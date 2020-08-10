@@ -8,6 +8,7 @@ from typing import Any, Tuple
 # Third party
 
 # Relative
+from cytosim_helpers import *
 
 ###############################################################################
 
@@ -32,31 +33,31 @@ class Converter(object):
     """
 
     @staticmethod
-    def _convert_custom(self, val: Any):
+    def _convert_custom(self, data: Any):
         # TODO
     
     @staticmethod
-    def _convert_readdy(self, val: Any):
+    def _convert_readdy(self, data: Any):
         # TODO
 
     @staticmethod
-    def _convert_cytosim(self, val: Any):
+    def _convert_cytosim(self, data: Any):
         # TODO
 
     @staticmethod
-    def _convert_physicell(self, val: Any):
+    def _convert_physicell(self, data: Any):
         # TODO
 
     @staticmethod
-    def convert(val: Any):
+    def convert(data: Any):
         """
         Convert the provided data to Simularium JSON format according to the current source_engine
         """
-        self.converter[source_engine](val)
+        self.converters[source_engine](data)
 
     def __init__(self, source_engine: string = 'custom'):
         self.source_engine = source_engine
-        self.converter = {
+        self.converters = {
             'readdy': self._convert_readdy,
             'cytosim': self._convert_cytosim,
             'physicell' : self._convert_physicell,

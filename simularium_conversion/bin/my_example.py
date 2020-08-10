@@ -81,6 +81,10 @@ def main():
 
         # Do your work here - preferably in a class or function,
         # passing in your args. E.g.
+
+        # from simularium_converstion import Converter
+        # Converter('custom').convert(data)
+        
         exe = Example(args.first)
         exe.update_value(args.second)
         print(
