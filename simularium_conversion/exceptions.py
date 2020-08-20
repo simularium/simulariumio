@@ -14,3 +14,17 @@ class UnsupportedSourceEngineError(Exception):
 
     def __str__(self):
         return f"simularium_conversion does not support this source simulation engine: '{self.source_engine}'."
+
+
+class MissingDataError(Exception):
+    """
+    This exception is intended to communicate that the data provided is missing a field
+    needed to parse outputs from the requested source simulation engine.
+    """
+
+    def __init__(self, field_name, **kwargs):
+        super().__init__(**kwargs)
+        self.field_name = field_name
+
+    def __str__(self):
+        return f"Missing data for requested source simulation engine: '{self.field_name}'."
