@@ -4,6 +4,8 @@
 import logging
 from typing import Dict, Any
 
+import numpy as np
+
 from ..exceptions import MissingDataError
 from .reader import Reader
 
@@ -25,7 +27,30 @@ class CustomTrajectoryReader(Reader):
         Return the spatialData's bundleData for a simulation 
         of agents with subpoints, packing buffer with jagged data is slower
         """
-        # TODO
+        bundleData: List[Dict[str,Any]] = []
+
+        for t in range(len(data['times'])):
+            frame_data = {}
+            frame_data['frameNumber'] = t
+            frame_data['time'] = data['times'][t]
+            n_agents = int(data['n_agents'][t])
+            local_buf = np.zeros(9 * n_agents + data['subpoints'][t].size)
+            i = 0
+            j = 0
+            for n in range(n_agents): 
+                local_buf[i] = data['viz_types'][t, n]
+                local_buf[i+1] = type_ids[t, n]
+                local_buf[i+2:i+5] = data['positions'][t, n]
+                local_buf[i+8] = data['radii'][t, n]
+                n_subpoints = data['subpoints'][t, j]
+                local_buf[i+9:i+10+n_subpoints] = data['subpoints'][t, j:j+1+n_subpoints]
+                i += 10 + n_subpoints
+                j += 1 + n_subpoints + (1 if n_subpoints > 0 else 0)
+            frame_data['data'] = local_buf.tolist()
+            bundleData.append(frame_data)
+
+        return bundleData
+
     
     def get_spatial_bundle_data_without_subpoints(
         self, 
@@ -38,18 +63,19 @@ class CustomTrajectoryReader(Reader):
         """
         bundleData: List[Dict[str,Any]] = []
 
-        ix_particles = np.empty((3*data['max_n_agents'],), dtype=int)
-        for i in range(data['max_n_agents']):
+        max_n_agents = int(np.amax(data['n_agents'], 0))
+        ix_particles = np.empty((3*max_n_agents,), dtype=int)
+        for i in range(max_n_agents):
             ix_particles[3*i:3*i+3] = np.arange(i*10 + 2, i*10 + 2+3)
 
-        frame_buf = np.zeros((data['max_n_agents'] * 10, ))
-        frame_buf[::10] = 1000  # vis type
+        frame_buf = np.zeros(10 * max_n_agents)
         for t in range(len(data['times'])):
             frame_data = {}
             frame_data['frameNumber'] = t
             frame_data['time'] = data['times'][t]
-            n = int(n_entities[t])
+            n = int(data['n_agents'][t])
             local_buf = frame_buf[:10*n]
+            local_buf[0::10] = data['viz_types'][t, :n]
             local_buf[1::10] = type_ids[t, :n]
             local_buf[ix_particles[:3*n]] = data['positions'][t, :n].flatten()
             local_buf[8::10] = data['radii'][t, :n]
@@ -67,8 +93,10 @@ class CustomTrajectoryReader(Reader):
             raise MissingDataError('box_size')
         if 'times' not in data:
             raise MissingDataError('times')
-        if 'max_n_agents' not in data:
-            raise MissingDataError('max_n_agents')
+        if 'n_agents' not in data:
+            raise MissingDataError('n_agents')
+        if 'viz_types' not in data:
+            raise MissingDataError('viz_types')
         if 'positions' not in data:
             raise MissingDataError('positions')
         if 'types' not in data:
@@ -98,7 +126,7 @@ class CustomTrajectoryReader(Reader):
         for t in range(totalSteps):
             type_ids.append([])
             for i in range(len(data['types'][t])):
-                agent_type = data['types'][t][i]
+                agent_type = data['types'][t, i]
                 if agent_type not in type_id_mapping:
                     type_id_mapping[agent_type] = k
                     traj_info[k] = { 'name' : agent_type }

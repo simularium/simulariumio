@@ -56,9 +56,14 @@ class Converter:
                     times: np.ndarray (shape = [timesteps])
                         A numpy ndarray containing the elapsed simulated time 
                         at each timestep
-                    max_n_agents: int
-                        The maximum number of agents that exist 
-                        at any one timestep
+                    n_agents: np.ndarray (shape = [timesteps])
+                        A numpy ndarray containing the number of agents 
+                        that exist at each timestep
+                    viz_types : np.ndarray (shape = [timesteps, agents])
+                        A numpy ndarray containing the viz type 
+                        for each agent at each timestep. Current options:
+                            1000 : default,
+                            1001 : fiber (which will require subpoints)
                     positions : np.ndarray (shape = [timesteps, agents, 3])
                         A numpy ndarray containing the XYZ position 
                         for each agent at each timestep
@@ -71,7 +76,14 @@ class Converter:
                     subpoints: np.ndarray 
                     (shape = [timesteps, subpoints]) (optional) 
                         A numpy ndarray containing subpoint data 
-                        for each timestep. TODO
+                        for each timestep. The subpoints array 
+                        at each timestep contains, for each agent: 
+                        [
+                            ...,
+                            number of subpoint values for this agent, 
+                            [subpoint values for this agent],
+                            ...
+                        ]
                     plots : Dict[str, Any] (optional) 
                         An object containing plot data already 
                         in Simularium format

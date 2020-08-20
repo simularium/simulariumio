@@ -32,8 +32,8 @@ class UnsupportedPlotTypeError(Exception):
 
 class MissingDataError(Exception):
     """
-    This exception is intended to communicate that the data provided is missing a field
-    needed to parse outputs from the requested source simulation engine.
+    This exception is intended to communicate that the data provided 
+    is missing a field needed to parse it.
     """
 
     def __init__(self, field_name, **kwargs):
@@ -41,4 +41,4 @@ class MissingDataError(Exception):
         self.field_name = field_name
 
     def __str__(self):
-        return f"Missing data for requested source simulation engine: '{self.field_name}'."
+        return f"Missing data: '{self.field_name}'."

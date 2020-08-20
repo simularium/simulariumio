@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Dict
+from typing import Dict, Any
 
-import numpy as np
-
+from ..exceptions import MissingDataError
 from .reader import Reader
 
 ###############################################################################
