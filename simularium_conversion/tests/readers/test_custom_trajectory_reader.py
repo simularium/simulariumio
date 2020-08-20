@@ -17,7 +17,7 @@ from random import choice
 import pytest
 import numpy as np
 
-from ...simularium_conversion import Converter
+from simularium_conversion import Converter
 
 
 # The best practice would be to parametrize your tests, and include tests for any

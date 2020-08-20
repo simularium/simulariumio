@@ -32,6 +32,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the
 
 ## The Four Commands You Need To Know
 1. `pip install -e .[dev]`
+    (`pip install -e ".[dev]"` on macs using zsh)
 
     This will install your package in editable mode with all the required development
     dependencies (i.e. `tox`).
