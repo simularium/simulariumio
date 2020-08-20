@@ -16,6 +16,20 @@ class UnsupportedSourceEngineError(Exception):
         return f"simularium_conversion does not support this source simulation engine: '{self.source_engine}'."
 
 
+class UnsupportedPlotTypeError(Exception):
+    """
+    This exception is intended to communicate that the requested plot type
+    is not one of the supported types and cannot be parsed with simularium_conversion.
+    """
+
+    def __init__(self, plot_type, **kwargs):
+        super().__init__(**kwargs)
+        self.plot_type = plot_type
+
+    def __str__(self):
+        return f"simularium_conversion does not support this plot type: '{self.plot_type}'."
+
+
 class MissingDataError(Exception):
     """
     This exception is intended to communicate that the data provided is missing a field

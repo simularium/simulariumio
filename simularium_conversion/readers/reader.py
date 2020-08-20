@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .simularium_data import SimulariumData
+import logging
+from abc import ABC, abstractmethod
+from typing import Dict, Any
 
 ###############################################################################
 
@@ -11,11 +13,7 @@ log = logging.getLogger(__name__)
 
 
 class Reader(ABC):
-    data: SimulariumData = None
-
-    def __init__(self, data: Dict[str, Any] = {}):
-        self.data = self._read(data)
 
     @abstractmethod
-    def _read(self, data: Dict[str, Any]) -> SimulariumData:
+    def read(self, data: Dict[str, Any]) -> Dict[str, Any]:
         pass

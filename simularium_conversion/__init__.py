@@ -13,4 +13,4 @@ def get_module_version():
     return __version__
 
 
-from .converter import Converter  # noqa: F401
+from .simularium_conversion import Converter  # noqa: F401
