@@ -67,9 +67,9 @@ class Converter:
                     positions : np.ndarray (shape = [timesteps, agents, 3])
                         A numpy ndarray containing the XYZ position 
                         for each agent at each timestep
-                    types: List[str] (list of shape [timesteps, agents])
-                        A list containing the string name for the type 
-                        of each agent at each timestep
+                    types: List[List[str]] (list of shape [timesteps, agents])
+                        A list containing timesteps, for each a list of 
+                        the string name for the type of each agent
                     radii : np.ndarray (shape = [timesteps, agents])
                         A numpy ndarray containing the radius 
                         for each agent at each timestep

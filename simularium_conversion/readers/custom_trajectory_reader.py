@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 
 class CustomTrajectoryReader(Reader):
     
-    def get_spatial_bundle_data_with_subpoints(
+    def _get_spatial_bundle_data_with_subpoints(
         self, 
         data: Dict[str, Any],
         type_ids: np.ndarray
@@ -52,7 +52,7 @@ class CustomTrajectoryReader(Reader):
         return bundleData
 
     
-    def get_spatial_bundle_data_without_subpoints(
+    def _get_spatial_bundle_data_without_subpoints(
         self, 
         data: Dict[str, Any],
         type_ids: np.ndarray
@@ -151,9 +151,9 @@ class CustomTrajectoryReader(Reader):
                     has_subpoints = True
                     break
         if has_subpoints:
-            spatialData['bundleData'] = get_spatial_bundle_data_with_subpoints(data, type_ids)
+            spatialData['bundleData'] = _get_spatial_bundle_data_with_subpoints(data, type_ids)
         else:
-            spatialData['bundleData'] = get_spatial_bundle_data_without_subpoints(data, type_ids)
+            spatialData['bundleData'] = _get_spatial_bundle_data_without_subpoints(data, type_ids)
         simularium_data["spatialData"] = spatialData
 
         simularium_data['plotData'] = {
