@@ -20,12 +20,12 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 SUPPORTED_TRAJECTORY_READERS = {
-    'custom' : CustomTrajectoryReader,
+    "custom": CustomTrajectoryReader,
 }
 
 SUPPORTED_PLOT_READERS = {
-    'scatter' : ScatterPlotReader,
-    'histogram' : HistogramPlotReader,
+    "scatter": ScatterPlotReader,
+    "histogram": HistogramPlotReader,
 }
 
 ###############################################################################
@@ -34,11 +34,7 @@ SUPPORTED_PLOT_READERS = {
 class Converter:
     _data: Dict[str, Any] = {}
 
-    def __init__(
-        self,
-        data: Dict[str, Any] = {}, 
-        source_engine: str = 'custom'
-    ):
+    def __init__(self, data: Dict[str, Any] = {}, source_engine: str = "custom"):
         """
         This object reads simulation trajectory outputs from various engines 
         (as well as custom data) and plot data and writes them 
@@ -99,9 +95,7 @@ class Converter:
         self._data = traj_reader_class().read(data)
 
     @staticmethod
-    def _determine_trajectory_reader(
-        source_engine: str = 'custom'
-    ) -> Type[Reader]:
+    def _determine_trajectory_reader(source_engine: str = "custom") -> Type[Reader]:
         """
         Return the trajectory reader to match the requested 
         source simulation engine
@@ -112,9 +106,7 @@ class Converter:
         raise UnsupportedSourceEngineError(source_engine)
 
     @staticmethod
-    def _determine_plot_reader(
-        plot_type: str = 'scatter'
-    ) -> Type[Reader]:
+    def _determine_plot_reader(plot_type: str = "scatter") -> Type[Reader]:
         """
         Return the plot reader to match the requested plot type
         """
@@ -123,11 +115,7 @@ class Converter:
 
         raise UnsupportedPlotTypeError(plot_type)
 
-    def add_plot(
-        self,
-        data: Dict[str, Any] = {}, 
-        plot_type: str = 'scatter'
-    ):
+    def add_plot(self, data: Dict[str, Any] = {}, plot_type: str = "scatter"):
         """
         Add data to be rendered in a plot
 
@@ -150,7 +138,7 @@ class Converter:
                         A dictionary with y-trace display names as keys, 
                         each mapped to a numpy ndarray of values for y, 
                         the dependent variable
-                    render_mode : str (optional)
+                    x`x  : str (optional)
                         A string specifying how to draw the datapoints.
                         Options:
                             'markers' : draw as points
@@ -177,7 +165,7 @@ class Converter:
             Default: 'scatter'
         """
         plot_reader_class = self._determine_plot_reader(plot_type)
-        self._data['plotData']['data'] += plot_reader_class().read(data)
+        self._data["plotData"]["data"].append(plot_reader_class().read(data))
 
     def write_JSON(self, output_path: str):
         """
@@ -188,5 +176,5 @@ class Converter:
         output_path: str
             where to save the file
         """
-        with open("{}.simularium".format(output_path), 'w+') as outfile:
+        with open("{}.simularium".format(output_path), "w+") as outfile:
             json.dump(self._data, outfile)

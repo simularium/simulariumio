@@ -14,8 +14,10 @@ class UnsupportedSourceEngineError(Exception):
         self.source_engine = source_engine
 
     def __str__(self):
-        return "simulariumio does not support"\
+        return (
+            "simulariumio does not support"
             f"this source simulation engine: '{self.source_engine}'."
+        )
 
 
 class UnsupportedPlotTypeError(Exception):
@@ -44,3 +46,17 @@ class MissingDataError(Exception):
 
     def __str__(self):
         return f"Missing data: '{self.field_name}'."
+
+
+class DataError(Exception):
+    """
+    This exception is intended to communicate that something
+    is wrong with the data provided.
+    """
+
+    def __init__(self, issue, **kwargs):
+        super().__init__(**kwargs)
+        self.issue = issue
+
+    def __str__(self):
+        return f"Problem with Data: '{self.issue}'."
