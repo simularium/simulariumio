@@ -49,9 +49,9 @@ build: ## run tox / run tests and lint
 	tox
 
 gen-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/simularium_conversion*.rst
+	rm -f docs/simulariumio*.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ simularium_conversion **/tests/
+	sphinx-apidoc -o docs/ simulariumio **/tests/
 	$(MAKE) -C docs html
 
 docs: ## generate Sphinx HTML documentation, including API docs, and serve to browser

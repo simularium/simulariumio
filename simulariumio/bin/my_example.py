@@ -11,7 +11,7 @@ import logging
 import sys
 import traceback
 
-from simularium_conversion import Example, get_module_version
+from simulariumio import Example, get_module_version
 
 ###############################################################################
 

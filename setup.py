@@ -65,7 +65,7 @@ setup(
     description="Simularium Conversion helps convert ssimulation outputs to the format consumed by the Simularium viewer.",
     entry_points={
         "console_scripts": [
-            "my_example=simularium_conversion.bin.my_example:main"
+            "my_example=simulariumio.bin.my_example:main"
         ],
     },
     install_requires=requirements,
@@ -73,15 +73,15 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     include_package_data=True,
-    keywords="simularium_conversion",
-    name="simularium_conversion",
+    keywords="simulariumio",
+    name="simulariumio",
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*"]),
     python_requires=">=3.7",
     setup_requires=setup_requirements,
-    test_suite="simularium_conversion/tests",
+    test_suite="simulariumio/tests",
     tests_require=test_requirements,
     extras_require=extra_requirements,
-    url="https://github.com/allen-cell-animated/simularium_conversion",
+    url="https://github.com/allen-cell-animated/simulariumio",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
     version="0.0.0",
