@@ -39,10 +39,12 @@ class HistogramPlotReader(Reader):
         # plot data
         simularium_data["data"] = []
         for trace_name in data["traces"]:
-            simularium_data["data"] += {
-                "name": trace_name,
-                "type": "histogram",
-                "x": data["traces"][trace_name],
-            }
+            simularium_data["data"].append(
+                {
+                    "name": trace_name,
+                    "type": "histogram",
+                    "x": data["traces"][trace_name],
+                }
+            )
 
         return simularium_data
