@@ -13,6 +13,7 @@ log = logging.getLogger(__name__)
 
 ###############################################################################
 
+
 class HistogramPlotReader(Reader):
 
     def read(self, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -26,7 +27,7 @@ class HistogramPlotReader(Reader):
             raise MissingDataError('xaxis_title')
         if 'traces' not in data:
             raise MissingDataError('traces')
-        
+
         simularium_data = {}
 
         # layout info
@@ -48,5 +49,5 @@ class HistogramPlotReader(Reader):
                 'type' : 'histogram',
                 'x' : data['traces'][trace_name]
             }
-        
+
         return simularium_data

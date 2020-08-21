@@ -13,8 +13,9 @@ log = logging.getLogger(__name__)
 
 ###############################################################################
 
+
 class ScatterPlotReader(Reader):
-    
+
     def read(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
@@ -30,7 +31,7 @@ class ScatterPlotReader(Reader):
             raise MissingDataError('xtrace')
         if 'ytraces' not in data:
             raise MissingDataError('ytraces')
-        
+
         simularium_data = {}
 
         # layout info
@@ -54,6 +55,5 @@ class ScatterPlotReader(Reader):
                 'y' : data['ytraces'][ytrace_name],
                 'mode' : data['render_mode'] if 'render_mode' in data else 'markers'
             }
-        
+
         return simularium_data
-        

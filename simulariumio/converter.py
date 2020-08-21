@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Dict, List, Any
-
-import numpy as np
+from typing import Dict, Any, Type
+import json
 
 from .exceptions import UnsupportedSourceEngineError, UnsupportedPlotTypeError
 from .readers import (
     CustomTrajectoryReader,
+    ScatterPlotReader,
+    HistogramPlotReader,
 )
 from .readers.reader import Reader
 
@@ -36,7 +37,7 @@ class Converter:
     def __init__(
         self,
         data: Dict[str, Any] = {}, 
-        source_engine: string = 'custom'
+        source_engine: str = 'custom'
     ):
         """
         This object reads simulation trajectory outputs from various engines 
@@ -74,21 +75,15 @@ class Converter:
                         A numpy ndarray containing the radius 
                         for each agent at each timestep
                     subpoints: np.ndarray 
-                    (shape = [timesteps, subpoints]) (optional) 
-                        A numpy ndarray containing subpoint data 
-                        for each timestep. The subpoints array 
-                        at each timestep contains, for each agent: 
-                        [
-                            ...,
-                            number of subpoint values for this agent, 
-                            [subpoint values for this agent],
-                            ...
-                        ]
+                    (shape = [timesteps, agents, subpoints, 3]) (optional) 
+                        A numpy ndarray containing a list of subpoint position data 
+                        for each agent at each timestep. These values are 
+                        currently only used for fiber agents.
                     plots : Dict[str, Any] (optional) 
                         An object containing plot data already 
                         in Simularium format
 
-        source_engine: string
+        source_engine: str
             A string specifying which simulation engine created these outputs. 
             Current options:
                 'custom' : outputs are from an engine not specifically supported
@@ -105,7 +100,7 @@ class Converter:
 
     @staticmethod
     def _determine_trajectory_reader(
-        source_engine: string = 'custom'
+        source_engine: str = 'custom'
     ) -> Type[Reader]:
         """
         Return the trajectory reader to match the requested 
@@ -118,7 +113,7 @@ class Converter:
 
     @staticmethod
     def _determine_plot_reader(
-        plot_type: string = 'scatter'
+        plot_type: str = 'scatter'
     ) -> Type[Reader]:
         """
         Return the plot reader to match the requested plot type
@@ -131,7 +126,7 @@ class Converter:
     def add_plot(
         self,
         data: Dict[str, Any] = {}, 
-        plot_type: string = 'scatter'
+        plot_type: str = 'scatter'
     ):
         """
         Add data to be rendered in a plot
@@ -183,7 +178,7 @@ class Converter:
         """
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data['plotData']['data'] += plot_reader_class().read(data)
-    
+
     def write_JSON(self, output_path: str):
         """
         Save the data in .simularium JSON format at the output path
@@ -195,5 +190,3 @@ class Converter:
         """
         with open("{}.simularium".format(output_path), 'w+') as outfile:
             json.dump(self._data, outfile)
-        
-        

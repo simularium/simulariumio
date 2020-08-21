@@ -84,7 +84,7 @@ def main():
 
         # from simularium_converstion import Converter
         # Converter('custom').convert(data)
-        
+
         exe = Example(args.first)
         exe.update_value(args.second)
         print(
