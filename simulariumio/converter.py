@@ -138,7 +138,7 @@ class Converter:
                         A dictionary with y-trace display names as keys, 
                         each mapped to a numpy ndarray of values for y, 
                         the dependent variable
-                    x`x  : str (optional)
+                    render_mode: str (optional)
                         A string specifying how to draw the datapoints.
                         Options:
                             'markers' : draw as points

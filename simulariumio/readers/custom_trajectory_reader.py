@@ -30,7 +30,7 @@ class CustomTrajectoryReader(Reader):
 
             frame_data = {}
             frame_data["frameNumber"] = t
-            frame_data["time"] = data["times"][t]
+            frame_data["time"] = float(data["times"][t])
             n_agents = int(data["n_agents"][t])
 
             i = 0
@@ -82,7 +82,7 @@ class CustomTrajectoryReader(Reader):
 
             frame_data = {}
             frame_data["frameNumber"] = t
-            frame_data["time"] = data["times"][t]
+            frame_data["time"] = float(data["times"][t])
             n = int(data["n_agents"][t])
             local_buf = frame_buf[: 10 * n]
             local_buf[0::10] = data["viz_types"][t, :n]
@@ -121,13 +121,13 @@ class CustomTrajectoryReader(Reader):
         traj_info = {
             "version": 1,
             "timeStepSize": (
-                data["times"][1] - data["times"][0] if totalSteps > 1 else 0
+                float(data["times"][1] - data["times"][0]) if totalSteps > 1 else 0.0
             ),
             "totalSteps": totalSteps,
             "size": {
-                "x": data["box_size"][0],
-                "y": data["box_size"][1],
-                "z": data["box_size"][2],
+                "x": float(data["box_size"][0]),
+                "y": float(data["box_size"][1]),
+                "z": float(data["box_size"][2]),
             },
         }
 
