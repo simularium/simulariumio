@@ -51,8 +51,8 @@ class ScatterPlotReader(Reader):
                 {
                     "name": ytrace_name,
                     "type": "scatter",
-                    "x": data["xtrace"],
-                    "y": data["ytraces"][ytrace_name],
+                    "x": data["xtrace"].tolist(),
+                    "y": data["ytraces"][ytrace_name].tolist(),
                     "mode": data["render_mode"] if "render_mode" in data else "markers",
                 }
             )

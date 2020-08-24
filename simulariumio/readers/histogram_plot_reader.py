@@ -43,7 +43,7 @@ class HistogramPlotReader(Reader):
                 {
                     "name": trace_name,
                     "type": "histogram",
-                    "x": data["traces"][trace_name],
+                    "x": data["traces"][trace_name].tolist(),
                 }
             )
 
