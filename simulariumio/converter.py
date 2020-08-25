@@ -8,6 +8,7 @@ import json
 from .exceptions import UnsupportedSourceEngineError, UnsupportedPlotTypeError
 from .readers import (
     CustomTrajectoryReader,
+    CytosimTrajectoryReader,
     ScatterPlotReader,
     HistogramPlotReader,
 )
@@ -21,6 +22,7 @@ log = logging.getLogger(__name__)
 
 SUPPORTED_TRAJECTORY_READERS = {
     "custom": CustomTrajectoryReader,
+    "cytosim": CytosimTrajectoryReader,
 }
 
 SUPPORTED_PLOT_READERS = {
@@ -47,13 +49,13 @@ class Converter:
             Fields for each engine:
 
                 custom: 
-                    box_size: np.ndarray (shape = [3])
+                    box_size : np.ndarray (shape = [3])
                         A numpy ndarray containing the XYZ dimensions 
                         of the simulation bounding volume
-                    times: np.ndarray (shape = [timesteps])
+                    times : np.ndarray (shape = [timesteps])
                         A numpy ndarray containing the elapsed simulated time 
                         at each timestep
-                    n_agents: np.ndarray (shape = [timesteps])
+                    n_agents : np.ndarray (shape = [timesteps])
                         A numpy ndarray containing the number of agents 
                         that exist at each timestep
                     viz_types : np.ndarray (shape = [timesteps, agents])
@@ -70,11 +72,21 @@ class Converter:
                     radii : np.ndarray (shape = [timesteps, agents])
                         A numpy ndarray containing the radius 
                         for each agent at each timestep
-                    subpoints: np.ndarray 
+                    subpoints : np.ndarray 
                     (shape = [timesteps, agents, subpoints, 3]) (optional) 
                         A numpy ndarray containing a list of subpoint position data 
                         for each agent at each timestep. These values are 
                         currently only used for fiber agents.
+                    plots : Dict[str, Any] (optional) 
+                        An object containing plot data already 
+                        in Simularium format
+
+                Cytosim:
+                    box_size : np.ndarray (shape = [3])
+                        A numpy ndarray containing the XYZ dimensions 
+                        of the simulation bounding volume
+                    fiber_points_path : str
+                        filepath to the Cytosim output file fiber_points.txt
                     plots : Dict[str, Any] (optional) 
                         An object containing plot data already 
                         in Simularium format
