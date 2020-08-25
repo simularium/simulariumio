@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from simulariumio import Converter, exceptions
+from simulariumio import Converter
 from simulariumio.tests.conftest import three_default_agents
 
 
@@ -191,7 +191,7 @@ from simulariumio.tests.conftest import three_default_agents
             },
             {},
             marks=pytest.mark.raises(
-                exception=exceptions.MissingDataError
+                exception=KeyError
             ),  # input data is missing key 'xaxis_title'
         ),
     ],

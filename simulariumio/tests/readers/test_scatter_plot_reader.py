@@ -164,7 +164,7 @@ def test_scatter_plot() -> Dict[str, Any]:
             },
             {},
             marks=pytest.mark.raises(
-                exception=exceptions.MissingDataError
+                exception=KeyError
             ),  # input data is missing key 'xtrace'
         ),
         pytest.param(

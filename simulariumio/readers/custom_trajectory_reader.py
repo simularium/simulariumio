@@ -6,7 +6,6 @@ from typing import Dict, List, Any
 
 import numpy as np
 
-from ..exceptions import MissingDataError
 from .reader import Reader
 
 ###############################################################################
@@ -98,22 +97,6 @@ class CustomTrajectoryReader(Reader):
         """
         Return an object containing the data shaped for Simularium format
         """
-
-        if "box_size" not in data:
-            raise MissingDataError("box_size")
-        if "times" not in data:
-            raise MissingDataError("times")
-        if "n_agents" not in data:
-            raise MissingDataError("n_agents")
-        if "viz_types" not in data:
-            raise MissingDataError("viz_types")
-        if "positions" not in data:
-            raise MissingDataError("positions")
-        if "types" not in data:
-            raise MissingDataError("types")
-        if "radii" not in data:
-            raise MissingDataError("radii")
-
         simularium_data = {}
 
         # trajectory info

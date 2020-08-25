@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Dict, Any, Type
+from typing import Dict, Any
 import json
 
 from .exceptions import UnsupportedSourceEngineError, UnsupportedPlotTypeError
@@ -95,7 +95,7 @@ class Converter:
         self._data = traj_reader_class().read(data)
 
     @staticmethod
-    def _determine_trajectory_reader(source_engine: str = "custom") -> Type[Reader]:
+    def _determine_trajectory_reader(source_engine: str = "custom") -> [Reader]:
         """
         Return the trajectory reader to match the requested 
         source simulation engine
@@ -106,7 +106,7 @@ class Converter:
         raise UnsupportedSourceEngineError(source_engine)
 
     @staticmethod
-    def _determine_plot_reader(plot_type: str = "scatter") -> Type[Reader]:
+    def _determine_plot_reader(plot_type: str = "scatter") -> [Reader]:
         """
         Return the plot reader to match the requested plot type
         """
@@ -176,5 +176,5 @@ class Converter:
         output_path: str
             where to save the file
         """
-        with open("{}.simularium".format(output_path), "w+") as outfile:
+        with open(f"{output_path}.simularium", "w+") as outfile:
             json.dump(self._data, outfile)

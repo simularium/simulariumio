@@ -4,7 +4,7 @@
 import logging
 from typing import Dict, Any
 
-from ..exceptions import MissingDataError, DataError
+from ..exceptions import DataError
 from .reader import Reader
 
 ###############################################################################
@@ -19,18 +19,6 @@ class ScatterPlotReader(Reader):
         """
         Return an object containing the data shaped for Simularium format
         """
-
-        if "title" not in data:
-            raise MissingDataError("title")
-        if "xaxis_title" not in data:
-            raise MissingDataError("xaxis_title")
-        if "yaxis_title" not in data:
-            raise MissingDataError("yaxis_title")
-        if "xtrace" not in data:
-            raise MissingDataError("xtrace")
-        if "ytraces" not in data:
-            raise MissingDataError("ytraces")
-
         simularium_data = {}
 
         # layout info

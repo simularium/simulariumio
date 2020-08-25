@@ -4,7 +4,6 @@
 import logging
 from typing import Dict, Any
 
-from ..exceptions import MissingDataError
 from .reader import Reader
 
 ###############################################################################
@@ -19,14 +18,6 @@ class HistogramPlotReader(Reader):
         """
         Return an object containing the data shaped for Simularium format
         """
-
-        if "title" not in data:
-            raise MissingDataError("title")
-        if "xaxis_title" not in data:
-            raise MissingDataError("xaxis_title")
-        if "traces" not in data:
-            raise MissingDataError("traces")
-
         simularium_data = {}
 
         # layout info

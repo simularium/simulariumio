@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from simulariumio import Converter, exceptions
+from simulariumio import Converter
 from simulariumio.tests.conftest import three_default_agents
 
 
@@ -533,9 +533,7 @@ from simulariumio.tests.conftest import three_default_agents
         pytest.param(
             {},
             {},
-            marks=pytest.mark.raises(
-                exception=exceptions.MissingDataError
-            ),  # input data is missing keys
+            marks=pytest.mark.raises(exception=KeyError),  # input data is missing keys
         ),
     ],
 )
