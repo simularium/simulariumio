@@ -1,8 +1,8 @@
 # Simularium Conversion
 
-[![Build Status](https://github.com/allen-cell-animated/simularium_conversion/workflows/Build%20Master/badge.svg)](https://github.com/allen-cell-animated/simularium_conversion/actions)
-[![Documentation](https://github.com/allen-cell-animated/simularium_conversion/workflows/Documentation/badge.svg)](https://allen-cell-animated.github.io/simularium_conversion)
-[![Code Coverage](https://codecov.io/gh/allen-cell-animated/simularium_conversion/branch/master/graph/badge.svg)](https://codecov.io/gh/allen-cell-animated/simularium_conversion)
+[![Build Status](https://github.com/allen-cell-animated/simulariumio/workflows/Build%20Master/badge.svg)](https://github.com/allen-cell-animated/simulariumio/actions)
+[![Documentation](https://github.com/allen-cell-animated/simulariumio/workflows/Documentation/badge.svg)](https://allen-cell-animated.github.io/simulariumio)
+[![Code Coverage](https://codecov.io/gh/allen-cell-animated/simulariumio/branch/master/graph/badge.svg)](https://codecov.io/gh/allen-cell-animated/simulariumio)
 
 Simularium Conversion helps convert ssimulation outputs to the format consumed by the Simularium viewer.
 
@@ -14,24 +14,25 @@ Simularium Conversion helps convert ssimulation outputs to the format consumed b
 
 ## Quick Start
 ```python
-from simularium_conversion import Example
+from simulariumio import Example
 
 a = Example()
 a.get_value()  # 10
 ```
 
 ## Installation
-**Stable Release:** `pip install simularium_conversion`<br>
-**Development Head:** `pip install git+https://github.com/allen-cell-animated/simularium_conversion.git`
+**Stable Release:** `pip install simulariumio`<br>
+**Development Head:** `pip install git+https://github.com/allen-cell-animated/simulariumio.git`
 
 ## Documentation
-For full package documentation please visit [allen-cell-animated.github.io/simularium_conversion](https://allen-cell-animated.github.io/simularium_conversion).
+For full package documentation please visit [allen-cell-animated.github.io/simulariumio](https://allen-cell-animated.github.io/simulariumio).
 
 ## Development
 See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the code.
 
 ## The Four Commands You Need To Know
 1. `pip install -e .[dev]`
+    (`pip install -e ".[dev]"` on macs using zsh)
 
     This will install your package in editable mode with all the required development
     dependencies (i.e. `tox`).
@@ -62,13 +63,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the
     * _A lot of the following optional steps are *free* if the repository is Public,
     plus open source is cool_
   * After a GitHub repo has been created, run the following commands:
-    * `git remote add origin git@github.com:allen-cell-animated/simularium_conversion.git`
+    * `git remote add origin git@github.com:allen-cell-animated/simulariumio.git`
     * `git push -u origin master`
-* Register simularium_conversion with Codecov:
+* Register simulariumio with Codecov:
   * Make an account on [codecov.io](https://codecov.io)
   (Recommended to sign in with GitHub)
   * Select `allen-cell-animated` and click: `Add new repository`
-  * Copy the token provided, go to your [GitHub repository's settings and under the `Secrets` tab](https://github.com/allen-cell-animated/simularium_conversion/settings/secrets),
+  * Copy the token provided, go to your [GitHub repository's settings and under the `Secrets` tab](https://github.com/allen-cell-animated/simulariumio/settings/secrets),
   add a secret called `CODECOV_TOKEN` with the token you just copied.
   Don't worry, no one will see this token because it will be encrypted.
 * Generate and add an access token as a secret to the repository for auto documentation
@@ -81,12 +82,12 @@ generation to work
     * _Select only: `repo:status`, `repo_deployment`, and `public_repo` to limit what
     this token has access to_
   * Copy the newly generated token
-  * Go to your [GitHub repository's settings and under the `Secrets` tab](https://github.com/allen-cell-animated/simularium_conversion/settings/secrets),
+  * Go to your [GitHub repository's settings and under the `Secrets` tab](https://github.com/allen-cell-animated/simulariumio/settings/secrets),
   add a secret called `ACCESS_TOKEN` with the personal access token you just created.
   Don't worry, no one will see this password because it will be encrypted.
 * Register your project with PyPI:
   * Make an account on [pypi.org](https://pypi.org)
-  * Go to your [GitHub repository's settings and under the `Secrets` tab](https://github.com/allen-cell-animated/simularium_conversion/settings/secrets),
+  * Go to your [GitHub repository's settings and under the `Secrets` tab](https://github.com/allen-cell-animated/simulariumio/settings/secrets),
   add a secret called `PYPI_TOKEN` with your password for your PyPI account.
   Don't worry, no one will see this password because it will be encrypted.
   * Next time you push to the branch: `stable`, GitHub actions will build and deploy
@@ -98,7 +99,7 @@ generation to work
     * To protect from just anyone pushing to `master` or `stable` (the branches with
     more tests and deploy
     configurations)
-    * Go to your [GitHub repository's settings and under the `Branches` tab](https://github.com/allen-cell-animated/simularium_conversion/settings/branches), click `Add rule` and select the
+    * Go to your [GitHub repository's settings and under the `Branches` tab](https://github.com/allen-cell-animated/simulariumio/settings/branches), click `Add rule` and select the
     settings you believe best.
     * _Recommendations:_
       * _Require pull request reviews before merging_

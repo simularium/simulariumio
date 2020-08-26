@@ -13,4 +13,4 @@ def get_module_version():
     return __version__
 
 
-from .conversion import Converter  # noqa: F401
+from .converter import Converter  # noqa: F401

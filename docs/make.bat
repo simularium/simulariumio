@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=simularium_conversion
+set SPHINXPROJ=simulariumio
 
 if "%1" == "" goto help
 
