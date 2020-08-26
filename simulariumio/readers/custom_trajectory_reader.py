@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Dict, List, Any
+from typing import Dict, Any
 
 import numpy as np
 
@@ -63,13 +63,9 @@ class CustomTrajectoryReader(TrajectoryReader):
             "bundleSize": totalSteps,
         }
         if "subpoints" in data:
-            spatialData["bundleData"] = self._get_spatial_bundle_data_subpoints(
-                data
-            )
+            spatialData["bundleData"] = self._get_spatial_bundle_data_subpoints(data)
         else:
-            spatialData["bundleData"] = self._get_spatial_bundle_data_no_subpoints(
-                data
-            )
+            spatialData["bundleData"] = self._get_spatial_bundle_data_no_subpoints(data)
         simularium_data["spatialData"] = spatialData
 
         # plot data

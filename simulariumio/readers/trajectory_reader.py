@@ -1,9 +1,10 @@
-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import logging
 from typing import Dict, Any, List
+
+import numpy as np
 
 from .reader import Reader
 
@@ -34,7 +35,7 @@ class TrajectoryReader(Reader):
             i = 0
             buffer_size = 10 * n_agents
             for n in range(n_agents):
-                buffer_size += 3 * len(data["subpoints"][t][n])
+                buffer_size += 3 * int(data["n_subpoints"][t][n])
             local_buf = np.zeros(buffer_size)
 
             for n in range(n_agents):
@@ -44,7 +45,7 @@ class TrajectoryReader(Reader):
                 local_buf[i + 2 : i + 5] = data["positions"][t, n]
                 local_buf[i + 8] = data["radii"][t, n]
 
-                n_subpoints = len(data["subpoints"][t][n])
+                n_subpoints = int(data["n_subpoints"][t][n])
                 if n_subpoints > 0:
                     subpoints = [3 * n_subpoints]
                     for p in range(n_subpoints):

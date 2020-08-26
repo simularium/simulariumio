@@ -200,6 +200,9 @@ from simulariumio.tests.conftest import three_default_agents
                         [8.91022619, 9.01379396, 0.0, 0.0, 0.0],
                     ]
                 ),
+                "n_subpoints": np.array(
+                    [[0, 3, 4, 0, 2], [3, 0, 3, 2, 0], [0, 0, 3, 2, 2]]
+                ),
                 "subpoints": np.array(
                     [
                         [

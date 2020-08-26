@@ -72,6 +72,10 @@ class Converter:
                     radii : np.ndarray (shape = [timesteps, agents])
                         A numpy ndarray containing the radius 
                         for each agent at each timestep
+                    n_subpoints : np.ndarray (shape = [timesteps, agents]) (optional)
+                        A numpy ndarray containing the number of subpoints
+                        belonging to each agent at each timestep. Required if
+                        subpoints are provided
                     subpoints : np.ndarray 
                     (shape = [timesteps, agents, subpoints, 3]) (optional) 
                         A numpy ndarray containing a list of subpoint position data 
