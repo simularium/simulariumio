@@ -13,8 +13,15 @@ from simulariumio import Converter
         # 3 fiber agents
         (
             {
-                "box_size": np.array([500.0, 500.0, 500.0]),
-                "fiber_points_path": "simulariumio/tests/data/cytosim/fiber_points.txt",
+                "box_size": np.array([0.5, 0.5, 0.5]),
+                "data": {
+                    "fibers": {
+                        "filepath": "simulariumio/tests/data/cytosim"
+                        "/3_fibers/fiber_points.txt",
+                        "types": {"0": "actin"},
+                    }
+                },
+                "scale_factor": 1e3,
             },
             {
                 "trajectoryInfo": {
@@ -23,7 +30,7 @@ from simulariumio import Converter
                     "totalSteps": 3,
                     "size": {"x": 500.0, "y": 500.0, "z": 500.0},
                     "nAgentTypes": 1,
-                    "0": {"name": "fiber"},
+                    "0": {"name": "actin"},
                 },
                 "spatialData": {
                     "version": 1,

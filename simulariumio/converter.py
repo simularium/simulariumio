@@ -89,8 +89,35 @@ class Converter:
                     box_size : np.ndarray (shape = [3])
                         A numpy ndarray containing the XYZ dimensions 
                         of the simulation bounding volume
-                    fiber_points_path : str
-                        filepath to the Cytosim output file fiber_points.txt
+                    data : Dict[str, Any]
+                        fibers : Dict[str, Any]
+                            filepath : str
+                                path to fiber_points.txt
+                            types : Dict[str, str] (optional)
+                                the display names for each type of fiber
+                                Default: "fiber[type index from Cytosim data]"
+                        solids : Dict[str, Any]
+                            filepath : str
+                                path to fiber_points.txt
+                            types : Dict[str, str] (optional)
+                                the display names for each type of solid
+                                Default: "solid[type index from Cytosim data]"
+                        singles : Dict[str, Any]
+                            filepath : str
+                                path to fiber_points.txt
+                            types : Dict[str, str] (optional)
+                                the display names for each type of single
+                                Default: "single[type index from Cytosim data]"
+                        couples : Dict[str, Any]
+                            filepath : str
+                                path to fiber_points.txt
+                            types : Dict[str, str] (optional)
+                                the display names for each type of couple
+                                Default: "couple[type index from Cytosim data]"
+                    scale_factor : float (optional)
+                        A multiplier for the Cytosim scene, use if 
+                        visualization is too large or small
+                        Default: 1.0
                     plots : Dict[str, Any] (optional) 
                         An object containing plot data already 
                         in Simularium format
@@ -99,9 +126,9 @@ class Converter:
             A string specifying which simulation engine created these outputs. 
             Current options:
                 'custom' : outputs are from an engine not specifically supported
-            Coming Soon:
                 'cytosim' : outputs are from CytoSim 
                     (https://gitlab.com/f.nedelec/cytosim)
+            Coming Soon:
                 'readdy' : outputs are from ReaDDy 
                     (https://readdy.github.io/)
                 'physicell' : outputs are from PhysiCell 
