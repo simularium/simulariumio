@@ -80,7 +80,9 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     dimensions = [[0] * dims[t] for t in range(len(dims))]
                 else:
                     if len(dims) != len(dimensions):
-                        raise DataError("number of timesteps in Cytosim data does not match")
+                        raise DataError(
+                            "number of timesteps in Cytosim data is not consistent"
+                        )
                     for t in range(len(dimensions)):
                         for n in range(dims[t]):
                             dimensions[t].append(0)
@@ -92,19 +94,23 @@ class CytosimTrajectoryReader(TrajectoryReader):
         return (len(dimensions), max_agents, np.amax(np.array(dimensions)))
 
     def _parse_fibers(
-        self, 
-        fibers_lines: List[str], 
-        scale_factor: float, 
-        result: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self,
+        fibers_lines: List[str],
+        scale_factor: float,
+        result: Dict[str, Any],
+        agent_types: Dict[int, Any],
+    ) -> Tuple[Dict[str, Any], List[str]]:
         """
         Parse a Cytosim fiber_points.txt output file to get fiber agents
         """
         t = -1
         n = -1
         s = -1
-        parse_time = (result["times"].size > 0 and 
-                      float(result["times"][1]) < sys.float_info.epsilon)
+        parse_time = (
+            result["times"].size > 0
+            and float(result["times"][1]) < sys.float_info.epsilon
+        )
+        types = {}
         for line in fibers_lines:
             if self._ignore_line(line):
                 continue
@@ -119,32 +125,44 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     result["times"][t] = float(line.split()[2])
                 elif "fiber" in line:
                     # start of fiber
-                    if s >= 0:
-                        result["n_subpoints"][t][n_other_agents + n] = s + 1
                     n += 1
+                    if n > 0 and s >= 0:
+                        result["n_subpoints"][t][n_other_agents + n - 1] = s + 1
                     s = -1
-                    result["type_ids"][t][n_other_agents + n] = int(
-                        line.split()[2].split(":")[0][1:])
+                    tid = int(line.split()[2].split(":")[0][1:])
+                    if tid not in types:
+                        raw_id = tid
+                        while tid in agent_types:
+                            tid += 1
+                        types[raw_id] = tid
+                        agent_types[tid] = {"object_type": "fibers", "raw_id": raw_id}
+                    else:
+                        tid = types[tid]
+                    result["type_ids"][t][n_other_agents + n] = tid
                 elif "end" in line:
                     # end of frame
                     result["n_subpoints"][t][n_other_agents + n] = s + 1
                     result["n_agents"][t] += n + 1
-                    result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (n + 1) * [1001.0]
+                    result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (
+                        n + 1
+                    ) * [1001.0]
                 continue
             s += 1
             columns = line.split()
             result["subpoints"][t][n_other_agents + n][s] = scale_factor * np.array(
                 [float(columns[1]), float(columns[2]), float(columns[3])]
             )
-        return result
+        return (result, agent_types)
 
     def _parse_others(
-        self, 
-        data_lines: List[str], 
-        scale_factor: float, 
-        radii: Dict[str, float], 
-        result: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self,
+        object_type: str,
+        data_lines: List[str],
+        scale_factor: float,
+        agent_data: Dict[str, float],
+        result: Dict[str, Any],
+        agent_types: Dict[int, Any],
+    ) -> Tuple[Dict[str, Any], List[str]]:
         """
         Parse a Cytosim output file containing objects other than fibers 
         (solids, singles, or couples) to get default agents
@@ -152,8 +170,15 @@ class CytosimTrajectoryReader(TrajectoryReader):
         t = -1
         n = -1
         n_other_agents = 0
-        parse_time = (result["times"].size > 0 and 
-                      float(result["times"][1]) < sys.float_info.epsilon)
+        parse_time = (
+            result["times"].size > 0
+            and float(result["times"][1]) < sys.float_info.epsilon
+        )
+        types = {}
+        if object_type == "couples":
+            position_indices = [3, 4, 5]
+        else:
+            position_indices = [2, 3, 4]
         for line in data_lines:
             if self._ignore_line(line):
                 continue
@@ -162,7 +187,9 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     # start of frame
                     if t >= 0:
                         result["n_agents"][t] += n + 1
-                        result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (n + 1) * [1000.0]
+                        result["viz_types"][t][
+                            n_other_agents : n_other_agents + n + 1
+                        ] = (n + 1) * [1000.0]
                     t += 1
                     n_other_agents = int(result["n_agents"][t])
                     n = -1
@@ -172,23 +199,34 @@ class CytosimTrajectoryReader(TrajectoryReader):
                 continue
             n += 1
             columns = line.split()
-            result["type_ids"][t][n_other_agents + n] = int(columns[0])
+            tid = int(columns[0])
+            raw_id = tid
+            if tid not in types:
+                while tid in agent_types:
+                    tid += 1
+                types[raw_id] = tid
+                agent_types[tid] = {"object_type": object_type, "raw_id": raw_id}
+            else:
+                tid = types[tid]
+            result["type_ids"][t][n_other_agents + n] = tid
             result["positions"][t][n_other_agents + n] = scale_factor * np.array(
-                [float(columns[2]), float(columns[3]), float(columns[4])]
+                [
+                    float(columns[position_indices[0]]),
+                    float(columns[position_indices[1]]),
+                    float(columns[position_indices[2]]),
+                ]
             )
-            tid = str(columns[0])
-            result["radii"][t][n_other_agents + n] = (scale_factor * radii[tid]) if tid in radii else 1.0
+            raw_id = str(raw_id)
+            result["radii"][t][n_other_agents + n] = (
+                (scale_factor * float(agent_data[raw_id]["radius"]))
+                if raw_id in agent_data and "radius" in agent_data[raw_id]
+                else 1.0
+            )
         result["n_agents"][t] += n + 1
-        result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (n + 1) * [1000.0]
-        return result
-
-    # def parse_solids(
-    #     self, solids_path: str, fiber_type_id: int
-    # ) -> Dict[str, Any]:
-    #     """
-    #     Parse a Cytosim fiber_points.txt output file to get the total steps,
-    #     maximum agents per timestep, and maximum subpoints per agent
-    #     """
+        result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (n + 1) * [
+            1000.0
+        ]
+        return (result, agent_types)
 
     def read(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -200,9 +238,10 @@ class CytosimTrajectoryReader(TrajectoryReader):
             with open(data["data"][object_type]["filepath"], "r") as myfile:
                 cytosim_data[object_type] = myfile.read().split("\n")
 
-        simularium_data = {}
-        (totalSteps, max_agents, max_subpoints) = self._parse_data_dimensions(cytosim_data)
-        scale = float(data["scale_factor"]) if "scale_factor" in data else 1.0
+        # parse
+        (totalSteps, max_agents, max_subpoints) = self._parse_data_dimensions(
+            cytosim_data
+        )
         agent_data = {
             "times": np.zeros(totalSteps),
             "n_agents": np.zeros(totalSteps),
@@ -211,19 +250,29 @@ class CytosimTrajectoryReader(TrajectoryReader):
             "type_ids": np.zeros((totalSteps, max_agents)),
             "radii": np.zeros((totalSteps, max_agents)),
             "n_subpoints": np.zeros((totalSteps, max_agents)),
-            "subpoints": np.zeros((totalSteps, max_agents, max_subpoints, 3))
+            "subpoints": np.zeros((totalSteps, max_agents, max_subpoints, 3)),
         }
-        if "fibers" in data["data"]:
-            agent_data = self._parse_fibers(cytosim_data["fibers"], scale, agent_data)
+        agent_types = {}
+        scale = float(data["scale_factor"]) if "scale_factor" in data else 1.0
         for object_type in data["data"]:
             if object_type != "fibers":
-                agent_data = self._parse_others(
-                    cytosim_data[object_type], 
-                    scale, 
-                    data["data"][object_type]["radii"] 
-                        if "radii" in data["data"][object_type] else {},
-                    agent_data
+                agent_data, agent_types = self._parse_others(
+                    object_type,
+                    cytosim_data[object_type],
+                    scale,
+                    data["data"][object_type]["agents"]
+                    if "agents" in data["data"][object_type]
+                    else {},
+                    agent_data,
+                    agent_types,
                 )
+            else:
+                agent_data, agent_types = self._parse_fibers(
+                    cytosim_data[object_type], scale, agent_data, agent_types
+                )
+
+        # shape data
+        simularium_data = {}
 
         # trajectory info
         totalSteps = agent_data["times"].size
@@ -240,13 +289,22 @@ class CytosimTrajectoryReader(TrajectoryReader):
                 "y": scale * float(data["box_size"][1]),
                 "z": scale * float(data["box_size"][2]),
             },
-            "nAgentTypes": 1,
+            "nAgentTypes": len(agent_types),
         }
-        for object_type in data["data"]:
-            for tid in data["data"][object_type]["types"]:
-                simularium_data["trajectoryInfo"][tid] = {
-                    "name": data["data"][object_type]["types"][tid]
+        for tid in agent_types:
+            s = str(tid)
+            object_type = agent_types[tid]["object_type"]
+            raw_id = str(agent_types[tid]["raw_id"])
+            if (
+                "agents" in data["data"][object_type]
+                and raw_id in data["data"][object_type]["agents"]
+                and "name" in data["data"][object_type]["agents"][raw_id]
+            ):
+                simularium_data["trajectoryInfo"][s] = {
+                    "name": data["data"][object_type]["agents"][raw_id]["name"]
                 }
+            else:
+                simularium_data["trajectoryInfo"][s] = {"name": object_type + raw_id}
 
         # spatial data
         simularium_data["spatialData"] = {

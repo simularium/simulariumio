@@ -1,0 +1,133 @@
+% A confined aster with cortical pulling motors
+% F. Nedelec, April 2010
+% with couples, actin fibers, and solids added for testing
+
+set simul system
+{
+    time_step = 0.005
+    viscosity = 0.1
+}
+
+set space cell
+{
+    shape = sphere
+}
+
+new cell
+{
+    radius = 1
+}
+
+set fiber microtubule
+{
+    confine = inside, 100
+    rigidity = 0.1
+    segmentation = 0.1
+}
+
+set solid core
+{
+    display = ( style=3 )
+}
+
+set aster star
+{
+    stiffness = 100, 50
+}
+
+new star
+{
+    solid  = core
+    radius = 0.5
+    point1 = center, 0.1
+    fibers = 12, microtubule, ( plus_end=grow; length = 3; )
+}
+
+set hand dynein
+{
+    binding_rate = 5
+    binding_range = 0.02
+    unbinding_rate = 0.1
+    unbinding_force = 3
+    
+    activity = move
+    unloaded_speed = -1
+    stall_force = 5
+    display = ( color = blue )
+}
+
+set single graftedD
+{
+    hand = dynein
+    stiffness = 100
+    activity = fixed
+}
+
+set hand kinesin
+{
+    binding_rate = 5
+    binding_range = 0.02
+    unbinding_rate = 0.1
+    unbinding_force = 3
+    
+    activity = move
+    unloaded_speed = -1
+    stall_force = 5
+    display = ( color = green )
+}
+
+set single graftedK
+{
+    hand = kinesin
+    stiffness = 100
+    activity = fixed
+}
+
+new 100 graftedK { position=surface; placement = inside, cell, ( x > 0 ); }
+new 100 graftedD { position=surface; placement = inside, cell, ( x < 0 ); }
+
+set couple complex 
+{
+    hand1 = kinesin
+    hand2 = dynein
+    diffusion = 0.20
+    stiffness = 200
+}
+
+new 200 complex
+
+set fiber actin
+{
+    rigidity = 0.05
+    segmentation = 0.0055      %that is 4 monomers
+    confine = inside, 200
+    display = ( style=actin; color=red, dark_red; end_color=yellow; )
+}
+
+new 8 actin
+{
+    length = 0.6
+}
+
+new 2 actin
+{
+    length = 1.0
+}
+
+set solid blob
+{
+    confine = inside, 1
+    steric = 1
+    display = ( coloring=1; style=7; color=0xFFFFFF88; )
+}
+
+new 5 blob
+{
+    point1 = 0 0 0, 0.1
+}
+
+run system 
+{
+    nb_steps = 1000
+    nb_frames = 100
+}

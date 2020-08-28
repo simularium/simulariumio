@@ -92,28 +92,57 @@ class Converter:
                     data : Dict[str, Any]
                         fibers : Dict[str, Any]
                             filepath : str
-                                path to fiber_points.txt
-                            types : Dict[str, str] (optional)
-                                the display names for each type of fiber
-                                Default: "fiber[type index from Cytosim data]"
+                                path to fiber_points.txt    
+                            agents : Dict[str, Any] (optional)
+                                [agent type index from Cytosim data] : Dict[str, Any]
+                                    the type index from Cytosim data mapped 
+                                    to display names for each type of fiber
+                                    name : str (optional)
+                                        the display name for this type of fiber
+                                        Default: "fiber[agent type index 
+                                            from Cytosim data]"
                         solids : Dict[str, Any]
                             filepath : str
-                                path to fiber_points.txt
-                            types : Dict[str, str] (optional)
-                                the display names for each type of solid
-                                Default: "solid[type index from Cytosim data]"
+                                path to solids.txt
+                            agents : Dict[str, Any] (optional)
+                                [agent type index from Cytosim data] : Dict[str, Any]
+                                    the type index from Cytosim data mapped 
+                                    to display names and radii for each type of solid
+                                    name : str (optional)
+                                        the display name for this type of solid
+                                        Default: "solid[agent type index 
+                                            from Cytosim data]"
+                                    radius : float (optional)
+                                        the radius for this type of solid
+                                        Default: 1.0
                         singles : Dict[str, Any]
                             filepath : str
-                                path to fiber_points.txt
-                            types : Dict[str, str] (optional)
-                                the display names for each type of single
-                                Default: "single[type index from Cytosim data]"
-                        couples : Dict[str, Any]
+                                path to singles.txt
+                            agents : Dict[str, Any] (optional)
+                                [agent type index from Cytosim data] : Dict[str, Any]
+                                    the type index from Cytosim data mapped 
+                                    to display names and radii for each type of single
+                                    name : str (optional)
+                                        the display name for this type of single
+                                        Default: "single[agent type index 
+                                            from Cytosim data]"
+                                    radius : float (optional)
+                                        the radius for this type of single
+                                        Default: 1.0
+                        couples : Dict[str, Any] (optional)
                             filepath : str
-                                path to fiber_points.txt
-                            types : Dict[str, str] (optional)
-                                the display names for each type of couple
-                                Default: "couple[type index from Cytosim data]"
+                                path to couples.txt
+                            agents : Dict[str, Any] (optional)
+                                [agent type index from Cytosim data] : Dict[str, Any]
+                                    the type index from Cytosim data mapped 
+                                    to display names and radii for each type of couple
+                                    name : str (optional)
+                                        the display name for this type of couple
+                                        Default: "couple[agent type index 
+                                            from Cytosim data]"
+                                    radius : float (optional)
+                                        the radius for this type of couple
+                                        Default: 1.0
                     scale_factor : float (optional)
                         A multiplier for the Cytosim scene, use if 
                         visualization is too large or small
