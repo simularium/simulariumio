@@ -115,6 +115,12 @@ class Converter:
                                     radius : float (optional)
                                         the radius for this type of solid
                                         Default: 1.0
+                            position_indices : List[int] (optional)
+                                the columns in Cytosim's reports are not 
+                                always consistent, use this to override them 
+                                if your output file has different column indices 
+                                for position XYZ
+                                Default: [2, 3, 4]
                         singles : Dict[str, Any]
                             filepath : str
                                 path to singles.txt
@@ -129,6 +135,12 @@ class Converter:
                                     radius : float (optional)
                                         the radius for this type of single
                                         Default: 1.0
+                            position_indices : List[int] (optional)
+                                the columns in Cytosim's reports are not 
+                                always consistent, use this to override them 
+                                if your output file has different column indices 
+                                for position XYZ
+                                Default: [2, 3, 4]
                         couples : Dict[str, Any] (optional)
                             filepath : str
                                 path to couples.txt
@@ -143,6 +155,12 @@ class Converter:
                                     radius : float (optional)
                                         the radius for this type of couple
                                         Default: 1.0
+                            position_indices : List[int] (optional)
+                                the columns in Cytosim's reports are not 
+                                always consistent, use this to override them 
+                                if your output file has different column indices 
+                                for position XYZ
+                                Default: [2, 3, 4]
                     scale_factor : float (optional)
                         A multiplier for the Cytosim scene, use if 
                         visualization is too large or small

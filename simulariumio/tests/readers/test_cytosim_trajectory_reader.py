@@ -301,6 +301,7 @@ from simulariumio import Converter
                         "filepath": "simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/couples.txt",
                         "agents": {"1": {"name": "motor complex", "radius": 0.02}},
+                        "position_indices": [3, 4, 5],
                     },
                 },
                 "scale_factor": 100.0,

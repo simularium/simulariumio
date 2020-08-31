@@ -24,28 +24,34 @@ class CytosimTrajectoryReader(TrajectoryReader):
         """
         return len(line) < 1 or line[0:7] == "warning" or "report" in line
 
-    def _parse_fiber_data_dimensions(self, fibers_lines: List[str]) -> List[List[int]]:
+    def _parse_fiber_data_dimensions(
+        self, fibers_lines: List[str]
+    ) -> Tuple[List[int], int]:
         """
         Parse a Cytosim fiber_points.txt output file to get the number 
         of subpoints per agent per timestep
         """
         result = []
         t = -1
-        n = -1
+        s = 0
+        max_subpoints = 0
         for line in fibers_lines:
             if self._ignore_line(line):
                 continue
             if line[0] == "%":
                 if "frame" in line:
-                    result.append([])
+                    result.append(0)
                     t += 1
-                    n = -1
                 elif "fiber" in line:
-                    result[t].append(0)
-                    n += 1
+                    result[t] += 1
+                    if s > max_subpoints:
+                        max_subpoints = s
+                    s = 0
                 continue
-            result[t][n] += 1
-        return result
+            s += 1
+        if s > max_subpoints:
+            max_subpoints = s
+        return (result, max_subpoints)
 
     def _parse_other_data_dimensions(self, lines: List[str]) -> List[int]:
         """
@@ -71,27 +77,28 @@ class CytosimTrajectoryReader(TrajectoryReader):
         maximum agents per timestep, and maximum subpoints per agent 
         """
         dimensions = []
-        if "fibers" in cytosim_data:
-            dimensions = self._parse_fiber_data_dimensions(cytosim_data["fibers"])
+        max_subpoints = 0
         for object_type in cytosim_data:
-            if object_type != "fibers":
+            if object_type == "fibers":
+                dims, max_subpoints = self._parse_fiber_data_dimensions(
+                    cytosim_data[object_type]
+                )
+            else:
                 dims = self._parse_other_data_dimensions(cytosim_data[object_type])
-                if len(dimensions) < 1:
-                    dimensions = [[0] * dims[t] for t in range(len(dims))]
-                else:
-                    if len(dims) != len(dimensions):
-                        raise DataError(
-                            "number of timesteps in Cytosim data is not consistent"
-                        )
-                    for t in range(len(dimensions)):
-                        for n in range(dims[t]):
-                            dimensions[t].append(0)
+            if len(dimensions) < 1:
+                dimensions = dims
+            else:
+                if len(dims) != len(dimensions):
+                    raise DataError(
+                        "number of timesteps in Cytosim data is not consistent"
+                    )
+                for t in range(len(dimensions)):
+                    dimensions[t] += dims[t]
         max_agents = 0
         for t in range(len(dimensions)):
-            n = len(dimensions[t])
-            if n > max_agents:
-                max_agents = n
-        return (len(dimensions), max_agents, np.amax(np.array(dimensions)))
+            if dimensions[t] > max_agents:
+                max_agents = dimensions[t]
+        return (len(dimensions), max_agents, max_subpoints)
 
     def _parse_fibers(
         self,
@@ -160,6 +167,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
         data_lines: List[str],
         scale_factor: float,
         agent_data: Dict[str, float],
+        position_indices: List[int],
         result: Dict[str, Any],
         agent_types: Dict[int, Any],
     ) -> Tuple[Dict[str, Any], List[str]]:
@@ -175,9 +183,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
             and float(result["times"][1]) < sys.float_info.epsilon
         )
         types = {}
-        if object_type == "couples":
-            position_indices = [3, 4, 5]
-        else:
+        if len(position_indices) < 3:
             position_indices = [2, 3, 4]
         for line in data_lines:
             if self._ignore_line(line):
@@ -263,6 +269,9 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     data["data"][object_type]["agents"]
                     if "agents" in data["data"][object_type]
                     else {},
+                    data["data"][object_type]["position_indices"]
+                    if "position_indices" in data["data"][object_type]
+                    else [],
                     agent_data,
                     agent_types,
                 )
@@ -304,7 +313,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     "name": data["data"][object_type]["agents"][raw_id]["name"]
                 }
             else:
-                simularium_data["trajectoryInfo"][s] = {"name": object_type + raw_id}
+                simularium_data["trajectoryInfo"][s] = {"name": object_type[:-1] + raw_id}
 
         # spatial data
         simularium_data["spatialData"] = {
