@@ -54,7 +54,6 @@ class TrajectoryReader(Reader):
                     local_buf[i + 9 : i + 10 + 3 * n_subpoints] = subpoints
                     i += 10 + 3 * n_subpoints
                 else:
-                    local_buf[i + 9] = 0.0
                     i += 10
 
             frame_data["data"] = local_buf.tolist()

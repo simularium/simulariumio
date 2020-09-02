@@ -49,6 +49,10 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     s = 0
                 continue
             s += 1
+
+            # TEST: draw spheres at fiber points
+            result[t] += 1
+
         if s > max_subpoints:
             max_subpoints = s
         return (result, max_subpoints)
@@ -159,6 +163,53 @@ class CytosimTrajectoryReader(TrajectoryReader):
             result["subpoints"][t][n_other_agents + n][s] = scale_factor * np.array(
                 [float(columns[1]), float(columns[2]), float(columns[3])]
             )
+
+        # TEST: draw spheres at fiber points
+        t = -1
+        n = -1
+        for line in fibers_lines:
+
+            # TEST
+            if n >= 3:
+                result["n_agents"][t] += n + 1
+                result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (
+                    n + 1
+                ) * [1000.0]
+                result["radii"][t][n_other_agents : n_other_agents + n + 1] = (
+                    n + 1
+                ) * [1.0]
+                break
+
+            if self._ignore_line(line):
+                continue
+            if line[0] == "%":
+                if "frame" in line:
+                    # start of frame
+                    t += 1
+                    n_other_agents = int(result["n_agents"][t])
+                    n = -1
+                elif "fiber" in line:
+                    # start of fiber
+                    n += 1
+                    if t == 149 and n == 113:
+                        result["type_ids"][t][n_other_agents + n] = 5.0
+                    else:
+                        result["type_ids"][t][n_other_agents + n] = types[int(line.split()[2].split(":")[0][1:])]
+                elif "end" in line:
+                    # end of frame
+                    result["n_agents"][t] += n + 1
+                    result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (
+                        n + 1
+                    ) * [1000.0]
+                    result["radii"][t][n_other_agents : n_other_agents + n + 1] = (
+                        n + 1
+                    ) * [1.0]
+                continue
+            columns = line.split()
+            result["positions"][t][n_other_agents + n] = scale_factor * np.array(
+                [float(columns[1]), float(columns[2]), float(columns[3])]
+            )
+            
         return (result, agent_types)
 
     def _parse_others(
@@ -323,6 +374,16 @@ class CytosimTrajectoryReader(TrajectoryReader):
             "bundleSize": totalSteps,
             "bundleData": self._get_spatial_bundle_data_subpoints(agent_data),
         }
+
+        # TEST: add spheres at box extents
+        print(simularium_data["trajectoryInfo"]["size"]["x"]/2)
+        for t in range(len(simularium_data["spatialData"]["bundleData"])):
+            simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, -simularium_data["trajectoryInfo"]["size"]["x"]/2, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0]
+            simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, simularium_data["trajectoryInfo"]["size"]["x"]/2, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0]
+            simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, 0.0, -simularium_data["trajectoryInfo"]["size"]["y"]/2, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0]
+            simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, 0.0, simularium_data["trajectoryInfo"]["size"]["y"]/2, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0]
+            simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, 0.0, 0.0, -simularium_data["trajectoryInfo"]["size"]["z"]/2, 0.0, 0.0, 0.0, 10.0, 0.0]
+            simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, 0.0, 0.0, simularium_data["trajectoryInfo"]["size"]["z"]/2, 0.0, 0.0, 0.0, 10.0, 0.0]
 
         # plot data
         simularium_data["plotData"] = {
