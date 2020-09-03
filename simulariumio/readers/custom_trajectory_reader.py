@@ -35,9 +35,10 @@ class CustomTrajectoryReader(TrajectoryReader):
                 "y": float(data["box_size"][1]),
                 "z": float(data["box_size"][2]),
             },
+            "typeMapping": {},
         }
 
-        # generate a unique ID for each agent type
+        # generate a unique type ID for each agent type
         type_ids = []
         type_id_mapping = {}
         k = 0
@@ -47,11 +48,10 @@ class CustomTrajectoryReader(TrajectoryReader):
                 agent_type = data["types"][t][i]
                 if agent_type not in type_id_mapping:
                     type_id_mapping[agent_type] = k
-                    traj_info[str(k)] = {"name": agent_type}
+                    traj_info["typeMapping"][str(k)] = {"name": agent_type}
                     k += 1
                 type_ids[t].append(type_id_mapping[agent_type])
         data["type_ids"] = np.array(type_ids)
-        traj_info["nAgentTypes"] = k
 
         simularium_data["trajectoryInfo"] = traj_info
 

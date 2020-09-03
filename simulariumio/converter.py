@@ -63,12 +63,15 @@ class Converter:
                         for each agent at each timestep. Current options:
                             1000 : default,
                             1001 : fiber (which will require subpoints)
-                    positions : np.ndarray (shape = [timesteps, agents, 3])
-                        A numpy ndarray containing the XYZ position 
+                    unique_ids : np.ndarray (shape = [timesteps, agents])
+                        A numpy ndarray containing the unique ID
                         for each agent at each timestep
                     types: List[List[str]] (list of shape [timesteps, agents])
                         A list containing timesteps, for each a list of 
                         the string name for the type of each agent
+                    positions : np.ndarray (shape = [timesteps, agents, 3])
+                        A numpy ndarray containing the XYZ position 
+                        for each agent at each timestep
                     radii : np.ndarray (shape = [timesteps, agents])
                         A numpy ndarray containing the radius 
                         for each agent at each timestep
@@ -101,6 +104,10 @@ class Converter:
                                         the display name for this type of fiber
                                         Default: "fiber[agent type index 
                                             from Cytosim data]"
+                            draw_points : bool (optional)
+                                in addition to drawing a line for each fiber,
+                                also draw spheres at each point along it?
+                                Default: False
                         solids : Dict[str, Any]
                             filepath : str
                                 path to solids.txt
