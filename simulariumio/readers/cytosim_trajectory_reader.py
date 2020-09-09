@@ -35,11 +35,14 @@ class CytosimTrajectoryReader(TrajectoryReader):
         t = -1
         s = 0
         max_subpoints = 0
+        n_test_frames = 150 # TEST t
         for line in fibers_lines:
             if self._ignore_line(line):
                 continue
             if line[0] == "%":
                 if "frame" in line:
+                    if t >= n_test_frames-1: # TEST
+                        return (result, max_subpoints)
                     result.append(0)
                     t += 1
                 elif "fiber" in line:
@@ -120,17 +123,21 @@ class CytosimTrajectoryReader(TrajectoryReader):
         n = -1
         s = -1
         parse_time = (
-            result["times"].size > 0
+            result["times"].size > 1
             and float(result["times"][1]) < sys.float_info.epsilon
         )
         types = {}
         uids = {}
+        n_test_agents = 18 # TEST
+        n_test_frames = 150 # TEST t
         for line in fibers_lines:
             if self._ignore_line(line):
                 continue
             if line[0] == "%":
                 if "frame" in line:
                     # start of frame
+                    if t >= n_test_frames-1: # TEST
+                        break
                     t += 1
                     n_other_agents = int(result["n_agents"][t])
                     n = -1
@@ -141,7 +148,8 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     # start of fiber
                     n += 1
                     if n > 0 and s >= 0:
-                        result["n_subpoints"][t][n_other_agents + n - 1] = s + 1
+                        if n <= n_test_agents: # TEST
+                            result["n_subpoints"][t][n_other_agents + n - 1] = s + 1
                     s = -1
                     fiber_info = line.split()[2].split(":")
                     # unique instance ID
@@ -154,7 +162,8 @@ class CytosimTrajectoryReader(TrajectoryReader):
                         used_unique_IDs.append(uid)
                     else:
                         uid = uids[raw_uid]
-                    result["unique_ids"][t][n_other_agents + n] = uid
+                    if n < n_test_agents: # TEST
+                        result["unique_ids"][t][n_other_agents + n] = uid
                     # type ID
                     raw_tid = int(fiber_info[0][1:])
                     if raw_tid not in types:
@@ -165,24 +174,34 @@ class CytosimTrajectoryReader(TrajectoryReader):
                         agent_types[tid] = {"object_type": "fibers", "raw_id": raw_tid}
                     else:
                         tid = types[raw_tid]
-                    result["type_ids"][t][n_other_agents + n] = tid
+                    if n < n_test_agents: # TEST
+                        if n == n_test_agents-1: # TEST
+                            result["type_ids"][t][n_other_agents + n] = tid + 1
+                        else:
+                            result["type_ids"][t][n_other_agents + n] = tid
                 elif "end" in line:
                     # end of frame
-                    result["n_subpoints"][t][n_other_agents + n] = s + 1
+                    # result["n_subpoints"][t][n_other_agents + n] = s + 1 # TEST
+                    n = n_test_agents-1 # TEST
                     result["n_agents"][t] += n + 1
                     result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (
                         n + 1
                     ) * [1001.0]
                 continue
             s += 1
-            columns = line.split()
-            result["subpoints"][t][n_other_agents + n][s] = scale_factor * np.array(
-                [float(columns[1]), float(columns[2]), float(columns[3])]
-            )
+            if n < n_test_agents: # TEST
+                columns = line.split()
+                result["subpoints"][t][n_other_agents + n][s] = scale_factor * np.array(
+                    [float(columns[1]), float(columns[2]), float(columns[3])]
+                )
+
+        agent_types[1] = {"object_type": "fibers", "raw_id": 1} # TEST
 
         if draw_fiber_points:
             t = -1
             n = -1
+            i = 0
+            uids = {}
             for line in fibers_lines:
 
                 if self._ignore_line(line):
@@ -190,33 +209,57 @@ class CytosimTrajectoryReader(TrajectoryReader):
                 if line[0] == "%":
                     if "frame" in line:
                         # start of frame
+                        if t >= n_test_frames-1: # TEST
+                            return (result, agent_types, used_unique_IDs)
                         t += 1
                         n_other_agents = int(result["n_agents"][t])
                         n = -1
+                        i = 0
                     elif "fiber" in line:
                         # start of fiber
                         n += 1
                         fiber_info = line.split()[2].split(":")
-                        result["unique_ids"][t][n_other_agents + n] = uids[
-                            int(fiber_info[1])
-                        ]
-                        result["type_ids"][t][n_other_agents + n] = types[
-                            int(fiber_info[0][1:])
-                        ]
+                        # # type ID TEST
+                        # raw_tid = int(fiber_info[0][1:])
+                        # if raw_tid not in types:
+                        #     tid = raw_tid
+                        #     while tid in agent_types:
+                        #         tid += 1
+                        #     types[raw_tid] = tid
+                        #     agent_types[tid] = {"object_type": "fibers", "raw_id": raw_tid}
                     elif "end" in line:
                         # end of frame
-                        result["n_agents"][t] += n + 1
+                        result["n_agents"][t] += i
                         result["viz_types"][t][
-                            n_other_agents : n_other_agents + n + 1
-                        ] = (n + 1) * [1000.0]
-                        result["radii"][t][n_other_agents : n_other_agents + n + 1] = (
-                            n + 1
-                        ) * [1.0]
+                            n_other_agents : n_other_agents + i
+                        ] = i * [1000.0]
+                        result["radii"][t][n_other_agents : n_other_agents + i] = (
+                            i
+                        ) * [0.5]
                     continue
-                columns = line.split()
-                result["positions"][t][n_other_agents + n] = scale_factor * np.array(
-                    [float(columns[1]), float(columns[2]), float(columns[3])]
-                )
+                if n < n_test_agents: # TEST
+                    columns = line.split()
+                    result["positions"][t][n_other_agents + i] = scale_factor * np.array(
+                        [float(columns[1]), float(columns[2]), float(columns[3])]
+                    )
+                    # unique instance ID
+                    raw_uid = i
+                    if raw_uid not in uids:
+                        uid = raw_uid
+                        while uid in used_unique_IDs:
+                            uid += 1
+                        uids[raw_uid] = uid
+                        used_unique_IDs.append(uid)
+                    result["unique_ids"][t][n_other_agents + i] = uids[raw_uid]
+                    if n == n_test_agents-1: # TEST
+                        result["type_ids"][t][n_other_agents + i] = types[
+                            int(fiber_info[0][1:])
+                        ] + 1
+                    else:
+                        result["type_ids"][t][n_other_agents + i] = types[
+                            int(fiber_info[0][1:])
+                        ]
+                    i += 1
 
         return (result, agent_types, used_unique_IDs)
 
