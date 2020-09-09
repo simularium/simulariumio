@@ -128,7 +128,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
         )
         types = {}
         uids = {}
-        n_test_agents = 18 # TEST
+        n_test_agents = 900 # TEST
         n_test_frames = 150 # TEST t
         for line in fibers_lines:
             if self._ignore_line(line):
@@ -182,10 +182,12 @@ class CytosimTrajectoryReader(TrajectoryReader):
                 elif "end" in line:
                     # end of frame
                     # result["n_subpoints"][t][n_other_agents + n] = s + 1 # TEST
-                    n = n_test_agents-1 # TEST
-                    result["n_agents"][t] += n + 1
-                    result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (
-                        n + 1
+                    print(n)
+                    if n >= n_test_agents: # TEST
+                        n = n_test_agents
+                    result["n_agents"][t] += n
+                    result["viz_types"][t][n_other_agents : n_other_agents + n] = (
+                        n
                     ) * [1001.0]
                 continue
             s += 1
@@ -232,7 +234,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
                         ) * [0.5]
                     continue
                 if n < n_test_agents: # TEST
-                    if s % 3 == 0:
+                    if s % 3 == 0 and n_other_agents + i < len(result["positions"][t]):
                         columns = line.split()
                         result["positions"][t][n_other_agents + i] = scale_factor * np.array(
                             [float(columns[1]), float(columns[2]), float(columns[3])]
