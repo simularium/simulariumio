@@ -52,7 +52,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     s = 0
                 continue
             s += 1
-            if draw_points:
+            if draw_points and s % 3 == 0:
                 result[t] += 1
         if s > max_subpoints:
             max_subpoints = s
@@ -201,6 +201,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
             t = -1
             n = -1
             i = 0
+            s = 0
             uids = {}
             for line in fibers_lines:
 
@@ -214,19 +215,12 @@ class CytosimTrajectoryReader(TrajectoryReader):
                         t += 1
                         n_other_agents = int(result["n_agents"][t])
                         n = -1
+                        s = 0
                         i = 0
                     elif "fiber" in line:
                         # start of fiber
                         n += 1
                         fiber_info = line.split()[2].split(":")
-                        # # type ID TEST
-                        # raw_tid = int(fiber_info[0][1:])
-                        # if raw_tid not in types:
-                        #     tid = raw_tid
-                        #     while tid in agent_types:
-                        #         tid += 1
-                        #     types[raw_tid] = tid
-                        #     agent_types[tid] = {"object_type": "fibers", "raw_id": raw_tid}
                     elif "end" in line:
                         # end of frame
                         result["n_agents"][t] += i
@@ -238,28 +232,30 @@ class CytosimTrajectoryReader(TrajectoryReader):
                         ) * [0.5]
                     continue
                 if n < n_test_agents: # TEST
-                    columns = line.split()
-                    result["positions"][t][n_other_agents + i] = scale_factor * np.array(
-                        [float(columns[1]), float(columns[2]), float(columns[3])]
-                    )
-                    # unique instance ID
-                    raw_uid = i
-                    if raw_uid not in uids:
-                        uid = raw_uid
-                        while uid in used_unique_IDs:
-                            uid += 1
-                        uids[raw_uid] = uid
-                        used_unique_IDs.append(uid)
-                    result["unique_ids"][t][n_other_agents + i] = uids[raw_uid]
-                    if n == n_test_agents-1: # TEST
-                        result["type_ids"][t][n_other_agents + i] = types[
-                            int(fiber_info[0][1:])
-                        ] + 1
-                    else:
-                        result["type_ids"][t][n_other_agents + i] = types[
-                            int(fiber_info[0][1:])
-                        ]
-                    i += 1
+                    if s % 3 == 0:
+                        columns = line.split()
+                        result["positions"][t][n_other_agents + i] = scale_factor * np.array(
+                            [float(columns[1]), float(columns[2]), float(columns[3])]
+                        )
+                        # unique instance ID
+                        raw_uid = i
+                        if raw_uid not in uids:
+                            uid = raw_uid
+                            while uid in used_unique_IDs:
+                                uid += 1
+                            uids[raw_uid] = uid
+                            used_unique_IDs.append(uid)
+                        result["unique_ids"][t][n_other_agents + i] = uids[raw_uid]
+                        if n == n_test_agents-1: # TEST
+                            result["type_ids"][t][n_other_agents + i] = types[
+                                int(fiber_info[0][1:])
+                            ] + 1
+                        else:
+                            result["type_ids"][t][n_other_agents + i] = types[
+                                int(fiber_info[0][1:])
+                            ]
+                        i += 1
+                    s += 1
 
         return (result, agent_types, used_unique_IDs)
 
