@@ -35,14 +35,11 @@ class CytosimTrajectoryReader(TrajectoryReader):
         t = -1
         s = 0
         max_subpoints = 0
-        n_test_frames = 150 # TEST t
         for line in fibers_lines:
             if self._ignore_line(line):
                 continue
             if line[0] == "%":
                 if "frame" in line:
-                    if t >= n_test_frames-1: # TEST
-                        return (result, max_subpoints)
                     result.append(0)
                     t += 1
                 elif "fiber" in line:
@@ -52,7 +49,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     s = 0
                 continue
             s += 1
-            if draw_points and (s-1) % 3 == 0:
+            if draw_points and (s-1) % 2 == 0:
                 result[t] += 1
         if s > max_subpoints:
             max_subpoints = s
@@ -128,29 +125,32 @@ class CytosimTrajectoryReader(TrajectoryReader):
         )
         types = {}
         uids = {}
-        n_test_agents = 900 # TEST
-        n_test_frames = 150 # TEST t
+        i = 0
+        j = 0
         for line in fibers_lines:
             if self._ignore_line(line):
                 continue
             if line[0] == "%":
                 if "frame" in line:
                     # start of frame
-                    if t >= n_test_frames-1: # TEST
-                        break
                     t += 1
                     n_other_agents = int(result["n_agents"][t])
                     n = -1
+                    i = 0
+                    j = 0
                 elif "time" in line and parse_time:
                     # time metadata
                     result["times"][t] = float(line.split()[2])
                 elif "fiber" in line:
                     # start of fiber
+                    if n >= 0 and s >= 0:
+                        result["n_subpoints"][t][n_other_agents + fiber_i] = s + 1
                     n += 1
-                    if n > 0 and s >= 0:
-                        if n <= n_test_agents: # TEST
-                            result["n_subpoints"][t][n_other_agents + n - 1] = s + 1
+                    fiber_i = i
                     s = -1
+                    j = 0
+                    result["viz_types"][t][n_other_agents + i] = 1001.0
+                    result["radii"][t][n_other_agents + i] = 1.0
                     fiber_info = line.split()[2].split(":")
                     # unique instance ID
                     raw_uid = int(fiber_info[1])
@@ -162,8 +162,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
                         used_unique_IDs.append(uid)
                     else:
                         uid = uids[raw_uid]
-                    if n < n_test_agents: # TEST
-                        result["unique_ids"][t][n_other_agents + n] = uid
+                    result["unique_ids"][t][n_other_agents + i] = uid
                     # type ID
                     raw_tid = int(fiber_info[0][1:])
                     if raw_tid not in types:
@@ -174,101 +173,38 @@ class CytosimTrajectoryReader(TrajectoryReader):
                         agent_types[tid] = {"object_type": "fibers", "raw_id": raw_tid}
                     else:
                         tid = types[raw_tid]
-                    if n < n_test_agents: # TEST
-                        if n == n_test_agents-1: # TEST
-                            result["type_ids"][t][n_other_agents + n] = tid + 1
-                        else:
-                            result["type_ids"][t][n_other_agents + n] = tid
+                    result["type_ids"][t][n_other_agents + i] = tid
+                    i += 1
                 elif "end" in line:
                     # end of frame
-                    if n >= n_test_agents: # TEST
-                        n = n_test_agents-1
-                    else: # TEST
-                        result["n_subpoints"][t][n_other_agents + n] = s + 1
-                    result["n_agents"][t] += n + 1
-                    result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (
-                        n + 1
-                    ) * [1001.0]
+                    result["n_subpoints"][t][n_other_agents + fiber_i] = s + 1
+                    result["n_agents"][t] += i
                 continue
+            
+            # each fiber point
+            columns = line.split()
+            point = scale_factor * np.array([float(columns[1]), float(columns[2]), float(columns[3])])
+            result["subpoints"][t][n_other_agents + fiber_i][s+1] = point
             s += 1
-            if n < n_test_agents: # TEST
-                columns = line.split()
-                result["subpoints"][t][n_other_agents + n][s] = scale_factor * np.array(
-                    [float(columns[1]), float(columns[2]), float(columns[3])]
-                )
-
-        agent_types[1] = {"object_type": "fibers", "raw_id": 1} # TEST
-
-        if draw_fiber_points:
-            t = -1
-            n = -1
-            i = 0
-            s = 0
-            j = 0
-            n_spheres = 0
-            uids = {}
-            for line in fibers_lines:
-
-                if self._ignore_line(line):
-                    continue
-                if line[0] == "%":
-                    if "frame" in line:
-                        # start of frame
-                        if t >= n_test_frames-1: # TEST
-                            return (result, agent_types, used_unique_IDs)
-                        t += 1
-                        n_other_agents = int(result["n_agents"][t])
-                        n = -1
-                        i = 0
-                        j = 0
-                        n_spheres = 0
-                    elif "fiber" in line:
-                        # start of fiber
-                        n_spheres += j
-                        n += 1
-                        s = 0
-                        j = 0
-                        fiber_info = line.split()[2].split(":")
-                    elif "end" in line:
-                        # end of frame
-                        result["n_agents"][t] += i
-                        result["viz_types"][t][
-                            n_other_agents : n_other_agents + i
-                        ] = i * [1000.0]
-                        result["radii"][t][n_other_agents : n_other_agents + i] = (
-                            i
-                        ) * [0.5]
-                    continue
-                if n < n_test_agents: # TEST
-                    if s % 3 == 0:
-                        if n_other_agents + i >= len(result["positions"][t]):
-                            print(f"extra agent(s) in fibers {t} {s} {n} {n_other_agents} {i} {j}")
-                        else:
-                            columns = line.split()
-                            result["positions"][t][n_other_agents + i] = scale_factor * np.array(
-                                [float(columns[1]), float(columns[2]), float(columns[3])]
-                            )
-                            # unique instance ID
-                            raw_uid = 100 * n + j
-                            if raw_uid not in uids:
-                                uid = raw_uid
-                                while uid in used_unique_IDs:
-                                    uid += 1
-                                uids[raw_uid] = uid
-                                used_unique_IDs.append(uid)
-                            result["unique_ids"][t][n_other_agents + i] = uids[raw_uid]
-                            if n == n_test_agents-1: # TEST
-                                result["type_ids"][t][n_other_agents + i] = types[
-                                    int(fiber_info[0][1:])
-                                ] + 1
-                            else:
-                                result["type_ids"][t][n_other_agents + i] = types[
-                                    int(fiber_info[0][1:])
-                                ]
-                            i += 1
-                            j += 1
-                    s += 1
-
+            if draw_fiber_points and s % 2 == 0:
+                result["positions"][t][n_other_agents + i] = point
+                result["viz_types"][t][n_other_agents + i] = 1000.0
+                result["radii"][t][n_other_agents + i] = 0.5
+                # unique instance ID
+                raw_uid = 100 * n + j
+                if raw_uid not in uids:
+                    uid = raw_uid
+                    while uid in used_unique_IDs:
+                        uid += 1
+                    uids[raw_uid] = uid
+                    used_unique_IDs.append(uid)
+                result["unique_ids"][t][n_other_agents + i] = uids[raw_uid]
+                result["type_ids"][t][n_other_agents + i] = types[
+                    int(fiber_info[0][1:])
+                ]
+                i += 1
+                j += 1
+        
         return (result, agent_types, used_unique_IDs)
 
     def _parse_others(
@@ -327,9 +263,6 @@ class CytosimTrajectoryReader(TrajectoryReader):
                 used_unique_IDs.append(uid)
             else:
                 uid = uids[raw_uid]
-            if n_other_agents + n >= len(result["unique_ids"][t]):
-                print(f"extra agent(s) in {object_type}")
-                continue
             result["unique_ids"][t][n_other_agents + n] = uid
             # type ID
             raw_tid = int(columns[0])
@@ -467,16 +400,6 @@ class CytosimTrajectoryReader(TrajectoryReader):
             "bundleSize": totalSteps,
             "bundleData": self._get_spatial_bundle_data_subpoints(agent_data),
         }
-
-        # # TEST: add spheres at box extents
-        # print(simularium_data["trajectoryInfo"]["size"]["x"]/2)
-        # for t in range(len(simularium_data["spatialData"]["bundleData"])):
-        #     simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, 0.0, -simularium_data["trajectoryInfo"]["size"]["x"]/2, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0]
-        #     simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, 0.0, simularium_data["trajectoryInfo"]["size"]["x"]/2, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0]
-        #     simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, 0.0, 0.0, -simularium_data["trajectoryInfo"]["size"]["y"]/2, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0]
-        #     simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, 0.0, 0.0, simularium_data["trajectoryInfo"]["size"]["y"]/2, 0.0, 0.0, 0.0, 0.0, 10.0, 0.0]
-        #     simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, 0.0, 0.0, 0.0, -simularium_data["trajectoryInfo"]["size"]["z"]/2, 0.0, 0.0, 0.0, 10.0, 0.0]
-        #     simularium_data["spatialData"]["bundleData"][t]["data"] += [1000.0, 100.0, 0.0, 0.0, 0.0, simularium_data["trajectoryInfo"]["size"]["z"]/2, 0.0, 0.0, 0.0, 10.0, 0.0]
 
         # plot data
         simularium_data["plotData"] = {
