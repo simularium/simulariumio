@@ -52,7 +52,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     s = 0
                 continue
             s += 1
-            if draw_points and s % 3 == 0:
+            if draw_points and (s-1) % 3 == 0:
                 result[t] += 1
         if s > max_subpoints:
             max_subpoints = s
@@ -181,13 +181,13 @@ class CytosimTrajectoryReader(TrajectoryReader):
                             result["type_ids"][t][n_other_agents + n] = tid
                 elif "end" in line:
                     # end of frame
-                    # result["n_subpoints"][t][n_other_agents + n] = s + 1 # TEST
-                    print(n)
                     if n >= n_test_agents: # TEST
-                        n = n_test_agents
-                    result["n_agents"][t] += n
-                    result["viz_types"][t][n_other_agents : n_other_agents + n] = (
-                        n
+                        n = n_test_agents-1
+                    else: # TEST
+                        result["n_subpoints"][t][n_other_agents + n] = s + 1
+                    result["n_agents"][t] += n + 1
+                    result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (
+                        n + 1
                     ) * [1001.0]
                 continue
             s += 1
@@ -204,6 +204,8 @@ class CytosimTrajectoryReader(TrajectoryReader):
             n = -1
             i = 0
             s = 0
+            j = 0
+            n_spheres = 0
             uids = {}
             for line in fibers_lines:
 
@@ -217,11 +219,15 @@ class CytosimTrajectoryReader(TrajectoryReader):
                         t += 1
                         n_other_agents = int(result["n_agents"][t])
                         n = -1
-                        s = 0
                         i = 0
+                        j = 0
+                        n_spheres = 0
                     elif "fiber" in line:
                         # start of fiber
+                        n_spheres += j
                         n += 1
+                        s = 0
+                        j = 0
                         fiber_info = line.split()[2].split(":")
                     elif "end" in line:
                         # end of frame
@@ -234,29 +240,33 @@ class CytosimTrajectoryReader(TrajectoryReader):
                         ) * [0.5]
                     continue
                 if n < n_test_agents: # TEST
-                    if s % 3 == 0 and n_other_agents + i < len(result["positions"][t]):
-                        columns = line.split()
-                        result["positions"][t][n_other_agents + i] = scale_factor * np.array(
-                            [float(columns[1]), float(columns[2]), float(columns[3])]
-                        )
-                        # unique instance ID
-                        raw_uid = i
-                        if raw_uid not in uids:
-                            uid = raw_uid
-                            while uid in used_unique_IDs:
-                                uid += 1
-                            uids[raw_uid] = uid
-                            used_unique_IDs.append(uid)
-                        result["unique_ids"][t][n_other_agents + i] = uids[raw_uid]
-                        if n == n_test_agents-1: # TEST
-                            result["type_ids"][t][n_other_agents + i] = types[
-                                int(fiber_info[0][1:])
-                            ] + 1
+                    if s % 3 == 0:
+                        if n_other_agents + i >= len(result["positions"][t]):
+                            print(f"extra agent(s) in fibers {t} {s} {n} {n_other_agents} {i} {j}")
                         else:
-                            result["type_ids"][t][n_other_agents + i] = types[
-                                int(fiber_info[0][1:])
-                            ]
-                        i += 1
+                            columns = line.split()
+                            result["positions"][t][n_other_agents + i] = scale_factor * np.array(
+                                [float(columns[1]), float(columns[2]), float(columns[3])]
+                            )
+                            # unique instance ID
+                            raw_uid = 100 * n + j
+                            if raw_uid not in uids:
+                                uid = raw_uid
+                                while uid in used_unique_IDs:
+                                    uid += 1
+                                uids[raw_uid] = uid
+                                used_unique_IDs.append(uid)
+                            result["unique_ids"][t][n_other_agents + i] = uids[raw_uid]
+                            if n == n_test_agents-1: # TEST
+                                result["type_ids"][t][n_other_agents + i] = types[
+                                    int(fiber_info[0][1:])
+                                ] + 1
+                            else:
+                                result["type_ids"][t][n_other_agents + i] = types[
+                                    int(fiber_info[0][1:])
+                                ]
+                            i += 1
+                            j += 1
                     s += 1
 
         return (result, agent_types, used_unique_IDs)
@@ -317,6 +327,9 @@ class CytosimTrajectoryReader(TrajectoryReader):
                 used_unique_IDs.append(uid)
             else:
                 uid = uids[raw_uid]
+            if n_other_agents + n >= len(result["unique_ids"][t]):
+                print(f"extra agent(s) in {object_type}")
+                continue
             result["unique_ids"][t][n_other_agents + n] = uid
             # type ID
             raw_tid = int(columns[0])
