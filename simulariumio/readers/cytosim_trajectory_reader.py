@@ -275,16 +275,17 @@ class CytosimTrajectoryReader(TrajectoryReader):
             else:
                 tid = types[raw_tid]
             result["type_ids"][t][n_other_agents + n] = tid
+            raw_tid = str(raw_tid)
             # position
-            result["positions"][t][n_other_agents + n] = scale_factor * np.array(
+            result["positions"][t][n_other_agents + n] = scale_factor * (np.array(
                 [
                     float(columns[position_indices[0]]),
                     float(columns[position_indices[1]]),
                     float(columns[position_indices[2]]),
-                ]
+                ] + (agent_data[raw_tid]["position_offset"] 
+                     if "position_offset" in agent_data[raw_tid] else np.zeros(3)))
             )
             # radius
-            raw_tid = str(raw_tid)
             result["radii"][t][n_other_agents + n] = (
                 (scale_factor * float(agent_data[raw_tid]["radius"]))
                 if raw_tid in agent_data and "radius" in agent_data[raw_tid]

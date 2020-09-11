@@ -122,6 +122,9 @@ class Converter:
                                     radius : float (optional)
                                         the radius for this type of solid
                                         Default: 1.0
+                                    position_offset : np.ndarray (shape = [3]) (optional)
+                                        XYZ translation to apply to this agent
+                                        Default: [0.0, 0.0, 0.0]
                             position_indices : List[int] (optional)
                                 the columns in Cytosim's reports are not 
                                 always consistent, use this to override them 
