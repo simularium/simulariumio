@@ -12,6 +12,14 @@ simulariumio.readers.custom\_trajectory\_reader module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.readers.cytosim\_trajectory\_reader module
+-------------------------------------------------------
+
+.. automodule:: simulariumio.readers.cytosim_trajectory_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.readers.histogram\_plot\_reader module
 ---------------------------------------------------
 
@@ -32,6 +40,14 @@ simulariumio.readers.scatter\_plot\_reader module
 -------------------------------------------------
 
 .. automodule:: simulariumio.readers.scatter_plot_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.readers.trajectory\_reader module
+----------------------------------------------
+
+.. automodule:: simulariumio.readers.trajectory_reader
    :members:
    :undoc-members:
    :show-inheritance:

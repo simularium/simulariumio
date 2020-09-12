@@ -21,7 +21,6 @@ class CustomTrajectoryReader(TrajectoryReader):
         Return an object containing the data shaped for Simularium format
         """
         simularium_data = {}
-
         # trajectory info
         totalSteps = len(data["times"])
         traj_info = {
@@ -37,7 +36,6 @@ class CustomTrajectoryReader(TrajectoryReader):
             },
             "typeMapping": {},
         }
-
         # generate a unique type ID for each agent type
         type_ids = []
         type_id_mapping = {}
@@ -52,9 +50,7 @@ class CustomTrajectoryReader(TrajectoryReader):
                     k += 1
                 type_ids[t].append(type_id_mapping[agent_type])
         data["type_ids"] = np.array(type_ids)
-
         simularium_data["trajectoryInfo"] = traj_info
-
         # spatial data
         spatialData = {
             "version": 1,
@@ -63,15 +59,16 @@ class CustomTrajectoryReader(TrajectoryReader):
             "bundleSize": totalSteps,
         }
         if "subpoints" in data:
-            spatialData["bundleData"] = self._get_spatial_bundle_data_subpoints(data)
+            spatialData["bundleData"] = self._get_spatial_bundle_data_subpoints(
+                data,
+                data["draw_fiber_points"] if "draw_fiber_points" in data else False,
+            )
         else:
             spatialData["bundleData"] = self._get_spatial_bundle_data_no_subpoints(data)
         simularium_data["spatialData"] = spatialData
-
         # plot data
         simularium_data["plotData"] = {
             "version": 1,
             "data": data["plots"] if "plots" in data else [],
         }
-
         return simularium_data

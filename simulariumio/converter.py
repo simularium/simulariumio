@@ -87,6 +87,9 @@ class Converter:
                     plots : Dict[str, Any] (optional) 
                         An object containing plot data already 
                         in Simularium format
+                    draw_fiber_points: bool (optional)
+                        Draw spheres at every other fiber point for fibers?
+                        Default: False
 
                 Cytosim:
                     box_size : np.ndarray (shape = [3])
@@ -106,7 +109,7 @@ class Converter:
                                             from Cytosim data]"
                             draw_points : bool (optional)
                                 in addition to drawing a line for each fiber,
-                                also draw spheres at each point along it?
+                                also draw spheres at every other point along it?
                                 Default: False
                         solids : Dict[str, Any]
                             filepath : str
