@@ -21,6 +21,7 @@ a.get_value()  # 10
 ```
 
 ## Installation
+**Install Requires:** If ReaDDy trajectories will be converted, the ReaDDy python package must be installed: `conda install -c readdy readdy` (after adding conda forge channel: `conda config --add channels conda-forge`)
 **Stable Release:** `pip install simulariumio`<br>
 **Development Head:** `pip install git+https://github.com/allen-cell-animated/simulariumio.git`
 

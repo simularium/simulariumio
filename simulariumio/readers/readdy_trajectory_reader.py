@@ -3,9 +3,9 @@
 
 import logging
 from typing import Dict, Any, List, Tuple
-import sys
 
 import numpy as np
+import readdy
 
 from .trajectory_reader import TrajectoryReader
 from ..exceptions import DataError
@@ -20,7 +20,7 @@ log = logging.getLogger(__name__)
 class ReaddyTrajectoryReader(TrajectoryReader):
     def _get_raw_trajectory_data(
         self, data: Dict[str, Any], scale_factor: float
-    ) -> [Dict[str, Any], Any]:
+    ) -> Tuple[Dict[str, Any], Any]:
         '''
         Return agent data populated from a ReaDDy .h5 trajectory file
         '''
@@ -58,7 +58,7 @@ class ReaddyTrajectoryReader(TrajectoryReader):
         n_filtered_particles_per_frame = np.zeros(totalSteps)
         for t in range(totalSteps):
             n = 0
-            for i in range(agent_data["n_agents"][t]):
+            for i in range(int(agent_data["n_agents"][t])):
                 if traj.species_name(agent_data["type_ids"][t][i]) not in ignore_types:
                     n += 1
             n_filtered_particles_per_frame[t] = n
@@ -75,10 +75,10 @@ class ReaddyTrajectoryReader(TrajectoryReader):
         }
         for t in range(len(agent_data["n_agents"])):
             n = 0
-            for i in range(agent_data["n_agents"][t]):
+            for i in range(int(agent_data["n_agents"][t])):
                 type_name = traj.species_name(agent_data["type_ids"][t][i])
                 if (type_name in ignore_types or 
-                    i >= n_filtered_particles_per_frame[t]):
+                    n >= n_filtered_particles_per_frame[t]):
                     continue
                 result["unique_ids"][t][n] = agent_data["unique_ids"][t][i]
                 result["type_ids"][t][n] = agent_data["type_ids"][t][i]
@@ -89,7 +89,7 @@ class ReaddyTrajectoryReader(TrajectoryReader):
 
     def _group_particle_types(
         self, agent_data: Dict[str, Any], traj: Any, type_grouping: Dict[str, List[str]]
-    ) -> Dict[str, Any]:
+    ) -> Tuple[Dict[str, Any], Dict[str, Dict[str, str]]]:
         '''
         Group ReaDDy particle types by assigning them to new group type IDs
         '''
@@ -105,7 +105,7 @@ class ReaddyTrajectoryReader(TrajectoryReader):
             i += 1
         # assign group ID to each particle of a type in the group
         for t in range(len(agent_data["n_agents"])):
-            for n in range(agent_data["n_agents"][t]):
+            for n in range(int(agent_data["n_agents"][t])):
                 readdy_id = agent_data["type_ids"][t][n]
                 if readdy_id in group_mapping:
                     agent_data["type_ids"][t][n] = group_mapping[readdy_id]
@@ -121,62 +121,36 @@ class ReaddyTrajectoryReader(TrajectoryReader):
         # optionally filter and group
         if "ignore_types" in data:
             agent_data = self._filter_trajectory_data(agent_data, traj, data["ignore_types"])
+        type_mapping = {}
         if "type_grouping" in data:
-            agent_data = self._group_particle_types(agent_data, data["type_grouping"])   
+            agent_data, type_mapping = self._group_particle_types(agent_data, traj, data["type_grouping"])
         # shape data
         simularium_data = {}
         # trajectory info
-        totalSteps = n_particles_per_frame.shape[0]
+        totalSteps = agent_data["n_agents"].shape[0]
         simularium_data["trajectoryInfo"] = {
             "version": 1,
-            "timeStepSize": (
-                float(data["timestep"]) else 0.0
-            ),
+            "timeStepSize": float(data["timestep"]),
             "totalSteps": totalSteps,
             "size": {
                 "x": scale * float(data["box_size"][0]),
                 "y": scale * float(data["box_size"][1]),
                 "z": scale * float(data["box_size"][2]),
             },
-            "typeMapping": {},
+            "typeMapping": type_mapping,
         }
         # add type names for each type that exists in the trajectory
-        if len(type_names) > 0:
-            existing_types = []
-            for t in range(total_steps):
-                for i in range(len(types[t])):
-                    type_id = types[t][i]
-                    if type_id not in existing_types:
-                        existing_types.append(int(type_id))
-            type_id_mapping = {}
-            for type_id in existing_types:
-                if type_id > len(type_names):
-                    raise Exception(f"No type name provided for type ID {type_id}")
-                traj_info["typeMapping"][str(type_id)] = {"name": type_names[type_id]}
-
-
-        for tid in agent_types:
-            s = str(tid)
-            object_type = agent_types[tid]["object_type"]
-            raw_id = str(agent_types[tid]["raw_id"])
-            if (
-                "agents" in data["data"][object_type]
-                and raw_id in data["data"][object_type]["agents"]
-                and "name" in data["data"][object_type]["agents"][raw_id]
-            ):
-                simularium_data["trajectoryInfo"]["typeMapping"][s] = {
-                    "name": data["data"][object_type]["agents"][raw_id]["name"]
-                }
-            else:
-                simularium_data["trajectoryInfo"]["typeMapping"][s] = {
-                    "name": object_type[:-1] + raw_id
-                }
+        existing_type_ids = []
+        for t in range(len(agent_data["n_agents"])):
+            for n in range(int(agent_data["n_agents"][t])):
+                type_id = int(agent_data["type_ids"][t][n])
+                if type_id not in existing_type_ids:
+                    existing_type_ids.append(type_id)
+        for type_id in existing_type_ids:
+            if str(type_id) not in simularium_data["trajectoryInfo"]["typeMapping"]:
+                type_name = traj.species_name(type_id)
+                simularium_data["trajectoryInfo"]["typeMapping"][str(type_id)] = {"name": type_name}
         # spatial data
-        draw_fiber_points = (
-            bool(data["data"]["fibers"]["draw_points"])
-            if "fibers" in data["data"] and "draw_points" in data["data"]["fibers"]
-            else False
-        )
         simularium_data["spatialData"] = {
             "version": 1,
             "msgType": 1,
