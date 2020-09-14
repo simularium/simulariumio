@@ -9,6 +9,7 @@ from .exceptions import UnsupportedSourceEngineError, UnsupportedPlotTypeError
 from .readers import (
     CustomTrajectoryReader,
     CytosimTrajectoryReader,
+    ReaddyTrajectoryReader,
     ScatterPlotReader,
     HistogramPlotReader,
 )
@@ -23,6 +24,7 @@ log = logging.getLogger(__name__)
 SUPPORTED_TRAJECTORY_READERS = {
     "custom": CustomTrajectoryReader,
     "cytosim": CytosimTrajectoryReader,
+    "readdy": ReaddyTrajectoryReader,
 }
 
 SUPPORTED_PLOT_READERS = {
@@ -176,6 +178,33 @@ class Converter:
                                 Default: [2, 3, 4]
                     scale_factor : float (optional)
                         A multiplier for the Cytosim scene, use if 
+                        visualization is too large or small
+                        Default: 1.0
+                    plots : Dict[str, Any] (optional) 
+                        An object containing plot data already 
+                        in Simularium format
+
+                ReaDDy:
+                    box_size : np.ndarray (shape = [3])
+                        A numpy ndarray containing the XYZ dimensions 
+                        of the simulation bounding volume
+                    timestep : float
+                        A float amount of time that passes each step
+                        Default: 0.0
+                    path_to_readdy_h5 : string
+                        A string path to the ReaDDy trajectory file (.h5)
+                    radii : Dict[str, float] (optional)
+                        A mapping of ReaDDy particle type to radius
+                        of each visualized sphere for that type
+                        Default: 1.0 (for each particle)
+                    ignore_types : List[str] (optional)
+                        A list of string ReaDDy particle types to ignore
+                    type_grouping : Dict[str, List[str]] (optional)
+                        A mapping of a new group type name to a list of 
+                        ReaDDy particle types to include in that group
+                        e.g. {"moleculeA":["A1","A2","A3"]}
+                    scale_factor : float (optional)
+                        A multiplier for the ReaDDy scene, use if 
                         visualization is too large or small
                         Default: 1.0
                     plots : Dict[str, Any] (optional) 
