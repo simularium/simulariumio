@@ -13,48 +13,31 @@ from simulariumio import Converter, exceptions
         # 4 particles 3 frames
         (
             {
-                "box_size" : np.array([20.0, 20.0, 20.0]),
-                "timestep" : 0.1,
-                "path_to_readdy_h5" : "simulariumio/tests/data/readdy/test.h5",
-                "type_grouping" : {
-                    "C" : ["A", "D"]
-                },
-                "radii" : {
-                    "C" : 3.0,
-                    "A" : 2.0,
-                    "B" : 2.0
-                },
-                "ignore_types" : ["E"]
+                "box_size": np.array([20.0, 20.0, 20.0]),
+                "timestep": 0.1,
+                "path_to_readdy_h5": "simulariumio/tests/data/readdy/test.h5",
+                "type_grouping": {"C": ["A", "D"]},
+                "radii": {"C": 3.0, "A": 2.0, "B": 2.0},
+                "ignore_types": ["E"],
             },
             {
-                "trajectoryInfo":{
-                    "version":1,
-                    "timeStepSize":0.1,
-                    "totalSteps":3,
-                    "size":{
-                        "x":20.0,
-                        "y":20.0,
-                        "z":20.0
-                    },
-                    "typeMapping":{
-                        "2":{
-                            "name":"C"
-                        },
-                        "1":{
-                            "name":"B"
-                        }
-                    }
+                "trajectoryInfo": {
+                    "version": 1,
+                    "timeStepSize": 0.1,
+                    "totalSteps": 3,
+                    "size": {"x": 20.0, "y": 20.0, "z": 20.0},
+                    "typeMapping": {"2": {"name": "C"}, "1": {"name": "B"}},
                 },
-                "spatialData":{
-                    "version":1,
-                    "msgType":1,
-                    "bundleStart":0,
-                    "bundleSize":3,
-                    "bundleData":[
+                "spatialData": {
+                    "version": 1,
+                    "msgType": 1,
+                    "bundleStart": 0,
+                    "bundleSize": 3,
+                    "bundleData": [
                         {
-                            "frameNumber":0,
-                            "time":0.0,
-                            "data":[
+                            "frameNumber": 0,
+                            "time": 0.0,
+                            "data": [
                                 1000.0,
                                 0.0,
                                 2.0,
@@ -98,13 +81,13 @@ from simulariumio import Converter, exceptions
                                 0.0,
                                 0.0,
                                 2.0,
-                                0.0
-                            ]
+                                0.0,
+                            ],
                         },
                         {
-                            "frameNumber":1,
-                            "time":0.1,
-                            "data":[
+                            "frameNumber": 1,
+                            "time": 0.1,
+                            "data": [
                                 1000.0,
                                 0.0,
                                 2.0,
@@ -148,13 +131,13 @@ from simulariumio import Converter, exceptions
                                 0.0,
                                 0.0,
                                 2.0,
-                                0.0
-                            ]
+                                0.0,
+                            ],
                         },
                         {
-                            "frameNumber":2,
-                            "time":0.2,
-                            "data":[
+                            "frameNumber": 2,
+                            "time": 0.2,
+                            "data": [
                                 1000.0,
                                 0.0,
                                 2.0,
@@ -198,22 +181,19 @@ from simulariumio import Converter, exceptions
                                 0.0,
                                 0.0,
                                 2.0,
-                                0.0
-                            ]
-                        }
-                    ]
+                                0.0,
+                            ],
+                        },
+                    ],
                 },
-                "plotData":{
-                    "version":1,
-                    "data":[]
-                }
-                },
+                "plotData": {"version": 1, "data": []},
+            },
         ),
         pytest.param(
             {},
             {},
             marks=pytest.mark.raises(exception=KeyError),  # input data is missing keys
-        )
+        ),
     ],
 )
 def test_cytosim_trajectory_reader(trajectory, expected_data):
