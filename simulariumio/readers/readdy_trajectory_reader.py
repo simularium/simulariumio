@@ -40,6 +40,12 @@ class ReaddyTrajectoryReader(TrajectoryReader):
         }
         # optionally set radius by particle type
         if "radii" in data:
+            type_map = traj.particle_types
+            for type_name in data["radii"]:
+                if type_name not in type_map:
+                    log.warning(f"type {type_name}, for which a radius was provided, "\
+                        "doesn't exist in the ReaDDy model so this radius won't be used. "\
+                        "Please provide radii for the original ReaDDy type(s).")
             for t in range(len(n_particles_per_frame)):
                 for n in range(n_particles_per_frame[t]):
                     type_name = traj.species_name(types[t][n])
@@ -53,6 +59,17 @@ class ReaddyTrajectoryReader(TrajectoryReader):
         '''
         Remove particles with types to be ignored
         '''
+        # check that the ignored types actually exist
+        type_map = traj.particle_types
+        atleast_one_type_to_ignore = False
+        for type_name in ignore_types:
+            if type_name not in type_map:
+                    log.warning(f"type {type_name}, which was provided in ignore_types, "\
+                        "doesn't exist in the ReaDDy model so won't be ignored. ")
+            else: 
+                atleast_one_type_to_ignore = True
+        if not atleast_one_type_to_ignore:
+            return agent_data
         # get number of filtered particles
         totalSteps = len(agent_data["times"])
         n_filtered_particles_per_frame = np.zeros(totalSteps)
@@ -95,13 +112,17 @@ class ReaddyTrajectoryReader(TrajectoryReader):
         '''
         # map ReaDDy ID to new group ID
         group_mapping = {}
-        type_ids = traj.particle_types
+        type_map = traj.particle_types
         type_mapping = {}
         i = int(np.amax(agent_data["type_ids"])) + 1
         for group_type in type_grouping:
             type_mapping[str(i)] = {"name": group_type}
             for readdy_type in type_grouping[group_type]:
-                group_mapping[type_ids[readdy_type]] = i
+                if readdy_type in type_map:
+                    group_mapping[type_map[readdy_type]] = i
+                else:
+                    log.warning(f"type {readdy_type}, which was provided in the type_grouping, "\
+                        "doesn't exist in the ReaDDy model")
             i += 1
         # assign group ID to each particle of a type in the group
         for t in range(len(agent_data["n_agents"])):

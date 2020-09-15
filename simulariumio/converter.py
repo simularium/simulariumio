@@ -217,9 +217,9 @@ class Converter:
                 'custom' : outputs are from an engine not specifically supported
                 'cytosim' : outputs are from CytoSim 
                     (https://gitlab.com/f.nedelec/cytosim)
-            Coming Soon:
                 'readdy' : outputs are from ReaDDy 
                     (https://readdy.github.io/)
+            Coming Soon:
                 'physicell' : outputs are from PhysiCell 
                     (http://physicell.org/)
         """
@@ -232,6 +232,7 @@ class Converter:
         Return the trajectory reader to match the requested 
         source simulation engine
         """
+        source_engine = source_engine.lower()
         if source_engine in SUPPORTED_TRAJECTORY_READERS:
             return SUPPORTED_TRAJECTORY_READERS[source_engine]
 
