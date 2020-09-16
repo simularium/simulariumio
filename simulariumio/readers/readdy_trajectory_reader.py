@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Dict, Any, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 import numpy as np
+
 import readdy
 
 from .trajectory_reader import TrajectoryReader
-from ..exceptions import DataError
 
 ###############################################################################
 
@@ -45,7 +45,8 @@ class ReaddyTrajectoryReader(TrajectoryReader):
                 if type_name not in type_map:
                     log.warning(
                         f"type {type_name}, for which a radius was provided, "
-                        "doesn't exist in the ReaDDy model so this radius won't be used. "
+                        "doesn't exist in the ReaDDy model so this "
+                        "radius won't be used. "
                         "Please provide radii for the original ReaDDy type(s)."
                     )
             for t in range(len(n_particles_per_frame)):

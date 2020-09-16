@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import pytest
 import numpy as np
+import pytest
 
-from simulariumio import Converter, exceptions
+from simulariumio import Converter
 
 
 @pytest.mark.parametrize(

@@ -4,8 +4,8 @@
 
 class UnsupportedSourceEngineError(Exception):
     """
-    This exception is intended to communicate that the requested 
-    source simulation engineis not one of the supported engines 
+    This exception is intended to communicate that the requested
+    source simulation engineis not one of the supported engines
     and cannot be parsed with simulariumio.
     """
 
@@ -36,7 +36,7 @@ class UnsupportedPlotTypeError(Exception):
 
 class MissingDataError(Exception):
     """
-    This exception is intended to communicate that the data provided 
+    This exception is intended to communicate that the data provided
     is missing a field needed to parse it.
     """
 

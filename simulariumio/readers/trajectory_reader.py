@@ -22,7 +22,7 @@ class TrajectoryReader(Reader):
         self, data: Dict[str, Any], draw_fiber_points: bool
     ) -> List[Dict[str, Any]]:
         """
-        Return the spatialData's bundleData for a simulation 
+        Return the spatialData's bundleData for a simulation
         of agents with subpoints, packing buffer with jagged data is slower
         """
         bundleData: List[Dict[str, Any]] = []
@@ -97,7 +97,7 @@ class TrajectoryReader(Reader):
         self, data: Dict[str, Any]
     ) -> List[Dict[str, Any]]:
         """
-        Return the spatialData's bundleData for a simulation 
+        Return the spatialData's bundleData for a simulation
         of agents without subpoints, using list slicing for speed
         """
         bundleData: List[Dict[str, Any]] = []
