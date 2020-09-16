@@ -292,7 +292,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
             "unique_ids": np.zeros((totalSteps, max_agents)),
             "type_ids": np.zeros((totalSteps, max_agents)),
             "positions": np.zeros((totalSteps, max_agents, 3)),
-            "radii": np.zeros((totalSteps, max_agents)),
+            "radii": np.ones((totalSteps, max_agents)),
             "n_subpoints": np.zeros((totalSteps, max_agents)),
             "subpoints": np.zeros((totalSteps, max_agents, max_subpoints, 3)),
         }

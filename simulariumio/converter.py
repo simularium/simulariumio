@@ -9,8 +9,9 @@ from .exceptions import UnsupportedPlotTypeError, UnsupportedSourceEngineError
 from .readers import (
     CustomTrajectoryReader,
     CytosimTrajectoryReader,
-    HistogramPlotReader,
     ReaddyTrajectoryReader,
+    PhysiCellTrajectoryReader,
+    HistogramPlotReader,
     ScatterPlotReader,
 )
 from .readers.reader import Reader
@@ -25,6 +26,7 @@ SUPPORTED_TRAJECTORY_READERS = {
     "custom": CustomTrajectoryReader,
     "cytosim": CytosimTrajectoryReader,
     "readdy": ReaddyTrajectoryReader,
+    "physicell": PhysiCellTrajectoryReader,
 }
 
 SUPPORTED_PLOT_READERS = {
@@ -211,6 +213,33 @@ class Converter:
                     plots : Dict[str, Any] (optional)
                         An object containing plot data already
                         in Simularium format
+
+                PhysiCell:
+                    box_size : np.ndarray (shape = [3])
+                        A numpy ndarray containing the XYZ dimensions
+                        of the simulation bounding volume
+                    timestep : float
+                        A float amount of time that passes each step
+                        Default: 0.0
+                    path_to_xml_files : string
+                        A string path to the PhysiCell MultiCellDS XML files
+                    types : Dict[int, Dict[int, str]] (optional)
+                        [cell type ID from PhysiCell data] : Dict[int, str]
+                            the cell type ID from PhysiCell data mapped
+                            to display names for each type of cell
+                            [cell phase ID from PhysiCell data] : str
+                                the cell phase ID from PhysiCell data mapped
+                                to the display name for this cell type and phase
+                                Default: "cell[cell type ID from PhysiCell data]#
+                                    [cell phase ID from PhysiCell data]"
+                    scale_factor : float (optional)
+                        A multiplier for the ReaDDy scene, use if
+                        visualization is too large or small
+                        Default: 1.0
+                    plots : Dict[str, Any] (optional)
+                        An object containing plot data already
+                        in Simularium format
+
 
         source_engine: str
             A string specifying which simulation engine created these outputs.
