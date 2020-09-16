@@ -33,6 +33,7 @@ dev_requirements = [
     "Sphinx>=2.0.0b1,<3",
     "sphinx_rtd_theme>=0.4.3",
     "tox>=3.15.2",
+    "tox-conda>=0.2.1",
     "twine>=3.1.1",
     "wheel>=0.34.2",
 ]
