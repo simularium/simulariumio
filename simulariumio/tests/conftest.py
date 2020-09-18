@@ -12,6 +12,8 @@ def three_default_agents() -> Dict[str, Any]:
         "times": 0.5 * np.array(list(range(3))),
         "n_agents": np.array(3 * [3]),
         "viz_types": np.array(3 * [3 * [1000.0]]),
+        "unique_ids": np.array([[0.0, 1.0, 2.0], [0.0, 1.0, 2.0], [0.0, 1.0, 2.0]]),
+        "types": [["C", "U", "C"], ["U", "L", "S"], ["O", "Y", "W"]],
         "positions": np.array(
             [
                 [
@@ -31,7 +33,6 @@ def three_default_agents() -> Dict[str, Any]:
                 ],
             ]
         ),
-        "types": [["C", "U", "C"], ["U", "L", "S"], ["O", "Y", "W"]],
         "radii": np.array(
             [
                 [8.38656327, 6.18568039, 6.61459206],

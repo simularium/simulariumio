@@ -8,6 +8,7 @@ import json
 from .exceptions import UnsupportedSourceEngineError, UnsupportedPlotTypeError
 from .readers import (
     CustomTrajectoryReader,
+    CytosimTrajectoryReader,
     ScatterPlotReader,
     HistogramPlotReader,
 )
@@ -21,6 +22,7 @@ log = logging.getLogger(__name__)
 
 SUPPORTED_TRAJECTORY_READERS = {
     "custom": CustomTrajectoryReader,
+    "cytosim": CytosimTrajectoryReader,
 }
 
 SUPPORTED_PLOT_READERS = {
@@ -47,13 +49,13 @@ class Converter:
             Fields for each engine:
 
                 custom: 
-                    box_size: np.ndarray (shape = [3])
+                    box_size : np.ndarray (shape = [3])
                         A numpy ndarray containing the XYZ dimensions 
                         of the simulation bounding volume
-                    times: np.ndarray (shape = [timesteps])
+                    times : np.ndarray (shape = [timesteps])
                         A numpy ndarray containing the elapsed simulated time 
                         at each timestep
-                    n_agents: np.ndarray (shape = [timesteps])
+                    n_agents : np.ndarray (shape = [timesteps])
                         A numpy ndarray containing the number of agents 
                         that exist at each timestep
                     viz_types : np.ndarray (shape = [timesteps, agents])
@@ -61,20 +63,121 @@ class Converter:
                         for each agent at each timestep. Current options:
                             1000 : default,
                             1001 : fiber (which will require subpoints)
-                    positions : np.ndarray (shape = [timesteps, agents, 3])
-                        A numpy ndarray containing the XYZ position 
+                    unique_ids : np.ndarray (shape = [timesteps, agents])
+                        A numpy ndarray containing the unique ID
                         for each agent at each timestep
                     types: List[List[str]] (list of shape [timesteps, agents])
                         A list containing timesteps, for each a list of 
                         the string name for the type of each agent
+                    positions : np.ndarray (shape = [timesteps, agents, 3])
+                        A numpy ndarray containing the XYZ position 
+                        for each agent at each timestep
                     radii : np.ndarray (shape = [timesteps, agents])
                         A numpy ndarray containing the radius 
                         for each agent at each timestep
-                    subpoints: np.ndarray 
+                    n_subpoints : np.ndarray (shape = [timesteps, agents]) (optional)
+                        A numpy ndarray containing the number of subpoints
+                        belonging to each agent at each timestep. Required if
+                        subpoints are provided
+                    subpoints : np.ndarray 
                     (shape = [timesteps, agents, subpoints, 3]) (optional) 
                         A numpy ndarray containing a list of subpoint position data 
                         for each agent at each timestep. These values are 
                         currently only used for fiber agents.
+                    plots : Dict[str, Any] (optional) 
+                        An object containing plot data already 
+                        in Simularium format
+                    draw_fiber_points: bool (optional)
+                        Draw spheres at every other fiber point for fibers?
+                        Default: False
+
+                Cytosim:
+                    box_size : np.ndarray (shape = [3])
+                        A numpy ndarray containing the XYZ dimensions 
+                        of the simulation bounding volume
+                    data : Dict[str, Any]
+                        fibers : Dict[str, Any]
+                            filepath : str
+                                path to fiber_points.txt    
+                            agents : Dict[str, Any] (optional)
+                                [agent type index from Cytosim data] : Dict[str, Any]
+                                    the type index from Cytosim data mapped 
+                                    to display names for each type of fiber
+                                    name : str (optional)
+                                        the display name for this type of fiber
+                                        Default: "fiber[agent type index 
+                                            from Cytosim data]"
+                            draw_points : bool (optional)
+                                in addition to drawing a line for each fiber,
+                                also draw spheres at every other point along it?
+                                Default: False
+                        solids : Dict[str, Any]
+                            filepath : str
+                                path to solids.txt
+                            agents : Dict[str, Any] (optional)
+                                [agent type index from Cytosim data] : Dict[str, Any]
+                                    the type index from Cytosim data mapped 
+                                    to display names and radii for each type of solid
+                                    name : str (optional)
+                                        the display name for this type of solid
+                                        Default: "solid[agent type index 
+                                            from Cytosim data]"
+                                    radius : float (optional)
+                                        the radius for this type of solid
+                                        Default: 1.0
+                                    position_offset : np.ndarray (shape = [3]) (optional)
+                                        XYZ translation to apply to this agent
+                                        Default: [0.0, 0.0, 0.0]
+                            position_indices : List[int] (optional)
+                                the columns in Cytosim's reports are not 
+                                always consistent, use this to override them 
+                                if your output file has different column indices 
+                                for position XYZ
+                                Default: [2, 3, 4]
+                        singles : Dict[str, Any]
+                            filepath : str
+                                path to singles.txt
+                            agents : Dict[str, Any] (optional)
+                                [agent type index from Cytosim data] : Dict[str, Any]
+                                    the type index from Cytosim data mapped 
+                                    to display names and radii for each type of single
+                                    name : str (optional)
+                                        the display name for this type of single
+                                        Default: "single[agent type index 
+                                            from Cytosim data]"
+                                    radius : float (optional)
+                                        the radius for this type of single
+                                        Default: 1.0
+                            position_indices : List[int] (optional)
+                                the columns in Cytosim's reports are not 
+                                always consistent, use this to override them 
+                                if your output file has different column indices 
+                                for position XYZ
+                                Default: [2, 3, 4]
+                        couples : Dict[str, Any] (optional)
+                            filepath : str
+                                path to couples.txt
+                            agents : Dict[str, Any] (optional)
+                                [agent type index from Cytosim data] : Dict[str, Any]
+                                    the type index from Cytosim data mapped 
+                                    to display names and radii for each type of couple
+                                    name : str (optional)
+                                        the display name for this type of couple
+                                        Default: "couple[agent type index 
+                                            from Cytosim data]"
+                                    radius : float (optional)
+                                        the radius for this type of couple
+                                        Default: 1.0
+                            position_indices : List[int] (optional)
+                                the columns in Cytosim's reports are not 
+                                always consistent, use this to override them 
+                                if your output file has different column indices 
+                                for position XYZ
+                                Default: [2, 3, 4]
+                    scale_factor : float (optional)
+                        A multiplier for the Cytosim scene, use if 
+                        visualization is too large or small
+                        Default: 1.0
                     plots : Dict[str, Any] (optional) 
                         An object containing plot data already 
                         in Simularium format
@@ -83,9 +186,9 @@ class Converter:
             A string specifying which simulation engine created these outputs. 
             Current options:
                 'custom' : outputs are from an engine not specifically supported
-            Coming Soon:
                 'cytosim' : outputs are from CytoSim 
                     (https://gitlab.com/f.nedelec/cytosim)
+            Coming Soon:
                 'readdy' : outputs are from ReaDDy 
                     (https://readdy.github.io/)
                 'physicell' : outputs are from PhysiCell 
