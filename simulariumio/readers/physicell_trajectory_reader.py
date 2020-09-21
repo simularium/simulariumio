@@ -49,14 +49,16 @@ class PhysiCellTrajectoryReader(TrajectoryReader):
             self.ids[cell_type] = {}
         if cell_phase not in self.ids[cell_type]:
             self.ids[cell_type][cell_phase] = self.last_id
-            if cell_type < len(type_names) and cell_phase < len(type_names[cell_type]):
-                self.type_mapping[str(self.last_id)] = {
-                    "name": type_names[cell_type][cell_phase]
-                }
+            type_name = ""
+            if cell_type in type_names and "name" in type_names[cell_type]:
+                type_name = type_names[cell_type]["name"]
             else:
-                self.type_mapping[str(self.last_id)] = {
-                    "name": f"cell{cell_type}#{cell_phase}"
-                }
+                type_name = f"cell {cell_type}"
+            if cell_type in type_names and cell_phase in type_names[cell_type]:
+                type_name += "#" + type_names[cell_type][cell_phase]
+            else:
+                type_name += f"#phase {cell_phase}"
+            self.type_mapping[str(self.last_id)] = {"name": type_name}
             self.last_id += 1
         return self.ids[cell_type][cell_phase]
 

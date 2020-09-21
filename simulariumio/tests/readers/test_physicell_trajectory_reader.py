@@ -24,7 +24,10 @@ from simulariumio import Converter, exceptions
                     "timeStepSize": 360.0,
                     "totalSteps": 3,
                     "size": {"x": 10.0, "y": 10.0, "z": 1.0},
-                    "typeMapping": {"0": {"name": "cell1#4"}, "1": {"name": "cell0#4"}},
+                    "typeMapping": {
+                        "0": {"name": "cell 1#phase 4"},
+                        "1": {"name": "cell 0#phase 4"},
+                    },
                 },
                 "spatialData": {
                     "version": 1,

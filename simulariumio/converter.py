@@ -224,15 +224,16 @@ class Converter:
                     path_to_output_dir : string
                         A string path to the PhysiCell output directory
                         containing MultiCellDS XML and MATLAB files
-                    types : Dict[int, Dict[int, str]] (optional)
-                        [cell type ID from PhysiCell data] : Dict[int, str]
+                    types : Dict[int, Dict[Any, str]] (optional)
+                        [cell type ID from PhysiCell data] : Dict[Any, str]
                             the cell type ID from PhysiCell data mapped
-                            to display names for each type of cell
-                            [cell phase ID from PhysiCell data] : str
-                                the cell phase ID from PhysiCell data mapped
-                                to the display name for this cell type and phase
+                            to display name for that type, and display names 
+                            for phases of that type
+                            "name" or [cell phase ID from PhysiCell data] : str
+                                "name" or the cell phase ID from PhysiCell data mapped
+                                to the display names
                                 Default: "cell[cell type ID from PhysiCell data]#
-                                    [cell phase ID from PhysiCell data]"
+                                    phase[cell phase ID from PhysiCell data]"
                     scale_factor : float (optional)
                         A multiplier for the ReaDDy scene, use if
                         visualization is too large or small
