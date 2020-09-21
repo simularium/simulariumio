@@ -5,7 +5,7 @@
 class UnsupportedSourceEngineError(Exception):
     """
     This exception is intended to communicate that the requested
-    source simulation engineis not one of the supported engines
+    source simulation engine is not one of the supported engines
     and cannot be parsed with simulariumio.
     """
 
