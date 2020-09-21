@@ -28,7 +28,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
         self, fibers_lines: List[str]
     ) -> Tuple[List[int], int]:
         """
-        Parse a Cytosim fiber_points.txt output file to get the number 
+        Parse a Cytosim fiber_points.txt output file to get the number
         of subpoints per agent per timestep
         """
         result = []
@@ -55,7 +55,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
 
     def _parse_other_data_dimensions(self, lines: List[str]) -> List[int]:
         """
-        Parse a Cytosim output file containing objects other than fibers 
+        Parse a Cytosim output file containing objects other than fibers
         (solids, singles, or couples) to get the number of agents per timestep
         """
         result = []
@@ -74,7 +74,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
     def _parse_data_dimensions(self, cytosim_data: Dict[str, List[str]]) -> Tuple[int]:
         """
         Parse Cytosim output files to get the total steps,
-        maximum agents per timestep, and maximum subpoints per agent 
+        maximum agents per timestep, and maximum subpoints per agent
         """
         dimensions = []
         max_subpoints = 0
@@ -188,7 +188,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
         used_unique_IDs: List[int],
     ) -> Tuple[Dict[str, Any], List[str], List[int]]:
         """
-        Parse a Cytosim output file containing objects other than fibers 
+        Parse a Cytosim output file containing objects other than fibers
         (solids, singles, or couples) to get default agents
         """
         t = -1
@@ -317,7 +317,11 @@ class CytosimTrajectoryReader(TrajectoryReader):
                 )
             else:
                 agent_data, agent_types, uids = self._parse_fibers(
-                    cytosim_data[object_type], scale, agent_data, agent_types, uids,
+                    cytosim_data[object_type],
+                    scale,
+                    agent_data,
+                    agent_types,
+                    uids,
                 )
         # shape data
         simularium_data = {}
