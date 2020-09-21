@@ -6,9 +6,9 @@ import sys
 import warnings
 from pathlib import Path
 
-'''
+"""
 Source: https://github.com/PhysiCell-Tools/python-loader/blob/master/pyMCDS.py
-'''
+"""
 
 
 class pyMCDS:
@@ -36,12 +36,12 @@ class pyMCDS:
     def __init__(self, xml_file, parse_continuum_variables, output_path="."):
         self.data = self._read_xml(xml_file, parse_continuum_variables, output_path)
 
-    ## METADATA RELATED FUNCTIONS
+    # METADATA RELATED FUNCTIONS
 
     def get_time(self):
         return self.data["metadata"]["current_time"]
 
-    ## MESH RELATED FUNCTIONS
+    # MESH RELATED FUNCTIONS
 
     def get_mesh(self, flat=False):
         """
@@ -60,7 +60,7 @@ class pyMCDS:
             Contains arrays of voxel center coordinates as meshgrid with shape
             [nx_voxel, ny_voxel, nz_voxel] or [nx_voxel, ny_voxel] if flat=True.
         """
-        if flat == True:
+        if flat:
             xx = self.data["mesh"]["x_coordinates"][:, :, 0]
             yy = self.data["mesh"]["y_coordinates"][:, :, 0]
 
@@ -154,44 +154,38 @@ class pyMCDS:
 
         if x > xx.max():
             warnings.warn(
-                "Position out of bounds: x out of bounds in pyMCDS._get_voxel_idx({0}, {1}, {2}). Setting x = x_max!".format(
-                    x, y, z
-                )
+                "Position out of bounds: x out of bounds in pyMCDS._get_voxel_idx"
+                "({0}, {1}, {2}). Setting x = x_max!".format(x, y, z)
             )
             x = xx.max()
         elif x < xx.min():
             warnings.warn(
-                "Position out of bounds: x out of bounds in pyMCDS._get_voxel_idx({0}, {1}, {2}). Setting x = x_min!".format(
-                    x, y, z
-                )
+                "Position out of bounds: x out of bounds in pyMCDS._get_voxel_idx"
+                "({0}, {1}, {2}). Setting x = x_min!".format(x, y, z)
             )
             x = xx.min()
         elif y > yy.max():
             warnings.warn(
-                "Position out of bounds: y out of bounds in pyMCDS._get_voxel_idx({0}, {1}, {2}). Setting y = y_max!".format(
-                    x, y, z
-                )
+                "Position out of bounds: y out of bounds in pyMCDS._get_voxel_idx"
+                "({0}, {1}, {2}). Setting y = y_max!".format(x, y, z)
             )
             y = yy.max()
         elif y < yy.min():
             warnings.warn(
-                "Position out of bounds: y out of bounds in pyMCDS._get_voxel_idx({0}, {1}, {2}). Setting y = y_min!".format(
-                    x, y, z
-                )
+                "Position out of bounds: y out of bounds in pyMCDS._get_voxel_idx"
+                "({0}, {1}, {2}). Setting y = y_min!".format(x, y, z)
             )
             y = yy.min()
         elif z > zz.max():
             warnings.warn(
-                "Position out of bounds: z out of bounds in pyMCDS._get_voxel_idx({0}, {1}, {2}). Setting z = z_max!".format(
-                    x, y, z
-                )
+                "Position out of bounds: z out of bounds in pyMCDS._get_voxel_idx"
+                "({0}, {1}, {2}). Setting z = z_max!".format(x, y, z)
             )
             z = zz.max()
         elif z < zz.min():
             warnings.warn(
-                "Position out of bounds: z out of bounds in pyMCDS._get_voxel_idx({0}, {1}, {2}). Setting z = z_min!".format(
-                    x, y, z
-                )
+                "Position out of bounds: z out of bounds in pyMCDS._get_voxel_idx"
+                "({0}, {1}, {2}). Setting z = z_min!".format(x, y, z)
             )
             z = zz.min()
 
@@ -203,7 +197,7 @@ class pyMCDS:
 
         return [ii, jj, kk]
 
-    ## MICROENVIRONMENT RELATED FUNCTIONS
+    # MICROENVIRONMENT RELATED FUNCTIONS
 
     def get_substrate_names(self):
         """
@@ -284,7 +278,7 @@ class pyMCDS:
 
         return concs
 
-    ## CELL RELATED FUNCTIONS
+    # CELL RELATED FUNCTIONS
 
     def get_cell_df(self):
         """
@@ -414,7 +408,9 @@ class pyMCDS:
         #     initial_mesh = sio.loadmat(voxel_path)['mesh']
         # except:
         #     raise FileNotFoundError(
-        #         "No such file or directory:\n'{}' referenced in '{}'".format(voxel_path, xml_file))
+        #         "No such file or directory:\n'{}' referenced in '{}'".format(
+        #         voxel_path, xml_file)
+        #     )
         #     sys.exit(1)
         #
         # print('Reading {}'.format(voxel_path))
@@ -443,12 +439,11 @@ class pyMCDS:
             # Changes here
             try:
                 me_data = sio.loadmat(me_path)["multiscale_microenvironment"]
-            except:
-                raise FileNotFoundError(
-                    "No such file or directory:\n'{}' referenced in '{}'".format(
-                        me_path, xml_file
-                    )
-                )
+            except FileNotFoundError:
+                print("'{}' referenced in '{}'".format(me_path, xml_file))
+                sys.exit(1)
+            except PermissionError:
+                print("'{}' referenced in '{}'".format(me_path, xml_file))
                 sys.exit(1)
 
             print("Reading {}".format(me_path))
@@ -538,12 +533,11 @@ class pyMCDS:
         cell_path = output_path / cell_file
         try:
             cell_data = sio.loadmat(cell_path)["cells"]
-        except:
-            raise FileNotFoundError(
-                "No such file or directory:\n'{}' referenced in '{}'".format(
-                    cell_path, xml_file
-                )
-            )
+        except FileNotFoundError:
+            print("'{}' referenced in '{}'".format(cell_path, xml_file))
+            sys.exit(1)
+        except PermissionError:
+            print("'{}' referenced in '{}'".format(cell_path, xml_file))
             sys.exit(1)
 
         print("Reading {}".format(cell_path))

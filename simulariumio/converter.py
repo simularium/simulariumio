@@ -221,8 +221,9 @@ class Converter:
                     timestep : float
                         A float amount of time that passes each step
                         Default: 0.0
-                    path_to_xml_files : string
-                        A string path to the PhysiCell MultiCellDS XML files
+                    path_to_output_dir : string
+                        A string path to the PhysiCell output directory
+                        containing MultiCellDS XML and MATLAB files
                     types : Dict[int, Dict[int, str]] (optional)
                         [cell type ID from PhysiCell data] : Dict[int, str]
                             the cell type ID from PhysiCell data mapped
@@ -249,7 +250,6 @@ class Converter:
                     (https://gitlab.com/f.nedelec/cytosim)
                 'readdy' : outputs are from ReaDDy
                     (https://readdy.github.io/)
-            Coming Soon:
                 'physicell' : outputs are from PhysiCell
                     (http://physicell.org/)
         """

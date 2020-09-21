@@ -28,6 +28,14 @@ simulariumio.readers.histogram\_plot\_reader module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.readers.physicell\_trajectory\_reader module
+---------------------------------------------------------
+
+.. automodule:: simulariumio.readers.physicell_trajectory_reader
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.readers.readdy\_trajectory\_reader module
 ------------------------------------------------------
 

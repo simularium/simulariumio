@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict
+from pathlib import Path
 
 import numpy as np
 
 from ..dep.pyMCDS import pyMCDS
 
 from .trajectory_reader import TrajectoryReader
+from ..exceptions import MissingDataError
 
 ###############################################################################
 
@@ -22,23 +24,26 @@ class PhysiCellTrajectoryReader(TrajectoryReader):
         self.ids = {}
         self.last_id = 0
         self.type_mapping = {}
-        print("did physicell init")
 
-    def _load_data(self, path_to_xml_files) -> np.ndarray:
-        """ 
-        Load simulation data from PhysiCell MultiCellDS XML files 
+    def _load_data(self, path_to_output_dir) -> np.ndarray:
         """
-        sorted_files = sorted(Path(path_to_xml_files).glob("output*.xml"))
+        Load simulation data from PhysiCell MultiCellDS XML files
+        """
+        files = Path(path_to_output_dir).glob("*output*.xml")
+        file_mapping = {}
+        for f in files:
+            index = int(f.name[f.name.index("output") + 6 :].split(".")[0])
+            file_mapping[index] = f
         data = []
-        for file in sorted_files:
-            data.append(pyMCDS(file.name, False, path_to_xml_files))
+        for t, xml_file in file_mapping.items():
+            data.append(pyMCDS(xml_file.name, False, path_to_output_dir))
         return np.array(data)
 
     def _get_agent_type(
         self, cell_type: int, cell_phase: int, type_names: Dict[int, Dict[int, str]]
     ) -> int:
-        """ 
-        Get a unique agent type ID for a specific cell type and phase combination 
+        """
+        Get a unique agent type ID for a specific cell type and phase combination
         """
         if cell_type not in self.ids:
             self.ids[cell_type] = {}
@@ -58,10 +63,10 @@ class PhysiCellTrajectoryReader(TrajectoryReader):
     def _get_trajectory_data(
         self, data: Dict[str, Any], scale_factor: float
     ) -> Dict[str, Any]:
-        """ 
-        Get data from one time step in Simularium format 
         """
-        physicell_data = self._load_data(data["path_to_xml_files"])
+        Get data from one time step in Simularium format
+        """
+        physicell_data = self._load_data(data["path_to_output_dir"])
         # get data dimensions
         totalSteps = len(physicell_data)
         max_agents = 0
@@ -71,6 +76,12 @@ class PhysiCellTrajectoryReader(TrajectoryReader):
             n = len(discrete_cells[t]["position_x"])
             if n > max_agents:
                 max_agents = n
+        if totalSteps < 1 or max_agents < 1:
+            raise MissingDataError(
+                "no timesteps or no agents found "
+                "in PhysiCell data, is the path_to_output_dir "
+                "pointing to an output directory?"
+            )
         result = {
             "times": float(data["timestep"]) * np.arange(totalSteps),
             "n_agents": np.zeros(totalSteps),
@@ -78,14 +89,15 @@ class PhysiCellTrajectoryReader(TrajectoryReader):
             "unique_ids": np.zeros((totalSteps, max_agents)),
             "type_ids": np.zeros((totalSteps, max_agents)),
             "positions": np.zeros((totalSteps, max_agents, 3)),
-            "radii": np.ones((totalSteps, max_agents))
+            "radii": np.ones((totalSteps, max_agents)),
         }
         # get data
         type_names = data["types"] if "types" in data else []
         for t in range(totalSteps):
-            result["n_agents"][t] = len(discrete_cells[t]["position_x"])
+            n_agents = int(len(discrete_cells[t]["position_x"]))
+            result["n_agents"][t] = n_agents
             i = 0
-            for n in range(result["n_agents"][t]):
+            for n in range(n_agents):
                 result["unique_ids"][t][i] = i
                 result["type_ids"][t][i] = float(
                     self._get_agent_type(
@@ -94,13 +106,16 @@ class PhysiCellTrajectoryReader(TrajectoryReader):
                         type_names,
                     )
                 )
-                result["positions"][t][i] = scale * [
-                    discrete_cells[t]["position_x"][n], 
-                    discrete_cells[t]["position_y"][n], 
-                    discrete_cells[t]["position_z"][n]
-                ]
-                result["radii"][t][i] = np.cbrt(
-                    3.0 / 4.0 * discrete_cells[t]["total_volume"][n] / np.pi)
+                result["positions"][t][i] = scale_factor * np.array(
+                    [
+                        discrete_cells[t]["position_x"][n],
+                        discrete_cells[t]["position_y"][n],
+                        discrete_cells[t]["position_z"][n],
+                    ]
+                )
+                result["radii"][t][i] = scale_factor * np.cbrt(
+                    3.0 / 4.0 * discrete_cells[t]["total_volume"][n] / np.pi
+                )
                 i += 1
         return result
 
