@@ -35,7 +35,7 @@ class PhysiCellTrajectoryReader(TrajectoryReader):
             index = int(f.name[f.name.index("output") + 6 :].split(".")[0])
             file_mapping[index] = f
         data = []
-        for t, xml_file in file_mapping.items():
+        for t, xml_file in sorted(file_mapping.items()):
             data.append(pyMCDS(xml_file.name, False, path_to_output_dir))
         return np.array(data)
 
