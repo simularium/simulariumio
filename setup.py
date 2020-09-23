@@ -8,6 +8,11 @@ from setuptools import find_packages, setup
 with open("README.md") as readme_file:
     readme = readme_file.read()
 
+physicell_requirements = [
+    "pandas>=1.1.2",
+    "scipy>=1.5.2",
+]
+
 setup_requirements = [
     "pytest-runner>=5.2",
 ]
@@ -20,6 +25,7 @@ test_requirements = [
     "pytest>=5.4.3",
     "pytest-cov>=2.9.0",
     "pytest-raises>=0.11",
+    *physicell_requirements,
 ]
 
 dev_requirements = [
@@ -46,9 +52,11 @@ extra_requirements = {
     "setup": setup_requirements,
     "test": test_requirements,
     "dev": dev_requirements,
+    "physicell": physicell_requirements,
     "all": [
         *requirements,
         *dev_requirements,
+        *physicell_requirements
     ]
 }
 

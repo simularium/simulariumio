@@ -9,8 +9,9 @@ from .exceptions import UnsupportedPlotTypeError, UnsupportedSourceEngineError
 from .readers import (
     CustomTrajectoryReader,
     CytosimTrajectoryReader,
-    HistogramPlotReader,
     ReaddyTrajectoryReader,
+    PhysiCellTrajectoryReader,
+    HistogramPlotReader,
     ScatterPlotReader,
 )
 from .readers.reader import Reader
@@ -25,6 +26,7 @@ SUPPORTED_TRAJECTORY_READERS = {
     "custom": CustomTrajectoryReader,
     "cytosim": CytosimTrajectoryReader,
     "readdy": ReaddyTrajectoryReader,
+    "physicell": PhysiCellTrajectoryReader,
 }
 
 SUPPORTED_PLOT_READERS = {
@@ -212,6 +214,35 @@ class Converter:
                         An object containing plot data already
                         in Simularium format
 
+                PhysiCell:
+                    box_size : np.ndarray (shape = [3])
+                        A numpy ndarray containing the XYZ dimensions
+                        of the simulation bounding volume
+                    timestep : float
+                        A float amount of time that passes each step
+                        Default: 0.0
+                    path_to_output_dir : string
+                        A string path to the PhysiCell output directory
+                        containing MultiCellDS XML and MATLAB files
+                    types : Dict[int, Dict[Any, str]] (optional)
+                        [cell type ID from PhysiCell data] : Dict[Any, str]
+                            the cell type ID from PhysiCell data mapped
+                            to display name for that type, and display names 
+                            for phases of that type
+                            "name" or [cell phase ID from PhysiCell data] : str
+                                "name" or the cell phase ID from PhysiCell data mapped
+                                to the display names
+                                Default: "cell[cell type ID from PhysiCell data]#
+                                    phase[cell phase ID from PhysiCell data]"
+                    scale_factor : float (optional)
+                        A multiplier for the ReaDDy scene, use if
+                        visualization is too large or small
+                        Default: 1.0
+                    plots : Dict[str, Any] (optional)
+                        An object containing plot data already
+                        in Simularium format
+
+
         source_engine: str
             A string specifying which simulation engine created these outputs.
             Current options:
@@ -220,7 +251,6 @@ class Converter:
                     (https://gitlab.com/f.nedelec/cytosim)
                 'readdy' : outputs are from ReaDDy
                     (https://readdy.github.io/)
-            Coming Soon:
                 'physicell' : outputs are from PhysiCell
                     (http://physicell.org/)
         """

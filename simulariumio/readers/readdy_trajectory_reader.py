@@ -28,15 +28,15 @@ class ReaddyTrajectoryReader(TrajectoryReader):
         traj = readdy.Trajectory(data["path_to_readdy_h5"])
         n_particles_per_frame, positions, types, ids = traj.to_numpy(start=0, stop=None)
         totalSteps = n_particles_per_frame.shape[0]
-        max_n_particles = int(np.amax(n_particles_per_frame))
+        max_agents = int(np.amax(n_particles_per_frame))
         result = {
             "times": float(data["timestep"]) * np.arange(totalSteps),
             "n_agents": n_particles_per_frame,
-            "viz_types": 1000.0 * np.ones(shape=(totalSteps, max_n_particles)),
+            "viz_types": 1000.0 * np.ones(shape=(totalSteps, max_agents)),
             "unique_ids": ids,
             "type_ids": types,
             "positions": scale_factor * positions,
-            "radii": np.ones(shape=(totalSteps, max_n_particles)),
+            "radii": np.ones(shape=(totalSteps, max_agents)),
         }
         # optionally set radius by particle type
         if "radii" in data:
@@ -85,15 +85,15 @@ class ReaddyTrajectoryReader(TrajectoryReader):
                     n += 1
             n_filtered_particles_per_frame[t] = n
         # filter particle data to remove ignored types
-        max_n_particles = int(np.amax(n_filtered_particles_per_frame))
+        max_agents = int(np.amax(n_filtered_particles_per_frame))
         result = {
             "times": agent_data["times"],
             "viz_types": agent_data["viz_types"],
             "n_agents": n_filtered_particles_per_frame,
-            "unique_ids": -1 * np.ones((totalSteps, max_n_particles)),
-            "type_ids": np.zeros((totalSteps, max_n_particles)),
-            "positions": np.zeros((totalSteps, max_n_particles, 3)),
-            "radii": np.ones(shape=(totalSteps, max_n_particles)),
+            "unique_ids": -1 * np.ones((totalSteps, max_agents)),
+            "type_ids": np.zeros((totalSteps, max_agents)),
+            "positions": np.zeros((totalSteps, max_agents, 3)),
+            "radii": np.ones(shape=(totalSteps, max_agents)),
         }
         for t in range(len(agent_data["n_agents"])):
             n = 0
