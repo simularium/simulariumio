@@ -115,7 +115,7 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
                   0.0,   // rotation X
                   0.0,   // rotation Y
                   0.0,   // rotation Z
-                  0.0,   // radius
+                  1.0,   // radius
                   9.0,   // number of subpoint values following this number
                   0.0,   // position1 X
                   1.0,   // position1 Y 
