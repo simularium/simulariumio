@@ -227,7 +227,7 @@ class Converter:
                     types : Dict[int, Dict[Any, str]] (optional)
                         [cell type ID from PhysiCell data] : Dict[Any, str]
                             the cell type ID from PhysiCell data mapped
-                            to display name for that type, and display names 
+                            to display name for that type, and display names
                             for phases of that type
                             "name" or [cell phase ID from PhysiCell data] : str
                                 "name" or the cell phase ID from PhysiCell data mapped
