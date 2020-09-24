@@ -2,16 +2,17 @@
 
 JSON files accepted by the simularium-viewer contain the following data in JSON format:
 * **trajectory info**
+  * version - 1.0
   * timeStepSize - the amount of time that passes in the simulation for each time step
   * totalSteps - the total number of time steps, or frames, in the simulation trajectory
   * size X, Y, Z - size of the bounding volume for the simulation. for now only rectangular prisms are supported, and the width in X, Y, and Z dimensions is provided
-  * agent display data - for each agent type ID in the trajectory, information about how to display and render it:
+  * type mapping - for each agent type ID in the trajectory, information about how to display and render it:
     * name - the type name to display for all agents of this type. Optionally, this name can be followed by a hash and state tags for the agent’s current state delimited with underscores
       * ex: “actin#barbed_ATP_1” is parsed as agent type “actin” in states “barbed”, “ATP”, and “1”
       * ex: “actA” is parsed as agent type “actA” with no state information
       * if no name is provided, the agent type ID, an integer number, is used for display
-    * pdb - the filename of the PDB file to render for this agent. If this field isn’t provided or if the file isn’t found, the renderer will fall back to mesh rendering
-    * mesh - the filename of the OBJ mesh file to render for this agent. If this field isn’t provided or if the file isn’t found, the renderer will fall back to a sphere
+    * pdb (optional) - the filename of the PDB file to render for this agent. If this field isn’t provided or if the file isn’t found, the renderer will fall back to mesh rendering
+    * mesh (optional) - the filename of the OBJ mesh file to render for this agent. If this field isn’t provided or if the file isn’t found, the renderer will fall back to a sphere
     * PDB and mesh data is currently only used for streaming trajectories, but this will be updated soon
 * **spatial data** - spatial data was designed to be sent in bundles from the simularium-engine in order to eventually support live simulation rendering. Therefore, each block of spatial data has metadata: msgType, bundleStart, and bundleSize.
   * msgType - always 1
@@ -67,17 +68,17 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
         "typeMapping": {
             "0" : {
                 "name" : "agent1",
-                "pdb" : "agent1.pdb",
-                "mesh" : "agent1.obj"
+                "pdb" : "agent1.pdb",  // optional
+                "mesh" : "agent1.obj"  // optional
             },
             "1" : {
                 "name" : "agent1#bound",
-                "pdb" : "agent1.pdb",
-                "mesh" : "agent1.obj"
+                "pdb" : "agent1.pdb",  // optional
+                "mesh" : "agent1.obj"  // optional
             },
             "2" : {
-                "name" : "agent2",
-                "mesh" : "agent2.obj"
+                "name" : "agent2",     // optional
+                "mesh" : "agent2.obj"  // optional
             },
             ...
         }
