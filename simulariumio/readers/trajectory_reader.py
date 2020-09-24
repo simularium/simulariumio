@@ -19,14 +19,16 @@ log = logging.getLogger(__name__)
 
 class TrajectoryReader(Reader):
     def _get_spatial_bundle_data_subpoints(
-        self, data: Dict[str, Any], draw_fiber_points: bool
+        self,
+        data: Dict[str, Any],
+        draw_fiber_points: bool,
+        used_unique_IDs: List[int] = [],
     ) -> List[Dict[str, Any]]:
         """
         Return the spatialData's bundleData for a simulation
         of agents with subpoints, packing buffer with jagged data is slower
         """
         bundleData: List[Dict[str, Any]] = []
-        max_other_uid = int(np.amax(data["unique_ids"]))
         uids = {}
         for t in range(len(data["times"])):
             # timestep
@@ -73,11 +75,10 @@ class TrajectoryReader(Reader):
                             raw_uid = 100 * (data["unique_ids"][t, n] + 1) + p
                             if raw_uid not in uids:
                                 uid = raw_uid
-                                while uid <= max_other_uid:
+                                while uid in used_unique_IDs:
                                     uid += 100
-                                while uid in uids:
-                                    uid += 1
                                 uids[raw_uid] = uid
+                                used_unique_IDs.append(uid)
                             # add sphere
                             if i >= len(local_buf):
                                 raise Exception(len(local_buf))
