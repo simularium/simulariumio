@@ -80,7 +80,7 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
                 "mesh" : "agent1.obj"  // optional
             },
             "2" : {
-                "name" : "agent2",     // optional
+                "name" : "agent2",
                 "mesh" : "agent2.obj"  // optional
             },
             ...
