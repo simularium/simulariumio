@@ -40,9 +40,10 @@ class TrajectoryReader(Reader):
             buffer_size = 11 * n_agents
             for n in range(n_agents):
                 s = int(data["n_subpoints"][t][n])
-                buffer_size += 3 * s
-                if draw_fiber_points:
-                    buffer_size += 11 * max(math.ceil(s / 2.0), 1)
+                if s > 0:
+                    buffer_size += 3 * s
+                    if draw_fiber_points:
+                        buffer_size += 11 * max(math.ceil(s / 2.0), 1)
             local_buf = np.zeros(buffer_size)
             for n in range(n_agents):
                 # add agent
@@ -80,8 +81,6 @@ class TrajectoryReader(Reader):
                                 uids[raw_uid] = uid
                                 used_unique_IDs.append(uid)
                             # add sphere
-                            if i >= len(local_buf):
-                                raise Exception(len(local_buf))
                             local_buf[i] = 1000.0
                             local_buf[i + 1] = uids[raw_uid]
                             local_buf[i + 2] = data["type_ids"][t, n]
