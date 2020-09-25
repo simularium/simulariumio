@@ -287,22 +287,25 @@ class Converter:
         bundleData = self._data["spatialData"]["bundleData"]
         for t in range(len(bundleData)):
             data = bundleData[t]["data"]
-            n = 1
+            next_uid_index = 1
             uids = []
             get_n_subpoints = False
             for i in range(len(data)):
-                if i == n:
+                if i == next_uid_index:
+                    # get the number of subpoints
+                    # in order to correctly increment next_uid_index
                     if get_n_subpoints:
-                        n += data[i] + 2
+                        next_uid_index += data[i] + 2
                         get_n_subpoints = False
                         continue
+                    # there should be a unique ID at this index, check for duplicate
                     uid = data[i]
                     if uid in uids:
                         raise Exception(
                             f"found duplicate ID {uid} in " f"frame {t} at index {i}"
                         )
                     uids.append(uid)
-                    n += 9
+                    next_uid_index += 9
                     get_n_subpoints = True
         return True
 
