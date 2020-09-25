@@ -302,7 +302,7 @@ class Converter:
                     uid = data[i]
                     if uid in uids:
                         raise Exception(
-                            f"found duplicate ID {uid} in " f"frame {t} at index {i}"
+                            f"found duplicate ID {uid} in frame {t} at index {i}"
                         )
                     uids.append(uid)
                     next_uid_index += 9
