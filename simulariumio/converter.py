@@ -256,8 +256,7 @@ class Converter:
         """
         traj_reader_class = self._determine_trajectory_reader(source_engine)
         self._data = traj_reader_class().read(data)
-        if not self._agent_ids_are_unique_per_frame():
-            raise Exception("agent unique IDs are not unique!")
+        self._check_agent_ids_are_unique_per_frame()
 
     @staticmethod
     def _determine_trajectory_reader(source_engine: str = "custom") -> [Reader]:
@@ -281,7 +280,7 @@ class Converter:
 
         raise UnsupportedPlotTypeError(plot_type)
 
-    def _agent_ids_are_unique_per_frame(self) -> bool:
+    def _check_agent_ids_are_unique_per_frame(self) -> bool:
         """
         For each frame, check that none of the unique agent IDs overlap
         """
@@ -299,7 +298,9 @@ class Converter:
                         continue
                     uid = data[i]
                     if uid in uids:
-                        raise Exception(f"{i} : found duplicate ID {uid} in frame {t}")
+                        raise Exception(
+                            f"found duplicate ID {uid} in " f"frame {t} at index {i}"
+                        )
                     uids.append(uid)
                     n += 9
                     get_n_subpoints = True
