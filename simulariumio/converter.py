@@ -256,6 +256,7 @@ class Converter:
         """
         traj_reader_class = self._determine_trajectory_reader(source_engine)
         self._data = traj_reader_class().read(data)
+        self._check_agent_ids_are_unique_per_frame()
 
     @staticmethod
     def _determine_trajectory_reader(source_engine: str = "custom") -> [Reader]:
@@ -278,6 +279,35 @@ class Converter:
             return SUPPORTED_PLOT_READERS[plot_type]
 
         raise UnsupportedPlotTypeError(plot_type)
+
+    def _check_agent_ids_are_unique_per_frame(self) -> bool:
+        """
+        For each frame, check that none of the unique agent IDs overlap
+        """
+        bundleData = self._data["spatialData"]["bundleData"]
+        for t in range(len(bundleData)):
+            data = bundleData[t]["data"]
+            next_uid_index = 1
+            uids = []
+            get_n_subpoints = False
+            for i in range(len(data)):
+                if i == next_uid_index:
+                    # get the number of subpoints
+                    # in order to correctly increment next_uid_index
+                    if get_n_subpoints:
+                        next_uid_index += data[i] + 2
+                        get_n_subpoints = False
+                        continue
+                    # there should be a unique ID at this index, check for duplicate
+                    uid = data[i]
+                    if uid in uids:
+                        raise Exception(
+                            f"found duplicate ID {uid} in frame {t} at index {i}"
+                        )
+                    uids.append(uid)
+                    next_uid_index += 9
+                    get_n_subpoints = True
+        return True
 
     def add_plot(self, data: Dict[str, Any] = {}, plot_type: str = "scatter"):
         """

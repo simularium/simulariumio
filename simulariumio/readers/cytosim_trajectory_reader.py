@@ -149,9 +149,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
                             uid += 1
                         uids[raw_uid] = uid
                         used_unique_IDs.append(uid)
-                    else:
-                        uid = uids[raw_uid]
-                    result["unique_ids"][t][n_other_agents + n] = uid
+                    result["unique_ids"][t][n_other_agents + n] = uids[raw_uid]
                     # type ID
                     raw_tid = int(fiber_info[0][1:])
                     if raw_tid not in types:
@@ -230,9 +228,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     uid += 1
                 uids[raw_uid] = uid
                 used_unique_IDs.append(uid)
-            else:
-                uid = uids[raw_uid]
-            result["unique_ids"][t][n_other_agents + n] = uid
+            result["unique_ids"][t][n_other_agents + n] = uids[raw_uid]
             # type ID
             raw_tid = int(columns[0])
             if raw_tid not in types:
@@ -370,7 +366,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
             "bundleStart": 0,
             "bundleSize": totalSteps,
             "bundleData": self._get_spatial_bundle_data_subpoints(
-                agent_data, draw_fiber_points
+                agent_data, draw_fiber_points, uids
             ),
         }
         # plot data
