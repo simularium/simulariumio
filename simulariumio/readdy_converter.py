@@ -9,6 +9,7 @@ import readdy
 
 from .converter import Converter
 from .data_objects import ReaddyData, AgentData
+from .constants import VIZ_TYPE
 
 ###############################################################################
 
@@ -45,7 +46,7 @@ class ReaddyConverter(Converter):
         result = AgentData(
             times=input_data.timestep * np.arange(totalSteps),
             n_agents=n_particles_per_frame,
-            viz_types=1000.0 * np.ones(shape=(totalSteps, max_agents)),
+            viz_types=VIZ_TYPE.default * np.ones(shape=(totalSteps, max_agents)),
             unique_ids=ids,
             types=None,
             positions=input_data.scale_factor * positions,

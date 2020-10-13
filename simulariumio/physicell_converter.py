@@ -11,6 +11,7 @@ from .dep.pyMCDS import pyMCDS
 from .converter import Converter
 from .data_objects import PhysicellData, AgentData
 from .exceptions import MissingDataError
+from .constants import VIZ_TYPE
 
 ###############################################################################
 
@@ -106,7 +107,7 @@ class PhysicellConverter(Converter):
         result = AgentData(
             times=input_data.timestep * np.arange(totalSteps),
             n_agents=np.zeros(totalSteps),
-            viz_types=1000.0 * np.ones(shape=(totalSteps, max_agents)),
+            viz_types=VIZ_TYPE.default * np.ones(shape=(totalSteps, max_agents)),
             unique_ids=np.zeros((totalSteps, max_agents)),
             types=None,
             positions=np.zeros((totalSteps, max_agents, 3)),

@@ -1109,4 +1109,5 @@ from simulariumio import (
 )
 def test_cytosim_trajectory_reader(trajectory, expected_data):
     converter = CytosimConverter(trajectory)
-    assert expected_data["trajectoryInfo"] == converter._data["trajectoryInfo"]
+    assert expected_data == converter._data
+    assert converter._check_agent_ids_are_unique_per_frame()

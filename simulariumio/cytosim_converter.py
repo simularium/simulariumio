@@ -10,6 +10,7 @@ import numpy as np
 from .converter import Converter
 from .data_objects import CytosimData, CytosimObjectInfo, AgentData
 from .exceptions import DataError
+from .constants import VIZ_TYPE
 
 ###############################################################################
 
@@ -153,7 +154,7 @@ class CytosimConverter(Converter):
                         result.n_subpoints[t][n_other_agents + n] = s + 1
                     n += 1
                     s = -1
-                    result.viz_types[t][n_other_agents + n] = 1001.0
+                    result.viz_types[t][n_other_agents + n] = VIZ_TYPE.fiber
                     result.radii[t][n_other_agents + n] = 1.0
                     fiber_info = line.split()[2].split(":")
                     # unique instance ID
@@ -221,7 +222,7 @@ class CytosimConverter(Converter):
                         result.n_agents[t] += n + 1
                         result.viz_types[t][n_other_agents : n_other_agents + n + 1] = (
                             n + 1
-                        ) * [1000.0]
+                        ) * [VIZ_TYPE.default]
                     t += 1
                     n_other_agents = int(result.n_agents[t])
                     n = -1
@@ -251,7 +252,6 @@ class CytosimConverter(Converter):
             else:
                 tid = types[raw_tid]
             result.type_ids[t][n_other_agents + n] = tid
-            raw_tid = str(raw_tid)
             # position
             result.positions[t][n_other_agents + n] = scale_factor * (
                 np.array(
@@ -270,7 +270,7 @@ class CytosimConverter(Converter):
             )
         result.n_agents[t] += n + 1
         result.viz_types[t][n_other_agents : n_other_agents + n + 1] = (n + 1) * [
-            1000.0
+            VIZ_TYPE.default
         ]
         return (result, agent_types, used_unique_IDs)
 

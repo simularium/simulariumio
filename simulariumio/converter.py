@@ -20,6 +20,7 @@ from .readers import (
 )
 from .readers.plot_reader import PlotReader
 from .data_objects.agent_data import AgentData
+from .constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE
 
 ###############################################################################
 
@@ -54,23 +55,36 @@ class Converter:
             frame_data["time"] = float(agent_data.times[t])
             n_agents = int(agent_data.n_agents[t])
             i = 0
-            buffer_size = 11 * n_agents
+            buffer_size = (len(V1_SPATIAL_BUFFER_STRUCT) - 1) * n_agents
             for n in range(n_agents):
                 s = int(agent_data.n_subpoints[t][n])
                 if s > 0:
                     buffer_size += 3 * s
                     if agent_data.draw_fiber_points:
-                        buffer_size += 11 * max(math.ceil(s / 2.0), 1)
+                        buffer_size += (len(V1_SPATIAL_BUFFER_STRUCT) - 1) * max(
+                            math.ceil(s / 2.0), 1
+                        )
             local_buf = np.zeros(buffer_size)
             for n in range(n_agents):
                 # add agent
-                local_buf[i] = agent_data.viz_types[t, n]
-                local_buf[i + 1] = agent_data.unique_ids[t, n]
-                local_buf[i + 2] = agent_data.type_ids[t, n]
-                local_buf[i + 3 : i + 6] = agent_data.positions[t, n]
-                local_buf[i + 9] = (
+                local_buf[
+                    i + V1_SPATIAL_BUFFER_STRUCT.index("VIZ_TYPE")
+                ] = agent_data.viz_types[t, n]
+                local_buf[
+                    i + V1_SPATIAL_BUFFER_STRUCT.index("UID")
+                ] = agent_data.unique_ids[t, n]
+                local_buf[
+                    i + V1_SPATIAL_BUFFER_STRUCT.index("TID")
+                ] = agent_data.type_ids[t, n]
+                local_buf[
+                    i
+                    + V1_SPATIAL_BUFFER_STRUCT.index("POSX") : i
+                    + V1_SPATIAL_BUFFER_STRUCT.index("POSX")
+                    + 3
+                ] = agent_data.positions[t, n]
+                local_buf[i + V1_SPATIAL_BUFFER_STRUCT.index("R")] = (
                     agent_data.radii[t, n]
-                    if abs(float(agent_data.viz_types[t, n]) - 1000.0)
+                    if abs(float(agent_data.viz_types[t, n]) - VIZ_TYPE.default)
                     < sys.float_info.epsilon
                     else 1.0
                 )
@@ -81,8 +95,14 @@ class Converter:
                     for p in range(n_subpoints):
                         for d in range(3):
                             subpoints.append(agent_data.subpoints[t][n][p][d])
-                    local_buf[i + 10 : i + 11 + 3 * n_subpoints] = subpoints
-                    i += 11 + 3 * n_subpoints
+                    local_buf[
+                        i
+                        + V1_SPATIAL_BUFFER_STRUCT.index("NSP") : i
+                        + V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                        + 1
+                        + 3 * n_subpoints
+                    ] = subpoints
+                    i += (len(V1_SPATIAL_BUFFER_STRUCT) - 1) + 3 * n_subpoints
                     # optionally draw spheres at points
                     if agent_data.draw_fiber_points:
                         for p in range(n_subpoints):
@@ -98,14 +118,25 @@ class Converter:
                                 uids[raw_uid] = uid
                                 used_unique_IDs.append(uid)
                             # add sphere
-                            local_buf[i] = 1000.0
-                            local_buf[i + 1] = uids[raw_uid]
-                            local_buf[i + 2] = agent_data.type_ids[t, n]
-                            local_buf[i + 3 : i + 6] = agent_data.subpoints[t][n][p]
-                            local_buf[i + 9] = 0.5
-                            i += 11
+                            local_buf[
+                                i + V1_SPATIAL_BUFFER_STRUCT.index("VIZ_TYPE")
+                            ] = VIZ_TYPE.default
+                            local_buf[i + V1_SPATIAL_BUFFER_STRUCT.index("UID")] = uids[
+                                raw_uid
+                            ]
+                            local_buf[
+                                i + V1_SPATIAL_BUFFER_STRUCT.index("TID")
+                            ] = agent_data.type_ids[t, n]
+                            local_buf[
+                                i
+                                + V1_SPATIAL_BUFFER_STRUCT.index("POSX") : i
+                                + V1_SPATIAL_BUFFER_STRUCT.index("POSX")
+                                + 3
+                            ] = agent_data.subpoints[t][n][p]
+                            local_buf[i + V1_SPATIAL_BUFFER_STRUCT.index("R")] = 0.5
+                            i += len(V1_SPATIAL_BUFFER_STRUCT) - 1
                 else:
-                    i += 11
+                    i += len(V1_SPATIAL_BUFFER_STRUCT) - 1
             frame_data["data"] = local_buf.tolist()
             bundleData.append(frame_data)
         return bundleData
@@ -121,19 +152,38 @@ class Converter:
         max_n_agents = int(np.amax(agent_data.n_agents, 0))
         ix_particles = np.empty((3 * max_n_agents,), dtype=int)
         for i in range(max_n_agents):
-            ix_particles[3 * i : 3 * i + 3] = np.arange(i * 11 + 3, i * 11 + 3 + 3)
-        frame_buf = np.zeros(11 * max_n_agents)
+            ix_particles[3 * i : 3 * i + 3] = np.arange(
+                i * (len(V1_SPATIAL_BUFFER_STRUCT) - 1)
+                + V1_SPATIAL_BUFFER_STRUCT.index("POSX"),
+                i * (len(V1_SPATIAL_BUFFER_STRUCT) - 1)
+                + V1_SPATIAL_BUFFER_STRUCT.index("POSX")
+                + 3,
+            )
+        frame_buf = np.zeros((len(V1_SPATIAL_BUFFER_STRUCT) - 1) * max_n_agents)
         for t in range(len(agent_data.times)):
             frame_data = {}
             frame_data["frameNumber"] = t
             frame_data["time"] = float(agent_data.times[t])
             n = int(agent_data.n_agents[t])
-            local_buf = frame_buf[: 11 * n]
-            local_buf[0::11] = agent_data.viz_types[t, :n]
-            local_buf[1::11] = agent_data.unique_ids[t, :n]
-            local_buf[2::11] = agent_data.type_ids[t, :n]
+            local_buf = frame_buf[: (len(V1_SPATIAL_BUFFER_STRUCT) - 1) * n]
+            local_buf[
+                V1_SPATIAL_BUFFER_STRUCT.index("VIZ_TYPE") :: len(
+                    V1_SPATIAL_BUFFER_STRUCT
+                )
+                - 1
+            ] = agent_data.viz_types[t, :n]
+            local_buf[
+                V1_SPATIAL_BUFFER_STRUCT.index("UID") :: len(V1_SPATIAL_BUFFER_STRUCT)
+                - 1
+            ] = agent_data.unique_ids[t, :n]
+            local_buf[
+                V1_SPATIAL_BUFFER_STRUCT.index("TID") :: len(V1_SPATIAL_BUFFER_STRUCT)
+                - 1
+            ] = agent_data.type_ids[t, :n]
             local_buf[ix_particles[: 3 * n]] = agent_data.positions[t, :n].flatten()
-            local_buf[9::11] = agent_data.radii[t, :n]
+            local_buf[
+                V1_SPATIAL_BUFFER_STRUCT.index("R") :: len(V1_SPATIAL_BUFFER_STRUCT) - 1
+            ] = agent_data.radii[t, :n]
             frame_data["data"] = local_buf.tolist()
             bundleData.append(frame_data)
         return bundleData
@@ -145,26 +195,31 @@ class Converter:
         bundleData = self._data["spatialData"]["bundleData"]
         for t in range(len(bundleData)):
             data = bundleData[t]["data"]
-            next_uid_index = 1
+            i = 1
             uids = []
             get_n_subpoints = False
-            for i in range(len(data)):
-                if i == next_uid_index:
-                    # get the number of subpoints
-                    # in order to correctly increment next_uid_index
-                    if get_n_subpoints:
-                        next_uid_index += data[i] + 2
-                        get_n_subpoints = False
-                        continue
-                    # there should be a unique ID at this index, check for duplicate
-                    uid = data[i]
-                    if uid in uids:
-                        raise Exception(
-                            f"found duplicate ID {uid} in frame {t} at index {i}"
+            while i < len(data):
+                # get the number of subpoints
+                # in order to correctly increment index
+                if get_n_subpoints:
+                    i += int(
+                        data[i]
+                        + (
+                            len(V1_SPATIAL_BUFFER_STRUCT)
+                            - V1_SPATIAL_BUFFER_STRUCT.index("NSP")
                         )
-                    uids.append(uid)
-                    next_uid_index += 9
-                    get_n_subpoints = True
+                    )
+                    get_n_subpoints = False
+                    continue
+                # there should be a unique ID at this index, check for duplicate
+                uid = data[i]
+                if uid in uids:
+                    raise Exception(
+                        f"found duplicate ID {uid} in frame {t} at index {i}"
+                    )
+                uids.append(uid)
+                i += V1_SPATIAL_BUFFER_STRUCT.index("NSP") - 1
+                get_n_subpoints = True
         return True
 
     @staticmethod

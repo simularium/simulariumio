@@ -1068,3 +1068,4 @@ from simulariumio.tests.conftest import three_default_agents
 def test_custom_trajectory_reader(trajectory, expected_data):
     converter = CustomConverter(trajectory)
     assert expected_data == converter._data
+    assert converter._check_agent_ids_are_unique_per_frame()
