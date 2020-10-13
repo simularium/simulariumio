@@ -27,5 +27,5 @@ from .data_objects import (
     ReaddyData,
     PhysicellData,
     ScatterPlotData,
-    HistogramPlotData
+    HistogramPlotData,
 )  # noqa: F401

@@ -178,9 +178,9 @@ class Converter:
         return True
 
     def add_plot(
-        self, 
-        data: [ScatterPlotData or HistogramPlotData] = {}, 
-        plot_type: str = "scatter"
+        self,
+        data: [ScatterPlotData or HistogramPlotData] = {},
+        plot_type: str = "scatter",
     ):
         """
         Add data to be rendered in a plot

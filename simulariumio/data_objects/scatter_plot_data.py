@@ -28,7 +28,7 @@ class ScatterPlotData:
         yaxis_title: str,
         xtrace: np.ndarray,
         ytraces: Dict[str, np.ndarray],
-        render_mode: str = "markers"
+        render_mode: str = "markers",
     ):
         """
         This object contains data for a scatterplot
@@ -61,4 +61,3 @@ class ScatterPlotData:
         self.xtrace = xtrace
         self.ytraces = ytraces
         self.render_mode = render_mode
-

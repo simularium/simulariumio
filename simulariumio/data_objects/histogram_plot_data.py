@@ -19,12 +19,7 @@ class HistogramPlotData:
     xtrace: np.ndarray
     traces: Dict[str, np.ndarray]
 
-    def __init__(
-        self,
-        title: str,
-        xaxis_title: str,
-        traces: Dict[str, np.ndarray]
-    ):
+    def __init__(self, title: str, xaxis_title: str, traces: Dict[str, np.ndarray]):
         """
         This object contains data for a scatterplot
 
@@ -41,4 +36,3 @@ class HistogramPlotData:
         self.title = title
         self.xaxis_title = xaxis_title
         self.traces = traces
-
