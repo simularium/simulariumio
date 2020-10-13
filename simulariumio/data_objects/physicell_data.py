@@ -47,15 +47,14 @@ class PhysicellData:
             A string path to the PhysiCell output directory
             containing MultiCellDS XML and MATLAB files
         types : Dict[int, Dict[Any, str]] (optional)
-            [cell type ID from PhysiCell data] : Dict[Any, str]
-                the cell type ID from PhysiCell data mapped
-                to display name for that type, and display names
-                for phases of that type
-                "name" or [cell phase ID from PhysiCell data] : str
-                    "name" or the cell phase ID from PhysiCell data mapped
-                    to the display names
-                    Default: "cell[cell type ID from PhysiCell data]#
-                        phase[cell phase ID from PhysiCell data]"
+            the cell type ID from PhysiCell data mapped
+            to display name for that type, and display names
+            for phases of that type
+            "name" or [cell phase ID from PhysiCell data] : str
+                "name" or the cell phase ID from PhysiCell data mapped
+                to the display names
+                Default: "cell[cell type ID from PhysiCell data]#
+                    phase[cell phase ID from PhysiCell data]"
         scale_factor : float (optional)
             A multiplier for the ReaDDy scene, use if
             visualization is too large or small

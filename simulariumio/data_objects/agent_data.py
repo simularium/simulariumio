@@ -59,7 +59,7 @@ class AgentData:
         unique_ids : np.ndarray (shape = [timesteps, agents])
             A numpy ndarray containing the unique ID
             for each agent at each timestep
-        types: List[List[str]] (list of shape [timesteps, agents])
+        types : List[List[str]] (list of shape [timesteps, agents])
             A list containing timesteps, for each a list of
             the string name for the type of each agent
         positions : np.ndarray (shape = [timesteps, agents, 3])

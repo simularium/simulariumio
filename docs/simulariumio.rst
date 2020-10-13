@@ -12,6 +12,14 @@ Subpackages
 Submodules
 ----------
 
+simulariumio.constants module
+-----------------------------
+
+.. automodule:: simulariumio.constants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.converter module
 -----------------------------
 
