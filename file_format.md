@@ -15,6 +15,7 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
     * mesh (optional) - the filename of the OBJ mesh file to render for this agent. If this field isn’t provided or if the file isn’t found, the renderer will fall back to a sphere
     * PDB and mesh data is currently only used for streaming trajectories, but this will be updated soon
 * **spatial data** - spatial data was designed to be sent in bundles from the simularium-engine in order to eventually support live simulation rendering. Therefore, each block of spatial data has metadata: msgType, bundleStart, and bundleSize.
+  * version - 1.0
   * msgType - always 1
   * bundleStart - the frame index of the first frame in the bundle
   * bundleSize - the number of frames in the bundle
@@ -35,19 +36,21 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
         * for fiber type (1001), this is the list of positions XYZ of the points along the fiber
           * ex: subpoints = 9, pos1 X, pos1 Y, pos1 Z, pos2 X, pos2 Y, pos2 Z, pos3 X, pos3 Y, pos3 Z 
 * **plot data** - a list of plots, either scatterplots or histograms, for each:
-  * layout
-    * title - label for the plot
-    * xaxis 
-      * title - the x-axis label
-      * if this label contains the text ‘time’, scatterplots will be considered time dependent and have a dynamic time bar rendered over them
-    * yaxis
-      * title - the y-axis label
-  * data - a list of traces, for each
-    * name - the label for this trace
-    * type - either 'scatter' or 'histogram'
-    * x - a list of x-values
-    * y - only for a scatterplot, a list of y-values, one for each x-value
-    * mode - only for a scatterplot, draw the data points as either 'lines' or 'markers', if not provided default to markers
+  * version - 1.0
+  * data - a list of plots, each has:
+    * layout
+      * title - label for the plot
+      * xaxis 
+        * title - the x-axis label
+        * if this label contains the text ‘time’, scatterplots will be considered time dependent and have a dynamic time bar rendered over them
+      * yaxis
+        * title - the y-axis label
+    * data - a list of traces, for each
+      * name - the label for this trace
+      * type - either 'scatter' or 'histogram'
+      * x - a list of x-values
+      * y - only for a scatterplot, a list of y-values, one for each x-value
+      * mode - only for a scatterplot, draw the data points as either 'lines' or 'markers', if not provided default to markers
 
 ## Example Data
 ```javascript
@@ -77,7 +80,7 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
                 "mesh" : "agent1.obj"  // optional
             },
             "2" : {
-                "name" : "agent2",     // optional
+                "name" : "agent2",
                 "mesh" : "agent2.obj"  // optional
             },
             ...
