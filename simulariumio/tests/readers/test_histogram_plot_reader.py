@@ -4,8 +4,11 @@
 import pytest
 import numpy as np
 
-from simulariumio import CustomConverter, HistogramPlotData
-from simulariumio.tests.conftest import three_default_agents
+from simulariumio import (
+    ReaddyConverter,
+    ReaddyData,
+    HistogramPlotData,
+)
 
 
 @pytest.mark.parametrize(
@@ -13,7 +16,14 @@ from simulariumio.tests.conftest import three_default_agents
     [
         (
             # histogram plot with multiple traces
-            three_default_agents(),
+            ReaddyData(
+                box_size=np.array([20.0, 20.0, 20.0]),
+                timestep=0.1,
+                path_to_readdy_h5="simulariumio/tests/data/readdy/test.h5",
+                radii={"C": 3.0, "A": 2.0, "B": 2.0},
+                ignore_types=["E"],
+                type_grouping={"C": ["A", "D"]},
+            ),
             HistogramPlotData(
                 title="Test Histogram 1",
                 xaxis_title="angle (degrees)",
@@ -203,8 +213,7 @@ from simulariumio.tests.conftest import three_default_agents
     ],
 )
 def test_add_two_histogram_plots(trajectory, plot_data1, plot_data2, expected_data):
-    converter = CustomConverter(trajectory)
+    converter = ReaddyConverter(trajectory)
     converter.add_plot(plot_data1, "histogram")
     converter.add_plot(plot_data2, "histogram")
-    raise Exception(converter._data["plotData"]["data"][0])
-    assert expected_data["data"][0]["layout"] == converter._data["plotData"]["data"][0]["layout"]
+    assert expected_data == converter._data["plotData"]

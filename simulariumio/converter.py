@@ -138,16 +138,6 @@ class Converter:
             bundleData.append(frame_data)
         return bundleData
 
-    @staticmethod
-    def _determine_plot_reader(plot_type: str = "scatter") -> [PlotReader]:
-        """
-        Return the plot reader to match the requested plot type
-        """
-        if plot_type in SUPPORTED_PLOT_READERS:
-            return SUPPORTED_PLOT_READERS[plot_type]
-
-        raise UnsupportedPlotTypeError(plot_type)
-
     def _check_agent_ids_are_unique_per_frame(self) -> bool:
         """
         For each frame, check that none of the unique agent IDs overlap
@@ -176,6 +166,16 @@ class Converter:
                     next_uid_index += 9
                     get_n_subpoints = True
         return True
+
+    @staticmethod
+    def _determine_plot_reader(plot_type: str = "scatter") -> [PlotReader]:
+        """
+        Return the plot reader to match the requested plot type
+        """
+        if plot_type in SUPPORTED_PLOT_READERS:
+            return SUPPORTED_PLOT_READERS[plot_type]
+
+        raise UnsupportedPlotTypeError(plot_type)
 
     def add_plot(
         self,

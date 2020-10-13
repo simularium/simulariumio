@@ -11,7 +11,7 @@ from simulariumio.tests.conftest import three_default_agents
 
 
 def test_scatter_plot() -> Dict[str, Any]:
-    return ScatterPlotData (
+    return ScatterPlotData(
         title="Test Scatterplot 1",
         xaxis_title="time (ns)",
         yaxis_title="concentration (uM)",
