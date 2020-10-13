@@ -3,31 +3,29 @@
 
 import json
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, List
+import sys
+import math
 
-from .exceptions import UnsupportedPlotTypeError, UnsupportedSourceEngineError
+import numpy as np
+
+from .exceptions import UnsupportedPlotTypeError
+from .data_objects import (
+    HistogramPlotData,
+    ScatterPlotData,
+)
 from .readers import (
-    CustomTrajectoryReader,
-    CytosimTrajectoryReader,
-    ReaddyTrajectoryReader,
-    PhysiCellTrajectoryReader,
     HistogramPlotReader,
     ScatterPlotReader,
 )
-from .readers.reader import Reader
+from .readers.plot_reader import PlotReader
+from .data_objects.agent_data import AgentData
 
 ###############################################################################
 
 log = logging.getLogger(__name__)
 
 ###############################################################################
-
-SUPPORTED_TRAJECTORY_READERS = {
-    "custom": CustomTrajectoryReader,
-    "cytosim": CytosimTrajectoryReader,
-    "readdy": ReaddyTrajectoryReader,
-    "physicell": PhysiCellTrajectoryReader,
-}
 
 SUPPORTED_PLOT_READERS = {
     "scatter": ScatterPlotReader,
@@ -40,237 +38,108 @@ SUPPORTED_PLOT_READERS = {
 class Converter:
     _data: Dict[str, Any] = {}
 
-    def __init__(self, data: Dict[str, Any] = {}, source_engine: str = "custom"):
+    def _get_spatial_bundle_data_subpoints(
+        self, agent_data: AgentData, used_unique_IDs: List[int] = []
+    ) -> List[Dict[str, Any]]:
         """
-        This object reads simulation trajectory outputs from various engines
-        (as well as custom data) and plot data and writes them
-        in the JSON format used by the Simularium viewer.
-
-        Parameters
-        ----------
-        data: Dict[str, Any]
-            Loaded data or path to data from a simulation engine.
-            Fields for each engine:
-
-                custom:
-                    box_size : np.ndarray (shape = [3])
-                        A numpy ndarray containing the XYZ dimensions
-                        of the simulation bounding volume
-                    times : np.ndarray (shape = [timesteps])
-                        A numpy ndarray containing the elapsed simulated time
-                        at each timestep
-                    n_agents : np.ndarray (shape = [timesteps])
-                        A numpy ndarray containing the number of agents
-                        that exist at each timestep
-                    viz_types : np.ndarray (shape = [timesteps, agents])
-                        A numpy ndarray containing the viz type
-                        for each agent at each timestep. Current options:
-                            1000 : default,
-                            1001 : fiber (which will require subpoints)
-                    unique_ids : np.ndarray (shape = [timesteps, agents])
-                        A numpy ndarray containing the unique ID
-                        for each agent at each timestep
-                    types: List[List[str]] (list of shape [timesteps, agents])
-                        A list containing timesteps, for each a list of
-                        the string name for the type of each agent
-                    positions : np.ndarray (shape = [timesteps, agents, 3])
-                        A numpy ndarray containing the XYZ position
-                        for each agent at each timestep
-                    radii : np.ndarray (shape = [timesteps, agents])
-                        A numpy ndarray containing the radius
-                        for each agent at each timestep
-                    n_subpoints : np.ndarray (shape = [timesteps, agents]) (optional)
-                        A numpy ndarray containing the number of subpoints
-                        belonging to each agent at each timestep. Required if
-                        subpoints are provided
-                    subpoints : np.ndarray
-                    (shape = [timesteps, agents, subpoints, 3]) (optional)
-                        A numpy ndarray containing a list of subpoint position data
-                        for each agent at each timestep. These values are
-                        currently only used for fiber agents.
-                    plots : Dict[str, Any] (optional)
-                        An object containing plot data already
-                        in Simularium format
-                    draw_fiber_points: bool (optional)
-                        Draw spheres at every other fiber point for fibers?
-                        Default: False
-
-                Cytosim:
-                    box_size : np.ndarray (shape = [3])
-                        A numpy ndarray containing the XYZ dimensions
-                        of the simulation bounding volume
-                    data : Dict[str, Any]
-                        fibers : Dict[str, Any]
-                            filepath : str
-                                path to fiber_points.txt
-                            agents : Dict[str, Any] (optional)
-                                [agent type index from Cytosim data] : Dict[str, Any]
-                                    the type index from Cytosim data mapped
-                                    to display names for each type of fiber
-                                    name : str (optional)
-                                        the display name for this type of fiber
-                                        Default: "fiber[agent type index
-                                            from Cytosim data]"
-                            draw_points : bool (optional)
-                                in addition to drawing a line for each fiber,
-                                also draw spheres at every other point along it?
-                                Default: False
-                        solids : Dict[str, Any]
-                            filepath : str
-                                path to solids.txt
-                            agents : Dict[str, Any] (optional)
-                                [agent type index from Cytosim data] : Dict[str, Any]
-                                    the type index from Cytosim data mapped
-                                    to display names and radii for each type of solid
-                                    name : str (optional)
-                                        the display name for this type of solid
-                                        Default: "solid[agent type index
-                                            from Cytosim data]"
-                                    radius : float (optional)
-                                        the radius for this type of solid
-                                        Default: 1.0
-                                    position_offset : np.ndarray (shape = [3])
-                                        (optional) XYZ translation to apply to this
-                                        agent
-                                        Default: [0.0, 0.0, 0.0]
-                            position_indices : List[int] (optional)
-                                the columns in Cytosim's reports are not
-                                always consistent, use this to override them
-                                if your output file has different column indices
-                                for position XYZ
-                                Default: [2, 3, 4]
-                        singles : Dict[str, Any]
-                            filepath : str
-                                path to singles.txt
-                            agents : Dict[str, Any] (optional)
-                                [agent type index from Cytosim data] : Dict[str, Any]
-                                    the type index from Cytosim data mapped
-                                    to display names and radii for each type of single
-                                    name : str (optional)
-                                        the display name for this type of single
-                                        Default: "single[agent type index
-                                            from Cytosim data]"
-                                    radius : float (optional)
-                                        the radius for this type of single
-                                        Default: 1.0
-                            position_indices : List[int] (optional)
-                                the columns in Cytosim's reports are not
-                                always consistent, use this to override them
-                                if your output file has different column indices
-                                for position XYZ
-                                Default: [2, 3, 4]
-                        couples : Dict[str, Any] (optional)
-                            filepath : str
-                                path to couples.txt
-                            agents : Dict[str, Any] (optional)
-                                [agent type index from Cytosim data] : Dict[str, Any]
-                                    the type index from Cytosim data mapped
-                                    to display names and radii for each type of couple
-                                    name : str (optional)
-                                        the display name for this type of couple
-                                        Default: "couple[agent type index
-                                            from Cytosim data]"
-                                    radius : float (optional)
-                                        the radius for this type of couple
-                                        Default: 1.0
-                            position_indices : List[int] (optional)
-                                the columns in Cytosim's reports are not
-                                always consistent, use this to override them
-                                if your output file has different column indices
-                                for position XYZ
-                                Default: [2, 3, 4]
-                    scale_factor : float (optional)
-                        A multiplier for the Cytosim scene, use if
-                        visualization is too large or small
-                        Default: 1.0
-                    plots : Dict[str, Any] (optional)
-                        An object containing plot data already
-                        in Simularium format
-
-                ReaDDy:
-                    box_size : np.ndarray (shape = [3])
-                        A numpy ndarray containing the XYZ dimensions
-                        of the simulation bounding volume
-                    timestep : float
-                        A float amount of time that passes each step
-                        Default: 0.0
-                    path_to_readdy_h5 : string
-                        A string path to the ReaDDy trajectory file (.h5)
-                    radii : Dict[str, float] (optional)
-                        A mapping of ReaDDy particle type to radius
-                        of each visualized sphere for that type
-                        Default: 1.0 (for each particle)
-                    ignore_types : List[str] (optional)
-                        A list of string ReaDDy particle types to ignore
-                    type_grouping : Dict[str, List[str]] (optional)
-                        A mapping of a new group type name to a list of
-                        ReaDDy particle types to include in that group
-                        e.g. {"moleculeA":["A1","A2","A3"]}
-                    scale_factor : float (optional)
-                        A multiplier for the ReaDDy scene, use if
-                        visualization is too large or small
-                        Default: 1.0
-                    plots : Dict[str, Any] (optional)
-                        An object containing plot data already
-                        in Simularium format
-
-                PhysiCell:
-                    box_size : np.ndarray (shape = [3])
-                        A numpy ndarray containing the XYZ dimensions
-                        of the simulation bounding volume
-                    timestep : float
-                        A float amount of time that passes each step
-                        Default: 0.0
-                    path_to_output_dir : string
-                        A string path to the PhysiCell output directory
-                        containing MultiCellDS XML and MATLAB files
-                    types : Dict[int, Dict[Any, str]] (optional)
-                        [cell type ID from PhysiCell data] : Dict[Any, str]
-                            the cell type ID from PhysiCell data mapped
-                            to display name for that type, and display names
-                            for phases of that type
-                            "name" or [cell phase ID from PhysiCell data] : str
-                                "name" or the cell phase ID from PhysiCell data mapped
-                                to the display names
-                                Default: "cell[cell type ID from PhysiCell data]#
-                                    phase[cell phase ID from PhysiCell data]"
-                    scale_factor : float (optional)
-                        A multiplier for the ReaDDy scene, use if
-                        visualization is too large or small
-                        Default: 1.0
-                    plots : Dict[str, Any] (optional)
-                        An object containing plot data already
-                        in Simularium format
-
-
-        source_engine: str
-            A string specifying which simulation engine created these outputs.
-            Current options:
-                'custom' : outputs are from an engine not specifically supported
-                'cytosim' : outputs are from CytoSim
-                    (https://gitlab.com/f.nedelec/cytosim)
-                'readdy' : outputs are from ReaDDy
-                    (https://readdy.github.io/)
-                'physicell' : outputs are from PhysiCell
-                    (http://physicell.org/)
+        Return the spatialData's bundleData for a simulation
+        of agents with subpoints, packing buffer with jagged data is slower
         """
-        traj_reader_class = self._determine_trajectory_reader(source_engine)
-        self._data = traj_reader_class().read(data)
+        bundleData: List[Dict[str, Any]] = []
+        uids = {}
+        for t in range(len(agent_data.times)):
+            # timestep
+            frame_data = {}
+            frame_data["frameNumber"] = t
+            frame_data["time"] = float(agent_data.times[t])
+            n_agents = int(agent_data.n_agents[t])
+            i = 0
+            buffer_size = 11 * n_agents
+            for n in range(n_agents):
+                s = int(agent_data.n_subpoints[t][n])
+                if s > 0:
+                    buffer_size += 3 * s
+                    if agent_data.draw_fiber_points:
+                        buffer_size += 11 * max(math.ceil(s / 2.0), 1)
+            local_buf = np.zeros(buffer_size)
+            for n in range(n_agents):
+                # add agent
+                local_buf[i] = agent_data.viz_types[t, n]
+                local_buf[i + 1] = agent_data.unique_ids[t, n]
+                local_buf[i + 2] = agent_data.type_ids[t, n]
+                local_buf[i + 3 : i + 6] = agent_data.positions[t, n]
+                local_buf[i + 9] = (
+                    agent_data.radii[t, n]
+                    if abs(float(agent_data.viz_types[t, n]) - 1000.0)
+                    < sys.float_info.epsilon
+                    else 1.0
+                )
+                n_subpoints = int(agent_data.n_subpoints[t][n])
+                if n_subpoints > 0:
+                    # add subpoints to fiber agent
+                    subpoints = [3 * n_subpoints]
+                    for p in range(n_subpoints):
+                        for d in range(3):
+                            subpoints.append(agent_data.subpoints[t][n][p][d])
+                    local_buf[i + 10 : i + 11 + 3 * n_subpoints] = subpoints
+                    i += 11 + 3 * n_subpoints
+                    # optionally draw spheres at points
+                    if agent_data.draw_fiber_points:
+                        for p in range(n_subpoints):
+                            # every other fiber point
+                            if p % 2 != 0:
+                                continue
+                            # unique instance ID
+                            raw_uid = 100 * (agent_data.unique_ids[t, n] + 1) + p
+                            if raw_uid not in uids:
+                                uid = raw_uid
+                                while uid in used_unique_IDs:
+                                    uid += 100
+                                uids[raw_uid] = uid
+                                used_unique_IDs.append(uid)
+                            # add sphere
+                            local_buf[i] = 1000.0
+                            local_buf[i + 1] = uids[raw_uid]
+                            local_buf[i + 2] = agent_data.type_ids[t, n]
+                            local_buf[i + 3 : i + 6] = agent_data.subpoints[t][n][p]
+                            local_buf[i + 9] = 0.5
+                            i += 11
+                else:
+                    i += 11
+            frame_data["data"] = local_buf.tolist()
+            bundleData.append(frame_data)
+        return bundleData
+
+    def _get_spatial_bundle_data_no_subpoints(
+        self, agent_data: AgentData
+    ) -> List[Dict[str, Any]]:
+        """
+        Return the spatialData's bundleData for a simulation
+        of agents without subpoints, using list slicing for speed
+        """
+        bundleData: List[Dict[str, Any]] = []
+        max_n_agents = int(np.amax(agent_data.n_agents, 0))
+        ix_particles = np.empty((3 * max_n_agents,), dtype=int)
+        for i in range(max_n_agents):
+            ix_particles[3 * i : 3 * i + 3] = np.arange(i * 11 + 3, i * 11 + 3 + 3)
+        frame_buf = np.zeros(11 * max_n_agents)
+        for t in range(len(agent_data.times)):
+            frame_data = {}
+            frame_data["frameNumber"] = t
+            frame_data["time"] = float(agent_data.times[t])
+            n = int(agent_data.n_agents[t])
+            local_buf = frame_buf[: 11 * n]
+            local_buf[0::11] = agent_data.viz_types[t, :n]
+            local_buf[1::11] = agent_data.unique_ids[t, :n]
+            local_buf[2::11] = agent_data.type_ids[t, :n]
+            local_buf[ix_particles[: 3 * n]] = agent_data.positions[t, :n].flatten()
+            local_buf[9::11] = agent_data.radii[t, :n]
+            frame_data["data"] = local_buf.tolist()
+            bundleData.append(frame_data)
+        return bundleData
 
     @staticmethod
-    def _determine_trajectory_reader(source_engine: str = "custom") -> [Reader]:
-        """
-        Return the trajectory reader to match the requested
-        source simulation engine
-        """
-        source_engine = source_engine.lower()
-        if source_engine in SUPPORTED_TRAJECTORY_READERS:
-            return SUPPORTED_TRAJECTORY_READERS[source_engine]
-
-        raise UnsupportedSourceEngineError(source_engine)
-
-    @staticmethod
-    def _determine_plot_reader(plot_type: str = "scatter") -> [Reader]:
+    def _determine_plot_reader(plot_type: str = "scatter") -> [PlotReader]:
         """
         Return the plot reader to match the requested plot type
         """
@@ -279,45 +148,47 @@ class Converter:
 
         raise UnsupportedPlotTypeError(plot_type)
 
-    def add_plot(self, data: Dict[str, Any] = {}, plot_type: str = "scatter"):
+    def _check_agent_ids_are_unique_per_frame(self) -> bool:
+        """
+        For each frame, check that none of the unique agent IDs overlap
+        """
+        bundleData = self._data["spatialData"]["bundleData"]
+        for t in range(len(bundleData)):
+            data = bundleData[t]["data"]
+            next_uid_index = 1
+            uids = []
+            get_n_subpoints = False
+            for i in range(len(data)):
+                if i == next_uid_index:
+                    # get the number of subpoints
+                    # in order to correctly increment next_uid_index
+                    if get_n_subpoints:
+                        next_uid_index += data[i] + 2
+                        get_n_subpoints = False
+                        continue
+                    # there should be a unique ID at this index, check for duplicate
+                    uid = data[i]
+                    if uid in uids:
+                        raise Exception(
+                            f"found duplicate ID {uid} in frame {t} at index {i}"
+                        )
+                    uids.append(uid)
+                    next_uid_index += 9
+                    get_n_subpoints = True
+        return True
+
+    def add_plot(
+        self, 
+        data: [ScatterPlotData or HistogramPlotData] = {}, 
+        plot_type: str = "scatter"
+    ):
         """
         Add data to be rendered in a plot
 
         Parameters
         ----------
-        data: Dict[str, Any]
-            Loaded data for a plot. Fields for each plot type:
-
-                scatter :
-                    title: str
-                        A string display title for the plot
-                    xaxis_title: str
-                        A string label (with units) for the x-axis
-                    yaxis_title: str
-                        A string label (with units) for the y-axis
-                    xtrace: np.ndarray (shape = [x values])
-                        A numpy ndarray of values for x,
-                        the independent variable
-                    ytraces: Dict[str, np.ndarray (shape = [x values])]
-                        A dictionary with y-trace display names as keys,
-                        each mapped to a numpy ndarray of values for y,
-                        the dependent variable
-                    render_mode: str (optional)
-                        A string specifying how to draw the datapoints.
-                        Options:
-                            'markers' : draw as points
-                            'lines' : connect points with line
-                        Default: 'markers'
-
-                histogram:
-                    title: str
-                        A string display title for the plot
-                    xaxis_title: str
-                        A string label (with units) for the x-axis
-                    traces: Dict[str, np.ndarray (shape = [values])]
-                        A dictionary with trace display names as keys,
-                        each mapped to a numpy ndarray of values
-
+        data: ScatterPlotData or HistogramPlotData
+            Loaded data for a plot.
         plot_type: str
             A string specifying which type of plot to render.
             Current options:

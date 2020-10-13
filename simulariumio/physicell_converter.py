@@ -6,11 +6,11 @@ from typing import Any, Dict
 from pathlib import Path
 
 import numpy as np
+from .dep.pyMCDS import pyMCDS
 
-from ..dep.pyMCDS import pyMCDS
-
-from .trajectory_reader import TrajectoryReader
-from ..exceptions import MissingDataError
+from .converter import Converter
+from .data_objects import PhysicellData, AgentData
+from .exceptions import MissingDataError
 
 ###############################################################################
 
@@ -19,11 +19,24 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class PhysiCellTrajectoryReader(TrajectoryReader):
-    def __init__(self):
-        self.ids = {}
-        self.last_id = 0
-        self.type_mapping = {}
+class PhysicellConverter(Converter):
+    def __init__(self, input_data: PhysicellData):
+        """
+        This object reads simulation trajectory outputs
+        from PhysiCell (http://physicell.org/)
+        and plot data and writes them in the JSON format used
+        by the Simularium viewer
+
+        Parameters
+        ----------
+        input_data : PhysicellData
+            An object containing info for reading
+            PhysiCell simulation trajectory outputs and plot data
+        """
+        self._ids = {}
+        self._last_id = 0
+        self._type_mapping = {}
+        self._data = self._read(input_data)
 
     def _load_data(self, path_to_output_dir) -> np.ndarray:
         """
@@ -45,30 +58,36 @@ class PhysiCellTrajectoryReader(TrajectoryReader):
         """
         Get a unique agent type ID for a specific cell type and phase combination
         """
-        if cell_type not in self.ids:
-            self.ids[cell_type] = {}
-        if cell_phase not in self.ids[cell_type]:
-            self.ids[cell_type][cell_phase] = self.last_id
+        if cell_type not in self._ids:
+            self._ids[cell_type] = {}
+        if cell_phase not in self._ids[cell_type]:
+            self._ids[cell_type][cell_phase] = self._last_id
             type_name = ""
-            if cell_type in type_names and "name" in type_names[cell_type]:
+            if (
+                type_names is not None
+                and cell_type in type_names
+                and "name" in type_names[cell_type]
+            ):
                 type_name = type_names[cell_type]["name"]
             else:
                 type_name = f"cell {cell_type}"
-            if cell_type in type_names and cell_phase in type_names[cell_type]:
+            if (
+                type_names is not None
+                and cell_type in type_names
+                and cell_phase in type_names[cell_type]
+            ):
                 type_name += "#" + type_names[cell_type][cell_phase]
             else:
                 type_name += f"#phase {cell_phase}"
-            self.type_mapping[str(self.last_id)] = {"name": type_name}
-            self.last_id += 1
-        return self.ids[cell_type][cell_phase]
+            self._type_mapping[str(self._last_id)] = {"name": type_name}
+            self._last_id += 1
+        return self._ids[cell_type][cell_phase]
 
-    def _get_trajectory_data(
-        self, data: Dict[str, Any], scale_factor: float
-    ) -> Dict[str, Any]:
+    def _get_trajectory_data(self, input_data: PhysicellData) -> AgentData:
         """
         Get data from one time step in Simularium format
         """
-        physicell_data = self._load_data(data["path_to_output_dir"])
+        physicell_data = self._load_data(input_data.path_to_output_dir)
         # get data dimensions
         totalSteps = len(physicell_data)
         max_agents = 0
@@ -84,64 +103,61 @@ class PhysiCellTrajectoryReader(TrajectoryReader):
                 "in PhysiCell data, is the path_to_output_dir "
                 "pointing to an output directory?"
             )
-        result = {
-            "times": float(data["timestep"]) * np.arange(totalSteps),
-            "n_agents": np.zeros(totalSteps),
-            "viz_types": 1000.0 * np.ones(shape=(totalSteps, max_agents)),
-            "unique_ids": np.zeros((totalSteps, max_agents)),
-            "type_ids": np.zeros((totalSteps, max_agents)),
-            "positions": np.zeros((totalSteps, max_agents, 3)),
-            "radii": np.ones((totalSteps, max_agents)),
-        }
+        result = AgentData(
+            times=input_data.timestep * np.arange(totalSteps),
+            n_agents=np.zeros(totalSteps),
+            viz_types=1000.0 * np.ones(shape=(totalSteps, max_agents)),
+            unique_ids=np.zeros((totalSteps, max_agents)),
+            types=None,
+            positions=np.zeros((totalSteps, max_agents, 3)),
+            radii=np.ones((totalSteps, max_agents)),
+        )
+        result.type_ids = np.zeros((totalSteps, max_agents))
         # get data
-        type_names = data["types"] if "types" in data else []
         for t in range(totalSteps):
             n_agents = int(len(discrete_cells[t]["position_x"]))
-            result["n_agents"][t] = n_agents
+            result.n_agents[t] = n_agents
             i = 0
             for n in range(n_agents):
-                result["unique_ids"][t][i] = i
-                result["type_ids"][t][i] = float(
-                    self._get_agent_type(
-                        int(discrete_cells[t]["cell_type"][n]),
-                        int(discrete_cells[t]["current_phase"][n]),
-                        type_names,
-                    )
+                result.unique_ids[t][i] = i
+                result.type_ids[t][i] = self._get_agent_type(
+                    cell_type=int(discrete_cells[t]["cell_type"][n]),
+                    cell_phase=int(discrete_cells[t]["current_phase"][n]),
+                    type_names=input_data.types,
                 )
-                result["positions"][t][i] = scale_factor * np.array(
+                result.positions[t][i] = input_data.scale_factor * np.array(
                     [
                         discrete_cells[t]["position_x"][n],
                         discrete_cells[t]["position_y"][n],
                         discrete_cells[t]["position_z"][n],
                     ]
                 )
-                result["radii"][t][i] = scale_factor * np.cbrt(
+                result.radii[t][i] = input_data.scale_factor * np.cbrt(
                     3.0 / 4.0 * discrete_cells[t]["total_volume"][n] / np.pi
                 )
                 i += 1
         return result
 
-    def read(self, data: Dict[str, Any]) -> Dict[str, Any]:
+    def _read(self, input_data: PhysicellData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """
         # load the data from PhysiCell MultiCellDS XML files
-        scale = float(data["scale_factor"]) if "scale_factor" in data else 1.0
-        agent_data = self._get_trajectory_data(data, scale)
+        agent_data = self._get_trajectory_data(input_data)
         # shape data
         simularium_data = {}
         # trajectory info
-        totalSteps = agent_data["n_agents"].shape[0]
+        totalSteps = agent_data.n_agents.shape[0]
         simularium_data["trajectoryInfo"] = {
             "version": 1,
-            "timeStepSize": float(data["timestep"]),
+            "timeStepSize": input_data.timestep,
             "totalSteps": totalSteps,
             "size": {
-                "x": scale * float(data["box_size"][0]),
-                "y": scale * float(data["box_size"][1]),
-                "z": scale * float(data["box_size"][2]),
+                "x": input_data.scale_factor * float(input_data.box_size[0]),
+                "y": input_data.scale_factor * float(input_data.box_size[1]),
+                "z": input_data.scale_factor * float(input_data.box_size[2]),
             },
-            "typeMapping": self.type_mapping,
+            "typeMapping": self._type_mapping,
         }
         # spatial data
         simularium_data["spatialData"] = {
@@ -154,6 +170,6 @@ class PhysiCellTrajectoryReader(TrajectoryReader):
         # plot data
         simularium_data["plotData"] = {
             "version": 1,
-            "data": data["plots"] if "plots" in data else [],
+            "data": input_data.plots,
         }
         return simularium_data

@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Dict, Any, List, Tuple
+from typing import Any, Dict, List, Tuple
 import sys
 
 import numpy as np
 
-from .trajectory_reader import TrajectoryReader
-from ..exceptions import DataError
+from .converter import Converter
+from .data_objects import CytosimData, CytosimObjectInfo, AgentData
+from .exceptions import DataError
 
 ###############################################################################
 
@@ -17,7 +18,22 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class CytosimTrajectoryReader(TrajectoryReader):
+class CytosimConverter(Converter):
+    def __init__(self, input_data: CytosimData):
+        """
+        This object reads simulation trajectory outputs
+        from CytoSim (https://gitlab.com/f.nedelec/cytosim)
+        and plot data and writes them in the JSON format used
+        by the Simularium viewer
+
+        Parameters
+        ----------
+        input_data : CytosimData
+            An object containing info for reading
+            Cytosim simulation trajectory outputs and plot data
+        """
+        self._data = self._read(input_data)
+
     def _ignore_line(self, line: str) -> bool:
         """
         if the line doesn't have any data, it can be ignored
@@ -104,7 +120,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
         self,
         fibers_lines: List[str],
         scale_factor: float,
-        result: Dict[str, Any],
+        result: AgentData,
         agent_types: Dict[int, Any],
         used_unique_IDs: List[int],
     ) -> Tuple[Dict[str, Any], List[str], List[int]]:
@@ -115,8 +131,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
         n = -1
         s = -1
         parse_time = (
-            result["times"].size > 1
-            and float(result["times"][1]) < sys.float_info.epsilon
+            result.times.size > 1 and float(result.times[1]) < sys.float_info.epsilon
         )
         types = {}
         uids = {}
@@ -127,19 +142,19 @@ class CytosimTrajectoryReader(TrajectoryReader):
                 if "frame" in line:
                     # start of frame
                     t += 1
-                    n_other_agents = int(result["n_agents"][t])
+                    n_other_agents = int(result.n_agents[t])
                     n = -1
                 elif "time" in line and parse_time:
                     # time metadata
-                    result["times"][t] = float(line.split()[2])
+                    result.times[t] = float(line.split()[2])
                 elif "fiber" in line:
                     # start of fiber
                     if n >= 0 and s >= 0:
-                        result["n_subpoints"][t][n_other_agents + n] = s + 1
+                        result.n_subpoints[t][n_other_agents + n] = s + 1
                     n += 1
                     s = -1
-                    result["viz_types"][t][n_other_agents + n] = 1001.0
-                    result["radii"][t][n_other_agents + n] = 1.0
+                    result.viz_types[t][n_other_agents + n] = 1001.0
+                    result.radii[t][n_other_agents + n] = 1.0
                     fiber_info = line.split()[2].split(":")
                     # unique instance ID
                     raw_uid = int(fiber_info[1])
@@ -149,9 +164,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
                             uid += 1
                         uids[raw_uid] = uid
                         used_unique_IDs.append(uid)
-                    else:
-                        uid = uids[raw_uid]
-                    result["unique_ids"][t][n_other_agents + n] = uid
+                    result.unique_ids[t][n_other_agents + n] = uids[raw_uid]
                     # type ID
                     raw_tid = int(fiber_info[0][1:])
                     if raw_tid not in types:
@@ -162,16 +175,16 @@ class CytosimTrajectoryReader(TrajectoryReader):
                         agent_types[tid] = {"object_type": "fibers", "raw_id": raw_tid}
                     else:
                         tid = types[raw_tid]
-                    result["type_ids"][t][n_other_agents + n] = tid
+                    result.type_ids[t][n_other_agents + n] = tid
                 elif "end" in line:
                     # end of frame
-                    result["n_subpoints"][t][n_other_agents + n] = s + 1
-                    result["n_agents"][t] += n + 1
+                    result.n_subpoints[t][n_other_agents + n] = s + 1
+                    result.n_agents[t] += n + 1
                 continue
             # each fiber point
             s += 1
             columns = line.split()
-            result["subpoints"][t][n_other_agents + n][s] = scale_factor * np.array(
+            result.subpoints[t][n_other_agents + n][s] = scale_factor * np.array(
                 [float(columns[1]), float(columns[2]), float(columns[3])]
             )
         return (result, agent_types, used_unique_IDs)
@@ -181,9 +194,8 @@ class CytosimTrajectoryReader(TrajectoryReader):
         object_type: str,
         data_lines: List[str],
         scale_factor: float,
-        agent_data: Dict[str, float],
-        position_indices: List[int],
-        result: Dict[str, Any],
+        object_info: CytosimObjectInfo,
+        result: AgentData,
         agent_types: Dict[int, Any],
         used_unique_IDs: List[int],
     ) -> Tuple[Dict[str, Any], List[str], List[int]]:
@@ -195,13 +207,10 @@ class CytosimTrajectoryReader(TrajectoryReader):
         n = -1
         n_other_agents = 0
         parse_time = (
-            result["times"].size > 0
-            and float(result["times"][1]) < sys.float_info.epsilon
+            result.times.size > 0 and float(result.times[1]) < sys.float_info.epsilon
         )
         types = {}
         uids = {}
-        if len(position_indices) < 3:
-            position_indices = [2, 3, 4]
         for line in data_lines:
             if self._ignore_line(line):
                 continue
@@ -209,16 +218,16 @@ class CytosimTrajectoryReader(TrajectoryReader):
                 if "frame" in line:
                     # start of frame
                     if t >= 0:
-                        result["n_agents"][t] += n + 1
-                        result["viz_types"][t][
-                            n_other_agents : n_other_agents + n + 1
-                        ] = (n + 1) * [1000.0]
+                        result.n_agents[t] += n + 1
+                        result.viz_types[t][n_other_agents : n_other_agents + n + 1] = (
+                            n + 1
+                        ) * [1000.0]
                     t += 1
-                    n_other_agents = int(result["n_agents"][t])
+                    n_other_agents = int(result.n_agents[t])
                     n = -1
                 elif "time" in line and parse_time:
                     # time metadata
-                    result["times"][t] = float(line.split()[2])
+                    result.times[t] = float(line.split()[2])
                 continue
             n += 1
             columns = line.split()
@@ -230,9 +239,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
                     uid += 1
                 uids[raw_uid] = uid
                 used_unique_IDs.append(uid)
-            else:
-                uid = uids[raw_uid]
-            result["unique_ids"][t][n_other_agents + n] = uid
+            result.unique_ids[t][n_other_agents + n] = uids[raw_uid]
             # type ID
             raw_tid = int(columns[0])
             if raw_tid not in types:
@@ -243,74 +250,65 @@ class CytosimTrajectoryReader(TrajectoryReader):
                 agent_types[tid] = {"object_type": object_type, "raw_id": raw_tid}
             else:
                 tid = types[raw_tid]
-            result["type_ids"][t][n_other_agents + n] = tid
+            result.type_ids[t][n_other_agents + n] = tid
             raw_tid = str(raw_tid)
             # position
-            result["positions"][t][n_other_agents + n] = scale_factor * (
+            result.positions[t][n_other_agents + n] = scale_factor * (
                 np.array(
                     [
-                        float(columns[position_indices[0]]),
-                        float(columns[position_indices[1]]),
-                        float(columns[position_indices[2]]),
+                        float(columns[object_info.position_indices[0]]),
+                        float(columns[object_info.position_indices[1]]),
+                        float(columns[object_info.position_indices[2]]),
                     ]
-                    + (
-                        agent_data[raw_tid]["position_offset"]
-                        if "position_offset" in agent_data[raw_tid]
-                        else np.zeros(3)
-                    )
                 )
             )
             # radius
-            result["radii"][t][n_other_agents + n] = (
-                (scale_factor * float(agent_data[raw_tid]["radius"]))
-                if raw_tid in agent_data and "radius" in agent_data[raw_tid]
+            result.radii[t][n_other_agents + n] = (
+                (scale_factor * float(object_info.agents[raw_tid].radius))
+                if raw_tid in object_info.agents
                 else 1.0
             )
-        result["n_agents"][t] += n + 1
-        result["viz_types"][t][n_other_agents : n_other_agents + n + 1] = (n + 1) * [
+        result.n_agents[t] += n + 1
+        result.viz_types[t][n_other_agents : n_other_agents + n + 1] = (n + 1) * [
             1000.0
         ]
         return (result, agent_types, used_unique_IDs)
 
-    def read(self, data: Dict[str, Any]) -> Dict[str, Any]:
+    def _read(self, input_data: CytosimData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """
         # load the data from Cytosim output .txt files
         cytosim_data = {}
-        for object_type in data["data"]:
-            with open(data["data"][object_type]["filepath"], "r") as myfile:
+        for object_type in input_data.object_info:
+            with open(input_data.object_info[object_type].filepath, "r") as myfile:
                 cytosim_data[object_type] = myfile.read().split("\n")
         # parse
         (totalSteps, max_agents, max_subpoints) = self._parse_data_dimensions(
             cytosim_data
         )
-        agent_data = {
-            "times": np.zeros(totalSteps),
-            "n_agents": np.zeros(totalSteps),
-            "viz_types": np.zeros((totalSteps, max_agents)),
-            "unique_ids": np.zeros((totalSteps, max_agents)),
-            "type_ids": np.zeros((totalSteps, max_agents)),
-            "positions": np.zeros((totalSteps, max_agents, 3)),
-            "radii": np.ones((totalSteps, max_agents)),
-            "n_subpoints": np.zeros((totalSteps, max_agents)),
-            "subpoints": np.zeros((totalSteps, max_agents, max_subpoints, 3)),
-        }
+        agent_data = AgentData(
+            times=np.zeros(totalSteps),
+            n_agents=np.zeros(totalSteps),
+            viz_types=np.zeros((totalSteps, max_agents)),
+            unique_ids=np.zeros((totalSteps, max_agents)),
+            types=None,
+            positions=np.zeros((totalSteps, max_agents, 3)),
+            radii=np.ones((totalSteps, max_agents)),
+            n_subpoints=np.zeros((totalSteps, max_agents)),
+            subpoints=np.zeros((totalSteps, max_agents, max_subpoints, 3)),
+            draw_fiber_points=input_data.draw_fiber_points,
+        )
+        agent_data.type_ids = np.zeros((totalSteps, max_agents))
         agent_types = {}
         uids = []
-        scale = float(data["scale_factor"]) if "scale_factor" in data else 1.0
-        for object_type in data["data"]:
-            if object_type != "fibers":
+        for object_type in input_data.object_info:
+            if "fiber" not in object_type:
                 agent_data, agent_types, uids = self._parse_others(
                     object_type,
                     cytosim_data[object_type],
-                    scale,
-                    data["data"][object_type]["agents"]
-                    if "agents" in data["data"][object_type]
-                    else {},
-                    data["data"][object_type]["position_indices"]
-                    if "position_indices" in data["data"][object_type]
-                    else [],
+                    input_data.scale_factor,
+                    input_data.object_info[object_type],
                     agent_data,
                     agent_types,
                     uids,
@@ -318,7 +316,7 @@ class CytosimTrajectoryReader(TrajectoryReader):
             else:
                 agent_data, agent_types, uids = self._parse_fibers(
                     cytosim_data[object_type],
-                    scale,
+                    input_data.scale_factor,
                     agent_data,
                     agent_types,
                     uids,
@@ -326,56 +324,47 @@ class CytosimTrajectoryReader(TrajectoryReader):
         # shape data
         simularium_data = {}
         # trajectory info
-        totalSteps = agent_data["times"].size
         simularium_data["trajectoryInfo"] = {
             "version": 1,
             "timeStepSize": (
-                float(agent_data["times"][1] - agent_data["times"][0])
+                float(agent_data.times[1] - agent_data.times[0])
                 if totalSteps > 1
                 else 0.0
             ),
             "totalSteps": totalSteps,
             "size": {
-                "x": scale * float(data["box_size"][0]),
-                "y": scale * float(data["box_size"][1]),
-                "z": scale * float(data["box_size"][2]),
+                "x": input_data.scale_factor * float(input_data.box_size[0]),
+                "y": input_data.scale_factor * float(input_data.box_size[1]),
+                "z": input_data.scale_factor * float(input_data.box_size[2]),
             },
             "typeMapping": {},
         }
         for tid in agent_types:
             s = str(tid)
             object_type = agent_types[tid]["object_type"]
-            raw_id = str(agent_types[tid]["raw_id"])
-            if (
-                "agents" in data["data"][object_type]
-                and raw_id in data["data"][object_type]["agents"]
-                and "name" in data["data"][object_type]["agents"][raw_id]
-            ):
+            raw_id = agent_types[tid]["raw_id"]
+            if raw_id in input_data.object_info[object_type].agents:
                 simularium_data["trajectoryInfo"]["typeMapping"][s] = {
-                    "name": data["data"][object_type]["agents"][raw_id]["name"]
+                    "name": input_data.object_info[object_type].agents[raw_id].name
                 }
             else:
                 simularium_data["trajectoryInfo"]["typeMapping"][s] = {
-                    "name": object_type[:-1] + raw_id
+                    "name": (
+                        object_type[:-1] if object_type.endswith("s") else object_type
+                    )
+                    + str(raw_id)
                 }
         # spatial data
-        draw_fiber_points = (
-            bool(data["data"]["fibers"]["draw_points"])
-            if "fibers" in data["data"] and "draw_points" in data["data"]["fibers"]
-            else False
-        )
         simularium_data["spatialData"] = {
             "version": 1,
             "msgType": 1,
             "bundleStart": 0,
             "bundleSize": totalSteps,
-            "bundleData": self._get_spatial_bundle_data_subpoints(
-                agent_data, draw_fiber_points
-            ),
+            "bundleData": self._get_spatial_bundle_data_subpoints(agent_data, uids),
         }
         # plot data
         simularium_data["plotData"] = {
             "version": 1,
-            "data": data["plots"] if "plots" in data else [],
+            "data": input_data.plots,
         }
         return simularium_data
