@@ -1,28 +1,87 @@
-# Simularium Conversion
+# SimulariumIO
 
-[![Build Status](https://github.com/allen-cell-animated/simulariumio/workflows/Build%20Master/badge.svg)](https://github.com/allen-cell-animated/simulariumio/actions)
-[![Documentation](https://github.com/allen-cell-animated/simulariumio/workflows/Documentation/badge.svg)](https://allen-cell-animated.github.io/simulariumio)
 [![Code Coverage](https://codecov.io/gh/allen-cell-animated/simulariumio/branch/master/graph/badge.svg)](https://codecov.io/gh/allen-cell-animated/simulariumio)
 
-Simularium Conversion helps convert ssimulation outputs to the format consumed by the Simularium viewer.
+Simulariumio converts simulation outputs to the format consumed by the [Simularium viewer](https://simularium.allencell.org/).
 
 ---
 
 ## Features
-* Store values and retain the prior value in memory
-* ... some other functionality
+* Converts 3D spatiotemporal trajectories to .simularium JSON format
+* Accepts spatial trajectories from the following biological simulation engines:
+    * CytoSim (https://gitlab.com/f.nedelec/cytosim)
+    * ReaDDy (https://readdy.github.io/)
+    * PhysiCell (http://physicell.org/) 
+    * Custom engines not specifically supported
+* Also accepts metrics data for plots to display alongside spatial data
 
 ## Quick Start
-```python
-from simulariumio import Example
 
-a = Example()
-a.get_value()  # 10
+### Convert spatial trajectory from a supported engine
+See the Tutorial for the simulation engine you're using for details:
+* [Cytosim Tutorial](examples/Tutorial_cytosim.ipynb) 
+* [ReaDDy Tutorial](examples/Tutorial_readdy.ipynb) 
+* [PhysiCell Tutorial](examples/Tutorial_physicell.ipynb) 
+
+An overview for data from ReaDDy:
+```python
+from simulariumio import ReaddyConverter, ReaddyData
+
+# see ReaDDy Tutorial for parameter details
+input_data = ReaddyData(
+    box_size=BOX_SIZE,
+    timestep=TIMESTEP,
+    path_to_readdy_h5=PATH_TO_H5_FILE,
+)
+ReaddyConverter(input_data).write_JSON("output_file_name")
+```
+
+### Convert spatial trajectory from a custom engine
+See the [Custom Data Tutorial](examples/Tutorial_custom.ipynb) for details. An overview:
+```python
+from simulariumio import CustomConverter, CustomData, AgentData
+
+# see Custom Data Tutorial for parameter details
+input_data = CustomData(  
+    box_size=BOX_SIZE,
+    agent_data=AgentData(
+        times=TIMES,
+        n_agents=N_AGENTS,
+        viz_types=VIZ_TYPES,
+        unique_ids=UNIQUE_IDS,
+        types=TYPE_IDS,
+        positions=POSITIONS,
+        radii=RADII,
+    )
+)
+CustomConverter(input_data).write_JSON("output_file_name")
+```
+
+### Add metrics data to plot
+See the [Plots Tutorial](examples/Tutorial_plots.ipynb) for details. An overview:
+```python
+from simulariumio import ScatterPlotData
+
+# see Plots Tutorial for parameter details
+example_scatter_plot = ScatterPlotData(
+    title=TITLE,
+    xaxis_title=X_TITLE,
+    yaxis_title=Y_TITLE,
+    xtrace=X_VALUES,
+    ytraces=Y_VALUES,
+)
+converter = CustomConverter(input_data) # see above to create converter
+converter.add_plot(example_scatter_plot, "scatter")
+converter.write_JSON("output_file_name")
 ```
 
 ## Installation
-**Install Requires:** If ReaDDy trajectories will be converted, the ReaDDy python package must be installed: `conda install -c readdy readdy` (after adding conda forge channel: `conda config --add channels conda-forge`)
-**Stable Release:** `pip install simulariumio`<br>
+**Install Requires:** If ReaDDy trajectories will be converted, the ReaDDy python package must be installed:
+(add conda forge channel if it's not already: `conda config --add channels conda-forge`)
+`conda install -c readdy readdy` 
+
+**Stable Release:** `pip install simulariumio`
+
 **Development Head:** `pip install git+https://github.com/allen-cell-animated/simulariumio.git`
 
 ## Documentation
@@ -31,101 +90,4 @@ For full package documentation please visit [allen-cell-animated.github.io/simul
 ## Development
 See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the code.
 
-## The Four Commands You Need To Know
-1. `pip install -e .[dev]`
-    (`pip install -e ".[dev]"` on macs using zsh)
-
-    This will install your package in editable mode with all the required development
-    dependencies (i.e. `tox`).
-
-2. `make build`
-
-    This will run `tox` which will run all your tests in both Python 3.7
-    and Python 3.8 as well as linting your code.
-
-3. `make clean`
-
-    This will clean up various Python and build generated files so that you can ensure
-    that you are working in a clean environment.
-
-4. `make docs`
-
-    This will generate and launch a web browser to view the most up-to-date
-    documentation for your Python package.
-
-#### Additional Optional Setup Steps:
-* Turn your project into a GitHub repository:
-  * Make sure you have `git` installed, if you don't, [follow these instructions](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-  * Make an account on [github.com](https://github.com)
-  * Go to [make a new repository](https://github.com/new)
-  * _Recommendations:_
-    * _It is strongly recommended to make the repository name the same as the Python
-    package name_
-    * _A lot of the following optional steps are *free* if the repository is Public,
-    plus open source is cool_
-  * After a GitHub repo has been created, run the following commands:
-    * `git remote add origin git@github.com:allen-cell-animated/simulariumio.git`
-    * `git push -u origin master`
-* Register simulariumio with Codecov:
-  * Make an account on [codecov.io](https://codecov.io)
-  (Recommended to sign in with GitHub)
-  * Select `allen-cell-animated` and click: `Add new repository`
-  * Copy the token provided, go to your [GitHub repository's settings and under the `Secrets` tab](https://github.com/allen-cell-animated/simulariumio/settings/secrets),
-  add a secret called `CODECOV_TOKEN` with the token you just copied.
-  Don't worry, no one will see this token because it will be encrypted.
-* Generate and add an access token as a secret to the repository for auto documentation
-generation to work
-  * Go to your [GitHub account's Personal Access Tokens page](https://github.com/settings/tokens)
-  * Click: `Generate new token`
-  * _Recommendations:_
-    * _Name the token: "Auto-Documentation Generation" or similar so you know what it
-    is being used for later_
-    * _Select only: `repo:status`, `repo_deployment`, and `public_repo` to limit what
-    this token has access to_
-  * Copy the newly generated token
-  * Go to your [GitHub repository's settings and under the `Secrets` tab](https://github.com/allen-cell-animated/simulariumio/settings/secrets),
-  add a secret called `ACCESS_TOKEN` with the personal access token you just created.
-  Don't worry, no one will see this password because it will be encrypted.
-* Register your project with PyPI:
-  * Make an account on [pypi.org](https://pypi.org)
-  * Go to your [GitHub repository's settings and under the `Secrets` tab](https://github.com/allen-cell-animated/simulariumio/settings/secrets),
-  add a secret called `PYPI_TOKEN` with your password for your PyPI account.
-  Don't worry, no one will see this password because it will be encrypted.
-  * Next time you push to the branch: `stable`, GitHub actions will build and deploy
-  your Python package to PyPI.
-  * _Recommendation: Prior to pushing to `stable` it is recommended to install and run
-  `bumpversion` as this will,
-  tag a git commit for release and update the `setup.py` version number._
-* Add branch protections to `master` and `stable`
-    * To protect from just anyone pushing to `master` or `stable` (the branches with
-    more tests and deploy
-    configurations)
-    * Go to your [GitHub repository's settings and under the `Branches` tab](https://github.com/allen-cell-animated/simulariumio/settings/branches), click `Add rule` and select the
-    settings you believe best.
-    * _Recommendations:_
-      * _Require pull request reviews before merging_
-      * _Require status checks to pass before merging (Recommended: lint and test)_
-
-#### Suggested Git Branch Strategy
-1. `master` is for the most up-to-date development, very rarely should you directly
-commit to this branch. GitHub Actions will run on every push and on a CRON to this
-branch but still recommended to commit to your development branches and make pull
-requests to master.
-2. `stable` is for releases only. When you want to release your project on PyPI, simply
-make a PR from `master` to `stable`, this template will handle the rest as long as you
-have added your PyPI information described in the above **Optional Steps** section.
-3. Your day-to-day work should exist on branches separate from `master`. Even if it is
-just yourself working on the repository, make a PR from your working branch to `master`
-so that you can ensure your commits don't break the development head. GitHub Actions
-will run on every push to any branch or any pull request from any branch to any other
-branch.
-4. It is recommended to use "Squash and Merge" commits when committing PR's. It makes
-each set of changes to `master` atomic and as a side effect naturally encourages small
-well defined PR's.
-5. GitHub's UI is bad for rebasing `master` onto `stable`, as it simply adds the
-commits to the other branch instead of properly rebasing from what I can tell. You
-should always rebase locally on the CLI until they fix it.
-
-
 ***Free software: Allen Institute Software License***
-
