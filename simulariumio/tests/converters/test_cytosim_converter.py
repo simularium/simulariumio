@@ -4,7 +4,12 @@
 import pytest
 import numpy as np
 
-from simulariumio import Converter
+from simulariumio import (
+    CytosimConverter,
+    CytosimData,
+    CytosimObjectInfo,
+    CytosimAgentInfo,
+)
 
 
 @pytest.mark.parametrize(
@@ -12,17 +17,17 @@ from simulariumio import Converter
     [
         # 3 fiber agents
         (
-            {
-                "box_size": np.array([0.5, 0.5, 0.5]),
-                "data": {
-                    "fibers": {
-                        "filepath": "simulariumio/tests/data/cytosim"
+            CytosimData(
+                box_size=np.array([0.5, 0.5, 0.5]),
+                object_info={
+                    "fibers": CytosimObjectInfo(
+                        filepath="simulariumio/tests/data/cytosim"
                         "/3_fibers_3_frames/fiber_points.txt",
-                        "agents": {"0": {"name": "fiber"}},
-                    }
+                        agents={0: CytosimAgentInfo(name="fiber")},
+                    )
                 },
-                "scale_factor": 1e3,
-            },
+                scale_factor=1e3,
+            ),
             {
                 "trajectoryInfo": {
                     "version": 1,
@@ -278,42 +283,42 @@ from simulariumio import Converter
         ),
         # aster_pull3D example with couples, actin fibers, and solids added
         (
-            {
-                "box_size": np.array([2.0, 2.0, 2.0]),
-                "data": {
-                    "fibers": {
-                        "filepath": "simulariumio/tests/data/cytosim/"
+            CytosimData(
+                box_size=np.array([2.0, 2.0, 2.0]),
+                object_info={
+                    "fibers": CytosimObjectInfo(
+                        filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/fiber_points.txt",
-                        "agents": {
-                            "1": {"name": "microtubule"},
-                            "2": {"name": "actin"},
+                        agents={
+                            1: CytosimAgentInfo(name="microtubule"),
+                            2: CytosimAgentInfo(name="actin"),
                         },
-                    },
-                    "solids": {
-                        "filepath": "simulariumio/tests/data/cytosim/"
+                    ),
+                    "solids": CytosimObjectInfo(
+                        filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/solids.txt",
-                        "agents": {
-                            "1": {"name": "aster", "radius": 0.1},
-                            "2": {"name": "vesicle", "radius": 0.1},
+                        agents={
+                            1: CytosimAgentInfo(name="aster", radius=0.1),
+                            2: CytosimAgentInfo(name="vesicle", radius=0.1),
                         },
-                    },
-                    "singles": {
-                        "filepath": "simulariumio/tests/data/cytosim/"
+                    ),
+                    "singles": CytosimObjectInfo(
+                        filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/singles.txt",
-                        "agents": {
-                            "1": {"name": "dynein", "radius": 0.01},
-                            "2": {"name": "kinesin", "radius": 0.01},
+                        agents={
+                            1: CytosimAgentInfo(name="dynein", radius=0.01),
+                            2: CytosimAgentInfo(name="kinesin", radius=0.01),
                         },
-                    },
-                    "couples": {
-                        "filepath": "simulariumio/tests/data/cytosim/"
+                    ),
+                    "couples": CytosimObjectInfo(
+                        filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/couples.txt",
-                        "agents": {"1": {"name": "motor complex", "radius": 0.02}},
-                        "position_indices": [3, 4, 5],
-                    },
+                        agents={1: CytosimAgentInfo(name="motor complex", radius=0.02)},
+                        position_indices=[3, 4, 5],
+                    ),
                 },
-                "scale_factor": 100.0,
-            },
+                scale_factor=100.0,
+            ),
             {
                 "trajectoryInfo": {
                     "version": 1,
@@ -1100,13 +1105,9 @@ from simulariumio import Converter
                 "plotData": {"version": 1, "data": []},
             },
         ),
-        pytest.param(
-            {},
-            {},
-            marks=pytest.mark.raises(exception=KeyError),  # input data is missing keys
-        ),
     ],
 )
 def test_cytosim_trajectory_reader(trajectory, expected_data):
-    converter = Converter(trajectory, "cytosim")
+    converter = CytosimConverter(trajectory)
     assert expected_data == converter._data
+    assert converter._check_agent_ids_are_unique_per_frame()

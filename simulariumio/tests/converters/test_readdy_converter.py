@@ -4,7 +4,7 @@
 import numpy as np
 import pytest
 
-from simulariumio import Converter
+from simulariumio import ReaddyConverter, ReaddyData
 
 
 @pytest.mark.parametrize(
@@ -12,14 +12,14 @@ from simulariumio import Converter
     [
         # 4 particles 3 frames
         (
-            {
-                "box_size": np.array([20.0, 20.0, 20.0]),
-                "timestep": 0.1,
-                "path_to_readdy_h5": "simulariumio/tests/data/readdy/test.h5",
-                "type_grouping": {"C": ["A", "D"]},
-                "radii": {"C": 3.0, "A": 2.0, "B": 2.0},
-                "ignore_types": ["E"],
-            },
+            ReaddyData(
+                box_size=np.array([20.0, 20.0, 20.0]),
+                timestep=0.1,
+                path_to_readdy_h5="simulariumio/tests/data/readdy/test.h5",
+                radii={"C": 3.0, "A": 2.0, "B": 2.0},
+                ignore_types=["E"],
+                type_grouping={"C": ["A", "D"]},
+            ),
             {
                 "trajectoryInfo": {
                     "version": 1,
@@ -188,14 +188,10 @@ from simulariumio import Converter
                 },
                 "plotData": {"version": 1, "data": []},
             },
-        ),
-        pytest.param(
-            {},
-            {},
-            marks=pytest.mark.raises(exception=KeyError),  # input data is missing keys
-        ),
+        )
     ],
 )
 def test_cytosim_trajectory_reader(trajectory, expected_data):
-    converter = Converter(trajectory, "readdy")
+    converter = ReaddyConverter(trajectory)
     assert expected_data == converter._data
+    assert converter._check_agent_ids_are_unique_per_frame()

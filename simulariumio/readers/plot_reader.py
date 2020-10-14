@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class Reader(ABC):
+class PlotReader(ABC):
     @abstractmethod
     def read(self, data: Dict[str, Any]) -> Dict[str, Any]:
         pass
