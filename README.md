@@ -1,5 +1,7 @@
 # SimulariumIO
 
+[![Build Status](https://github.com/allen-cell-animated/simulariumio/workflows/Build%20Master/badge.svg)](https://github.com/allen-cell-animated/simulariumio/actions)
+[![Documentation](https://github.com/allen-cell-animated/simulariumio/workflows/Documentation/badge.svg)](https://allen-cell-animated.github.io/simulariumio)
 [![Code Coverage](https://codecov.io/gh/allen-cell-animated/simulariumio/branch/master/graph/badge.svg)](https://codecov.io/gh/allen-cell-animated/simulariumio)
 
 Simulariumio converts simulation outputs to the format consumed by the [Simularium viewer](https://simularium.allencell.org/).
@@ -11,7 +13,7 @@ Simulariumio converts simulation outputs to the format consumed by the [Simulari
 * Accepts spatial trajectories from the following biological simulation engines:
     * CytoSim (https://gitlab.com/f.nedelec/cytosim)
     * ReaDDy (https://readdy.github.io/)
-    * PhysiCell (http://physicell.org/) 
+    * PhysiCell (http://physicell.org/)
     * Custom engines not specifically supported
 * Also accepts metrics data for plots to display alongside spatial data
 
@@ -19,9 +21,9 @@ Simulariumio converts simulation outputs to the format consumed by the [Simulari
 
 ### Convert spatial trajectory from a supported engine
 See the Tutorial for the simulation engine you're using for details:
-* [Cytosim Tutorial](examples/Tutorial_cytosim.ipynb) 
-* [ReaDDy Tutorial](examples/Tutorial_readdy.ipynb) 
-* [PhysiCell Tutorial](examples/Tutorial_physicell.ipynb) 
+* [Cytosim Tutorial](examples/Tutorial_cytosim.ipynb)
+* [ReaDDy Tutorial](examples/Tutorial_readdy.ipynb)
+* [PhysiCell Tutorial](examples/Tutorial_physicell.ipynb)
 
 An overview for data from ReaDDy:
 ```python
@@ -78,7 +80,7 @@ converter.write_JSON("output_file_name")
 ## Installation
 **Install Requires:** If ReaDDy trajectories will be converted, the ReaDDy python package must be installed:
 (add conda forge channel if it's not already: `conda config --add channels conda-forge`)
-`conda install -c readdy readdy` 
+`conda install -c readdy readdy`
 
 **Stable Release:** `pip install simulariumio`
 
