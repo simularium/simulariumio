@@ -10,17 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.8
+    - name: Setup MiniConda
+      uses: conda-incubator/setup-miniconda@v1
+        with:
+          auto-update-conda: true
+          python-version: 3.8
+          channels: readdy/label/dev,conda-forge
+    - name: Install Conda Deps
+      run: |
+        conda install readdy
     - name: Install Dependencies
       run: |
-        pip install --upgrade pip
+        python -m pip install --upgrade pip
         pip install .[all]
     - name: Generate Docs
       run: |
-        make docs
+        make gen-docs
         touch docs/_build/html/.nojekyll
     - name: Publish Docs
       uses: JamesIves/github-pages-deploy-action@releases/v3
