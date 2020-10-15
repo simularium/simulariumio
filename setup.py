@@ -73,9 +73,7 @@ setup(
     ],
     description="Simularium Conversion helps convert ssimulation outputs to the format consumed by the Simularium viewer.",
     entry_points={
-        "console_scripts": [
-            "my_example=simulariumio.bin.my_example:main"
-        ],
+        "console_scripts": [],
     },
     install_requires=requirements,
     license="Allen Institute Software License",
