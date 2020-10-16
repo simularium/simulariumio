@@ -71,7 +71,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    description="Simularium Conversion helps convert ssimulation outputs to the format consumed by the Simularium viewer.",
+    description="Simularium Conversion helps convert simulation outputs to the format consumed by the Simularium viewer.",
     entry_points={
         "console_scripts": [],
     },
