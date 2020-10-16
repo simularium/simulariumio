@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
 
    simulariumio.data_objects
+   simulariumio.dep
    simulariumio.readers
 
 Submodules

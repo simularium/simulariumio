@@ -16,7 +16,6 @@ def get_module_version():
 from .custom_converter import CustomConverter  # noqa: F401
 from .cytosim_converter import CytosimConverter  # noqa: F401
 from .readdy_converter import ReaddyConverter  # noqa: F401
-from .dep.pyMCDS import pyMCDS  # noqa: F401
 from .physicell_converter import PhysicellConverter  # noqa: F401
 
 from .data_objects import (  # noqa: F401
