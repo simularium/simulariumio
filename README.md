@@ -78,7 +78,11 @@ converter.write_JSON("output_file_name")
 ```
 
 ## Installation
-**Install Requires:** If ReaDDy trajectories will be converted, the ReaDDy python package must be installed:
+**Install Requires:** 
+
+* Requires Python 3.7 or 3.8
+
+* If ReaDDy trajectories will be converted, the ReaDDy python package must be installed:
 (add conda forge channel if it's not already: `conda config --add channels conda-forge`)
 `conda install -c readdy readdy`
 
