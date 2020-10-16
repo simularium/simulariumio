@@ -17,19 +17,23 @@ jobs:
         python-version: 3.8
         channels: readdy/label/dev,conda-forge
     - name: Install Conda Deps
+      shell: bash -l {0}
       run: |
         conda install readdy
     - name: Install Project Dependencies
+      shell: bash -l {0}
       run: |
-        python3 -m pip install --upgrade pip
-        pip3 install .[all]
+        python -m pip install --upgrade pip
+        pip install .[all]
     - name: Install Build Dependencies
+      shell: bash -l {0}
       run: |
-        python3 -m pip install --upgrade pip
-        pip3 install setuptools wheel
+        python -m pip install --upgrade pip
+        pip install setuptools wheel
     - name: Build Package
+      shell: bash -l {0}
       run: |
-        python3 setup.py sdist bdist_wheel
+        python setup.py sdist bdist_wheel
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@master
       with:
