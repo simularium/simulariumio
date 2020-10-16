@@ -10,15 +10,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python
-      uses: actions/setup-python@v1
+    - name: Setup MiniConda
+      uses: conda-incubator/setup-miniconda@v1
       with:
+        auto-update-conda: true
         python-version: 3.8
-    - name: Install Dependencies
+        channels: readdy/label/dev,conda-forge
+    - name: Install Conda Deps
+      shell: bash -l {0}
+      run: |
+        conda install readdy
+    - name: Install Project Dependencies
+      shell: bash -l {0}
+      run: |
+        python -m pip install --upgrade pip
+        pip install .[all]
+    - name: Install Build Dependencies
+      shell: bash -l {0}
       run: |
         python -m pip install --upgrade pip
         pip install setuptools wheel
     - name: Build Package
+      shell: bash -l {0}
       run: |
         python setup.py sdist bdist_wheel
     - name: Publish to PyPI
