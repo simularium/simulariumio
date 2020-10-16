@@ -14,7 +14,7 @@ Simulariumio converts simulation outputs to the format consumed by the [Simulari
     * CytoSim (https://gitlab.com/f.nedelec/cytosim)
     * ReaDDy (https://readdy.github.io/)
     * PhysiCell (http://physicell.org/)
-    * Custom engines not specifically supported
+* Conversions for data from custom engines can be implemented using the CustomConverter class
 * Also accepts metrics data for plots to display alongside spatial data
 
 ## Quick Start
