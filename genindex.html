@@ -1,0 +1,661 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Index &mdash; Simularium Conversion 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Simularium Conversion
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.html">simulariumio package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.dep.html">simulariumio.dep package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.readers.html">simulariumio.readers package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.cytosim_converter">simulariumio.cytosim_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.physicell_converter">simulariumio.physicell_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.readdy_converter">simulariumio.readdy_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Math notation example</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Simularium Conversion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Index</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ | <a href="#X"><strong>X</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.html#simulariumio.converter.Converter.add_plot">add_plot() (simulariumio.converter.Converter method)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.custom_data.CustomData.agent_data">agent_data (simulariumio.data_objects.custom_data.CustomData attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData">AgentData (class in simulariumio.data_objects.agent_data)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo.agents">agents (simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.custom_data.CustomData.box_size">box_size (simulariumio.data_objects.custom_data.CustomData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_data.CytosimData.box_size">(simulariumio.data_objects.cytosim_data.CytosimData attribute)</a>
+</li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.physicell_data.PhysicellData.box_size">(simulariumio.data_objects.physicell_data.PhysicellData attribute)</a>
+</li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.readdy_data.ReaddyData.box_size">(simulariumio.data_objects.readdy_data.ReaddyData attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.html#simulariumio.converter.Converter">Converter (class in simulariumio.converter)</a>
+</li>
+      <li><a href="simulariumio.html#simulariumio.custom_converter.CustomConverter">CustomConverter (class in simulariumio.custom_converter)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.custom_data.CustomData">CustomData (class in simulariumio.data_objects.custom_data)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo">CytosimAgentInfo (class in simulariumio.data_objects.cytosim_agent_info)</a>
+</li>
+      <li><a href="simulariumio.html#simulariumio.cytosim_converter.CytosimConverter">CytosimConverter (class in simulariumio.cytosim_converter)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_data.CytosimData">CytosimData (class in simulariumio.data_objects.cytosim_data)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo">CytosimObjectInfo (class in simulariumio.data_objects.cytosim_object_info)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.html#simulariumio.exceptions.DataError">DataError</a>
+</li>
+      <li><a href="simulariumio.html#simulariumio.constants.VIZ_TYPE.default">default (simulariumio.constants.VIZ_TYPE attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.draw_fiber_points">draw_fiber_points (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_data.CytosimData.draw_fiber_points">(simulariumio.data_objects.cytosim_data.CytosimData attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.html#simulariumio.constants.VIZ_TYPE.fiber">fiber (simulariumio.constants.VIZ_TYPE attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo.filepath">filepath (simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_2D_mesh">get_2D_mesh() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_cell_df">get_cell_df() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_cell_df_at">get_cell_df_at() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_cell_variables">get_cell_variables() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_concentrations">get_concentrations() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_concentrations_at">get_concentrations_at() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_containing_voxel_ijk">get_containing_voxel_ijk() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_linear_voxels">get_linear_voxels() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_mesh">get_mesh() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_mesh_spacing">get_mesh_spacing() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+      <li><a href="simulariumio.html#simulariumio.get_module_version">get_module_version() (in module simulariumio)</a>
+</li>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_substrate_names">get_substrate_names() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS.get_time">get_time() (simulariumio.dep.pyMCDS.pyMCDS method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.histogram_plot_data.HistogramPlotData">HistogramPlotData (class in simulariumio.data_objects.histogram_plot_data)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.readers.html#simulariumio.readers.histogram_plot_reader.HistogramPlotReader">HistogramPlotReader (class in simulariumio.readers.histogram_plot_reader)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.readdy_data.ReaddyData.ignore_types">ignore_types (simulariumio.data_objects.readdy_data.ReaddyData attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.html#simulariumio.exceptions.MissingDataError">MissingDataError</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.n_agents">n_agents (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.n_subpoints">n_subpoints (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo.name">name (simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_data.CytosimData.object_info">object_info (simulariumio.data_objects.cytosim_data.CytosimData attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.physicell_data.PhysicellData.path_to_output_dir">path_to_output_dir (simulariumio.data_objects.physicell_data.PhysicellData attribute)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.readdy_data.ReaddyData.path_to_readdy_h5">path_to_readdy_h5 (simulariumio.data_objects.readdy_data.ReaddyData attribute)</a>
+</li>
+      <li><a href="simulariumio.html#simulariumio.physicell_converter.PhysicellConverter">PhysicellConverter (class in simulariumio.physicell_converter)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.physicell_data.PhysicellData">PhysicellData (class in simulariumio.data_objects.physicell_data)</a>
+</li>
+      <li><a href="simulariumio.readers.html#simulariumio.readers.plot_reader.PlotReader">PlotReader (class in simulariumio.readers.plot_reader)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.custom_data.CustomData.plots">plots (simulariumio.data_objects.custom_data.CustomData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_data.CytosimData.plots">(simulariumio.data_objects.cytosim_data.CytosimData attribute)</a>
+</li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.physicell_data.PhysicellData.plots">(simulariumio.data_objects.physicell_data.PhysicellData attribute)</a>
+</li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.readdy_data.ReaddyData.plots">(simulariumio.data_objects.readdy_data.ReaddyData attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo.position_indices">position_indices (simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo attribute)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.positions">positions (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+</li>
+      <li><a href="simulariumio.dep.html#simulariumio.dep.pyMCDS.pyMCDS">pyMCDS (class in simulariumio.dep.pyMCDS)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.radii">radii (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.readdy_data.ReaddyData.radii">(simulariumio.data_objects.readdy_data.ReaddyData attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo.radius">radius (simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo attribute)</a>
+</li>
+      <li><a href="simulariumio.readers.html#simulariumio.readers.histogram_plot_reader.HistogramPlotReader.read">read() (simulariumio.readers.histogram_plot_reader.HistogramPlotReader method)</a>
+
+      <ul>
+        <li><a href="simulariumio.readers.html#simulariumio.readers.plot_reader.PlotReader.read">(simulariumio.readers.plot_reader.PlotReader method)</a>
+</li>
+        <li><a href="simulariumio.readers.html#simulariumio.readers.scatter_plot_reader.ScatterPlotReader.read">(simulariumio.readers.scatter_plot_reader.ScatterPlotReader method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.html#simulariumio.readdy_converter.ReaddyConverter">ReaddyConverter (class in simulariumio.readdy_converter)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.readdy_data.ReaddyData">ReaddyData (class in simulariumio.data_objects.readdy_data)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.render_mode">render_mode (simulariumio.data_objects.scatter_plot_data.ScatterPlotData attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.cytosim_data.CytosimData.scale_factor">scale_factor (simulariumio.data_objects.cytosim_data.CytosimData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.physicell_data.PhysicellData.scale_factor">(simulariumio.data_objects.physicell_data.PhysicellData attribute)</a>
+</li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.readdy_data.ReaddyData.scale_factor">(simulariumio.data_objects.readdy_data.ReaddyData attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.scatter_plot_data.ScatterPlotData">ScatterPlotData (class in simulariumio.data_objects.scatter_plot_data)</a>
+</li>
+      <li><a href="simulariumio.readers.html#simulariumio.readers.scatter_plot_reader.ScatterPlotReader">ScatterPlotReader (class in simulariumio.readers.scatter_plot_reader)</a>
+</li>
+      <li><a href="simulariumio.html#module-simulariumio">simulariumio (module)</a>
+</li>
+      <li><a href="simulariumio.html#module-simulariumio.constants">simulariumio.constants (module)</a>
+</li>
+      <li><a href="simulariumio.html#module-simulariumio.converter">simulariumio.converter (module)</a>
+</li>
+      <li><a href="simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter (module)</a>
+</li>
+      <li><a href="simulariumio.html#module-simulariumio.cytosim_converter">simulariumio.cytosim_converter (module)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects">simulariumio.data_objects (module)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.agent_data">simulariumio.data_objects.agent_data (module)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.custom_data">simulariumio.data_objects.custom_data (module)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.cytosim_agent_info">simulariumio.data_objects.cytosim_agent_info (module)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.cytosim_data">simulariumio.data_objects.cytosim_data (module)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.cytosim_object_info">simulariumio.data_objects.cytosim_object_info (module)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.histogram_plot_data">simulariumio.data_objects.histogram_plot_data (module)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.physicell_data">simulariumio.data_objects.physicell_data (module)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.readdy_data">simulariumio.data_objects.readdy_data (module)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.scatter_plot_data">simulariumio.data_objects.scatter_plot_data (module)</a>
+</li>
+      <li><a href="simulariumio.dep.html#module-simulariumio.dep">simulariumio.dep (module)</a>
+</li>
+      <li><a href="simulariumio.dep.html#module-simulariumio.dep.pyMCDS">simulariumio.dep.pyMCDS (module)</a>
+</li>
+      <li><a href="simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions (module)</a>
+</li>
+      <li><a href="simulariumio.html#module-simulariumio.physicell_converter">simulariumio.physicell_converter (module)</a>
+</li>
+      <li><a href="simulariumio.html#module-simulariumio.readdy_converter">simulariumio.readdy_converter (module)</a>
+</li>
+      <li><a href="simulariumio.readers.html#module-simulariumio.readers">simulariumio.readers (module)</a>
+</li>
+      <li><a href="simulariumio.readers.html#module-simulariumio.readers.histogram_plot_reader">simulariumio.readers.histogram_plot_reader (module)</a>
+</li>
+      <li><a href="simulariumio.readers.html#module-simulariumio.readers.plot_reader">simulariumio.readers.plot_reader (module)</a>
+</li>
+      <li><a href="simulariumio.readers.html#module-simulariumio.readers.scatter_plot_reader">simulariumio.readers.scatter_plot_reader (module)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.subpoints">subpoints (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.times">times (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.physicell_data.PhysicellData.timestep">timestep (simulariumio.data_objects.physicell_data.PhysicellData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.readdy_data.ReaddyData.timestep">(simulariumio.data_objects.readdy_data.ReaddyData attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.histogram_plot_data.HistogramPlotData.title">title (simulariumio.data_objects.histogram_plot_data.HistogramPlotData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.title">(simulariumio.data_objects.scatter_plot_data.ScatterPlotData attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.histogram_plot_data.HistogramPlotData.traces">traces (simulariumio.data_objects.histogram_plot_data.HistogramPlotData attribute)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.readdy_data.ReaddyData.type_grouping">type_grouping (simulariumio.data_objects.readdy_data.ReaddyData attribute)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.type_ids">type_ids (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.types">types (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.physicell_data.PhysicellData.types">(simulariumio.data_objects.physicell_data.PhysicellData attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.unique_ids">unique_ids (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.html#simulariumio.exceptions.UnsupportedPlotTypeError">UnsupportedPlotTypeError</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.html#simulariumio.constants.VIZ_TYPE">VIZ_TYPE (class in simulariumio.constants)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.viz_types">viz_types (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.html#simulariumio.converter.Converter.write_JSON">write_JSON() (simulariumio.converter.Converter method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.histogram_plot_data.HistogramPlotData.xaxis_title">xaxis_title (simulariumio.data_objects.histogram_plot_data.HistogramPlotData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.xaxis_title">(simulariumio.data_objects.scatter_plot_data.ScatterPlotData attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.histogram_plot_data.HistogramPlotData.xtrace">xtrace (simulariumio.data_objects.histogram_plot_data.HistogramPlotData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.xtrace">(simulariumio.data_objects.scatter_plot_data.ScatterPlotData attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.yaxis_title">yaxis_title (simulariumio.data_objects.scatter_plot_data.ScatterPlotData attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.ytraces">ytraces (simulariumio.data_objects.scatter_plot_data.ScatterPlotData attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Blair Lyons
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

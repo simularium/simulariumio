@@ -1,0 +1,785 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>simulariumio.data_objects package &mdash; Simularium Conversion 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="simulariumio.dep package" href="simulariumio.dep.html" />
+    <link rel="prev" title="simulariumio package" href="simulariumio.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Simularium Conversion
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="simulariumio.html">simulariumio package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="simulariumio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.dep.html">simulariumio.dep package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.readers.html">simulariumio.readers package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.cytosim_converter">simulariumio.cytosim_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.physicell_converter">simulariumio.physicell_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.readdy_converter">simulariumio.readdy_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Math notation example</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Simularium Conversion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">simulariumio</a> &raquo;</li>
+        
+          <li><a href="simulariumio.html">simulariumio package</a> &raquo;</li>
+        
+      <li>simulariumio.data_objects package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/simulariumio.data_objects.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="simulariumio.dep.html" class="btn btn-neutral float-right" title="simulariumio.dep package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="simulariumio.html" class="btn btn-neutral float-left" title="simulariumio package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="simulariumio-data-objects-package">
+<h1>simulariumio.data_objects package<a class="headerlink" href="#simulariumio-data-objects-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-simulariumio.data_objects.agent_data">
+<span id="simulariumio-data-objects-agent-data-module"></span><h2>simulariumio.data_objects.agent_data module<a class="headerlink" href="#module-simulariumio.data_objects.agent_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.agent_data.AgentData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.agent_data.</code><code class="sig-name descname">AgentData</code><span class="sig-paren">(</span><em class="sig-param">times: numpy.ndarray, n_agents: numpy.ndarray, viz_types: numpy.ndarray, unique_ids: numpy.ndarray, types: List[List[str]], positions: numpy.ndarray, radii: numpy.ndarray, n_subpoints: numpy.ndarray = None, subpoints: numpy.ndarray = None, draw_fiber_points: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object contains custom simulation trajectory outputs
+and plot data</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>times</strong> (<em>np.ndarray (shape = [timesteps])</em>) – A numpy ndarray containing the elapsed simulated time
+at each timestep</p></li>
+<li><p><strong>n_agents</strong> (<em>np.ndarray (shape = [timesteps])</em>) – A numpy ndarray containing the number of agents
+that exist at each timestep</p></li>
+<li><p><strong>viz_types</strong> (<em>np.ndarray (shape = [timesteps, agents])</em>) – A numpy ndarray containing the viz type
+for each agent at each timestep. Current options:</p>
+<blockquote>
+<div><p>1000 : default,
+1001 : fiber (which will require subpoints)</p>
+</div></blockquote>
+</li>
+<li><p><strong>unique_ids</strong> (<em>np.ndarray (shape = [timesteps, agents])</em>) – A numpy ndarray containing the unique ID
+for each agent at each timestep</p></li>
+<li><p><strong>types</strong> (<em>List[List[str]] (list of shape [timesteps, agents])</em>) – A list containing timesteps, for each a list of
+the string name for the type of each agent</p></li>
+<li><p><strong>positions</strong> (<em>np.ndarray (shape = [timesteps, agents, 3])</em>) – A numpy ndarray containing the XYZ position
+for each agent at each timestep</p></li>
+<li><p><strong>radii</strong> (<em>np.ndarray (shape = [timesteps, agents])</em>) – A numpy ndarray containing the radius
+for each agent at each timestep</p></li>
+<li><p><strong>n_subpoints</strong> (<em>np.ndarray (shape = [timesteps, agents]) (optional)</em>) – A numpy ndarray containing the number of subpoints
+belonging to each agent at each timestep. Required if
+subpoints are provided
+Default: None</p></li>
+<li><p><strong>subpoints</strong> (<em>np.ndarray</em>)</p></li>
+<li><p><strong>(shape = [timesteps, agents, subpoints, 3]) (optional)</strong> – A numpy ndarray containing a list of subpoint position data
+for each agent at each timestep. These values are
+currently only used for fiber agents
+Default: None</p></li>
+<li><p><strong>draw_fiber_points</strong> (<em>bool (optional)</em>) – Draw spheres at every other fiber point for fibers?
+Default: False</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.draw_fiber_points">
+<code class="sig-name descname">draw_fiber_points</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.draw_fiber_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.n_agents">
+<code class="sig-name descname">n_agents</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.n_agents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.n_subpoints">
+<code class="sig-name descname">n_subpoints</code><em class="property">: numpy.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.n_subpoints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.positions">
+<code class="sig-name descname">positions</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.positions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.radii">
+<code class="sig-name descname">radii</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.radii" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.subpoints">
+<code class="sig-name descname">subpoints</code><em class="property">: numpy.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.subpoints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.times">
+<code class="sig-name descname">times</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.times" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.type_ids">
+<code class="sig-name descname">type_ids</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.type_ids" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.types">
+<code class="sig-name descname">types</code><em class="property">: List[List[str]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.unique_ids">
+<code class="sig-name descname">unique_ids</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.unique_ids" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.viz_types">
+<code class="sig-name descname">viz_types</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.viz_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects.custom_data">
+<span id="simulariumio-data-objects-custom-data-module"></span><h2>simulariumio.data_objects.custom_data module<a class="headerlink" href="#module-simulariumio.data_objects.custom_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.custom_data.CustomData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.custom_data.</code><code class="sig-name descname">CustomData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">agent_data: simulariumio.data_objects.agent_data.AgentData</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/custom_data.html#CustomData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.custom_data.CustomData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object holds custom simulation trajectory outputs
+and plot data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
+of the simulation bounding volume</p></li>
+<li><p><strong>agent_data</strong> (<em>AgentData</em>) – An object containing data for each agent
+at each timestep</p></li>
+<li><p><strong>plots</strong> (<em>List[Dict[str, Any]] (optional)</em>) – An object containing plot data already
+in Simularium format</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.custom_data.CustomData.agent_data">
+<code class="sig-name descname">agent_data</code><em class="property">: AgentData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.custom_data.CustomData.agent_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.custom_data.CustomData.box_size">
+<code class="sig-name descname">box_size</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.custom_data.CustomData.box_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.custom_data.CustomData.plots">
+<code class="sig-name descname">plots</code><em class="property">: List[Dict[str, Any]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.custom_data.CustomData.plots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects.cytosim_agent_info">
+<span id="simulariumio-data-objects-cytosim-agent-info-module"></span><h2>simulariumio.data_objects.cytosim_agent_info module<a class="headerlink" href="#module-simulariumio.data_objects.cytosim_agent_info" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.cytosim_agent_info.</code><code class="sig-name descname">CytosimAgentInfo</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">radius: float = 1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/cytosim_agent_info.html#CytosimAgentInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object contains info about how to display a type of agent</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>name</strong> (<em>str</em>) – A string display name for this type of agent
+Default: “[Cytosim object type][agent type index from Cytosim data]”</p>
+<blockquote>
+<div><p>e.g. “fiber1”, “solid0”</p>
+</div></blockquote>
+</li>
+<li><p><strong>radius</strong> (<em>float (optional)</em>) – A float radius for rendering this agent.
+For fibers, this is the thickness of the line
+For default agents, this is the radius of the sphere
+Default : 1.0</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo.name">
+<code class="sig-name descname">name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo.radius">
+<code class="sig-name descname">radius</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo.radius" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects.cytosim_data">
+<span id="simulariumio-data-objects-cytosim-data-module"></span><h2>simulariumio.data_objects.cytosim_data module<a class="headerlink" href="#module-simulariumio.data_objects.cytosim_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.cytosim_data.CytosimData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.cytosim_data.</code><code class="sig-name descname">CytosimData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray, object_info: Dict[str, simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo], draw_fiber_points: bool = False, scale_factor: float = 1.0, plots: List[Dict[str, Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/cytosim_data.html#CytosimData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.cytosim_data.CytosimData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object holds simulation trajectory outputs
+from CytoSim (<a class="reference external" href="https://gitlab.com/f.nedelec/cytosim">https://gitlab.com/f.nedelec/cytosim</a>)
+and plot data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
+of the simulation bounding volume</p></li>
+<li><p><strong>object_info</strong> (<em>Dict[str, CytosimObjectInfo]</em>) – A dict mapping Cytosim object type
+(either “fibers”, “solids”, “singles”, or “couples”)
+to info for reading the Cytosim data for agents
+of that object type</p></li>
+<li><p><strong>draw_fiber_points</strong> (<em>bool (optional)</em>) – (only used for fibers)
+in addition to drawing a line for each fiber,
+also draw spheres at every other point along it?
+Default: False</p></li>
+<li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the Cytosim scene, use if
+visualization is too large or small
+Default: 1.0</p></li>
+<li><p><strong>plots</strong> (<em>List[Dict[str, Any]] (optional)</em>) – An object containing plot data already
+in Simularium format</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.cytosim_data.CytosimData.box_size">
+<code class="sig-name descname">box_size</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.cytosim_data.CytosimData.box_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.cytosim_data.CytosimData.draw_fiber_points">
+<code class="sig-name descname">draw_fiber_points</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.cytosim_data.CytosimData.draw_fiber_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.cytosim_data.CytosimData.object_info">
+<code class="sig-name descname">object_info</code><em class="property">: Dict[str, CytosimObjectInfo]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.cytosim_data.CytosimData.object_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.cytosim_data.CytosimData.plots">
+<code class="sig-name descname">plots</code><em class="property">: List[Dict[str, Any]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.cytosim_data.CytosimData.plots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.cytosim_data.CytosimData.scale_factor">
+<code class="sig-name descname">scale_factor</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.cytosim_data.CytosimData.scale_factor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects.cytosim_object_info">
+<span id="simulariumio-data-objects-cytosim-object-info-module"></span><h2>simulariumio.data_objects.cytosim_object_info module<a class="headerlink" href="#module-simulariumio.data_objects.cytosim_object_info" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.cytosim_object_info.</code><code class="sig-name descname">CytosimObjectInfo</code><span class="sig-paren">(</span><em class="sig-param">filepath: str, agents: Dict[int, simulariumio.data_objects.cytosim_agent_info.CytosimAgentInfo] = {}, position_indices: List[int] = [2, 3, 4]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/cytosim_object_info.html#CytosimObjectInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object contains info for reading Cytosim data
+for one type of Cytosim object
+(e.g. fibers, couples, singles, or solids)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> (<em>str</em>) – A string path to fiber_points.txt</p></li>
+<li><p><strong>agents</strong> (<em>Dict[int, CytosimAgentInfo] (optional)</em>) – A dict mapping the type index from Cytosim data
+to display names and radii for each type of agent
+of this type of Cytosim object</p></li>
+<li><p><strong>position_indices</strong> (<em>List[int] (optional)</em>) – the columns in Cytosim’s reports are not
+always consistent, use this to override them
+if your output file has different column indices
+for position XYZ
+Default: [2, 3, 4]</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo.agents">
+<code class="sig-name descname">agents</code><em class="property">: Dict[int, CytosimAgentInfo]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo.agents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo.filepath">
+<code class="sig-name descname">filepath</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo.filepath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo.position_indices">
+<code class="sig-name descname">position_indices</code><em class="property">: List[int]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo.position_indices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects.histogram_plot_data">
+<span id="simulariumio-data-objects-histogram-plot-data-module"></span><h2>simulariumio.data_objects.histogram_plot_data module<a class="headerlink" href="#module-simulariumio.data_objects.histogram_plot_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.histogram_plot_data.HistogramPlotData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.histogram_plot_data.</code><code class="sig-name descname">HistogramPlotData</code><span class="sig-paren">(</span><em class="sig-param">title: str, xaxis_title: str, traces: Dict[str, numpy.ndarray]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/histogram_plot_data.html#HistogramPlotData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.histogram_plot_data.HistogramPlotData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object contains data for a scatterplot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> (<em>str</em>) – A string display title for the plot</p></li>
+<li><p><strong>xaxis_title</strong> (<em>str</em>) – A string label (with units) for the x-axis</p></li>
+<li><p><strong>traces</strong> (<em>Dict[str, np.ndarray] (shape = [values])]</em>) – A dictionary with trace display names as keys,
+each mapped to a numpy ndarray of values</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.histogram_plot_data.HistogramPlotData.title">
+<code class="sig-name descname">title</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.histogram_plot_data.HistogramPlotData.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.histogram_plot_data.HistogramPlotData.traces">
+<code class="sig-name descname">traces</code><em class="property">: Dict[str, np.ndarray]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.histogram_plot_data.HistogramPlotData.traces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.histogram_plot_data.HistogramPlotData.xaxis_title">
+<code class="sig-name descname">xaxis_title</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.histogram_plot_data.HistogramPlotData.xaxis_title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.histogram_plot_data.HistogramPlotData.xtrace">
+<code class="sig-name descname">xtrace</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.histogram_plot_data.HistogramPlotData.xtrace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects.physicell_data">
+<span id="simulariumio-data-objects-physicell-data-module"></span><h2>simulariumio.data_objects.physicell_data module<a class="headerlink" href="#module-simulariumio.data_objects.physicell_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.physicell_data.PhysicellData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.physicell_data.</code><code class="sig-name descname">PhysicellData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">timestep: float</em>, <em class="sig-param">path_to_output_dir: str</em>, <em class="sig-param">types: Dict[int</em>, <em class="sig-param">Dict[Any</em>, <em class="sig-param">str]] = None</em>, <em class="sig-param">scale_factor: float = 1.0</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/physicell_data.html#PhysicellData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.physicell_data.PhysicellData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object holds simulation trajectory outputs
+from ReaDDy (<a class="reference external" href="https://readdy.github.io/">https://readdy.github.io/</a>)
+and plot data</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
+of the simulation bounding volume</p></li>
+<li><p><strong>timestep</strong> (<em>float</em>) – A float amount of time that passes each step
+Default: 0.0</p></li>
+<li><p><strong>path_to_output_dir</strong> (<em>string</em>) – A string path to the PhysiCell output directory
+containing MultiCellDS XML and MATLAB files</p></li>
+<li><p><strong>types</strong> (<em>Dict[int, Dict[Any, str]] (optional)</em>) – the cell type ID from PhysiCell data mapped
+to display name for that type, and display names
+for phases of that type
+“name” or [cell phase ID from PhysiCell data] : str</p>
+<blockquote>
+<div><p>“name” or the cell phase ID from PhysiCell data mapped
+to the display names
+Default: “cell[cell type ID from PhysiCell data]#</p>
+<blockquote>
+<div><p>phase[cell phase ID from PhysiCell data]”</p>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the ReaDDy scene, use if
+visualization is too large or small
+Default: 1.0</p></li>
+<li><p><strong>plots</strong> (<em>List[Dict[str, Any]] (optional)</em>) – An object containing plot data already
+in Simularium format</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.physicell_data.PhysicellData.box_size">
+<code class="sig-name descname">box_size</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.physicell_data.PhysicellData.box_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.physicell_data.PhysicellData.path_to_output_dir">
+<code class="sig-name descname">path_to_output_dir</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.physicell_data.PhysicellData.path_to_output_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.physicell_data.PhysicellData.plots">
+<code class="sig-name descname">plots</code><em class="property">: List[Dict[str, Any]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.physicell_data.PhysicellData.plots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.physicell_data.PhysicellData.scale_factor">
+<code class="sig-name descname">scale_factor</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.physicell_data.PhysicellData.scale_factor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.physicell_data.PhysicellData.timestep">
+<code class="sig-name descname">timestep</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.physicell_data.PhysicellData.timestep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.physicell_data.PhysicellData.types">
+<code class="sig-name descname">types</code><em class="property">: Dict[int, Dict[Any, str]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.physicell_data.PhysicellData.types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects.readdy_data">
+<span id="simulariumio-data-objects-readdy-data-module"></span><h2>simulariumio.data_objects.readdy_data module<a class="headerlink" href="#module-simulariumio.data_objects.readdy_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.readdy_data.ReaddyData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.readdy_data.</code><code class="sig-name descname">ReaddyData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">timestep: float</em>, <em class="sig-param">path_to_readdy_h5: str</em>, <em class="sig-param">radii: Dict[str</em>, <em class="sig-param">float] = None</em>, <em class="sig-param">ignore_types: List[str] = None</em>, <em class="sig-param">type_grouping: Dict[str</em>, <em class="sig-param">List[str]] = None</em>, <em class="sig-param">scale_factor: float = 1.0</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/readdy_data.html#ReaddyData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.readdy_data.ReaddyData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object holds simulation trajectory outputs
+from ReaDDy (<a class="reference external" href="https://readdy.github.io/">https://readdy.github.io/</a>)
+and plot data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
+of the simulation bounding volume</p></li>
+<li><p><strong>timestep</strong> (<em>float</em>) – A float amount of time that passes each step
+Default: 0.0</p></li>
+<li><p><strong>path_to_readdy_h5</strong> (<em>str</em>) – A string path to the ReaDDy trajectory file (.h5)</p></li>
+<li><p><strong>radii</strong> (<em>Dict[str, float] (optional)</em>) – A mapping of ReaDDy particle type to radius
+of each visualized sphere for that type
+Default: 1.0 (for each particle)</p></li>
+<li><p><strong>ignore_types</strong> (<em>List[str] (optional)</em>) – A list of string ReaDDy particle types to ignore</p></li>
+<li><p><strong>type_grouping</strong> (<em>Dict[str, List[str]] (optional)</em>) – A mapping of a new group type name to a list of
+ReaDDy particle types to include in that group
+e.g. {“moleculeA”:[“A1”,”A2”,”A3”]}</p></li>
+<li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the ReaDDy scene, use if
+visualization is too large or small
+Default: 1.0</p></li>
+<li><p><strong>plots</strong> (<em>List[Dict[str, Any]] (optional)</em>) – An object containing plot data already
+in Simularium format</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.readdy_data.ReaddyData.box_size">
+<code class="sig-name descname">box_size</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.readdy_data.ReaddyData.box_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.readdy_data.ReaddyData.ignore_types">
+<code class="sig-name descname">ignore_types</code><em class="property">: List[str]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.readdy_data.ReaddyData.ignore_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.readdy_data.ReaddyData.path_to_readdy_h5">
+<code class="sig-name descname">path_to_readdy_h5</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.readdy_data.ReaddyData.path_to_readdy_h5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.readdy_data.ReaddyData.plots">
+<code class="sig-name descname">plots</code><em class="property">: List[Dict[str, Any]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.readdy_data.ReaddyData.plots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.readdy_data.ReaddyData.radii">
+<code class="sig-name descname">radii</code><em class="property">: Dict[str, float]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.readdy_data.ReaddyData.radii" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.readdy_data.ReaddyData.scale_factor">
+<code class="sig-name descname">scale_factor</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.readdy_data.ReaddyData.scale_factor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.readdy_data.ReaddyData.timestep">
+<code class="sig-name descname">timestep</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.readdy_data.ReaddyData.timestep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.readdy_data.ReaddyData.type_grouping">
+<code class="sig-name descname">type_grouping</code><em class="property">: Dict[str, List[str]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.readdy_data.ReaddyData.type_grouping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects.scatter_plot_data">
+<span id="simulariumio-data-objects-scatter-plot-data-module"></span><h2>simulariumio.data_objects.scatter_plot_data module<a class="headerlink" href="#module-simulariumio.data_objects.scatter_plot_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.scatter_plot_data.ScatterPlotData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.scatter_plot_data.</code><code class="sig-name descname">ScatterPlotData</code><span class="sig-paren">(</span><em class="sig-param">title: str, xaxis_title: str, yaxis_title: str, xtrace: numpy.ndarray, ytraces: Dict[str, numpy.ndarray], render_mode: str = 'markers'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/scatter_plot_data.html#ScatterPlotData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.scatter_plot_data.ScatterPlotData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object contains data for a scatterplot</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>title</strong> (<em>str</em>) – A string display title for the plot</p></li>
+<li><p><strong>xaxis_title</strong> (<em>str</em>) – A string label (with units) for the x-axis</p></li>
+<li><p><strong>yaxis_title</strong> (<em>str</em>) – A string label (with units) for the y-axis</p></li>
+<li><p><strong>xtrace</strong> (<em>np.ndarray (shape = [x values])</em>) – A numpy ndarray of values for x,
+the independent variable</p></li>
+<li><p><strong>ytraces</strong> (<em>Dict[str, np.ndarray] (shape = [x values])]</em>) – A dictionary with y-trace display names as keys,
+each mapped to a numpy ndarray of values for y,
+the dependent variable</p></li>
+<li><p><strong>render_mode</strong> (<em>str (optional)</em>) – A string specifying how to draw the datapoints.
+Options:</p>
+<blockquote>
+<div><p>“markers” : draw as points
+“lines” : connect points with line</p>
+</div></blockquote>
+<p>Default: “markers”</p>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.scatter_plot_data.ScatterPlotData.render_mode">
+<code class="sig-name descname">render_mode</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.render_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.scatter_plot_data.ScatterPlotData.title">
+<code class="sig-name descname">title</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.scatter_plot_data.ScatterPlotData.xaxis_title">
+<code class="sig-name descname">xaxis_title</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.xaxis_title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.scatter_plot_data.ScatterPlotData.xtrace">
+<code class="sig-name descname">xtrace</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.xtrace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.scatter_plot_data.ScatterPlotData.yaxis_title">
+<code class="sig-name descname">yaxis_title</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.yaxis_title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.scatter_plot_data.ScatterPlotData.ytraces">
+<code class="sig-name descname">ytraces</code><em class="property">: Dict[str, np.ndarray]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.ytraces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.data_objects" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Blair Lyons
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>simulariumio package &mdash; Simularium Conversion 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="simulariumio.data_objects package" href="simulariumio.data_objects.html" />
+    <link rel="prev" title="simulariumio" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Simularium Conversion
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">simulariumio package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.dep.html">simulariumio.dep package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.readers.html">simulariumio.readers package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.constants">simulariumio.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.converter">simulariumio.converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.cytosim_converter">simulariumio.cytosim_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.physicell_converter">simulariumio.physicell_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.readdy_converter">simulariumio.readdy_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Math notation example</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Simularium Conversion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">simulariumio</a> &raquo;</li>
+        
+      <li>simulariumio package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/simulariumio.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="simulariumio.data_objects.html" class="btn btn-neutral float-right" title="simulariumio.data_objects package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="simulariumio" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="simulariumio-package">
+<h1>simulariumio package<a class="headerlink" href="#simulariumio-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.agent_data">simulariumio.data_objects.agent_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.custom_data">simulariumio.data_objects.custom_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.cytosim_agent_info">simulariumio.data_objects.cytosim_agent_info module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.cytosim_data">simulariumio.data_objects.cytosim_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.cytosim_object_info">simulariumio.data_objects.cytosim_object_info module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.histogram_plot_data">simulariumio.data_objects.histogram_plot_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.physicell_data">simulariumio.data_objects.physicell_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.readdy_data">simulariumio.data_objects.readdy_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.scatter_plot_data">simulariumio.data_objects.scatter_plot_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulariumio.dep.html">simulariumio.dep package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.dep.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.dep.html#module-simulariumio.dep.pyMCDS">simulariumio.dep.pyMCDS module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.dep.html#module-simulariumio.dep">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulariumio.readers.html">simulariumio.readers package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.readers.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.readers.html#module-simulariumio.readers.histogram_plot_reader">simulariumio.readers.histogram_plot_reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.readers.html#module-simulariumio.readers.plot_reader">simulariumio.readers.plot_reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.readers.html#module-simulariumio.readers.scatter_plot_reader">simulariumio.readers.scatter_plot_reader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.readers.html#module-simulariumio.readers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-simulariumio.constants">
+<span id="simulariumio-constants-module"></span><h2>simulariumio.constants module<a class="headerlink" href="#module-simulariumio.constants" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.constants.VIZ_TYPE">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.constants.</code><code class="sig-name descname">VIZ_TYPE</code><a class="reference internal" href="_modules/simulariumio/constants.html#VIZ_TYPE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.constants.VIZ_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="simulariumio.constants.VIZ_TYPE.default">
+<code class="sig-name descname">default</code><em class="property">: float</em><em class="property"> = 1000.0</em><a class="headerlink" href="#simulariumio.constants.VIZ_TYPE.default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.VIZ_TYPE.fiber">
+<code class="sig-name descname">fiber</code><em class="property">: float</em><em class="property"> = 1001.0</em><a class="headerlink" href="#simulariumio.constants.VIZ_TYPE.fiber" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.converter">
+<span id="simulariumio-converter-module"></span><h2>simulariumio.converter module<a class="headerlink" href="#module-simulariumio.converter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.converter.Converter">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.converter.</code><code class="sig-name descname">Converter</code><a class="reference internal" href="_modules/simulariumio/converter.html#Converter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.converter.Converter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="simulariumio.converter.Converter.add_plot">
+<code class="sig-name descname">add_plot</code><span class="sig-paren">(</span><em class="sig-param">data: [&lt;class 'simulariumio.data_objects.scatter_plot_data.ScatterPlotData'&gt;] = {}</em>, <em class="sig-param">plot_type: str = 'scatter'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/converter.html#Converter.add_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.converter.Converter.add_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add data to be rendered in a plot</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>data</strong> (<em>ScatterPlotData or HistogramPlotData</em>) – Loaded data for a plot.</p></li>
+<li><p><strong>plot_type</strong> (<em>str</em>) – A string specifying which type of plot to render.
+Current options:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>‘scatter’<span class="classifier">a scatterplot with y-trace(s) dependent</span></dt><dd><p>on an x-trace</p>
+</dd>
+<dt>‘histogram’<span class="classifier">a histogram with bars drawn at intervals</span></dt><dd><p>over the range(s) of the data, with their height
+corresponding to the number of values in each interval</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Default: ‘scatter’</p>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.converter.Converter.write_JSON">
+<code class="sig-name descname">write_JSON</code><span class="sig-paren">(</span><em class="sig-param">output_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/converter.html#Converter.write_JSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.converter.Converter.write_JSON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the data in .simularium JSON format at the output path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output_path</strong> (<em>str</em>) – where to save the file</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.custom_converter">
+<span id="simulariumio-custom-converter-module"></span><h2>simulariumio.custom_converter module<a class="headerlink" href="#module-simulariumio.custom_converter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.custom_converter.CustomConverter">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.custom_converter.</code><code class="sig-name descname">CustomConverter</code><span class="sig-paren">(</span><em class="sig-param">input_data: simulariumio.data_objects.custom_data.CustomData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/custom_converter.html#CustomConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.custom_converter.CustomConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.converter.Converter" title="simulariumio.converter.Converter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.converter.Converter</span></code></a></p>
+<p>This object reads custom simulation trajectory outputs
+and plot data and writes them in the JSON format used
+by the Simularium viewer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_data</strong> (<em>CustomData</em>) – An object containing custom simulation trajectory outputs
+and plot data</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.cytosim_converter">
+<span id="simulariumio-cytosim-converter-module"></span><h2>simulariumio.cytosim_converter module<a class="headerlink" href="#module-simulariumio.cytosim_converter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.cytosim_converter.CytosimConverter">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.cytosim_converter.</code><code class="sig-name descname">CytosimConverter</code><span class="sig-paren">(</span><em class="sig-param">input_data: simulariumio.data_objects.cytosim_data.CytosimData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/cytosim_converter.html#CytosimConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.cytosim_converter.CytosimConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.converter.Converter" title="simulariumio.converter.Converter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.converter.Converter</span></code></a></p>
+<p>This object reads simulation trajectory outputs
+from CytoSim (<a class="reference external" href="https://gitlab.com/f.nedelec/cytosim">https://gitlab.com/f.nedelec/cytosim</a>)
+and plot data and writes them in the JSON format used
+by the Simularium viewer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_data</strong> (<em>CytosimData</em>) – An object containing info for reading
+Cytosim simulation trajectory outputs and plot data</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.exceptions">
+<span id="simulariumio-exceptions-module"></span><h2>simulariumio.exceptions module<a class="headerlink" href="#module-simulariumio.exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="simulariumio.exceptions.DataError">
+<em class="property">exception </em><code class="sig-prename descclassname">simulariumio.exceptions.</code><code class="sig-name descname">DataError</code><span class="sig-paren">(</span><em class="sig-param">issue</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/exceptions.html#DataError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.exceptions.DataError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>This exception is intended to communicate that something
+is wrong with the data provided.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="simulariumio.exceptions.MissingDataError">
+<em class="property">exception </em><code class="sig-prename descclassname">simulariumio.exceptions.</code><code class="sig-name descname">MissingDataError</code><span class="sig-paren">(</span><em class="sig-param">field_name</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/exceptions.html#MissingDataError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.exceptions.MissingDataError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>This exception is intended to communicate that the data provided
+is missing a field needed to parse it.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="simulariumio.exceptions.UnsupportedPlotTypeError">
+<em class="property">exception </em><code class="sig-prename descclassname">simulariumio.exceptions.</code><code class="sig-name descname">UnsupportedPlotTypeError</code><span class="sig-paren">(</span><em class="sig-param">plot_type</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/exceptions.html#UnsupportedPlotTypeError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.exceptions.UnsupportedPlotTypeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>This exception is intended to communicate that the requested plot type
+is not one of the supported types and cannot be parsed with simulariumio.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.physicell_converter">
+<span id="simulariumio-physicell-converter-module"></span><h2>simulariumio.physicell_converter module<a class="headerlink" href="#module-simulariumio.physicell_converter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.physicell_converter.PhysicellConverter">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.physicell_converter.</code><code class="sig-name descname">PhysicellConverter</code><span class="sig-paren">(</span><em class="sig-param">input_data: simulariumio.data_objects.physicell_data.PhysicellData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/physicell_converter.html#PhysicellConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.physicell_converter.PhysicellConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.converter.Converter" title="simulariumio.converter.Converter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.converter.Converter</span></code></a></p>
+<p>This object reads simulation trajectory outputs
+from PhysiCell (<a class="reference external" href="http://physicell.org/">http://physicell.org/</a>)
+and plot data and writes them in the JSON format used
+by the Simularium viewer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_data</strong> (<em>PhysicellData</em>) – An object containing info for reading
+PhysiCell simulation trajectory outputs and plot data</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.readdy_converter">
+<span id="simulariumio-readdy-converter-module"></span><h2>simulariumio.readdy_converter module<a class="headerlink" href="#module-simulariumio.readdy_converter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.readdy_converter.ReaddyConverter">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.readdy_converter.</code><code class="sig-name descname">ReaddyConverter</code><span class="sig-paren">(</span><em class="sig-param">input_data: simulariumio.data_objects.readdy_data.ReaddyData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/readdy_converter.html#ReaddyConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.readdy_converter.ReaddyConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.converter.Converter" title="simulariumio.converter.Converter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.converter.Converter</span></code></a></p>
+<p>This object reads simulation trajectory outputs
+from ReaDDy (<a class="reference external" href="https://readdy.github.io/">https://readdy.github.io/</a>)
+and plot data and writes them in the JSON format used
+by the Simularium viewer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_data</strong> (<em>ReaddyData</em>) – An object containing info for reading
+ReaDDy simulation trajectory outputs and plot data</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio" title="Permalink to this headline">¶</a></h2>
+<p>Top-level package for Simularium Conversion.</p>
+<dl class="function">
+<dt id="simulariumio.get_module_version">
+<code class="sig-prename descclassname">simulariumio.</code><code class="sig-name descname">get_module_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio.html#get_module_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.get_module_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Blair Lyons
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

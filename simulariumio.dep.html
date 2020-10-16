@@ -1,0 +1,487 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>simulariumio.dep package &mdash; Simularium Conversion 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="simulariumio.readers package" href="simulariumio.readers.html" />
+    <link rel="prev" title="simulariumio.data_objects package" href="simulariumio.data_objects.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Simularium Conversion
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="simulariumio.html">simulariumio package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="simulariumio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">simulariumio.dep package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.readers.html">simulariumio.readers package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.cytosim_converter">simulariumio.cytosim_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.physicell_converter">simulariumio.physicell_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.readdy_converter">simulariumio.readdy_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="math.html">Math notation example</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Simularium Conversion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">simulariumio</a> &raquo;</li>
+        
+          <li><a href="simulariumio.html">simulariumio package</a> &raquo;</li>
+        
+      <li>simulariumio.dep package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/simulariumio.dep.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="simulariumio.readers.html" class="btn btn-neutral float-right" title="simulariumio.readers package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="simulariumio.data_objects.html" class="btn btn-neutral float-left" title="simulariumio.data_objects package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="simulariumio-dep-package">
+<h1>simulariumio.dep package<a class="headerlink" href="#simulariumio-dep-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-simulariumio.dep.pyMCDS">
+<span id="simulariumio-dep-pymcds-module"></span><h2>simulariumio.dep.pyMCDS module<a class="headerlink" href="#module-simulariumio.dep.pyMCDS" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.dep.pyMCDS.</code><code class="sig-name descname">pyMCDS</code><span class="sig-paren">(</span><em class="sig-param">xml_file</em>, <em class="sig-param">parse_continuum_variables</em>, <em class="sig-param">output_path='.'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class contains a dictionary of dictionaries that contains all of the
+output from a single time step of a PhysiCell Model. This class assumes that
+all output files are stored in the same directory. Data is loaded by reading
+the .xml file for a particular timestep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xml_name</strong> (<em>str</em>) – String containing the name of the xml file without the path</p></li>
+<li><p><strong>output_path</strong> (<em>str, optional</em>) – String containing the path (relative or absolute) to the directory
+where PhysiCell output files are stored (default= “.”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables</dt>
+<dd class="field-even"><p><strong>data</strong> (<em>dict</em>) – Hierarchical container for all of the data retrieved by parsing the xml
+file and the files referenced therein.</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_2D_mesh">
+<code class="sig-name descname">get_2D_mesh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_2D_mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_2D_mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns the x, y meshgrid as two numpy arrays. It is
+identical to get_mesh with the option flat=True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>splitting</strong> – Contains arrays of voxel center coordinates in x and y dimensions
+as meshgrid with shape [nx_voxel, ny_voxel]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list length=2</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_cell_df">
+<code class="sig-name descname">get_cell_df</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_cell_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_cell_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds DataFrame from data[‘discrete_cells’]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>cells_df</strong> – Dataframe containing the cell data for all cells at this time step</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pd.Dataframe, shape=[n_cells, n_variables]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_cell_df_at">
+<code class="sig-name descname">get_cell_df_at</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_cell_df_at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_cell_df_at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dataframe for cells in the same voxel as the position given by
+x, y, and z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – x-position for the point of interest</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – y_position for the point of interest</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – z_position for the point of interest</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>vox_df</strong> – cell dataframe containing only cells in the same voxel as the point
+specified by x, y, and z.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame, shape=[n_cell_in_voxel, n_variables]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_cell_variables">
+<code class="sig-name descname">get_cell_variables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_cell_variables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_cell_variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the names of all of the cell variables tracked in [‘discrete cells’]
+dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>var_list</strong> – Contains the names of the cell variables</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list, shape=[n_variables]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_concentrations">
+<code class="sig-name descname">get_concentrations</code><span class="sig-paren">(</span><em class="sig-param">species_name</em>, <em class="sig-param">z_slice=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_concentrations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_concentrations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the concentration array for the specified chemical species
+in the microenvironment. Can return either the whole 3D picture, or
+a 2D plane of concentrations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>species_name</strong> (<em>str</em>) – Name of the chemical species for which to get concentrations</p></li>
+<li><p><strong>z_slice</strong> (<em>float</em>) – z-axis position to use as plane for 2D output. This value must match
+a plane of voxel centers in the z-axis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>conc_arr</strong> – Contains the concentration of the specified chemical in each voxel.
+The array spatially maps to a meshgrid of the voxel centers.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array (np.float) shape=[nx_voxels, ny_voxels, nz_voxels]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_concentrations_at">
+<code class="sig-name descname">get_concentrations_at</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_concentrations_at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_concentrations_at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return concentrations of each chemical species inside a particular voxel
+that contains the point described in the arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – x-position for the point of interest</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – y_position for the point of interest</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – z_position for the point of interest</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>concs</strong> – array of concentrations in the order given by get_substrate_names()</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array, shape=[n_substrates,]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_containing_voxel_ijk">
+<code class="sig-name descname">get_containing_voxel_ijk</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_containing_voxel_ijk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_containing_voxel_ijk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Internal function to get the meshgrid indices for the center of a voxel
+that contains the given position.</p>
+<p>Note that pyMCDS stores meshgrids as ‘cartesian’
+(indexing=’xy’ in np.meshgrid) which means that we will have
+to use these indices as [j, i, k] on the actual meshgrid objects</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – x-coordinate for the position</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – y-coordinate for the position</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – z-coordinate for the position</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ijk</strong> – contains the i, j, and k indices for the containing voxel’s center</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list length=3</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_linear_voxels">
+<code class="sig-name descname">get_linear_voxels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_linear_voxels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_linear_voxels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to quickly grab voxel centers array stored linearly as
+opposed to meshgrid-style.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_mesh">
+<code class="sig-name descname">get_mesh</code><span class="sig-paren">(</span><em class="sig-param">flat=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_mesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a meshgrid of the computational domain. Can return either full
+3D or a 2D plane for contour plots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flat</strong> (<em>bool</em>) – If flat is set to true, we return only the x and y meshgrid.
+Otherwise we return x, y, and z</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>splitting</strong> – Contains arrays of voxel center coordinates as meshgrid with shape
+[nx_voxel, ny_voxel, nz_voxel] or [nx_voxel, ny_voxel] if flat=True.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list length=2 if flat=True, else length=3</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_mesh_spacing">
+<code class="sig-name descname">get_mesh_spacing</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_mesh_spacing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_mesh_spacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the space in between voxel centers for the mesh in terms of the
+mesh’s spatial units. Assumes that voxel centers fall on integer values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>dx</strong> – Distance between voxel centers in the same units as the other
+spatial measurements</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_substrate_names">
+<code class="sig-name descname">get_substrate_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_substrate_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_substrate_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of chemical species in microenvironment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>species_list</strong> – Contains names of chemical species in microenvironment</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array (str), shape=[n_species,]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.dep.pyMCDS.pyMCDS.get_time">
+<code class="sig-name descname">get_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/dep/pyMCDS.html#pyMCDS.get_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.dep.pyMCDS.pyMCDS.get_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.dep">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.dep" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Blair Lyons
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
