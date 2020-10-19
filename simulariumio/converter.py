@@ -14,11 +14,11 @@ from .data_objects import (
     HistogramPlotData,
     ScatterPlotData,
 )
-from .readers import (
+from .plot_readers import (
     HistogramPlotReader,
     ScatterPlotReader,
+    PlotReader,
 )
-from .readers.plot_reader import PlotReader
 from .data_objects.agent_data import AgentData
 from .constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE
 

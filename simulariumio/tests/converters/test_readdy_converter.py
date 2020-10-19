@@ -4,7 +4,7 @@
 import numpy as np
 import pytest
 
-from simulariumio import ReaddyConverter, ReaddyData
+from simulariumio.readdy import ReaddyConverter, ReaddyData
 
 
 @pytest.mark.parametrize(

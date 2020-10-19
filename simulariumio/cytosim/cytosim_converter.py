@@ -7,10 +7,12 @@ import sys
 
 import numpy as np
 
-from .converter import Converter
-from .data_objects import CytosimData, CytosimObjectInfo, AgentData
-from .exceptions import DataError
-from .constants import VIZ_TYPE
+from ..converter import Converter
+from ..data_objects import AgentData
+from ..exceptions import DataError
+from ..constants import VIZ_TYPE
+from .cytosim_data import CytosimData
+from .cytosim_object_info import CytosimObjectInfo
 
 ###############################################################################
 

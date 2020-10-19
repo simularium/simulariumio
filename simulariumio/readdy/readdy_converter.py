@@ -7,9 +7,10 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 import readdy
 
-from .converter import Converter
-from .data_objects import ReaddyData, AgentData
-from .constants import VIZ_TYPE
+from ..converter import Converter
+from ..data_objects import AgentData
+from ..constants import VIZ_TYPE
+from .readdy_data import ReaddyData
 
 ###############################################################################
 

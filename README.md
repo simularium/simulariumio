@@ -27,7 +27,7 @@ See the Tutorial for the simulation engine you're using for details:
 
 An overview for data from ReaDDy:
 ```python
-from simulariumio import ReaddyConverter, ReaddyData
+from simulariumio.readdy import ReaddyConverter, ReaddyData
 
 # see ReaDDy Tutorial for parameter details
 input_data = ReaddyData(

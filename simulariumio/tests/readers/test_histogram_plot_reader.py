@@ -4,11 +4,8 @@
 import pytest
 import numpy as np
 
-from simulariumio import (
-    ReaddyConverter,
-    ReaddyData,
-    HistogramPlotData,
-)
+from simulariumio import HistogramPlotData
+from simulariumio.readdy import ReaddyConverter, ReaddyData
 
 
 @pytest.mark.parametrize(
