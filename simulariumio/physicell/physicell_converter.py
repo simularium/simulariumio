@@ -6,7 +6,7 @@ from typing import Any, Dict
 from pathlib import Path
 
 import numpy as np
-from ..dep.pyMCDS import pyMCDS
+from .dep.pyMCDS import pyMCDS
 
 from ..converter import Converter
 from ..data_objects import AgentData
