@@ -95,19 +95,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Package modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../simulariumio.html">simulariumio package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../simulariumio.dep.html">simulariumio.dep package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../simulariumio.readers.html">simulariumio.readers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.cytosim_converter">simulariumio.cytosim_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.physicell_converter">simulariumio.physicell_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.readdy_converter">simulariumio.readdy_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -200,11 +199,11 @@
     <span class="n">HistogramPlotData</span><span class="p">,</span>
     <span class="n">ScatterPlotData</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.readers</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">.plot_readers</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">HistogramPlotReader</span><span class="p">,</span>
     <span class="n">ScatterPlotReader</span><span class="p">,</span>
+    <span class="n">PlotReader</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.readers.plot_reader</span> <span class="kn">import</span> <span class="n">PlotReader</span>
 <span class="kn">from</span> <span class="nn">.data_objects.agent_data</span> <span class="kn">import</span> <span class="n">AgentData</span>
 <span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="p">,</span> <span class="n">VIZ_TYPE</span>
 

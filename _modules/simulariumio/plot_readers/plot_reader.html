@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>simulariumio.readers.histogram_plot_reader &mdash; Simularium Conversion 1.0.0 documentation</title>
+  <title>simulariumio.plot_readers.plot_reader &mdash; Simularium Conversion 1.0.0 documentation</title>
   
 
   
@@ -95,19 +95,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../simulariumio.html">simulariumio package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.dep.html">simulariumio.dep package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readers.html">simulariumio.readers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.cytosim_converter">simulariumio.cytosim_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.physicell_converter">simulariumio.physicell_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.readdy_converter">simulariumio.readdy_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -168,7 +167,7 @@
         
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
         
-      <li>simulariumio.readers.histogram_plot_reader</li>
+      <li>simulariumio.plot_readers.plot_reader</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -183,14 +182,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for simulariumio.readers.histogram_plot_reader</h1><div class="highlight"><pre>
+  <h1>Source code for simulariumio.plot_readers.plot_reader</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
-
-<span class="kn">from</span> <span class="nn">.plot_reader</span> <span class="kn">import</span> <span class="n">PlotReader</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -199,29 +197,10 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="HistogramPlotReader"><a class="viewcode-back" href="../../../simulariumio.readers.html#simulariumio.readers.histogram_plot_reader.HistogramPlotReader">[docs]</a><span class="k">class</span> <span class="nc">HistogramPlotReader</span><span class="p">(</span><span class="n">PlotReader</span><span class="p">):</span>
-<div class="viewcode-block" id="HistogramPlotReader.read"><a class="viewcode-back" href="../../../simulariumio.readers.html#simulariumio.readers.histogram_plot_reader.HistogramPlotReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return an object containing the data shaped for Simularium format</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">simularium_data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># layout info</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;layout&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
-            <span class="s2">&quot;xaxis&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">xaxis_title</span><span class="p">},</span>
-            <span class="s2">&quot;yaxis&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;frequency&quot;</span><span class="p">},</span>
-        <span class="p">}</span>
-        <span class="c1"># plot data</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">trace_name</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">traces</span><span class="p">:</span>
-            <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">trace_name</span><span class="p">,</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;histogram&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">traces</span><span class="p">[</span><span class="n">trace_name</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="p">}</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="n">simularium_data</span></div></div>
+<div class="viewcode-block" id="PlotReader"><a class="viewcode-back" href="../../../simulariumio.plot_readers.html#simulariumio.plot_readers.plot_reader.PlotReader">[docs]</a><span class="k">class</span> <span class="nc">PlotReader</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="PlotReader.read"><a class="viewcode-back" href="../../../simulariumio.plot_readers.html#simulariumio.plot_readers.plot_reader.PlotReader.read">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">pass</span></div></div>
 </pre></div>
 
            </div>

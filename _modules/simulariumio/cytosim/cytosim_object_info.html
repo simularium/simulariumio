@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>simulariumio.data_objects.cytosim_object_info &mdash; Simularium Conversion 1.0.0 documentation</title>
+  <title>simulariumio.cytosim.cytosim_object_info &mdash; Simularium Conversion 1.0.0 documentation</title>
   
 
   
@@ -95,19 +95,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../simulariumio.html">simulariumio package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.dep.html">simulariumio.dep package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readers.html">simulariumio.readers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.cytosim_converter">simulariumio.cytosim_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.physicell_converter">simulariumio.physicell_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.readdy_converter">simulariumio.readdy_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -168,7 +167,7 @@
         
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
         
-      <li>simulariumio.data_objects.cytosim_object_info</li>
+      <li>simulariumio.cytosim.cytosim_object_info</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -183,7 +182,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for simulariumio.data_objects.cytosim_object_info</h1><div class="highlight"><pre>
+  <h1>Source code for simulariumio.cytosim.cytosim_object_info</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -199,7 +198,7 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="CytosimObjectInfo"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.cytosim_object_info.CytosimObjectInfo">[docs]</a><span class="k">class</span> <span class="nc">CytosimObjectInfo</span><span class="p">:</span>
+<div class="viewcode-block" id="CytosimObjectInfo"><a class="viewcode-back" href="../../../simulariumio.cytosim.html#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo">[docs]</a><span class="k">class</span> <span class="nc">CytosimObjectInfo</span><span class="p">:</span>
     <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">agents</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">CytosimAgentInfo</span><span class="p">]</span>
     <span class="n">position_indices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>

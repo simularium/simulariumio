@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>simulariumio.data_objects.physicell_data &mdash; Simularium Conversion 1.0.0 documentation</title>
+  <title>simulariumio.readdy.readdy_data &mdash; Simularium Conversion 1.0.0 documentation</title>
   
 
   
@@ -95,19 +95,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../simulariumio.html">simulariumio package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.dep.html">simulariumio.dep package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readers.html">simulariumio.readers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.cytosim_converter">simulariumio.cytosim_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.physicell_converter">simulariumio.physicell_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.readdy_converter">simulariumio.readdy_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -168,7 +167,7 @@
         
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
         
-      <li>simulariumio.data_objects.physicell_data</li>
+      <li>simulariumio.readdy.readdy_data</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -183,7 +182,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for simulariumio.data_objects.physicell_data</h1><div class="highlight"><pre>
+  <h1>Source code for simulariumio.readdy.readdy_data</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
@@ -199,11 +198,13 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="PhysicellData"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.physicell_data.PhysicellData">[docs]</a><span class="k">class</span> <span class="nc">PhysicellData</span><span class="p">:</span>
+<div class="viewcode-block" id="ReaddyData"><a class="viewcode-back" href="../../../simulariumio.readdy.html#simulariumio.readdy.readdy_data.ReaddyData">[docs]</a><span class="k">class</span> <span class="nc">ReaddyData</span><span class="p">:</span>
     <span class="n">box_size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">path_to_output_dir</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">types</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+    <span class="n">path_to_readdy_h5</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">radii</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+    <span class="n">ignore_types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">type_grouping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
     <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 
@@ -211,8 +212,10 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">box_size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">path_to_output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">types</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">path_to_readdy_h5</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">radii</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ignore_types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">type_grouping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[],</span>
     <span class="p">):</span>
@@ -229,18 +232,18 @@
 <span class="sd">        timestep : float</span>
 <span class="sd">            A float amount of time that passes each step</span>
 <span class="sd">            Default: 0.0</span>
-<span class="sd">        path_to_output_dir : string</span>
-<span class="sd">            A string path to the PhysiCell output directory</span>
-<span class="sd">            containing MultiCellDS XML and MATLAB files</span>
-<span class="sd">        types : Dict[int, Dict[Any, str]] (optional)</span>
-<span class="sd">            the cell type ID from PhysiCell data mapped</span>
-<span class="sd">            to display name for that type, and display names</span>
-<span class="sd">            for phases of that type</span>
-<span class="sd">            &quot;name&quot; or [cell phase ID from PhysiCell data] : str</span>
-<span class="sd">                &quot;name&quot; or the cell phase ID from PhysiCell data mapped</span>
-<span class="sd">                to the display names</span>
-<span class="sd">                Default: &quot;cell[cell type ID from PhysiCell data]#</span>
-<span class="sd">                    phase[cell phase ID from PhysiCell data]&quot;</span>
+<span class="sd">        path_to_readdy_h5 : str</span>
+<span class="sd">            A string path to the ReaDDy trajectory file (.h5)</span>
+<span class="sd">        radii : Dict[str, float] (optional)</span>
+<span class="sd">            A mapping of ReaDDy particle type to radius</span>
+<span class="sd">            of each visualized sphere for that type</span>
+<span class="sd">            Default: 1.0 (for each particle)</span>
+<span class="sd">        ignore_types : List[str] (optional)</span>
+<span class="sd">            A list of string ReaDDy particle types to ignore</span>
+<span class="sd">        type_grouping : Dict[str, List[str]] (optional)</span>
+<span class="sd">            A mapping of a new group type name to a list of</span>
+<span class="sd">            ReaDDy particle types to include in that group</span>
+<span class="sd">            e.g. {&quot;moleculeA&quot;:[&quot;A1&quot;,&quot;A2&quot;,&quot;A3&quot;]}</span>
 <span class="sd">        scale_factor : float (optional)</span>
 <span class="sd">            A multiplier for the ReaDDy scene, use if</span>
 <span class="sd">            visualization is too large or small</span>
@@ -251,8 +254,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">box_size</span> <span class="o">=</span> <span class="n">box_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">=</span> <span class="n">timestep</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">path_to_output_dir</span> <span class="o">=</span> <span class="n">path_to_output_dir</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="n">types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_to_readdy_h5</span> <span class="o">=</span> <span class="n">path_to_readdy_h5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radii</span> <span class="o">=</span> <span class="n">radii</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ignore_types</span> <span class="o">=</span> <span class="n">ignore_types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_grouping</span> <span class="o">=</span> <span class="n">type_grouping</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">=</span> <span class="n">scale_factor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span></div>
 </pre></div>
