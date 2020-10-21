@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from simulariumio import (
+from simulariumio.cytosim import (
     CytosimConverter,
     CytosimData,
     CytosimObjectInfo,

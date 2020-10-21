@@ -4,7 +4,7 @@
 import numpy as np
 import pytest
 
-from simulariumio import PhysicellConverter, PhysicellData
+from simulariumio.physicell import PhysicellConverter, PhysicellData
 
 
 @pytest.mark.parametrize(

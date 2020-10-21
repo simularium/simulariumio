@@ -8,10 +8,11 @@ from pathlib import Path
 import numpy as np
 from .dep.pyMCDS import pyMCDS
 
-from .converter import Converter
-from .data_objects import PhysicellData, AgentData
-from .exceptions import MissingDataError
-from .constants import VIZ_TYPE
+from ..converter import Converter
+from ..data_objects import AgentData
+from ..exceptions import MissingDataError
+from ..constants import VIZ_TYPE
+from .physicell_data import PhysicellData
 
 ###############################################################################
 
