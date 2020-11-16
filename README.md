@@ -17,6 +17,8 @@ Simulariumio converts simulation outputs to the format consumed by the [Simulari
 * Conversions for data from custom engines can be implemented using the CustomConverter class
 * Also accepts metrics data for plots to display alongside spatial data
 
+We're working to improve performance for converting large trajectories, and also discussing with the authors of some packages the possibility of adding the ability to export Simularium files directly.
+
 ## Quick Start
 
 ### Convert spatial trajectory from a supported engine
