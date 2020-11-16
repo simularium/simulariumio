@@ -32,7 +32,7 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
 # see ReaDDy Tutorial for parameter details
 input_data = ReaddyData(
     box_size=BOX_SIZE,
-    timestep=TIMESTEP,
+    timestep=TIMESTEP,  # seconds
     path_to_readdy_h5=PATH_TO_H5_FILE,
 )
 ReaddyConverter(input_data).write_JSON("output_file_name")
@@ -47,7 +47,7 @@ from simulariumio import CustomConverter, CustomData, AgentData
 input_data = CustomData(  
     box_size=BOX_SIZE,
     agent_data=AgentData(
-        times=TIMES,
+        times=TIMES,  # seconds
         n_agents=N_AGENTS,
         viz_types=VIZ_TYPES,
         unique_ids=UNIQUE_IDS,

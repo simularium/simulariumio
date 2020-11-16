@@ -47,7 +47,7 @@ class AgentData:
         ----------
         times : np.ndarray (shape = [timesteps])
             A numpy ndarray containing the elapsed simulated time
-            at each timestep
+            in seconds at each timestep
         n_agents : np.ndarray (shape = [timesteps])
             A numpy ndarray containing the number of agents
             that exist at each timestep

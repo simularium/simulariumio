@@ -32,7 +32,7 @@ class PhysicellData:
     ):
         """
         This object holds simulation trajectory outputs
-        from ReaDDy (https://readdy.github.io/)
+        from PhysiCell (http://physicell.org/)
         and plot data
 
         Parameters
@@ -41,7 +41,7 @@ class PhysicellData:
             A numpy ndarray containing the XYZ dimensions
             of the simulation bounding volume
         timestep : float
-            A float amount of time that passes each step
+            A float amount of time in seconds that passes each step
             Default: 0.0
         path_to_output_dir : string
             A string path to the PhysiCell output directory
@@ -56,7 +56,7 @@ class PhysicellData:
                 Default: "cell[cell type ID from PhysiCell data]#
                     phase[cell phase ID from PhysiCell data]"
         scale_factor : float (optional)
-            A multiplier for the ReaDDy scene, use if
+            A multiplier for the PhysiCell scene, use if
             visualization is too large or small
             Default: 1.0
         plots : List[Dict[str, Any]] (optional)
