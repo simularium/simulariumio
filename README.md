@@ -17,6 +17,8 @@ Simulariumio converts simulation outputs to the format consumed by the [Simulari
 * Conversions for data from custom engines can be implemented using the CustomConverter class
 * Also accepts metrics data for plots to display alongside spatial data
 
+We're working to improve performance for converting large trajectories, and also discussing with the authors of some packages the possibility of adding the ability to export Simularium files directly.
+
 ## Quick Start
 
 ### Convert spatial trajectory from a supported engine
@@ -32,7 +34,7 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
 # see ReaDDy Tutorial for parameter details
 input_data = ReaddyData(
     box_size=BOX_SIZE,
-    timestep=TIMESTEP,
+    timestep=TIMESTEP,  # seconds
     path_to_readdy_h5=PATH_TO_H5_FILE,
 )
 ReaddyConverter(input_data).write_JSON("output_file_name")
@@ -47,7 +49,7 @@ from simulariumio import CustomConverter, CustomData, AgentData
 input_data = CustomData(  
     box_size=BOX_SIZE,
     agent_data=AgentData(
-        times=TIMES,
+        times=TIMES,  # seconds
         n_agents=N_AGENTS,
         viz_types=VIZ_TYPES,
         unique_ids=UNIQUE_IDS,

@@ -45,7 +45,7 @@ class ReaddyData:
             A numpy ndarray containing the XYZ dimensions
             of the simulation bounding volume
         timestep : float
-            A float amount of time that passes each step
+            A float amount of time in seconds that passes each step
             Default: 0.0
         path_to_readdy_h5 : str
             A string path to the ReaDDy trajectory file (.h5)
