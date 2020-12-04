@@ -188,7 +188,11 @@ class CytosimConverter(Converter):
             s += 1
             columns = line.split()
             result.subpoints[t][n_other_agents + n][s] = scale_factor * np.array(
-                [float(columns[1]), float(columns[2]), float(columns[3])]
+                [
+                    float(columns[1].strip('+,')), 
+                    float(columns[2].strip('+,')), 
+                    float(columns[3].strip('+,'))
+                ]
             )
         return (result, agent_types, used_unique_IDs)
 
@@ -235,7 +239,7 @@ class CytosimConverter(Converter):
             n += 1
             columns = line.split()
             # unique instance ID
-            raw_uid = int(columns[1])
+            raw_uid = int(columns[1].strip('+,'))
             if raw_uid not in uids:
                 uid = raw_uid
                 while uid in used_unique_IDs:
@@ -244,7 +248,7 @@ class CytosimConverter(Converter):
                 used_unique_IDs.append(uid)
             result.unique_ids[t][n_other_agents + n] = uids[raw_uid]
             # type ID
-            raw_tid = int(columns[0])
+            raw_tid = int(columns[0].strip('+,'))
             if raw_tid not in types:
                 tid = raw_tid
                 while tid in agent_types:
@@ -258,9 +262,9 @@ class CytosimConverter(Converter):
             result.positions[t][n_other_agents + n] = scale_factor * (
                 np.array(
                     [
-                        float(columns[object_info.position_indices[0]]),
-                        float(columns[object_info.position_indices[1]]),
-                        float(columns[object_info.position_indices[2]]),
+                        float(columns[object_info.position_indices[0]].strip('+,')),
+                        float(columns[object_info.position_indices[1]].strip('+,')),
+                        float(columns[object_info.position_indices[2]].strip('+,')),
                     ]
                 )
             )
