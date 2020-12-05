@@ -23,6 +23,7 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
                     "version": 1,
                     "timeStepSize": 360.0,
                     "totalSteps": 3,
+                    "spatialUnits": "μm",
                     "size": {"x": 10.0, "y": 10.0, "z": 1.0},
                     "typeMapping": {
                         "0": {"name": "cell 1#phase 4"},

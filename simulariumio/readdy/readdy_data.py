@@ -48,7 +48,7 @@ class ReaddyData:
         ----------
         spatial_units : str
             A string specifying the units for spatial data,
-            which includes positions, box size, radii. 
+            which includes positions, box size, radii.
             Options:
                 Ym = yottameters
                 Zm = zettameters

@@ -10,8 +10,8 @@ from .dep.pyMCDS import pyMCDS
 
 from ..converter import Converter
 from ..data_objects import AgentData
-from ..exceptions import MissingDataError
-from ..constants import VIZ_TYPE
+from ..exceptions import MissingDataError, DataError
+from ..constants import VIZ_TYPE, SPATIAL_UNIT_OPTIONS
 from .physicell_data import PhysicellData
 
 ###############################################################################
@@ -138,7 +138,12 @@ class PhysicellConverter(Converter):
                     3.0 / 4.0 * discrete_cells[t]["total_volume"][n] / np.pi
                 )
                 i += 1
-        return result, physicell_data[0].metadata.spatial_units
+        units = physicell_data[0].data["metadata"]["spatial_units"]
+        if "micron" in units.lower():
+            units = "μm"
+        if units not in SPATIAL_UNIT_OPTIONS:
+            raise DataError(f"Unrecognized spatial unit: {units}")
+        return result, units
 
     def _read(self, input_data: PhysicellData) -> Dict[str, Any]:
         """
