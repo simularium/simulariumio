@@ -14,7 +14,7 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
         (
             # histogram plot with multiple traces
             ReaddyData(
-                spatial_units="nm",
+                spatial_unit_factor_meters="nm",
                 box_size=np.array([20.0, 20.0, 20.0]),
                 timestep=0.1,
                 path_to_readdy_h5="simulariumio/tests/data/readdy/test.h5",

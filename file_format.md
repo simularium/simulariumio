@@ -5,30 +5,7 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
   * version - 1.0
   * timeStepSize - the amount of time that passes in the simulation for each time step
   * totalSteps - the total number of time steps, or frames, in the simulation trajectory
-  * spatialUnits - the units used for spatial data, including positions, radii, and box size
-    * Options:
-      * "Ym" = yottameters
-      * "Zm" = zettameters
-      * "Em" = exameters
-      * "Pm" = petameters
-      * "Tm" = terameters
-      * "Gm" = gigameters
-      * "Mm" = megameters
-      * "km" = kilometers
-      * "hm" = hectometers
-      * "dam" = decameters
-      * "m" = meters
-      * "dm" = decimeters
-      * "cm" = centimeters
-      * "mm" = millimeters
-      * "um" or "μm" = micrometers (microns)
-      * "nm" = nanometers
-      * "A" = angstroms
-      * "pm" = picometers
-      * "fm" = femptometers
-      * "am" = attometers
-      * "zm" = zeptometers
-      * "ym" = yoctometers
+  * spatialUnitFactorMeters - the multiplier needed to convert spatial data (including positions, radii, and box size) to meters
   * size X, Y, Z - size of the bounding volume for the simulation. for now only rectangular prisms are supported, and the width in X, Y, and Z dimensions is provided
   * type mapping - for each agent type ID in the trajectory, information about how to display and render it:
     * name - the type name to display for all agents of this type. Optionally, this name can be followed by a hash and state tags for the agent’s current state delimited with underscores
@@ -86,7 +63,7 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
         "timeStepSize" : 0.5,
         "totalSteps" : 1000,
         // units
-        "spatialUnits" : "nm",
+        "spatialUnitFactorMeters" : 1e-9,
         // box size
         "size" : {
             "x" : 300,

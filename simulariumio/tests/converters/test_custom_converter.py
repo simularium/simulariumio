@@ -20,7 +20,7 @@ from simulariumio.tests.conftest import three_default_agents
                     "version": 1,
                     "timeStepSize": 0.5,
                     "totalSteps": 3,
-                    "spatialUnits": "nm",
+                    "spatialUnitFactorMeters": "nm",
                     "size": {"x": 100.0, "y": 100.0, "z": 100.0},
                     "typeMapping": {
                         "0": {"name": "C"},
@@ -164,7 +164,7 @@ from simulariumio.tests.conftest import three_default_agents
         # at given positions for 3 frames, no plots
         (
             CustomData(
-                spatial_units="μm",
+                spatial_unit_factor_meters="μm",
                 box_size=np.array([1000.0, 1000.0, 1000.0]),
                 agent_data=AgentData(
                     times=1.0 * np.array(list(range(3))),
@@ -331,7 +331,7 @@ from simulariumio.tests.conftest import three_default_agents
                     "version": 1,
                     "timeStepSize": 1.0,
                     "totalSteps": 3,
-                    "spatialUnits": "μm",
+                    "spatialUnitFactorMeters": "μm",
                     "size": {"x": 1000.0, "y": 1000.0, "z": 1000.0},
                     "typeMapping": {
                         "0": {"name": "H"},
@@ -617,7 +617,7 @@ from simulariumio.tests.conftest import three_default_agents
         # at given positions for 3 frames, no plots
         (
             CustomData(
-                spatial_units="dam",
+                spatial_unit_factor_meters="dam",
                 box_size=np.array([1000.0, 1000.0, 1000.0]),
                 agent_data=AgentData(
                     times=1.0 * np.array(list(range(3))),
@@ -703,7 +703,7 @@ from simulariumio.tests.conftest import three_default_agents
                     "version": 1,
                     "timeStepSize": 1.0,
                     "totalSteps": 3,
-                    "spatialUnits": "dam",
+                    "spatialUnitFactorMeters": "dam",
                     "size": {"x": 1000.0, "y": 1000.0, "z": 1000.0},
                     "typeMapping": {
                         "0": {"name": "H"},

@@ -159,7 +159,7 @@ class PhysicellConverter(Converter):
             "version": 1,
             "timeStepSize": input_data.timestep,
             "totalSteps": totalSteps,
-            "spatialUnits": units,
+            "spatialUnitFactorMeters": units,
             "size": {
                 "x": input_data.scale_factor * float(input_data.box_size[0]),
                 "y": input_data.scale_factor * float(input_data.box_size[1]),

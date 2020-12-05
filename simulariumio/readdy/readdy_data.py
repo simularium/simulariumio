@@ -6,9 +6,6 @@ from typing import Any, Dict, List
 
 import numpy as np
 
-from ..constants import SPATIAL_UNIT_OPTIONS
-from ..exceptions import DataError
-
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -17,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 class ReaddyData:
-    spatial_units: str
+    spatial_unit_factor_meters: str
     box_size: np.ndarray
     timestep: float
     path_to_readdy_h5: str
@@ -29,7 +26,7 @@ class ReaddyData:
 
     def __init__(
         self,
-        spatial_units: str,
+        spatial_unit_factor_meters: str,
         box_size: np.ndarray,
         timestep: float,
         path_to_readdy_h5: str,
@@ -46,32 +43,9 @@ class ReaddyData:
 
         Parameters
         ----------
-        spatial_units : str
-            A string specifying the units for spatial data,
-            which includes positions, box size, radii.
-            Options:
-                Ym = yottameters
-                Zm = zettameters
-                Em = exameters
-                Pm = petameters
-                Tm = terameters
-                Gm = gigameters
-                Mm = megameters
-                km = kilometers
-                hm = hectometers
-                dam = decameters
-                m = meters
-                dm = decimeters
-                cm = centimeters
-                mm = millimeters
-                um or μm = micrometers (microns)
-                nm = nanometers
-                A = angstroms
-                pm = picometers
-                fm = femptometers
-                am = attometers
-                zm = zeptometers
-                ym = yoctometers
+        spatial_unit_factor_meters : float
+            A float multiplier needed to convert spatial data
+            (including positions, radii, and box size) to meters
         box_size : np.ndarray (shape = [3])
             A numpy ndarray containing the XYZ dimensions
             of the simulation bounding volume
@@ -98,9 +72,7 @@ class ReaddyData:
             An object containing plot data already
             in Simularium format
         """
-        if spatial_units not in SPATIAL_UNIT_OPTIONS:
-            raise DataError(f"Unrecognized spatial unit: {spatial_units}")
-        self.spatial_units = spatial_units
+        self.spatial_unit_factor_meters = spatial_unit_factor_meters
         self.box_size = box_size
         self.timestep = timestep
         self.path_to_readdy_h5 = path_to_readdy_h5
