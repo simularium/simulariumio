@@ -33,6 +33,7 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
 
 # see ReaDDy Tutorial for parameter details
 input_data = ReaddyData(
+    spatial_units="nm",
     box_size=BOX_SIZE,
     timestep=TIMESTEP,  # seconds
     path_to_readdy_h5=PATH_TO_H5_FILE,
@@ -47,6 +48,7 @@ from simulariumio import CustomConverter, CustomData, AgentData
 
 # see Custom Data Tutorial for parameter details
 input_data = CustomData(  
+    spatial_units="nm",
     box_size=BOX_SIZE,
     agent_data=AgentData(
         times=TIMES,  # seconds
