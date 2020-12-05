@@ -47,6 +47,7 @@ class CustomConverter(Converter):
                 else 0.0
             ),
             "totalSteps": totalSteps,
+            "spatialUnits": input_data.spatial_units,
             "size": {
                 "x": float(input_data.box_size[0]),
                 "y": float(input_data.box_size[1]),

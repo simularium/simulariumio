@@ -338,6 +338,7 @@ class CytosimConverter(Converter):
                 else 0.0
             ),
             "totalSteps": totalSteps,
+            "spatialUnits": "um",
             "size": {
                 "x": input_data.scale_factor * float(input_data.box_size[0]),
                 "y": input_data.scale_factor * float(input_data.box_size[1]),

@@ -5,11 +5,35 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
   * version - 1.0
   * timeStepSize - the amount of time that passes in the simulation for each time step
   * totalSteps - the total number of time steps, or frames, in the simulation trajectory
+  * spatialUnits - the units used for spatial data, including positions, radii, and box size
+    * Options:
+      * "Ym" = yottameters
+      * "Zm" = zettameters
+      * "Em" = exameters
+      * "Pm" = petameters
+      * "Tm" = terameters
+      * "Gm" = gigameters
+      * "Mm" = megameters
+      * "km" = kilometers
+      * "hm" = hectometers
+      * "dam" = decameters
+      * "m" = meters
+      * "dm" = decimeters
+      * "cm" = centimeters
+      * "mm" = millimeters
+      * "um" or "μm" = micrometers (microns)
+      * "nm" = nanometers
+      * "A" = angstroms
+      * "pm" = picometers
+      * "fm" = femptometers
+      * "am" = attometers
+      * "zm" = zeptometers
+      * "ym" = yoctometers
   * size X, Y, Z - size of the bounding volume for the simulation. for now only rectangular prisms are supported, and the width in X, Y, and Z dimensions is provided
   * type mapping - for each agent type ID in the trajectory, information about how to display and render it:
     * name - the type name to display for all agents of this type. Optionally, this name can be followed by a hash and state tags for the agent’s current state delimited with underscores
-      * ex: “actin#barbed_ATP_1” is parsed as agent type “actin” in states “barbed”, “ATP”, and “1”
-      * ex: “actA” is parsed as agent type “actA” with no state information
+      * ex: "actin#barbed_ATP_1" is parsed as agent type "actin" in states "barbed", "ATP", and "1"
+      * ex: "actA" is parsed as agent type "actA" with no state information
       * if no name is provided, the agent type ID, an integer number, is used for display
     * pdb (optional) - the filename of the PDB file to render for this agent. If this field isn’t provided or if the file isn’t found, the renderer will fall back to mesh rendering
     * mesh (optional) - the filename of the OBJ mesh file to render for this agent. If this field isn’t provided or if the file isn’t found, the renderer will fall back to a sphere
@@ -42,15 +66,15 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
       * title - label for the plot
       * xaxis 
         * title - the x-axis label
-        * if this label contains the text ‘time’, scatterplots will be considered time dependent and have a dynamic time bar rendered over them
+        * if this label contains the text "time", scatterplots will be considered time dependent and have a dynamic time bar rendered over them
       * yaxis
         * title - the y-axis label
     * data - a list of traces, for each
       * name - the label for this trace
-      * type - either 'scatter' or 'histogram'
+      * type - either "scatter" or "histogram"
       * x - a list of x-values
       * y - only for a scatterplot, a list of y-values, one for each x-value
-      * mode - only for a scatterplot, draw the data points as either 'lines' or 'markers', if not provided default to markers
+      * mode - only for a scatterplot, draw the data points as either "lines" or "markers", if not provided default to markers
 
 ## Example Data
 ```javascript
@@ -61,6 +85,8 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
         // time
         "timeStepSize" : 0.5,
         "totalSteps" : 1000,
+        // units
+        "spatialUnits" : "nm",
         // box size
         "size" : {
             "x" : 300,

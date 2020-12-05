@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 from pathlib import Path
 
 import numpy as np
@@ -85,7 +85,7 @@ class PhysicellConverter(Converter):
             self._last_id += 1
         return self._ids[cell_type][cell_phase]
 
-    def _get_trajectory_data(self, input_data: PhysicellData) -> AgentData:
+    def _get_trajectory_data(self, input_data: PhysicellData) -> Tuple[AgentData, str]:
         """
         Get data from one time step in Simularium format
         """
@@ -138,14 +138,14 @@ class PhysicellConverter(Converter):
                     3.0 / 4.0 * discrete_cells[t]["total_volume"][n] / np.pi
                 )
                 i += 1
-        return result
+        return result, physicell_data[0].metadata.spatial_units
 
     def _read(self, input_data: PhysicellData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """
         # load the data from PhysiCell MultiCellDS XML files
-        agent_data = self._get_trajectory_data(input_data)
+        agent_data, units = self._get_trajectory_data(input_data)
         # shape data
         simularium_data = {}
         # trajectory info
@@ -154,6 +154,7 @@ class PhysicellConverter(Converter):
             "version": 1,
             "timeStepSize": input_data.timestep,
             "totalSteps": totalSteps,
+            "spatialUnits": units,
             "size": {
                 "x": input_data.scale_factor * float(input_data.box_size[0]),
                 "y": input_data.scale_factor * float(input_data.box_size[1]),
