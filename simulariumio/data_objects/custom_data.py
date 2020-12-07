@@ -16,14 +16,14 @@ log = logging.getLogger(__name__)
 
 
 class CustomData:
-    spatial_unit_factor_meters: str
+    spatial_unit_factor_meters: float
     box_size: np.ndarray
     agent_data: AgentData
     plots: List[Dict[str, Any]]
 
     def __init__(
         self,
-        spatial_unit_factor_meters: str,
+        spatial_unit_factor_meters: float,
         box_size: np.ndarray,
         agent_data: AgentData,
         plots: List[Dict[str, Any]] = [],

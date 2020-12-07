@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 class ReaddyData:
-    spatial_unit_factor_meters: str
+    spatial_unit_factor_meters: float
     box_size: np.ndarray
     timestep: float
     path_to_readdy_h5: str
@@ -26,7 +26,7 @@ class ReaddyData:
 
     def __init__(
         self,
-        spatial_unit_factor_meters: str,
+        spatial_unit_factor_meters: float,
         box_size: np.ndarray,
         timestep: float,
         path_to_readdy_h5: str,

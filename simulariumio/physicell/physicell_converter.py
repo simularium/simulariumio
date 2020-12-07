@@ -4,14 +4,15 @@
 import logging
 from typing import Any, Dict, Tuple
 from pathlib import Path
+from pint import UnitRegistry
 
 import numpy as np
 from .dep.pyMCDS import pyMCDS
 
 from ..converter import Converter
 from ..data_objects import AgentData
-from ..exceptions import MissingDataError, DataError
-from ..constants import VIZ_TYPE, SPATIAL_UNIT_OPTIONS
+from ..exceptions import MissingDataError
+from ..constants import VIZ_TYPE
 from .physicell_data import PhysicellData
 
 ###############################################################################
@@ -85,7 +86,9 @@ class PhysicellConverter(Converter):
             self._last_id += 1
         return self._ids[cell_type][cell_phase]
 
-    def _get_trajectory_data(self, input_data: PhysicellData) -> Tuple[AgentData, str]:
+    def _get_trajectory_data(
+        self, input_data: PhysicellData
+    ) -> Tuple[AgentData, float]:
         """
         Get data from one time step in Simularium format
         """
@@ -138,19 +141,21 @@ class PhysicellConverter(Converter):
                     3.0 / 4.0 * discrete_cells[t]["total_volume"][n] / np.pi
                 )
                 i += 1
-        units = physicell_data[0].data["metadata"]["spatial_units"]
-        if "micron" in units.lower():
-            units = "μm"
-        if units not in SPATIAL_UNIT_OPTIONS:
-            raise DataError(f"Unrecognized spatial unit: {units}")
-        return result, units
+        # get spatial unit factor
+        ureg = UnitRegistry()
+        unit_factor = (
+            ureg(physicell_data[0].data["metadata"]["spatial_units"])
+            .to("meter")
+            .magnitude
+        )
+        return result, unit_factor
 
     def _read(self, input_data: PhysicellData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """
         # load the data from PhysiCell MultiCellDS XML files
-        agent_data, units = self._get_trajectory_data(input_data)
+        agent_data, unit_factor = self._get_trajectory_data(input_data)
         # shape data
         simularium_data = {}
         # trajectory info
@@ -159,7 +164,7 @@ class PhysicellConverter(Converter):
             "version": 1,
             "timeStepSize": input_data.timestep,
             "totalSteps": totalSteps,
-            "spatialUnitFactorMeters": units,
+            "spatialUnitFactorMeters": unit_factor,
             "size": {
                 "x": input_data.scale_factor * float(input_data.box_size[0]),
                 "y": input_data.scale_factor * float(input_data.box_size[1]),
