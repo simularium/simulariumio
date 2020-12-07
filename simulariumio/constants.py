@@ -17,32 +17,6 @@ V1_SPATIAL_BUFFER_STRUCT = [
     "SP",  # subpoints
 ]
 
-SPATIAL_UNIT_OPTIONS = [
-    "Ym",
-    "Zm",
-    "Em",
-    "Pm",
-    "Tm",
-    "Gm",
-    "Mm",
-    "km",
-    "hm",
-    "dam",
-    "m",
-    "dm",
-    "cm",
-    "mm",
-    "um",
-    "μm",
-    "nm",
-    "A",
-    "pm",
-    "fm",
-    "am",
-    "zm",
-    "ym",
-]
-
 
 class VIZ_TYPE:
     default: float = 1000.0
