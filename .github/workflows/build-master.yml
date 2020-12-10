@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Setup MiniConda
-      uses: conda-incubator/setup-miniconda@v1
+      uses: conda-incubator/setup-miniconda@v2
       with:
         auto-update-conda: true
         python-version: ${{ matrix.python-version }}
@@ -48,7 +48,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Setup MiniConda
-      uses: conda-incubator/setup-miniconda@v1
+      uses: conda-incubator/setup-miniconda@v2
       with:
         auto-update-conda: true
         python-version: 3.8
