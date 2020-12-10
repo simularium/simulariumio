@@ -216,6 +216,7 @@
 <li><p>Conversions for data from custom engines can be implemented using the CustomConverter class</p></li>
 <li><p>Also accepts metrics data for plots to display alongside spatial data</p></li>
 </ul>
+<p>We’re working to improve performance for converting large trajectories, and also discussing with the authors of some packages the possibility of adding the ability to export Simularium files directly.</p>
 </div>
 <div class="section" id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
@@ -232,8 +233,9 @@
 
 <span class="c1"># see ReaDDy Tutorial for parameter details</span>
 <span class="n">input_data</span> <span class="o">=</span> <span class="n">ReaddyData</span><span class="p">(</span>
+    <span class="n">spatial_unit_factor_meters</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">,</span>  <span class="c1"># nanometers</span>
     <span class="n">box_size</span><span class="o">=</span><span class="n">BOX_SIZE</span><span class="p">,</span>
-    <span class="n">timestep</span><span class="o">=</span><span class="n">TIMESTEP</span><span class="p">,</span>
+    <span class="n">timestep</span><span class="o">=</span><span class="n">TIMESTEP</span><span class="p">,</span>  <span class="c1"># seconds</span>
     <span class="n">path_to_readdy_h5</span><span class="o">=</span><span class="n">PATH_TO_H5_FILE</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">ReaddyConverter</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span><span class="o">.</span><span class="n">write_JSON</span><span class="p">(</span><span class="s2">&quot;output_file_name&quot;</span><span class="p">)</span>
@@ -247,9 +249,10 @@
 
 <span class="c1"># see Custom Data Tutorial for parameter details</span>
 <span class="n">input_data</span> <span class="o">=</span> <span class="n">CustomData</span><span class="p">(</span>
+    <span class="n">spatial_unit_factor_meters</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">,</span>  <span class="c1"># nanometers</span>
     <span class="n">box_size</span><span class="o">=</span><span class="n">BOX_SIZE</span><span class="p">,</span>
     <span class="n">agent_data</span><span class="o">=</span><span class="n">AgentData</span><span class="p">(</span>
-        <span class="n">times</span><span class="o">=</span><span class="n">TIMES</span><span class="p">,</span>
+        <span class="n">times</span><span class="o">=</span><span class="n">TIMES</span><span class="p">,</span>  <span class="c1"># seconds</span>
         <span class="n">n_agents</span><span class="o">=</span><span class="n">N_AGENTS</span><span class="p">,</span>
         <span class="n">viz_types</span><span class="o">=</span><span class="n">VIZ_TYPES</span><span class="p">,</span>
         <span class="n">unique_ids</span><span class="o">=</span><span class="n">UNIQUE_IDS</span><span class="p">,</span>

@@ -373,7 +373,11 @@
             <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">columns</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="n">result</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n_other_agents</span> <span class="o">+</span> <span class="n">n</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">3</span><span class="p">])]</span>
+                <span class="p">[</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">)),</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">)),</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">)),</span>
+                <span class="p">]</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">agent_types</span><span class="p">,</span> <span class="n">used_unique_IDs</span><span class="p">)</span>
 
@@ -420,7 +424,7 @@
             <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">columns</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="c1"># unique instance ID</span>
-            <span class="n">raw_uid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">raw_uid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">raw_uid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">uids</span><span class="p">:</span>
                 <span class="n">uid</span> <span class="o">=</span> <span class="n">raw_uid</span>
                 <span class="k">while</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">used_unique_IDs</span><span class="p">:</span>
@@ -429,7 +433,7 @@
                 <span class="n">used_unique_IDs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uid</span><span class="p">)</span>
             <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n_other_agents</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">uids</span><span class="p">[</span><span class="n">raw_uid</span><span class="p">]</span>
             <span class="c1"># type ID</span>
-            <span class="n">raw_tid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">raw_tid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">raw_tid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
                 <span class="n">tid</span> <span class="o">=</span> <span class="n">raw_tid</span>
                 <span class="k">while</span> <span class="n">tid</span> <span class="ow">in</span> <span class="n">agent_types</span><span class="p">:</span>
@@ -443,9 +447,9 @@
             <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n_other_agents</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                     <span class="p">[</span>
-                        <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="n">object_info</span><span class="o">.</span><span class="n">position_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]),</span>
-                        <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="n">object_info</span><span class="o">.</span><span class="n">position_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]]),</span>
-                        <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="n">object_info</span><span class="o">.</span><span class="n">position_indices</span><span class="p">[</span><span class="mi">2</span><span class="p">]]),</span>
+                        <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="n">object_info</span><span class="o">.</span><span class="n">position_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">)),</span>
+                        <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="n">object_info</span><span class="o">.</span><span class="n">position_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">)),</span>
+                        <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="n">object_info</span><span class="o">.</span><span class="n">position_indices</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">)),</span>
                     <span class="p">]</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -519,6 +523,7 @@
                 <span class="k">else</span> <span class="mf">0.0</span>
             <span class="p">),</span>
             <span class="s2">&quot;totalSteps&quot;</span><span class="p">:</span> <span class="n">totalSteps</span><span class="p">,</span>
+            <span class="s2">&quot;spatialUnitFactorMeters&quot;</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">,</span>
             <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                 <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>

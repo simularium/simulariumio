@@ -199,6 +199,7 @@
 
 
 <div class="viewcode-block" id="ReaddyData"><a class="viewcode-back" href="../../../simulariumio.readdy.html#simulariumio.readdy.readdy_data.ReaddyData">[docs]</a><span class="k">class</span> <span class="nc">ReaddyData</span><span class="p">:</span>
+    <span class="n">spatial_unit_factor_meters</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">box_size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">path_to_readdy_h5</span><span class="p">:</span> <span class="nb">str</span>
@@ -210,6 +211,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
+        <span class="n">spatial_unit_factor_meters</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">box_size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">path_to_readdy_h5</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -226,11 +228,14 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        spatial_unit_factor_meters : float</span>
+<span class="sd">            A float multiplier needed to convert spatial data</span>
+<span class="sd">            (including positions, radii, and box size) to meters</span>
 <span class="sd">        box_size : np.ndarray (shape = [3])</span>
 <span class="sd">            A numpy ndarray containing the XYZ dimensions</span>
 <span class="sd">            of the simulation bounding volume</span>
 <span class="sd">        timestep : float</span>
-<span class="sd">            A float amount of time that passes each step</span>
+<span class="sd">            A float amount of time in seconds that passes each step</span>
 <span class="sd">            Default: 0.0</span>
 <span class="sd">        path_to_readdy_h5 : str</span>
 <span class="sd">            A string path to the ReaDDy trajectory file (.h5)</span>
@@ -252,6 +257,7 @@
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spatial_unit_factor_meters</span> <span class="o">=</span> <span class="n">spatial_unit_factor_meters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">box_size</span> <span class="o">=</span> <span class="n">box_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">=</span> <span class="n">timestep</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_to_readdy_h5</span> <span class="o">=</span> <span class="n">path_to_readdy_h5</span>

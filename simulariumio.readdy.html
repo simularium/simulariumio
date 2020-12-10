@@ -225,7 +225,7 @@ ReaDDy simulation trajectory outputs and plot data</p>
 <span id="simulariumio-readdy-readdy-data-module"></span><h2>simulariumio.readdy.readdy_data module<a class="headerlink" href="#module-simulariumio.readdy.readdy_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.readdy.readdy_data.ReaddyData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.readdy.readdy_data.</code><code class="sig-name descname">ReaddyData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">timestep: float</em>, <em class="sig-param">path_to_readdy_h5: str</em>, <em class="sig-param">radii: Dict[str</em>, <em class="sig-param">float] = None</em>, <em class="sig-param">ignore_types: List[str] = None</em>, <em class="sig-param">type_grouping: Dict[str</em>, <em class="sig-param">List[str]] = None</em>, <em class="sig-param">scale_factor: float = 1.0</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/readdy/readdy_data.html#ReaddyData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.readdy.readdy_data.ReaddyData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.readdy.readdy_data.</code><code class="sig-name descname">ReaddyData</code><span class="sig-paren">(</span><em class="sig-param">spatial_unit_factor_meters: float</em>, <em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">timestep: float</em>, <em class="sig-param">path_to_readdy_h5: str</em>, <em class="sig-param">radii: Dict[str</em>, <em class="sig-param">float] = None</em>, <em class="sig-param">ignore_types: List[str] = None</em>, <em class="sig-param">type_grouping: Dict[str</em>, <em class="sig-param">List[str]] = None</em>, <em class="sig-param">scale_factor: float = 1.0</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/readdy/readdy_data.html#ReaddyData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.readdy.readdy_data.ReaddyData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 from ReaDDy (<a class="reference external" href="https://readdy.github.io/">https://readdy.github.io/</a>)
@@ -233,9 +233,11 @@ and plot data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>spatial_unit_factor_meters</strong> (<em>float</em>) – A float multiplier needed to convert spatial data
+(including positions, radii, and box size) to meters</p></li>
 <li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
 of the simulation bounding volume</p></li>
-<li><p><strong>timestep</strong> (<em>float</em>) – A float amount of time that passes each step
+<li><p><strong>timestep</strong> (<em>float</em>) – A float amount of time in seconds that passes each step
 Default: 0.0</p></li>
 <li><p><strong>path_to_readdy_h5</strong> (<em>str</em>) – A string path to the ReaDDy trajectory file (.h5)</p></li>
 <li><p><strong>radii</strong> (<em>Dict[str, float] (optional)</em>) – A mapping of ReaDDy particle type to radius
@@ -281,6 +283,11 @@ in Simularium format</p></li>
 <dl class="attribute">
 <dt id="simulariumio.readdy.readdy_data.ReaddyData.scale_factor">
 <code class="sig-name descname">scale_factor</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.readdy.readdy_data.ReaddyData.scale_factor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.readdy.readdy_data.ReaddyData.spatial_unit_factor_meters">
+<code class="sig-name descname">spatial_unit_factor_meters</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.readdy.readdy_data.ReaddyData.spatial_unit_factor_meters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">

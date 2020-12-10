@@ -241,14 +241,14 @@ PhysiCell simulation trajectory outputs and plot data</p>
 <em class="property">class </em><code class="sig-prename descclassname">simulariumio.physicell.physicell_data.</code><code class="sig-name descname">PhysicellData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">timestep: float</em>, <em class="sig-param">path_to_output_dir: str</em>, <em class="sig-param">types: Dict[int</em>, <em class="sig-param">Dict[Any</em>, <em class="sig-param">str]] = None</em>, <em class="sig-param">scale_factor: float = 1.0</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/physicell/physicell_data.html#PhysicellData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.physicell.physicell_data.PhysicellData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
-from ReaDDy (<a class="reference external" href="https://readdy.github.io/">https://readdy.github.io/</a>)
+from PhysiCell (<a class="reference external" href="http://physicell.org/">http://physicell.org/</a>)
 and plot data</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
 <li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
 of the simulation bounding volume</p></li>
-<li><p><strong>timestep</strong> (<em>float</em>) – A float amount of time that passes each step
+<li><p><strong>timestep</strong> (<em>float</em>) – A float amount of time in seconds that passes each step
 Default: 0.0</p></li>
 <li><p><strong>path_to_output_dir</strong> (<em>string</em>) – A string path to the PhysiCell output directory
 containing MultiCellDS XML and MATLAB files</p></li>
@@ -265,7 +265,7 @@ Default: “cell[cell type ID from PhysiCell data]#</p>
 </div></blockquote>
 </div></blockquote>
 </li>
-<li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the ReaDDy scene, use if
+<li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the PhysiCell scene, use if
 visualization is too large or small
 Default: 1.0</p></li>
 <li><p><strong>plots</strong> (<em>List[Dict[str, Any]] (optional)</em>) – An object containing plot data already
