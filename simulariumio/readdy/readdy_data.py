@@ -14,6 +14,7 @@ log = logging.getLogger(__name__)
 
 
 class ReaddyData:
+    spatial_unit_factor_meters: float
     box_size: np.ndarray
     timestep: float
     path_to_readdy_h5: str
@@ -25,6 +26,7 @@ class ReaddyData:
 
     def __init__(
         self,
+        spatial_unit_factor_meters: float,
         box_size: np.ndarray,
         timestep: float,
         path_to_readdy_h5: str,
@@ -41,6 +43,9 @@ class ReaddyData:
 
         Parameters
         ----------
+        spatial_unit_factor_meters : float
+            A float multiplier needed to convert spatial data
+            (including positions, radii, and box size) to meters
         box_size : np.ndarray (shape = [3])
             A numpy ndarray containing the XYZ dimensions
             of the simulation bounding volume
@@ -67,6 +72,7 @@ class ReaddyData:
             An object containing plot data already
             in Simularium format
         """
+        self.spatial_unit_factor_meters = spatial_unit_factor_meters
         self.box_size = box_size
         self.timestep = timestep
         self.path_to_readdy_h5 = path_to_readdy_h5

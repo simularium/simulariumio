@@ -179,6 +179,7 @@ class ReaddyConverter(Converter):
             "version": 1,
             "timeStepSize": float(input_data.timestep),
             "totalSteps": totalSteps,
+            "spatialUnitFactorMeters": input_data.spatial_unit_factor_meters,
             "size": {
                 "x": input_data.scale_factor * float(input_data.box_size[0]),
                 "y": input_data.scale_factor * float(input_data.box_size[1]),

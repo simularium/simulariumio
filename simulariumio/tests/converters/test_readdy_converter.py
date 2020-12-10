@@ -13,6 +13,7 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
         # 4 particles 3 frames
         (
             ReaddyData(
+                spatial_unit_factor_meters=1e-9,
                 box_size=np.array([20.0, 20.0, 20.0]),
                 timestep=0.1,
                 path_to_readdy_h5="simulariumio/tests/data/readdy/test.h5",
@@ -25,6 +26,7 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
                     "version": 1,
                     "timeStepSize": 0.1,
                     "totalSteps": 3,
+                    "spatialUnitFactorMeters": 1e-9,
                     "size": {"x": 20.0, "y": 20.0, "z": 20.0},
                     "typeMapping": {"2": {"name": "C"}, "1": {"name": "B"}},
                 },
