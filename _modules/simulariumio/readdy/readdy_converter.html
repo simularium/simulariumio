@@ -362,7 +362,7 @@
         <span class="n">totalSteps</span> <span class="o">=</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;timeStepSize&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">timestep</span><span class="p">),</span>
+            <span class="s2">&quot;timeStepSize&quot;</span><span class="p">:</span> <span class="n">Converter</span><span class="o">.</span><span class="n">_format_timestep</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">timestep</span><span class="p">)),</span>
             <span class="s2">&quot;totalSteps&quot;</span><span class="p">:</span> <span class="n">totalSteps</span><span class="p">,</span>
             <span class="s2">&quot;spatialUnitFactorMeters&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">spatial_unit_factor_meters</span><span class="p">,</span>
             <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="p">{</span>
