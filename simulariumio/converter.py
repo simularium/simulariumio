@@ -223,6 +223,10 @@ class Converter:
         return True
 
     @staticmethod
+    def _format_timestep(number: float):
+        return float("%.4g" % number)
+
+    @staticmethod
     def _determine_plot_reader(plot_type: str = "scatter") -> [PlotReader]:
         """
         Return the plot reader to match the requested plot type

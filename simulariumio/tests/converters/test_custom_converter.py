@@ -620,7 +620,7 @@ from simulariumio.tests.conftest import three_default_agents
                 spatial_unit_factor_meters=10.0,
                 box_size=np.array([1000.0, 1000.0, 1000.0]),
                 agent_data=AgentData(
-                    times=1.0 * np.array(list(range(3))),
+                    times=np.array([0.0, 1.00001, 2.00001]),
                     n_agents=np.array(3 * [3]),
                     viz_types=1001.0 * np.ones(shape=(3, 3)),
                     unique_ids=np.array(
@@ -843,7 +843,7 @@ from simulariumio.tests.conftest import three_default_agents
                         },
                         {
                             "frameNumber": 1,
-                            "time": 1.0,
+                            "time": 1.00001,
                             "data": [
                                 1001.0,
                                 1.0,
@@ -961,7 +961,7 @@ from simulariumio.tests.conftest import three_default_agents
                         },
                         {
                             "frameNumber": 2,
-                            "time": 2.0,
+                            "time": 2.00001,
                             "data": [
                                 1001.0,
                                 1.0,
