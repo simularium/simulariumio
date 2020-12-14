@@ -47,6 +47,8 @@ Ready to contribute? Here's how to set up `simulariumio` for local development.
 
 7. Submit a pull request through the GitHub website.
 
+___
+
 ## Deploying
 
 A reminder for the maintainers on how to deploy.
@@ -63,3 +65,11 @@ git push --set-upstream origin stable -f
 ```
 
 This will release a new package version on Git + GitHub and publish to PyPI.
+
+___
+
+## Questions or Thoughts?
+
+Talk to us on [one of our community forums][community].
+
+[community]: https://forum.allencell.org/

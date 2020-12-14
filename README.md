@@ -1,3 +1,12 @@
+## Simularium repositories
+This repository is part of the Simularium project ([simularium.allencell.org](https://simularium.allencell.org)), which includes repositories:
+- [simulariumIO](https://github.com/allen-cell-animated/simulariumio) - Python package that converts simulation outputs to the format consumed by the Simularium viewer website
+- [simularium-engine](https://github.com/allen-cell-animated/simularium-engine) - C++ backend application that interfaces with biological simulation engines and serves simulation data to the front end website
+- [simularium-viewer](https://github.com/allen-cell-animated/simularium-viewer) - NPM package to view Simularium trajectories in 3D
+- [simularium-website](https://github.com/allen-cell-animated/simularium-website) - Front end website for the Simularium project, includes the Simularium viewer
+
+---
+
 # SimulariumIO
 
 [![Build Status](https://github.com/allen-cell-animated/simulariumio/workflows/Build%20Master/badge.svg)](https://github.com/allen-cell-animated/simulariumio/actions)
@@ -18,6 +27,8 @@ Simulariumio converts simulation outputs to the format consumed by the [Simulari
 * Also accepts metrics data for plots to display alongside spatial data
 
 We're working to improve performance for converting large trajectories, and also discussing with the authors of some packages the possibility of adding the ability to export Simularium files directly.
+
+___
 
 ## Quick Start
 
@@ -80,6 +91,7 @@ converter = CustomConverter(input_data) # see above to create converter
 converter.add_plot(example_scatter_plot, "scatter")
 converter.write_JSON("output_file_name")
 ```
+___
 
 ## Installation
 **Install Requires:** 
@@ -94,10 +106,13 @@ converter.write_JSON("output_file_name")
 
 **Development Head:** `pip install git+https://github.com/allen-cell-animated/simulariumio.git`
 
+___
+
 ## Documentation
 For full package documentation please visit [allen-cell-animated.github.io/simulariumio](https://allen-cell-animated.github.io/simulariumio).
+
+___
 
 ## Development
 See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the code.
 
-***Free software: Allen Institute Software License***
