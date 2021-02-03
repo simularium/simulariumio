@@ -162,6 +162,7 @@ class PhysicellConverter(Converter):
         totalSteps = agent_data.n_agents.shape[0]
         simularium_data["trajectoryInfo"] = {
             "version": 1,
+            "timeUnitFactorSeconds": input_data.time_unit_factor_seconds,
             "timeStepSize": Converter._format_timestep(input_data.timestep),
             "totalSteps": totalSteps,
             "spatialUnitFactorMeters": unit_factor,

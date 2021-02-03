@@ -3,6 +3,7 @@
 JSON files accepted by the simularium-viewer contain the following data in JSON format:
 * **trajectory info**
   * version - 1.0
+  * timeUnitFactorSeconds - the multiplier needed to convert temporal data (e.g. timeStepSize) to meters
   * timeStepSize - the amount of time that passes in the simulation for each time step
   * totalSteps - the total number of time steps, or frames, in the simulation trajectory
   * spatialUnitFactorMeters - the multiplier needed to convert spatial data (including positions, radii, and box size) to meters
@@ -59,11 +60,13 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
     // trajectory info
     "trajectoryInfo" : {
         "version" : 1,
+        // time units
+        "timeUnitFactorSeconds" : 1e-6, // microseconds
         // time
         "timeStepSize" : 0.5,
         "totalSteps" : 1000,
-        // units
-        "spatialUnitFactorMeters" : 1e-9,
+        // spatial units
+        "spatialUnitFactorMeters" : 1e-9, // nanometers
         // box size
         "size" : {
             "x" : 300,

@@ -332,6 +332,7 @@ class CytosimConverter(Converter):
         # trajectory info
         simularium_data["trajectoryInfo"] = {
             "version": 1,
+            "timeUnitFactorSeconds": 1,
             "timeStepSize": Converter._format_timestep(
                 float(agent_data.times[1] - agent_data.times[0])
                 if totalSteps > 1

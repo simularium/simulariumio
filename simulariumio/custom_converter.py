@@ -41,6 +41,7 @@ class CustomConverter(Converter):
         totalSteps = len(input_data.agent_data.times)
         traj_info = {
             "version": 1,
+            "timeUnitFactorSeconds": input_data.time_unit_factor_seconds,
             "timeStepSize": Converter._format_timestep(
                 float(input_data.agent_data.times[1] - input_data.agent_data.times[0])
                 if totalSteps > 1

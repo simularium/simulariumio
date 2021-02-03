@@ -21,6 +21,7 @@ class ReaddyData:
     radii: Dict[str, float]
     ignore_types: List[str]
     type_grouping: Dict[str, List[str]]
+    time_unit_factor_seconds: float
     scale_factor: float
     plots: List[Dict[str, Any]]
 
@@ -33,6 +34,7 @@ class ReaddyData:
         radii: Dict[str, float] = None,
         ignore_types: List[str] = None,
         type_grouping: Dict[str, List[str]] = None,
+        time_unit_factor_seconds: float = 1.0,
         scale_factor: float = 1.0,
         plots: List[Dict[str, Any]] = [],
     ):
@@ -64,6 +66,10 @@ class ReaddyData:
             A mapping of a new group type name to a list of
             ReaDDy particle types to include in that group
             e.g. {"moleculeA":["A1","A2","A3"]}
+        time_unit_factor_seconds : float (optional)
+            A float multiplier needed to convert temporal data
+            (e.g. timestep) to seconds
+            Default: 1.0 (seconds)
         scale_factor : float (optional)
             A multiplier for the ReaDDy scene, use if
             visualization is too large or small
@@ -79,5 +85,6 @@ class ReaddyData:
         self.radii = radii
         self.ignore_types = ignore_types
         self.type_grouping = type_grouping
+        self.time_unit_factor_seconds = time_unit_factor_seconds
         self.scale_factor = scale_factor
         self.plots = plots
