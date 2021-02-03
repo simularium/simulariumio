@@ -45,10 +45,12 @@ class CustomData:
         time_unit_factor_seconds : float (optional)
             A float multiplier needed to convert temporal data
             (e.g. timeStepSize) to seconds
+            ex: 1e-9 if times are in nanoseconds
             Default: 1.0
         spatial_unit_factor_meters : float (optional)
             A float multiplier needed to convert spatial data
             (including positions, radii, and box size) to meters
+            ex: 1e-9 if distances are in nanometers
             Default: 1.0
         plots : List[Dict[str, Any]] (optional)
             An object containing plot data already
