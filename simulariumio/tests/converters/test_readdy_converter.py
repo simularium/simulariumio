@@ -20,10 +20,12 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
                 radii={"C": 3.0, "A": 2.0, "B": 2.0},
                 ignore_types=["E"],
                 type_grouping={"C": ["A", "D"]},
+                time_unit_factor_seconds=1e-9,
             ),
             {
                 "trajectoryInfo": {
                     "version": 1,
+                    "timeUnitFactorSeconds": 1e-9,
                     "timeStepSize": 0.1,
                     "totalSteps": 3,
                     "spatialUnitFactorMeters": 1e-9,

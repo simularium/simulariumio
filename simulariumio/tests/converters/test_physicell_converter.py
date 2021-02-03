@@ -14,14 +14,16 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
         (
             PhysicellData(
                 box_size=np.array([1000.0, 1000.0, 100.0]),
-                timestep=360.0,
+                timestep=360000.0,
                 path_to_output_dir="simulariumio/tests/data/physicell/output/",
+                time_unit_factor_seconds=1e-3,
                 scale_factor=0.01,
             ),
             {
                 "trajectoryInfo": {
                     "version": 1,
-                    "timeStepSize": 360.0,
+                    "timeUnitFactorSeconds": 1e-3,
+                    "timeStepSize": 360000.0,
                     "totalSteps": 3,
                     "spatialUnitFactorMeters": 1e-6,
                     "size": {"x": 10.0, "y": 10.0, "z": 1.0},
@@ -77,7 +79,7 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
                         },
                         {
                             "frameNumber": 1,
-                            "time": 360.0,
+                            "time": 360000.0,
                             "data": [
                                 1000.0,
                                 0.0,
@@ -116,7 +118,7 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
                         },
                         {
                             "frameNumber": 2,
-                            "time": 720.0,
+                            "time": 720000.0,
                             "data": [
                                 1000.0,
                                 0.0,
@@ -158,17 +160,6 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
                 "plotData": {"version": 1, "data": []},
             },
         ),
-        # pytest.param(
-        #     {
-        #         "box_size": np.array([1000.0, 1000.0, 100.0]),
-        #         "timestep": 360.0,
-        #         "path_to_output_dir": "../simulariumio/tests/data/physicell/output/",
-        #         "scale_factor": 0.01,
-        #     },
-        #     {},
-        #     marks=pytest.mark.raises(exception=exceptions.MissingDataError),
-        #     # path_to_output_dir is incorrect
-        # ),
     ],
 )
 def test_cytosim_trajectory_reader(trajectory, expected_data):

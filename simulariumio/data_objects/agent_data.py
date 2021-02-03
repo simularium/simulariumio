@@ -46,8 +46,8 @@ class AgentData:
         Parameters
         ----------
         times : np.ndarray (shape = [timesteps])
-            A numpy ndarray containing the elapsed simulated time 
-            at each timestep (in the time units specified by 
+            A numpy ndarray containing the elapsed simulated time
+            at each timestep (in the time units specified by
             CustomData.time_unit_factor_seconds)
         n_agents : np.ndarray (shape = [timesteps])
             A numpy ndarray containing the number of agents

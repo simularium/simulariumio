@@ -45,4 +45,5 @@ def three_default_agents() -> Dict[str, Any]:
                 ]
             ),
         ),
+        time_unit_factor_seconds=1e-9,
     )

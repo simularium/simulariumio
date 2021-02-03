@@ -18,6 +18,7 @@ from simulariumio.tests.conftest import three_default_agents
             {
                 "trajectoryInfo": {
                     "version": 1,
+                    "timeUnitFactorSeconds": 1e-9,
                     "timeStepSize": 0.5,
                     "totalSteps": 3,
                     "spatialUnitFactorMeters": 1e-9,
@@ -329,6 +330,7 @@ from simulariumio.tests.conftest import three_default_agents
             {
                 "trajectoryInfo": {
                     "version": 1,
+                    "timeUnitFactorSeconds": 1.0,
                     "timeStepSize": 1.0,
                     "totalSteps": 3,
                     "spatialUnitFactorMeters": 1e-6,
@@ -696,11 +698,13 @@ from simulariumio.tests.conftest import three_default_agents
                     ),
                     draw_fiber_points=True,
                 ),
+                time_unit_factor_seconds=1e-6,
                 plots=["plot data goes here"],
             ),
             {
                 "trajectoryInfo": {
                     "version": 1,
+                    "timeUnitFactorSeconds": 1e-6,
                     "timeStepSize": 1.0,
                     "totalSteps": 3,
                     "spatialUnitFactorMeters": 10.0,

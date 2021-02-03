@@ -31,6 +31,7 @@ from simulariumio.cytosim import (
             {
                 "trajectoryInfo": {
                     "version": 1,
+                    "timeUnitFactorSeconds": 1.0,
                     "timeStepSize": 0.1,
                     "totalSteps": 3,
                     "spatialUnitFactorMeters": 1e-6,
@@ -323,6 +324,7 @@ from simulariumio.cytosim import (
             {
                 "trajectoryInfo": {
                     "version": 1,
+                    "timeUnitFactorSeconds": 1.0,
                     "timeStepSize": 0.05,
                     "totalSteps": 3,
                     "spatialUnitFactorMeters": 1e-6,
