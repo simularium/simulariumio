@@ -20,7 +20,7 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
                     "timeUnitFactorSeconds": 1.0,
                     "timeStepSize": 360.0,
                     "totalSteps": 3,

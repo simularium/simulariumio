@@ -30,7 +30,7 @@ from simulariumio.cytosim import (
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
                     "timeUnitFactorSeconds": 1.0,
                     "timeStepSize": 0.1,
                     "totalSteps": 3,
@@ -323,7 +323,7 @@ from simulariumio.cytosim import (
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
                     "timeUnitFactorSeconds": 1.0,
                     "timeStepSize": 0.05,
                     "totalSteps": 3,

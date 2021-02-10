@@ -17,7 +17,7 @@ from simulariumio.tests.conftest import three_default_agents
             three_default_agents(),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
                     "timeUnitFactorSeconds": 1e-9,
                     "timeStepSize": 0.5,
                     "totalSteps": 3,
@@ -329,7 +329,7 @@ from simulariumio.tests.conftest import three_default_agents
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
                     "timeUnitFactorSeconds": 1.0,
                     "timeStepSize": 1.0,
                     "totalSteps": 3,
@@ -703,7 +703,7 @@ from simulariumio.tests.conftest import three_default_agents
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
                     "timeUnitFactorSeconds": 1e-6,
                     "timeStepSize": 1.0,
                     "totalSteps": 3,

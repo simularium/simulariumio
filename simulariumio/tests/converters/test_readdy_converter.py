@@ -24,7 +24,7 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
                     "timeUnitFactorSeconds": 1e-9,
                     "timeStepSize": 0.1,
                     "totalSteps": 3,

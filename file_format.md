@@ -2,7 +2,7 @@
 
 JSON files accepted by the simularium-viewer contain the following data in JSON format:
 * **trajectory info**
-  * version - 1.0
+  * version - 2.0
   * timeUnitFactorSeconds - the multiplier needed to convert temporal data (e.g. timeStepSize) to meters
   * timeStepSize - the amount of time that passes in the simulation for each time step
   * totalSteps - the total number of time steps, or frames, in the simulation trajectory
@@ -59,7 +59,7 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
 {
     // trajectory info
     "trajectoryInfo" : {
-        "version" : 1,
+        "version" : 2,
         // time units
         "timeUnitFactorSeconds" : 1e-6, // microseconds
         // time
