@@ -143,7 +143,7 @@ class AgentData:
         for t in range(self.times.size):
             for n in range(int(self.n_agents[t])):
                 type_name = self.types[t][n]
-                if type_name not in type_name_mapping:
+                if type_name not in type_id_mapping:
                     if self.type_ids is not None:
                         tid = int(self.type_ids[t][n])
                     else:
@@ -158,8 +158,7 @@ class AgentData:
 
     @classmethod
     def from_simularium_data(cls, data: Dict[str, Any]):
-        """
-        """
+        """"""
         bundleData = data["spatialData"]["bundleData"]
         total_steps, max_agents, max_subpoints = AgentData._get_data_dimensions(data)
         print(

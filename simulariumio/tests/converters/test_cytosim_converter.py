@@ -23,7 +23,7 @@ from simulariumio.cytosim import (
                     "fibers": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim"
                         "/3_fibers_3_frames/fiber_points.txt",
-                        agents={0: CytosimAgentInfo(name="fiber")},
+                        agents={0: CytosimAgentInfo(name="fiber", radius=1e-3)},
                     )
                 },
                 scale_factor=1e3,
@@ -291,8 +291,8 @@ from simulariumio.cytosim import (
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/fiber_points.txt",
                         agents={
-                            1: CytosimAgentInfo(name="microtubule"),
-                            2: CytosimAgentInfo(name="actin"),
+                            1: CytosimAgentInfo(name="microtubule", radius=0.01),
+                            2: CytosimAgentInfo(name="actin", radius=0.01),
                         },
                     ),
                     "solids": CytosimObjectInfo(
@@ -1111,5 +1111,8 @@ from simulariumio.cytosim import (
 )
 def test_cytosim_trajectory_reader(trajectory, expected_data):
     converter = CytosimConverter(trajectory)
-    assert expected_data == converter._data
+    assert (
+        expected_data["spatialData"]["bundleData"][0]["data"]
+        == converter._data["spatialData"]["bundleData"][0]["data"]
+    )
     assert converter._check_agent_ids_are_unique_per_frame()

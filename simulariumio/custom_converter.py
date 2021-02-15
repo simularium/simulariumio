@@ -3,7 +3,7 @@
 
 import json
 import logging
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 import math
 
 import numpy as np
@@ -74,7 +74,7 @@ class CustomConverter:
         simularium_data = {}
         # trajectory info
         totalSteps = input_data.agent_data.times.size
-        
+
         type_mapping = input_data.agent_data.get_type_mapping()
         traj_info = {
             "version": 1,
@@ -239,16 +239,6 @@ class CustomConverter:
                 + V1_SPATIAL_BUFFER_STRUCT.index("POSX")
                 + 3,
             )
-        if agent_data.rotations is not None:
-            ix_rotations = np.empty((3 * max_n_agents,), dtype=int)
-            for i in range(max_n_agents):
-                ix_rotations[3 * i : 3 * i + 3] = np.arange(
-                    i * (len(V1_SPATIAL_BUFFER_STRUCT) - 1)
-                    + V1_SPATIAL_BUFFER_STRUCT.index("ROTX"),
-                    i * (len(V1_SPATIAL_BUFFER_STRUCT) - 1)
-                    + V1_SPATIAL_BUFFER_STRUCT.index("ROTX")
-                    + 3,
-                )
         frame_buf = np.zeros((len(V1_SPATIAL_BUFFER_STRUCT) - 1) * max_n_agents)
         for t in range(len(agent_data.times)):
             frame_data = {}
@@ -271,8 +261,6 @@ class CustomConverter:
                 - 1
             ] = agent_data.type_ids[t, :n]
             local_buf[ix_positions[: 3 * n]] = agent_data.positions[t, :n].flatten()
-            if agent_data.rotations is not None:
-                local_buf[ix_rotations[: 3 * n]] = agent_data.rotations[t, :n].flatten()
             local_buf[
                 V1_SPATIAL_BUFFER_STRUCT.index("R") :: len(V1_SPATIAL_BUFFER_STRUCT) - 1
             ] = agent_data.radii[t, :n]
@@ -380,7 +368,9 @@ class CustomConverter:
             agent_data = filter_class().filter_spatial_data(agent_data, params[i])
         self._data = self._read_custom_data(
             CustomData(
-                spatial_unit_factor_meters=self._data["trajectoryInfo"]["spatialUnitFactorMeters"],
+                spatial_unit_factor_meters=self._data["trajectoryInfo"][
+                    "spatialUnitFactorMeters"
+                ],
                 box_size=np.array(
                     [float(box_size["x"]), float(box_size["y"]), float(box_size["z"])]
                 ),

@@ -29,15 +29,16 @@ from simulariumio.filters.params import EveryNthAgentFilterParams
                     "version": 1,
                     "timeStepSize": 0.0,
                     "totalSteps": 3,
+                    "spatialUnitFactorMeters": 1e-6,
                     "size": {"x": 200.0, "y": 200.0, "z": 200.0},
                     "typeMapping": {
-                        "0": {"name": "microtubule"},
-                        "1": {"name": "actin"},
-                        "2": {"name": "aster"},
-                        "3": {"name": "vesicle"},
-                        "4": {"name": "kinesin"},
-                        "5": {"name": "dynein"},
-                        "6": {"name": "motor complex"},
+                        "1": {"name": "microtubule"},
+                        "2": {"name": "actin"},
+                        "3": {"name": "aster"},
+                        "4": {"name": "vesicle"},
+                        "5": {"name": "kinesin"},
+                        "6": {"name": "dynein"},
+                        "7": {"name": "motor complex"},
                     },
                 },
                 "spatialData": {
@@ -581,4 +582,7 @@ from simulariumio.filters.params import EveryNthAgentFilterParams
 def test_percent_agents_filter(input_path, params, expected_data):
     converter = FileConverter(input_path)
     converter.apply_filters([params])
-    assert expected_data == converter._data
+    assert (
+        expected_data["trajectoryInfo"]["typeMapping"]
+        == converter._data["trajectoryInfo"]["typeMapping"]
+    )
