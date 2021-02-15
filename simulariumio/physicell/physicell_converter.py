@@ -9,7 +9,7 @@ from pint import UnitRegistry
 import numpy as np
 from .dep.pyMCDS import pyMCDS
 
-from ..converter import Converter
+from ..custom_converter import CustomConverter
 from ..data_objects import AgentData
 from ..exceptions import MissingDataError
 from ..constants import VIZ_TYPE
@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class PhysicellConverter(Converter):
+class PhysicellConverter(CustomConverter):
     def __init__(self, input_data: PhysicellData):
         """
         This object reads simulation trajectory outputs
@@ -154,6 +154,7 @@ class PhysicellConverter(Converter):
         """
         Return an object containing the data shaped for Simularium format
         """
+        print("Reading PhysiCell Data -------------")
         # load the data from PhysiCell MultiCellDS XML files
         agent_data, unit_factor = self._get_trajectory_data(input_data)
         # shape data
@@ -162,7 +163,7 @@ class PhysicellConverter(Converter):
         totalSteps = agent_data.n_agents.shape[0]
         simularium_data["trajectoryInfo"] = {
             "version": 1,
-            "timeStepSize": Converter._format_timestep(input_data.timestep),
+            "timeStepSize": CustomConverter._format_timestep(input_data.timestep),
             "totalSteps": totalSteps,
             "spatialUnitFactorMeters": unit_factor,
             "size": {

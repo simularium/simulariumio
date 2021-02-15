@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 import readdy
 
-from ..converter import Converter
+from ..custom_converter import CustomConverter
 from ..data_objects import AgentData
 from ..constants import VIZ_TYPE
 from .readdy_data import ReaddyData
@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class ReaddyConverter(Converter):
+class ReaddyConverter(CustomConverter):
     def __init__(self, input_data: ReaddyData):
         """
         This object reads simulation trajectory outputs
@@ -111,10 +111,10 @@ class ReaddyConverter(Converter):
             positions=np.zeros((totalSteps, max_agents, 3)),
             radii=np.ones(shape=(totalSteps, max_agents)),
         )
-        result.type_ids = (np.zeros((totalSteps, max_agents)),)
+        result.type_ids = np.zeros((totalSteps, max_agents))
         for t in range(agent_data.n_agents.shape[0]):
             n = 0
-            for i in range(agent_data.n_agents[t].shape[1]):
+            for i in range(agent_data.n_agents[t]):
                 type_name = traj.species_name(agent_data.type_ids[t][i])
                 if type_name in ignore_types or n >= n_filtered_particles_per_frame[t]:
                     continue
@@ -149,7 +149,7 @@ class ReaddyConverter(Converter):
             i += 1
         # assign group ID to each particle of a type in the group
         for t in range(agent_data.n_agents.shape[0]):
-            for n in range(agent_data.n_agents[t]):
+            for n in range(int(agent_data.n_agents[t])):
                 readdy_id = agent_data.type_ids[t][n]
                 if readdy_id in group_mapping:
                     agent_data.type_ids[t][n] = group_mapping[readdy_id]
@@ -159,6 +159,7 @@ class ReaddyConverter(Converter):
         """
         Return an object containing the data shaped for Simularium format
         """
+        print("Reading ReaDDy Data -------------")
         # load the data from a ReaDDy trajectory file
         agent_data, traj = self._get_raw_trajectory_data(input_data)
         # optionally filter and group
@@ -177,7 +178,7 @@ class ReaddyConverter(Converter):
         totalSteps = agent_data.n_agents.shape[0]
         simularium_data["trajectoryInfo"] = {
             "version": 1,
-            "timeStepSize": Converter._format_timestep(float(input_data.timestep)),
+            "timeStepSize": CustomConverter._format_timestep(float(input_data.timestep)),
             "totalSteps": totalSteps,
             "spatialUnitFactorMeters": input_data.spatial_unit_factor_meters,
             "size": {

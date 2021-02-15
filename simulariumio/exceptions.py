@@ -16,6 +16,20 @@ class UnsupportedPlotTypeError(Exception):
         return f"simulariumio does not support this plot type: '{self.plot_type}'."
 
 
+class UnsupportedFilterTypeError(Exception):
+    """
+    This exception is intended to communicate that the requested
+    filter type does not exist.
+    """
+
+    def __init__(self, filter_type, **kwargs):
+        super().__init__(**kwargs)
+        self.filter_type = filter_type
+
+    def __str__(self):
+        return f"simulariumio does not support this filter type: '{self.filter_type}'."
+
+
 class MissingDataError(Exception):
     """
     This exception is intended to communicate that the data provided

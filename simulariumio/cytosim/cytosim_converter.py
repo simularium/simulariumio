@@ -7,12 +7,13 @@ import sys
 
 import numpy as np
 
-from ..converter import Converter
+from ..custom_converter import CustomConverter
 from ..data_objects import AgentData
 from ..exceptions import DataError
 from ..constants import VIZ_TYPE
 from .cytosim_data import CytosimData
 from .cytosim_object_info import CytosimObjectInfo
+from .cytosim_agent_info import CytosimAgentInfo
 
 ###############################################################################
 
@@ -21,7 +22,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class CytosimConverter(Converter):
+class CytosimConverter(CustomConverter):
     def __init__(self, input_data: CytosimData):
         """
         This object reads simulation trajectory outputs
@@ -123,6 +124,7 @@ class CytosimConverter(Converter):
         self,
         fibers_lines: List[str],
         scale_factor: float,
+        agent_info: Dict[int, CytosimAgentInfo],
         result: AgentData,
         agent_types: Dict[int, Any],
         used_unique_IDs: List[int],
@@ -157,7 +159,6 @@ class CytosimConverter(Converter):
                     n += 1
                     s = -1
                     result.viz_types[t][n_other_agents + n] = VIZ_TYPE.fiber
-                    result.radii[t][n_other_agents + n] = 1.0
                     fiber_info = line.split()[2].split(":")
                     # unique instance ID
                     raw_uid = int(fiber_info[1])
@@ -179,6 +180,11 @@ class CytosimConverter(Converter):
                     else:
                         tid = types[raw_tid]
                     result.type_ids[t][n_other_agents + n] = tid
+                    result.radii[t][n_other_agents + n] = (
+                        (scale_factor * float(agent_info[raw_tid].radius))
+                        if raw_tid in agent_info
+                        else 1.0
+                    )
                 elif "end" in line:
                     # end of frame
                     result.n_subpoints[t][n_other_agents + n] = s + 1
@@ -284,6 +290,7 @@ class CytosimConverter(Converter):
         """
         Return an object containing the data shaped for Simularium format
         """
+        print("Reading Cytosim Data -------------")
         # load the data from Cytosim output .txt files
         cytosim_data = {}
         for object_type in input_data.object_info:
@@ -323,6 +330,7 @@ class CytosimConverter(Converter):
                 agent_data, agent_types, uids = self._parse_fibers(
                     cytosim_data[object_type],
                     input_data.scale_factor,
+                    input_data.object_info["fibers"].agents,
                     agent_data,
                     agent_types,
                     uids,
