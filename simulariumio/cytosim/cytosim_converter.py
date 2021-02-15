@@ -240,7 +240,8 @@ class CytosimConverter(CustomConverter):
                     n = -1
                 elif "time" in line and parse_time:
                     # time metadata
-                    result.times[t] = float(line.split()[2])
+                    # Cytosim times are in seconds, Simularium is nanoseconds
+                    result.times[t] = float(line.split()[2]) * 1e9
                 continue
             n += 1
             columns = line.split()
@@ -341,7 +342,9 @@ class CytosimConverter(CustomConverter):
         simularium_data["trajectoryInfo"] = {
             "version": 1,
             "timeStepSize": CustomConverter._format_timestep(
-                float(agent_data.times[1] - agent_data.times[0])
+                float(agent_data.times[2] - agent_data.times[1])
+                if totalSteps > 2
+                else float(agent_data.times[1] - agent_data.times[0])
                 if totalSteps > 1
                 else 0.0
             ),

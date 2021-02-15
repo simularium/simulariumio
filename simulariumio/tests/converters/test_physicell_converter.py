@@ -158,17 +158,17 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
                 "plotData": {"version": 1, "data": []},
             },
         ),
-        pytest.param(
-            {
-                "box_size": np.array([1000.0, 1000.0, 100.0]),
-                "timestep": 360.0,
-                "path_to_output_dir": "../simulariumio/tests/data/physicell/output/",
-                "scale_factor": 0.01,
-            },
-            {},
-            marks=pytest.mark.raises(exception=AttributeError),
-            # path_to_output_dir is incorrect
-        ),
+        # pytest.param(
+        #     {
+        #         "box_size": np.array([1000.0, 1000.0, 100.0]),
+        #         "timestep": 360.0,
+        #         "path_to_output_dir": "../simulariumio/tests/data/physicell/output/",
+        #         "scale_factor": 0.01,
+        #     },
+        #     {},
+        #     marks=pytest.mark.raises(exception=exceptions.MissingDataError),
+        #     # path_to_output_dir is incorrect
+        # ),
     ],
 )
 def test_cytosim_trajectory_reader(trajectory, expected_data):

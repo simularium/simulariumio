@@ -52,6 +52,7 @@ class ReaddyConverter(CustomConverter):
             types=None,
             positions=input_data.scale_factor * positions,
             radii=np.ones(shape=(totalSteps, max_agents)),
+            rotations=input_data.rotations,
         )
         result.type_ids = types
         # optionally set radius by particle type
@@ -110,6 +111,7 @@ class ReaddyConverter(CustomConverter):
             types=None,
             positions=np.zeros((totalSteps, max_agents, 3)),
             radii=np.ones(shape=(totalSteps, max_agents)),
+            rotations=agent_data.rotations,
         )
         result.type_ids = np.zeros((totalSteps, max_agents))
         for t in range(agent_data.n_agents.shape[0]):
@@ -178,9 +180,7 @@ class ReaddyConverter(CustomConverter):
         totalSteps = agent_data.n_agents.shape[0]
         simularium_data["trajectoryInfo"] = {
             "version": 1,
-            "timeStepSize": CustomConverter._format_timestep(
-                float(input_data.timestep)
-            ),
+            "timeStepSize": CustomConverter._format_timestep(float(input_data.timestep)),
             "totalSteps": totalSteps,
             "spatialUnitFactorMeters": input_data.spatial_unit_factor_meters,
             "size": {

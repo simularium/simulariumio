@@ -23,6 +23,7 @@ class AgentData:
     unique_ids: np.ndarray
     types: List[List[str]]
     positions: np.ndarray
+    rotations: np.ndarray
     radii: np.ndarray
     n_subpoints: np.ndarray = None
     subpoints: np.ndarray = None
@@ -39,6 +40,7 @@ class AgentData:
         types: List[List[str]],
         positions: np.ndarray,
         radii: np.ndarray,
+        rotations: np.ndarray = None,
         n_subpoints: np.ndarray = None,
         subpoints: np.ndarray = None,
         draw_fiber_points: bool = False,
@@ -73,6 +75,9 @@ class AgentData:
         radii : np.ndarray (shape = [timesteps, agents])
             A numpy ndarray containing the radius
             for each agent at each timestep
+        rotations: np.ndarray (shape = [timesteps, agents, 3]) (optional)
+            A numpy ndarray containing the XYZ rotation
+            for each particle at each timestep
         n_subpoints : np.ndarray (shape = [timesteps, agents]) (optional)
             A numpy ndarray containing the number of subpoints
             belonging to each agent at each timestep. Required if
@@ -95,6 +100,7 @@ class AgentData:
         self.types = types
         self.positions = positions
         self.radii = radii
+        self.rotations = rotations
         self.n_subpoints = n_subpoints
         self.subpoints = subpoints
         self.draw_fiber_points = draw_fiber_points
@@ -143,7 +149,7 @@ class AgentData:
         for t in range(self.times.size):
             for n in range(int(self.n_agents[t])):
                 type_name = self.types[t][n]
-                if type_name not in type_id_mapping:
+                if type_name not in type_name_mapping:
                     if self.type_ids is not None:
                         tid = int(self.type_ids[t][n])
                     else:
@@ -158,7 +164,8 @@ class AgentData:
 
     @classmethod
     def from_simularium_data(cls, data: Dict[str, Any]):
-        """"""
+        """
+        """
         bundleData = data["spatialData"]["bundleData"]
         total_steps, max_agents, max_subpoints = AgentData._get_data_dimensions(data)
         print(
