@@ -11,6 +11,14 @@ Subpackages
 Submodules
 ----------
 
+simulariumio.filters.add\_agents\_filter module
+-----------------------------------------------
+
+.. automodule:: simulariumio.filters.add_agents_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.filters.every\_nth\_agent\_filter module
 -----------------------------------------------------
 
@@ -19,10 +27,58 @@ simulariumio.filters.every\_nth\_agent\_filter module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.filters.every\_nth\_subpoint\_filter module
+--------------------------------------------------------
+
+.. automodule:: simulariumio.filters.every_nth_subpoint_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.filters.every\_nth\_timestep\_filter module
+--------------------------------------------------------
+
+.. automodule:: simulariumio.filters.every_nth_timestep_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.filters.filter module
 ----------------------------------
 
 .. automodule:: simulariumio.filters.filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.filters.multiply\_time\_filter module
+--------------------------------------------------
+
+.. automodule:: simulariumio.filters.multiply_time_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.filters.multiply\_time\_plot\_filter module
+--------------------------------------------------------
+
+.. automodule:: simulariumio.filters.multiply_time_plot_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.filters.reorder\_agents\_filter module
+---------------------------------------------------
+
+.. automodule:: simulariumio.filters.reorder_agents_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.filters.up\_direction\_filter module
+-------------------------------------------------
+
+.. automodule:: simulariumio.filters.up_direction_filter
    :members:
    :undoc-members:
    :show-inheritance:
