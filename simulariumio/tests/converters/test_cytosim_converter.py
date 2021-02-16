@@ -31,7 +31,7 @@ from simulariumio.cytosim import (
             {
                 "trajectoryInfo": {
                     "version": 1,
-                    "timeStepSize": 100000000.0,
+                    "timeStepSize": 0.1,
                     "totalSteps": 3,
                     "spatialUnitFactorMeters": 1e-6,
                     "size": {"x": 500.0, "y": 500.0, "z": 500.0},
@@ -45,7 +45,7 @@ from simulariumio.cytosim import (
                     "bundleData": [
                         {
                             "frameNumber": 0,
-                            "time": 100000000.0,
+                            "time": 0.1,
                             "data": [
                                 1001.0,
                                 1.0,
@@ -123,7 +123,7 @@ from simulariumio.cytosim import (
                         },
                         {
                             "frameNumber": 1,
-                            "time": 200000000.0,
+                            "time": 0.2,
                             "data": [
                                 1001.0,
                                 1.0,
@@ -201,7 +201,7 @@ from simulariumio.cytosim import (
                         },
                         {
                             "frameNumber": 2,
-                            "time": 300000000.0,
+                            "time": 0.3,
                             "data": [
                                 1001.0,
                                 1.0,
@@ -345,7 +345,7 @@ from simulariumio.cytosim import (
                     "bundleData": [
                         {
                             "frameNumber": 0,
-                            "time": 0.000,
+                            "time": 0.0,
                             "data": [
                                 1001.0,
                                 1.0,
@@ -601,7 +601,7 @@ from simulariumio.cytosim import (
                         },
                         {
                             "frameNumber": 1,
-                            "time": 50000000.0,
+                            "time": 0.05,
                             "data": [
                                 1001.0,
                                 1.0,
@@ -860,7 +860,7 @@ from simulariumio.cytosim import (
                         },
                         {
                             "frameNumber": 2,
-                            "time": 50000000.0,
+                            "time": 0.05,
                             "data": [
                                 1001.0,
                                 1.0,
