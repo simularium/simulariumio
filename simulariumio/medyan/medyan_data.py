@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 class MedyanData:
     box_size: np.ndarray
     path_to_snapshot: str
-    agent_info : Dict[str, Dict[int, MedyanAgentInfo]]
+    agent_info: Dict[str, Dict[int, MedyanAgentInfo]]
     draw_fiber_points: bool
     scale_factor: float
     plots: List[Dict[str, Any]]
@@ -27,9 +27,9 @@ class MedyanData:
         self,
         box_size: np.ndarray,
         path_to_snapshot: str,
-        filament_agent_info : Dict[int, MedyanAgentInfo] = {},
-        linker_agent_info : Dict[int, MedyanAgentInfo] = {},
-        motor_agent_info : Dict[int, MedyanAgentInfo] = {},
+        filament_agent_info: Dict[int, MedyanAgentInfo] = {},
+        linker_agent_info: Dict[int, MedyanAgentInfo] = {},
+        motor_agent_info: Dict[int, MedyanAgentInfo] = {},
         draw_fiber_points: bool = False,
         scale_factor: float = 1.0,
         plots: List[Dict[str, Any]] = [],
@@ -69,9 +69,11 @@ class MedyanData:
         """
         self.box_size = box_size
         self.path_to_snapshot = path_to_snapshot
-        self.agent_info["filament"] = filament_agent_info
-        self.agent_info["linker"] = linker_agent_info
-        self.agent_info["motor"] = motor_agent_info
+        self.agent_info = {
+            "filament": filament_agent_info,
+            "linker": linker_agent_info,
+            "motor": motor_agent_info,
+        }
         self.draw_fiber_points = draw_fiber_points
         self.scale_factor = scale_factor
         self.plots = plots

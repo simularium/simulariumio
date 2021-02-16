@@ -2,15 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Any, Dict, Tuple
-from pathlib import Path
-from pint import UnitRegistry
+from typing import Any, Dict, List, Tuple
+import math
 
 import numpy as np
 
 from ..custom_converter import CustomConverter
 from ..data_objects import AgentData
-from ..exceptions import MissingDataError
 from ..constants import VIZ_TYPE
 from .medyan_data import MedyanData
 
@@ -37,9 +35,7 @@ class MedyanConverter(CustomConverter):
         """
         self._data = self._read(input_data)
 
-    def _parse_data_dimensions(
-        self, lines: List[str]
-    ) -> List[int]:
+    def _parse_data_dimensions(self, lines: List[str]) -> List[int]:
         """
         Parse a MEDYAN snapshot.traj output file to get the number
         of subpoints per agent per timestep
@@ -74,7 +70,7 @@ class MedyanConverter(CustomConverter):
 
     def _get_trajectory_data(
         self, input_data: MedyanData
-    ) -> AgentData, Dict[str, Dict[int, int]]:
+    ) -> Tuple[AgentData, Dict[str, Dict[int, int]]]:
         """
         Parse a MEDYAN snapshot.traj output file to get agents
         """
@@ -98,15 +94,15 @@ class MedyanConverter(CustomConverter):
         at_frame_start = True
         parsing_object = False
         uids = {
-            "filament" : {},
-            "linker" : {},
-            "motor" : {},
+            "filament": {},
+            "linker": {},
+            "motor": {},
         }
         last_uid = 0
         tids = {
-            "filament" : {},
-            "linker" : {},
-            "motor" : {},
+            "filament": {},
+            "linker": {},
+            "motor": {},
         }
         last_tid = 0
         for line in lines:
@@ -143,20 +139,24 @@ class MedyanConverter(CustomConverter):
                     last_tid += 1
                 agent_data.type_ids[t][n] = tids[object_type][raw_tid]
                 # radius
-                agent_data.radii[t][n] = (input_data.agent_info[object_type][raw_tid].radius
+                agent_data.radii[t][n] = (
+                    input_data.agent_info[object_type][raw_tid].radius
                     if raw_tid in input_data.agent_info[object_type]
-                    else 1.0)
+                    else 1.0
+                )
                 if "FILAMENT" in line:
-                    agent_data.n_subpoints[t][n] = 3 * int(cols[3])
+                    agent_data.n_subpoints[t][n] = int(cols[3])
                 else:
-                    agent_data.n_subpoints[t][n] = 6
+                    agent_data.n_subpoints[t][n] = 2
                 parsing_object = True
-                n += 1
             elif parsing_object:
                 # object coordinates
-                for s in range(len(cols)):
-                    agent_data.subpoints[t][n][s] = float(cols[s])
+                for i in range(len(cols)):
+                    s = math.floor(i / 3)
+                    d = i % 3
+                    agent_data.subpoints[t][n][s][d] = float(cols[i])
                 parsing_object = False
+                n += 1
         return agent_data, tids
 
     def _read(self, input_data: MedyanData) -> Dict[str, Any]:
@@ -174,9 +174,11 @@ class MedyanConverter(CustomConverter):
             for raw_tid in type_id_mapping[object_type]:
                 tid = type_id_mapping[object_type][raw_tid]
                 type_name_mapping[str(tid)] = {
-                    "name": (input_data.agent_info[object_type][raw_tid].name
+                    "name": (
+                        input_data.agent_info[object_type][raw_tid].name
                         if raw_tid in input_data.agent_info[object_type]
-                        else object_type + raw_tid)
+                        else object_type + str(raw_tid)
+                    )
                 }
         # trajectory info
         totalSteps = agent_data.n_agents.shape[0]
@@ -204,7 +206,7 @@ class MedyanConverter(CustomConverter):
             "msgType": 1,
             "bundleStart": 0,
             "bundleSize": totalSteps,
-            "bundleData": self._get_spatial_bundle_data_no_subpoints(agent_data),
+            "bundleData": self._get_spatial_bundle_data_subpoints(agent_data),
         }
         # plot data
         simularium_data["plotData"] = {
