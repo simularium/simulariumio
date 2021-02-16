@@ -28,6 +28,7 @@ from .filters import (
     MultiplyTimePlotFilter,
     ReorderAgentsFilter,
     AddAgentsFilter,
+    TranslateFilter,
 )
 from .filters.params import FilterParams
 from .filters.filter import Filter
@@ -57,6 +58,7 @@ FILTERS = {
     "multiply_plot_time": MultiplyTimePlotFilter,
     "reorder_agents": ReorderAgentsFilter,
     "add_agents": AddAgentsFilter,
+    "translate": TranslateFilter,
 }
 
 ###############################################################################

@@ -10,3 +10,4 @@ from .multiply_time_filter import MultiplyTimeFilter  # noqa: F401
 from .multiply_time_plot_filter import MultiplyTimePlotFilter  # noqa: F401
 from .reorder_agents_filter import ReorderAgentsFilter  # noqa: F401
 from .add_agents_filter import AddAgentsFilter  # noqa: F401
+from .translate_filter import TranslateFilter  # noqa: F401
