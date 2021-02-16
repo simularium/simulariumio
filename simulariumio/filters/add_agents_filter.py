@@ -3,7 +3,6 @@
 
 from typing import Any, Dict
 import logging
-import math
 
 import numpy as np
 
@@ -26,18 +25,22 @@ class AddAgentsFilter(Filter):
         """
         Add the given agents to each frame of the simulation
         """
-        print(f"Filtering: add agents -------------")
+        print("Filtering: add agents -------------")
         # get dimensions
         total_steps = agent_data.times.size
         new_total_steps = params.new_agent_data.times.size
         if new_total_steps != total_steps:
-            raise DataError("Timestep in data to add differs from existing: "
-                            f"new data has {new_total_steps} steps, while "
-                            f"existing data has {total_steps}")
-        max_agents = (int(np.amax(agent_data.n_agents)) + 
-                      int(np.amax(params.new_agent_data.n_agents)))
-        max_subpoints = (int(np.amax(agent_data.n_subpoints)) + 
-                         int(np.amax(params.new_agent_data.n_subpoints)))
+            raise DataError(
+                "Timestep in data to add differs from existing: "
+                f"new data has {new_total_steps} steps, while "
+                f"existing data has {total_steps}"
+            )
+        max_agents = int(np.amax(agent_data.n_agents)) + int(
+            np.amax(params.new_agent_data.n_agents)
+        )
+        max_subpoints = int(np.amax(agent_data.n_subpoints)) + int(
+            np.amax(params.new_agent_data.n_subpoints)
+        )
         # get filtered data
         n_agents = np.zeros(total_steps)
         viz_types = np.zeros((total_steps, max_agents))

@@ -3,9 +3,6 @@
 
 from typing import Any, Dict
 import logging
-import math
-
-import numpy as np
 
 from ..data_objects import AgentData
 from .filter import Filter

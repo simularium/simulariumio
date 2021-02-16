@@ -3,7 +3,6 @@
 
 from typing import Any, Dict
 import logging
-import math
 
 import numpy as np
 
@@ -23,10 +22,10 @@ class ReorderAgentsFilter(Filter):
         self, agent_data: AgentData, params: ReorderAgentsFilterParams
     ) -> AgentData:
         """
-        Change the type IDs of the agents, so that the agents are listed, 
+        Change the type IDs of the agents, so that the agents are listed,
         and therefore colored, in a different order in the viewer
         """
-        print(f"Filtering: reorder agents -------------")
+        print("Filtering: reorder agents -------------")
         # get dimensions
         total_steps = agent_data.times.size
         max_agents = int(np.amax(agent_data.n_agents))

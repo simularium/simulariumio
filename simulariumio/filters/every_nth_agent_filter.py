@@ -68,8 +68,10 @@ class EveryNthAgentFilter(Filter):
                 ] = agent_data.subpoints[t][n]
                 i += 1
             n_agents[t] = i
-        print(f"filtered dims = {total_steps} timesteps X "
-              f"{int(np.amax(n_agents))} agents X {max_subpoints} subpoint")
+        print(
+            f"filtered dims = {total_steps} timesteps X "
+            f"{int(np.amax(n_agents))} agents X {max_subpoints} subpoint"
+        )
         return AgentData(
             times=agent_data.times,
             n_agents=n_agents,

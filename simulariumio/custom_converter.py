@@ -3,7 +3,7 @@
 
 import json
 import logging
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 import math
 
 import numpy as np
@@ -88,7 +88,6 @@ class CustomConverter:
         simularium_data = {}
         # trajectory info
         totalSteps = input_data.agent_data.times.size
-        
         type_mapping = input_data.agent_data.get_type_mapping()
         traj_info = {
             "version": 1,
@@ -367,10 +366,7 @@ class CustomConverter:
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data["plotData"]["data"].append(plot_reader_class().read(data))
 
-    def add_number_of_agents_plot(
-        self,
-        agent_data: AgentData = None
-    ):
+    def add_number_of_agents_plot(self, agent_data: AgentData = None):
         """
         Add a scatterplot of the number of each type of agent over time
 
@@ -392,14 +388,16 @@ class CustomConverter:
                 if type_name not in n_agents:
                     n_agents[type_name] = np.zeros_like(agent_data.times)
                 n_agents[type_name][t] += 1
-        self.add_plot(ScatterPlotData(
-            title="Number of agents over time",
-            xaxis_title="Time (s)",
-            yaxis_title="Number of agents",
-            xtrace=agent_data.times,
-            ytraces=n_agents,
-            render_mode="lines",
-        ))
+        self.add_plot(
+            ScatterPlotData(
+                title="Number of agents over time",
+                xaxis_title="Time (s)",
+                yaxis_title="Number of agents",
+                xtrace=agent_data.times,
+                ytraces=n_agents,
+                render_mode="lines",
+            )
+        )
 
     @staticmethod
     def _determine_filter(filter_type: str) -> [Filter]:
@@ -431,7 +429,9 @@ class CustomConverter:
                 agent_data = filter_class().filter_spatial_data(agent_data, params[i])
         self._data = self._read_custom_data(
             CustomData(
-                spatial_unit_factor_meters=self._data["trajectoryInfo"]["spatialUnitFactorMeters"],
+                spatial_unit_factor_meters=self._data["trajectoryInfo"][
+                    "spatialUnitFactorMeters"
+                ],
                 box_size=np.array(
                     [float(box_size["x"]), float(box_size["y"]), float(box_size["z"])]
                 ),
@@ -439,30 +439,6 @@ class CustomConverter:
             )
         )
         self._data["plotData"] = plot_data
-
-    def add_rotations(self, rotations: np.ndarray):
-        """
-        Modify the current simularium data to add rotations for the particles
-        """
-        print("Adding rotations -------------")
-        agent_data = AgentData.from_simularium_data(self._data)
-        max_n_agents = int(np.amax(agent_data.n_agents, 0))
-        ix_particles = np.empty((3 * max_n_agents,), dtype=int)
-        for i in range(max_n_agents):
-            ix_particles[3 * i : 3 * i + 3] = np.arange(
-                i * (len(V1_SPATIAL_BUFFER_STRUCT) - 1)
-                + V1_SPATIAL_BUFFER_STRUCT.index("ROTX"),
-                i * (len(V1_SPATIAL_BUFFER_STRUCT) - 1)
-                + V1_SPATIAL_BUFFER_STRUCT.index("ROTX")
-                + 3,
-            )
-        frame_buf = np.zeros((len(V1_SPATIAL_BUFFER_STRUCT) - 1) * max_n_agents)
-        for t in range(len(agent_data.times)):
-            n = int(agent_data.n_agents[t])
-            local_buf = np.array(self._data["spatialData"]["bundleData"][t]["data"])
-            local_buf[ix_particles[: 3 * n]] = rotations[t, :n].flatten()
-            self._data["spatialData"]["bundleData"][t]["data"] = local_buf.tolist()
-
 
     def write_JSON(self, output_path: str):
         """

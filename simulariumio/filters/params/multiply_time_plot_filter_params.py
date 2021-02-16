@@ -20,7 +20,7 @@ class MultiplyTimePlotFilterParams(FilterParams):
         multiplier: float,
     ):
         """
-        This object contains parameters 
+        This object contains parameters
         for multiplying time values
 
         Parameters
