@@ -2,10 +2,15 @@
 
 JSON files accepted by the simularium-viewer contain the following data in JSON format:
 * **trajectory info**
-  * version - 1.0
+  * version - 2.0
+  * timeUnits - unit info for temporal data (e.g. timeStepSize)
+    * magnitude - multiplier for time values (in case they are not given in whole units)
+    * name - unit name for time values (we support this list https://github.com/hgrecco/pint/blob/master/pint/default_en.txt)
   * timeStepSize - the amount of time that passes in the simulation for each time step
   * totalSteps - the total number of time steps, or frames, in the simulation trajectory
-  * spatialUnitFactorMeters - the multiplier needed to convert spatial data (including positions, radii, and box size) to meters
+  * spatialUnits - unit info for spatial data (e.g. positions and radii)
+    * magnitude - multiplier for spatial values (in case they are not given in whole units)
+    * name - unit name for spatial values (we support units in this list https://github.com/hgrecco/pint/blob/master/pint/default_en.txt)
   * size X, Y, Z - size of the bounding volume for the simulation. for now only rectangular prisms are supported, and the width in X, Y, and Z dimensions is provided
   * type mapping - for each agent type ID in the trajectory, information about how to display and render it:
     * name - the type name to display for all agents of this type. Optionally, this name can be followed by a hash and state tags for the agent’s current state delimited with underscores
@@ -58,12 +63,14 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
 {
     // trajectory info
     "trajectoryInfo" : {
-        "version" : 1,
+        "version" : 2,
+        // time units
+        "timeUnitFactorSeconds" : 1e-6, // microseconds
         // time
         "timeStepSize" : 0.5,
         "totalSteps" : 1000,
-        // units
-        "spatialUnitFactorMeters" : 1e-9,
+        // spatial units
+        "spatialUnitFactorMeters" : 1e-9, // nanometers
         // box size
         "size" : {
             "x" : 300,

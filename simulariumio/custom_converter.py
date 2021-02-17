@@ -77,7 +77,11 @@ class CustomConverter:
 
         type_mapping = input_data.agent_data.get_type_mapping()
         traj_info = {
-            "version": 1,
+            "version": 2,
+            "timeUnits": {
+                "magnitude": input_data.time_units.magnitude,
+                "name": input_data.time_units.name,
+            },
             "timeStepSize": CustomConverter._format_timestep(
                 float(input_data.agent_data.times[2] - input_data.agent_data.times[1])
                 if totalSteps > 2
@@ -88,7 +92,10 @@ class CustomConverter:
                 else 0.0
             ),
             "totalSteps": totalSteps,
-            "spatialUnitFactorMeters": input_data.spatial_unit_factor_meters,
+            "spatialUnits": {
+                "magnitude": input_data.spatial_units.magnitude,
+                "name": input_data.spatial_units.name,
+            },
             "size": {
                 "x": float(input_data.box_size[0]),
                 "y": float(input_data.box_size[1]),
