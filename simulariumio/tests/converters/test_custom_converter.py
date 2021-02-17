@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from simulariumio import CustomConverter, CustomData, AgentData
+from simulariumio import CustomConverter, CustomData, AgentData, UnitData
 from simulariumio.tests.conftest import three_default_agents
 
 
@@ -18,10 +18,16 @@ from simulariumio.tests.conftest import three_default_agents
             {
                 "trajectoryInfo": {
                     "version": 2,
-                    "timeUnitFactorSeconds": 1e-9,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "nanosecond",
+                    },
                     "timeStepSize": 0.5,
                     "totalSteps": 3,
-                    "spatialUnitFactorMeters": 1e-9,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "nanometer",
+                    },
                     "size": {"x": 100.0, "y": 100.0, "z": 100.0},
                     "typeMapping": {
                         "0": {"name": "C"},
@@ -165,7 +171,6 @@ from simulariumio.tests.conftest import three_default_agents
         # at given positions for 3 frames, no plots
         (
             CustomData(
-                spatial_unit_factor_meters=1e-6,
                 box_size=np.array([1000.0, 1000.0, 1000.0]),
                 agent_data=AgentData(
                     times=1.0 * np.array(list(range(3))),
@@ -325,15 +330,23 @@ from simulariumio.tests.conftest import three_default_agents
                         ]
                     ),
                 ),
+                time_units=UnitData("s"),
+                spatial_units=UnitData("um"),
                 plots=["plot data goes here"],
             ),
             {
                 "trajectoryInfo": {
                     "version": 2,
-                    "timeUnitFactorSeconds": 1.0,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "second",
+                    },
                     "timeStepSize": 1.0,
                     "totalSteps": 3,
-                    "spatialUnitFactorMeters": 1e-6,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "micrometer",
+                    },
                     "size": {"x": 1000.0, "y": 1000.0, "z": 1000.0},
                     "typeMapping": {
                         "0": {"name": "H"},
@@ -619,7 +632,6 @@ from simulariumio.tests.conftest import three_default_agents
         # at given positions for 3 frames, no plots
         (
             CustomData(
-                spatial_unit_factor_meters=10.0,
                 box_size=np.array([1000.0, 1000.0, 1000.0]),
                 agent_data=AgentData(
                     times=np.array([0.0, 1.00001, 2.00001]),
@@ -698,16 +710,23 @@ from simulariumio.tests.conftest import three_default_agents
                     ),
                     draw_fiber_points=True,
                 ),
-                time_unit_factor_seconds=1e-6,
+                time_units=UnitData("us"),
+                spatial_units=UnitData("m", 10.0),
                 plots=["plot data goes here"],
             ),
             {
                 "trajectoryInfo": {
                     "version": 2,
-                    "timeUnitFactorSeconds": 1e-6,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "microsecond",
+                    },
                     "timeStepSize": 1.0,
                     "totalSteps": 3,
-                    "spatialUnitFactorMeters": 10.0,
+                    "spatialUnits": {
+                        "magnitude": 10.0,
+                        "name": "meter",
+                    },
                     "size": {"x": 1000.0, "y": 1000.0, "z": 1000.0},
                     "typeMapping": {
                         "0": {"name": "H"},

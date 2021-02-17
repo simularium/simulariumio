@@ -174,13 +174,20 @@ class ReaddyConverter(Converter):
         # shape data
         simularium_data = {}
         # trajectory info
+        input_data.spatial_units.multiply(1.0 / input_data.scale_factor)
         totalSteps = agent_data.n_agents.shape[0]
         simularium_data["trajectoryInfo"] = {
             "version": 2,
-            "timeUnitFactorSeconds": input_data.time_unit_factor_seconds,
+            "timeUnits": {
+                "magnitude": input_data.time_units.magnitude,
+                "name": input_data.time_units.name,
+            },
             "timeStepSize": Converter._format_timestep(float(input_data.timestep)),
             "totalSteps": totalSteps,
-            "spatialUnitFactorMeters": input_data.spatial_unit_factor_meters,
+            "spatialUnits": {
+                "magnitude": input_data.spatial_units.magnitude,
+                "name": input_data.spatial_units.name,
+            },
             "size": {
                 "x": input_data.scale_factor * float(input_data.box_size[0]),
                 "y": input_data.scale_factor * float(input_data.box_size[1]),

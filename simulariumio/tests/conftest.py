@@ -5,12 +5,11 @@ from typing import Dict, Any
 
 import numpy as np
 
-from simulariumio import AgentData, CustomData
+from simulariumio import AgentData, CustomData, UnitData
 
 
 def three_default_agents() -> Dict[str, Any]:
     return CustomData(
-        spatial_unit_factor_meters=1e-9,
         box_size=np.array([100.0, 100.0, 100.0]),
         agent_data=AgentData(
             times=0.5 * np.array(list(range(3))),
@@ -45,5 +44,6 @@ def three_default_agents() -> Dict[str, Any]:
                 ]
             ),
         ),
-        time_unit_factor_seconds=1e-9,
+        time_units=UnitData("ns"),
+        spatial_units=UnitData("nm"),
     )

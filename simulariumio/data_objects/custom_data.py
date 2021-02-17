@@ -7,6 +7,7 @@ from typing import Any, Dict, List
 import numpy as np
 
 from .agent_data import AgentData
+from .unit_data import UnitData
 
 ###############################################################################
 
@@ -16,18 +17,18 @@ log = logging.getLogger(__name__)
 
 
 class CustomData:
-    time_unit_factor_seconds: float
-    spatial_unit_factor_meters: float
     box_size: np.ndarray
     agent_data: AgentData
+    time_units: UnitData
+    spatial_units: UnitData
     plots: List[Dict[str, Any]]
 
     def __init__(
         self,
         box_size: np.ndarray,
         agent_data: AgentData,
-        time_unit_factor_seconds: float = 1.0,
-        spatial_unit_factor_meters: float = 1.0,
+        time_units: UnitData = UnitData("s"),
+        spatial_units: UnitData = UnitData("m"),
         plots: List[Dict[str, Any]] = [],
     ):
         """
@@ -42,22 +43,18 @@ class CustomData:
         agent_data : AgentData
             An object containing data for each agent
             at each timestep
-        time_unit_factor_seconds : float (optional)
-            A float multiplier needed to convert temporal data
-            (e.g. timeStepSize) to seconds
-            ex: 1e-9 if times are in nanoseconds
-            Default: 1.0
-        spatial_unit_factor_meters : float (optional)
-            A float multiplier needed to convert spatial data
-            (including positions, radii, and box size) to meters
-            ex: 1e-9 if distances are in nanometers
-            Default: 1.0
+        time_units: UnitData (optional)
+            multiplier and unit name for time values
+            Default: 1.0 second
+        spatial_units: UnitData (optional)
+            multiplier and unit name for spatial values
+            Default: 1.0 meter
         plots : List[Dict[str, Any]] (optional)
             An object containing plot data already
             in Simularium format
         """
-        self.time_unit_factor_seconds = time_unit_factor_seconds
-        self.spatial_unit_factor_meters = spatial_unit_factor_meters
         self.box_size = box_size
         self.agent_data = agent_data
+        self.time_units = time_units
+        self.spatial_units = spatial_units
         self.plots = plots

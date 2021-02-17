@@ -36,6 +36,14 @@ simulariumio.data\_objects.scatter\_plot\_data module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.data\_objects.unit\_data module
+--------------------------------------------
+
+.. automodule:: simulariumio.data_objects.unit_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 Module contents
 ---------------

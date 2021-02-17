@@ -41,14 +41,20 @@ class CustomConverter(Converter):
         totalSteps = len(input_data.agent_data.times)
         traj_info = {
             "version": 2,
-            "timeUnitFactorSeconds": input_data.time_unit_factor_seconds,
+            "timeUnits": {
+                "magnitude": input_data.time_units.magnitude,
+                "name": input_data.time_units.name,
+            },
             "timeStepSize": Converter._format_timestep(
                 float(input_data.agent_data.times[1] - input_data.agent_data.times[0])
                 if totalSteps > 1
                 else 0.0
             ),
             "totalSteps": totalSteps,
-            "spatialUnitFactorMeters": input_data.spatial_unit_factor_meters,
+            "spatialUnits": {
+                "magnitude": input_data.spatial_units.magnitude,
+                "name": input_data.spatial_units.name,
+            },
             "size": {
                 "x": float(input_data.box_size[0]),
                 "y": float(input_data.box_size[1]),
