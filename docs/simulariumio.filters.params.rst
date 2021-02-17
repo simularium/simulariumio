@@ -68,6 +68,14 @@ simulariumio.filters.params.reorder\_agents\_filter\_params module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.filters.params.translate\_filter\_params module
+------------------------------------------------------------
+
+.. automodule:: simulariumio.filters.params.translate_filter_params
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.filters.params.up\_direction\_filter\_params module
 ----------------------------------------------------------------
 

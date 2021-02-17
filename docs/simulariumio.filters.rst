@@ -75,6 +75,14 @@ simulariumio.filters.reorder\_agents\_filter module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.filters.translate\_filter module
+---------------------------------------------
+
+.. automodule:: simulariumio.filters.translate_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.filters.up\_direction\_filter module
 -------------------------------------------------
 
