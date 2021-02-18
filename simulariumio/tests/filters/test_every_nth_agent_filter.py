@@ -26,10 +26,17 @@ from simulariumio.filters.params import EveryNthAgentFilterParams
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "second",
+                    },
                     "timeStepSize": 0.0,
                     "totalSteps": 3,
-                    "spatialUnitFactorMeters": 1e-6,
+                    "spatialUnits": {
+                        "magnitude": 10.0,
+                        "name": "nanometer",
+                    },
                     "size": {"x": 200.0, "y": 200.0, "z": 200.0},
                     "typeMapping": {
                         "1": {"name": "microtubule"},

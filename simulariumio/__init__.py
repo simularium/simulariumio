@@ -19,6 +19,7 @@ from .file_converter import FileConverter  # noqa: F401
 from .data_objects import (  # noqa: F401
     CustomData,
     AgentData,
+    UnitData,
     ScatterPlotData,
     HistogramPlotData,
 )

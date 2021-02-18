@@ -8,7 +8,7 @@ import sys
 import numpy as np
 
 from ..custom_converter import CustomConverter
-from ..data_objects import AgentData
+from ..data_objects import AgentData, UnitData
 from ..exceptions import DataError
 from ..constants import VIZ_TYPE
 from .cytosim_data import CytosimData
@@ -339,8 +339,14 @@ class CytosimConverter(CustomConverter):
         # shape data
         simularium_data = {}
         # trajectory info
+        time_units = UnitData("s")
+        spatial_units = UnitData("µm", 1.0 / input_data.scale_factor)
         simularium_data["trajectoryInfo"] = {
-            "version": 1,
+            "version": 2,
+            "timeUnits": {
+                "magnitude": time_units.magnitude,
+                "name": time_units.name,
+            },
             "timeStepSize": CustomConverter._format_timestep(
                 float(agent_data.times[2] - agent_data.times[1])
                 if totalSteps > 2
@@ -349,7 +355,10 @@ class CytosimConverter(CustomConverter):
                 else 0.0
             ),
             "totalSteps": totalSteps,
-            "spatialUnitFactorMeters": 1e-6,
+            "spatialUnits": {
+                "magnitude": spatial_units.magnitude,
+                "name": spatial_units.name,
+            },
             "size": {
                 "x": input_data.scale_factor * float(input_data.box_size[0]),
                 "y": input_data.scale_factor * float(input_data.box_size[1]),
