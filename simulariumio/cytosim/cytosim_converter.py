@@ -348,9 +348,7 @@ class CytosimConverter(CustomConverter):
                 "name": time_units.name,
             },
             "timeStepSize": CustomConverter._format_timestep(
-                float(agent_data.times[2] - agent_data.times[1])
-                if totalSteps > 2
-                else float(agent_data.times[1] - agent_data.times[0])
+                float(agent_data.times[1] - agent_data.times[0])
                 if totalSteps > 1
                 else 0.0
             ),

@@ -97,11 +97,7 @@ class CustomConverter:
                 "name": input_data.time_units.name,
             },
             "timeStepSize": CustomConverter._format_timestep(
-                float(input_data.agent_data.times[2] - input_data.agent_data.times[1])
-                if totalSteps > 2
-                else float(
-                    input_data.agent_data.times[1] - input_data.agent_data.times[0]
-                )
+                float(input_data.agent_data.times[1] - input_data.agent_data.times[0])
                 if totalSteps > 1
                 else 0.0
             ),
