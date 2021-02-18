@@ -20,13 +20,13 @@ from simulariumio.tests.conftest import three_default_agents
                     "version": 2,
                     "timeUnits": {
                         "magnitude": 1.0,
-                        "name": "nanosecond",
+                        "name": "ns",
                     },
                     "timeStepSize": 0.5,
                     "totalSteps": 3,
                     "spatialUnits": {
                         "magnitude": 1.0,
-                        "name": "nanometer",
+                        "name": "nm",
                     },
                     "size": {"x": 100.0, "y": 100.0, "z": 100.0},
                     "typeMapping": {
@@ -339,13 +339,13 @@ from simulariumio.tests.conftest import three_default_agents
                     "version": 2,
                     "timeUnits": {
                         "magnitude": 1.0,
-                        "name": "second",
+                        "name": "s",
                     },
                     "timeStepSize": 1.0,
                     "totalSteps": 3,
                     "spatialUnits": {
                         "magnitude": 1.0,
-                        "name": "micrometer",
+                        "name": "µm",
                     },
                     "size": {"x": 1000.0, "y": 1000.0, "z": 1000.0},
                     "typeMapping": {
@@ -719,13 +719,13 @@ from simulariumio.tests.conftest import three_default_agents
                     "version": 2,
                     "timeUnits": {
                         "magnitude": 1.0,
-                        "name": "microsecond",
+                        "name": "µs",
                     },
                     "timeStepSize": 1.0,
                     "totalSteps": 3,
                     "spatialUnits": {
                         "magnitude": 10.0,
-                        "name": "meter",
+                        "name": "m",
                     },
                     "size": {"x": 1000.0, "y": 1000.0, "z": 1000.0},
                     "typeMapping": {
