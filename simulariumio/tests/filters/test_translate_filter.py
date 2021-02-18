@@ -18,10 +18,17 @@ from simulariumio.filters.params import TranslateFilterParams
             TranslateFilterParams(translation=np.array([10, 0, 50])),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
                     "timeStepSize": 0.05,
                     "totalSteps": 3,
-                    "spatialUnitFactorMeters": 1e-6,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "µm",
+                    },
                     "size": {"x": 200.0, "y": 200.0, "z": 200.0},
                     "typeMapping": {
                         "1": {"name": "microtubule"},

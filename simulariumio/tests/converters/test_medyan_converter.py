@@ -30,10 +30,17 @@ from simulariumio.medyan import MedyanConverter, MedyanData, MedyanAgentInfo
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
                     "timeStepSize": 1.0,
                     "totalSteps": 3,
-                    "spatialUnitFactorMeters": 1e-9,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "nm",
+                    },
                     "size": {"x": 1000.0, "y": 1000.0, "z": 500.0},
                     "typeMapping": {
                         "0": {"name": "Actin"},
@@ -388,10 +395,17 @@ from simulariumio.medyan import MedyanConverter, MedyanData, MedyanAgentInfo
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
                     "timeStepSize": 1.0,
                     "totalSteps": 3,
-                    "spatialUnitFactorMeters": 1e-9,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "nm",
+                    },
                     "size": {"x": 1000.0, "y": 1000.0, "z": 500.0},
                     "typeMapping": {
                         "0": {"name": "Actin"},

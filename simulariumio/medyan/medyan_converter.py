@@ -8,7 +8,7 @@ import math
 import numpy as np
 
 from ..custom_converter import CustomConverter
-from ..data_objects import AgentData
+from ..data_objects import AgentData, UnitData
 from ..constants import VIZ_TYPE
 from .medyan_data import MedyanData
 
@@ -237,17 +237,24 @@ class MedyanConverter(CustomConverter):
                 }
         # trajectory info
         totalSteps = agent_data.n_agents.shape[0]
+        time_units = UnitData("s")
+        spatial_units = UnitData("nm", 1.0 / input_data.scale_factor)
         simularium_data["trajectoryInfo"] = {
-            "version": 1,
+            "version": 2,
+            "timeUnits": {
+                "magnitude": time_units.magnitude,
+                "name": time_units.name,
+            },
             "timeStepSize": CustomConverter._format_timestep(
-                float(agent_data.times[2] - agent_data.times[1])
-                if totalSteps > 2
-                else float(agent_data.times[1] - agent_data.times[0])
+                float(agent_data.times[1] - agent_data.times[0])
                 if totalSteps > 1
                 else 0.0
             ),
             "totalSteps": totalSteps,
-            "spatialUnitFactorMeters": 1e-9 / input_data.scale_factor,
+            "spatialUnits": {
+                "magnitude": spatial_units.magnitude,
+                "name": spatial_units.name,
+            },
             "size": {
                 "x": input_data.scale_factor * float(input_data.box_size[0]),
                 "y": input_data.scale_factor * float(input_data.box_size[1]),
