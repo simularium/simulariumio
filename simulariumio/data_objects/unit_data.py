@@ -35,9 +35,7 @@ class UnitData:
         # standardize and simplify units with pint
         ureg = UnitRegistry()
         self._quantity = magnitude * ureg(name)
-        self._quantity = self._quantity.to_compact()
-        self.magnitude = self._clamp_precision(self._quantity.magnitude)
-        self.name = str(self._quantity.units)
+        self._update_units()
 
     def _clamp_precision(self, number: float):
         """
@@ -45,11 +43,21 @@ class UnitData:
         """
         return float("%.4g" % number)
 
+    def _update_units(self):
+        """
+        update magnitude and name after setting quantity
+        """
+        self._quantity = self._quantity.to_compact()
+        self.magnitude = self._clamp_precision(self._quantity.magnitude)
+        n = f"{self._quantity.units:~}"
+        # pint has the wrong abbreviation for microns? (µ instead of µm)
+        if n == "µ":
+            n += "m"
+        self.name = n
+
     def multiply(self, multiplier: float):
         """
         multiply quantity and simplify
         """
         self._quantity *= multiplier
-        self._quantity = self._quantity.to_compact()
-        self.magnitude = self._clamp_precision(self._quantity.magnitude)
-        self.name = str(self._quantity.units)
+        self._update_units()

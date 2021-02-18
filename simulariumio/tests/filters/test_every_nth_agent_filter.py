@@ -29,13 +29,13 @@ from simulariumio.filters.params import EveryNthAgentFilterParams
                     "version": 2,
                     "timeUnits": {
                         "magnitude": 1.0,
-                        "name": "second",
+                        "name": "s",
                     },
                     "timeStepSize": 0.0,
                     "totalSteps": 3,
                     "spatialUnits": {
-                        "magnitude": 10.0,
-                        "name": "nanometer",
+                        "magnitude": 1.0,
+                        "name": "µm",
                     },
                     "size": {"x": 200.0, "y": 200.0, "z": 200.0},
                     "typeMapping": {

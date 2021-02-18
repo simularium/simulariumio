@@ -28,13 +28,13 @@ from simulariumio import UnitData
                     "version": 2,
                     "timeUnits": {
                         "magnitude": 1.0,
-                        "name": "nanosecond",
+                        "name": "ns",
                     },
                     "timeStepSize": 0.1,
                     "totalSteps": 3,
                     "spatialUnits": {
                         "magnitude": 1.0,
-                        "name": "nanometer",
+                        "name": "nm",
                     },
                     "size": {"x": 20.0, "y": 20.0, "z": 20.0},
                     "typeMapping": {"2": {"name": "C"}, "1": {"name": "B"}},

@@ -23,13 +23,13 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
                     "version": 2,
                     "timeUnits": {
                         "magnitude": 1.0,
-                        "name": "second",
+                        "name": "s",
                     },
                     "timeStepSize": 360.0,
                     "totalSteps": 3,
                     "spatialUnits": {
                         "magnitude": 100.0,
-                        "name": "micron",
+                        "name": "µm",
                     },
                     "size": {"x": 10.0, "y": 10.0, "z": 1.0},
                     "typeMapping": {
