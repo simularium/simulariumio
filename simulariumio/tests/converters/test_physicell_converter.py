@@ -169,7 +169,7 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
             {
                 "box_size": np.array([1000.0, 1000.0, 100.0]),
                 "timestep": 360.0,
-                "path_to_output_dir": "../simulariumio/tests/data/physicell/output/",
+                "path_to_output_dir": "../simulariumio/tests/data/physicell/",
                 "scale_factor": 0.01,
             },
             {},
