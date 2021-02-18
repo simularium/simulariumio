@@ -65,12 +65,18 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
     "trajectoryInfo" : {
         "version" : 2,
         // time units
-        "timeUnitFactorSeconds" : 1e-6, // microseconds
+        "timeUnits": {
+            "magnitude": 1.0,
+            "name": "microseconds",
+        },
         // time
         "timeStepSize" : 0.5,
         "totalSteps" : 1000,
         // spatial units
-        "spatialUnitFactorMeters" : 1e-9, // nanometers
+        "timeUnits": {
+            "magnitude": 1.0,
+            "name": "nanometers",
+        },
         // box size
         "size" : {
             "x" : 300,
