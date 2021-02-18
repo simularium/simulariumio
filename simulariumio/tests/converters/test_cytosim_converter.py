@@ -334,7 +334,7 @@ from simulariumio.cytosim import (
                         "magnitude": 1.0,
                         "name": "s",
                     },
-                    "timeStepSize": 0.05,
+                    "timeStepSize": 0.0,
                     "totalSteps": 3,
                     "spatialUnits": {
                         "magnitude": 10.0,
