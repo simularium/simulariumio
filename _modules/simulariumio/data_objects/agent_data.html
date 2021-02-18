@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>simulariumio.data_objects.agent_data &mdash; Simularium Conversion 1.0.1 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -49,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Simularium Conversion
+            <a href="../../../index.html" class="icon icon-home"> Simularium Conversion
           
 
           
@@ -115,6 +118,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#deploying">Deploying</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#questions-or-thoughts">Questions or Thoughts?</a></li>
 </ul>
 </li>
 </ul>
@@ -142,6 +146,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -232,7 +238,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        times : np.ndarray (shape = [timesteps])</span>
 <span class="sd">            A numpy ndarray containing the elapsed simulated time</span>
-<span class="sd">            in seconds at each timestep</span>
+<span class="sd">            at each timestep (in the units specified by</span>
+<span class="sd">            CustomData.time_units)</span>
 <span class="sd">        n_agents : np.ndarray (shape = [timesteps])</span>
 <span class="sd">            A numpy ndarray containing the number of agents</span>
 <span class="sd">            that exist at each timestep</span>
@@ -249,7 +256,8 @@
 <span class="sd">            the string name for the type of each agent</span>
 <span class="sd">        positions : np.ndarray (shape = [timesteps, agents, 3])</span>
 <span class="sd">            A numpy ndarray containing the XYZ position</span>
-<span class="sd">            for each agent at each timestep</span>
+<span class="sd">            for each agent at each timestep (in the units</span>
+<span class="sd">            specified by CustomData.spatial_units)</span>
 <span class="sd">        radii : np.ndarray (shape = [timesteps, agents])</span>
 <span class="sd">            A numpy ndarray containing the radius</span>
 <span class="sd">            for each agent at each timestep</span>
@@ -284,28 +292,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Blair Lyons
+        &#169; Copyright 2020, Blair Lyons.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

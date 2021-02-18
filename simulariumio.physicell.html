@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>simulariumio.physicell package &mdash; Simularium Conversion 1.0.1 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -51,7 +54,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Simularium Conversion
+            <a href="index.html" class="icon icon-home"> Simularium Conversion
           
 
           
@@ -117,6 +120,7 @@
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#questions-or-thoughts">Questions or Thoughts?</a></li>
 </ul>
 </li>
 </ul>
@@ -159,6 +163,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -174,7 +180,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/simulariumio.physicell.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -185,10 +191,10 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="simulariumio.physicell.dep.html" class="btn btn-neutral float-right" title="simulariumio.physicell.dep package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="simulariumio.physicell.dep.html" class="btn btn-neutral float-right" title="simulariumio.physicell.dep package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
       
       
-        <a href="simulariumio.data_objects.html" class="btn btn-neutral float-left" title="simulariumio.data_objects package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="simulariumio.data_objects.html" class="btn btn-neutral float-left" title="simulariumio.data_objects package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
       
   </div>
   
@@ -238,7 +244,7 @@ PhysiCell simulation trajectory outputs and plot data</p>
 <span id="simulariumio-physicell-physicell-data-module"></span><h2>simulariumio.physicell.physicell_data module<a class="headerlink" href="#module-simulariumio.physicell.physicell_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.physicell.physicell_data.PhysicellData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.physicell.physicell_data.</code><code class="sig-name descname">PhysicellData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">timestep: float</em>, <em class="sig-param">path_to_output_dir: str</em>, <em class="sig-param">types: Dict[int</em>, <em class="sig-param">Dict[Any</em>, <em class="sig-param">str]] = None</em>, <em class="sig-param">scale_factor: float = 1.0</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/physicell/physicell_data.html#PhysicellData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.physicell.physicell_data.PhysicellData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.physicell.physicell_data.</code><code class="sig-name descname">PhysicellData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">timestep: float</em>, <em class="sig-param">path_to_output_dir: str</em>, <em class="sig-param">types: Dict[int</em>, <em class="sig-param">Dict[Any</em>, <em class="sig-param">str]] = None</em>, <em class="sig-param">time_units: simulariumio.data_objects.unit_data.UnitData = &lt;simulariumio.data_objects.unit_data.UnitData object&gt;</em>, <em class="sig-param">scale_factor: float = 1.0</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/physicell/physicell_data.html#PhysicellData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.physicell.physicell_data.PhysicellData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 from PhysiCell (<a class="reference external" href="http://physicell.org/">http://physicell.org/</a>)
@@ -248,8 +254,7 @@ and plot data</p>
 <dd class="field-odd"><ul>
 <li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
 of the simulation bounding volume</p></li>
-<li><p><strong>timestep</strong> (<em>float</em>) – A float amount of time in seconds that passes each step
-Default: 0.0</p></li>
+<li><p><strong>timestep</strong> (<em>float</em>) – A float amount of time that passes each step</p></li>
 <li><p><strong>path_to_output_dir</strong> (<em>string</em>) – A string path to the PhysiCell output directory
 containing MultiCellDS XML and MATLAB files</p></li>
 <li><p><strong>types</strong> (<em>Dict[int, Dict[Any, str]] (optional)</em>) – the cell type ID from PhysiCell data mapped
@@ -265,6 +270,8 @@ Default: “cell[cell type ID from PhysiCell data]#</p>
 </div></blockquote>
 </div></blockquote>
 </li>
+<li><p><strong>time_units</strong> (<em>UnitData (optional)</em>) – multiplier and unit name for time values
+Default: 1.0 second</p></li>
 <li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the PhysiCell scene, use if
 visualization is too large or small
 Default: 1.0</p></li>
@@ -294,6 +301,11 @@ in Simularium format</p></li>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="simulariumio.physicell.physicell_data.PhysicellData.time_units">
+<code class="sig-name descname">time_units</code><em class="property">: UnitData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.physicell.physicell_data.PhysicellData.time_units" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="simulariumio.physicell.physicell_data.PhysicellData.timestep">
 <code class="sig-name descname">timestep</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.physicell.physicell_data.PhysicellData.timestep" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -316,28 +328,25 @@ in Simularium format</p></li>
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Blair Lyons
+        &#169; Copyright 2020, Blair Lyons.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>simulariumio.cytosim.cytosim_converter &mdash; Simularium Conversion 1.0.1 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -49,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Simularium Conversion
+            <a href="../../../index.html" class="icon icon-home"> Simularium Conversion
           
 
           
@@ -115,6 +118,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#deploying">Deploying</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#questions-or-thoughts">Questions or Thoughts?</a></li>
 </ul>
 </li>
 </ul>
@@ -142,6 +146,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -193,7 +199,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">..converter</span> <span class="kn">import</span> <span class="n">Converter</span>
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">AgentData</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">UnitData</span>
 <span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">DataError</span>
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">VIZ_TYPE</span>
 <span class="kn">from</span> <span class="nn">.cytosim_data</span> <span class="kn">import</span> <span class="n">CytosimData</span>
@@ -515,15 +521,24 @@
         <span class="c1"># shape data</span>
         <span class="n">simularium_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># trajectory info</span>
+        <span class="n">time_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="n">spatial_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;µm&quot;</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">)</span>
         <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&quot;timeUnits&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span> <span class="n">time_units</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">time_units</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="p">},</span>
             <span class="s2">&quot;timeStepSize&quot;</span><span class="p">:</span> <span class="n">Converter</span><span class="o">.</span><span class="n">_format_timestep</span><span class="p">(</span>
                 <span class="nb">float</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">totalSteps</span> <span class="o">&gt;</span> <span class="mi">1</span>
                 <span class="k">else</span> <span class="mf">0.0</span>
             <span class="p">),</span>
             <span class="s2">&quot;totalSteps&quot;</span><span class="p">:</span> <span class="n">totalSteps</span><span class="p">,</span>
-            <span class="s2">&quot;spatialUnitFactorMeters&quot;</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">,</span>
+            <span class="s2">&quot;spatialUnits&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span> <span class="n">spatial_units</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">spatial_units</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="p">},</span>
             <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                 <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
@@ -566,28 +581,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Blair Lyons
+        &#169; Copyright 2020, Blair Lyons.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

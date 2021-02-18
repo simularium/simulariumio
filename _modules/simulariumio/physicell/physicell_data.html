@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>simulariumio.physicell.physicell_data &mdash; Simularium Conversion 1.0.1 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -49,7 +52,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> Simularium Conversion
+            <a href="../../../index.html" class="icon icon-home"> Simularium Conversion
           
 
           
@@ -115,6 +118,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#deploying">Deploying</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#questions-or-thoughts">Questions or Thoughts?</a></li>
 </ul>
 </li>
 </ul>
@@ -142,6 +146,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -191,6 +197,8 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">UnitData</span>
+
 <span class="c1">###############################################################################</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -201,6 +209,7 @@
 <div class="viewcode-block" id="PhysicellData"><a class="viewcode-back" href="../../../simulariumio.physicell.html#simulariumio.physicell.physicell_data.PhysicellData">[docs]</a><span class="k">class</span> <span class="nc">PhysicellData</span><span class="p">:</span>
     <span class="n">box_size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span>
     <span class="n">path_to_output_dir</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">types</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
     <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span>
@@ -212,6 +221,7 @@
         <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">path_to_output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">types</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">),</span>
         <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[],</span>
     <span class="p">):</span>
@@ -226,8 +236,7 @@
 <span class="sd">            A numpy ndarray containing the XYZ dimensions</span>
 <span class="sd">            of the simulation bounding volume</span>
 <span class="sd">        timestep : float</span>
-<span class="sd">            A float amount of time in seconds that passes each step</span>
-<span class="sd">            Default: 0.0</span>
+<span class="sd">            A float amount of time that passes each step</span>
 <span class="sd">        path_to_output_dir : string</span>
 <span class="sd">            A string path to the PhysiCell output directory</span>
 <span class="sd">            containing MultiCellDS XML and MATLAB files</span>
@@ -240,6 +249,9 @@
 <span class="sd">                to the display names</span>
 <span class="sd">                Default: &quot;cell[cell type ID from PhysiCell data]#</span>
 <span class="sd">                    phase[cell phase ID from PhysiCell data]&quot;</span>
+<span class="sd">        time_units: UnitData (optional)</span>
+<span class="sd">            multiplier and unit name for time values</span>
+<span class="sd">            Default: 1.0 second</span>
 <span class="sd">        scale_factor : float (optional)</span>
 <span class="sd">            A multiplier for the PhysiCell scene, use if</span>
 <span class="sd">            visualization is too large or small</span>
@@ -252,6 +264,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">=</span> <span class="n">timestep</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_to_output_dir</span> <span class="o">=</span> <span class="n">path_to_output_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="n">types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">=</span> <span class="n">scale_factor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span></div>
 </pre></div>
@@ -260,28 +273,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Blair Lyons
+        &#169; Copyright 2020, Blair Lyons.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

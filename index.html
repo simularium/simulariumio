@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Welcome to Simularium Conversion’s documentation! &mdash; Simularium Conversion 1.0.1 documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -50,7 +53,7 @@
           
 
           
-            <a href="#" class="icon icon-home" alt="Documentation Home"> Simularium Conversion
+            <a href="#" class="icon icon-home"> Simularium Conversion
           
 
           
@@ -116,6 +119,7 @@
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
 <li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#questions-or-thoughts">Questions or Thoughts?</a></li>
 </ul>
 </li>
 </ul>
@@ -158,6 +162,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -169,7 +175,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -180,7 +186,7 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
       
       
   </div>
@@ -194,9 +200,20 @@
 <h1>Welcome to Simularium Conversion’s documentation!<a class="headerlink" href="#welcome-to-simularium-conversion-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
+<div class="section" id="simularium-repositories">
+<h2>Simularium repositories<a class="headerlink" href="#simularium-repositories" title="Permalink to this headline">¶</a></h2>
+<p>This repository is part of the Simularium project (<a class="reference external" href="https://simularium.allencell.org">simularium.allencell.org</a>), which includes repositories:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/allen-cell-animated/simulariumio">simulariumIO</a> - Python package that converts simulation outputs to the format consumed by the Simularium viewer website</p></li>
+<li><p><a class="reference external" href="https://github.com/allen-cell-animated/simularium-engine">simularium-engine</a> - C++ backend application that interfaces with biological simulation engines and serves simulation data to the front end website</p></li>
+<li><p><a class="reference external" href="https://github.com/allen-cell-animated/simularium-viewer">simularium-viewer</a> - NPM package to view Simularium trajectories in 3D</p></li>
+<li><p><a class="reference external" href="https://github.com/allen-cell-animated/simularium-website">simularium-website</a> - Front end website for the Simularium project, includes the Simularium viewer</p></li>
+</ul>
 </div>
-<div class="section" id="simulariumio">
-<h1>SimulariumIO<a class="headerlink" href="#simulariumio" title="Permalink to this headline">¶</a></h1>
+</div>
+<hr class="docutils" />
+<div class="section" id="id1">
+<h1>SimulariumIO<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <a class="reference external image-reference" href="https://github.com/allen-cell-animated/simulariumio/actions"><img alt="Build Status" src="https://github.com/allen-cell-animated/simulariumio/workflows/Build%20Master/badge.svg" /></a>
 <a class="reference external image-reference" href="https://allen-cell-animated.github.io/simulariumio"><img alt="Documentation" src="https://github.com/allen-cell-animated/simulariumio/workflows/Documentation/badge.svg" /></a>
 <a class="reference external image-reference" href="https://codecov.io/gh/allen-cell-animated/simulariumio"><img alt="Code Coverage" src="https://codecov.io/gh/allen-cell-animated/simulariumio/branch/master/graph/badge.svg" /></a>
@@ -218,6 +235,7 @@
 </ul>
 <p>We’re working to improve performance for converting large trajectories, and also discussing with the authors of some packages the possibility of adding the ability to export Simularium files directly.</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="convert-spatial-trajectory-from-a-supported-engine">
@@ -285,6 +303,7 @@
 </div>
 </div>
 </div>
+<hr class="docutils" />
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p><strong>Install Requires:</strong></p>
@@ -297,14 +316,15 @@
 <p><strong>Stable Release:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">simulariumio</span></code></p>
 <p><strong>Development Head:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/allen-cell-animated/simulariumio.git</span></code></p>
 </div>
+<hr class="docutils" />
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <p>For full package documentation please visit <a class="reference external" href="https://allen-cell-animated.github.io/simulariumio">allen-cell-animated.github.io/simulariumio</a>.</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="development">
 <h2>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h2>
 <p>See <a class="reference external" href="CONTRIBUTING.md">CONTRIBUTING.md</a> for information related to developing the code.</p>
-<p><a href="#id1"><span class="problematic" id="id2">**</span></a><em>Free software: Allen Institute Software License</em>**</p>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -321,28 +341,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Blair Lyons
+        &#169; Copyright 2020, Blair Lyons.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
