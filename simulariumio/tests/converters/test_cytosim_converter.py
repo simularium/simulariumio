@@ -30,10 +30,17 @@ from simulariumio.cytosim import (
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
                     "timeStepSize": 0.1,
                     "totalSteps": 3,
-                    "spatialUnitFactorMeters": 1e-6,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "nm",
+                    },
                     "size": {"x": 500.0, "y": 500.0, "z": 500.0},
                     "typeMapping": {"0": {"name": "fiber"}},
                 },
@@ -322,10 +329,17 @@ from simulariumio.cytosim import (
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
                     "timeStepSize": 0.05,
                     "totalSteps": 3,
-                    "spatialUnitFactorMeters": 1e-6,
+                    "spatialUnits": {
+                        "magnitude": 10.0,
+                        "name": "nm",
+                    },
                     "size": {"x": 200.0, "y": 200.0, "z": 200.0},
                     "typeMapping": {
                         "1": {"name": "microtubule"},

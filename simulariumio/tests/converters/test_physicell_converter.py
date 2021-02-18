@@ -20,10 +20,17 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
                     "timeStepSize": 360.0,
                     "totalSteps": 3,
-                    "spatialUnitFactorMeters": 1e-6,
+                    "spatialUnits": {
+                        "magnitude": 100.0,
+                        "name": "µm",
+                    },
                     "size": {"x": 10.0, "y": 10.0, "z": 1.0},
                     "typeMapping": {
                         "0": {"name": "cell 1#phase 4"},
@@ -158,17 +165,17 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
                 "plotData": {"version": 1, "data": []},
             },
         ),
-        # pytest.param(
-        #     {
-        #         "box_size": np.array([1000.0, 1000.0, 100.0]),
-        #         "timestep": 360.0,
-        #         "path_to_output_dir": "../simulariumio/tests/data/physicell/output/",
-        #         "scale_factor": 0.01,
-        #     },
-        #     {},
-        #     marks=pytest.mark.raises(exception=exceptions.MissingDataError),
-        #     # path_to_output_dir is incorrect
-        # ),
+        pytest.param(
+            {
+                "box_size": np.array([1000.0, 1000.0, 100.0]),
+                "timestep": 360.0,
+                "path_to_output_dir": "../simulariumio/tests/data/physicell/",
+                "scale_factor": 0.01,
+            },
+            {},
+            marks=pytest.mark.raises(exception=AttributeError),
+            # path_to_output_dir is incorrect
+        ),
     ],
 )
 def test_cytosim_trajectory_reader(trajectory, expected_data):

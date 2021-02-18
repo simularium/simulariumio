@@ -4,13 +4,12 @@
 import logging
 from typing import Any, Dict, Tuple
 from pathlib import Path
-from pint import UnitRegistry
 
 import numpy as np
 from .dep.pyMCDS import pyMCDS
 
 from ..converter import Converter
-from ..data_objects import AgentData
+from ..data_objects import AgentData, UnitData
 from ..exceptions import MissingDataError
 from ..constants import VIZ_TYPE
 from .physicell_data import PhysicellData
@@ -86,9 +85,7 @@ class PhysicellConverter(Converter):
             self._last_id += 1
         return self._ids[cell_type][cell_phase]
 
-    def _get_trajectory_data(
-        self, input_data: PhysicellData
-    ) -> Tuple[AgentData, float]:
+    def _get_trajectory_data(self, input_data: PhysicellData) -> Tuple[AgentData, str]:
         """
         Get data from one time step in Simularium format
         """
@@ -141,30 +138,30 @@ class PhysicellConverter(Converter):
                     3.0 / 4.0 * discrete_cells[t]["total_volume"][n] / np.pi
                 )
                 i += 1
-        # get spatial unit factor
-        ureg = UnitRegistry()
-        unit_factor = (
-            ureg(physicell_data[0].data["metadata"]["spatial_units"])
-            .to("meter")
-            .magnitude
-        )
-        return result, unit_factor
+        return result, physicell_data[0].data["metadata"]["spatial_units"]
 
     def _read(self, input_data: PhysicellData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """
         # load the data from PhysiCell MultiCellDS XML files
-        agent_data, unit_factor = self._get_trajectory_data(input_data)
+        agent_data, units = self._get_trajectory_data(input_data)
         # shape data
         simularium_data = {}
         # trajectory info
-        totalSteps = agent_data.n_agents.shape[0]
+        spatial_units = UnitData(units, 1.0 / input_data.scale_factor)
         simularium_data["trajectoryInfo"] = {
-            "version": 1,
+            "version": 2,
+            "timeUnits": {
+                "magnitude": input_data.time_units.magnitude,
+                "name": input_data.time_units.name,
+            },
             "timeStepSize": Converter._format_timestep(input_data.timestep),
-            "totalSteps": totalSteps,
-            "spatialUnitFactorMeters": unit_factor,
+            "totalSteps": agent_data.n_agents.shape[0],
+            "spatialUnits": {
+                "magnitude": spatial_units.magnitude,
+                "name": spatial_units.name,
+            },
             "size": {
                 "x": input_data.scale_factor * float(input_data.box_size[0]),
                 "y": input_data.scale_factor * float(input_data.box_size[1]),
@@ -177,7 +174,7 @@ class PhysicellConverter(Converter):
             "version": 1,
             "msgType": 1,
             "bundleStart": 0,
-            "bundleSize": totalSteps,
+            "bundleSize": agent_data.n_agents.shape[0],
             "bundleData": self._get_spatial_bundle_data_no_subpoints(agent_data),
         }
         # plot data
