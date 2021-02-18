@@ -6,6 +6,8 @@ from typing import Any, Dict, List
 
 import numpy as np
 
+from ..data_objects import UnitData
+
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -14,7 +16,6 @@ log = logging.getLogger(__name__)
 
 
 class ReaddyData:
-    spatial_unit_factor_meters: float
     box_size: np.ndarray
     timestep: float
     path_to_readdy_h5: str
@@ -22,12 +23,13 @@ class ReaddyData:
     radii: Dict[str, float]
     ignore_types: List[str]
     type_grouping: Dict[str, List[str]]
+    time_units: UnitData
+    spatial_units: UnitData
     scale_factor: float
     plots: List[Dict[str, Any]]
 
     def __init__(
         self,
-        spatial_unit_factor_meters: float,
         box_size: np.ndarray,
         timestep: float,
         path_to_readdy_h5: str,
@@ -35,6 +37,8 @@ class ReaddyData:
         radii: Dict[str, float] = None,
         ignore_types: List[str] = None,
         type_grouping: Dict[str, List[str]] = None,
+        time_units: UnitData = UnitData("s"),
+        spatial_units: UnitData = UnitData("m"),
         scale_factor: float = 1.0,
         plots: List[Dict[str, Any]] = [],
     ):
@@ -45,9 +49,6 @@ class ReaddyData:
 
         Parameters
         ----------
-        spatial_unit_factor_meters : float
-            A float multiplier needed to convert spatial data
-            (including positions, radii, and box size) to meters
         box_size : np.ndarray (shape = [3])
             A numpy ndarray containing the XYZ dimensions
             of the simulation bounding volume
@@ -69,6 +70,13 @@ class ReaddyData:
             A mapping of a new group type name to a list of
             ReaDDy particle types to include in that group
             e.g. {"moleculeA":["A1","A2","A3"]}
+        time_units: UnitData (optional)
+            multiplier and unit name for time values
+            Default: 1.0 second
+        spatial_units: UnitData (optional)
+            multiplier and unit name for spatial values
+            (including positions, radii, and box size)
+            Default: 1.0 meter
         scale_factor : float (optional)
             A multiplier for the ReaDDy scene, use if
             visualization is too large or small
@@ -77,7 +85,7 @@ class ReaddyData:
             An object containing plot data already
             in Simularium format
         """
-        self.spatial_unit_factor_meters = spatial_unit_factor_meters
+        self.spatial_units = spatial_units
         self.box_size = box_size
         self.timestep = timestep
         self.path_to_readdy_h5 = path_to_readdy_h5
@@ -85,5 +93,6 @@ class ReaddyData:
         self.radii = radii
         self.ignore_types = ignore_types
         self.type_grouping = type_grouping
+        self.time_units = time_units
         self.scale_factor = scale_factor
         self.plots = plots

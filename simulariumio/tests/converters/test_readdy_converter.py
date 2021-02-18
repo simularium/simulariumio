@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.readdy import ReaddyConverter, ReaddyData
+from simulariumio import UnitData
 
 
 @pytest.mark.parametrize(
@@ -13,20 +14,28 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
         # 4 particles 3 frames
         (
             ReaddyData(
-                spatial_unit_factor_meters=1e-9,
                 box_size=np.array([20.0, 20.0, 20.0]),
                 timestep=0.1,
                 path_to_readdy_h5="simulariumio/tests/data/readdy/test.h5",
                 radii={"C": 3.0, "A": 2.0, "B": 2.0},
                 ignore_types=["E"],
                 type_grouping={"C": ["A", "D"]},
+                time_units=UnitData("ms", 1e-6),
+                spatial_units=UnitData("nm"),
             ),
             {
                 "trajectoryInfo": {
-                    "version": 1,
+                    "version": 2,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "ns",
+                    },
                     "timeStepSize": 0.1,
                     "totalSteps": 3,
-                    "spatialUnitFactorMeters": 1e-9,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "nm",
+                    },
                     "size": {"x": 20.0, "y": 20.0, "z": 20.0},
                     "typeMapping": {"2": {"name": "C"}, "1": {"name": "B"}},
                 },

@@ -18,6 +18,7 @@ from .data_objects import (
     ScatterPlotData,
     AgentData,
     CustomData,
+    UnitData,
 )
 from .filters import (
     EveryNthAgentFilter,
@@ -92,18 +93,21 @@ class CustomConverter:
         totalSteps = input_data.agent_data.times.size
         type_mapping = input_data.agent_data.get_type_mapping()
         traj_info = {
-            "version": 1,
+            "version": 2,
+            "timeUnits": {
+                "magnitude": input_data.time_units.magnitude,
+                "name": input_data.time_units.name,
+            },
             "timeStepSize": CustomConverter._format_timestep(
-                float(input_data.agent_data.times[2] - input_data.agent_data.times[1])
-                if totalSteps > 2
-                else float(
-                    input_data.agent_data.times[1] - input_data.agent_data.times[0]
-                )
+                float(input_data.agent_data.times[1] - input_data.agent_data.times[0])
                 if totalSteps > 1
                 else 0.0
             ),
             "totalSteps": totalSteps,
-            "spatialUnitFactorMeters": input_data.spatial_unit_factor_meters,
+            "spatialUnits": {
+                "magnitude": input_data.spatial_units.magnitude,
+                "name": input_data.spatial_units.name,
+            },
             "size": {
                 "x": float(input_data.box_size[0]),
                 "y": float(input_data.box_size[1]),
@@ -431,13 +435,15 @@ class CustomConverter:
                 agent_data = filter_class().filter_spatial_data(agent_data, params[i])
         self._data = self._read_custom_data(
             CustomData(
-                spatial_unit_factor_meters=self._data["trajectoryInfo"][
-                    "spatialUnitFactorMeters"
-                ],
                 box_size=np.array(
                     [float(box_size["x"]), float(box_size["y"]), float(box_size["z"])]
                 ),
                 agent_data=agent_data,
+                time_units=UnitData("s"),
+                spatial_units=UnitData(
+                    self._data["trajectoryInfo"]["spatialUnits"]["name"],
+                    self._data["trajectoryInfo"]["spatialUnits"]["magnitude"],
+                ),
             )
         )
         self._data["plotData"] = plot_data
