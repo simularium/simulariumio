@@ -403,7 +403,7 @@ class CustomConverter:
         self.add_plot(
             ScatterPlotData(
                 title=plot_title,
-                xaxis_title=f"Time ({UnitData.to_string()})",
+                xaxis_title=f"Time ({time_units.to_string()})",
                 yaxis_title=yaxis_title,
                 xtrace=agent_data.times,
                 ytraces=n_agents,
