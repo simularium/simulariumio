@@ -27,6 +27,9 @@ class EveryNthAgentFilterParams(FilterParams):
         n_per_type_id : Dict[int, int]
             N for agents of each type ID,
             keep every nth agent of that type ID, filter out all the others
+        default_n : int
+            N for any agent types not specified in n_per_type_id
+            Default: 1
         """
         self.name = "every_nth_agent"
         self.n_per_type_id = n_per_type_id

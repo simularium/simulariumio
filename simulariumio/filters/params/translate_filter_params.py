@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from typing import Dict
 
 import numpy as np
 
@@ -15,11 +16,13 @@ log = logging.getLogger(__name__)
 
 
 class TranslateFilterParams(FilterParams):
-    translation: np.ndarray
+    translation_per_type_id: Dict[int, np.ndarray]
+    default_translation: np.ndarray
 
     def __init__(
         self,
-        translation: np.ndarray,
+        translation_per_type_id: Dict[int, np.ndarray],
+        default_translation: np.ndarray = np.zeros(3),
     ):
         """
         This object contains parameters for translating 3D positions
@@ -27,8 +30,13 @@ class TranslateFilterParams(FilterParams):
 
         Parameters
         ----------
-        translation: np.ndarray (shape = [3])
-            An XYZ offset to add to each spatial position
+        translation_per_type_id : Dict[int, int]
+            translation for agents of each type ID
+        default_translation : int
+            translation for any agent types not specified
+            in translation_per_type_id
+            Default: np.zeros(3)
         """
         self.name = "translate"
-        self.translation = translation
+        self.translation_per_type_id = translation_per_type_id
+        self.default_translation = default_translation

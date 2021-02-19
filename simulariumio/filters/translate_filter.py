@@ -35,17 +35,23 @@ class TranslateFilter(Filter):
         # get filtered data
         for t in range(total_steps):
             for n in range(int(agent_data.n_agents[t])):
+                if agent_data.type_ids[t][n] in params.translation_per_type_id:
+                    translation = params.translation_per_type_id[
+                        agent_data.type_ids[t][n]
+                    ]
+                else:
+                    translation = params.default_translation
                 n_subpoints = int(agent_data.n_subpoints[t][n])
                 if n_subpoints > 0:
                     for s in range(int(agent_data.n_subpoints[t][n])):
                         for d in range(3):
                             subpoints[t][n][s][d] = (
-                                agent_data.subpoints[t][n][s][d] + params.translation[d]
+                                agent_data.subpoints[t][n][s][d] + translation[d]
                             )
                 else:
                     for d in range(3):
                         positions[t][n][d] = (
-                            agent_data.positions[t][n][d] + params.translation[d]
+                            agent_data.positions[t][n][d] + translation[d]
                         )
         return AgentData(
             times=agent_data.times,
