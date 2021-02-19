@@ -372,7 +372,13 @@ class CustomConverter:
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data["plotData"]["data"].append(plot_reader_class().read(data))
 
-    def add_number_of_agents_plot(self, agent_data: AgentData = None):
+    def add_number_of_agents_plot(
+        self,
+        agent_data: AgentData = None,
+        plot_title: str = "Number of agents over time",
+        yaxis_title: str = "Number of agents",
+        time_units: UnitData = UnitData("s"),
+    ):
         """
         Add a scatterplot of the number of each type of agent over time
 
@@ -396,9 +402,9 @@ class CustomConverter:
                 n_agents[type_name][t] += 1
         self.add_plot(
             ScatterPlotData(
-                title="Number of agents over time",
-                xaxis_title="Time (s)",
-                yaxis_title="Number of agents",
+                title=plot_title,
+                xaxis_title=f"Time ({UnitData.to_string()})",
+                yaxis_title=yaxis_title,
                 xtrace=agent_data.times,
                 ytraces=n_agents,
                 render_mode="lines",
