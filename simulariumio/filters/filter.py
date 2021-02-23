@@ -21,9 +21,3 @@ class Filter(ABC):
         self, agent_data: AgentData, params: FilterParams
     ) -> AgentData:
         pass
-
-    @abstractmethod
-    def filter_plot_data(
-        self, plot_data: Dict[str, Any], params: FilterParams
-    ) -> Dict[str, Any]:
-        pass

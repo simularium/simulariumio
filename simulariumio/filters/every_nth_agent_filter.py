@@ -85,8 +85,3 @@ class EveryNthAgentFilter(Filter):
             draw_fiber_points=False,
             type_ids=type_ids,
         )
-
-    def filter_plot_data(
-        self, plot_data: Dict[str, Any], params: FilterParams
-    ) -> Dict[str, Any]:
-        return plot_data
