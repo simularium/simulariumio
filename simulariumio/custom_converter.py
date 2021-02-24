@@ -50,7 +50,7 @@ FILTERS = {
 
 
 class CustomConverter:
-    _data: Dict[str, Any] = {}
+    _data: CustomData
 
     def __init__(self, input_data: CustomData):
         """
@@ -64,8 +64,7 @@ class CustomConverter:
             An object containing custom simulation trajectory outputs
             and plot data
         """
-        self._data = self._read_custom_data(input_data)
-        self._check_agent_ids_are_unique_per_frame()
+        self._data = input_data
 
     def _read_custom_data(self, input_data: CustomData) -> Dict[str, Any]:
         """
@@ -136,7 +135,7 @@ class CustomConverter:
         Return the spatialData's bundleData for a simulation
         of agents with subpoints, packing buffer with jagged data is slower
         """
-        bundleData: List[Dict[str, Any]] = []
+        bundle_data: List[Dict[str, Any]] = []
         uids = {}
         for t in range(len(agent_data.times)):
             # timestep
@@ -225,8 +224,8 @@ class CustomConverter:
                 else:
                     i += len(V1_SPATIAL_BUFFER_STRUCT) - 1
             frame_data["data"] = local_buf.tolist()
-            bundleData.append(frame_data)
-        return bundleData
+            bundle_data.append(frame_data)
+        return bundle_data
 
     @staticmethod
     def _get_spatial_bundle_data_no_subpoints(
@@ -236,7 +235,7 @@ class CustomConverter:
         Return the spatialData's bundleData for a simulation
         of agents without subpoints, using list slicing for speed
         """
-        bundleData: List[Dict[str, Any]] = []
+        bundle_data: List[Dict[str, Any]] = []
         max_n_agents = int(np.amax(agent_data.n_agents, 0))
         ix_positions = np.empty((3 * max_n_agents,), dtype=int)
         for i in range(max_n_agents):
@@ -273,16 +272,16 @@ class CustomConverter:
                 V1_SPATIAL_BUFFER_STRUCT.index("R") :: len(V1_SPATIAL_BUFFER_STRUCT) - 1
             ] = agent_data.radii[t, :n]
             frame_data["data"] = local_buf.tolist()
-            bundleData.append(frame_data)
-        return bundleData
+            bundle_data.append(frame_data)
+        return bundle_data
 
-    def _check_agent_ids_are_unique_per_frame(self) -> bool:
+    def _check_agent_ids_are_unique_per_frame(self, buffer_data: Dict[str, Any]) -> bool:
         """
         For each frame, check that none of the unique agent IDs overlap
         """
-        bundleData = self._data["spatialData"]["bundleData"]
-        for t in range(len(bundleData)):
-            data = bundleData[t]["data"]
+        bundle_data = buffer_data["spatialData"]["bundleData"]
+        for t in range(len(bundle_data)):
+            data = bundle_data[t]["data"]
             i = 1
             uids = []
             get_n_subpoints = False
@@ -347,7 +346,7 @@ class CustomConverter:
             Default: 'scatter'
         """
         plot_reader_class = self._determine_plot_reader(plot_type)
-        self._data["plotData"]["data"].append(plot_reader_class().read(data))
+        self._data.plots.append(plot_reader_class().read(data))
 
     @staticmethod
     def _determine_filter(filter_type: str) -> [Filter]:
@@ -399,6 +398,7 @@ class CustomConverter:
             where to save the file
         """
         print("Writing JSON -------------")
+        buffer_data = self._read_custom_data(self._data)
         with open(f"{output_path}.simularium", "w+") as outfile:
-            json.dump(self._data, outfile)
+            json.dump(buffer_data, outfile)
         print(f"saved to {output_path}.simularium")
