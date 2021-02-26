@@ -19,28 +19,44 @@ log = logging.getLogger(__name__)
 
 
 class EveryNthAgentFilter(Filter):
-    def filter_spatial_data(
-        self, data: CustomData, params: EveryNthAgentFilterParams
-    ) -> CustomData:
+    n_per_type_id: Dict[int, int]
+    default_n: int
+
+    def __init__(self, n_per_type_id: Dict[int, int], default_n: int = 1):
+        """
+        This filter reduces the number of agents in each frame 
+        of simularium data by filtering out all but every nth agent
+
+        Parameters
+        ----------
+        n_per_type_id : Dict[int, int]
+            N for agents of each type ID,
+            keep every nth agent of that type ID, filter out all the others
+        default_n : int (optional)
+            N for any agents of type not specified in n_per_type_id
+            Default: 1
+        """
+        self.name = "every_nth_agent"
+        self.n_per_type_id = n_per_type_id
+        self.default_n = default_n
+
+    def apply(self, data: CustomData) -> CustomData:
         """
         Reduce the number of agents in each frame of the simularium
         file by filtering out all but every nth agent
         """
         print("Filtering: every Nth agent -------------")
-        # get dimensions
-        total_steps = data.agent_data.times.size
-        max_agents = int(np.amax(data.agent_data.n_agents))
-        max_subpoints = int(np.amax(data.agent_data.n_subpoints))
         # get filtered data
-        n_agents = np.zeros(total_steps)
-        viz_types = np.zeros((total_steps, max_agents))
-        unique_ids = np.zeros((total_steps, max_agents))
+        total_steps = data.agent_data.times.size
+        n_agents = np.zeros_like(data.agent_data.n_agents)
+        viz_types = np.zeros_like(data.agent_data.viz_types)
+        unique_ids = np.zeros_like(data.agent_data.unique_ids)
         types = []
-        type_ids = np.zeros((total_steps, max_agents))
-        positions = np.zeros((total_steps, max_agents, 3))
-        radii = np.ones((total_steps, max_agents))
-        n_subpoints = np.zeros((total_steps, max_agents))
-        subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
+        type_ids = np.zeros_like(data.agent_data.type_ids)
+        positions = np.zeros_like(data.agent_data.positions)
+        radii = np.ones_like(data.agent_data.radii)
+        n_subpoints = np.zeros_like(data.agent_data.n_subpoints)
+        subpoints = np.zeros_like(data.agent_data.subpoints)
         for t in range(total_steps):
             i = 0
             types.append([])
@@ -51,10 +67,10 @@ class EveryNthAgentFilter(Filter):
                 if type_id not in n_found:
                     n_found[type_id] = -1
                 n_found[type_id] += 1
-                if type_id in params.n_per_type_id:
-                    inc = params.n_per_type_id[type_id]
+                if type_id in self.n_per_type_id:
+                    inc = self.n_per_type_id[type_id]
                 else:
-                    inc = params.default_n
+                    inc = self.default_n
                 if inc < 1 or n_found[type_id] % inc != 0:
                     continue
                 viz_types[t][i] = data.agent_data.viz_types[t][n]
@@ -69,26 +85,26 @@ class EveryNthAgentFilter(Filter):
                 ] = data.agent_data.subpoints[t][n]
                 i += 1
             n_agents[t] = i
+        max_subpoints = int(np.amax(data.agent_data.n_subpoints))
         print(
             f"filtered dims = {total_steps} timesteps X "
             f"{int(np.amax(n_agents))} agents X {max_subpoints} subpoint"
         )
-        filtered_agent_data = AgentData(
-            times=np.copy(data.agent_data.times),
-            n_agents=n_agents,
-            viz_types=viz_types,
-            unique_ids=unique_ids,
-            types=types,
-            positions=positions,
-            radii=radii,
-            n_subpoints=n_subpoints,
-            subpoints=subpoints,
-            draw_fiber_points=False,
-            type_ids=type_ids,
-        )
         return CustomData(
             box_size=np.copy(data.box_size),
-            agent_data=filtered_agent_data,
+            agent_data=AgentData(
+                times=np.copy(data.agent_data.times),
+                n_agents=n_agents,
+                viz_types=viz_types,
+                unique_ids=unique_ids,
+                types=types,
+                positions=positions,
+                radii=radii,
+                n_subpoints=n_subpoints,
+                subpoints=subpoints,
+                draw_fiber_points=False,
+                type_ids=type_ids,
+            ),
             time_units=copy.copy(data.time_units),
             spatial_units=copy.copy(data.spatial_units),
             plots=copy.copy(data.plots),

@@ -20,15 +20,8 @@ from .data_objects import (
     CustomData,
     UnitData,
 )
-from .filters import (
-    EveryNthAgentFilter,
-)
-from .filters.params import FilterParams
-from .filters.filter import Filter
-from .exceptions import (
-    UnsupportedPlotTypeError,
-    UnsupportedFilterTypeError,
-)
+from .filters import Filter
+from .exceptions import UnsupportedPlotTypeError
 from .constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE
 
 ###############################################################################
@@ -40,10 +33,6 @@ log = logging.getLogger(__name__)
 SUPPORTED_PLOT_READERS = {
     "scatter": ScatterPlotReader,
     "histogram": HistogramPlotReader,
-}
-
-FILTERS = {
-    "every_nth_agent": EveryNthAgentFilter,
 }
 
 ###############################################################################
@@ -348,27 +337,11 @@ class CustomConverter:
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data.plots.append(plot_reader_class().read(data))
 
-    @staticmethod
-    def _determine_filter(filter_type: str) -> [Filter]:
+    def apply_filter(self, filter: Filter):
         """
-        Return the filter to match the requested filter type
+        Return the simularium data with the given filter applied
         """
-        if filter_type in FILTERS:
-            return FILTERS[filter_type]
-
-        raise UnsupportedFilterTypeError(filter_type)
-
-    def apply_filters(self, params: FilterParams):
-        """
-        Apply the given filter to the simularium data
-
-        Parameters
-        ----------
-        params: FilterParams
-            parameters for the specific filter
-        """
-        filter_class = self._determine_filter(params.name)
-        return filter_class().filter_spatial_data(self._data, params)
+        return filter.apply(self._data)
 
     def write_JSON(self, output_path: str):
         """
