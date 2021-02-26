@@ -358,35 +358,17 @@ class CustomConverter:
 
         raise UnsupportedFilterTypeError(filter_type)
 
-    def apply_filters(self, params: List[FilterParams]):
+    def apply_filters(self, params: FilterParams):
         """
         Apply the given filter to the simularium data
 
         Parameters
         ----------
-        params: List[FilterParams]
-            a list of filter parameters, one for each filter to be applied
+        params: FilterParams
+            parameters for the specific filter
         """
-        box_size = self._data["trajectoryInfo"]["size"]
-        plot_data = self._data["plotData"]
-        agent_data = AgentData.from_simularium_data(self._data)
-        for i in range(len(params)):
-            filter_class = self._determine_filter(params[i].name)
-            agent_data = filter_class().filter_spatial_data(agent_data, params[i])
-        self._data = self._read_custom_data(
-            CustomData(
-                box_size=np.array(
-                    [float(box_size["x"]), float(box_size["y"]), float(box_size["z"])]
-                ),
-                agent_data=agent_data,
-                time_units=UnitData("s"),
-                spatial_units=UnitData(
-                    self._data["trajectoryInfo"]["spatialUnits"]["name"],
-                    self._data["trajectoryInfo"]["spatialUnits"]["magnitude"],
-                ),
-            )
-        )
-        self._data["plotData"] = plot_data
+        filter_class = self._determine_filter(params.name)
+        return filter_class().filter_spatial_data(self._data, params)
 
     def write_JSON(self, output_path: str):
         """
