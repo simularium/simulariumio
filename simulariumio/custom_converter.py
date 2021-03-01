@@ -63,8 +63,9 @@ class CustomConverter:
         simularium_data = {}
         # trajectory info
         totalSteps = input_data.agent_data.times.size
-
-        type_mapping = input_data.agent_data.get_type_mapping()
+        type_ids, type_name_mapping = AgentData.get_type_ids_and_mapping(input_data.agent_data.types, input_data.agent_data.type_ids)
+        if input_data.agent_data.type_ids is None:
+            input_data.agent_data.type_ids = type_ids
         traj_info = {
             "version": 2,
             "timeUnits": {
@@ -72,9 +73,7 @@ class CustomConverter:
                 "name": input_data.time_units.name,
             },
             "timeStepSize": CustomConverter._format_timestep(
-                float(input_data.agent_data.times[2] - input_data.agent_data.times[1])
-                if totalSteps > 2
-                else float(
+                float(
                     input_data.agent_data.times[1] - input_data.agent_data.times[0]
                 )
                 if totalSteps > 1
@@ -90,7 +89,7 @@ class CustomConverter:
                 "y": float(input_data.box_size[1]),
                 "z": float(input_data.box_size[2]),
             },
-            "typeMapping": type_mapping,
+            "typeMapping": type_name_mapping,
         }
         simularium_data["trajectoryInfo"] = traj_info
         # spatial data
@@ -118,7 +117,7 @@ class CustomConverter:
 
     @staticmethod
     def _get_spatial_bundle_data_subpoints(
-        agent_data: AgentData, used_unique_IDs: List[int] = []
+        agent_data: AgentData
     ) -> List[Dict[str, Any]]:
         """
         Return the spatialData's bundleData for a simulation
@@ -126,6 +125,7 @@ class CustomConverter:
         """
         bundle_data: List[Dict[str, Any]] = []
         uids = {}
+        used_unique_IDs = list(np.unique(agent_data.unique_ids))
         for t in range(len(agent_data.times)):
             # timestep
             frame_data = {}
@@ -191,7 +191,7 @@ class CustomConverter:
                                 while uid in used_unique_IDs:
                                     uid += 100
                                 uids[raw_uid] = uid
-                                used_unique_IDs.append(uid)
+                                used_unique_IDs.append(uid) 
                             # add sphere
                             local_buf[
                                 i + V1_SPATIAL_BUFFER_STRUCT.index("VIZ_TYPE")

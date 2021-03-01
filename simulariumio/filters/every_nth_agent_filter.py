@@ -8,7 +8,6 @@ import logging
 import numpy as np
 
 from .filter import Filter
-from .params import EveryNthAgentFilterParams, FilterParams
 from ..data_objects import CustomData, AgentData
 
 ###############################################################################

@@ -199,12 +199,7 @@ class ReaddyConverter(CustomConverter):
             "typeMapping": type_mapping,
         }
         # add type names for each type that exists in the trajectory
-        existing_type_ids = []
-        for t in range(totalSteps):
-            for n in range(int(agent_data.n_agents[t])):
-                type_id = int(agent_data.type_ids[t][n])
-                if type_id not in existing_type_ids:
-                    existing_type_ids.append(type_id)
+        existing_type_ids = np.unique(agent_data.type_ids)
         for type_id in existing_type_ids:
             if str(type_id) not in simularium_data["trajectoryInfo"]["typeMapping"]:
                 type_name = traj.species_name(type_id)
