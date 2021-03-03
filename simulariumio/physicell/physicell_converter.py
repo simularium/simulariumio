@@ -110,7 +110,7 @@ class PhysicellConverter(CustomConverter):
         result = AgentData(
             times=input_data.timestep * np.arange(totalSteps),
             n_agents=np.zeros(totalSteps),
-            viz_types=VIZ_TYPE.default * np.ones(shape=(totalSteps, max_agents)),
+            viz_types=VIZ_TYPE.DEFAULT * np.ones(shape=(totalSteps, max_agents)),
             unique_ids=np.zeros((totalSteps, max_agents)),
             types=[[] for t in range(totalSteps)],
             positions=np.zeros((totalSteps, max_agents, 3)),

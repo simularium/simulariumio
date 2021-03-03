@@ -123,12 +123,12 @@ class CytosimConverter(CustomConverter):
     ) -> [AgentData, Dict[int, int], List[int], Dict[int, int], List[int]]:
         """"""
         if "fiber" in object_type:
-            result.viz_types[t][n] = VIZ_TYPE.fiber
+            result.viz_types[t][n] = VIZ_TYPE.FIBER
             fiber_info = data_columns[2].split(":")
             raw_uid = int(fiber_info[1])
             raw_tid = int(fiber_info[0][1:])
         else:
-            result.viz_types[t][n] = VIZ_TYPE.default
+            result.viz_types[t][n] = VIZ_TYPE.DEFAULT
             raw_uid = int(data_columns[1].strip("+,"))
             raw_tid = int(data_columns[0].strip("+,"))
         # unique instance ID

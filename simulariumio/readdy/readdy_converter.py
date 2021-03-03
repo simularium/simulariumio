@@ -47,7 +47,7 @@ class ReaddyConverter(CustomConverter):
         result = AgentData(
             times=input_data.timestep * np.arange(totalSteps),
             n_agents=n_particles_per_frame,
-            viz_types=VIZ_TYPE.default * np.ones(shape=(totalSteps, max_agents)),
+            viz_types=VIZ_TYPE.DEFAULT * np.ones(shape=(totalSteps, max_agents)),
             unique_ids=ids,
             types=[[] for t in range(totalSteps)],
             positions=input_data.scale_factor * positions,

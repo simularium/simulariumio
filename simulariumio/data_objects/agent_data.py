@@ -115,7 +115,7 @@ class AgentData:
             while i < len(data):
                 # a new agent should start at this index
                 n_agents += 1
-                i += V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                i += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                 # get the number of subpoints
                 n_sp = math.floor(data[i] / 3.0)
                 if n_sp > max_n_subpoints:
@@ -123,8 +123,8 @@ class AgentData:
                 i += int(
                     data[i]
                     + (
-                        len(V1_SPATIAL_BUFFER_STRUCT)
-                        - V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                        V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
+                        - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                         - 1
                     )
                 )
@@ -205,25 +205,25 @@ class AgentData:
             frame_data = bundleData[t]["data"]
             n = 0
             i = 0
-            while i + V1_SPATIAL_BUFFER_STRUCT.index("NSP") < len(frame_data):
+            while i + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX < len(frame_data):
                 # a new agent should start at this index
                 viz_types[t][n] = frame_data[
-                    i + V1_SPATIAL_BUFFER_STRUCT.index("VIZ_TYPE")
+                    i + V1_SPATIAL_BUFFER_STRUCT.VIZ_TYPE_INDEX
                 ]
-                unique_ids[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("UID")]
-                type_ids[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("TID")]
+                unique_ids[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.UID_INDEX]
+                type_ids[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX]
                 positions[t][n] = [
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("POSX")],
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("POSY")],
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("POSZ")],
+                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX],
+                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSY_INDEX],
+                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSZ_INDEX],
                 ]
-                radii[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("R")]
-                i += V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                radii[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX]
+                i += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                 # get the subpoints
                 if max_subpoints < 1:
                     i += int(
-                        V1_SPATIAL_BUFFER_STRUCT.index("SP")
-                        - V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                        V1_SPATIAL_BUFFER_STRUCT.SP_INDEX
+                        - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                     )
                     n += 1
                     continue
@@ -239,8 +239,8 @@ class AgentData:
                 i += int(
                     frame_data[i]
                     + (
-                        V1_SPATIAL_BUFFER_STRUCT.index("SP")
-                        - V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                        V1_SPATIAL_BUFFER_STRUCT.SP_INDEX
+                        - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                     )
                 )
                 n += 1
