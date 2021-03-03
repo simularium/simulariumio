@@ -180,5 +180,6 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
 )
 def test_cytosim_trajectory_reader(trajectory, expected_data):
     converter = PhysicellConverter(trajectory)
-    assert expected_data == converter._data
-    assert converter._check_agent_ids_are_unique_per_frame()
+    buffer_data = converter._read_custom_data(converter._data)
+    assert expected_data == buffer_data
+    assert converter._check_agent_ids_are_unique_per_frame(buffer_data)

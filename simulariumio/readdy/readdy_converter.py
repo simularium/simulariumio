@@ -8,7 +8,7 @@ import numpy as np
 import readdy
 
 from ..custom_converter import CustomConverter
-from ..data_objects import AgentData
+from ..data_objects import CustomData, AgentData
 from ..constants import VIZ_TYPE
 from .readdy_data import ReaddyData
 
@@ -47,9 +47,9 @@ class ReaddyConverter(CustomConverter):
         result = AgentData(
             times=input_data.timestep * np.arange(totalSteps),
             n_agents=n_particles_per_frame,
-            viz_types=VIZ_TYPE.default * np.ones(shape=(totalSteps, max_agents)),
+            viz_types=VIZ_TYPE.DEFAULT * np.ones(shape=(totalSteps, max_agents)),
             unique_ids=ids,
-            types=None,
+            types=[[] for t in range(totalSteps)],
             positions=input_data.scale_factor * positions,
             radii=np.ones(shape=(totalSteps, max_agents)),
             rotations=input_data.rotations,
@@ -108,7 +108,7 @@ class ReaddyConverter(CustomConverter):
             n_agents=n_filtered_particles_per_frame,
             viz_types=agent_data.viz_types,
             unique_ids=-1 * np.ones((totalSteps, max_agents)),
-            types=None,
+            types=[[] for t in range(totalSteps)],
             positions=np.zeros((totalSteps, max_agents, 3)),
             radii=np.ones(shape=(totalSteps, max_agents)),
             rotations=agent_data.rotations,
@@ -127,103 +127,83 @@ class ReaddyConverter(CustomConverter):
                 n += 1
         return result
 
-    def _group_particle_types(
+    def _set_particle_types(
         self, agent_data: AgentData, traj: Any, type_grouping: Dict[str, List[str]]
-    ) -> Tuple[AgentData, Dict[str, Dict[str, str]]]:
+    ) -> AgentData:
         """
-        Group ReaDDy particle types by assigning them to new group type IDs
+        Set particle type names and optionally group ReaDDy particle types
+        by assigning them to new group type IDs
         """
-        # map ReaDDy ID to new group ID
-        group_mapping = {}
-        type_map = traj.particle_types
-        type_mapping = {}
+        # warn user if a given type doesn't exist in ReaDDy
+        readdy_type_map = traj.particle_types
         i = int(np.amax(agent_data.type_ids)) + 1
-        for group_type in type_grouping:
-            type_mapping[str(i)] = {"name": group_type}
-            for readdy_type in type_grouping[group_type]:
-                if readdy_type in type_map:
-                    group_mapping[type_map[readdy_type]] = i
-                else:
-                    log.warning(
-                        f"type {readdy_type}, which was provided in the type_grouping, "
-                        "doesn't exist in the ReaDDy model"
-                    )
-            i += 1
-        # assign group ID to each particle of a type in the group
+        if type_grouping is not None:
+            for group_type_name in type_grouping:
+                for readdy_type_name in type_grouping[group_type_name]:
+                    if readdy_type_name not in readdy_type_map:
+                        log.warning(
+                            f"type {readdy_type_name}, which was provided "
+                            "in the type_grouping, doesn't exist in the ReaDDy model"
+                        )
+        # map ReaDDy ID to new group ID if grouped
+        group_mapping = {}
+        group_id_mapping = {}
+        group_name_mapping = {}
+        type_mapping = {}
+        for readdy_type_name in readdy_type_map:
+            group = False
+            if type_grouping is not None:
+                for group_type_name in type_grouping:
+                    if readdy_type_name in type_grouping[group_type_name]:
+                        if group_type_name not in group_id_mapping:
+                            group_id_mapping[group_type_name] = i
+                            group_name_mapping[i] = group_type_name
+                            i += 1
+                        type_mapping[
+                            float(group_id_mapping[group_type_name])
+                        ] = group_type_name
+                        group_mapping[
+                            float(readdy_type_map[readdy_type_name])
+                        ] = group_id_mapping[group_type_name]
+                        group = True
+                        break
+            if not group:
+                type_mapping[
+                    float(readdy_type_map[readdy_type_name])
+                ] = readdy_type_name
+        # assign group ID to each particle of a type in the group, and assign type names
         for t in range(agent_data.n_agents.shape[0]):
             for n in range(int(agent_data.n_agents[t])):
                 readdy_id = agent_data.type_ids[t][n]
+                while n >= len(agent_data.types[t]):
+                    agent_data.types[t].append("")
                 if readdy_id in group_mapping:
-                    agent_data.type_ids[t][n] = group_mapping[readdy_id]
-        return (agent_data, type_mapping)
+                    group_id = group_mapping[readdy_id]
+                    group_name = group_name_mapping[group_id]
+                    agent_data.type_ids[t][n] = group_id
+                    agent_data.types[t][n] = group_name
+                else:
+                    agent_data.types[t][n] = type_mapping[readdy_id]
+        return agent_data
 
     def _read(self, input_data: ReaddyData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """
         print("Reading ReaDDy Data -------------")
-        # load the data from a ReaDDy trajectory file
         agent_data, traj = self._get_raw_trajectory_data(input_data)
         # optionally filter and group
         if input_data.ignore_types is not None:
             agent_data = self._filter_trajectory_data(
                 agent_data, traj, input_data.ignore_types
             )
-        type_mapping = {}
-        if input_data.type_grouping is not None:
-            agent_data, type_mapping = self._group_particle_types(
-                agent_data, traj, input_data.type_grouping
-            )
-        # shape data
-        simularium_data = {}
-        # trajectory info
-        input_data.spatial_units.multiply(1.0 / input_data.scale_factor)
-        totalSteps = agent_data.n_agents.shape[0]
-        simularium_data["trajectoryInfo"] = {
-            "version": 2,
-            "timeUnits": {
-                "magnitude": input_data.time_units.magnitude,
-                "name": input_data.time_units.name,
-            },
-            "timeStepSize": CustomConverter._format_timestep(
-                float(input_data.timestep)
-            ),
-            "totalSteps": totalSteps,
-            "spatialUnits": {
-                "magnitude": input_data.spatial_units.magnitude,
-                "name": input_data.spatial_units.name,
-            },
-            "size": {
-                "x": input_data.scale_factor * float(input_data.box_size[0]),
-                "y": input_data.scale_factor * float(input_data.box_size[1]),
-                "z": input_data.scale_factor * float(input_data.box_size[2]),
-            },
-            "typeMapping": type_mapping,
-        }
-        # add type names for each type that exists in the trajectory
-        existing_type_ids = []
-        for t in range(totalSteps):
-            for n in range(int(agent_data.n_agents[t])):
-                type_id = int(agent_data.type_ids[t][n])
-                if type_id not in existing_type_ids:
-                    existing_type_ids.append(type_id)
-        for type_id in existing_type_ids:
-            if str(type_id) not in simularium_data["trajectoryInfo"]["typeMapping"]:
-                type_name = traj.species_name(type_id)
-                simularium_data["trajectoryInfo"]["typeMapping"][str(type_id)] = {
-                    "name": type_name
-                }
-        # spatial data
-        simularium_data["spatialData"] = {
-            "version": 1,
-            "msgType": 1,
-            "bundleStart": 0,
-            "bundleSize": totalSteps,
-            "bundleData": self._get_spatial_bundle_data_no_subpoints(agent_data),
-        }
-        # plot data
-        simularium_data["plotData"] = {
-            "version": 1,
-            "data": input_data.plots,
-        }
-        return simularium_data
+        agent_data = self._set_particle_types(
+            agent_data, traj, input_data.type_grouping
+        )
+        return CustomData(
+            box_size=input_data.scale_factor * input_data.box_size,
+            agent_data=agent_data,
+            time_units=input_data.time_units,
+            spatial_units=input_data.spatial_units,
+            plots=input_data.plots,
+        )

@@ -1,13 +1,6 @@
 simulariumio.filters package
 ============================
 
-Subpackages
------------
-
-.. toctree::
-
-   simulariumio.filters.params
-
 Submodules
 ----------
 

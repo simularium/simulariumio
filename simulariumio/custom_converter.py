@@ -18,24 +18,9 @@ from .data_objects import (
     ScatterPlotData,
     AgentData,
     CustomData,
-    UnitData,
 )
-from .filters import (
-    EveryNthAgentFilter,
-    EveryNthTimestepFilter,
-    EveryNthSubpointFilter,
-    UpDirectionFilter,
-    MultiplyTimeFilter,
-    MultiplyTimePlotFilter,
-    ReorderAgentsFilter,
-    AddAgentsFilter,
-)
-from .filters.params import FilterParams
-from .filters.filter import Filter
-from .exceptions import (
-    UnsupportedPlotTypeError,
-    UnsupportedFilterTypeError,
-)
+from .filters import Filter
+from .exceptions import UnsupportedPlotTypeError
 from .constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE
 
 ###############################################################################
@@ -49,22 +34,11 @@ SUPPORTED_PLOT_READERS = {
     "histogram": HistogramPlotReader,
 }
 
-FILTERS = {
-    "every_nth_agent": EveryNthAgentFilter,
-    "every_nth_timestep": EveryNthTimestepFilter,
-    "every_nth_subpoint": EveryNthSubpointFilter,
-    "up_direction": UpDirectionFilter,
-    "multiply_time": MultiplyTimeFilter,
-    "multiply_plot_time": MultiplyTimePlotFilter,
-    "reorder_agents": ReorderAgentsFilter,
-    "add_agents": AddAgentsFilter,
-}
-
 ###############################################################################
 
 
 class CustomConverter:
-    _data: Dict[str, Any] = {}
+    _data: CustomData
 
     def __init__(self, input_data: CustomData):
         """
@@ -78,10 +52,10 @@ class CustomConverter:
             An object containing custom simulation trajectory outputs
             and plot data
         """
-        self._data = self._read_custom_data(input_data)
-        self._check_agent_ids_are_unique_per_frame()
+        self._data = input_data
 
-    def _read_custom_data(self, input_data: CustomData) -> Dict[str, Any]:
+    @staticmethod
+    def _read_custom_data(input_data: CustomData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """
@@ -89,7 +63,11 @@ class CustomConverter:
         simularium_data = {}
         # trajectory info
         totalSteps = input_data.agent_data.times.size
-        type_mapping = input_data.agent_data.get_type_mapping()
+        type_ids, type_name_mapping = AgentData.get_type_ids_and_mapping(
+            input_data.agent_data.types, input_data.agent_data.type_ids
+        )
+        if input_data.agent_data.type_ids is None:
+            input_data.agent_data.type_ids = type_ids
         traj_info = {
             "version": 2,
             "timeUnits": {
@@ -111,7 +89,7 @@ class CustomConverter:
                 "y": float(input_data.box_size[1]),
                 "z": float(input_data.box_size[2]),
             },
-            "typeMapping": type_mapping,
+            "typeMapping": type_name_mapping,
         }
         simularium_data["trajectoryInfo"] = traj_info
         # spatial data
@@ -122,11 +100,15 @@ class CustomConverter:
             "bundleSize": totalSteps,
         }
         if input_data.agent_data.subpoints is not None:
-            spatialData["bundleData"] = self._get_spatial_bundle_data_subpoints(
+            spatialData[
+                "bundleData"
+            ] = CustomConverter._get_spatial_bundle_data_subpoints(
                 input_data.agent_data
             )
         else:
-            spatialData["bundleData"] = self._get_spatial_bundle_data_no_subpoints(
+            spatialData[
+                "bundleData"
+            ] = CustomConverter._get_spatial_bundle_data_no_subpoints(
                 input_data.agent_data
             )
         simularium_data["spatialData"] = spatialData
@@ -139,14 +121,15 @@ class CustomConverter:
 
     @staticmethod
     def _get_spatial_bundle_data_subpoints(
-        agent_data: AgentData, used_unique_IDs: List[int] = []
+        agent_data: AgentData,
     ) -> List[Dict[str, Any]]:
         """
         Return the spatialData's bundleData for a simulation
         of agents with subpoints, packing buffer with jagged data is slower
         """
-        bundleData: List[Dict[str, Any]] = []
+        bundle_data: List[Dict[str, Any]] = []
         uids = {}
+        used_unique_IDs = list(np.unique(agent_data.unique_ids))
         for t in range(len(agent_data.times)):
             # timestep
             frame_data = {}
@@ -154,36 +137,34 @@ class CustomConverter:
             frame_data["time"] = float(agent_data.times[t])
             n_agents = int(agent_data.n_agents[t])
             i = 0
-            buffer_size = (len(V1_SPATIAL_BUFFER_STRUCT) - 1) * n_agents
+            buffer_size = (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1) * n_agents
             for n in range(n_agents):
                 s = int(agent_data.n_subpoints[t][n])
                 if s > 0:
                     buffer_size += 3 * s
                     if agent_data.draw_fiber_points:
-                        buffer_size += (len(V1_SPATIAL_BUFFER_STRUCT) - 1) * max(
-                            math.ceil(s / 2.0), 1
-                        )
+                        buffer_size += (
+                            V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
+                        ) * max(math.ceil(s / 2.0), 1)
             local_buf = np.zeros(buffer_size)
             for n in range(n_agents):
                 # add agent
                 local_buf[
-                    i + V1_SPATIAL_BUFFER_STRUCT.index("VIZ_TYPE")
+                    i + V1_SPATIAL_BUFFER_STRUCT.VIZ_TYPE_INDEX
                 ] = agent_data.viz_types[t, n]
                 local_buf[
-                    i + V1_SPATIAL_BUFFER_STRUCT.index("UID")
+                    i + V1_SPATIAL_BUFFER_STRUCT.UID_INDEX
                 ] = agent_data.unique_ids[t, n]
-                local_buf[
-                    i + V1_SPATIAL_BUFFER_STRUCT.index("TID")
-                ] = agent_data.type_ids[t, n]
-                local_buf[
-                    i
-                    + V1_SPATIAL_BUFFER_STRUCT.index("POSX") : i
-                    + V1_SPATIAL_BUFFER_STRUCT.index("POSX")
-                    + 3
-                ] = agent_data.positions[t, n]
-                local_buf[i + V1_SPATIAL_BUFFER_STRUCT.index("R")] = agent_data.radii[
+                local_buf[i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX] = agent_data.type_ids[
                     t, n
                 ]
+                local_buf[
+                    i
+                    + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX : i
+                    + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX
+                    + 3
+                ] = agent_data.positions[t, n]
+                local_buf[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX] = agent_data.radii[t, n]
                 n_subpoints = int(agent_data.n_subpoints[t][n])
                 if n_subpoints > 0:
                     # add subpoints to fiber agent
@@ -193,12 +174,14 @@ class CustomConverter:
                             subpoints.append(agent_data.subpoints[t][n][p][d])
                     local_buf[
                         i
-                        + V1_SPATIAL_BUFFER_STRUCT.index("NSP") : i
-                        + V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                        + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX : i
+                        + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                         + 1
                         + 3 * n_subpoints
                     ] = subpoints
-                    i += (len(V1_SPATIAL_BUFFER_STRUCT) - 1) + 3 * n_subpoints
+                    i += (
+                        V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
+                    ) + 3 * n_subpoints
                     # optionally draw spheres at points
                     if agent_data.draw_fiber_points:
                         for p in range(n_subpoints):
@@ -215,27 +198,27 @@ class CustomConverter:
                                 used_unique_IDs.append(uid)
                             # add sphere
                             local_buf[
-                                i + V1_SPATIAL_BUFFER_STRUCT.index("VIZ_TYPE")
-                            ] = VIZ_TYPE.default
-                            local_buf[i + V1_SPATIAL_BUFFER_STRUCT.index("UID")] = uids[
+                                i + V1_SPATIAL_BUFFER_STRUCT.VIZ_TYPE_INDEX
+                            ] = VIZ_TYPE.DEFAULT
+                            local_buf[i + V1_SPATIAL_BUFFER_STRUCT.UID_INDEX] = uids[
                                 raw_uid
                             ]
                             local_buf[
-                                i + V1_SPATIAL_BUFFER_STRUCT.index("TID")
+                                i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX
                             ] = agent_data.type_ids[t, n]
                             local_buf[
                                 i
-                                + V1_SPATIAL_BUFFER_STRUCT.index("POSX") : i
-                                + V1_SPATIAL_BUFFER_STRUCT.index("POSX")
+                                + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX : i
+                                + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX
                                 + 3
                             ] = agent_data.subpoints[t][n][p]
-                            local_buf[i + V1_SPATIAL_BUFFER_STRUCT.index("R")] = 0.5
-                            i += len(V1_SPATIAL_BUFFER_STRUCT) - 1
+                            local_buf[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX] = 0.5
+                            i += V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
                 else:
-                    i += len(V1_SPATIAL_BUFFER_STRUCT) - 1
+                    i += V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
             frame_data["data"] = local_buf.tolist()
-            bundleData.append(frame_data)
-        return bundleData
+            bundle_data.append(frame_data)
+        return bundle_data
 
     @staticmethod
     def _get_spatial_bundle_data_no_subpoints(
@@ -245,65 +228,49 @@ class CustomConverter:
         Return the spatialData's bundleData for a simulation
         of agents without subpoints, using list slicing for speed
         """
-        bundleData: List[Dict[str, Any]] = []
+        bundle_data: List[Dict[str, Any]] = []
         max_n_agents = int(np.amax(agent_data.n_agents, 0))
         ix_positions = np.empty((3 * max_n_agents,), dtype=int)
+        buffer_struct = V1_SPATIAL_BUFFER_STRUCT
         for i in range(max_n_agents):
             ix_positions[3 * i : 3 * i + 3] = np.arange(
-                i * (len(V1_SPATIAL_BUFFER_STRUCT) - 1)
-                + V1_SPATIAL_BUFFER_STRUCT.index("POSX"),
-                i * (len(V1_SPATIAL_BUFFER_STRUCT) - 1)
-                + V1_SPATIAL_BUFFER_STRUCT.index("POSX")
-                + 3,
+                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.POSX_INDEX,
+                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.POSX_INDEX + 3,
             )
-        if agent_data.rotations is not None:
-            ix_rotations = np.empty((3 * max_n_agents,), dtype=int)
-            for i in range(max_n_agents):
-                ix_rotations[3 * i : 3 * i + 3] = np.arange(
-                    i * (len(V1_SPATIAL_BUFFER_STRUCT) - 1)
-                    + V1_SPATIAL_BUFFER_STRUCT.index("ROTX"),
-                    i * (len(V1_SPATIAL_BUFFER_STRUCT) - 1)
-                    + V1_SPATIAL_BUFFER_STRUCT.index("ROTX")
-                    + 3,
-                )
-        frame_buf = np.zeros((len(V1_SPATIAL_BUFFER_STRUCT) - 1) * max_n_agents)
+        frame_buf = np.zeros((buffer_struct.VALUES_PER_AGENT - 1) * max_n_agents)
         for t in range(len(agent_data.times)):
             frame_data = {}
             frame_data["frameNumber"] = t
             frame_data["time"] = float(agent_data.times[t])
             n = int(agent_data.n_agents[t])
-            local_buf = frame_buf[: (len(V1_SPATIAL_BUFFER_STRUCT) - 1) * n]
+            local_buf = frame_buf[: (buffer_struct.VALUES_PER_AGENT - 1) * n]
             local_buf[
-                V1_SPATIAL_BUFFER_STRUCT.index("VIZ_TYPE") :: len(
-                    V1_SPATIAL_BUFFER_STRUCT
-                )
-                - 1
+                buffer_struct.VIZ_TYPE_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
             ] = agent_data.viz_types[t, :n]
             local_buf[
-                V1_SPATIAL_BUFFER_STRUCT.index("UID") :: len(V1_SPATIAL_BUFFER_STRUCT)
-                - 1
+                buffer_struct.UID_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
             ] = agent_data.unique_ids[t, :n]
             local_buf[
-                V1_SPATIAL_BUFFER_STRUCT.index("TID") :: len(V1_SPATIAL_BUFFER_STRUCT)
-                - 1
+                buffer_struct.TID_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
             ] = agent_data.type_ids[t, :n]
             local_buf[ix_positions[: 3 * n]] = agent_data.positions[t, :n].flatten()
             if agent_data.rotations is not None:
                 local_buf[ix_rotations[: 3 * n]] = agent_data.rotations[t, :n].flatten()
             local_buf[
-                V1_SPATIAL_BUFFER_STRUCT.index("R") :: len(V1_SPATIAL_BUFFER_STRUCT) - 1
+                buffer_struct.R_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
             ] = agent_data.radii[t, :n]
             frame_data["data"] = local_buf.tolist()
-            bundleData.append(frame_data)
-        return bundleData
+            bundle_data.append(frame_data)
+        return bundle_data
 
-    def _check_agent_ids_are_unique_per_frame(self) -> bool:
+    @staticmethod
+    def _check_agent_ids_are_unique_per_frame(buffer_data: Dict[str, Any]) -> bool:
         """
         For each frame, check that none of the unique agent IDs overlap
         """
-        bundleData = self._data["spatialData"]["bundleData"]
-        for t in range(len(bundleData)):
-            data = bundleData[t]["data"]
+        bundle_data = buffer_data["spatialData"]["bundleData"]
+        for t in range(len(bundle_data)):
+            data = bundle_data[t]["data"]
             i = 1
             uids = []
             get_n_subpoints = False
@@ -314,8 +281,8 @@ class CustomConverter:
                     i += int(
                         data[i]
                         + (
-                            len(V1_SPATIAL_BUFFER_STRUCT)
-                            - V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                            V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
+                            - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                         )
                     )
                     get_n_subpoints = False
@@ -327,12 +294,12 @@ class CustomConverter:
                         f"found duplicate ID {uid} in frame {t} at index {i}"
                     )
                 uids.append(uid)
-                i += V1_SPATIAL_BUFFER_STRUCT.index("NSP") - 1
+                i += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX - 1
                 get_n_subpoints = True
         return True
 
     @staticmethod
-    def _format_timestep(number: float):
+    def _format_timestep(number: float) -> float:
         return float("%.4g" % number)
 
     @staticmethod
@@ -368,7 +335,7 @@ class CustomConverter:
             Default: 'scatter'
         """
         plot_reader_class = self._determine_plot_reader(plot_type)
-        self._data["plotData"]["data"].append(plot_reader_class().read(data))
+        self._data.plots.append(plot_reader_class().read(data))
 
     def add_number_of_agents_plot(self, agent_data: AgentData = None):
         """
@@ -403,52 +370,19 @@ class CustomConverter:
             )
         )
 
-    @staticmethod
-    def _determine_filter(filter_type: str) -> [Filter]:
+    def filter_data(self, filters: List[Filter]) -> CustomData:
         """
-        Return the filter to match the requested filter type
+        Return the simularium data with the given filter applied
         """
-        if filter_type in FILTERS:
-            return FILTERS[filter_type]
-
-        raise UnsupportedFilterTypeError(filter_type)
-
-    def apply_filters(self, params: List[FilterParams]):
-        """
-        Apply the given filter to the simularium data
-
-        Parameters
-        ----------
-        params: List[FilterParams]
-            a list of filter parameters, one for each filter to be applied
-        """
-        box_size = self._data["trajectoryInfo"]["size"]
-        plot_data = self._data["plotData"]
-        agent_data = AgentData.from_simularium_data(self._data)
-        for i in range(len(params)):
-            filter_class = self._determine_filter(params[i].name)
-            if "plot" in params[i].name:
-                plot_data = filter_class().filter_plot_data(plot_data, params[i])
-            else:
-                agent_data = filter_class().filter_spatial_data(agent_data, params[i])
-        self._data = self._read_custom_data(
-            CustomData(
-                box_size=np.array(
-                    [float(box_size["x"]), float(box_size["y"]), float(box_size["z"])]
-                ),
-                agent_data=agent_data,
-                time_units=UnitData("s"),
-                spatial_units=UnitData(
-                    self._data["trajectoryInfo"]["spatialUnits"]["name"],
-                    self._data["trajectoryInfo"]["spatialUnits"]["magnitude"],
-                ),
-            )
-        )
-        self._data["plotData"] = plot_data
+        filtered_data = self._data
+        for f in filters:
+            filtered_data = f.apply(filtered_data)
+        return filtered_data
 
     def write_JSON(self, output_path: str):
         """
-        Save the data in .simularium JSON format at the output path
+        Save the current simularium data in .simularium JSON format
+        at the output path
 
         Parameters
         ----------
@@ -456,6 +390,26 @@ class CustomConverter:
             where to save the file
         """
         print("Writing JSON -------------")
+        buffer_data = CustomConverter._read_custom_data(self._data)
         with open(f"{output_path}.simularium", "w+") as outfile:
-            json.dump(self._data, outfile)
+            json.dump(buffer_data, outfile)
+        print(f"saved to {output_path}.simularium")
+
+    @staticmethod
+    def write_external_JSON(external_data: CustomData, output_path: str):
+        """
+        Save the given data in .simularium JSON format
+        at the output path
+
+        Parameters
+        ----------
+        external_data: CustomData
+            the data to save
+        output_path: str
+            where to save the file
+        """
+        print("Writing JSON (external)-------------")
+        buffer_data = CustomConverter._read_custom_data(external_data)
+        with open(f"{output_path}.simularium", "w+") as outfile:
+            json.dump(buffer_data, outfile)
         print(f"saved to {output_path}.simularium")

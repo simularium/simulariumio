@@ -29,7 +29,6 @@ class AgentData:
     subpoints: np.ndarray = None
     draw_fiber_points: bool = False
     type_ids: np.ndarray
-    type_mapping: Dict[str, Any]
 
     def __init__(
         self,
@@ -109,9 +108,9 @@ class AgentData:
         self.type_ids = type_ids
 
     @staticmethod
-    def _get_data_dimensions(data: Dict[str, Any]) -> Tuple[int]:
+    def _get_buffer_data_dimensions(buffer_data: Dict[str, Any]) -> Tuple[int]:
         """"""
-        bundleData = data["spatialData"]["bundleData"]
+        bundleData = buffer_data["spatialData"]["bundleData"]
         total_steps = len(bundleData)
         max_n_agents = 0
         max_n_subpoints = 0
@@ -122,7 +121,7 @@ class AgentData:
             while i < len(data):
                 # a new agent should start at this index
                 n_agents += 1
-                i += V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                i += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                 # get the number of subpoints
                 n_sp = math.floor(data[i] / 3.0)
                 if n_sp > max_n_subpoints:
@@ -130,8 +129,8 @@ class AgentData:
                 i += int(
                     data[i]
                     + (
-                        len(V1_SPATIAL_BUFFER_STRUCT)
-                        - V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                        V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
+                        - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                         - 1
                     )
                 )
@@ -139,36 +138,61 @@ class AgentData:
                 max_n_agents = n_agents
         return total_steps, max_n_agents, max_n_subpoints
 
-    def get_type_mapping(self) -> Dict[str, Any]:
+    @staticmethod
+    def get_type_ids_and_mapping(
+        type_names: List[List[str]], type_ids: np.ndarray = None
+    ) -> Tuple[np.ndarray, Dict[str, Any]]:
         """
-        Generate the type mapping using the types list,
-        set the type_ids list if it hasn't been
+        Generate the type_ids array from the type_names list
         """
-        type_ids = np.zeros_like(self.viz_types)
+        total_steps = len(type_names)
+        max_agents = 0
+        for t in range(len(type_names)):
+            n = len(type_names[t])
+            if n > max_agents:
+                max_agents = n
+        use_existing_ids = True
+        if type_ids is None:
+            type_ids = np.zeros((len(type_names), max_agents))
+            use_existing_ids = False
         type_name_mapping = {}
         type_id_mapping = {}
         last_tid = 0
-        for t in range(self.times.size):
-            for n in range(int(self.n_agents[t])):
-                type_name = self.types[t][n]
-                if type_name not in type_id_mapping:
-                    if self.type_ids is not None:
-                        tid = int(self.type_ids[t][n])
+        for t in range(total_steps):
+            for n in range(len(type_names[t])):
+                if type_names[t][n] not in type_id_mapping:
+                    if use_existing_ids:
+                        tid = int(type_ids[t][n])
                     else:
                         tid = last_tid
                         last_tid += 1
-                    type_id_mapping[type_name] = tid
-                    type_name_mapping[str(tid)] = {"name": type_name}
-                type_ids[t][n] = type_id_mapping[type_name]
-        if self.type_ids is None:
-            self.type_ids = type_ids
-        return type_name_mapping
+                    type_id_mapping[type_names[t][n]] = tid
+                    type_name_mapping[str(tid)] = {"name": type_names[t][n]}
+                if not use_existing_ids:
+                    type_ids[t][n] = type_id_mapping[type_names[t][n]]
+        return type_ids, type_name_mapping
+
+    @staticmethod
+    def get_type_names(
+        type_ids: np.ndarray, type_mapping: Dict[str, Any]
+    ) -> List[List[str]]:
+        """
+        Generate the type_names list from the type_ids array
+        """
+        result = []
+        for t in range(type_ids.shape[0]):
+            result.append([])
+            for n in range(int(len(type_ids[t]))):
+                result[t].append(type_mapping[str(int(type_ids[t][n]))]["name"])
+        return result
 
     @classmethod
-    def from_simularium_data(cls, data: Dict[str, Any]):
+    def from_buffer_data(cls, buffer_data: Dict[str, Any]):
         """"""
-        bundleData = data["spatialData"]["bundleData"]
-        total_steps, max_agents, max_subpoints = AgentData._get_data_dimensions(data)
+        bundleData = buffer_data["spatialData"]["bundleData"]
+        total_steps, max_agents, max_subpoints = AgentData._get_buffer_data_dimensions(
+            buffer_data
+        )
         print(
             f"original dim = {total_steps} timesteps X "
             f"{max_agents} agents X {max_subpoints} subpoints"
@@ -187,25 +211,25 @@ class AgentData:
             frame_data = bundleData[t]["data"]
             n = 0
             i = 0
-            while i + V1_SPATIAL_BUFFER_STRUCT.index("NSP") < len(frame_data):
+            while i + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX < len(frame_data):
                 # a new agent should start at this index
                 viz_types[t][n] = frame_data[
-                    i + V1_SPATIAL_BUFFER_STRUCT.index("VIZ_TYPE")
+                    i + V1_SPATIAL_BUFFER_STRUCT.VIZ_TYPE_INDEX
                 ]
-                unique_ids[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("UID")]
-                type_ids[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("TID")]
+                unique_ids[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.UID_INDEX]
+                type_ids[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX]
                 positions[t][n] = [
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("POSX")],
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("POSY")],
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("POSZ")],
+                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX],
+                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSY_INDEX],
+                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSZ_INDEX],
                 ]
-                radii[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.index("R")]
-                i += V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                radii[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX]
+                i += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                 # get the subpoints
                 if max_subpoints < 1:
                     i += int(
-                        V1_SPATIAL_BUFFER_STRUCT.index("SP")
-                        - V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                        V1_SPATIAL_BUFFER_STRUCT.SP_INDEX
+                        - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                     )
                     n += 1
                     continue
@@ -221,25 +245,21 @@ class AgentData:
                 i += int(
                     frame_data[i]
                     + (
-                        V1_SPATIAL_BUFFER_STRUCT.index("SP")
-                        - V1_SPATIAL_BUFFER_STRUCT.index("NSP")
+                        V1_SPATIAL_BUFFER_STRUCT.SP_INDEX
+                        - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                     )
                 )
                 n += 1
             n_agents[t] = n
-        # get type names
-        type_mapping = data["trajectoryInfo"]["typeMapping"]
-        types = []
-        for t in range(total_steps):
-            types.append([])
-            for n in range(int(n_agents[t])):
-                types[t].append(type_mapping[str(int(type_ids[t][n]))]["name"])
+        type_names = AgentData.get_type_names(
+            type_ids, buffer_data["trajectoryInfo"]["typeMapping"]
+        )
         return cls(
             times=times,
             n_agents=n_agents,
             viz_types=viz_types,
             unique_ids=unique_ids,
-            types=types,
+            types=type_names,
             positions=positions,
             radii=radii,
             n_subpoints=n_subpoints,
