@@ -353,7 +353,8 @@ class CustomConverter:
 
     def write_JSON(self, output_path: str):
         """
-        Save the data in .simularium JSON format at the output path
+        Save the current simularium data in .simularium JSON format
+        at the output path
 
         Parameters
         ----------
@@ -362,6 +363,25 @@ class CustomConverter:
         """
         print("Writing JSON -------------")
         buffer_data = CustomConverter._read_custom_data(self._data)
+        with open(f"{output_path}.simularium", "w+") as outfile:
+            json.dump(buffer_data, outfile)
+        print(f"saved to {output_path}.simularium")
+
+    @staticmethod
+    def write_external_JSON(external_data: CustomData, output_path: str):
+        """
+        Save the given data in .simularium JSON format
+        at the output path
+
+        Parameters
+        ----------
+        external_data: CustomData
+            the data to save
+        output_path: str
+            where to save the file
+        """
+        print("Writing JSON (external)-------------")
+        buffer_data = CustomConverter._read_custom_data(external_data)
         with open(f"{output_path}.simularium", "w+") as outfile:
             json.dump(buffer_data, outfile)
         print(f"saved to {output_path}.simularium")
