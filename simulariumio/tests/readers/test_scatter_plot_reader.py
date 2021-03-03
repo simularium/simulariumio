@@ -174,4 +174,5 @@ def test_scatter_plot() -> Dict[str, Any]:
 def test_add_one_scatter_plot(trajectory, plot_data, expected_data):
     converter = CustomConverter(trajectory)
     converter.add_plot(plot_data, "scatter")
-    assert expected_data == converter._data["plotData"]
+    buffer_data = converter._read_custom_data(converter._data)
+    assert expected_data == buffer_data["plotData"]

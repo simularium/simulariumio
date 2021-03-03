@@ -283,7 +283,6 @@ class CytosimConverter(CustomConverter):
                 types,
             )
         # create CustomData
-        self._used_unique_IDs = uids
         return CustomData(
             box_size=input_data.scale_factor * input_data.box_size,
             agent_data=agent_data,

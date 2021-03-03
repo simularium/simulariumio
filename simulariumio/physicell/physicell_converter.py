@@ -9,7 +9,7 @@ import numpy as np
 from .dep.pyMCDS import pyMCDS
 
 from ..custom_converter import CustomConverter
-from ..data_objects import AgentData, UnitData
+from ..data_objects import CustomData, AgentData, UnitData
 from ..exceptions import MissingDataError
 from ..constants import VIZ_TYPE
 from .physicell_data import PhysicellData
@@ -81,11 +81,11 @@ class PhysicellConverter(CustomConverter):
                 type_name += "#" + type_names[cell_type][cell_phase]
             else:
                 type_name += f"#phase {cell_phase}"
-            self._type_mapping[str(self._last_id)] = {"name": type_name}
+            self._type_mapping[self._last_id] = type_name
             self._last_id += 1
         return self._ids[cell_type][cell_phase]
 
-    def _get_trajectory_data(self, input_data: PhysicellData) -> Tuple[AgentData, str]:
+    def _get_trajectory_data(self, input_data: PhysicellData) -> Tuple[AgentData, UnitData]:
         """
         Get data from one time step in Simularium format
         """
@@ -110,7 +110,7 @@ class PhysicellConverter(CustomConverter):
             n_agents=np.zeros(totalSteps),
             viz_types=VIZ_TYPE.default * np.ones(shape=(totalSteps, max_agents)),
             unique_ids=np.zeros((totalSteps, max_agents)),
-            types=None,
+            types=[[] for t in range(totalSteps)],
             positions=np.zeros((totalSteps, max_agents, 3)),
             radii=np.ones((totalSteps, max_agents)),
         )
@@ -122,11 +122,15 @@ class PhysicellConverter(CustomConverter):
             i = 0
             for n in range(n_agents):
                 result.unique_ids[t][i] = i
-                result.type_ids[t][i] = self._get_agent_type(
+                tid = self._get_agent_type(
                     cell_type=int(discrete_cells[t]["cell_type"][n]),
                     cell_phase=int(discrete_cells[t]["current_phase"][n]),
                     type_names=input_data.types,
                 )
+                result.type_ids[t][i] = tid
+                while i >= len(result.types[t]):
+                    result.types[t].append("")
+                result.types[t][i] = self._type_mapping[tid]
                 result.positions[t][i] = input_data.scale_factor * np.array(
                     [
                         discrete_cells[t]["position_x"][n],
@@ -138,49 +142,19 @@ class PhysicellConverter(CustomConverter):
                     3.0 / 4.0 * discrete_cells[t]["total_volume"][n] / np.pi
                 )
                 i += 1
-        return result, physicell_data[0].data["metadata"]["spatial_units"]
+        spatial_units = UnitData(physicell_data[0].data["metadata"]["spatial_units"], 1.0 / input_data.scale_factor)
+        return result, spatial_units
 
-    def _read(self, input_data: PhysicellData) -> Dict[str, Any]:
+    def _read(self, input_data: PhysicellData) -> CustomData:
         """
-        Return an object containing the data shaped for Simularium format
+        Return a CustomData object containing the PhysiCell data
         """
         print("Reading PhysiCell Data -------------")
-        # load the data from PhysiCell MultiCellDS XML files
-        agent_data, units = self._get_trajectory_data(input_data)
-        # shape data
-        simularium_data = {}
-        # trajectory info
-        spatial_units = UnitData(units, 1.0 / input_data.scale_factor)
-        simularium_data["trajectoryInfo"] = {
-            "version": 2,
-            "timeUnits": {
-                "magnitude": input_data.time_units.magnitude,
-                "name": input_data.time_units.name,
-            },
-            "timeStepSize": CustomConverter._format_timestep(input_data.timestep),
-            "totalSteps": agent_data.n_agents.shape[0],
-            "spatialUnits": {
-                "magnitude": spatial_units.magnitude,
-                "name": spatial_units.name,
-            },
-            "size": {
-                "x": input_data.scale_factor * float(input_data.box_size[0]),
-                "y": input_data.scale_factor * float(input_data.box_size[1]),
-                "z": input_data.scale_factor * float(input_data.box_size[2]),
-            },
-            "typeMapping": self._type_mapping,
-        }
-        # spatial data
-        simularium_data["spatialData"] = {
-            "version": 1,
-            "msgType": 1,
-            "bundleStart": 0,
-            "bundleSize": agent_data.n_agents.shape[0],
-            "bundleData": self._get_spatial_bundle_data_no_subpoints(agent_data),
-        }
-        # plot data
-        simularium_data["plotData"] = {
-            "version": 1,
-            "data": input_data.plots,
-        }
-        return simularium_data
+        agent_data, spatial_units = self._get_trajectory_data(input_data)
+        return CustomData(
+            box_size=input_data.scale_factor * input_data.box_size,
+            agent_data=agent_data,
+            time_units=input_data.time_units,
+            spatial_units=spatial_units,
+            plots=input_data.plots,
+        )
