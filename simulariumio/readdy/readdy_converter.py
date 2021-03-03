@@ -129,7 +129,7 @@ class ReaddyConverter(CustomConverter):
         self, agent_data: AgentData, traj: Any, type_grouping: Dict[str, List[str]]
     ) -> AgentData:
         """
-        Set particle type names and optionally group ReaDDy particle types 
+        Set particle type names and optionally group ReaDDy particle types
         by assigning them to new group type IDs
         """
         # warn user if a given type doesn't exist in ReaDDy
@@ -140,8 +140,8 @@ class ReaddyConverter(CustomConverter):
                 for readdy_type_name in type_grouping[group_type_name]:
                     if readdy_type_name not in readdy_type_map:
                         log.warning(
-                            f"type {readdy_type_name}, which was provided in the type_grouping, "
-                            "doesn't exist in the ReaDDy model"
+                            f"type {readdy_type_name}, which was provided "
+                            "in the type_grouping, doesn't exist in the ReaDDy model"
                         )
         # map ReaDDy ID to new group ID if grouped
         group_mapping = {}
@@ -157,12 +157,18 @@ class ReaddyConverter(CustomConverter):
                             group_id_mapping[group_type_name] = i
                             group_name_mapping[i] = group_type_name
                             i += 1
-                        type_mapping[float(group_id_mapping[group_type_name])] = group_type_name
-                        group_mapping[float(readdy_type_map[readdy_type_name])] = group_id_mapping[group_type_name]
+                        type_mapping[
+                            float(group_id_mapping[group_type_name])
+                        ] = group_type_name
+                        group_mapping[
+                            float(readdy_type_map[readdy_type_name])
+                        ] = group_id_mapping[group_type_name]
                         group = True
                         break
             if not group:
-                type_mapping[float(readdy_type_map[readdy_type_name])] = readdy_type_name
+                type_mapping[
+                    float(readdy_type_map[readdy_type_name])
+                ] = readdy_type_name
         # assign group ID to each particle of a type in the group, and assign type names
         for t in range(agent_data.n_agents.shape[0]):
             for n in range(int(agent_data.n_agents[t])):

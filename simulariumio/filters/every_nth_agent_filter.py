@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import copy
-from typing import Any, Dict
+from typing import Dict
 import logging
 
 import numpy as np
@@ -23,7 +23,7 @@ class EveryNthAgentFilter(Filter):
 
     def __init__(self, n_per_type_id: Dict[int, int], default_n: int = 1):
         """
-        This filter reduces the number of agents in each frame 
+        This filter reduces the number of agents in each frame
         of simularium data by filtering out all but every nth agent
 
         Parameters

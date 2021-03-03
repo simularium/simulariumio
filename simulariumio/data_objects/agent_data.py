@@ -133,7 +133,9 @@ class AgentData:
         return total_steps, max_n_agents, max_n_subpoints
 
     @staticmethod
-    def get_type_ids_and_mapping(type_names: List[List[str]], type_ids: np.ndarray = None) -> Tuple[np.ndarray, Dict[str, Any]]:
+    def get_type_ids_and_mapping(
+        type_names: List[List[str]], type_ids: np.ndarray = None
+    ) -> Tuple[np.ndarray, Dict[str, Any]]:
         """
         Generate the type_ids array from the type_names list
         """
@@ -165,14 +167,16 @@ class AgentData:
         return type_ids, type_name_mapping
 
     @staticmethod
-    def get_type_names(type_ids: np.ndarray, type_mapping: Dict[str, Any]) -> List[List[str]]:
+    def get_type_names(
+        type_ids: np.ndarray, type_mapping: Dict[str, Any]
+    ) -> List[List[str]]:
         """
         Generate the type_names list from the type_ids array
         """
         result = []
-        for t in range(total_steps):
+        for t in range(type_ids.shape[0]):
             result.append([])
-            for n in range(int(n_agents[t])):
+            for n in range(int(len(type_ids[t]))):
                 result[t].append(type_mapping[str(int(type_ids[t][n]))]["name"])
         return result
 
@@ -180,7 +184,9 @@ class AgentData:
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):
         """"""
         bundleData = buffer_data["spatialData"]["bundleData"]
-        total_steps, max_agents, max_subpoints = AgentData._get_buffer_data_dimensions(buffer_data)
+        total_steps, max_agents, max_subpoints = AgentData._get_buffer_data_dimensions(
+            buffer_data
+        )
         print(
             f"original dim = {total_steps} timesteps X "
             f"{max_agents} agents X {max_subpoints} subpoints"
@@ -239,7 +245,9 @@ class AgentData:
                 )
                 n += 1
             n_agents[t] = n
-        type_names = self.get_type_names(type_ids, buffer_data["trajectoryInfo"]["typeMapping"])
+        type_names = AgentData.get_type_names(
+            type_ids, buffer_data["trajectoryInfo"]["typeMapping"]
+        )
         return cls(
             times=times,
             n_agents=n_agents,

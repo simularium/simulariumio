@@ -63,19 +63,21 @@ class CustomData:
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):
         """"""
         return cls(
-            box_size=np.array([
-                float(buffer_data["trajectoryInfo"]["size"]["x"]),
-                float(buffer_data["trajectoryInfo"]["size"]["y"]),
-                float(buffer_data["trajectoryInfo"]["size"]["z"]),
-            ]),
+            box_size=np.array(
+                [
+                    float(buffer_data["trajectoryInfo"]["size"]["x"]),
+                    float(buffer_data["trajectoryInfo"]["size"]["y"]),
+                    float(buffer_data["trajectoryInfo"]["size"]["z"]),
+                ]
+            ),
             agent_data=AgentData.from_buffer_data(buffer_data),
             time_units=UnitData(
-                buffer_data["trajectoryInfo"]["timeUnits"]["name"], 
+                buffer_data["trajectoryInfo"]["timeUnits"]["name"],
                 float(buffer_data["trajectoryInfo"]["timeUnits"]["magnitude"]),
             ),
             spatial_units=UnitData(
-                buffer_data["trajectoryInfo"]["spatialUnits"]["name"], 
+                buffer_data["trajectoryInfo"]["spatialUnits"]["name"],
                 float(buffer_data["trajectoryInfo"]["spatialUnits"]["magnitude"]),
             ),
-            plots=buffer_data["plotData"]["data"]
+            plots=buffer_data["plotData"]["data"],
         )

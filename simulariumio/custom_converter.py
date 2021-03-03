@@ -18,7 +18,6 @@ from .data_objects import (
     ScatterPlotData,
     AgentData,
     CustomData,
-    UnitData,
 )
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
@@ -63,7 +62,9 @@ class CustomConverter:
         simularium_data = {}
         # trajectory info
         totalSteps = input_data.agent_data.times.size
-        type_ids, type_name_mapping = AgentData.get_type_ids_and_mapping(input_data.agent_data.types, input_data.agent_data.type_ids)
+        type_ids, type_name_mapping = AgentData.get_type_ids_and_mapping(
+            input_data.agent_data.types, input_data.agent_data.type_ids
+        )
         if input_data.agent_data.type_ids is None:
             input_data.agent_data.type_ids = type_ids
         traj_info = {
@@ -73,9 +74,7 @@ class CustomConverter:
                 "name": input_data.time_units.name,
             },
             "timeStepSize": CustomConverter._format_timestep(
-                float(
-                    input_data.agent_data.times[1] - input_data.agent_data.times[0]
-                )
+                float(input_data.agent_data.times[1] - input_data.agent_data.times[0])
                 if totalSteps > 1
                 else 0.0
             ),
@@ -117,7 +116,7 @@ class CustomConverter:
 
     @staticmethod
     def _get_spatial_bundle_data_subpoints(
-        agent_data: AgentData
+        agent_data: AgentData,
     ) -> List[Dict[str, Any]]:
         """
         Return the spatialData's bundleData for a simulation
@@ -191,7 +190,7 @@ class CustomConverter:
                                 while uid in used_unique_IDs:
                                     uid += 100
                                 uids[raw_uid] = uid
-                                used_unique_IDs.append(uid) 
+                                used_unique_IDs.append(uid)
                             # add sphere
                             local_buf[
                                 i + V1_SPATIAL_BUFFER_STRUCT.index("VIZ_TYPE")
@@ -264,7 +263,9 @@ class CustomConverter:
             bundle_data.append(frame_data)
         return bundle_data
 
-    def _check_agent_ids_are_unique_per_frame(self, buffer_data: Dict[str, Any]) -> bool:
+    def _check_agent_ids_are_unique_per_frame(
+        self, buffer_data: Dict[str, Any]
+    ) -> bool:
         """
         For each frame, check that none of the unique agent IDs overlap
         """
@@ -337,7 +338,7 @@ class CustomConverter:
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data.plots.append(plot_reader_class().read(data))
 
-    def apply_filter(self, filter: Filter):
+    def filter_data(self, filter: Filter):
         """
         Return the simularium data with the given filter applied
         """

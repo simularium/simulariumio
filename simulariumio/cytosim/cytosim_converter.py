@@ -13,7 +13,6 @@ from ..exceptions import DataError
 from ..constants import VIZ_TYPE
 from .cytosim_data import CytosimData
 from .cytosim_object_info import CytosimObjectInfo
-from .cytosim_agent_info import CytosimAgentInfo
 
 ###############################################################################
 
@@ -45,7 +44,9 @@ class CytosimConverter(CustomConverter):
         return len(line) < 1 or line[0:7] == "warning" or "report" in line
 
     def _parse_object_type_dimensions(
-        self, data_lines: List[str], is_fiber: bool,
+        self,
+        data_lines: List[str],
+        is_fiber: bool,
     ) -> Tuple[List[int], int]:
         """
         Parse a Cytosim output file containing objects
@@ -120,8 +121,7 @@ class CytosimConverter(CustomConverter):
         types: Dict[int, int],
         used_type_IDs: List[int],
     ) -> [AgentData, Dict[int, int], List[int], Dict[int, int], List[int]]:
-        """
-        """
+        """"""
         if "fiber" in object_type:
             result.viz_types[t][n] = VIZ_TYPE.fiber
             fiber_info = data_columns[2].split(":")
@@ -207,8 +207,25 @@ class CytosimConverter(CustomConverter):
                         result.n_subpoints[t][n_other_agents + n] = s + 1
                     n += 1
                     s = -1
-                    result, uids, used_unique_IDs, types, used_type_IDs = self._parse_object(
-                        object_type, columns, t, n_other_agents + n, scale_factor, object_info, result, uids, used_unique_IDs, types, used_type_IDs)
+                    (
+                        result,
+                        uids,
+                        used_unique_IDs,
+                        types,
+                        used_type_IDs,
+                    ) = self._parse_object(
+                        object_type,
+                        columns,
+                        t,
+                        n_other_agents + n,
+                        scale_factor,
+                        object_info,
+                        result,
+                        uids,
+                        used_unique_IDs,
+                        types,
+                        used_type_IDs,
+                    )
                 elif "end" in line:
                     # end of frame
                     if is_fiber:
@@ -229,8 +246,25 @@ class CytosimConverter(CustomConverter):
             else:
                 # each non-fiber object
                 n += 1
-                result, uids, used_unique_IDs, types, used_type_IDs = self._parse_object(
-                    object_type, columns, t, n_other_agents + n, scale_factor, object_info, result, uids, used_unique_IDs, types, used_type_IDs)
+                (
+                    result,
+                    uids,
+                    used_unique_IDs,
+                    types,
+                    used_type_IDs,
+                ) = self._parse_object(
+                    object_type,
+                    columns,
+                    t,
+                    n_other_agents + n,
+                    scale_factor,
+                    object_info,
+                    result,
+                    uids,
+                    used_unique_IDs,
+                    types,
+                    used_type_IDs,
+                )
                 # position
                 result.positions[t][n_other_agents + n] = scale_factor * (
                     np.array(
@@ -254,9 +288,7 @@ class CytosimConverter(CustomConverter):
             with open(input_data.object_info[object_type].filepath, "r") as myfile:
                 cytosim_data[object_type] = myfile.read().split("\n")
         # parse
-        (totalSteps, max_agents, max_subpoints) = self._parse_dimensions(
-            cytosim_data
-        )
+        (totalSteps, max_agents, max_subpoints) = self._parse_dimensions(cytosim_data)
         agent_data = AgentData(
             times=np.zeros(totalSteps),
             n_agents=np.zeros(totalSteps),

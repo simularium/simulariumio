@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Any, Dict, Tuple
+from typing import Dict, Tuple
 from pathlib import Path
 
 import numpy as np
@@ -85,7 +85,9 @@ class PhysicellConverter(CustomConverter):
             self._last_id += 1
         return self._ids[cell_type][cell_phase]
 
-    def _get_trajectory_data(self, input_data: PhysicellData) -> Tuple[AgentData, UnitData]:
+    def _get_trajectory_data(
+        self, input_data: PhysicellData
+    ) -> Tuple[AgentData, UnitData]:
         """
         Get data from one time step in Simularium format
         """
@@ -142,7 +144,10 @@ class PhysicellConverter(CustomConverter):
                     3.0 / 4.0 * discrete_cells[t]["total_volume"][n] / np.pi
                 )
                 i += 1
-        spatial_units = UnitData(physicell_data[0].data["metadata"]["spatial_units"], 1.0 / input_data.scale_factor)
+        spatial_units = UnitData(
+            physicell_data[0].data["metadata"]["spatial_units"],
+            1.0 / input_data.scale_factor,
+        )
         return result, spatial_units
 
     def _read(self, input_data: PhysicellData) -> CustomData:
