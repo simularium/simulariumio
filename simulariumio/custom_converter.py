@@ -297,7 +297,7 @@ class CustomConverter:
         return True
 
     @staticmethod
-    def _format_timestep(number: float):
+    def _format_timestep(number: float) -> float:
         return float("%.4g" % number)
 
     @staticmethod
@@ -335,7 +335,7 @@ class CustomConverter:
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data.plots.append(plot_reader_class().read(data))
 
-    def filter_data(self, filters: List[Filter]):
+    def filter_data(self, filters: List[Filter]) -> CustomData:
         """
         Return the simularium data with the given filter applied
         """
