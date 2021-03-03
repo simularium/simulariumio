@@ -254,8 +254,6 @@ class CustomConverter:
                 buffer_struct.TID_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
             ] = agent_data.type_ids[t, :n]
             local_buf[ix_positions[: 3 * n]] = agent_data.positions[t, :n].flatten()
-            if agent_data.rotations is not None:
-                local_buf[ix_rotations[: 3 * n]] = agent_data.rotations[t, :n].flatten()
             local_buf[
                 buffer_struct.R_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
             ] = agent_data.radii[t, :n]

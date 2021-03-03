@@ -410,7 +410,7 @@ from simulariumio.filters import EveryNthAgentFilter
                         },
                         {
                             "frameNumber": 2,
-                            "time": 0.05,
+                            "time": 0.1,
                             "data": [
                                 1001.0,
                                 1.0,
@@ -586,7 +586,7 @@ from simulariumio.filters import EveryNthAgentFilter
         ),
     ],
 )
-def test_percent_agents_filter(input_path, _filter, expected_data):
+def test_every_nth_agent_filter(input_path, _filter, expected_data):
     converter = FileConverter(input_path)
     filtered_data = converter.filter_data([_filter])
     buffer_data = converter._read_custom_data(filtered_data)

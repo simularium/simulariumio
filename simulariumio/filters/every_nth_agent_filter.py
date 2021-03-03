@@ -35,14 +35,13 @@ class EveryNthAgentFilter(Filter):
             N for any agents of type not specified in n_per_type_id
             Default: 1
         """
-        self.name = "every_nth_agent"
         self.n_per_type_id = n_per_type_id
         self.default_n = default_n
 
     def apply(self, data: CustomData) -> CustomData:
         """
         Reduce the number of agents in each frame of the simularium
-        file by filtering out all but every nth agent
+        data by filtering out all but every nth agent
         """
         print("Filtering: every Nth agent -------------")
         # get filtered data
@@ -101,7 +100,7 @@ class EveryNthAgentFilter(Filter):
                 radii=radii,
                 n_subpoints=n_subpoints,
                 subpoints=subpoints,
-                draw_fiber_points=False,
+                draw_fiber_points=data.agent_data.draw_fiber_points,
                 type_ids=type_ids,
             ),
             time_units=copy.copy(data.time_units),

@@ -18,7 +18,7 @@
 % end
 
 % frame   2
-% time 0.050
+% time 0.100
 % report solid
 %    class  identity      cenX      cenY      cenZ   point0X   point0Y   point0Z   point1X   point1Y   point1Z
          1         1   +0.4486   +0.3424   +0.0936   +0.4486   +0.3424   +0.0936   +0.6213   +0.4766   +0.5425

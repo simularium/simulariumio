@@ -874,7 +874,7 @@ from simulariumio.cytosim import (
                         },
                         {
                             "frameNumber": 2,
-                            "time": 0.05,
+                            "time": 0.1,
                             "data": [
                                 1001.0,
                                 1.0,

@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Any, Dict
+import copy
 import logging
 
 import numpy as np
 
-from ..data_objects import AgentData
+from ..data_objects import CustomData, AgentData
 from .filter import Filter
-from .params import AddAgentsFilterParams, FilterParams
 from ..exceptions import DataError
 
 ###############################################################################
@@ -19,27 +18,39 @@ log = logging.getLogger(__name__)
 
 
 class AddAgentsFilter(Filter):
-    def filter_spatial_data(
-        self, agent_data: AgentData, params: AddAgentsFilterParams
-    ) -> AgentData:
+    new_agent_data: AgentData
+
+    def __init__(self, new_agent_data: AgentData):
         """
-        Add the given agents to each frame of the simulation
+        This filter adds the given agents
+        to each frame of the simulation
+
+        Parameters
+        ----------
+        new_agent_data : AgentData
+            agent data to append to the trajectory
+        """
+        self.new_agent_data = new_agent_data
+
+    def apply(self, data: CustomData) -> CustomData:
+        """
+        Add the given agents to each frame of the simularium data
         """
         print("Filtering: add agents -------------")
         # get dimensions
-        total_steps = agent_data.times.size
-        new_total_steps = params.new_agent_data.times.size
+        total_steps = data.agent_data.times.size
+        new_total_steps = self.new_agent_data.times.size
         if new_total_steps != total_steps:
             raise DataError(
                 "Timestep in data to add differs from existing: "
                 f"new data has {new_total_steps} steps, while "
                 f"existing data has {total_steps}"
             )
-        max_agents = int(np.amax(agent_data.n_agents)) + int(
-            np.amax(params.new_agent_data.n_agents)
+        max_agents = int(np.amax(data.agent_data.n_agents)) + int(
+            np.amax(self.new_agent_data.n_agents)
         )
-        max_subpoints = int(np.amax(agent_data.n_subpoints)) + int(
-            np.amax(params.new_agent_data.n_subpoints)
+        max_subpoints = int(np.amax(data.agent_data.n_subpoints)) + int(
+            np.amax(self.new_agent_data.n_subpoints)
         )
         # get filtered data
         n_agents = np.zeros(total_steps)
@@ -54,48 +65,49 @@ class AddAgentsFilter(Filter):
         for t in range(total_steps):
             i = 0
             types.append([])
-            n_a = int(agent_data.n_agents[t])
+            n_a = int(data.agent_data.n_agents[t])
             for n in range(n_a):
-                viz_types[t][i] = agent_data.viz_types[t][n]
-                unique_ids[t][i] = agent_data.unique_ids[t][n]
-                type_ids[t][i] = agent_data.type_ids[t][n]
-                types[t].append(agent_data.types[t][n])
-                positions[t][i] = agent_data.positions[t][n]
-                radii[t][i] = agent_data.radii[t][n]
-                n_subpoints[t][i] = agent_data.n_subpoints[t][n]
+                viz_types[t][i] = data.agent_data.viz_types[t][n]
+                unique_ids[t][i] = data.agent_data.unique_ids[t][n]
+                type_ids[t][i] = data.agent_data.type_ids[t][n]
+                types[t].append(data.agent_data.types[t][n])
+                positions[t][i] = data.agent_data.positions[t][n]
+                radii[t][i] = data.agent_data.radii[t][n]
+                n_subpoints[t][i] = data.agent_data.n_subpoints[t][n]
                 subpoints[t][i][
-                    : np.shape(agent_data.subpoints[t][n])[0]
-                ] = agent_data.subpoints[t][n]
+                    : np.shape(data.agent_data.subpoints[t][n])[0]
+                ] = data.agent_data.subpoints[t][n]
                 i += 1
-            n_a = int(params.new_agent_data.n_agents[t])
+            n_a = int(self.new_agent_data.n_agents[t])
             for n in range(n_a):
-                viz_types[t][i] = params.new_agent_data.viz_types[t][n]
-                unique_ids[t][i] = params.new_agent_data.unique_ids[t][n]
-                type_ids[t][i] = params.new_agent_data.type_ids[t][n]
-                types[t].append(params.new_agent_data.types[t][n])
-                positions[t][i] = params.new_agent_data.positions[t][n]
-                radii[t][i] = params.new_agent_data.radii[t][n]
-                n_subpoints[t][i] = params.new_agent_data.n_subpoints[t][n]
+                viz_types[t][i] = self.new_agent_data.viz_types[t][n]
+                unique_ids[t][i] = self.new_agent_data.unique_ids[t][n]
+                type_ids[t][i] = self.new_agent_data.type_ids[t][n]
+                types[t].append(self.new_agent_data.types[t][n])
+                positions[t][i] = self.new_agent_data.positions[t][n]
+                radii[t][i] = self.new_agent_data.radii[t][n]
+                n_subpoints[t][i] = self.new_agent_data.n_subpoints[t][n]
                 subpoints[t][i][
-                    : np.shape(params.new_agent_data.subpoints[t][n])[0]
-                ] = params.new_agent_data.subpoints[t][n]
+                    : np.shape(self.new_agent_data.subpoints[t][n])[0]
+                ] = self.new_agent_data.subpoints[t][n]
                 i += 1
             n_agents[t] = i
-        return AgentData(
-            times=agent_data.times,
-            n_agents=n_agents,
-            viz_types=viz_types,
-            unique_ids=unique_ids,
-            types=types,
-            positions=positions,
-            radii=radii,
-            n_subpoints=n_subpoints,
-            subpoints=subpoints,
-            draw_fiber_points=False,
-            type_ids=type_ids,
+        return CustomData(
+            box_size=np.copy(data.box_size),
+            agent_data=AgentData(
+                times=np.copy(data.agent_data.times),
+                n_agents=n_agents,
+                viz_types=viz_types,
+                unique_ids=unique_ids,
+                types=types,
+                positions=positions,
+                radii=radii,
+                n_subpoints=n_subpoints,
+                subpoints=subpoints,
+                draw_fiber_points=data.agent_data.draw_fiber_points,
+                type_ids=type_ids,
+            ),
+            time_units=copy.copy(data.time_units),
+            spatial_units=copy.copy(data.spatial_units),
+            plots=copy.copy(data.plots),
         )
-
-    def filter_plot_data(
-        self, plot_data: Dict[str, Any], params: FilterParams
-    ) -> Dict[str, Any]:
-        return plot_data

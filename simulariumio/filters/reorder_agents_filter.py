@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Any, Dict
+import copy
+from typing import Dict
 import logging
 
 import numpy as np
 
-from ..data_objects import AgentData
+from ..data_objects import CustomData, AgentData
 from .filter import Filter
-from .params import ReorderAgentsFilterParams, FilterParams
 
 ###############################################################################
 
@@ -18,40 +18,55 @@ log = logging.getLogger(__name__)
 
 
 class ReorderAgentsFilter(Filter):
-    def filter_spatial_data(
-        self, agent_data: AgentData, params: ReorderAgentsFilterParams
-    ) -> AgentData:
+    type_id_mapping: Dict[int, int]
+
+    def __init__(self, type_id_mapping: Dict[int, int]):
         """
-        Change the type IDs of the agents, so that the agents are listed,
-        and therefore colored, in a different order in the viewer
+        This object contains parameters for changing the type IDs
+        of the agents, so that the agents are listed
+        and colored in a different order
+
+        Parameters
+        ----------
+        type_id_mapping : Dict[int, int]
+            change each int key type ID in the data to
+            the given int value
+        """
+        self.type_id_mapping = type_id_mapping
+
+    def apply(self, data: CustomData) -> CustomData:
+        """
+        Change the type IDs of the agents, so that the agents are listed
+        and colored in a different order
         """
         print("Filtering: reorder agents -------------")
         # get dimensions
-        total_steps = agent_data.times.size
-        max_agents = int(np.amax(agent_data.n_agents))
+        total_steps = data.agent_data.times.size
+        max_agents = int(np.amax(data.agent_data.n_agents))
         # get filtered data
         type_ids = np.zeros((total_steps, max_agents))
-        for t in range(agent_data.times.size):
-            for n in range(int(agent_data.n_agents[t])):
-                tid = agent_data.type_ids[t][n]
-                if tid in params.type_id_mapping:
-                    tid = params.type_id_mapping[tid]
+        for t in range(data.agent_data.times.size):
+            for n in range(int(data.agent_data.n_agents[t])):
+                tid = data.agent_data.type_ids[t][n]
+                if tid in self.type_id_mapping:
+                    tid = self.type_id_mapping[tid]
                 type_ids[t][n] = tid
-        return AgentData(
-            times=agent_data.times,
-            n_agents=agent_data.n_agents,
-            viz_types=agent_data.viz_types,
-            unique_ids=agent_data.unique_ids,
-            types=agent_data.types,
-            positions=agent_data.positions,
-            radii=agent_data.radii,
-            n_subpoints=agent_data.n_subpoints,
-            subpoints=agent_data.subpoints,
-            draw_fiber_points=False,
-            type_ids=type_ids,
+        return CustomData(
+            box_size=np.copy(data.box_size),
+            agent_data=AgentData(
+                times=np.copy(data.agent_data.times),
+                n_agents=np.copy(data.agent_data.n_agents),
+                viz_types=np.copy(data.agent_data.viz_types),
+                unique_ids=np.copy(data.agent_data.unique_ids),
+                types=copy.copy(data.agent_data.types),
+                positions=np.copy(data.agent_data.positions),
+                radii=np.copy(data.agent_data.radii),
+                n_subpoints=np.copy(data.agent_data.n_subpoints),
+                subpoints=np.copy(data.agent_data.subpoints),
+                draw_fiber_points=data.agent_data.draw_fiber_points,
+                type_ids=type_ids,
+            ),
+            time_units=copy.copy(data.time_units),
+            spatial_units=copy.copy(data.spatial_units),
+            plots=copy.copy(data.plots),
         )
-
-    def filter_plot_data(
-        self, plot_data: Dict[str, Any], params: FilterParams
-    ) -> Dict[str, Any]:
-        return plot_data

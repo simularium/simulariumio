@@ -18,7 +18,7 @@
 % end
 
 % frame   2
-% time 0.050
+% time 0.100
 % report couple:state
 %    class  identity    active      posX      posY      posZ    fiber1 abscissa1    fiber2 abscissa2
          1         1         1   +0.3396   +0.1331   +0.5029         0       nan         0       nan

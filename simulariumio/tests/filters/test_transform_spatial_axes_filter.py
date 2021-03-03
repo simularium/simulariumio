@@ -4,17 +4,17 @@
 import pytest
 
 from simulariumio import FileConverter
-from simulariumio.filters.params import UpDirectionFilterParams
+from simulariumio.filters import TransformSpatialAxesFilter
 
 
 @pytest.mark.parametrize(
-    "input_path, params, expected_data",
+    "input_path, _filter, expected_data",
     [
         (
             # reduce agents
             "simulariumio/tests/data/cytosim/aster_pull3D_couples_actin_solid_3_frames"
             "/aster_pull3D_couples_actin_solid_3_frames_small.json",
-            UpDirectionFilterParams(up_dir="Z"),
+            TransformSpatialAxesFilter(axes_mapping=["+X", "-Z", "+Y"]),
             {
                 "trajectoryInfo": {
                     "version": 2,
@@ -179,7 +179,8 @@ from simulariumio.filters.params import UpDirectionFilterParams
         ),
     ],
 )
-def test_percent_agents_filter(input_path, params, expected_data):
+def test_transform_spatial_axes_filter(input_path, _filter, expected_data):
     converter = FileConverter(input_path)
-    converter.apply_filters([params])
-    assert expected_data == converter._data
+    filtered_data = converter.filter_data([_filter])
+    buffer_data = converter._read_custom_data(filtered_data)
+    assert expected_data == buffer_data
