@@ -54,7 +54,8 @@ class CustomConverter:
         """
         self._data = input_data
 
-    def _read_custom_data(self, input_data: CustomData) -> Dict[str, Any]:
+    @staticmethod
+    def _read_custom_data(input_data: CustomData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """
@@ -99,11 +100,15 @@ class CustomConverter:
             "bundleSize": totalSteps,
         }
         if input_data.agent_data.subpoints is not None:
-            spatialData["bundleData"] = self._get_spatial_bundle_data_subpoints(
+            spatialData[
+                "bundleData"
+            ] = CustomConverter._get_spatial_bundle_data_subpoints(
                 input_data.agent_data
             )
         else:
-            spatialData["bundleData"] = self._get_spatial_bundle_data_no_subpoints(
+            spatialData[
+                "bundleData"
+            ] = CustomConverter._get_spatial_bundle_data_no_subpoints(
                 input_data.agent_data
             )
         simularium_data["spatialData"] = spatialData
@@ -263,9 +268,8 @@ class CustomConverter:
             bundle_data.append(frame_data)
         return bundle_data
 
-    def _check_agent_ids_are_unique_per_frame(
-        self, buffer_data: Dict[str, Any]
-    ) -> bool:
+    @staticmethod
+    def _check_agent_ids_are_unique_per_frame(buffer_data: Dict[str, Any]) -> bool:
         """
         For each frame, check that none of the unique agent IDs overlap
         """
@@ -338,11 +342,14 @@ class CustomConverter:
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data.plots.append(plot_reader_class().read(data))
 
-    def filter_data(self, filter: Filter):
+    def filter_data(self, filters: List[Filter]):
         """
         Return the simularium data with the given filter applied
         """
-        return filter.apply(self._data)
+        filtered_data = self._data
+        for f in filters:
+            filtered_data = f.apply(filtered_data)
+        return filtered_data
 
     def write_JSON(self, output_path: str):
         """
@@ -354,7 +361,7 @@ class CustomConverter:
             where to save the file
         """
         print("Writing JSON -------------")
-        buffer_data = self._read_custom_data(self._data)
+        buffer_data = CustomConverter._read_custom_data(self._data)
         with open(f"{output_path}.simularium", "w+") as outfile:
             json.dump(buffer_data, outfile)
         print(f"saved to {output_path}.simularium")

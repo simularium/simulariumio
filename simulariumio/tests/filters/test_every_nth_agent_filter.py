@@ -588,6 +588,6 @@ from simulariumio.filters import EveryNthAgentFilter
 )
 def test_percent_agents_filter(input_path, _filter, expected_data):
     converter = FileConverter(input_path)
-    filtered_data = converter.filter_data(_filter)
+    filtered_data = converter.filter_data([_filter])
     buffer_data = converter._read_custom_data(filtered_data)
     assert expected_data == buffer_data
