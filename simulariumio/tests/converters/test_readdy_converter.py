@@ -202,7 +202,7 @@ from simulariumio import UnitData
         )
     ],
 )
-def test_readdy_trajectory_reader(trajectory, expected_data):
+def test_readdy_converter(trajectory, expected_data):
     converter = ReaddyConverter(trajectory)
     buffer_data = converter._read_custom_data(converter._data)
     assert expected_data == buffer_data

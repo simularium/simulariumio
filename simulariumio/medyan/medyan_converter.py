@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Any, Dict, List, Tuple
+from typing import List
 import math
 
 import numpy as np
 
 from ..custom_converter import CustomConverter
-from ..data_objects import AgentData, UnitData
+from ..data_objects import CustomData, AgentData, UnitData
 from ..constants import VIZ_TYPE
 from .medyan_data import MedyanData
 
@@ -96,9 +96,7 @@ class MedyanConverter(CustomConverter):
             max_agents = n
         return totalSteps, max_agents, max_subpoints
 
-    def _get_trajectory_data(
-        self, input_data: MedyanData
-    ) -> Tuple[AgentData, Dict[str, Dict[int, int]]]:
+    def _get_trajectory_data(self, input_data: MedyanData) -> AgentData:
         """
         Parse a MEDYAN snapshot.traj output file to get agents
         """
@@ -107,19 +105,19 @@ class MedyanConverter(CustomConverter):
         totalSteps, max_agents, max_subpoints = self._parse_data_dimensions(
             lines, input_data
         )
-        agent_data = AgentData(
+        result = AgentData(
             times=np.zeros(totalSteps),
             n_agents=np.zeros(totalSteps),
             viz_types=np.zeros((totalSteps, max_agents)),
             unique_ids=np.zeros((totalSteps, max_agents)),
-            types=None,
+            types=[[] for t in range(totalSteps)],
             positions=np.zeros((totalSteps, max_agents, 3)),
             radii=np.ones((totalSteps, max_agents)),
             n_subpoints=np.zeros((totalSteps, max_agents)),
             subpoints=np.zeros((totalSteps, max_agents, max_subpoints, 3)),
             draw_fiber_points=input_data.draw_fiber_points,
         )
-        agent_data.type_ids = np.zeros((totalSteps, max_agents))
+        result.type_ids = np.zeros((totalSteps, max_agents))
         t = -1
         at_frame_start = True
         parsing_object = False
@@ -146,12 +144,12 @@ class MedyanConverter(CustomConverter):
                 # start of timestep
                 t += 1
                 n = 0
-                agent_data.times[t] = float(cols[1])
-                agent_data.n_agents[t] = int(cols[2]) + int(cols[3]) + int(cols[4])
+                result.times[t] = float(cols[1])
+                result.n_agents[t] = int(cols[2]) + int(cols[3]) + int(cols[4])
                 at_frame_start = False
             if "FILAMENT" in line or "LINKER" in line or "MOTOR" in line:
                 # start of object
-                agent_data.viz_types[t][n] = VIZ_TYPE.fiber
+                result.viz_types[t][n] = VIZ_TYPE.FIBER
                 if "FILAMENT" in line:
                     object_type = "filament"
                 elif "LINKER" in line:
@@ -164,32 +162,43 @@ class MedyanConverter(CustomConverter):
                 if raw_uid not in uids[object_type]:
                     uids[object_type][raw_uid] = last_uid
                     last_uid += 1 if not draw_endpoints else 3
-                agent_data.unique_ids[t][n] = uids[object_type][raw_uid]
+                result.unique_ids[t][n] = uids[object_type][raw_uid]
                 # type ID
                 raw_tid = int(cols[2])
                 if raw_tid not in tids[object_type]:
                     tids[object_type][raw_tid] = last_tid
                     last_tid += 1
-                agent_data.type_ids[t][n] = tids[object_type][raw_tid]
+                result.type_ids[t][n] = tids[object_type][raw_tid]
+                # type name
+                while n >= len(result.types[t]):
+                    result.types[t].append("")
+                result.types[t][n] = (
+                    input_data.agent_info[object_type][raw_tid].name
+                    if raw_tid in input_data.agent_info[object_type]
+                    else object_type + str(raw_tid)
+                )
                 # radius
-                agent_data.radii[t][n] = input_data.scale_factor * (
+                result.radii[t][n] = input_data.scale_factor * (
                     input_data.agent_info[object_type][raw_tid].radius
                     if raw_tid in input_data.agent_info[object_type]
                     else 1.0
                 )
                 if "FILAMENT" in line:
-                    agent_data.n_subpoints[t][n] = int(cols[3])
+                    result.n_subpoints[t][n] = int(cols[3])
                 else:
-                    agent_data.n_subpoints[t][n] = 2
+                    result.n_subpoints[t][n] = 2
                 # draw endpoints?
                 if draw_endpoints:
                     for i in range(2):
-                        agent_data.viz_types[t][n + i + 1] = VIZ_TYPE.default
-                        agent_data.unique_ids[t][n + i + 1] = (
+                        result.viz_types[t][n + i + 1] = VIZ_TYPE.DEFAULT
+                        result.unique_ids[t][n + i + 1] = (
                             uids[object_type][raw_uid] + i + 1
                         )
-                        agent_data.type_ids[t][n + i + 1] = tids[object_type][raw_tid]
-                        agent_data.radii[t][n + i + 1] = input_data.scale_factor * (
+                        result.type_ids[t][n + i + 1] = tids[object_type][raw_tid]
+                        while n + i + 1 >= len(result.types[t]):
+                            result.types[t].append("")
+                        result.types[t][n + i + 1] = result.types[t][n]
+                        result.radii[t][n + i + 1] = input_data.scale_factor * (
                             input_data.agent_info[object_type][raw_tid].endpoint_radius
                             if raw_tid in input_data.agent_info[object_type]
                             else 1.0
@@ -200,79 +209,32 @@ class MedyanConverter(CustomConverter):
                 for i in range(len(cols)):
                     s = math.floor(i / 3)
                     d = i % 3
-                    agent_data.subpoints[t][n][s][d] = input_data.scale_factor * float(
+                    result.subpoints[t][n][s][d] = input_data.scale_factor * float(
                         cols[i]
                     )
                     if draw_endpoints:
-                        agent_data.positions[t][n + s + 1][
+                        result.positions[t][n + s + 1][
                             d
                         ] = input_data.scale_factor * float(cols[i])
                 parsing_object = False
                 n += 1
                 if draw_endpoints:
                     n += 2
-                    agent_data.n_agents[t] += 2
-        return agent_data, tids
+                    result.n_agents[t] += 2
+        return result
 
-    def _read(self, input_data: MedyanData) -> Dict[str, Any]:
+    def _read(self, input_data: MedyanData) -> CustomData:
         """
         Return an object containing the data shaped for Simularium format
         """
         print("Reading MEDYAN Data -------------")
-        # load the data from MEDYAN snapshot.traj
-        agent_data, type_id_mapping = self._get_trajectory_data(input_data)
-        # shape data
-        simularium_data = {}
-        # type mapping
-        type_name_mapping = {}
-        for object_type in input_data.agent_info:
-            for raw_tid in type_id_mapping[object_type]:
-                tid = type_id_mapping[object_type][raw_tid]
-                type_name_mapping[str(tid)] = {
-                    "name": (
-                        input_data.agent_info[object_type][raw_tid].name
-                        if raw_tid in input_data.agent_info[object_type]
-                        else object_type + str(raw_tid)
-                    )
-                }
-        # trajectory info
-        totalSteps = agent_data.n_agents.shape[0]
+        agent_data = self._get_trajectory_data(input_data)
         time_units = UnitData("s")
         spatial_units = UnitData("nm", 1.0 / input_data.scale_factor)
-        simularium_data["trajectoryInfo"] = {
-            "version": 2,
-            "timeUnits": {
-                "magnitude": time_units.magnitude,
-                "name": time_units.name,
-            },
-            "timeStepSize": CustomConverter._format_timestep(
-                float(agent_data.times[1] - agent_data.times[0])
-                if totalSteps > 1
-                else 0.0
-            ),
-            "totalSteps": totalSteps,
-            "spatialUnits": {
-                "magnitude": spatial_units.magnitude,
-                "name": spatial_units.name,
-            },
-            "size": {
-                "x": input_data.scale_factor * float(input_data.box_size[0]),
-                "y": input_data.scale_factor * float(input_data.box_size[1]),
-                "z": input_data.scale_factor * float(input_data.box_size[2]),
-            },
-            "typeMapping": type_name_mapping,
-        }
-        # spatial data
-        simularium_data["spatialData"] = {
-            "version": 1,
-            "msgType": 1,
-            "bundleStart": 0,
-            "bundleSize": totalSteps,
-            "bundleData": self._get_spatial_bundle_data_subpoints(agent_data),
-        }
-        # plot data
-        simularium_data["plotData"] = {
-            "version": 1,
-            "data": input_data.plots,
-        }
-        return simularium_data
+        return CustomData(
+            box_size=input_data.scale_factor * input_data.box_size,
+            agent_data=agent_data,
+            time_units=time_units,
+            spatial_units=spatial_units,
+            plots=input_data.plots,
+        )

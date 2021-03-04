@@ -68,6 +68,14 @@ simulariumio.filters.transform\_spatial\_axes\_filter module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.filters.translate\_filter module
+---------------------------------------------
+
+.. automodule:: simulariumio.filters.translate_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 
 Module contents
 ---------------

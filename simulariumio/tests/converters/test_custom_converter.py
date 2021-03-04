@@ -1093,7 +1093,7 @@ from simulariumio.tests.conftest import three_default_agents
         ),
     ],
 )
-def test_custom_trajectory_reader(trajectory, expected_data):
+def test_custom_converter(trajectory, expected_data):
     converter = CustomConverter(trajectory)
     buffer_data = converter._read_custom_data(converter._data)
     assert expected_data == buffer_data

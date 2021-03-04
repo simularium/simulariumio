@@ -186,7 +186,7 @@ class ReaddyConverter(CustomConverter):
                     agent_data.types[t][n] = type_mapping[readdy_id]
         return agent_data
 
-    def _read(self, input_data: ReaddyData) -> Dict[str, Any]:
+    def _read(self, input_data: ReaddyData) -> CustomData:
         """
         Return an object containing the data shaped for Simularium format
         """
