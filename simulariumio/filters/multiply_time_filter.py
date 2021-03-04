@@ -6,7 +6,7 @@ import logging
 
 import numpy as np
 
-from ..data_objects import CustomData
+from ..data_objects import CustomData, AgentData
 from .filter import Filter
 
 ###############################################################################
@@ -44,9 +44,6 @@ class MultiplyTimeFilter(Filter):
         Multiply time values in the data
         """
         print(f"Filtering: multiplying time by {self.multiplier} -------------")
-        # spatial data
-        agent_data = copy.copy(data.agent_data)
-        agent_data.times *= self.multiplier
         # plot data
         plot_data = copy.copy(data.plots)
         if self.apply_to_plots:
@@ -57,10 +54,23 @@ class MultiplyTimeFilter(Filter):
                 for tr in range(len(plot_data[p]["data"])):
                     trace = plot_data[p]["data"][tr]
                     trace["x"] = (self.multiplier * np.array(trace["x"])).tolist()
+        # spatial data
         return CustomData(
             box_size=np.copy(data.box_size),
-            agent_data=agent_data,
-            time_units=copy.copy(data.time_units).multiply(self.multiplier),
+            agent_data=AgentData(
+                times=self.multiplier * np.copy(data.agent_data.times),
+                n_agents=np.copy(data.agent_data.n_agents),
+                viz_types=np.copy(data.agent_data.viz_types),
+                unique_ids=np.copy(data.agent_data.unique_ids),
+                types=copy.copy(data.agent_data.types),
+                positions=np.copy(data.agent_data.positions),
+                radii=np.copy(data.agent_data.radii),
+                n_subpoints=np.copy(data.agent_data.n_subpoints),
+                subpoints=np.copy(data.agent_data.subpoints),
+                draw_fiber_points=data.agent_data.draw_fiber_points,
+                type_ids=np.copy(data.agent_data.type_ids),
+            ),
+            time_units=copy.copy(data.time_units),
             spatial_units=copy.copy(data.spatial_units),
             plots=plot_data,
         )

@@ -11,7 +11,6 @@ from simulariumio.filters import EveryNthTimestepFilter
     "input_path, _filter, expected_data",
     [
         (
-            # reduce timesteps by 50%
             "simulariumio/tests/data/cytosim/aster_pull3D_couples_actin_solid_3_frames"
             "/aster_pull3D_couples_actin_solid_3_frames.json",
             EveryNthTimestepFilter(n=2),

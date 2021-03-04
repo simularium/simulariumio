@@ -11,7 +11,6 @@ from simulariumio.filters import EveryNthAgentFilter
     "input_path, _filter, expected_data",
     [
         (
-            # reduce agents
             "simulariumio/tests/data/cytosim/aster_pull3D_couples_actin_solid_3_frames"
             "/aster_pull3D_couples_actin_solid_3_frames.json",
             EveryNthAgentFilter(
