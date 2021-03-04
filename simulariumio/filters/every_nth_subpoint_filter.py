@@ -74,7 +74,7 @@ class EveryNthSubpointFilter(Filter):
                 n_agents=np.copy(data.agent_data.n_agents),
                 viz_types=np.copy(data.agent_data.viz_types),
                 unique_ids=np.copy(data.agent_data.unique_ids),
-                types=np.copy(data.agent_data.types),
+                types=copy.copy(data.agent_data.types),
                 positions=np.copy(data.agent_data.positions),
                 radii=np.copy(data.agent_data.radii),
                 n_subpoints=n_subpoints,
