@@ -65,7 +65,7 @@
 % end
 
 % frame   2
-% time 0.050
+% time 0.100
 % report fiber:point
 % identity      posX      posY      posZ curvature
 %   fiber f1:0001  0.1000

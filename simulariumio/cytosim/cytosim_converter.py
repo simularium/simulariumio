@@ -8,12 +8,11 @@ import sys
 import numpy as np
 
 from ..custom_converter import CustomConverter
-from ..data_objects import AgentData, UnitData
+from ..data_objects import CustomData, AgentData, UnitData
 from ..exceptions import DataError
 from ..constants import VIZ_TYPE
 from .cytosim_data import CytosimData
 from .cytosim_object_info import CytosimObjectInfo
-from .cytosim_agent_info import CytosimAgentInfo
 
 ###############################################################################
 
@@ -44,18 +43,21 @@ class CytosimConverter(CustomConverter):
         """
         return len(line) < 1 or line[0:7] == "warning" or "report" in line
 
-    def _parse_fiber_data_dimensions(
-        self, fibers_lines: List[str]
+    def _parse_object_type_dimensions(
+        self,
+        data_lines: List[str],
+        is_fiber: bool,
     ) -> Tuple[List[int], int]:
         """
-        Parse a Cytosim fiber_points.txt output file to get the number
+        Parse a Cytosim output file containing objects
+        (fibers, solids, singles, or couples) to get the number
         of subpoints per agent per timestep
         """
         result = []
         t = -1
         s = 0
         max_subpoints = 0
-        for line in fibers_lines:
+        for line in data_lines:
             if self._ignore_line(line):
                 continue
             if line[0] == "%":
@@ -68,30 +70,15 @@ class CytosimConverter(CustomConverter):
                         max_subpoints = s
                     s = 0
                 continue
-            s += 1
+            if is_fiber:
+                s += 1
+            else:
+                result[t] += 1
         if s > max_subpoints:
             max_subpoints = s
         return (result, max_subpoints)
 
-    def _parse_other_data_dimensions(self, lines: List[str]) -> List[int]:
-        """
-        Parse a Cytosim output file containing objects other than fibers
-        (solids, singles, or couples) to get the number of agents per timestep
-        """
-        result = []
-        t = -1
-        for line in lines:
-            if self._ignore_line(line):
-                continue
-            if line[0] == "%":
-                if "frame" in line:
-                    result.append(0)
-                    t += 1
-                continue
-            result[t] += 1
-        return result
-
-    def _parse_data_dimensions(self, cytosim_data: Dict[str, List[str]]) -> Tuple[int]:
+    def _parse_dimensions(self, cytosim_data: Dict[str, List[str]]) -> Tuple[int]:
         """
         Parse Cytosim output files to get the total steps,
         maximum agents per timestep, and maximum subpoints per agent
@@ -99,12 +86,12 @@ class CytosimConverter(CustomConverter):
         dimensions = []
         max_subpoints = 0
         for object_type in cytosim_data:
-            if object_type == "fibers":
-                dims, max_subpoints = self._parse_fiber_data_dimensions(
-                    cytosim_data[object_type]
-                )
-            else:
-                dims = self._parse_other_data_dimensions(cytosim_data[object_type])
+            dims, n_subpoints = self._parse_object_type_dimensions(
+                cytosim_data[object_type],
+                "fiber" in object_type,
+            )
+            if n_subpoints > max_subpoints:
+                max_subpoints = n_subpoints
             if len(dimensions) < 1:
                 dimensions = dims
             else:
@@ -120,176 +107,179 @@ class CytosimConverter(CustomConverter):
                 max_agents = dimensions[t]
         return (len(dimensions), max_agents, max_subpoints)
 
-    def _parse_fibers(
+    def _parse_object(
         self,
-        fibers_lines: List[str],
+        object_type: str,
+        data_columns: List[str],
+        t: int,
+        n: int,
         scale_factor: float,
-        agent_info: Dict[int, CytosimAgentInfo],
+        object_info: CytosimObjectInfo,
         result: AgentData,
-        agent_types: Dict[int, Any],
+        uids: Dict[int, int],
         used_unique_IDs: List[int],
-    ) -> Tuple[Dict[str, Any], List[str], List[int]]:
-        """
-        Parse a Cytosim fiber_points.txt output file to get fiber agents
-        """
-        t = -1
-        n = -1
-        s = -1
-        parse_time = (
-            result.times.size > 1 and float(result.times[1]) < sys.float_info.epsilon
+        types: Dict[int, int],
+        used_type_IDs: List[int],
+    ) -> [AgentData, Dict[int, int], List[int], Dict[int, int], List[int]]:
+        """"""
+        if "fiber" in object_type:
+            result.viz_types[t][n] = VIZ_TYPE.FIBER
+            fiber_info = data_columns[2].split(":")
+            raw_uid = int(fiber_info[1])
+            raw_tid = int(fiber_info[0][1:])
+        else:
+            result.viz_types[t][n] = VIZ_TYPE.DEFAULT
+            raw_uid = int(data_columns[1].strip("+,"))
+            raw_tid = int(data_columns[0].strip("+,"))
+        # unique instance ID
+        if raw_uid not in uids:
+            uid = raw_uid
+            while uid in used_unique_IDs:
+                uid += 1
+            uids[raw_uid] = uid
+            used_unique_IDs.append(uid)
+        result.unique_ids[t][n] = uids[raw_uid]
+        # type ID
+        if raw_tid not in types:
+            tid = raw_tid
+            while tid in used_type_IDs:
+                tid += 1
+            types[raw_tid] = tid
+            used_type_IDs.append(tid)
+        else:
+            tid = types[raw_tid]
+        result.type_ids[t][n] = tid
+        # type name
+        while n >= len(result.types[t]):
+            result.types[t].append("")
+        if raw_tid in object_info.agents:
+            result.types[t][n] = object_info.agents[raw_tid].name
+        else:
+            result.types[t][n] = object_type[:-1] + str(raw_tid)
+        # radius
+        result.radii[t][n] = (
+            (scale_factor * float(object_info.agents[raw_tid].radius))
+            if raw_tid in object_info.agents
+            else 1.0
         )
-        types = {}
-        uids = {}
-        for line in fibers_lines:
-            if self._ignore_line(line):
-                continue
-            if line[0] == "%":
-                if "frame" in line:
-                    # start of frame
-                    t += 1
-                    n_other_agents = int(result.n_agents[t])
-                    n = -1
-                elif "time" in line and parse_time:
-                    # time metadata
-                    result.times[t] = float(line.split()[2])
-                elif "fiber" in line:
-                    # start of fiber
-                    if n >= 0 and s >= 0:
-                        result.n_subpoints[t][n_other_agents + n] = s + 1
-                    n += 1
-                    s = -1
-                    result.viz_types[t][n_other_agents + n] = VIZ_TYPE.fiber
-                    fiber_info = line.split()[2].split(":")
-                    # unique instance ID
-                    raw_uid = int(fiber_info[1])
-                    if raw_uid not in uids:
-                        uid = raw_uid
-                        while uid in used_unique_IDs:
-                            uid += 1
-                        uids[raw_uid] = uid
-                        used_unique_IDs.append(uid)
-                    result.unique_ids[t][n_other_agents + n] = uids[raw_uid]
-                    # type ID
-                    raw_tid = int(fiber_info[0][1:])
-                    if raw_tid not in types:
-                        tid = raw_tid
-                        while tid in agent_types:
-                            tid += 1
-                        types[raw_tid] = tid
-                        agent_types[tid] = {"object_type": "fibers", "raw_id": raw_tid}
-                    else:
-                        tid = types[raw_tid]
-                    result.type_ids[t][n_other_agents + n] = tid
-                    result.radii[t][n_other_agents + n] = (
-                        (scale_factor * float(agent_info[raw_tid].radius))
-                        if raw_tid in agent_info
-                        else 1.0
-                    )
-                elif "end" in line:
-                    # end of frame
-                    result.n_subpoints[t][n_other_agents + n] = s + 1
-                    result.n_agents[t] += n + 1
-                continue
-            # each fiber point
-            s += 1
-            columns = line.split()
-            result.subpoints[t][n_other_agents + n][s] = scale_factor * np.array(
-                [
-                    float(columns[1].strip("+,")),
-                    float(columns[2].strip("+,")),
-                    float(columns[3].strip("+,")),
-                ]
-            )
-        return (result, agent_types, used_unique_IDs)
+        return (result, uids, used_unique_IDs, types, used_type_IDs)
 
-    def _parse_others(
+    def _parse_objects(
         self,
         object_type: str,
         data_lines: List[str],
         scale_factor: float,
         object_info: CytosimObjectInfo,
         result: AgentData,
-        agent_types: Dict[int, Any],
         used_unique_IDs: List[int],
-    ) -> Tuple[Dict[str, Any], List[str], List[int]]:
+        used_type_IDs: List[int],
+    ) -> Tuple[Dict[str, Any], List[int], List[int]]:
         """
-        Parse a Cytosim output file containing objects other than fibers
-        (solids, singles, or couples) to get default agents
+        Parse a Cytosim output file containing objects
+        (fibers, solids, singles, or couples) to get agents
         """
         t = -1
         n = -1
+        s = -1
         n_other_agents = 0
         parse_time = (
-            result.times.size > 0 and float(result.times[1]) < sys.float_info.epsilon
+            result.times.size > 1 and float(result.times[1]) < sys.float_info.epsilon
         )
         types = {}
         uids = {}
+        is_fiber = "fiber" in object_type
         for line in data_lines:
             if self._ignore_line(line):
                 continue
+            columns = line.split()
             if line[0] == "%":
                 if "frame" in line:
                     # start of frame
-                    if t >= 0:
-                        result.n_agents[t] += n + 1
-                        result.viz_types[t][n_other_agents : n_other_agents + n + 1] = (
-                            n + 1
-                        ) * [VIZ_TYPE.default]
                     t += 1
                     n_other_agents = int(result.n_agents[t])
                     n = -1
-                elif "time" in line and parse_time:
+                elif parse_time and "time" in line:
                     # time metadata
-                    # Cytosim times are in seconds, Simularium is nanoseconds
-                    result.times[t] = float(line.split()[2]) * 1e9
+                    result.times[t] = float(columns[2])
+                elif "fiber" in columns[1]:
+                    # start of fiber object
+                    if n >= 0 and s >= 0:
+                        result.n_subpoints[t][n_other_agents + n] = s + 1
+                    n += 1
+                    s = -1
+                    (
+                        result,
+                        uids,
+                        used_unique_IDs,
+                        types,
+                        used_type_IDs,
+                    ) = self._parse_object(
+                        object_type,
+                        columns,
+                        t,
+                        n_other_agents + n,
+                        scale_factor,
+                        object_info,
+                        result,
+                        uids,
+                        used_unique_IDs,
+                        types,
+                        used_type_IDs,
+                    )
+                elif "end" in line:
+                    # end of frame
+                    if is_fiber:
+                        result.n_subpoints[t][n_other_agents + n] = s + 1
+                    result.n_agents[t] += n + 1
                 continue
-            n += 1
-            columns = line.split()
-            # unique instance ID
-            raw_uid = int(columns[1].strip("+,"))
-            if raw_uid not in uids:
-                uid = raw_uid
-                while uid in used_unique_IDs:
-                    uid += 1
-                uids[raw_uid] = uid
-                used_unique_IDs.append(uid)
-            result.unique_ids[t][n_other_agents + n] = uids[raw_uid]
-            # type ID
-            raw_tid = int(columns[0].strip("+,"))
-            if raw_tid not in types:
-                tid = raw_tid
-                while tid in agent_types:
-                    tid += 1
-                types[raw_tid] = tid
-                agent_types[tid] = {"object_type": object_type, "raw_id": raw_tid}
-            else:
-                tid = types[raw_tid]
-            result.type_ids[t][n_other_agents + n] = tid
-            # position
-            result.positions[t][n_other_agents + n] = scale_factor * (
-                np.array(
+            elif is_fiber:
+                # each fiber point
+                s += 1
+                # position
+                result.subpoints[t][n_other_agents + n][s] = scale_factor * np.array(
                     [
-                        float(columns[object_info.position_indices[0]].strip("+,")),
-                        float(columns[object_info.position_indices[1]].strip("+,")),
-                        float(columns[object_info.position_indices[2]].strip("+,")),
+                        float(columns[1].strip("+,")),
+                        float(columns[2].strip("+,")),
+                        float(columns[3].strip("+,")),
                     ]
                 )
-            )
-            # radius
-            result.radii[t][n_other_agents + n] = (
-                (scale_factor * float(object_info.agents[raw_tid].radius))
-                if raw_tid in object_info.agents
-                else 1.0
-            )
-        result.n_agents[t] += n + 1
-        result.viz_types[t][n_other_agents : n_other_agents + n + 1] = (n + 1) * [
-            VIZ_TYPE.default
-        ]
-        return (result, agent_types, used_unique_IDs)
+            else:
+                # each non-fiber object
+                n += 1
+                (
+                    result,
+                    uids,
+                    used_unique_IDs,
+                    types,
+                    used_type_IDs,
+                ) = self._parse_object(
+                    object_type,
+                    columns,
+                    t,
+                    n_other_agents + n,
+                    scale_factor,
+                    object_info,
+                    result,
+                    uids,
+                    used_unique_IDs,
+                    types,
+                    used_type_IDs,
+                )
+                # position
+                result.positions[t][n_other_agents + n] = scale_factor * (
+                    np.array(
+                        [
+                            float(columns[object_info.position_indices[0]].strip("+,")),
+                            float(columns[object_info.position_indices[1]].strip("+,")),
+                            float(columns[object_info.position_indices[2]].strip("+,")),
+                        ]
+                    )
+                )
+        return (result, used_unique_IDs, used_type_IDs)
 
-    def _read(self, input_data: CytosimData) -> Dict[str, Any]:
+    def _read(self, input_data: CytosimData) -> CustomData:
         """
-        Return an object containing the data shaped for Simularium format
+        Return a CustomData object containing the CytoSim data
         """
         print("Reading Cytosim Data -------------")
         # load the data from Cytosim output .txt files
@@ -298,15 +288,13 @@ class CytosimConverter(CustomConverter):
             with open(input_data.object_info[object_type].filepath, "r") as myfile:
                 cytosim_data[object_type] = myfile.read().split("\n")
         # parse
-        (totalSteps, max_agents, max_subpoints) = self._parse_data_dimensions(
-            cytosim_data
-        )
+        (totalSteps, max_agents, max_subpoints) = self._parse_dimensions(cytosim_data)
         agent_data = AgentData(
             times=np.zeros(totalSteps),
             n_agents=np.zeros(totalSteps),
             viz_types=np.zeros((totalSteps, max_agents)),
             unique_ids=np.zeros((totalSteps, max_agents)),
-            types=None,
+            types=[[] for t in range(totalSteps)],
             positions=np.zeros((totalSteps, max_agents, 3)),
             radii=np.ones((totalSteps, max_agents)),
             n_subpoints=np.zeros((totalSteps, max_agents)),
@@ -314,82 +302,23 @@ class CytosimConverter(CustomConverter):
             draw_fiber_points=input_data.draw_fiber_points,
         )
         agent_data.type_ids = np.zeros((totalSteps, max_agents))
-        agent_types = {}
         uids = []
+        types = []
         for object_type in input_data.object_info:
-            if "fiber" not in object_type:
-                agent_data, agent_types, uids = self._parse_others(
-                    object_type,
-                    cytosim_data[object_type],
-                    input_data.scale_factor,
-                    input_data.object_info[object_type],
-                    agent_data,
-                    agent_types,
-                    uids,
-                )
-            else:
-                agent_data, agent_types, uids = self._parse_fibers(
-                    cytosim_data[object_type],
-                    input_data.scale_factor,
-                    input_data.object_info["fibers"].agents,
-                    agent_data,
-                    agent_types,
-                    uids,
-                )
-        # shape data
-        simularium_data = {}
-        # trajectory info
-        time_units = UnitData("s")
-        spatial_units = UnitData("µm", 1.0 / input_data.scale_factor)
-        simularium_data["trajectoryInfo"] = {
-            "version": 2,
-            "timeUnits": {
-                "magnitude": time_units.magnitude,
-                "name": time_units.name,
-            },
-            "timeStepSize": CustomConverter._format_timestep(
-                float(agent_data.times[1] - agent_data.times[0])
-                if totalSteps > 1
-                else 0.0
-            ),
-            "totalSteps": totalSteps,
-            "spatialUnits": {
-                "magnitude": spatial_units.magnitude,
-                "name": spatial_units.name,
-            },
-            "size": {
-                "x": input_data.scale_factor * float(input_data.box_size[0]),
-                "y": input_data.scale_factor * float(input_data.box_size[1]),
-                "z": input_data.scale_factor * float(input_data.box_size[2]),
-            },
-            "typeMapping": {},
-        }
-        for tid in agent_types:
-            s = str(tid)
-            object_type = agent_types[tid]["object_type"]
-            raw_id = agent_types[tid]["raw_id"]
-            if raw_id in input_data.object_info[object_type].agents:
-                simularium_data["trajectoryInfo"]["typeMapping"][s] = {
-                    "name": input_data.object_info[object_type].agents[raw_id].name
-                }
-            else:
-                simularium_data["trajectoryInfo"]["typeMapping"][s] = {
-                    "name": (
-                        object_type[:-1] if object_type.endswith("s") else object_type
-                    )
-                    + str(raw_id)
-                }
-        # spatial data
-        simularium_data["spatialData"] = {
-            "version": 1,
-            "msgType": 1,
-            "bundleStart": 0,
-            "bundleSize": totalSteps,
-            "bundleData": self._get_spatial_bundle_data_subpoints(agent_data, uids),
-        }
-        # plot data
-        simularium_data["plotData"] = {
-            "version": 1,
-            "data": input_data.plots,
-        }
-        return simularium_data
+            agent_data, uids, types = self._parse_objects(
+                object_type,
+                cytosim_data[object_type],
+                input_data.scale_factor,
+                input_data.object_info[object_type],
+                agent_data,
+                uids,
+                types,
+            )
+        # create CustomData
+        return CustomData(
+            box_size=input_data.scale_factor * input_data.box_size,
+            agent_data=agent_data,
+            time_units=UnitData("s"),
+            spatial_units=UnitData("µm", 1.0 / input_data.scale_factor),
+            plots=input_data.plots,
+        )

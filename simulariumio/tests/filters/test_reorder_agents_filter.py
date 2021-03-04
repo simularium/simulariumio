@@ -4,17 +4,21 @@
 import pytest
 
 from simulariumio import FileConverter
-from simulariumio.filters.params import UpDirectionFilterParams
+from simulariumio.filters import ReorderAgentsFilter
 
 
 @pytest.mark.parametrize(
-    "input_path, params, expected_data",
+    "input_path, _filter, expected_data",
     [
         (
-            # reduce agents
             "simulariumio/tests/data/cytosim/aster_pull3D_couples_actin_solid_3_frames"
             "/aster_pull3D_couples_actin_solid_3_frames_small.json",
-            UpDirectionFilterParams(up_dir="Z"),
+            ReorderAgentsFilter(
+                type_id_mapping={
+                    7: 1,
+                    1: 2,
+                }
+            ),
             {
                 "trajectoryInfo": {
                     "version": 2,
@@ -30,8 +34,8 @@ from simulariumio.filters.params import UpDirectionFilterParams
                     },
                     "size": {"x": 200.0, "y": 200.0, "z": 200.0},
                     "typeMapping": {
-                        "1": {"name": "microtubule"},
-                        "7": {"name": "motor complex"},
+                        "1": {"name": "motor complex"},
+                        "2": {"name": "microtubule"},
                     },
                 },
                 "spatialData": {
@@ -46,7 +50,7 @@ from simulariumio.filters.params import UpDirectionFilterParams
                             "data": [
                                 1001.0,
                                 1.0,
-                                1.0,
+                                2.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -56,26 +60,26 @@ from simulariumio.filters.params import UpDirectionFilterParams
                                 1.0,
                                 15.0,
                                 36.93,
-                                -16.78,
                                 36.8,
+                                16.78,
                                 30.55,
-                                -19.84,
                                 43.87,
+                                19.84,
                                 24.169999999999998,
-                                -22.900000000000002,
                                 50.93,
+                                22.900000000000002,
                                 17.78,
-                                -25.95,
                                 57.99999999999999,
+                                25.95,
                                 11.4,
-                                -29.01,
                                 65.07,
+                                29.01,
                                 1000.0,
                                 12.0,
-                                7.0,
+                                1.0,
                                 -73.8,
-                                43.89,
                                 -25.2,
+                                -43.89,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -89,7 +93,7 @@ from simulariumio.filters.params import UpDirectionFilterParams
                             "data": [
                                 1001.0,
                                 1.0,
-                                1.0,
+                                2.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -99,29 +103,29 @@ from simulariumio.filters.params import UpDirectionFilterParams
                                 1.0,
                                 18.0,
                                 44.55,
-                                -8.86,
                                 33.97,
+                                8.86,
                                 36.63,
-                                -4.51,
                                 38.269999999999996,
+                                4.51,
                                 28.96,
-                                -0.5,
                                 43.28,
+                                0.5,
                                 21.83,
-                                2.52,
                                 49.61,
+                                -2.52,
                                 16.0,
-                                3.58,
                                 57.66,
+                                -3.58,
                                 12.85,
-                                1.47,
                                 66.92,
+                                -1.47,
                                 1000.0,
                                 12.0,
-                                7.0,
+                                1.0,
                                 -72.52,
-                                43.59,
                                 -21.9,
+                                -43.59,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -135,7 +139,7 @@ from simulariumio.filters.params import UpDirectionFilterParams
                             "data": [
                                 1001.0,
                                 1.0,
-                                1.0,
+                                2.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -145,26 +149,26 @@ from simulariumio.filters.params import UpDirectionFilterParams
                                 1.0,
                                 15.0,
                                 44.55,
-                                -8.86,
                                 33.97,
+                                8.86,
                                 36.63,
-                                -4.51,
                                 38.269999999999996,
+                                4.51,
                                 28.96,
-                                -0.5,
                                 43.28,
+                                0.5,
                                 21.83,
-                                2.52,
                                 49.61,
+                                -2.52,
                                 16.0,
-                                3.58,
                                 57.66,
+                                -3.58,
                                 1000.0,
                                 12.0,
-                                7.0,
+                                1.0,
                                 -72.52,
-                                43.59,
                                 -21.9,
+                                -43.59,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -174,12 +178,16 @@ from simulariumio.filters.params import UpDirectionFilterParams
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {
+                    "version": 1,
+                    "data": [],
+                },
             },
         ),
     ],
 )
-def test_percent_agents_filter(input_path, params, expected_data):
+def test_reorder_agents_filter(input_path, _filter, expected_data):
     converter = FileConverter(input_path)
-    converter.apply_filters([params])
-    assert expected_data == converter._data
+    filtered_data = converter.filter_data([_filter])
+    buffer_data = converter._read_custom_data(filtered_data)
+    assert expected_data == buffer_data

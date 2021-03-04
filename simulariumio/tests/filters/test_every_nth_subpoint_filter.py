@@ -4,17 +4,16 @@
 import pytest
 
 from simulariumio import FileConverter
-from simulariumio.filters.params import EveryNthSubpointFilterParams
+from simulariumio.filters import EveryNthSubpointFilter
 
 
 @pytest.mark.parametrize(
-    "input_path, params, expected_data",
+    "input_path, _filter, expected_data",
     [
         (
-            # reduce agents
             "simulariumio/tests/data/cytosim/aster_pull3D_couples_actin_solid_3_frames"
             "/aster_pull3D_couples_actin_solid_3_frames.json",
-            EveryNthSubpointFilterParams(
+            EveryNthSubpointFilter(
                 n_per_type_id={
                     1: 3,
                 },
@@ -498,7 +497,7 @@ from simulariumio.filters.params import EveryNthSubpointFilterParams
                         },
                         {
                             "frameNumber": 2,
-                            "time": 0.05,
+                            "time": 0.1,
                             "data": [
                                 1001.0,
                                 1.0,
@@ -720,7 +719,8 @@ from simulariumio.filters.params import EveryNthSubpointFilterParams
         ),
     ],
 )
-def test_percent_agents_filter(input_path, params, expected_data):
+def test_every_nth_subpoint_filter(input_path, _filter, expected_data):
     converter = FileConverter(input_path)
-    converter.apply_filters([params])
-    assert expected_data == converter._data
+    filtered_data = converter.filter_data([_filter])
+    buffer_data = converter._read_custom_data(filtered_data)
+    assert expected_data == buffer_data

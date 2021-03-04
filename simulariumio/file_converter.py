@@ -6,7 +6,7 @@ import logging
 from typing import Any, Dict
 
 from .custom_converter import CustomConverter
-from .data_objects import UnitData
+from .data_objects import CustomData, UnitData
 
 ###############################################################################
 
@@ -30,13 +30,13 @@ class FileConverter(CustomConverter):
         """
         print("Reading Simularium JSON -------------")
         with open(input_path) as simularium_file:
-            data = json.load(simularium_file)
+            buffer_data = json.load(simularium_file)
         if (
-            int(data["trajectoryInfo"]["version"])
+            int(buffer_data["trajectoryInfo"]["version"])
             < self.current_trajectory_info_version
         ):
-            data = self.update_trajectory_info_version(data)
-        self._data = data
+            buffer_data = self.update_trajectory_info_version(buffer_data)
+        self._data = CustomData.from_buffer_data(buffer_data)
 
     def update_trajectory_info_version(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """

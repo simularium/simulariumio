@@ -1,13 +1,6 @@
 simulariumio.filters package
 ============================
 
-Subpackages
------------
-
-.. toctree::
-
-   simulariumio.filters.params
-
 Submodules
 ----------
 
@@ -59,14 +52,6 @@ simulariumio.filters.multiply\_time\_filter module
    :undoc-members:
    :show-inheritance:
 
-simulariumio.filters.multiply\_time\_plot\_filter module
---------------------------------------------------------
-
-.. automodule:: simulariumio.filters.multiply_time_plot_filter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 simulariumio.filters.reorder\_agents\_filter module
 ---------------------------------------------------
 
@@ -75,18 +60,10 @@ simulariumio.filters.reorder\_agents\_filter module
    :undoc-members:
    :show-inheritance:
 
-simulariumio.filters.translate\_filter module
----------------------------------------------
+simulariumio.filters.transform\_spatial\_axes\_filter module
+------------------------------------------------------------
 
-.. automodule:: simulariumio.filters.translate_filter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-simulariumio.filters.up\_direction\_filter module
--------------------------------------------------
-
-.. automodule:: simulariumio.filters.up_direction_filter
+.. automodule:: simulariumio.filters.transform_spatial_axes_filter
    :members:
    :undoc-members:
    :show-inheritance:
