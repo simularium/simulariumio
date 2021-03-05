@@ -7,7 +7,7 @@ import logging
 
 import numpy as np
 
-from ..data_objects import CustomData, AgentData
+from ..data_objects import TrajectoryData, AgentData
 from .filter import Filter
 
 ###############################################################################
@@ -34,7 +34,7 @@ class ReorderAgentsFilter(Filter):
         """
         self.type_id_mapping = type_id_mapping
 
-    def apply(self, data: CustomData) -> CustomData:
+    def apply(self, data: TrajectoryData) -> TrajectoryData:
         """
         Change the type IDs of the agents, so that the agents are listed
         and colored in a different order
@@ -51,7 +51,7 @@ class ReorderAgentsFilter(Filter):
                 if tid in self.type_id_mapping:
                     tid = self.type_id_mapping[tid]
                 type_ids[t][n] = tid
-        return CustomData(
+        return TrajectoryData(
             box_size=np.copy(data.box_size),
             agent_data=AgentData(
                 times=np.copy(data.agent_data.times),

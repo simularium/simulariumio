@@ -8,7 +8,7 @@ import logging
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import CustomData, AgentData
+from ..data_objects import TrajectoryData, AgentData
 
 ###############################################################################
 
@@ -39,7 +39,7 @@ class EveryNthSubpointFilter(Filter):
         self.n_per_type_id = n_per_type_id
         self.default_n = default_n
 
-    def apply(self, data: CustomData) -> CustomData:
+    def apply(self, data: TrajectoryData) -> TrajectoryData:
         """
         Reduce the number of subpoints in each frame of the simularium
         data by filtering out all but every nth subpoint
@@ -67,7 +67,7 @@ class EveryNthSubpointFilter(Filter):
                         subpoints[t][n][i] = data.agent_data.subpoints[t][n][s]
                         i += 1
                 n_subpoints[t][n] = i
-        return CustomData(
+        return TrajectoryData(
             box_size=np.copy(data.box_size),
             agent_data=AgentData(
                 times=np.copy(data.agent_data.times),

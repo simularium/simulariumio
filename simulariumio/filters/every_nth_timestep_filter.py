@@ -7,7 +7,7 @@ import math
 
 import numpy as np
 
-from ..data_objects import CustomData, AgentData
+from ..data_objects import TrajectoryData, AgentData
 from .filter import Filter
 
 ###############################################################################
@@ -35,7 +35,7 @@ class EveryNthTimestepFilter(Filter):
         """
         self.n = n
 
-    def apply(self, data: CustomData) -> CustomData:
+    def apply(self, data: TrajectoryData) -> TrajectoryData:
         """
         Reduce the number of timesteps in each frame of the simularium
         data by filtering out all but every nth timestep
@@ -77,7 +77,7 @@ class EveryNthTimestepFilter(Filter):
                     : np.shape(data.agent_data.subpoints[t][n])[0]
                 ] = data.agent_data.subpoints[t][n]
             i += 1
-        return CustomData(
+        return TrajectoryData(
             box_size=np.copy(data.box_size),
             agent_data=AgentData(
                 times=times,
