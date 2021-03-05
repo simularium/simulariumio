@@ -349,11 +349,11 @@ class TrajectoryConverter:
         Parameters
         ----------
         agent_data: AgentData
-            The data shaped as an AgentData object to avoid generating one
-            Default: None (generate from the currently loaded data)
+            The data shaped as an AgentData object
+            Default: None (use the currently loaded data)
         """
         if agent_data is None:
-            agent_data = AgentData.from_simularium_data(self._data)
+            agent_data = self._data.agent_data
         n_agents = {}
         type_mapping = agent_data.get_type_mapping()
         for t in range(agent_data.times.size):

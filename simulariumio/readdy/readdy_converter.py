@@ -52,7 +52,6 @@ class ReaddyConverter(TrajectoryConverter):
             types=[[] for t in range(totalSteps)],
             positions=input_data.scale_factor * positions,
             radii=np.ones(shape=(totalSteps, max_agents)),
-            rotations=input_data.rotations,
         )
         result.type_ids = types
         # optionally set radius by particle type
@@ -111,7 +110,6 @@ class ReaddyConverter(TrajectoryConverter):
             types=[[] for t in range(totalSteps)],
             positions=np.zeros((totalSteps, max_agents, 3)),
             radii=np.ones(shape=(totalSteps, max_agents)),
-            rotations=agent_data.rotations,
         )
         result.type_ids = np.zeros((totalSteps, max_agents))
         for t in range(agent_data.n_agents.shape[0]):
