@@ -13,10 +13,11 @@ def get_module_version():
     return __version__
 
 
-from .custom_converter import CustomConverter  # noqa: F401
+from .trajectory_converter import TrajectoryConverter  # noqa: F401
+from .file_converter import FileConverter  # noqa: F401
 
 from .data_objects import (  # noqa: F401
-    CustomData,
+    TrajectoryData,
     AgentData,
     UnitData,
     ScatterPlotData,

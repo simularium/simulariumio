@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from simulariumio import CustomConverter, CustomData, AgentData, UnitData
+from simulariumio import TrajectoryConverter, TrajectoryData, AgentData, UnitData
 from simulariumio.tests.conftest import three_default_agents
 
 
@@ -170,7 +170,7 @@ from simulariumio.tests.conftest import three_default_agents
         # 2 default agents (radius 5-10) and 3 fiber agents
         # at given positions for 3 frames, no plots
         (
-            CustomData(
+            TrajectoryData(
                 box_size=np.array([1000.0, 1000.0, 1000.0]),
                 agent_data=AgentData(
                     times=1.0 * np.array(list(range(3))),
@@ -631,7 +631,7 @@ from simulariumio.tests.conftest import three_default_agents
         # 3 fiber agents with points drawn
         # at given positions for 3 frames, no plots
         (
-            CustomData(
+            TrajectoryData(
                 box_size=np.array([1000.0, 1000.0, 1000.0]),
                 agent_data=AgentData(
                     times=np.array([0.0, 1.00001, 2.00001]),
@@ -1094,6 +1094,7 @@ from simulariumio.tests.conftest import three_default_agents
     ],
 )
 def test_custom_trajectory_reader(trajectory, expected_data):
-    converter = CustomConverter(trajectory)
-    assert expected_data == converter._data
-    assert converter._check_agent_ids_are_unique_per_frame()
+    converter = TrajectoryConverter(trajectory)
+    buffer_data = converter._read_trajectory_data(converter._data)
+    assert expected_data == buffer_data
+    assert converter._check_agent_ids_are_unique_per_frame(buffer_data)

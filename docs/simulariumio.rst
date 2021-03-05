@@ -8,6 +8,7 @@ Subpackages
 
    simulariumio.cytosim
    simulariumio.data_objects
+   simulariumio.filters
    simulariumio.physicell
    simulariumio.plot_readers
    simulariumio.readdy
@@ -23,26 +24,26 @@ simulariumio.constants module
    :undoc-members:
    :show-inheritance:
 
-simulariumio.converter module
------------------------------
-
-.. automodule:: simulariumio.converter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-simulariumio.custom\_converter module
--------------------------------------
-
-.. automodule:: simulariumio.custom_converter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 simulariumio.exceptions module
 ------------------------------
 
 .. automodule:: simulariumio.exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.file\_converter module
+-----------------------------------
+
+.. automodule:: simulariumio.file_converter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.trajectory\_converter module
+-----------------------------------------
+
+.. automodule:: simulariumio.trajectory_converter
    :members:
    :undoc-members:
    :show-inheritance:

@@ -5,11 +5,11 @@ from typing import Dict, Any
 
 import numpy as np
 
-from simulariumio import AgentData, CustomData, UnitData
+from simulariumio import AgentData, TrajectoryData, UnitData
 
 
 def three_default_agents() -> Dict[str, Any]:
-    return CustomData(
+    return TrajectoryData(
         box_size=np.array([100.0, 100.0, 100.0]),
         agent_data=AgentData(
             times=0.5 * np.array(list(range(3))),
