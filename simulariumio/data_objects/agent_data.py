@@ -23,7 +23,6 @@ class AgentData:
     unique_ids: np.ndarray
     types: List[List[str]]
     positions: np.ndarray
-    rotations: np.ndarray
     radii: np.ndarray
     n_subpoints: np.ndarray = None
     subpoints: np.ndarray = None
@@ -39,7 +38,6 @@ class AgentData:
         types: List[List[str]],
         positions: np.ndarray,
         radii: np.ndarray,
-        rotations: np.ndarray = None,
         n_subpoints: np.ndarray = None,
         subpoints: np.ndarray = None,
         draw_fiber_points: bool = False,
@@ -76,9 +74,6 @@ class AgentData:
         radii : np.ndarray (shape = [timesteps, agents])
             A numpy ndarray containing the radius
             for each agent at each timestep
-        rotations: np.ndarray (shape = [timesteps, agents, 3]) (optional)
-            A numpy ndarray containing the XYZ rotation
-            for each particle at each timestep
         n_subpoints : np.ndarray (shape = [timesteps, agents]) (optional)
             A numpy ndarray containing the number of subpoints
             belonging to each agent at each timestep. Required if
@@ -101,7 +96,6 @@ class AgentData:
         self.types = types
         self.positions = positions
         self.radii = radii
-        self.rotations = rotations
         self.n_subpoints = n_subpoints
         self.subpoints = subpoints
         self.draw_fiber_points = draw_fiber_points
