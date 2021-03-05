@@ -7,7 +7,7 @@ import math
 
 import numpy as np
 
-from ..custom_converter import TrajectoryConverter
+from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, UnitData
 from ..constants import VIZ_TYPE
 from .medyan_data import MedyanData
