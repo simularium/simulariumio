@@ -554,5 +554,5 @@ from simulariumio.filters import EveryNthTimestepFilter
 def test_every_nth_timestep_filter(input_path, _filter, expected_data):
     converter = FileConverter(input_path)
     filtered_data = converter.filter_data([_filter])
-    buffer_data = converter._read_custom_data(filtered_data)
+    buffer_data = converter._read_trajectory_data(filtered_data)
     assert expected_data == buffer_data
