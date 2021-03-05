@@ -4,7 +4,7 @@
 import logging
 from abc import ABC, abstractmethod
 
-from ..data_objects import CustomData
+from ..data_objects import TrajectoryData
 
 ###############################################################################
 
@@ -15,5 +15,5 @@ log = logging.getLogger(__name__)
 
 class Filter(ABC):
     @abstractmethod
-    def apply(self, data: CustomData) -> CustomData:
+    def apply(self, data: TrajectoryData) -> TrajectoryData:
         pass

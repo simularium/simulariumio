@@ -8,7 +8,7 @@ import logging
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import CustomData, AgentData
+from ..data_objects import TrajectoryData, AgentData
 
 ###############################################################################
 
@@ -39,7 +39,7 @@ class EveryNthAgentFilter(Filter):
         self.n_per_type_id = n_per_type_id
         self.default_n = default_n
 
-    def apply(self, data: CustomData) -> CustomData:
+    def apply(self, data: TrajectoryData) -> TrajectoryData:
         """
         Reduce the number of agents in each frame of the simularium
         file by filtering out all but every nth agent
@@ -89,7 +89,7 @@ class EveryNthAgentFilter(Filter):
             f"filtered dims = {total_steps} timesteps X "
             f"{int(np.amax(n_agents))} agents X {max_subpoints} subpoint"
         )
-        return CustomData(
+        return TrajectoryData(
             box_size=np.copy(data.box_size),
             agent_data=AgentData(
                 times=np.copy(data.agent_data.times),

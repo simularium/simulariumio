@@ -17,7 +17,7 @@ from .data_objects import (
     HistogramPlotData,
     ScatterPlotData,
     AgentData,
-    CustomData,
+    TrajectoryData,
 )
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
@@ -37,10 +37,10 @@ SUPPORTED_PLOT_READERS = {
 ###############################################################################
 
 
-class CustomConverter:
-    _data: CustomData
+class TrajectoryConverter:
+    _data: TrajectoryData
 
-    def __init__(self, input_data: CustomData):
+    def __init__(self, input_data: TrajectoryData):
         """
         This object reads custom simulation trajectory outputs
         and plot data and writes them in the JSON format used
@@ -48,14 +48,14 @@ class CustomConverter:
 
         Parameters
         ----------
-        input_data : CustomData
+        input_data : TrajectoryData
             An object containing custom simulation trajectory outputs
             and plot data
         """
         self._data = input_data
 
     @staticmethod
-    def _read_custom_data(input_data: CustomData) -> Dict[str, Any]:
+    def _read_custom_data(input_data: TrajectoryData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """
@@ -74,7 +74,7 @@ class CustomConverter:
                 "magnitude": input_data.time_units.magnitude,
                 "name": input_data.time_units.name,
             },
-            "timeStepSize": CustomConverter._format_timestep(
+            "timeStepSize": TrajectoryConverter._format_timestep(
                 float(input_data.agent_data.times[1] - input_data.agent_data.times[0])
                 if totalSteps > 1
                 else 0.0
@@ -102,13 +102,13 @@ class CustomConverter:
         if input_data.agent_data.subpoints is not None:
             spatialData[
                 "bundleData"
-            ] = CustomConverter._get_spatial_bundle_data_subpoints(
+            ] = TrajectoryConverter._get_spatial_bundle_data_subpoints(
                 input_data.agent_data
             )
         else:
             spatialData[
                 "bundleData"
-            ] = CustomConverter._get_spatial_bundle_data_no_subpoints(
+            ] = TrajectoryConverter._get_spatial_bundle_data_no_subpoints(
                 input_data.agent_data
             )
         simularium_data["spatialData"] = spatialData
@@ -335,7 +335,7 @@ class CustomConverter:
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data.plots.append(plot_reader_class().read(data))
 
-    def filter_data(self, filters: List[Filter]) -> CustomData:
+    def filter_data(self, filters: List[Filter]) -> TrajectoryData:
         """
         Return the simularium data with the given filter applied
         """
@@ -355,26 +355,26 @@ class CustomConverter:
             where to save the file
         """
         print("Writing JSON -------------")
-        buffer_data = CustomConverter._read_custom_data(self._data)
+        buffer_data = TrajectoryConverter._read_custom_data(self._data)
         with open(f"{output_path}.simularium", "w+") as outfile:
             json.dump(buffer_data, outfile)
         print(f"saved to {output_path}.simularium")
 
     @staticmethod
-    def write_external_JSON(external_data: CustomData, output_path: str):
+    def write_external_JSON(external_data: TrajectoryData, output_path: str):
         """
         Save the given data in .simularium JSON format
         at the output path
 
         Parameters
         ----------
-        external_data: CustomData
+        external_data: TrajectoryData
             the data to save
         output_path: str
             where to save the file
         """
         print("Writing JSON (external)-------------")
-        buffer_data = CustomConverter._read_custom_data(external_data)
+        buffer_data = TrajectoryConverter._read_custom_data(external_data)
         with open(f"{output_path}.simularium", "w+") as outfile:
             json.dump(buffer_data, outfile)
         print(f"saved to {output_path}.simularium")

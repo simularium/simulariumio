@@ -52,7 +52,7 @@ class AgentData:
         times : np.ndarray (shape = [timesteps])
             A numpy ndarray containing the elapsed simulated time
             at each timestep (in the units specified by
-            CustomData.time_units)
+            TrajectoryData.time_units)
         n_agents : np.ndarray (shape = [timesteps])
             A numpy ndarray containing the number of agents
             that exist at each timestep
@@ -70,7 +70,7 @@ class AgentData:
         positions : np.ndarray (shape = [timesteps, agents, 3])
             A numpy ndarray containing the XYZ position
             for each agent at each timestep (in the units
-            specified by CustomData.spatial_units)
+            specified by TrajectoryData.spatial_units)
         radii : np.ndarray (shape = [timesteps, agents])
             A numpy ndarray containing the radius
             for each agent at each timestep

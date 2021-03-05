@@ -8,8 +8,8 @@ from pathlib import Path
 import numpy as np
 from .dep.pyMCDS import pyMCDS
 
-from ..custom_converter import CustomConverter
-from ..data_objects import CustomData, AgentData, UnitData
+from ..custom_converter import TrajectoryConverter
+from ..data_objects import TrajectoryData, AgentData, UnitData
 from ..exceptions import MissingDataError
 from ..constants import VIZ_TYPE
 from .physicell_data import PhysicellData
@@ -21,7 +21,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class PhysicellConverter(CustomConverter):
+class PhysicellConverter(TrajectoryConverter):
     def __init__(self, input_data: PhysicellData):
         """
         This object reads simulation trajectory outputs
@@ -150,13 +150,13 @@ class PhysicellConverter(CustomConverter):
         )
         return result, spatial_units
 
-    def _read(self, input_data: PhysicellData) -> CustomData:
+    def _read(self, input_data: PhysicellData) -> TrajectoryData:
         """
-        Return a CustomData object containing the PhysiCell data
+        Return a TrajectoryData object containing the PhysiCell data
         """
         print("Reading PhysiCell Data -------------")
         agent_data, spatial_units = self._get_trajectory_data(input_data)
-        return CustomData(
+        return TrajectoryData(
             box_size=input_data.scale_factor * input_data.box_size,
             agent_data=agent_data,
             time_units=input_data.time_units,
