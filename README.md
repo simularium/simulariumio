@@ -23,7 +23,8 @@ Simulariumio converts simulation outputs to the format consumed by the [Simulari
     * CytoSim (https://gitlab.com/f.nedelec/cytosim)
     * ReaDDy (https://readdy.github.io/)
     * PhysiCell (http://physicell.org/)
-* Conversions for data from custom engines can be implemented using the CustomConverter class
+    * MEDYAN (http://medyan.org/)
+* Conversions for data from custom engines can be implemented using the TrajectoryConverter class
 * Also accepts metrics data for plots to display alongside spatial data
 
 We're working to improve performance for converting large trajectories, and also discussing with the authors of some packages the possibility of adding the ability to export Simularium files directly.
@@ -37,6 +38,7 @@ See the Tutorial for the simulation engine you're using for details:
 * [Cytosim Tutorial](examples/Tutorial_cytosim.ipynb)
 * [ReaDDy Tutorial](examples/Tutorial_readdy.ipynb)
 * [PhysiCell Tutorial](examples/Tutorial_physicell.ipynb)
+* [MEDYAN Tutorial](examples/Tutorial_medyan.ipynb)
 
 An overview for data from ReaDDy:
 ```python
@@ -55,10 +57,10 @@ ReaddyConverter(input_data).write_JSON("output_file_name")
 ### Convert spatial trajectory from a custom engine
 See the [Custom Data Tutorial](examples/Tutorial_custom.ipynb) for details. An overview:
 ```python
-from simulariumio import CustomConverter, CustomData, AgentData
+from simulariumio import TrajectoryConverter, TrajectoryData, AgentData
 
 # see Custom Data Tutorial for parameter details
-input_data = CustomData(  
+input_data = TrajectoryData(  
     spatial_unit_factor_meters=1e-9,  # nanometers
     box_size=BOX_SIZE,
     agent_data=AgentData(
@@ -71,7 +73,7 @@ input_data = CustomData(
         radii=RADII,
     )
 )
-CustomConverter(input_data).write_JSON("output_file_name")
+TrajectoryConverter(input_data).write_JSON("output_file_name")
 ```
 
 ### Add metrics data to plot
@@ -87,7 +89,7 @@ example_scatter_plot = ScatterPlotData(
     xtrace=X_VALUES,
     ytraces=Y_VALUES,
 )
-converter = CustomConverter(input_data) # see above to create converter
+converter = TrajectoryConverter(input_data) # see above to create converter
 converter.add_plot(example_scatter_plot, "scatter")
 converter.write_JSON("output_file_name")
 ```

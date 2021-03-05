@@ -24,7 +24,7 @@
 % end
 
 % frame   2
-% time 0.050
+% time 0.100
 % report single:position
 %    class  identity      posX      posY      posZ     fiber  abscissa
          2         1   +0.2061   -0.3991   +0.8935         0         0

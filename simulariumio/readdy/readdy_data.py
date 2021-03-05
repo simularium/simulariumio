@@ -19,6 +19,7 @@ class ReaddyData:
     box_size: np.ndarray
     timestep: float
     path_to_readdy_h5: str
+    rotations: np.ndarray
     radii: Dict[str, float]
     ignore_types: List[str]
     type_grouping: Dict[str, List[str]]
@@ -32,6 +33,7 @@ class ReaddyData:
         box_size: np.ndarray,
         timestep: float,
         path_to_readdy_h5: str,
+        rotations: np.ndarray = None,
         radii: Dict[str, float] = None,
         ignore_types: List[str] = None,
         type_grouping: Dict[str, List[str]] = None,
@@ -55,6 +57,9 @@ class ReaddyData:
             Default: 0.0
         path_to_readdy_h5 : str
             A string path to the ReaDDy trajectory file (.h5)
+        rotations: np.ndarray (shape = [timesteps, agents, 3]) (optional)
+            A numpy ndarray containing the XYZ rotation
+            for each particle at each timestep
         radii : Dict[str, float] (optional)
             A mapping of ReaDDy particle type to radius
             of each visualized sphere for that type
@@ -84,6 +89,7 @@ class ReaddyData:
         self.box_size = box_size
         self.timestep = timestep
         self.path_to_readdy_h5 = path_to_readdy_h5
+        self.rotations = rotations
         self.radii = radii
         self.ignore_types = ignore_types
         self.type_grouping = type_grouping
