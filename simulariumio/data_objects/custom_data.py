@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class CustomData:
+class TrajectoryData:
     box_size: np.ndarray
     agent_data: AgentData
     time_units: UnitData
@@ -32,7 +32,7 @@ class CustomData:
         plots: List[Dict[str, Any]] = [],
     ):
         """
-        This object holds custom simulation trajectory outputs
+        This object holds simulation trajectory outputs
         and plot data
 
         Parameters

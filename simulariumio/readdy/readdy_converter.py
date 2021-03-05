@@ -7,8 +7,8 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 import readdy
 
-from ..custom_converter import CustomConverter
-from ..data_objects import CustomData, AgentData
+from ..custom_converter import TrajectoryConverter
+from ..data_objects import TrajectoryData, AgentData
 from ..constants import VIZ_TYPE
 from .readdy_data import ReaddyData
 
@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class ReaddyConverter(CustomConverter):
+class ReaddyConverter(TrajectoryConverter):
     def __init__(self, input_data: ReaddyData):
         """
         This object reads simulation trajectory outputs
@@ -200,7 +200,7 @@ class ReaddyConverter(CustomConverter):
         agent_data = self._set_particle_types(
             agent_data, traj, input_data.type_grouping
         )
-        return CustomData(
+        return TrajectoryData(
             box_size=input_data.scale_factor * input_data.box_size,
             agent_data=agent_data,
             time_units=input_data.time_units,

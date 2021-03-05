@@ -6,7 +6,7 @@ import logging
 
 import numpy as np
 
-from ..data_objects import CustomData, AgentData
+from ..data_objects import TrajectoryData, AgentData
 from .filter import Filter
 from ..exceptions import DataError
 
@@ -32,7 +32,7 @@ class AddAgentsFilter(Filter):
         """
         self.new_agent_data = new_agent_data
 
-    def apply(self, data: CustomData) -> CustomData:
+    def apply(self, data: TrajectoryData) -> TrajectoryData:
         """
         Add the given agents to each frame of the simularium data
         """
@@ -117,7 +117,7 @@ class AddAgentsFilter(Filter):
                     ] = self.new_agent_data.subpoints[t][n]
                 i += 1
             n_agents[t] = i
-        return CustomData(
+        return TrajectoryData(
             box_size=np.copy(data.box_size),
             agent_data=AgentData(
                 times=np.copy(data.agent_data.times),

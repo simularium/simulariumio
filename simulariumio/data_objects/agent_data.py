@@ -54,7 +54,7 @@ class AgentData:
         times : np.ndarray (shape = [timesteps])
             A numpy ndarray containing the elapsed simulated time
             at each timestep (in the units specified by
-            CustomData.time_units)
+            TrajectoryData.time_units)
         n_agents : np.ndarray (shape = [timesteps])
             A numpy ndarray containing the number of agents
             that exist at each timestep
@@ -72,7 +72,7 @@ class AgentData:
         positions : np.ndarray (shape = [timesteps, agents, 3])
             A numpy ndarray containing the XYZ position
             for each agent at each timestep (in the units
-            specified by CustomData.spatial_units)
+            specified by TrajectoryData.spatial_units)
         radii : np.ndarray (shape = [timesteps, agents])
             A numpy ndarray containing the radius
             for each agent at each timestep
@@ -110,12 +110,12 @@ class AgentData:
     @staticmethod
     def _get_buffer_data_dimensions(buffer_data: Dict[str, Any]) -> Tuple[int]:
         """"""
-        bundleData = buffer_data["spatialData"]["bundleData"]
-        total_steps = len(bundleData)
+        bundle_data = buffer_data["spatialData"]["bundleData"]
+        total_steps = len(bundle_data)
         max_n_agents = 0
         max_n_subpoints = 0
         for t in range(total_steps):
-            data = bundleData[t]["data"]
+            data = bundle_data[t]["data"]
             i = 0
             n_agents = 0
             while i < len(data):
@@ -189,7 +189,7 @@ class AgentData:
     @classmethod
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):
         """"""
-        bundleData = buffer_data["spatialData"]["bundleData"]
+        bundle_data = buffer_data["spatialData"]["bundleData"]
         total_steps, max_agents, max_subpoints = AgentData._get_buffer_data_dimensions(
             buffer_data
         )
@@ -207,8 +207,8 @@ class AgentData:
         n_subpoints = np.zeros((total_steps, max_agents))
         subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
         for t in range(total_steps):
-            times[t] = bundleData[t]["time"]
-            frame_data = bundleData[t]["data"]
+            times[t] = bundle_data[t]["time"]
+            frame_data = bundle_data[t]["data"]
             n = 0
             i = 0
             while i + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX < len(frame_data):

@@ -6,7 +6,7 @@ import logging
 
 import numpy as np
 
-from ..data_objects import CustomData, AgentData
+from ..data_objects import TrajectoryData, AgentData
 from .filter import Filter
 
 ###############################################################################
@@ -39,7 +39,7 @@ class MultiplyTimeFilter(Filter):
         self.multiplier = multiplier
         self.apply_to_plots = apply_to_plots
 
-    def apply(self, data: CustomData) -> CustomData:
+    def apply(self, data: TrajectoryData) -> TrajectoryData:
         """
         Multiply time values in the data
         """
@@ -55,7 +55,7 @@ class MultiplyTimeFilter(Filter):
                     trace = plot_data[p]["data"][tr]
                     trace["x"] = (self.multiplier * np.array(trace["x"])).tolist()
         # spatial data
-        return CustomData(
+        return TrajectoryData(
             box_size=np.copy(data.box_size),
             agent_data=AgentData(
                 times=self.multiplier * np.copy(data.agent_data.times),

@@ -8,7 +8,7 @@ import logging
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import CustomData, AgentData
+from ..data_objects import TrajectoryData, AgentData
 from ..exceptions import DataError
 
 ###############################################################################
@@ -62,7 +62,7 @@ class TransformSpatialAxesFilter(Filter):
                 result[d] *= -1.0
         return result
 
-    def apply(self, data: CustomData) -> CustomData:
+    def apply(self, data: TrajectoryData) -> TrajectoryData:
         """
         Transform spatial coordinates to rotate and/or reflect the scene
         """
@@ -86,7 +86,7 @@ class TransformSpatialAxesFilter(Filter):
                         subpoints[t][n][s] = self._transform_coordinate(
                             data.agent_data.subpoints[t][n][s]
                         )
-        return CustomData(
+        return TrajectoryData(
             box_size=box_size,
             agent_data=AgentData(
                 times=np.copy(data.agent_data.times),
