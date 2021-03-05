@@ -4,8 +4,6 @@
 import logging
 from typing import Any, Dict, List
 
-import numpy as np
-
 from ..data_objects import UnitData, MetaData
 
 ###############################################################################
