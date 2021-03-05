@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 import readdy
 
-from ..custom_converter import TrajectoryConverter
+from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData
 from ..constants import VIZ_TYPE
 from .readdy_data import ReaddyData
