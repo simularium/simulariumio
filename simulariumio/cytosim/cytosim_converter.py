@@ -8,7 +8,7 @@ import sys
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData
+from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData
 from ..exceptions import DataError
 from ..constants import VIZ_TYPE
 from .cytosim_data import CytosimData
@@ -308,7 +308,7 @@ class CytosimConverter(TrajectoryConverter):
             agent_data, uids, types = self._parse_objects(
                 object_type,
                 cytosim_data[object_type],
-                input_data.scale_factor,
+                input_data.meta_data.scale_factor,
                 input_data.object_info[object_type],
                 agent_data,
                 uids,
@@ -316,9 +316,14 @@ class CytosimConverter(TrajectoryConverter):
             )
         # create TrajectoryData
         return TrajectoryData(
-            box_size=input_data.scale_factor * input_data.box_size,
+            meta_data=MetaData(
+                box_size=input_data.meta_data.scale_factor
+                * input_data.meta_data.box_size,
+                default_camera_position=input_data.meta_data.default_camera_position,
+                default_camera_rotation=input_data.meta_data.default_camera_rotation,
+            ),
             agent_data=agent_data,
             time_units=UnitData("s"),
-            spatial_units=UnitData("µm", 1.0 / input_data.scale_factor),
+            spatial_units=UnitData("µm", 1.0 / input_data.meta_data.scale_factor),
             plots=input_data.plots,
         )

@@ -8,7 +8,7 @@ import logging
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import TrajectoryData, AgentData
+from ..data_objects import TrajectoryData, AgentData, MetaData
 
 ###############################################################################
 
@@ -76,7 +76,11 @@ class TranslateFilter(Filter):
                             data.agent_data.positions[t][n][d] + translation[d]
                         )
         return TrajectoryData(
-            box_size=np.copy(data.box_size),
+            meta_data=MetaData(
+                box_size=np.copy(data.meta_data.box_size),
+                default_camera_position=np.copy(data.meta_data.default_camera_position),
+                default_camera_rotation=np.copy(data.meta_data.default_camera_rotation),
+            ),
             agent_data=AgentData(
                 times=np.copy(data.agent_data.times),
                 n_agents=np.copy(data.agent_data.n_agents),

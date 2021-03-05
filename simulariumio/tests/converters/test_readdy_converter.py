@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.readdy import ReaddyConverter, ReaddyData
-from simulariumio import UnitData
+from simulariumio import UnitData, MetaData
 
 
 @pytest.mark.parametrize(
@@ -14,7 +14,9 @@ from simulariumio import UnitData
         # 4 particles 3 frames
         (
             ReaddyData(
-                box_size=np.array([20.0, 20.0, 20.0]),
+                meta_data=MetaData(
+                    box_size=np.array([20.0, 20.0, 20.0]),
+                ),
                 timestep=0.1,
                 path_to_readdy_h5="simulariumio/tests/data/readdy/test.h5",
                 radii={"C": 3.0, "A": 2.0, "B": 2.0},
@@ -37,6 +39,10 @@ from simulariumio import UnitData
                         "name": "nm",
                     },
                     "size": {"x": 20.0, "y": 20.0, "z": 20.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "rotation": {"x": 0, "y": 0, "z": 0},
+                    },
                     "typeMapping": {"2": {"name": "C"}, "1": {"name": "B"}},
                 },
                 "spatialData": {

@@ -6,7 +6,7 @@ import logging
 
 import numpy as np
 
-from ..data_objects import TrajectoryData, AgentData
+from ..data_objects import TrajectoryData, AgentData, MetaData
 from .filter import Filter
 from ..exceptions import DataError
 
@@ -118,7 +118,11 @@ class AddAgentsFilter(Filter):
                 i += 1
             n_agents[t] = i
         return TrajectoryData(
-            box_size=np.copy(data.box_size),
+            meta_data=MetaData(
+                box_size=np.copy(data.meta_data.box_size),
+                default_camera_position=np.copy(data.meta_data.default_camera_position),
+                default_camera_rotation=np.copy(data.meta_data.default_camera_rotation),
+            ),
             agent_data=AgentData(
                 times=np.copy(data.agent_data.times),
                 n_agents=n_agents,

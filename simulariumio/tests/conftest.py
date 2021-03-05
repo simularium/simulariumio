@@ -5,12 +5,14 @@ from typing import Dict, Any
 
 import numpy as np
 
-from simulariumio import AgentData, TrajectoryData, UnitData, ScatterPlotData
+from simulariumio import AgentData, TrajectoryData, UnitData, MetaData, ScatterPlotData
 
 
 def three_default_agents() -> Dict[str, Any]:
     return TrajectoryData(
-        box_size=np.array([100.0, 100.0, 100.0]),
+        meta_data=MetaData(
+            box_size=np.array([100.0, 100.0, 100.0]),
+        ),
         agent_data=AgentData(
             times=0.5 * np.array(list(range(3))),
             n_agents=np.array(3 * [3]),

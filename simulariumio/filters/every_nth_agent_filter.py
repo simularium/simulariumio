@@ -8,7 +8,7 @@ import logging
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import TrajectoryData, AgentData
+from ..data_objects import TrajectoryData, AgentData, MetaData
 
 ###############################################################################
 
@@ -89,7 +89,11 @@ class EveryNthAgentFilter(Filter):
             f"{int(np.amax(n_agents))} agents X {max_subpoints} subpoint"
         )
         return TrajectoryData(
-            box_size=np.copy(data.box_size),
+            meta_data=MetaData(
+                box_size=np.copy(data.meta_data.box_size),
+                default_camera_position=np.copy(data.meta_data.default_camera_position),
+                default_camera_rotation=np.copy(data.meta_data.default_camera_rotation),
+            ),
             agent_data=AgentData(
                 times=np.copy(data.agent_data.times),
                 n_agents=n_agents,

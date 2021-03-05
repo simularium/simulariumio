@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.physicell import PhysicellConverter, PhysicellData
+from simulariumio import MetaData
 
 
 @pytest.mark.parametrize(
@@ -13,10 +14,12 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
         # 3 cells 3 frames
         (
             PhysicellData(
-                box_size=np.array([1000.0, 1000.0, 100.0]),
+                meta_data=MetaData(
+                    box_size=np.array([1000.0, 1000.0, 100.0]),
+                    scale_factor=0.01,
+                ),
                 timestep=360.0,
                 path_to_output_dir="simulariumio/tests/data/physicell/output/",
-                scale_factor=0.01,
             ),
             {
                 "trajectoryInfo": {
@@ -32,6 +35,10 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
                         "name": "µm",
                     },
                     "size": {"x": 10.0, "y": 10.0, "z": 1.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "rotation": {"x": 0, "y": 0, "z": 0},
+                    },
                     "typeMapping": {
                         "0": {"name": "cell 1#phase 4"},
                         "1": {"name": "cell 0#phase 4"},
@@ -167,10 +174,12 @@ from simulariumio.physicell import PhysicellConverter, PhysicellData
         ),
         pytest.param(
             {
-                "box_size": np.array([1000.0, 1000.0, 100.0]),
+                "meta_data": MetaData(
+                    box_size=np.array([1000.0, 1000.0, 100.0]),
+                    scale_factor=0.01,
+                ),
                 "timestep": 360.0,
                 "path_to_output_dir": "../simulariumio/tests/data/physicell/",
-                "scale_factor": 0.01,
             },
             {},
             marks=pytest.mark.raises(exception=AttributeError),

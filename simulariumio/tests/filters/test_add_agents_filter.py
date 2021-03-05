@@ -28,6 +28,10 @@ from simulariumio.tests.conftest import three_default_agents
                         "name": "nm",
                     },
                     "size": {"x": 100.0, "y": 100.0, "z": 100.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "rotation": {"x": 0, "y": 0, "z": 0},
+                    },
                     "typeMapping": {
                         "0": {"name": "C"},
                         "1": {"name": "U"},

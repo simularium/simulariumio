@@ -8,7 +8,7 @@ import math
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData
+from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData
 from ..constants import VIZ_TYPE
 from .medyan_data import MedyanData
 
@@ -178,7 +178,7 @@ class MedyanConverter(TrajectoryConverter):
                     else object_type + str(raw_tid)
                 )
                 # radius
-                result.radii[t][n] = input_data.scale_factor * (
+                result.radii[t][n] = input_data.meta_data.scale_factor * (
                     input_data.agent_info[object_type][raw_tid].radius
                     if raw_tid in input_data.agent_info[object_type]
                     else 1.0
@@ -198,7 +198,9 @@ class MedyanConverter(TrajectoryConverter):
                         while n + i + 1 >= len(result.types[t]):
                             result.types[t].append("")
                         result.types[t][n + i + 1] = result.types[t][n]
-                        result.radii[t][n + i + 1] = input_data.scale_factor * (
+                        result.radii[t][
+                            n + i + 1
+                        ] = input_data.meta_data.scale_factor * (
                             input_data.agent_info[object_type][raw_tid].endpoint_radius
                             if raw_tid in input_data.agent_info[object_type]
                             else 1.0
@@ -209,13 +211,13 @@ class MedyanConverter(TrajectoryConverter):
                 for i in range(len(cols)):
                     s = math.floor(i / 3)
                     d = i % 3
-                    result.subpoints[t][n][s][d] = input_data.scale_factor * float(
-                        cols[i]
-                    )
+                    result.subpoints[t][n][s][
+                        d
+                    ] = input_data.meta_data.scale_factor * float(cols[i])
                     if draw_endpoints:
                         result.positions[t][n + s + 1][
                             d
-                        ] = input_data.scale_factor * float(cols[i])
+                        ] = input_data.meta_data.scale_factor * float(cols[i])
                 parsing_object = False
                 n += 1
                 if draw_endpoints:
@@ -230,9 +232,14 @@ class MedyanConverter(TrajectoryConverter):
         print("Reading MEDYAN Data -------------")
         agent_data = self._get_trajectory_data(input_data)
         time_units = UnitData("s")
-        spatial_units = UnitData("nm", 1.0 / input_data.scale_factor)
+        spatial_units = UnitData("nm", 1.0 / input_data.meta_data.scale_factor)
         return TrajectoryData(
-            box_size=input_data.scale_factor * input_data.box_size,
+            meta_data=MetaData(
+                box_size=input_data.meta_data.scale_factor
+                * input_data.meta_data.box_size,
+                default_camera_position=input_data.meta_data.default_camera_position,
+                default_camera_rotation=input_data.meta_data.default_camera_rotation,
+            ),
             agent_data=agent_data,
             time_units=time_units,
             spatial_units=spatial_units,

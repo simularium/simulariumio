@@ -6,7 +6,7 @@ import logging
 
 import numpy as np
 
-from ..data_objects import TrajectoryData, AgentData
+from ..data_objects import TrajectoryData, AgentData, MetaData
 from .filter import Filter
 
 ###############################################################################
@@ -56,7 +56,11 @@ class MultiplyTimeFilter(Filter):
                     trace["x"] = (self.multiplier * np.array(trace["x"])).tolist()
         # spatial data
         return TrajectoryData(
-            box_size=np.copy(data.box_size),
+            meta_data=MetaData(
+                box_size=np.copy(data.meta_data.box_size),
+                default_camera_position=np.copy(data.meta_data.default_camera_position),
+                default_camera_rotation=np.copy(data.meta_data.default_camera_rotation),
+            ),
             agent_data=AgentData(
                 times=self.multiplier * np.copy(data.agent_data.times),
                 n_agents=np.copy(data.agent_data.n_agents),

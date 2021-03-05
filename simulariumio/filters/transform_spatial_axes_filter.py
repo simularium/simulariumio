@@ -8,7 +8,7 @@ import logging
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import TrajectoryData, AgentData
+from ..data_objects import TrajectoryData, AgentData, MetaData
 from ..exceptions import DataError
 
 ###############################################################################
@@ -68,7 +68,7 @@ class TransformSpatialAxesFilter(Filter):
         """
         print(f"Filtering: transform spatial axes {self.axes_mapping} -------------")
         # box size
-        box_size = self._transform_coordinate(data.box_size, False)
+        box_size = self._transform_coordinate(data.meta_data.box_size, False)
         # get dimensions
         total_steps = data.agent_data.times.size
         max_agents = int(np.amax(data.agent_data.n_agents))
@@ -87,7 +87,11 @@ class TransformSpatialAxesFilter(Filter):
                             data.agent_data.subpoints[t][n][s]
                         )
         return TrajectoryData(
-            box_size=box_size,
+            meta_data=MetaData(
+                box_size=box_size,
+                default_camera_position=np.copy(data.meta_data.default_camera_position),
+                default_camera_rotation=np.copy(data.meta_data.default_camera_rotation),
+            ),
             agent_data=AgentData(
                 times=np.copy(data.agent_data.times),
                 n_agents=np.copy(data.agent_data.n_agents),
