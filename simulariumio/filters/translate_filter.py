@@ -8,7 +8,7 @@ import logging
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import CustomData, AgentData
+from ..data_objects import TrajectoryData, AgentData
 
 ###############################################################################
 
@@ -42,7 +42,7 @@ class TranslateFilter(Filter):
         self.translation_per_type_id = translation_per_type_id
         self.default_translation = default_translation
 
-    def apply(self, data: CustomData) -> CustomData:
+    def apply(self, data: TrajectoryData) -> TrajectoryData:
         """
         Add the XYZ translation to all spatial coordinates
         """
@@ -75,7 +75,7 @@ class TranslateFilter(Filter):
                         positions[t][n][d] = (
                             data.agent_data.positions[t][n][d] + translation[d]
                         )
-        return CustomData(
+        return TrajectoryData(
             box_size=np.copy(data.box_size),
             agent_data=AgentData(
                 times=np.copy(data.agent_data.times),

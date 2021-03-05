@@ -7,8 +7,8 @@ import math
 
 import numpy as np
 
-from ..custom_converter import CustomConverter
-from ..data_objects import CustomData, AgentData, UnitData
+from ..custom_converter import TrajectoryConverter
+from ..data_objects import TrajectoryData, AgentData, UnitData
 from ..constants import VIZ_TYPE
 from .medyan_data import MedyanData
 
@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class MedyanConverter(CustomConverter):
+class MedyanConverter(TrajectoryConverter):
     def __init__(self, input_data: MedyanData):
         """
         This object reads simulation trajectory outputs
@@ -223,7 +223,7 @@ class MedyanConverter(CustomConverter):
                     result.n_agents[t] += 2
         return result
 
-    def _read(self, input_data: MedyanData) -> CustomData:
+    def _read(self, input_data: MedyanData) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
@@ -231,7 +231,7 @@ class MedyanConverter(CustomConverter):
         agent_data = self._get_trajectory_data(input_data)
         time_units = UnitData("s")
         spatial_units = UnitData("nm", 1.0 / input_data.scale_factor)
-        return CustomData(
+        return TrajectoryData(
             box_size=input_data.scale_factor * input_data.box_size,
             agent_data=agent_data,
             time_units=time_units,
