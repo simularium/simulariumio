@@ -5,7 +5,7 @@ import json
 import logging
 from typing import Any, Dict
 
-from .custom_converter import TrajectoryConverter
+from .trajectory_converter import TrajectoryConverter
 from .data_objects import TrajectoryData, UnitData
 
 ###############################################################################

@@ -56,7 +56,7 @@ class TrajectoryConverter:
         self._data = input_data
 
     @staticmethod
-    def _read_custom_data(input_data: TrajectoryData) -> Dict[str, Any]:
+    def _read_trajectory_data(input_data: TrajectoryData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """
@@ -395,7 +395,7 @@ class TrajectoryConverter:
             where to save the file
         """
         print("Writing JSON -------------")
-        buffer_data = TrajectoryConverter._read_custom_data(self._data)
+        buffer_data = TrajectoryConverter._read_trajectory_data(self._data)
         with open(f"{output_path}.simularium", "w+") as outfile:
             json.dump(buffer_data, outfile)
         print(f"saved to {output_path}.simularium")
@@ -414,7 +414,7 @@ class TrajectoryConverter:
             where to save the file
         """
         print("Writing JSON (external)-------------")
-        buffer_data = TrajectoryConverter._read_custom_data(external_data)
+        buffer_data = TrajectoryConverter._read_trajectory_data(external_data)
         with open(f"{output_path}.simularium", "w+") as outfile:
             json.dump(buffer_data, outfile)
         print(f"saved to {output_path}.simularium")

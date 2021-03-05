@@ -118,5 +118,5 @@ from simulariumio.tests.conftest import three_default_agents, test_scatter_plot
 def test_add_one_scatter_plot(trajectory, plot_data, expected_data):
     converter = TrajectoryConverter(trajectory)
     converter.add_plot(plot_data, "scatter")
-    buffer_data = converter._read_custom_data(converter._data)
+    buffer_data = converter._read_trajectory_data(converter._data)
     assert expected_data == buffer_data["plotData"]

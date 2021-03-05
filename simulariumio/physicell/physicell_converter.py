@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 from .dep.pyMCDS import pyMCDS
 
-from ..custom_converter import TrajectoryConverter
+from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, UnitData
 from ..exceptions import MissingDataError
 from ..constants import VIZ_TYPE
