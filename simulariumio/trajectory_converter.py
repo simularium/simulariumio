@@ -43,14 +43,14 @@ class TrajectoryConverter:
 
     def __init__(self, input_data: TrajectoryData):
         """
-        This object reads custom simulation trajectory outputs
+        This object reads simulation trajectory outputs
         and plot data and writes them in the JSON format used
         by the Simularium viewer
 
         Parameters
         ----------
         input_data : TrajectoryData
-            An object containing custom simulation trajectory outputs
+            An object containing simulation trajectory outputs
             and plot data
         """
         self._data = input_data
@@ -60,7 +60,7 @@ class TrajectoryConverter:
         """
         Return an object containing the data shaped for Simularium format
         """
-        print("Reading Custom Data -------------")
+        print("Reading Trajectory Data -------------")
         simularium_data = {}
         # trajectory info
         totalSteps = input_data.agent_data.times.size

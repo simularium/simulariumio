@@ -46,8 +46,7 @@ class AgentData:
         type_ids: np.ndarray = None,
     ):
         """
-        This object contains custom simulation trajectory outputs
-        and plot data
+        This object contains spatial simulation data
 
         Parameters
         ----------

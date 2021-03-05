@@ -34,16 +34,16 @@ class MetaData:
         box_size : np.ndarray (shape = [3])
             A numpy ndarray containing the XYZ dimensions
             of the simulation bounding volume
-        default_camera_position: np.ndarray (optional)
+        default_camera_position: np.ndarray (shape = [3]) (optional)
             camera's initial position
             which it also returns to when reset
             Default: np.array([0.0, 0.0, 120.0])
-        default_camera_rotation: np.ndarray (optional)
+        default_camera_rotation: np.ndarray (shape = [3]) (optional)
             camera's initial rotation
             which it also returns to when reset
             Default: np.zeros(3)
         scale_factor : float (optional)
-            A multiplier for the Cytosim scene, use if
+            A multiplier for the scene, use if
             visualization is too large or small
             Default: 1.0
         """
