@@ -5,8 +5,8 @@ import json
 import logging
 from typing import Any, Dict
 
-from .custom_converter import CustomConverter
-from .data_objects import CustomData, UnitData
+from .custom_converter import TrajectoryConverter
+from .data_objects import TrajectoryData, UnitData
 
 ###############################################################################
 
@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class FileConverter(CustomConverter):
+class FileConverter(TrajectoryConverter):
     current_trajectory_info_version: int = 2
 
     def __init__(self, input_path: str):
@@ -36,7 +36,7 @@ class FileConverter(CustomConverter):
             < self.current_trajectory_info_version
         ):
             buffer_data = self.update_trajectory_info_version(buffer_data)
-        self._data = CustomData.from_buffer_data(buffer_data)
+        self._data = TrajectoryData.from_buffer_data(buffer_data)
 
     def update_trajectory_info_version(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """

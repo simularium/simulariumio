@@ -7,8 +7,8 @@ import sys
 
 import numpy as np
 
-from ..custom_converter import CustomConverter
-from ..data_objects import CustomData, AgentData, UnitData
+from ..custom_converter import TrajectoryConverter
+from ..data_objects import TrajectoryData, AgentData, UnitData
 from ..exceptions import DataError
 from ..constants import VIZ_TYPE
 from .cytosim_data import CytosimData
@@ -21,7 +21,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class CytosimConverter(CustomConverter):
+class CytosimConverter(TrajectoryConverter):
     def __init__(self, input_data: CytosimData):
         """
         This object reads simulation trajectory outputs
@@ -277,9 +277,9 @@ class CytosimConverter(CustomConverter):
                 )
         return (result, used_unique_IDs, used_type_IDs)
 
-    def _read(self, input_data: CytosimData) -> CustomData:
+    def _read(self, input_data: CytosimData) -> TrajectoryData:
         """
-        Return a CustomData object containing the CytoSim data
+        Return a TrajectoryData object containing the CytoSim data
         """
         print("Reading Cytosim Data -------------")
         # load the data from Cytosim output .txt files
@@ -314,8 +314,8 @@ class CytosimConverter(CustomConverter):
                 uids,
                 types,
             )
-        # create CustomData
-        return CustomData(
+        # create TrajectoryData
+        return TrajectoryData(
             box_size=input_data.scale_factor * input_data.box_size,
             agent_data=agent_data,
             time_units=UnitData("s"),

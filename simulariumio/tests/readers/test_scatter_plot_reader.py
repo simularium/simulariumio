@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from simulariumio import CustomConverter, ScatterPlotData, exceptions
+from simulariumio import TrajectoryConverter, ScatterPlotData, exceptions
 from simulariumio.tests.conftest import three_default_agents, test_scatter_plot
 
 
@@ -116,7 +116,7 @@ from simulariumio.tests.conftest import three_default_agents, test_scatter_plot
     ],
 )
 def test_add_one_scatter_plot(trajectory, plot_data, expected_data):
-    converter = CustomConverter(trajectory)
+    converter = TrajectoryConverter(trajectory)
     converter.add_plot(plot_data, "scatter")
     buffer_data = converter._read_custom_data(converter._data)
     assert expected_data == buffer_data["plotData"]
