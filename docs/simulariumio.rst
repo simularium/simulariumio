@@ -24,14 +24,6 @@ simulariumio.constants module
    :undoc-members:
    :show-inheritance:
 
-simulariumio.custom\_converter module
--------------------------------------
-
-.. automodule:: simulariumio.custom_converter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 simulariumio.exceptions module
 ------------------------------
 
@@ -44,6 +36,14 @@ simulariumio.file\_converter module
 -----------------------------------
 
 .. automodule:: simulariumio.file_converter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.trajectory\_converter module
+-----------------------------------------
+
+.. automodule:: simulariumio.trajectory_converter
    :members:
    :undoc-members:
    :show-inheritance:

@@ -12,14 +12,6 @@ simulariumio.data\_objects.agent\_data module
    :undoc-members:
    :show-inheritance:
 
-simulariumio.data\_objects.custom\_data module
-----------------------------------------------
-
-.. automodule:: simulariumio.data_objects.custom_data
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 simulariumio.data\_objects.histogram\_plot\_data module
 -------------------------------------------------------
 
@@ -32,6 +24,14 @@ simulariumio.data\_objects.scatter\_plot\_data module
 -----------------------------------------------------
 
 .. automodule:: simulariumio.data_objects.scatter_plot_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.data\_objects.trajectory\_data module
+--------------------------------------------------
+
+.. automodule:: simulariumio.data_objects.trajectory_data
    :members:
    :undoc-members:
    :show-inheritance:
