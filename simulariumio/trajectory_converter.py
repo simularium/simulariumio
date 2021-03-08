@@ -68,6 +68,8 @@ class TrajectoryConverter:
         )
         if input_data.agent_data.type_ids is None:
             input_data.agent_data.type_ids = type_ids
+        if input_data.agent_data.type_mapping is None:
+            input_data.agent_data.type_mapping = type_name_mapping
         traj_info = {
             "version": 2,
             "timeUnits": {
@@ -89,7 +91,7 @@ class TrajectoryConverter:
                 "y": float(input_data.box_size[1]),
                 "z": float(input_data.box_size[2]),
             },
-            "typeMapping": type_name_mapping,
+            "typeMapping": input_data.agent_data.type_mapping,
         }
         simularium_data["trajectoryInfo"] = traj_info
         # spatial data
