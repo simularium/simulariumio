@@ -44,15 +44,17 @@ class FileConverter(TrajectoryConverter):
         to match the current version
         """
         if int(data["trajectoryInfo"]["version"]) == 1:
-            # units
-            spatial_units = UnitData(
-                "m", data["trajectoryInfo"]["spatialUnitFactorMeters"]
-            )
+            if "spatialUnitFactorMeters" in data["trajectoryInfo"]:
+                spatial_units = UnitData(
+                    "m", data["trajectoryInfo"]["spatialUnitFactorMeters"]
+                )
+                data["trajectoryInfo"].pop("spatialUnitFactorMeters")
+            else:
+                spatial_units = UnitData("m")
             data["trajectoryInfo"]["spatialUnits"] = {
                 "magnitude": spatial_units.magnitude,
                 "name": spatial_units.name,
             }
-            data["trajectoryInfo"].pop("spatialUnitFactorMeters")
             time_units = UnitData("s", 1.0)
             data["trajectoryInfo"]["timeUnits"] = {
                 "magnitude": time_units.magnitude,

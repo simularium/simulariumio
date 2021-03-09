@@ -28,6 +28,7 @@ class AgentData:
     subpoints: np.ndarray = None
     draw_fiber_points: bool = False
     type_ids: np.ndarray
+    type_mapping: Dict[str, Any]
 
     def __init__(
         self,
@@ -99,6 +100,7 @@ class AgentData:
         self.subpoints = subpoints
         self.draw_fiber_points = draw_fiber_points
         self.type_ids = type_ids
+        self.type_mapping = None
 
     @staticmethod
     def _get_buffer_data_dimensions(buffer_data: Dict[str, Any]) -> Tuple[int]:
