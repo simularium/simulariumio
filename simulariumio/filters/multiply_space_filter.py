@@ -6,7 +6,7 @@ import logging
 
 import numpy as np
 
-from ..data_objects import TrajectoryData, AgentData, UnitData
+from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData
 from .filter import Filter
 
 ###############################################################################
@@ -41,7 +41,9 @@ class MultiplySpaceFilter(Filter):
             f"Filtering: multiplying spatial scale by {self.multiplier} -------------"
         )
         return TrajectoryData(
-            box_size=self.multiplier * np.copy(data.box_size),
+            meta_data=MetaData(
+                box_size=self.multiplier * np.copy(data.meta_data.box_size)
+            ),
             agent_data=AgentData(
                 times=np.copy(data.agent_data.times),
                 n_agents=np.copy(data.agent_data.n_agents),
