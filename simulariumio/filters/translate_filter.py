@@ -23,7 +23,7 @@ class TranslateFilter(Filter):
 
     def __init__(
         self,
-        translation_per_type_id: Dict[int, np.ndarray],
+        translation_per_type_id: Dict[int, np.ndarray] = {},
         default_translation: np.ndarray = np.zeros(3),
     ):
         """
@@ -34,6 +34,7 @@ class TranslateFilter(Filter):
         ----------
         translation_per_type_id : Dict[int, int]
             translation for agents of each type ID
+            Default: {}
         default_translation : int
             translation for any agent types not specified
             in translation_per_type_id
