@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import copy
 import logging
 from typing import Any, Dict, List
 
@@ -61,7 +62,9 @@ class TrajectoryData:
 
     @classmethod
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):
-        """"""
+        """
+        Create TrajectoryData from a simularium JSON dict containing buffers
+        """
         return cls(
             box_size=np.array(
                 [
@@ -81,3 +84,18 @@ class TrajectoryData:
             ),
             plots=buffer_data["plotData"]["data"],
         )
+
+    def __copy__(self):
+        result = type(self)()
+        result.__dict__.update(self.__dict__)
+        return result
+
+    def __deepcopy__(self, memo):
+        result = type(self)(
+            box_size=np.copy(self.box_size),
+            agent_data=copy.deepcopy(self.agent_data, memo),
+            time_units=copy.copy(self.time_units),
+            spatial_units=copy.copy(self.spatial_units),
+            plots=copy.deepcopy(self.plots, memo),
+        )
+        return result

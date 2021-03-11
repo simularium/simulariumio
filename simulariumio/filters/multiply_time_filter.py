@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import copy
 import logging
 
 import numpy as np
 
-from ..data_objects import TrajectoryData, AgentData
+from ..data_objects import TrajectoryData
 from .filter import Filter
 
 ###############################################################################
@@ -45,32 +44,14 @@ class MultiplyTimeFilter(Filter):
         """
         print(f"Filtering: multiplying time by {self.multiplier} -------------")
         # plot data
-        plot_data = copy.copy(data.plots)
         if self.apply_to_plots:
-            for p in range(len(plot_data)):
-                x_title = plot_data[p]["layout"]["xaxis"]["title"]
+            for p in range(len(data.plots)):
+                x_title = data.plots[p]["layout"]["xaxis"]["title"]
                 if "time" not in x_title.lower():
                     continue
-                for tr in range(len(plot_data[p]["data"])):
-                    trace = plot_data[p]["data"][tr]
+                for tr in range(len(data.plots[p]["data"])):
+                    trace = data.plots[p]["data"][tr]
                     trace["x"] = (self.multiplier * np.array(trace["x"])).tolist()
         # spatial data
-        return TrajectoryData(
-            box_size=np.copy(data.box_size),
-            agent_data=AgentData(
-                times=self.multiplier * np.copy(data.agent_data.times),
-                n_agents=np.copy(data.agent_data.n_agents),
-                viz_types=np.copy(data.agent_data.viz_types),
-                unique_ids=np.copy(data.agent_data.unique_ids),
-                types=copy.copy(data.agent_data.types),
-                positions=np.copy(data.agent_data.positions),
-                radii=np.copy(data.agent_data.radii),
-                n_subpoints=np.copy(data.agent_data.n_subpoints),
-                subpoints=np.copy(data.agent_data.subpoints),
-                draw_fiber_points=data.agent_data.draw_fiber_points,
-                type_ids=np.copy(data.agent_data.type_ids),
-            ),
-            time_units=copy.copy(data.time_units),
-            spatial_units=copy.copy(data.spatial_units),
-            plots=plot_data,
-        )
+        data.agent_data.times = self.multiplier * data.agent_data.times
+        return data

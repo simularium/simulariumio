@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import copy
 import logging
 
-import numpy as np
-
-from ..data_objects import TrajectoryData, AgentData, UnitData
+from ..data_objects import TrajectoryData
 from .filter import Filter
 
 ###############################################################################
@@ -40,24 +37,9 @@ class MultiplySpaceFilter(Filter):
         print(
             f"Filtering: multiplying spatial scale by {self.multiplier} -------------"
         )
-        return TrajectoryData(
-            box_size=self.multiplier * np.copy(data.box_size),
-            agent_data=AgentData(
-                times=np.copy(data.agent_data.times),
-                n_agents=np.copy(data.agent_data.n_agents),
-                viz_types=np.copy(data.agent_data.viz_types),
-                unique_ids=np.copy(data.agent_data.unique_ids),
-                types=copy.copy(data.agent_data.types),
-                positions=self.multiplier * np.copy(data.agent_data.positions),
-                radii=self.multiplier * np.copy(data.agent_data.radii),
-                n_subpoints=np.copy(data.agent_data.n_subpoints),
-                subpoints=self.multiplier * np.copy(data.agent_data.subpoints),
-                draw_fiber_points=data.agent_data.draw_fiber_points,
-                type_ids=np.copy(data.agent_data.type_ids),
-            ),
-            time_units=copy.copy(data.time_units),
-            spatial_units=UnitData(
-                data.spatial_units.name, data.spatial_units.magnitude / self.multiplier
-            ),
-            plots=copy.copy(data.plots),
-        )
+        data.box_size = self.multiplier * data.box_size
+        data.agent_data.positions = self.multiplier * data.agent_data.positions
+        data.agent_data.radii = self.multiplier * data.agent_data.radii
+        data.agent_data.subpoints = self.multiplier * data.agent_data.subpoints
+        data.spatial_units.multiply(1.0 / self.multiplier)
+        return data

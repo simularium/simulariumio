@@ -5,6 +5,7 @@ import json
 import logging
 from typing import Any, Dict, List
 import math
+import copy
 
 import numpy as np
 
@@ -374,7 +375,7 @@ class TrajectoryConverter:
         """
         Return the simularium data with the given filter applied
         """
-        filtered_data = self._data
+        filtered_data = copy.deepcopy(self._data)
         for f in filters:
             filtered_data = f.apply(filtered_data)
         return filtered_data

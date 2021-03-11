@@ -61,3 +61,10 @@ class UnitData:
         """
         self._quantity *= multiplier
         self._update_units()
+
+    def __copy__(self):
+        result = type(self)(
+            name=self.name,
+            magnitude=self.magnitude,
+        )
+        return result
