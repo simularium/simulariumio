@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="simulariumio.physicell.dep package" href="simulariumio.physicell.dep.html" />
-    <link rel="prev" title="simulariumio.data_objects package" href="simulariumio.data_objects.html" /> 
+    <link rel="prev" title="simulariumio.filters package" href="simulariumio.filters.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -102,6 +102,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="simulariumio.html#subpackages">Subpackages</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.filters.html">simulariumio.filters package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">simulariumio.physicell package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
@@ -109,9 +110,9 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -194,7 +195,7 @@
         <a href="simulariumio.physicell.dep.html" class="btn btn-neutral float-right" title="simulariumio.physicell.dep package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
       
       
-        <a href="simulariumio.data_objects.html" class="btn btn-neutral float-left" title="simulariumio.data_objects package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="simulariumio.filters.html" class="btn btn-neutral float-left" title="simulariumio.filters package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
       
   </div>
   
@@ -226,7 +227,7 @@
 <dl class="class">
 <dt id="simulariumio.physicell.physicell_converter.PhysicellConverter">
 <em class="property">class </em><code class="sig-prename descclassname">simulariumio.physicell.physicell_converter.</code><code class="sig-name descname">PhysicellConverter</code><span class="sig-paren">(</span><em class="sig-param">input_data: simulariumio.physicell.physicell_data.PhysicellData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/physicell/physicell_converter.html#PhysicellConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.physicell.physicell_converter.PhysicellConverter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="simulariumio.html#simulariumio.converter.Converter" title="simulariumio.converter.Converter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.converter.Converter</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter" title="simulariumio.trajectory_converter.TrajectoryConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.trajectory_converter.TrajectoryConverter</span></code></a></p>
 <p>This object reads simulation trajectory outputs
 from PhysiCell (<a class="reference external" href="http://physicell.org/">http://physicell.org/</a>)
 and plot data and writes them in the JSON format used

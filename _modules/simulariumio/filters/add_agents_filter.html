@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>simulariumio.plot_readers.histogram_plot_reader &mdash; Simularium Conversion 1.0.1 documentation</title>
+  <title>simulariumio.filters.add_agents_filter &mdash; Simularium Conversion 1.0.1 documentation</title>
   
 
   
@@ -174,7 +174,7 @@
         
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
         
-      <li>simulariumio.plot_readers.histogram_plot_reader</li>
+      <li>simulariumio.filters.add_agents_filter</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -189,14 +189,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for simulariumio.plot_readers.histogram_plot_reader</h1><div class="highlight"><pre>
+  <h1>Source code for simulariumio.filters.add_agents_filter</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">.plot_reader</span> <span class="kn">import</span> <span class="n">PlotReader</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span>
+<span class="kn">from</span> <span class="nn">.filter</span> <span class="kn">import</span> <span class="n">Filter</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -205,30 +205,28 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="HistogramPlotReader"><a class="viewcode-back" href="../../../simulariumio.plot_readers.html#simulariumio.plot_readers.histogram_plot_reader.HistogramPlotReader">[docs]</a><span class="k">class</span> <span class="nc">HistogramPlotReader</span><span class="p">(</span><span class="n">PlotReader</span><span class="p">):</span>
-<div class="viewcode-block" id="HistogramPlotReader.read"><a class="viewcode-back" href="../../../simulariumio.plot_readers.html#simulariumio.plot_readers.histogram_plot_reader.HistogramPlotReader.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="AddAgentsFilter"><a class="viewcode-back" href="../../../simulariumio.filters.html#simulariumio.filters.add_agents_filter.AddAgentsFilter">[docs]</a><span class="k">class</span> <span class="nc">AddAgentsFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+    <span class="n">new_agent_data</span><span class="p">:</span> <span class="n">AgentData</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return an object containing the data shaped for Simularium format</span>
+<span class="sd">        This filter adds the given agents</span>
+<span class="sd">        to each frame of the simulation</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_agent_data : AgentData</span>
+<span class="sd">            agent data to append to the trajectory</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading Histogram Data -------------&quot;</span><span class="p">)</span>
-        <span class="n">simularium_data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># layout info</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;layout&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
-            <span class="s2">&quot;xaxis&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">xaxis_title</span><span class="p">},</span>
-            <span class="s2">&quot;yaxis&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;frequency&quot;</span><span class="p">},</span>
-        <span class="p">}</span>
-        <span class="c1"># plot data</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">trace_name</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">traces</span><span class="p">:</span>
-            <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">trace_name</span><span class="p">,</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;histogram&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">traces</span><span class="p">[</span><span class="n">trace_name</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="p">}</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="n">simularium_data</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_agent_data</span> <span class="o">=</span> <span class="n">new_agent_data</span>
+
+<div class="viewcode-block" id="AddAgentsFilter.apply"><a class="viewcode-back" href="../../../simulariumio.filters.html#simulariumio.filters.add_agents_filter.AddAgentsFilter.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add the given agents to each frame of the simularium data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filtering: add agents -------------&quot;</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">append_agents</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_agent_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span></div></div>
 </pre></div>
 
            </div>

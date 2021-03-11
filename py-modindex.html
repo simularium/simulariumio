@@ -103,6 +103,7 @@
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.filters.html">simulariumio.filters package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
@@ -110,9 +111,9 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -212,16 +213,6 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="simulariumio.html#module-simulariumio.converter"><code class="xref">simulariumio.converter</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="simulariumio.html#module-simulariumio.custom_converter"><code class="xref">simulariumio.custom_converter</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
        <a href="simulariumio.cytosim.html#module-simulariumio.cytosim"><code class="xref">simulariumio.cytosim</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -257,11 +248,6 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="simulariumio.data_objects.html#module-simulariumio.data_objects.custom_data"><code class="xref">simulariumio.data_objects.custom_data</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
        <a href="simulariumio.data_objects.html#module-simulariumio.data_objects.histogram_plot_data"><code class="xref">simulariumio.data_objects.histogram_plot_data</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -272,12 +258,72 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="simulariumio.data_objects.html#module-simulariumio.data_objects.trajectory_data"><code class="xref">simulariumio.data_objects.trajectory_data</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="simulariumio.data_objects.html#module-simulariumio.data_objects.unit_data"><code class="xref">simulariumio.data_objects.unit_data</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="simulariumio.html#module-simulariumio.exceptions"><code class="xref">simulariumio.exceptions</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.html#module-simulariumio.file_converter"><code class="xref">simulariumio.file_converter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.filters.html#module-simulariumio.filters"><code class="xref">simulariumio.filters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.filters.html#module-simulariumio.filters.add_agents_filter"><code class="xref">simulariumio.filters.add_agents_filter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.filters.html#module-simulariumio.filters.every_nth_agent_filter"><code class="xref">simulariumio.filters.every_nth_agent_filter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.filters.html#module-simulariumio.filters.every_nth_subpoint_filter"><code class="xref">simulariumio.filters.every_nth_subpoint_filter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.filters.html#module-simulariumio.filters.every_nth_timestep_filter"><code class="xref">simulariumio.filters.every_nth_timestep_filter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.filters.html#module-simulariumio.filters.filter"><code class="xref">simulariumio.filters.filter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.filters.html#module-simulariumio.filters.multiply_space_filter"><code class="xref">simulariumio.filters.multiply_space_filter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.filters.html#module-simulariumio.filters.multiply_time_filter"><code class="xref">simulariumio.filters.multiply_time_filter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.filters.html#module-simulariumio.filters.reorder_agents_filter"><code class="xref">simulariumio.filters.reorder_agents_filter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.filters.html#module-simulariumio.filters.transform_spatial_axes_filter"><code class="xref">simulariumio.filters.transform_spatial_axes_filter</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -338,6 +384,11 @@
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="simulariumio.readdy.html#module-simulariumio.readdy.readdy_data"><code class="xref">simulariumio.readdy.readdy_data</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="simulariumio.html#module-simulariumio.trajectory_converter"><code class="xref">simulariumio.trajectory_converter</code></a></td><td>
        <em></em></td></tr>
    </table>
 

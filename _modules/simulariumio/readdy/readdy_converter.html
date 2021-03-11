@@ -100,6 +100,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.filters.html">simulariumio.filters package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
@@ -107,9 +108,9 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -198,8 +199,8 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">readdy</span>
 
-<span class="kn">from</span> <span class="nn">..converter</span> <span class="kn">import</span> <span class="n">Converter</span>
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">AgentData</span>
+<span class="kn">from</span> <span class="nn">..trajectory_converter</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span>
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">VIZ_TYPE</span>
 <span class="kn">from</span> <span class="nn">.readdy_data</span> <span class="kn">import</span> <span class="n">ReaddyData</span>
 
@@ -210,7 +211,7 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="ReaddyConverter"><a class="viewcode-back" href="../../../simulariumio.readdy.html#simulariumio.readdy.readdy_converter.ReaddyConverter">[docs]</a><span class="k">class</span> <span class="nc">ReaddyConverter</span><span class="p">(</span><span class="n">Converter</span><span class="p">):</span>
+<div class="viewcode-block" id="ReaddyConverter"><a class="viewcode-back" href="../../../simulariumio.readdy.html#simulariumio.readdy.readdy_converter.ReaddyConverter">[docs]</a><span class="k">class</span> <span class="nc">ReaddyConverter</span><span class="p">(</span><span class="n">TrajectoryConverter</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">ReaddyData</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object reads simulation trajectory outputs</span>
@@ -238,9 +239,9 @@
         <span class="n">result</span> <span class="o">=</span> <span class="n">AgentData</span><span class="p">(</span>
             <span class="n">times</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">timestep</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">),</span>
             <span class="n">n_agents</span><span class="o">=</span><span class="n">n_particles_per_frame</span><span class="p">,</span>
-            <span class="n">viz_types</span><span class="o">=</span><span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">default</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
+            <span class="n">viz_types</span><span class="o">=</span><span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
             <span class="n">unique_ids</span><span class="o">=</span><span class="n">ids</span><span class="p">,</span>
-            <span class="n">types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">types</span><span class="o">=</span><span class="p">[[]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">)],</span>
             <span class="n">positions</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">positions</span><span class="p">,</span>
             <span class="n">radii</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
         <span class="p">)</span>
@@ -298,14 +299,14 @@
             <span class="n">n_agents</span><span class="o">=</span><span class="n">n_filtered_particles_per_frame</span><span class="p">,</span>
             <span class="n">viz_types</span><span class="o">=</span><span class="n">agent_data</span><span class="o">.</span><span class="n">viz_types</span><span class="p">,</span>
             <span class="n">unique_ids</span><span class="o">=-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">types</span><span class="o">=</span><span class="p">[[]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">)],</span>
             <span class="n">positions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
             <span class="n">radii</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
         <span class="p">)</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">type_ids</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">type_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">]):</span>
                 <span class="n">type_name</span> <span class="o">=</span> <span class="n">traj</span><span class="o">.</span><span class="n">species_name</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="n">ignore_types</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="n">n_filtered_particles_per_frame</span><span class="p">[</span><span class="n">t</span><span class="p">]:</span>
                     <span class="k">continue</span>
@@ -316,103 +317,86 @@
                 <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="k">def</span> <span class="nf">_group_particle_types</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">_set_particle_types</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">traj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">type_grouping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Group ReaDDy particle types by assigning them to new group type IDs</span>
+<span class="sd">        Set particle type names and optionally group ReaDDy particle types</span>
+<span class="sd">        by assigning them to new group type IDs</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># map ReaDDy ID to new group ID</span>
-        <span class="n">group_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">type_map</span> <span class="o">=</span> <span class="n">traj</span><span class="o">.</span><span class="n">particle_types</span>
-        <span class="n">type_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># warn user if a given type doesn&#39;t exist in ReaDDy</span>
+        <span class="n">readdy_type_map</span> <span class="o">=</span> <span class="n">traj</span><span class="o">.</span><span class="n">particle_types</span>
         <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">group_type</span> <span class="ow">in</span> <span class="n">type_grouping</span><span class="p">:</span>
-            <span class="n">type_mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">group_type</span><span class="p">}</span>
-            <span class="k">for</span> <span class="n">readdy_type</span> <span class="ow">in</span> <span class="n">type_grouping</span><span class="p">[</span><span class="n">group_type</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="n">readdy_type</span> <span class="ow">in</span> <span class="n">type_map</span><span class="p">:</span>
-                    <span class="n">group_mapping</span><span class="p">[</span><span class="n">type_map</span><span class="p">[</span><span class="n">readdy_type</span><span class="p">]]</span> <span class="o">=</span> <span class="n">i</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;type </span><span class="si">{</span><span class="n">readdy_type</span><span class="si">}</span><span class="s2">, which was provided in the type_grouping, &quot;</span>
-                        <span class="s2">&quot;doesn&#39;t exist in the ReaDDy model&quot;</span>
-                    <span class="p">)</span>
-            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="c1"># assign group ID to each particle of a type in the group</span>
+        <span class="k">if</span> <span class="n">type_grouping</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">group_type_name</span> <span class="ow">in</span> <span class="n">type_grouping</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">readdy_type_name</span> <span class="ow">in</span> <span class="n">type_grouping</span><span class="p">[</span><span class="n">group_type_name</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="n">readdy_type_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">readdy_type_map</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;type </span><span class="si">{</span><span class="n">readdy_type_name</span><span class="si">}</span><span class="s2">, which was provided &quot;</span>
+                            <span class="s2">&quot;in the type_grouping, doesn&#39;t exist in the ReaDDy model&quot;</span>
+                        <span class="p">)</span>
+        <span class="c1"># map ReaDDy ID to new group ID if grouped</span>
+        <span class="n">group_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">group_id_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">group_name_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">type_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">readdy_type_name</span> <span class="ow">in</span> <span class="n">readdy_type_map</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">type_grouping</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">group_type_name</span> <span class="ow">in</span> <span class="n">type_grouping</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">readdy_type_name</span> <span class="ow">in</span> <span class="n">type_grouping</span><span class="p">[</span><span class="n">group_type_name</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="n">group_type_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">group_id_mapping</span><span class="p">:</span>
+                            <span class="n">group_id_mapping</span><span class="p">[</span><span class="n">group_type_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+                            <span class="n">group_name_mapping</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">group_type_name</span>
+                            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">type_mapping</span><span class="p">[</span>
+                            <span class="nb">float</span><span class="p">(</span><span class="n">group_id_mapping</span><span class="p">[</span><span class="n">group_type_name</span><span class="p">])</span>
+                        <span class="p">]</span> <span class="o">=</span> <span class="n">group_type_name</span>
+                        <span class="n">group_mapping</span><span class="p">[</span>
+                            <span class="nb">float</span><span class="p">(</span><span class="n">readdy_type_map</span><span class="p">[</span><span class="n">readdy_type_name</span><span class="p">])</span>
+                        <span class="p">]</span> <span class="o">=</span> <span class="n">group_id_mapping</span><span class="p">[</span><span class="n">group_type_name</span><span class="p">]</span>
+                        <span class="n">group</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">break</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">group</span><span class="p">:</span>
+                <span class="n">type_mapping</span><span class="p">[</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">readdy_type_map</span><span class="p">[</span><span class="n">readdy_type_name</span><span class="p">])</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">readdy_type_name</span>
+        <span class="c1"># assign group ID to each particle of a type in the group, and assign type names</span>
         <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">])):</span>
                 <span class="n">readdy_id</span> <span class="o">=</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+                <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">]):</span>
+                    <span class="n">agent_data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">readdy_id</span> <span class="ow">in</span> <span class="n">group_mapping</span><span class="p">:</span>
-                    <span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">group_mapping</span><span class="p">[</span><span class="n">readdy_id</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">agent_data</span><span class="p">,</span> <span class="n">type_mapping</span><span class="p">)</span>
+                    <span class="n">group_id</span> <span class="o">=</span> <span class="n">group_mapping</span><span class="p">[</span><span class="n">readdy_id</span><span class="p">]</span>
+                    <span class="n">group_name</span> <span class="o">=</span> <span class="n">group_name_mapping</span><span class="p">[</span><span class="n">group_id</span><span class="p">]</span>
+                    <span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">group_id</span>
+                    <span class="n">agent_data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">group_name</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">agent_data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_mapping</span><span class="p">[</span><span class="n">readdy_id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">agent_data</span>
 
     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">ReaddyData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return an object containing the data shaped for Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># load the data from a ReaDDy trajectory file</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading ReaDDy Data -------------&quot;</span><span class="p">)</span>
         <span class="n">agent_data</span><span class="p">,</span> <span class="n">traj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_raw_trajectory_data</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
         <span class="c1"># optionally filter and group</span>
         <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">ignore_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">agent_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_trajectory_data</span><span class="p">(</span>
                 <span class="n">agent_data</span><span class="p">,</span> <span class="n">traj</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">ignore_types</span>
             <span class="p">)</span>
-        <span class="n">type_mapping</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">type_grouping</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">agent_data</span><span class="p">,</span> <span class="n">type_mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group_particle_types</span><span class="p">(</span>
-                <span class="n">agent_data</span><span class="p">,</span> <span class="n">traj</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">type_grouping</span>
-            <span class="p">)</span>
-        <span class="c1"># shape data</span>
-        <span class="n">simularium_data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># trajectory info</span>
-        <span class="n">input_data</span><span class="o">.</span><span class="n">spatial_units</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">)</span>
-        <span class="n">totalSteps</span> <span class="o">=</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="s2">&quot;timeUnits&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">time_units</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">time_units</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;timeStepSize&quot;</span><span class="p">:</span> <span class="n">Converter</span><span class="o">.</span><span class="n">_format_timestep</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">timestep</span><span class="p">)),</span>
-            <span class="s2">&quot;totalSteps&quot;</span><span class="p">:</span> <span class="n">totalSteps</span><span class="p">,</span>
-            <span class="s2">&quot;spatialUnits&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">spatial_units</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">spatial_units</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;typeMapping&quot;</span><span class="p">:</span> <span class="n">type_mapping</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="c1"># add type names for each type that exists in the trajectory</span>
-        <span class="n">existing_type_ids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">])):</span>
-                <span class="n">type_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">type_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">existing_type_ids</span><span class="p">:</span>
-                    <span class="n">existing_type_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">type_id</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">type_id</span> <span class="ow">in</span> <span class="n">existing_type_ids</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">type_id</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;typeMapping&quot;</span><span class="p">]:</span>
-                <span class="n">type_name</span> <span class="o">=</span> <span class="n">traj</span><span class="o">.</span><span class="n">species_name</span><span class="p">(</span><span class="n">type_id</span><span class="p">)</span>
-                <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;typeMapping&quot;</span><span class="p">][</span><span class="nb">str</span><span class="p">(</span><span class="n">type_id</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">type_name</span>
-                <span class="p">}</span>
-        <span class="c1"># spatial data</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;spatialData&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;msgType&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;bundleStart&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;bundleSize&quot;</span><span class="p">:</span> <span class="n">totalSteps</span><span class="p">,</span>
-            <span class="s2">&quot;bundleData&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_spatial_bundle_data_no_subpoints</span><span class="p">(</span><span class="n">agent_data</span><span class="p">),</span>
-        <span class="p">}</span>
-        <span class="c1"># plot data</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;plotData&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">plots</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="n">simularium_data</span></div>
+        <span class="n">agent_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_particle_types</span><span class="p">(</span>
+            <span class="n">agent_data</span><span class="p">,</span> <span class="n">traj</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">type_grouping</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">TrajectoryData</span><span class="p">(</span>
+            <span class="n">box_size</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">input_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">,</span>
+            <span class="n">agent_data</span><span class="o">=</span><span class="n">agent_data</span><span class="p">,</span>
+            <span class="n">time_units</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">time_units</span><span class="p">,</span>
+            <span class="n">spatial_units</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">spatial_units</span><span class="p">,</span>
+            <span class="n">plots</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">plots</span><span class="p">,</span>
+        <span class="p">)</span></div>
 </pre></div>
 
            </div>

@@ -102,6 +102,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.filters.html">simulariumio.filters package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
@@ -109,9 +110,9 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.constants">simulariumio.constants module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.converter">simulariumio.converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -219,11 +220,25 @@
 <li class="toctree-l1"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.agent_data">simulariumio.data_objects.agent_data module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.custom_data">simulariumio.data_objects.custom_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.histogram_plot_data">simulariumio.data_objects.histogram_plot_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.scatter_plot_data">simulariumio.data_objects.scatter_plot_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.trajectory_data">simulariumio.data_objects.trajectory_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.unit_data">simulariumio.data_objects.unit_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulariumio.filters.html">simulariumio.filters package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.add_agents_filter">simulariumio.filters.add_agents_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.every_nth_agent_filter">simulariumio.filters.every_nth_agent_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.every_nth_subpoint_filter">simulariumio.filters.every_nth_subpoint_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.every_nth_timestep_filter">simulariumio.filters.every_nth_timestep_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.filter">simulariumio.filters.filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.multiply_space_filter">simulariumio.filters.multiply_space_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.multiply_time_filter">simulariumio.filters.multiply_time_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.reorder_agents_filter">simulariumio.filters.reorder_agents_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.transform_spatial_axes_filter">simulariumio.filters.transform_spatial_axes_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a><ul>
@@ -266,83 +281,90 @@
 <div class="section" id="module-simulariumio.constants">
 <span id="simulariumio-constants-module"></span><h2>simulariumio.constants module<a class="headerlink" href="#module-simulariumio.constants" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.constants.</code><code class="sig-name descname">V1_SPATIAL_BUFFER_STRUCT</code><a class="reference internal" href="_modules/simulariumio/constants.html#V1_SPATIAL_BUFFER_STRUCT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX">
+<code class="sig-name descname">NSP_INDEX</code><em class="property">: int</em><em class="property"> = 10</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX">
+<code class="sig-name descname">POSX_INDEX</code><em class="property">: int</em><em class="property"> = 3</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.POSY_INDEX">
+<code class="sig-name descname">POSY_INDEX</code><em class="property">: int</em><em class="property"> = 4</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.POSY_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.POSZ_INDEX">
+<code class="sig-name descname">POSZ_INDEX</code><em class="property">: int</em><em class="property"> = 5</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.POSZ_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX">
+<code class="sig-name descname">ROTX_INDEX</code><em class="property">: int</em><em class="property"> = 6</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.ROTY_INDEX">
+<code class="sig-name descname">ROTY_INDEX</code><em class="property">: int</em><em class="property"> = 7</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.ROTY_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.ROTZ_INDEX">
+<code class="sig-name descname">ROTZ_INDEX</code><em class="property">: int</em><em class="property"> = 8</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.ROTZ_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.R_INDEX">
+<code class="sig-name descname">R_INDEX</code><em class="property">: int</em><em class="property"> = 9</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.R_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.SP_INDEX">
+<code class="sig-name descname">SP_INDEX</code><em class="property">: int</em><em class="property"> = 11</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.SP_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.TID_INDEX">
+<code class="sig-name descname">TID_INDEX</code><em class="property">: int</em><em class="property"> = 2</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.TID_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.UID_INDEX">
+<code class="sig-name descname">UID_INDEX</code><em class="property">: int</em><em class="property"> = 1</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.UID_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT">
+<code class="sig-name descname">VALUES_PER_AGENT</code><em class="property">: int</em><em class="property"> = 12</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.VIZ_TYPE_INDEX">
+<code class="sig-name descname">VIZ_TYPE_INDEX</code><em class="property">: int</em><em class="property"> = 0</em><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.VIZ_TYPE_INDEX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="simulariumio.constants.VIZ_TYPE">
 <em class="property">class </em><code class="sig-prename descclassname">simulariumio.constants.</code><code class="sig-name descname">VIZ_TYPE</code><a class="reference internal" href="_modules/simulariumio/constants.html#VIZ_TYPE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.constants.VIZ_TYPE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="attribute">
-<dt id="simulariumio.constants.VIZ_TYPE.default">
-<code class="sig-name descname">default</code><em class="property">: float</em><em class="property"> = 1000.0</em><a class="headerlink" href="#simulariumio.constants.VIZ_TYPE.default" title="Permalink to this definition">¶</a></dt>
+<dt id="simulariumio.constants.VIZ_TYPE.DEFAULT">
+<code class="sig-name descname">DEFAULT</code><em class="property">: float</em><em class="property"> = 1000.0</em><a class="headerlink" href="#simulariumio.constants.VIZ_TYPE.DEFAULT" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="simulariumio.constants.VIZ_TYPE.fiber">
-<code class="sig-name descname">fiber</code><em class="property">: float</em><em class="property"> = 1001.0</em><a class="headerlink" href="#simulariumio.constants.VIZ_TYPE.fiber" title="Permalink to this definition">¶</a></dt>
+<dt id="simulariumio.constants.VIZ_TYPE.FIBER">
+<code class="sig-name descname">FIBER</code><em class="property">: float</em><em class="property"> = 1001.0</em><a class="headerlink" href="#simulariumio.constants.VIZ_TYPE.FIBER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</dd></dl>
-
-</div>
-<div class="section" id="module-simulariumio.converter">
-<span id="simulariumio-converter-module"></span><h2>simulariumio.converter module<a class="headerlink" href="#module-simulariumio.converter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.converter.Converter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.converter.</code><code class="sig-name descname">Converter</code><a class="reference internal" href="_modules/simulariumio/converter.html#Converter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.converter.Converter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="method">
-<dt id="simulariumio.converter.Converter.add_plot">
-<code class="sig-name descname">add_plot</code><span class="sig-paren">(</span><em class="sig-param">data: [&lt;class 'simulariumio.data_objects.scatter_plot_data.ScatterPlotData'&gt;] = {}</em>, <em class="sig-param">plot_type: str = 'scatter'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/converter.html#Converter.add_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.converter.Converter.add_plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add data to be rendered in a plot</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul>
-<li><p><strong>data</strong> (<em>ScatterPlotData or HistogramPlotData</em>) – Loaded data for a plot.</p></li>
-<li><p><strong>plot_type</strong> (<em>str</em>) – A string specifying which type of plot to render.
-Current options:</p>
-<blockquote>
-<div><dl class="simple">
-<dt>‘scatter’<span class="classifier">a scatterplot with y-trace(s) dependent</span></dt><dd><p>on an x-trace</p>
-</dd>
-<dt>‘histogram’<span class="classifier">a histogram with bars drawn at intervals</span></dt><dd><p>over the range(s) of the data, with their height
-corresponding to the number of values in each interval</p>
-</dd>
-</dl>
-</div></blockquote>
-<p>Default: ‘scatter’</p>
-</li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="simulariumio.converter.Converter.write_JSON">
-<code class="sig-name descname">write_JSON</code><span class="sig-paren">(</span><em class="sig-param">output_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/converter.html#Converter.write_JSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.converter.Converter.write_JSON" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the data in .simularium JSON format at the output path</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>output_path</strong> (<em>str</em>) – where to save the file</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-simulariumio.custom_converter">
-<span id="simulariumio-custom-converter-module"></span><h2>simulariumio.custom_converter module<a class="headerlink" href="#module-simulariumio.custom_converter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.custom_converter.CustomConverter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.custom_converter.</code><code class="sig-name descname">CustomConverter</code><span class="sig-paren">(</span><em class="sig-param">input_data: simulariumio.data_objects.custom_data.CustomData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/custom_converter.html#CustomConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.custom_converter.CustomConverter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#simulariumio.converter.Converter" title="simulariumio.converter.Converter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.converter.Converter</span></code></a></p>
-<p>This object reads custom simulation trajectory outputs
-and plot data and writes them in the JSON format used
-by the Simularium viewer</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_data</strong> (<em>CustomData</em>) – An object containing custom simulation trajectory outputs
-and plot data</p>
-</dd>
-</dl>
 </dd></dl>
 
 </div>
@@ -370,6 +392,123 @@ is missing a field needed to parse it.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 <p>This exception is intended to communicate that the requested plot type
 is not one of the supported types and cannot be parsed with simulariumio.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.file_converter">
+<span id="simulariumio-file-converter-module"></span><h2>simulariumio.file_converter module<a class="headerlink" href="#module-simulariumio.file_converter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.file_converter.FileConverter">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.file_converter.</code><code class="sig-name descname">FileConverter</code><span class="sig-paren">(</span><em class="sig-param">input_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/file_converter.html#FileConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.file_converter.FileConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter" title="simulariumio.trajectory_converter.TrajectoryConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.trajectory_converter.TrajectoryConverter</span></code></a></p>
+<p>This object loads the data in .simularium JSON format
+at the input path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_path</strong> (<em>str</em>) – path to the .simularium JSON file to load</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.file_converter.FileConverter.current_trajectory_info_version">
+<code class="sig-name descname">current_trajectory_info_version</code><em class="property">: int</em><em class="property"> = 2</em><a class="headerlink" href="#simulariumio.file_converter.FileConverter.current_trajectory_info_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.file_converter.FileConverter.update_trajectory_info_version">
+<code class="sig-name descname">update_trajectory_info_version</code><span class="sig-paren">(</span><em class="sig-param">data: Dict[str, Any]</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="reference internal" href="_modules/simulariumio/file_converter.html#FileConverter.update_trajectory_info_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.file_converter.FileConverter.update_trajectory_info_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the trajectory info block
+to match the current version</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.trajectory_converter">
+<span id="simulariumio-trajectory-converter-module"></span><h2>simulariumio.trajectory_converter module<a class="headerlink" href="#module-simulariumio.trajectory_converter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.trajectory_converter.TrajectoryConverter">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.trajectory_converter.</code><code class="sig-name descname">TrajectoryConverter</code><span class="sig-paren">(</span><em class="sig-param">input_data: simulariumio.data_objects.trajectory_data.TrajectoryData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/trajectory_converter.html#TrajectoryConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.trajectory_converter.TrajectoryConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object reads custom simulation trajectory outputs
+and plot data and writes them in the JSON format used
+by the Simularium viewer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_data</strong> (<em>TrajectoryData</em>) – An object containing custom simulation trajectory outputs
+and plot data</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="simulariumio.trajectory_converter.TrajectoryConverter.add_number_of_agents_plot">
+<code class="sig-name descname">add_number_of_agents_plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/trajectory_converter.html#TrajectoryConverter.add_number_of_agents_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.trajectory_converter.TrajectoryConverter.add_number_of_agents_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a scatterplot of the number of each type of agent over time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>agent_data</strong> (<em>AgentData</em>) – The data shaped as an AgentData object
+Default: None (use the currently loaded data)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.trajectory_converter.TrajectoryConverter.add_plot">
+<code class="sig-name descname">add_plot</code><span class="sig-paren">(</span><em class="sig-param">data: [&lt;class 'simulariumio.data_objects.scatter_plot_data.ScatterPlotData'&gt;] = {}</em>, <em class="sig-param">plot_type: str = 'scatter'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/trajectory_converter.html#TrajectoryConverter.add_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.trajectory_converter.TrajectoryConverter.add_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add data to be rendered in a plot</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>data</strong> (<em>ScatterPlotData or HistogramPlotData</em>) – Loaded data for a plot.</p></li>
+<li><p><strong>plot_type</strong> (<em>str</em>) – A string specifying which type of plot to render.
+Current options:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>‘scatter’<span class="classifier">a scatterplot with y-trace(s) dependent</span></dt><dd><p>on an x-trace</p>
+</dd>
+<dt>‘histogram’<span class="classifier">a histogram with bars drawn at intervals</span></dt><dd><p>over the range(s) of the data, with their height
+corresponding to the number of values in each interval</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>Default: ‘scatter’</p>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.trajectory_converter.TrajectoryConverter.filter_data">
+<code class="sig-name descname">filter_data</code><span class="sig-paren">(</span><em class="sig-param">filters: List[simulariumio.filters.filter.Filter]</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/trajectory_converter.html#TrajectoryConverter.filter_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.trajectory_converter.TrajectoryConverter.filter_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the simularium data with the given filter applied</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.trajectory_converter.TrajectoryConverter.write_JSON">
+<code class="sig-name descname">write_JSON</code><span class="sig-paren">(</span><em class="sig-param">output_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/trajectory_converter.html#TrajectoryConverter.write_JSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.trajectory_converter.TrajectoryConverter.write_JSON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the current simularium data in .simularium JSON format
+at the output path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>output_path</strong> (<em>str</em>) – where to save the file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.trajectory_converter.TrajectoryConverter.write_external_JSON">
+<em class="property">static </em><code class="sig-name descname">write_external_JSON</code><span class="sig-paren">(</span><em class="sig-param">external_data: simulariumio.data_objects.trajectory_data.TrajectoryData</em>, <em class="sig-param">output_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/trajectory_converter.html#TrajectoryConverter.write_external_JSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.trajectory_converter.TrajectoryConverter.write_external_JSON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the given data in .simularium JSON format
+at the output path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>external_data</strong> (<em>TrajectoryData</em>) – the data to save</p></li>
+<li><p><strong>output_path</strong> (<em>str</em>) – where to save the file</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>

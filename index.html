@@ -101,6 +101,7 @@
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.filters.html">simulariumio.filters package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
@@ -108,9 +109,9 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -230,7 +231,7 @@
 <li><p>PhysiCell (<a class="reference external" href="http://physicell.org/">http://physicell.org/</a>)</p></li>
 </ul>
 </li>
-<li><p>Conversions for data from custom engines can be implemented using the CustomConverter class</p></li>
+<li><p>Conversions for data from custom engines can be implemented using the TrajectoryConverter class</p></li>
 <li><p>Also accepts metrics data for plots to display alongside spatial data</p></li>
 </ul>
 <p>We’re working to improve performance for converting large trajectories, and also discussing with the authors of some packages the possibility of adding the ability to export Simularium files directly.</p>
@@ -263,10 +264,10 @@
 <div class="section" id="convert-spatial-trajectory-from-a-custom-engine">
 <h3>Convert spatial trajectory from a custom engine<a class="headerlink" href="#convert-spatial-trajectory-from-a-custom-engine" title="Permalink to this headline">¶</a></h3>
 <p>See the <a class="reference external" href="examples/Tutorial_custom.ipynb">Custom Data Tutorial</a> for details. An overview:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simulariumio</span> <span class="kn">import</span> <span class="n">CustomConverter</span><span class="p">,</span> <span class="n">CustomData</span><span class="p">,</span> <span class="n">AgentData</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simulariumio</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span><span class="p">,</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span>
 
 <span class="c1"># see Custom Data Tutorial for parameter details</span>
-<span class="n">input_data</span> <span class="o">=</span> <span class="n">CustomData</span><span class="p">(</span>
+<span class="n">input_data</span> <span class="o">=</span> <span class="n">TrajectoryData</span><span class="p">(</span>
     <span class="n">spatial_unit_factor_meters</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">,</span>  <span class="c1"># nanometers</span>
     <span class="n">box_size</span><span class="o">=</span><span class="n">BOX_SIZE</span><span class="p">,</span>
     <span class="n">agent_data</span><span class="o">=</span><span class="n">AgentData</span><span class="p">(</span>
@@ -279,7 +280,7 @@
         <span class="n">radii</span><span class="o">=</span><span class="n">RADII</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="p">)</span>
-<span class="n">CustomConverter</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span><span class="o">.</span><span class="n">write_JSON</span><span class="p">(</span><span class="s2">&quot;output_file_name&quot;</span><span class="p">)</span>
+<span class="n">TrajectoryConverter</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span><span class="o">.</span><span class="n">write_JSON</span><span class="p">(</span><span class="s2">&quot;output_file_name&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -296,7 +297,7 @@
     <span class="n">xtrace</span><span class="o">=</span><span class="n">X_VALUES</span><span class="p">,</span>
     <span class="n">ytraces</span><span class="o">=</span><span class="n">Y_VALUES</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">converter</span> <span class="o">=</span> <span class="n">CustomConverter</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span> <span class="c1"># see above to create converter</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span> <span class="c1"># see above to create converter</span>
 <span class="n">converter</span><span class="o">.</span><span class="n">add_plot</span><span class="p">(</span><span class="n">example_scatter_plot</span><span class="p">,</span> <span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
 <span class="n">converter</span><span class="o">.</span><span class="n">write_JSON</span><span class="p">(</span><span class="s2">&quot;output_file_name&quot;</span><span class="p">)</span>
 </pre></div>

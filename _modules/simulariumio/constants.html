@@ -100,6 +100,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../simulariumio.filters.html">simulariumio.filters package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
@@ -107,9 +108,9 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../simulariumio.html#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -193,25 +194,25 @@
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 
-<span class="n">V1_SPATIAL_BUFFER_STRUCT</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;VIZ_TYPE&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;UID&quot;</span><span class="p">,</span>  <span class="c1"># unique ID</span>
-    <span class="s2">&quot;TID&quot;</span><span class="p">,</span>  <span class="c1"># type ID</span>
-    <span class="s2">&quot;POSX&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;POSY&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;POSZ&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ROTX&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ROTY&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ROTZ&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;R&quot;</span><span class="p">,</span>  <span class="c1"># radius</span>
-    <span class="s2">&quot;NSP&quot;</span><span class="p">,</span>  <span class="c1"># num subpoints</span>
-    <span class="s2">&quot;SP&quot;</span><span class="p">,</span>  <span class="c1"># subpoints</span>
-<span class="p">]</span>
+<div class="viewcode-block" id="V1_SPATIAL_BUFFER_STRUCT"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT">[docs]</a><span class="k">class</span> <span class="nc">V1_SPATIAL_BUFFER_STRUCT</span><span class="p">:</span>
+    <span class="n">VIZ_TYPE_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">UID_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># unique ID</span>
+    <span class="n">TID_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># type ID</span>
+    <span class="n">POSX_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">POSY_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">POSZ_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">ROTX_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">ROTY_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">7</span>
+    <span class="n">ROTZ_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">R_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">9</span>  <span class="c1"># radius</span>
+    <span class="n">NSP_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># num subpoints</span>
+    <span class="n">SP_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">11</span>  <span class="c1"># subpoints</span>
+    <span class="n">VALUES_PER_AGENT</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span></div>
 
 
 <div class="viewcode-block" id="VIZ_TYPE"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.constants.VIZ_TYPE">[docs]</a><span class="k">class</span> <span class="nc">VIZ_TYPE</span><span class="p">:</span>
-    <span class="n">default</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1000.0</span>
-    <span class="n">fiber</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1001.0</span></div>
+    <span class="n">DEFAULT</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1000.0</span>
+    <span class="n">FIBER</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1001.0</span></div>
 </pre></div>
 
            </div>

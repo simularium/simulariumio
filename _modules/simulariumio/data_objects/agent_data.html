@@ -100,6 +100,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.filters.html">simulariumio.filters package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
@@ -107,9 +108,9 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -191,11 +192,17 @@
   <h1>Source code for simulariumio.data_objects.agent_data</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
+<span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span>
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">DataError</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -210,12 +217,13 @@
     <span class="n">viz_types</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">unique_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
-    <span class="n">type_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">positions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">radii</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">n_subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">draw_fiber_points</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">type_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">type_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -229,6 +237,7 @@
         <span class="n">n_subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">draw_fiber_points</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">type_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object contains custom simulation trajectory outputs</span>
@@ -239,7 +248,7 @@
 <span class="sd">        times : np.ndarray (shape = [timesteps])</span>
 <span class="sd">            A numpy ndarray containing the elapsed simulated time</span>
 <span class="sd">            at each timestep (in the units specified by</span>
-<span class="sd">            CustomData.time_units)</span>
+<span class="sd">            TrajectoryData.time_units)</span>
 <span class="sd">        n_agents : np.ndarray (shape = [timesteps])</span>
 <span class="sd">            A numpy ndarray containing the number of agents</span>
 <span class="sd">            that exist at each timestep</span>
@@ -257,7 +266,7 @@
 <span class="sd">        positions : np.ndarray (shape = [timesteps, agents, 3])</span>
 <span class="sd">            A numpy ndarray containing the XYZ position</span>
 <span class="sd">            for each agent at each timestep (in the units</span>
-<span class="sd">            specified by CustomData.spatial_units)</span>
+<span class="sd">            specified by TrajectoryData.spatial_units)</span>
 <span class="sd">        radii : np.ndarray (shape = [timesteps, agents])</span>
 <span class="sd">            A numpy ndarray containing the radius</span>
 <span class="sd">            for each agent at each timestep</span>
@@ -285,7 +294,277 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">radii</span> <span class="o">=</span> <span class="n">radii</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">n_subpoints</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">subpoints</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span> <span class="o">=</span> <span class="n">draw_fiber_points</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span> <span class="o">=</span> <span class="n">draw_fiber_points</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_ids</span> <span class="o">=</span> <span class="n">type_ids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_mapping</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_buffer_data_dimensions</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="n">bundle_data</span> <span class="o">=</span> <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;spatialData&quot;</span><span class="p">][</span><span class="s2">&quot;bundleData&quot;</span><span class="p">]</span>
+        <span class="n">total_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bundle_data</span><span class="p">)</span>
+        <span class="n">max_n_agents</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_n_subpoints</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">bundle_data</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">n_agents</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+                <span class="c1"># a new agent should start at this index</span>
+                <span class="n">n_agents</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">NSP_INDEX</span>
+                <span class="c1"># get the number of subpoints</span>
+                <span class="n">n_sp</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">n_sp</span> <span class="o">&gt;</span> <span class="n">max_n_subpoints</span><span class="p">:</span>
+                    <span class="n">max_n_subpoints</span> <span class="o">=</span> <span class="n">n_sp</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span>
+                    <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="o">+</span> <span class="p">(</span>
+                        <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">VALUES_PER_AGENT</span>
+                        <span class="o">-</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">NSP_INDEX</span>
+                        <span class="o">-</span> <span class="mi">1</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_agents</span> <span class="o">&gt;</span> <span class="n">max_n_agents</span><span class="p">:</span>
+                <span class="n">max_n_agents</span> <span class="o">=</span> <span class="n">n_agents</span>
+        <span class="k">return</span> <span class="n">total_steps</span><span class="p">,</span> <span class="n">max_n_agents</span><span class="p">,</span> <span class="n">max_n_subpoints</span>
+
+<div class="viewcode-block" id="AgentData.get_type_ids_and_mapping"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.get_type_ids_and_mapping">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_type_ids_and_mapping</span><span class="p">(</span>
+        <span class="n">type_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">type_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate the type_ids array from the type_names list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">total_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">type_names</span><span class="p">)</span>
+        <span class="n">max_agents</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">type_names</span><span class="p">)):</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">type_names</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">max_agents</span><span class="p">:</span>
+                <span class="n">max_agents</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="n">use_existing_ids</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">type_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">type_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">type_names</span><span class="p">),</span> <span class="n">max_agents</span><span class="p">))</span>
+            <span class="n">use_existing_ids</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">type_name_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">type_id_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">last_tid</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">type_names</span><span class="p">[</span><span class="n">t</span><span class="p">])):</span>
+                <span class="k">if</span> <span class="n">type_names</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">type_id_mapping</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">use_existing_ids</span><span class="p">:</span>
+                        <span class="n">tid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">tid</span> <span class="o">=</span> <span class="n">last_tid</span>
+                        <span class="n">last_tid</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">type_id_mapping</span><span class="p">[</span><span class="n">type_names</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tid</span>
+                    <span class="n">type_name_mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">tid</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">type_names</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]}</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">use_existing_ids</span><span class="p">:</span>
+                    <span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_id_mapping</span><span class="p">[</span><span class="n">type_names</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">type_ids</span><span class="p">,</span> <span class="n">type_name_mapping</span></div>
+
+<div class="viewcode-block" id="AgentData.get_type_names"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.get_type_names">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_type_names</span><span class="p">(</span>
+        <span class="n">type_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">type_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate the type_names list from the type_ids array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">type_ids</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">]))):</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">type_mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]))][</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="AgentData.from_buffer_data"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.from_buffer_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_buffer_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">buffer_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create AgentData from a simularium JSON dict containing buffers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bundle_data</span> <span class="o">=</span> <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;spatialData&quot;</span><span class="p">][</span><span class="s2">&quot;bundleData&quot;</span><span class="p">]</span>
+        <span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="n">max_subpoints</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">_get_buffer_data_dimensions</span><span class="p">(</span>
+            <span class="n">buffer_data</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;original dim = </span><span class="si">{</span><span class="n">total_steps</span><span class="si">}</span><span class="s2"> timesteps X &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">max_agents</span><span class="si">}</span><span class="s2"> agents X </span><span class="si">{</span><span class="n">max_subpoints</span><span class="si">}</span><span class="s2"> subpoints&quot;</span>
+        <span class="p">)</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">total_steps</span><span class="p">)</span>
+        <span class="n">n_agents</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">total_steps</span><span class="p">)</span>
+        <span class="n">viz_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
+        <span class="n">unique_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
+        <span class="n">type_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
+        <span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
+        <span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="n">max_subpoints</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
+            <span class="n">times</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">bundle_data</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;time&quot;</span><span class="p">]</span>
+            <span class="n">frame_data</span> <span class="o">=</span> <span class="n">bundle_data</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">while</span> <span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">NSP_INDEX</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">frame_data</span><span class="p">):</span>
+                <span class="c1"># a new agent should start at this index</span>
+                <span class="n">viz_types</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_data</span><span class="p">[</span>
+                    <span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">VIZ_TYPE_INDEX</span>
+                <span class="p">]</span>
+                <span class="n">unique_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">UID_INDEX</span><span class="p">]</span>
+                <span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">TID_INDEX</span><span class="p">]</span>
+                <span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">POSX_INDEX</span><span class="p">],</span>
+                    <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">POSY_INDEX</span><span class="p">],</span>
+                    <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">POSZ_INDEX</span><span class="p">],</span>
+                <span class="p">]</span>
+                <span class="n">radii</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">R_INDEX</span><span class="p">]</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">NSP_INDEX</span>
+                <span class="c1"># get the subpoints</span>
+                <span class="k">if</span> <span class="n">max_subpoints</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span>
+                        <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">SP_INDEX</span>
+                        <span class="o">-</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">NSP_INDEX</span>
+                    <span class="p">)</span>
+                    <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">continue</span>
+                <span class="n">n_subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">frame_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">frame_data</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+                    <span class="n">subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">p</span><span class="p">][</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span>
+                    <span class="n">d</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
+                        <span class="n">p</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span>
+                    <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="o">+</span> <span class="p">(</span>
+                        <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">SP_INDEX</span>
+                        <span class="o">-</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">NSP_INDEX</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="n">type_names</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">get_type_names</span><span class="p">(</span>
+            <span class="n">type_ids</span><span class="p">,</span> <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;typeMapping&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
+            <span class="n">n_agents</span><span class="o">=</span><span class="n">n_agents</span><span class="p">,</span>
+            <span class="n">viz_types</span><span class="o">=</span><span class="n">viz_types</span><span class="p">,</span>
+            <span class="n">unique_ids</span><span class="o">=</span><span class="n">unique_ids</span><span class="p">,</span>
+            <span class="n">types</span><span class="o">=</span><span class="n">type_names</span><span class="p">,</span>
+            <span class="n">positions</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span>
+            <span class="n">radii</span><span class="o">=</span><span class="n">radii</span><span class="p">,</span>
+            <span class="n">n_subpoints</span><span class="o">=</span><span class="n">n_subpoints</span><span class="p">,</span>
+            <span class="n">subpoints</span><span class="o">=</span><span class="n">subpoints</span><span class="p">,</span>
+            <span class="n">draw_fiber_points</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">type_ids</span><span class="o">=</span><span class="n">type_ids</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="AgentData.append_agents"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.append_agents">[docs]</a>    <span class="k">def</span> <span class="nf">append_agents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_agents</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Concatenate the new AgentData with the current data,</span>
+<span class="sd">        generate new unique IDs and type IDs as needed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get dimensions</span>
+        <span class="n">total_steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">new_total_steps</span> <span class="o">=</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">size</span>
+        <span class="k">if</span> <span class="n">new_total_steps</span> <span class="o">!=</span> <span class="n">total_steps</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span>
+                <span class="s2">&quot;Timestep in data to add differs from existing: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;new data has </span><span class="si">{</span><span class="n">new_total_steps</span><span class="si">}</span><span class="s2"> steps, while &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;existing data has </span><span class="si">{</span><span class="n">total_steps</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">max_agents</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">))</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">new_agents</span><span class="o">.</span><span class="n">n_agents</span><span class="p">))</span>
+        <span class="c1"># add agents</span>
+        <span class="n">n_agents</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">n_agents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">viz_types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">viz_types</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">viz_types</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">unique_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">type_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">positions</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">radii</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">new_agents</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">subpoints</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">new_agents</span><span class="o">.</span><span class="n">subpoints</span><span class="p">)</span>
+        <span class="c1"># generate new unique IDs and type IDs so they don&#39;t overlap</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">type_ids</span><span class="p">,</span> <span class="n">tm</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">get_type_ids_and_mapping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">type_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_agents</span><span class="o">.</span><span class="n">type_ids</span><span class="p">,</span> <span class="n">tm</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">get_type_ids_and_mapping</span><span class="p">(</span>
+                <span class="n">new_agents</span><span class="o">.</span><span class="n">types</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_mapping</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">used_uids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">))</span>
+        <span class="n">new_uids</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">types</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+            <span class="n">n_a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_a</span><span class="p">):</span>
+                <span class="n">unique_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+                <span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+                <span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">])</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">n_a</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">new_agents</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_a</span><span class="p">):</span>
+                <span class="n">raw_uid</span> <span class="o">=</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">raw_uid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new_uids</span><span class="p">:</span>
+                    <span class="n">uid</span> <span class="o">=</span> <span class="n">raw_uid</span>
+                    <span class="k">while</span> <span class="n">uid</span> <span class="ow">in</span> <span class="n">used_uids</span><span class="p">:</span>
+                        <span class="n">uid</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">new_uids</span><span class="p">[</span><span class="n">raw_uid</span><span class="p">]</span> <span class="o">=</span> <span class="n">uid</span>
+                    <span class="n">used_uids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uid</span><span class="p">)</span>
+                <span class="n">unique_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_uids</span><span class="p">[</span><span class="n">raw_uid</span><span class="p">]</span>
+                <span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+                <span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_agents</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">])</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unique_ids</span> <span class="o">=</span> <span class="n">unique_ids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="n">types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_ids</span> <span class="o">=</span> <span class="n">type_ids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span> <span class="o">=</span> <span class="n">n_agents</span></div>
+
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)()</span>
+        <span class="n">result</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">type_ids</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">type_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type_ids</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n_subpoints</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">subpoints</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
+            <span class="n">times</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">),</span>
+            <span class="n">n_agents</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">),</span>
+            <span class="n">viz_types</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viz_types</span><span class="p">),</span>
+            <span class="n">unique_ids</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">),</span>
+            <span class="n">types</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">positions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">),</span>
+            <span class="n">radii</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">),</span>
+            <span class="n">n_subpoints</span><span class="o">=</span><span class="n">n_subpoints</span><span class="p">,</span>
+            <span class="n">subpoints</span><span class="o">=</span><span class="n">subpoints</span><span class="p">,</span>
+            <span class="n">draw_fiber_points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span><span class="p">,</span>
+            <span class="n">type_ids</span><span class="o">=</span><span class="n">type_ids</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
 </pre></div>
 
            </div>

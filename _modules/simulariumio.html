@@ -100,6 +100,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../simulariumio.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../simulariumio.filters.html">simulariumio.filters package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../simulariumio.physicell.html">simulariumio.physicell package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../simulariumio.readdy.html">simulariumio.readdy package</a></li>
@@ -107,9 +108,9 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../simulariumio.html#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../simulariumio.html#module-simulariumio.converter">simulariumio.converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../simulariumio.html#module-simulariumio.custom_converter">simulariumio.custom_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../simulariumio.html#module-simulariumio">Module contents</a></li>
 </ul>
 </li>
@@ -202,10 +203,11 @@
     <span class="k">return</span> <span class="n">__version__</span></div>
 
 
-<span class="kn">from</span> <span class="nn">.custom_converter</span> <span class="kn">import</span> <span class="n">CustomConverter</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">from</span> <span class="nn">.trajectory_converter</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span>  <span class="c1"># noqa: F401</span>
+<span class="kn">from</span> <span class="nn">.file_converter</span> <span class="kn">import</span> <span class="n">FileConverter</span>  <span class="c1"># noqa: F401</span>
 
 <span class="kn">from</span> <span class="nn">.data_objects</span> <span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa: F401</span>
-    <span class="n">CustomData</span><span class="p">,</span>
+    <span class="n">TrajectoryData</span><span class="p">,</span>
     <span class="n">AgentData</span><span class="p">,</span>
     <span class="n">UnitData</span><span class="p">,</span>
     <span class="n">ScatterPlotData</span><span class="p">,</span>
