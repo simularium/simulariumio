@@ -90,3 +90,12 @@ class MetaData:
                 ]
             ),
         )
+
+    def __deepcopy__(self, memo):
+        result = type(self)(
+            box_size=np.copy(self.box_size),
+            default_camera_position=np.copy(self.default_camera_position),
+            default_camera_rotation=np.copy(self.default_camera_rotation),
+            scale_factor=self.scale_factor,
+        )
+        return result

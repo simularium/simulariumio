@@ -340,11 +340,6 @@ class AgentData:
         self.type_ids = type_ids
         self.n_agents = n_agents
 
-    def __copy__(self):
-        result = type(self)()
-        result.__dict__.update(self.__dict__)
-        return result
-
     def __deepcopy__(self, memo):
         if self.type_ids is None:
             type_ids = None

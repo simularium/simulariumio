@@ -78,14 +78,9 @@ class TrajectoryData:
             plots=buffer_data["plotData"]["data"],
         )
 
-    def __copy__(self):
-        result = type(self)()
-        result.__dict__.update(self.__dict__)
-        return result
-
     def __deepcopy__(self, memo):
         result = type(self)(
-            box_size=np.copy(self.box_size),
+            meta_data=copy.deepcopy(self.meta_data, memo),
             agent_data=copy.deepcopy(self.agent_data, memo),
             time_units=copy.copy(self.time_units),
             spatial_units=copy.copy(self.spatial_units),
