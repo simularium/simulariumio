@@ -19,7 +19,6 @@ from .data_objects import (
     ScatterPlotData,
     AgentData,
     TrajectoryData,
-    UnitData,
 )
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
