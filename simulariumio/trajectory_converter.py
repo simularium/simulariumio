@@ -5,6 +5,7 @@ import json
 import logging
 from typing import Any, Dict, List
 import math
+import copy
 
 import numpy as np
 
@@ -340,10 +341,8 @@ class TrajectoryConverter:
 
     def add_number_of_agents_plot(
         self,
-        agent_data: AgentData = None,
         plot_title: str = "Number of agents over time",
         yaxis_title: str = "Number of agents",
-        time_units: UnitData = UnitData("s"),
     ):
         """
         Add a scatterplot of the number of each type of agent over time
@@ -354,24 +353,24 @@ class TrajectoryConverter:
             The data shaped as an AgentData object
             Default: None (use the currently loaded data)
         """
-        if agent_data is None:
-            agent_data = self._data.agent_data
         n_agents = {}
-        type_mapping = agent_data.get_type_mapping()
-        for t in range(agent_data.times.size):
-            for n in range(int(agent_data.n_agents[t])):
-                type_name = type_mapping[str(int(agent_data.type_ids[t][n]))]["name"]
+        type_mapping = self._data.agent_data.get_type_mapping()
+        for t in range(self._data.agent_data.times.size):
+            for n in range(int(self._data.agent_data.n_agents[t])):
+                type_name = type_mapping[
+                    str(int(self._data.agent_data.type_ids[t][n]))
+                ]["name"]
                 if "#" in type_name:
                     type_name = type_name.split("#")[0]
                 if type_name not in n_agents:
-                    n_agents[type_name] = np.zeros_like(agent_data.times)
+                    n_agents[type_name] = np.zeros_like(self._data.agent_data.times)
                 n_agents[type_name][t] += 1
         self.add_plot(
             ScatterPlotData(
                 title=plot_title,
-                xaxis_title=f"Time ({time_units.to_string()})",
+                xaxis_title=f"Time ({self._data.time_units.to_string()})",
                 yaxis_title=yaxis_title,
-                xtrace=agent_data.times,
+                xtrace=self._data.agent_data.times,
                 ytraces=n_agents,
                 render_mode="lines",
             )
@@ -381,7 +380,7 @@ class TrajectoryConverter:
         """
         Return the simularium data with the given filter applied
         """
-        filtered_data = self._data
+        filtered_data = copy.deepcopy(self._data)
         for f in filters:
             filtered_data = f.apply(filtered_data)
         return filtered_data

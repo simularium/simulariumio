@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import copy
 from typing import Dict
 import logging
 
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import TrajectoryData, AgentData
+from ..data_objects import TrajectoryData
 
 ###############################################################################
 
@@ -67,22 +66,10 @@ class EveryNthSubpointFilter(Filter):
                         subpoints[t][n][i] = data.agent_data.subpoints[t][n][s]
                         i += 1
                 n_subpoints[t][n] = i
-        return TrajectoryData(
-            box_size=np.copy(data.box_size),
-            agent_data=AgentData(
-                times=np.copy(data.agent_data.times),
-                n_agents=np.copy(data.agent_data.n_agents),
-                viz_types=np.copy(data.agent_data.viz_types),
-                unique_ids=np.copy(data.agent_data.unique_ids),
-                types=copy.copy(data.agent_data.types),
-                positions=np.copy(data.agent_data.positions),
-                radii=np.copy(data.agent_data.radii),
-                n_subpoints=n_subpoints,
-                subpoints=subpoints,
-                draw_fiber_points=data.agent_data.draw_fiber_points,
-                type_ids=np.copy(data.agent_data.type_ids),
-            ),
-            time_units=copy.copy(data.time_units),
-            spatial_units=copy.copy(data.spatial_units),
-            plots=copy.copy(data.plots),
+        data.agent_data.n_subpoints = n_subpoints
+        data.agent_data.subpoints = subpoints
+        print(
+            f"filtered dims = {total_steps} timesteps X "
+            f"{max_agents} agents X {int(np.amax(n_subpoints))} subpoints"
         )
+        return data

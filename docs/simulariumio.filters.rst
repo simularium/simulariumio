@@ -44,6 +44,14 @@ simulariumio.filters.filter module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.filters.multiply\_space\_filter module
+---------------------------------------------------
+
+.. automodule:: simulariumio.filters.multiply_space_filter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.filters.multiply\_time\_filter module
 --------------------------------------------------
 
