@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import copy
 from typing import Dict
 import logging
 
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import TrajectoryData, AgentData, MetaData
+from ..data_objects import TrajectoryData
 
 ###############################################################################
 
@@ -73,8 +72,8 @@ class EveryNthAgentFilter(Filter):
                     continue
                 viz_types[t][i] = data.agent_data.viz_types[t][n]
                 unique_ids[t][i] = data.agent_data.unique_ids[t][n]
-                type_ids[t][i] = data.agent_data.type_ids[t][n]
                 types[t].append(data.agent_data.types[t][n])
+                type_ids[t][i] = data.agent_data.type_ids[t][n]
                 positions[t][i] = data.agent_data.positions[t][n]
                 radii[t][i] = data.agent_data.radii[t][n]
                 n_subpoints[t][i] = data.agent_data.n_subpoints[t][n]
@@ -83,31 +82,18 @@ class EveryNthAgentFilter(Filter):
                 ] = data.agent_data.subpoints[t][n]
                 i += 1
             n_agents[t] = i
-        max_subpoints = int(np.amax(data.agent_data.n_subpoints))
+        data.agent_data.n_agents = n_agents
+        data.agent_data.viz_types = viz_types
+        data.agent_data.unique_ids = unique_ids
+        data.agent_data.types = types
+        data.agent_data.type_ids = type_ids
+        data.agent_data.positions = positions
+        data.agent_data.radii = radii
+        data.agent_data.n_subpoints = n_subpoints
+        data.agent_data.subpoints = subpoints
         print(
             f"filtered dims = {total_steps} timesteps X "
-            f"{int(np.amax(n_agents))} agents X {max_subpoints} subpoint"
+            f"{int(np.amax(n_agents))} agents X "
+            f"{int(np.amax(data.agent_data.n_subpoints))} subpoints"
         )
-        return TrajectoryData(
-            meta_data=MetaData(
-                box_size=np.copy(data.meta_data.box_size),
-                default_camera_position=np.copy(data.meta_data.default_camera_position),
-                default_camera_rotation=np.copy(data.meta_data.default_camera_rotation),
-            ),
-            agent_data=AgentData(
-                times=np.copy(data.agent_data.times),
-                n_agents=n_agents,
-                viz_types=viz_types,
-                unique_ids=unique_ids,
-                types=types,
-                positions=positions,
-                radii=radii,
-                n_subpoints=n_subpoints,
-                subpoints=subpoints,
-                draw_fiber_points=data.agent_data.draw_fiber_points,
-                type_ids=type_ids,
-            ),
-            time_units=copy.copy(data.time_units),
-            spatial_units=copy.copy(data.spatial_units),
-            plots=copy.copy(data.plots),
-        )
+        return data

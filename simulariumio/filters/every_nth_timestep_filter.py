@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import copy
 import logging
 import math
 
 import numpy as np
 
-from ..data_objects import TrajectoryData, AgentData, MetaData
+from ..data_objects import TrajectoryData
 from .filter import Filter
 
 ###############################################################################
@@ -77,26 +76,18 @@ class EveryNthTimestepFilter(Filter):
                     : np.shape(data.agent_data.subpoints[t][n])[0]
                 ] = data.agent_data.subpoints[t][n]
             i += 1
-        return TrajectoryData(
-            meta_data=MetaData(
-                box_size=np.copy(data.meta_data.box_size),
-                default_camera_position=np.copy(data.meta_data.default_camera_position),
-                default_camera_rotation=np.copy(data.meta_data.default_camera_rotation),
-            ),
-            agent_data=AgentData(
-                times=times,
-                n_agents=n_agents,
-                viz_types=viz_types,
-                unique_ids=unique_ids,
-                types=types,
-                positions=positions,
-                radii=radii,
-                n_subpoints=n_subpoints,
-                subpoints=subpoints,
-                draw_fiber_points=data.agent_data.draw_fiber_points,
-                type_ids=type_ids,
-            ),
-            time_units=copy.copy(data.time_units),
-            spatial_units=copy.copy(data.spatial_units),
-            plots=copy.copy(data.plots),
+        data.agent_data.times = times
+        data.agent_data.n_agents = n_agents
+        data.agent_data.viz_types = viz_types
+        data.agent_data.unique_ids = unique_ids
+        data.agent_data.types = types
+        data.agent_data.type_ids = type_ids
+        data.agent_data.positions = positions
+        data.agent_data.radii = radii
+        data.agent_data.n_subpoints = n_subpoints
+        data.agent_data.subpoints = subpoints
+        print(
+            f"filtered dims = {times.shape[0]} timesteps X "
+            f"{max_agents} agents X {max_subpoints} subpoints"
         )
+        return data

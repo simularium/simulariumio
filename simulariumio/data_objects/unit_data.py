@@ -74,3 +74,10 @@ class UnitData:
             else ""
         )
         return f"{magnitude}{self.name}"
+
+    def __copy__(self):
+        result = type(self)(
+            name=self.name,
+            magnitude=self.magnitude,
+        )
+        return result
