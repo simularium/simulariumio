@@ -23,7 +23,7 @@ from simulariumio.cytosim import (
                     "fibers": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim"
                         "/3_fibers_3_frames/fiber_points.txt",
-                        agents={0: CytosimAgentInfo(name="fiber", radius=1e-3)},
+                        agents={0: CytosimAgentInfo(name="fiber", radius=0.001)},
                     )
                 },
                 scale_factor=1e3,
@@ -359,7 +359,7 @@ from simulariumio.cytosim import (
                     "bundleData": [
                         {
                             "frameNumber": 0,
-                            "time": 0.000,
+                            "time": 0.0,
                             "data": [
                                 1001.0,
                                 1.0,
@@ -615,7 +615,7 @@ from simulariumio.cytosim import (
                         },
                         {
                             "frameNumber": 1,
-                            "time": 0.050,
+                            "time": 0.05,
                             "data": [
                                 1001.0,
                                 1.0,
@@ -874,7 +874,7 @@ from simulariumio.cytosim import (
                         },
                         {
                             "frameNumber": 2,
-                            "time": 0.050,
+                            "time": 0.1,
                             "data": [
                                 1001.0,
                                 1.0,

@@ -19,6 +19,7 @@ class ScatterPlotReader(PlotReader):
         """
         Return an object containing the data shaped for Simularium format
         """
+        print("Reading Scatter Plot Data -------------")
         simularium_data = {}
         # layout info
         simularium_data["layout"] = {

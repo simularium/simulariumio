@@ -18,6 +18,7 @@ class HistogramPlotReader(PlotReader):
         """
         Return an object containing the data shaped for Simularium format
         """
+        print("Reading Histogram Data -------------")
         simularium_data = {}
         # layout info
         simularium_data["layout"] = {

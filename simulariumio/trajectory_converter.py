@@ -5,6 +5,7 @@ import json
 import logging
 from typing import Any, Dict, List
 import math
+import copy
 
 import numpy as np
 
@@ -68,6 +69,8 @@ class TrajectoryConverter:
         )
         if input_data.agent_data.type_ids is None:
             input_data.agent_data.type_ids = type_ids
+        if input_data.agent_data.type_mapping is None:
+            input_data.agent_data.type_mapping = type_name_mapping
         traj_info = {
             "version": 2,
             "timeUnits": {
@@ -89,7 +92,7 @@ class TrajectoryConverter:
                 "y": float(input_data.box_size[1]),
                 "z": float(input_data.box_size[2]),
             },
-            "typeMapping": type_name_mapping,
+            "typeMapping": input_data.agent_data.type_mapping,
         }
         simularium_data["trajectoryInfo"] = traj_info
         # spatial data
@@ -335,11 +338,44 @@ class TrajectoryConverter:
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data.plots.append(plot_reader_class().read(data))
 
+    def add_number_of_agents_plot(self):
+        """
+        Add a scatterplot of the number of each type of agent over time
+
+        Parameters
+        ----------
+        agent_data: AgentData
+            The data shaped as an AgentData object
+            Default: None (use the currently loaded data)
+        """
+        n_agents = {}
+        type_mapping = self._data.agent_data.get_type_mapping()
+        for t in range(self._data.agent_data.times.size):
+            for n in range(int(self._data.agent_data.n_agents[t])):
+                type_name = type_mapping[
+                    str(int(self._data.agent_data.type_ids[t][n]))
+                ]["name"]
+                if "#" in type_name:
+                    type_name = type_name.split("#")[0]
+                if type_name not in n_agents:
+                    n_agents[type_name] = np.zeros_like(self._data.agent_data.times)
+                n_agents[type_name][t] += 1
+        self.add_plot(
+            ScatterPlotData(
+                title="Number of agents over time",
+                xaxis_title=f"Time ({self._data.time_units.to_string()})",
+                yaxis_title="Number of agents",
+                xtrace=self._data.agent_data.times,
+                ytraces=n_agents,
+                render_mode="lines",
+            )
+        )
+
     def filter_data(self, filters: List[Filter]) -> TrajectoryData:
         """
         Return the simularium data with the given filter applied
         """
-        filtered_data = self._data
+        filtered_data = copy.deepcopy(self._data)
         for f in filters:
             filtered_data = f.apply(filtered_data)
         return filtered_data
