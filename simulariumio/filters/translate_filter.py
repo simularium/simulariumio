@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import copy
 from typing import Dict
 import logging
 
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import TrajectoryData, AgentData, MetaData
+from ..data_objects import TrajectoryData
 
 ###############################################################################
 
@@ -76,26 +75,6 @@ class TranslateFilter(Filter):
                         positions[t][n][d] = (
                             data.agent_data.positions[t][n][d] + translation[d]
                         )
-        return TrajectoryData(
-            meta_data=MetaData(
-                box_size=np.copy(data.meta_data.box_size),
-                default_camera_position=np.copy(data.meta_data.default_camera_position),
-                default_camera_rotation=np.copy(data.meta_data.default_camera_rotation),
-            ),
-            agent_data=AgentData(
-                times=np.copy(data.agent_data.times),
-                n_agents=np.copy(data.agent_data.n_agents),
-                viz_types=np.copy(data.agent_data.viz_types),
-                unique_ids=np.copy(data.agent_data.unique_ids),
-                types=copy.copy(data.agent_data.types),
-                positions=positions,
-                radii=np.copy(data.agent_data.radii),
-                n_subpoints=np.copy(data.agent_data.n_subpoints),
-                subpoints=subpoints,
-                draw_fiber_points=data.agent_data.draw_fiber_points,
-                type_ids=np.copy(data.agent_data.type_ids),
-            ),
-            time_units=copy.copy(data.time_units),
-            spatial_units=copy.copy(data.spatial_units),
-            plots=copy.copy(data.plots),
-        )
+        data.agent_data.positions = positions
+        data.agent_data.subpoints = subpoints
+        return data
