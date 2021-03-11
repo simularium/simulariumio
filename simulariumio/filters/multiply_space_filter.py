@@ -21,7 +21,7 @@ class MultiplySpaceFilter(Filter):
         multiplier: float,
     ):
         """
-        This filter multiplies spatial scale
+        This filter scales all spatial data by a supplied multiplier
 
         Parameters
         ----------

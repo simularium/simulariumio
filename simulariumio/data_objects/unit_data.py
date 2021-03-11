@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 import logging
 from pint import UnitRegistry
 
@@ -61,6 +62,18 @@ class UnitData:
         """
         self._quantity *= multiplier
         self._update_units()
+
+    def to_string(self):
+        """
+        get a string for the units
+        """
+        magnitude = (
+            str(self.magnitude) + " "
+            if self.magnitude > 1.0 + sys.float_info.epsilon
+            or self.magnitude < 1.0 - sys.float_info.epsilon
+            else ""
+        )
+        return f"{magnitude}{self.name}"
 
     def __copy__(self):
         result = type(self)(

@@ -338,7 +338,7 @@ class TrajectoryConverter:
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data.plots.append(plot_reader_class().read(data))
 
-    def add_number_of_agents_plot(self, agent_data: AgentData = None):
+    def add_number_of_agents_plot(self):
         """
         Add a scatterplot of the number of each type of agent over time
 
@@ -348,24 +348,24 @@ class TrajectoryConverter:
             The data shaped as an AgentData object
             Default: None (use the currently loaded data)
         """
-        if agent_data is None:
-            agent_data = self._data.agent_data
         n_agents = {}
-        type_mapping = agent_data.get_type_mapping()
-        for t in range(agent_data.times.size):
-            for n in range(int(agent_data.n_agents[t])):
-                type_name = type_mapping[str(int(agent_data.type_ids[t][n]))]["name"]
+        type_mapping = self._data.agent_data.get_type_mapping()
+        for t in range(self._data.agent_data.times.size):
+            for n in range(int(self._data.agent_data.n_agents[t])):
+                type_name = type_mapping[
+                    str(int(self._data.agent_data.type_ids[t][n]))
+                ]["name"]
                 if "#" in type_name:
                     type_name = type_name.split("#")[0]
                 if type_name not in n_agents:
-                    n_agents[type_name] = np.zeros_like(agent_data.times)
+                    n_agents[type_name] = np.zeros_like(self._data.agent_data.times)
                 n_agents[type_name][t] += 1
         self.add_plot(
             ScatterPlotData(
                 title="Number of agents over time",
-                xaxis_title="Time (s)",
+                xaxis_title=f"Time ({self._data.time_units.to_string()})",
                 yaxis_title="Number of agents",
-                xtrace=agent_data.times,
+                xtrace=self._data.agent_data.times,
                 ytraces=n_agents,
                 render_mode="lines",
             )

@@ -25,7 +25,8 @@ class MultiplyTimeFilter(Filter):
         apply_to_plots: bool = True,
     ):
         """
-        This filter multiplies time values
+        This filter scales the time-stamp values
+        for each simulation frame by a provided multiplier
 
         Parameters
         ----------
