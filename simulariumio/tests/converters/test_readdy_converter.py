@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.readdy import ReaddyConverter, ReaddyData
-from simulariumio import UnitData
+from simulariumio import UnitData, MetaData
 
 
 @pytest.mark.parametrize(
@@ -14,7 +14,9 @@ from simulariumio import UnitData
         # 4 particles 3 frames
         (
             ReaddyData(
-                box_size=np.array([20.0, 20.0, 20.0]),
+                meta_data=MetaData(
+                    box_size=np.array([20.0, 20.0, 20.0]),
+                ),
                 timestep=0.1,
                 path_to_readdy_h5="simulariumio/tests/data/readdy/test.h5",
                 radii={"C": 3.0, "A": 2.0, "B": 2.0},
@@ -37,6 +39,12 @@ from simulariumio import UnitData
                         "name": "nm",
                     },
                     "size": {"x": 20.0, "y": 20.0, "z": 20.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
+                        "upVector": {"x": 0, "y": 1, "z": 0},
+                        "fovDegrees": 50.0,
+                    },
                     "typeMapping": {"2": {"name": "C"}, "1": {"name": "B"}},
                 },
                 "spatialData": {
@@ -202,7 +210,7 @@ from simulariumio import UnitData
         )
     ],
 )
-def test_readdy_trajectory_reader(trajectory, expected_data):
+def test_readdy_converter(trajectory, expected_data):
     converter = ReaddyConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
     assert expected_data == buffer_data

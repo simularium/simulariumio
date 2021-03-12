@@ -10,6 +10,7 @@ from simulariumio.cytosim import (
     CytosimObjectInfo,
     CytosimAgentInfo,
 )
+from simulariumio import MetaData
 
 
 @pytest.mark.parametrize(
@@ -18,7 +19,10 @@ from simulariumio.cytosim import (
         # 3 fiber agents
         (
             CytosimData(
-                box_size=np.array([0.5, 0.5, 0.5]),
+                meta_data=MetaData(
+                    box_size=np.array([0.5, 0.5, 0.5]),
+                    scale_factor=1e3,
+                ),
                 object_info={
                     "fibers": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim"
@@ -26,7 +30,6 @@ from simulariumio.cytosim import (
                         agents={0: CytosimAgentInfo(name="fiber", radius=0.001)},
                     )
                 },
-                scale_factor=1e3,
             ),
             {
                 "trajectoryInfo": {
@@ -42,6 +45,12 @@ from simulariumio.cytosim import (
                         "name": "nm",
                     },
                     "size": {"x": 500.0, "y": 500.0, "z": 500.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
+                        "upVector": {"x": 0, "y": 1, "z": 0},
+                        "fovDegrees": 50.0,
+                    },
                     "typeMapping": {"0": {"name": "fiber"}},
                 },
                 "spatialData": {
@@ -292,7 +301,10 @@ from simulariumio.cytosim import (
         # aster_pull3D example with couples, actin fibers, and solids added
         (
             CytosimData(
-                box_size=np.array([2.0, 2.0, 2.0]),
+                meta_data=MetaData(
+                    box_size=np.array([2.0, 2.0, 2.0]),
+                    scale_factor=100.0,
+                ),
                 object_info={
                     "fibers": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
@@ -325,7 +337,6 @@ from simulariumio.cytosim import (
                         position_indices=[3, 4, 5],
                     ),
                 },
-                scale_factor=100.0,
             ),
             {
                 "trajectoryInfo": {
@@ -341,6 +352,12 @@ from simulariumio.cytosim import (
                         "name": "nm",
                     },
                     "size": {"x": 200.0, "y": 200.0, "z": 200.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
+                        "upVector": {"x": 0, "y": 1, "z": 0},
+                        "fovDegrees": 50.0,
+                    },
                     "typeMapping": {
                         "1": {"name": "microtubule"},
                         "2": {"name": "actin"},
@@ -1123,7 +1140,7 @@ from simulariumio.cytosim import (
         ),
     ],
 )
-def test_cytosim_trajectory_reader(trajectory, expected_data):
+def test_cytosim_converter(trajectory, expected_data):
     converter = CytosimConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
     assert expected_data == buffer_data

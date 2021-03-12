@@ -4,7 +4,13 @@
 import pytest
 import numpy as np
 
-from simulariumio import TrajectoryConverter, TrajectoryData, AgentData, UnitData
+from simulariumio import (
+    TrajectoryConverter,
+    TrajectoryData,
+    AgentData,
+    UnitData,
+    MetaData,
+)
 from simulariumio.tests.conftest import three_default_agents
 
 
@@ -29,6 +35,12 @@ from simulariumio.tests.conftest import three_default_agents
                         "name": "nm",
                     },
                     "size": {"x": 100.0, "y": 100.0, "z": 100.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
+                        "upVector": {"x": 0, "y": 1, "z": 0},
+                        "fovDegrees": 50.0,
+                    },
                     "typeMapping": {
                         "0": {"name": "C"},
                         "1": {"name": "U"},
@@ -171,7 +183,9 @@ from simulariumio.tests.conftest import three_default_agents
         # at given positions for 3 frames, no plots
         (
             TrajectoryData(
-                box_size=np.array([1000.0, 1000.0, 1000.0]),
+                meta_data=MetaData(
+                    box_size=np.array([1000.0, 1000.0, 1000.0]),
+                ),
                 agent_data=AgentData(
                     times=1.0 * np.array(list(range(3))),
                     n_agents=np.array(3 * [5]),
@@ -348,6 +362,12 @@ from simulariumio.tests.conftest import three_default_agents
                         "name": "µm",
                     },
                     "size": {"x": 1000.0, "y": 1000.0, "z": 1000.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
+                        "upVector": {"x": 0, "y": 1, "z": 0},
+                        "fovDegrees": 50.0,
+                    },
                     "typeMapping": {
                         "0": {"name": "H"},
                         "1": {"name": "A"},
@@ -632,7 +652,9 @@ from simulariumio.tests.conftest import three_default_agents
         # at given positions for 3 frames, no plots
         (
             TrajectoryData(
-                box_size=np.array([1000.0, 1000.0, 1000.0]),
+                meta_data=MetaData(
+                    box_size=np.array([1000.0, 1000.0, 1000.0]),
+                ),
                 agent_data=AgentData(
                     times=np.array([0.0, 1.00001, 2.00001]),
                     n_agents=np.array(3 * [3]),
@@ -728,6 +750,12 @@ from simulariumio.tests.conftest import three_default_agents
                         "name": "m",
                     },
                     "size": {"x": 1000.0, "y": 1000.0, "z": 1000.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
+                        "upVector": {"x": 0, "y": 1, "z": 0},
+                        "fovDegrees": 50.0,
+                    },
                     "typeMapping": {
                         "0": {"name": "H"},
                         "1": {"name": "A"},
@@ -1093,7 +1121,7 @@ from simulariumio.tests.conftest import three_default_agents
         ),
     ],
 )
-def test_custom_trajectory_reader(trajectory, expected_data):
+def test_trajectory_reader(trajectory, expected_data):
     converter = TrajectoryConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
     assert expected_data == buffer_data

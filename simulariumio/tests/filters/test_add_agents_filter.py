@@ -28,6 +28,12 @@ from simulariumio.tests.conftest import three_default_agents
                         "name": "nm",
                     },
                     "size": {"x": 100.0, "y": 100.0, "z": 100.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
+                        "upVector": {"x": 0, "y": 1, "z": 0},
+                        "fovDegrees": 50.0,
+                    },
                     "typeMapping": {
                         "0": {"name": "C"},
                         "1": {"name": "U"},
@@ -272,3 +278,4 @@ def test_add_agents_filter(trajectory, _filter, expected_data):
     filtered_data = converter.filter_data([_filter])
     buffer_data = converter._read_trajectory_data(filtered_data)
     assert expected_data == buffer_data
+    assert converter._check_agent_ids_are_unique_per_frame(buffer_data)

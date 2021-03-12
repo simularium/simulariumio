@@ -28,6 +28,12 @@ from simulariumio.filters import MultiplySpaceFilter
                         "name": "nm",
                     },
                     "size": {"x": 2000.0, "y": 2000.0, "z": 2000.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
+                        "upVector": {"x": 0, "y": 1, "z": 0},
+                        "fovDegrees": 50.0,
+                    },
                     "typeMapping": {
                         "1": {"name": "microtubule"},
                         "7": {"name": "motor complex"},

@@ -67,7 +67,7 @@ class TransformSpatialAxesFilter(Filter):
         """
         print(f"Filtering: transform spatial axes {self.axes_mapping} -------------")
         # box size
-        box_size = self._transform_coordinate(data.box_size, False)
+        box_size = self._transform_coordinate(data.meta_data.box_size, False)
         # get dimensions
         total_steps = data.agent_data.times.size
         max_agents = int(np.amax(data.agent_data.n_agents))
@@ -85,7 +85,7 @@ class TransformSpatialAxesFilter(Filter):
                         subpoints[t][n][s] = self._transform_coordinate(
                             data.agent_data.subpoints[t][n][s]
                         )
-        data.box_size = box_size
+        data.meta_data.box_size = box_size
         data.agent_data.positions = positions
         data.agent_data.subpoints = subpoints
         return data

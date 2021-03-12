@@ -37,7 +37,7 @@ class MultiplySpaceFilter(Filter):
         print(
             f"Filtering: multiplying spatial scale by {self.multiplier} -------------"
         )
-        data.box_size = self.multiplier * data.box_size
+        data.meta_data.box_size = self.multiplier * data.meta_data.box_size
         data.agent_data.positions = self.multiplier * data.agent_data.positions
         data.agent_data.radii = self.multiplier * data.agent_data.radii
         data.agent_data.subpoints = self.multiplier * data.agent_data.subpoints

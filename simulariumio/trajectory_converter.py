@@ -43,14 +43,14 @@ class TrajectoryConverter:
 
     def __init__(self, input_data: TrajectoryData):
         """
-        This object reads custom simulation trajectory outputs
+        This object reads simulation trajectory outputs
         and plot data and writes them in the JSON format used
         by the Simularium viewer
 
         Parameters
         ----------
         input_data : TrajectoryData
-            An object containing custom simulation trajectory outputs
+            An object containing simulation trajectory outputs
             and plot data
         """
         self._data = input_data
@@ -60,7 +60,7 @@ class TrajectoryConverter:
         """
         Return an object containing the data shaped for Simularium format
         """
-        print("Reading Custom Data -------------")
+        print("Reading Trajectory Data -------------")
         simularium_data = {}
         # trajectory info
         totalSteps = input_data.agent_data.times.size
@@ -88,9 +88,33 @@ class TrajectoryConverter:
                 "name": input_data.spatial_units.name,
             },
             "size": {
-                "x": float(input_data.box_size[0]),
-                "y": float(input_data.box_size[1]),
-                "z": float(input_data.box_size[2]),
+                "x": float(input_data.meta_data.box_size[0]),
+                "y": float(input_data.meta_data.box_size[1]),
+                "z": float(input_data.meta_data.box_size[2]),
+            },
+            "cameraDefault": {
+                "position": {
+                    "x": float(input_data.meta_data.camera_defaults.position[0]),
+                    "y": float(input_data.meta_data.camera_defaults.position[1]),
+                    "z": float(input_data.meta_data.camera_defaults.position[2]),
+                },
+                "lookAtPosition": {
+                    "x": float(
+                        input_data.meta_data.camera_defaults.look_at_position[0]
+                    ),
+                    "y": float(
+                        input_data.meta_data.camera_defaults.look_at_position[1]
+                    ),
+                    "z": float(
+                        input_data.meta_data.camera_defaults.look_at_position[2]
+                    ),
+                },
+                "upVector": {
+                    "x": float(input_data.meta_data.camera_defaults.up_vector[0]),
+                    "y": float(input_data.meta_data.camera_defaults.up_vector[1]),
+                    "z": float(input_data.meta_data.camera_defaults.up_vector[2]),
+                },
+                "fovDegrees": float(input_data.meta_data.camera_defaults.fov_degrees),
             },
             "typeMapping": input_data.agent_data.type_mapping,
         }
@@ -338,7 +362,11 @@ class TrajectoryConverter:
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data.plots.append(plot_reader_class().read(data))
 
-    def add_number_of_agents_plot(self):
+    def add_number_of_agents_plot(
+        self,
+        plot_title: str = "Number of agents over time",
+        yaxis_title: str = "Number of agents",
+    ):
         """
         Add a scatterplot of the number of each type of agent over time
 
@@ -362,9 +390,9 @@ class TrajectoryConverter:
                 n_agents[type_name][t] += 1
         self.add_plot(
             ScatterPlotData(
-                title="Number of agents over time",
+                title=plot_title,
                 xaxis_title=f"Time ({self._data.time_units.to_string()})",
-                yaxis_title="Number of agents",
+                yaxis_title=yaxis_title,
                 xtrace=self._data.agent_data.times,
                 ytraces=n_agents,
                 render_mode="lines",

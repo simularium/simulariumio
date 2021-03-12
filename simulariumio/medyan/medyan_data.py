@@ -4,7 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-from .cytosim_object_info import CytosimObjectInfo
+from .medyan_agent_info import MedyanAgentInfo
 from ..data_objects import MetaData
 
 ###############################################################################
@@ -14,35 +14,43 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class CytosimData:
+class MedyanData:
     meta_data: MetaData
-    object_info: Dict[str, CytosimObjectInfo]
+    path_to_snapshot: str
+    agent_info: Dict[str, Dict[int, MedyanAgentInfo]]
     draw_fiber_points: bool
     plots: List[Dict[str, Any]]
 
     def __init__(
         self,
         meta_data: MetaData,
-        object_info: Dict[str, CytosimObjectInfo],
+        path_to_snapshot: str,
+        filament_agent_info: Dict[int, MedyanAgentInfo] = {},
+        linker_agent_info: Dict[int, MedyanAgentInfo] = {},
+        motor_agent_info: Dict[int, MedyanAgentInfo] = {},
         draw_fiber_points: bool = False,
-        scale_factor: float = 1.0,
         plots: List[Dict[str, Any]] = [],
     ):
         """
         This object holds simulation trajectory outputs
-        from CytoSim (https://gitlab.com/f.nedelec/cytosim)
-        and plot data
+        from MEDYAN (http://medyan.org/) and plot data
 
         Parameters
         ----------
         meta_data : MetaData
             An object containing metadata for the trajectory
             including box size, scale factor, and camera defaults
-        object_info : Dict[str, CytosimObjectInfo]
-            A dict mapping Cytosim object type
-            (either "fibers", "solids", "singles", or "couples")
-            to info for reading the Cytosim data for agents
-            of that object type
+        path_to_snapshot : string
+            A string path to the MEDYAN snapshot.traj output file
+        filament_agent_info : Dict[int, MedyanAgentInfo] (optional)
+            A dict mapping MEDYAN type ID for filaments
+            to info (name, radius) for filament agents
+        linker_agent_info : Dict[int, MedyanAgentInfo] (optional)
+            A dict mapping MEDYAN type ID for linkers
+            to info (name, radius) for linker agents
+        motor_agent_info : Dict[int, MedyanAgentInfo] (optional)
+            A dict mapping MEDYAN type ID for motors
+            to info (name, radius) for motor agents
         draw_fiber_points : bool (optional)
             (only used for fibers)
             in addition to drawing a line for each fiber,
@@ -53,6 +61,11 @@ class CytosimData:
             in Simularium format
         """
         self.meta_data = meta_data
-        self.object_info = object_info
+        self.path_to_snapshot = path_to_snapshot
+        self.agent_info = {
+            "filament": filament_agent_info,
+            "linker": linker_agent_info,
+            "motor": motor_agent_info,
+        }
         self.draw_fiber_points = draw_fiber_points
         self.plots = plots

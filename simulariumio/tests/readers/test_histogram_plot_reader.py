@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from simulariumio import HistogramPlotData, UnitData
+from simulariumio import HistogramPlotData, UnitData, MetaData
 from simulariumio.readdy import ReaddyConverter, ReaddyData
 
 
@@ -14,7 +14,9 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
         (
             # histogram plot with multiple traces
             ReaddyData(
-                box_size=np.array([20.0, 20.0, 20.0]),
+                meta_data=MetaData(
+                    box_size=np.array([20.0, 20.0, 20.0]),
+                ),
                 timestep=0.1,
                 path_to_readdy_h5="simulariumio/tests/data/readdy/test.h5",
                 radii={"C": 3.0, "A": 2.0, "B": 2.0},
