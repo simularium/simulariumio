@@ -12,6 +12,14 @@ simulariumio.data\_objects.agent\_data module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.data\_objects.camera\_data module
+----------------------------------------------
+
+.. automodule:: simulariumio.data_objects.camera_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.data\_objects.histogram\_plot\_data module
 -------------------------------------------------------
 

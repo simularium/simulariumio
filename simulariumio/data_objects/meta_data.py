@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import copy
 import logging
 from typing import Any, Dict
 
 import numpy as np
+
+from .camera_data import CameraData
 
 ###############################################################################
 
@@ -15,15 +18,13 @@ log = logging.getLogger(__name__)
 
 class MetaData:
     box_size: np.ndarray
-    default_camera_position: np.ndarray
-    default_camera_rotation: np.ndarray
+    camera_defaults: CameraData
     scale_factor: float
 
     def __init__(
         self,
         box_size: np.ndarray,
-        default_camera_position: np.ndarray = np.array([0.0, 0.0, 120.0]),
-        default_camera_rotation: np.ndarray = np.zeros(3),
+        camera_defaults: CameraData = CameraData(),
         scale_factor: float = 1.0,
     ):
         """
@@ -34,22 +35,22 @@ class MetaData:
         box_size : np.ndarray (shape = [3])
             A numpy ndarray containing the XYZ dimensions
             of the simulation bounding volume
-        default_camera_position: np.ndarray (shape = [3]) (optional)
-            camera's initial position
+        camera_defaults: CameraData (optional)
+            camera's initial settings
             which it also returns to when reset
-            Default: np.array([0.0, 0.0, 120.0])
-        default_camera_rotation: np.ndarray (shape = [3]) (optional)
-            camera's initial rotation
-            which it also returns to when reset
-            Default: np.zeros(3)
+            Default: CameraData(
+                position=[0,0,120],
+                look_at_position=[0,0,0],
+                up_vector=[0,1,0],
+                fov_degrees=50
+            )
         scale_factor : float (optional)
             A multiplier for the scene, use if
             visualization is too large or small
             Default: 1.0
         """
         self.box_size = box_size
-        self.default_camera_position = default_camera_position
-        self.default_camera_rotation = default_camera_rotation
+        self.camera_defaults = camera_defaults
         self.scale_factor = scale_factor
 
     @classmethod
@@ -63,39 +64,13 @@ class MetaData:
                     float(buffer_data["trajectoryInfo"]["size"]["z"]),
                 ]
             ),
-            default_camera_position=np.array(
-                [
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["position"]["x"]
-                    ),
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["position"]["y"]
-                    ),
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["position"]["z"]
-                    ),
-                ]
-            ),
-            default_camera_rotation=np.array(
-                [
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["rotation"]["x"]
-                    ),
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["rotation"]["y"]
-                    ),
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["rotation"]["z"]
-                    ),
-                ]
-            ),
+            camera_defaults=CameraData.from_buffer_data(buffer_data),
         )
 
     def __deepcopy__(self, memo):
         result = type(self)(
             box_size=np.copy(self.box_size),
-            default_camera_position=np.copy(self.default_camera_position),
-            default_camera_rotation=np.copy(self.default_camera_rotation),
+            camera_defaults=copy.deepcopy(self.camera_defaults, memo),
             scale_factor=self.scale_factor,
         )
         return result

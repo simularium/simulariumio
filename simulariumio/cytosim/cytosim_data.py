@@ -4,8 +4,6 @@
 import logging
 from typing import Any, Dict, List
 
-import numpy as np
-
 from .cytosim_object_info import CytosimObjectInfo
 from ..data_objects import MetaData
 
@@ -28,8 +26,6 @@ class CytosimData:
         object_info: Dict[str, CytosimObjectInfo],
         draw_fiber_points: bool = False,
         scale_factor: float = 1.0,
-        default_camera_position: np.ndarray = np.array([0.0, 0.0, 120.0]),
-        default_camera_rotation: np.ndarray = np.zeros(3),
         plots: List[Dict[str, Any]] = [],
     ):
         """

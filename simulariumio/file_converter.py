@@ -44,6 +44,7 @@ class FileConverter(TrajectoryConverter):
         to match the current version
         """
         if int(data["trajectoryInfo"]["version"]) == 1:
+            # units
             if "spatialUnitFactorMeters" in data["trajectoryInfo"]:
                 spatial_units = UnitData(
                     "m", data["trajectoryInfo"]["spatialUnitFactorMeters"]
@@ -63,7 +64,9 @@ class FileConverter(TrajectoryConverter):
             # default camera transform
             data["trajectoryInfo"]["cameraDefault"] = {
                 "position": {"x": 0, "y": 0, "z": 120},
-                "rotation": {"x": 0, "y": 0, "z": 0},
+                "lookAtPosition": {"x": 0, "y": 0, "z": 0},
+                "upVector": {"x": 0, "y": 1, "z": 0},
+                "fovDegrees": 50.0,
             }
             data["trajectoryInfo"]["version"] = 2
         print(f"Updated TrajectoryInfo v1 -> v{self.current_trajectory_info_version}")

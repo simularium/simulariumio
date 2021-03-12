@@ -94,15 +94,27 @@ class TrajectoryConverter:
             },
             "cameraDefault": {
                 "position": {
-                    "x": float(input_data.meta_data.default_camera_position[0]),
-                    "y": float(input_data.meta_data.default_camera_position[1]),
-                    "z": float(input_data.meta_data.default_camera_position[2]),
+                    "x": float(input_data.meta_data.camera_defaults.position[0]),
+                    "y": float(input_data.meta_data.camera_defaults.position[1]),
+                    "z": float(input_data.meta_data.camera_defaults.position[2]),
                 },
-                "rotation": {
-                    "x": float(input_data.meta_data.default_camera_rotation[0]),
-                    "y": float(input_data.meta_data.default_camera_rotation[1]),
-                    "z": float(input_data.meta_data.default_camera_rotation[2]),
+                "lookAtPosition": {
+                    "x": float(
+                        input_data.meta_data.camera_defaults.look_at_position[0]
+                    ),
+                    "y": float(
+                        input_data.meta_data.camera_defaults.look_at_position[1]
+                    ),
+                    "z": float(
+                        input_data.meta_data.camera_defaults.look_at_position[2]
+                    ),
                 },
+                "upVector": {
+                    "x": float(input_data.meta_data.camera_defaults.up_vector[0]),
+                    "y": float(input_data.meta_data.camera_defaults.up_vector[1]),
+                    "z": float(input_data.meta_data.camera_defaults.up_vector[2]),
+                },
+                "fovDegrees": float(input_data.meta_data.camera_defaults.fov_degrees),
             },
             "typeMapping": input_data.agent_data.type_mapping,
         }

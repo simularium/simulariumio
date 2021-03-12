@@ -237,8 +237,7 @@ class MedyanConverter(TrajectoryConverter):
             meta_data=MetaData(
                 box_size=input_data.meta_data.scale_factor
                 * input_data.meta_data.box_size,
-                default_camera_position=input_data.meta_data.default_camera_position,
-                default_camera_rotation=input_data.meta_data.default_camera_rotation,
+                camera_defaults=input_data.meta_data.camera_defaults,
             ),
             agent_data=agent_data,
             time_units=time_units,
