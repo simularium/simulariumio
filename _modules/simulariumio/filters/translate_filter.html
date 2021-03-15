@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>simulariumio.filters.transform_spatial_axes_filter &mdash; Simularium Conversion 1.0.1 documentation</title>
+  <title>simulariumio.filters.translate_filter &mdash; Simularium Conversion 1.0.1 documentation</title>
   
 
   
@@ -175,7 +175,7 @@
         
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
         
-      <li>simulariumio.filters.transform_spatial_axes_filter</li>
+      <li>simulariumio.filters.translate_filter</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -190,18 +190,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for simulariumio.filters.transform_spatial_axes_filter</h1><div class="highlight"><pre>
+  <h1>Source code for simulariumio.filters.translate_filter</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">.filter</span> <span class="kn">import</span> <span class="n">Filter</span>
 <span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span>
-<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">DataError</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -210,57 +209,37 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="TransformSpatialAxesFilter"><a class="viewcode-back" href="../../../simulariumio.filters.html#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter">[docs]</a><span class="k">class</span> <span class="nc">TransformSpatialAxesFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
-    <span class="n">axes_mapping</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<div class="viewcode-block" id="TranslateFilter"><a class="viewcode-back" href="../../../simulariumio.filters.html#simulariumio.filters.translate_filter.TranslateFilter">[docs]</a><span class="k">class</span> <span class="nc">TranslateFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
+    <span class="n">translation_per_type_id</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+    <span class="n">default_translation</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">axes_mapping</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">translation_per_type_id</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
+        <span class="n">default_translation</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This filter transforms spatial axes</span>
-<span class="sd">        to rotate and/or reflect the scene</span>
+<span class="sd">        This object contains parameters for translating 3D positions</span>
 <span class="sd">        in each frame of simularium data</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        axes_mapping : List[str]</span>
-<span class="sd">            a list describing how to remap the axes</span>
-<span class="sd">            e.g. [&quot;+X&quot;, &quot;-Z&quot;, &quot;+Y&quot;] for [+X, +Y, +Z] -&gt; [+X, -Z, +Y]</span>
-<span class="sd">            e.g. [&quot;-Z&quot;, &quot;-Y&quot;, &quot;+X&quot;] for [+X, +Y, +Z] -&gt; [-Z, -Y, +X]</span>
+<span class="sd">        translation_per_type_id : Dict[int, int]</span>
+<span class="sd">            translation for agents of each type ID</span>
+<span class="sd">            Default: {}</span>
+<span class="sd">        default_translation : int</span>
+<span class="sd">            translation for any agent types not specified</span>
+<span class="sd">            in translation_per_type_id</span>
+<span class="sd">            Default: np.zeros(3)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes_mapping</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span><span class="s2">&quot;axes_mapping must have length 3&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">axes_mapping</span><span class="p">)):</span>
-            <span class="n">axes_mapping</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">axes_mapping</span><span class="p">[</span><span class="n">d</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">axes_mapping</span> <span class="o">=</span> <span class="n">axes_mapping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">translation_per_type_id</span> <span class="o">=</span> <span class="n">translation_per_type_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_translation</span> <span class="o">=</span> <span class="n">default_translation</span>
 
-    <span class="k">def</span> <span class="nf">_transform_coordinate</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">set_direction</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<div class="viewcode-block" id="TranslateFilter.apply"><a class="viewcode-back" href="../../../simulariumio.filters.html#simulariumio.filters.translate_filter.TranslateFilter.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Transform an +X+Y+Z coordinate according to axes_mapping</span>
+<span class="sd">        Add the XYZ translation to all spatial coordinates</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes_mapping</span><span class="p">)):</span>
-            <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes_mapping</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;x&quot;</span> <span class="ow">in</span> <span class="n">axis</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;y&quot;</span> <span class="ow">in</span> <span class="n">axis</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;z&quot;</span> <span class="ow">in</span> <span class="n">axis</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">set_direction</span> <span class="ow">and</span> <span class="s2">&quot;-&quot;</span> <span class="ow">in</span> <span class="n">axis</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">*=</span> <span class="o">-</span><span class="mf">1.0</span>
-        <span class="k">return</span> <span class="n">result</span>
-
-<div class="viewcode-block" id="TransformSpatialAxesFilter.apply"><a class="viewcode-back" href="../../../simulariumio.filters.html#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Transform spatial coordinates to rotate and/or reflect the scene</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Filtering: transform spatial axes </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">axes_mapping</span><span class="si">}</span><span class="s2"> -------------&quot;</span><span class="p">)</span>
-        <span class="c1"># box size</span>
-        <span class="n">box_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_coordinate</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">box_size</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filtering: translation -------------&quot;</span><span class="p">)</span>
         <span class="c1"># get dimensions</span>
         <span class="n">total_steps</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">size</span>
         <span class="n">max_agents</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">))</span>
@@ -268,17 +247,27 @@
         <span class="c1"># get filtered data</span>
         <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
         <span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="n">max_subpoints</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="c1"># get filtered data</span>
         <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">])):</span>
-                <span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_coordinate</span><span class="p">(</span>
-                    <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">translation_per_type_id</span><span class="p">:</span>
+                    <span class="n">translation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">translation_per_type_id</span><span class="p">[</span>
+                        <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+                    <span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">translation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_translation</span>
+                <span class="n">n_subpoints</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">n_subpoints</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">])):</span>
-                        <span class="n">subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_coordinate</span><span class="p">(</span>
-                            <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>
+                        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                            <span class="n">subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">s</span><span class="p">][</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                                <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">s</span><span class="p">][</span><span class="n">d</span><span class="p">]</span> <span class="o">+</span> <span class="n">translation</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
+                            <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                        <span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">d</span><span class="p">]</span> <span class="o">+</span> <span class="n">translation</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
                         <span class="p">)</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">box_size</span> <span class="o">=</span> <span class="n">box_size</span>
         <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">positions</span>
         <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">subpoints</span>
         <span class="k">return</span> <span class="n">data</span></div></div>

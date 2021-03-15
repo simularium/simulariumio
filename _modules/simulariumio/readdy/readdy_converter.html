@@ -101,6 +101,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.filters.html">simulariumio.filters package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.medyan.html">simulariumio.medyan package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
@@ -376,7 +377,7 @@
                     <span class="n">agent_data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_mapping</span><span class="p">[</span><span class="n">readdy_id</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">agent_data</span>
 
-    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">ReaddyData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">ReaddyData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return an object containing the data shaped for Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>

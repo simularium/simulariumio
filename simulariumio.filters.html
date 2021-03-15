@@ -39,7 +39,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="simulariumio.physicell package" href="simulariumio.physicell.html" />
+    <link rel="next" title="simulariumio.medyan package" href="simulariumio.medyan.html" />
     <link rel="prev" title="simulariumio.data_objects package" href="simulariumio.data_objects.html" /> 
 </head>
 
@@ -103,6 +103,7 @@
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">simulariumio.filters package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.medyan.html">simulariumio.medyan package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
@@ -192,7 +193,7 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="simulariumio.physicell.html" class="btn btn-neutral float-right" title="simulariumio.physicell package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="simulariumio.medyan.html" class="btn btn-neutral float-right" title="simulariumio.medyan package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
       
       
         <a href="simulariumio.data_objects.html" class="btn btn-neutral float-left" title="simulariumio.data_objects package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
@@ -472,6 +473,44 @@ e.g. [“-Z”, “-Y”, “+X”] for [+X, +Y, +Z] -&gt; [-Z, -Y, +X]</p>
 <dl class="attribute">
 <dt id="simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.axes_mapping">
 <code class="sig-name descname">axes_mapping</code><em class="property">: List[str]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.axes_mapping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.filters.translate_filter">
+<span id="simulariumio-filters-translate-filter-module"></span><h2>simulariumio.filters.translate_filter module<a class="headerlink" href="#module-simulariumio.filters.translate_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.filters.translate_filter.TranslateFilter">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.filters.translate_filter.</code><code class="sig-name descname">TranslateFilter</code><span class="sig-paren">(</span><em class="sig-param">translation_per_type_id: Dict[int</em>, <em class="sig-param">numpy.ndarray] = {}</em>, <em class="sig-param">default_translation: numpy.ndarray = array([0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">0.])</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/translate_filter.html#TranslateFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.filters.filter.Filter</span></code></a></p>
+<p>This object contains parameters for translating 3D positions
+in each frame of simularium data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>translation_per_type_id</strong> (<em>Dict[int, int]</em>) – translation for agents of each type ID
+Default: {}</p></li>
+<li><p><strong>default_translation</strong> (<em>int</em>) – translation for any agent types not specified
+in translation_per_type_id
+Default: np.zeros(3)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="simulariumio.filters.translate_filter.TranslateFilter.apply">
+<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">data: simulariumio.data_objects.trajectory_data.TrajectoryData</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/filters/translate_filter.html#TranslateFilter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the XYZ translation to all spatial coordinates</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.filters.translate_filter.TranslateFilter.default_translation">
+<code class="sig-name descname">default_translation</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter.default_translation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.filters.translate_filter.TranslateFilter.translation_per_type_id">
+<code class="sig-name descname">translation_per_type_id</code><em class="property">: Dict[int, np.ndarray]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter.translation_per_type_id" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

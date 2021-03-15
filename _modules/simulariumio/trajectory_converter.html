@@ -101,6 +101,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.filters.html">simulariumio.filters package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../simulariumio.medyan.html">simulariumio.medyan package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
@@ -530,7 +531,11 @@
         <span class="n">plot_reader_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_determine_plot_reader</span><span class="p">(</span><span class="n">plot_type</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot_reader_class</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">data</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="TrajectoryConverter.add_number_of_agents_plot"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.add_number_of_agents_plot">[docs]</a>    <span class="k">def</span> <span class="nf">add_number_of_agents_plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TrajectoryConverter.add_number_of_agents_plot"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.add_number_of_agents_plot">[docs]</a>    <span class="k">def</span> <span class="nf">add_number_of_agents_plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">plot_title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Number of agents over time&quot;</span><span class="p">,</span>
+        <span class="n">yaxis_title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Number of agents&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a scatterplot of the number of each type of agent over time</span>
 
@@ -554,9 +559,9 @@
                 <span class="n">n_agents</span><span class="p">[</span><span class="n">type_name</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_plot</span><span class="p">(</span>
             <span class="n">ScatterPlotData</span><span class="p">(</span>
-                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Number of agents over time&quot;</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="n">plot_title</span><span class="p">,</span>
                 <span class="n">xaxis_title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Time (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">time_units</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-                <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Number of agents&quot;</span><span class="p">,</span>
+                <span class="n">yaxis_title</span><span class="o">=</span><span class="n">yaxis_title</span><span class="p">,</span>
                 <span class="n">xtrace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="p">,</span>
                 <span class="n">ytraces</span><span class="o">=</span><span class="n">n_agents</span><span class="p">,</span>
                 <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>

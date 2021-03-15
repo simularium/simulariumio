@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>simulariumio.data_objects.unit_data &mdash; Simularium Conversion 1.0.1 documentation</title>
+  <title>simulariumio.medyan.medyan_agent_info &mdash; Simularium Conversion 1.0.1 documentation</title>
   
 
   
@@ -175,7 +175,7 @@
         
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
         
-      <li>simulariumio.data_objects.unit_data</li>
+      <li>simulariumio.medyan.medyan_agent_info</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -190,13 +190,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for simulariumio.data_objects.unit_data</h1><div class="highlight"><pre>
+  <h1>Source code for simulariumio.medyan.medyan_agent_info</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">pint</span> <span class="kn">import</span> <span class="n">UnitRegistry</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -205,75 +203,45 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="UnitData"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData">[docs]</a><span class="k">class</span> <span class="nc">UnitData</span><span class="p">:</span>
-    <span class="n">magnitude</span><span class="p">:</span> <span class="nb">float</span>
+<div class="viewcode-block" id="MedyanAgentInfo"><a class="viewcode-back" href="../../../simulariumio.medyan.html#simulariumio.medyan.medyan_agent_info.MedyanAgentInfo">[docs]</a><span class="k">class</span> <span class="nc">MedyanAgentInfo</span><span class="p">:</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">draw_endpoints</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">endpoint_radius</span><span class="p">:</span> <span class="nb">float</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">magnitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">draw_endpoints</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">endpoint_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This object contains data for units</span>
+<span class="sd">        This object contains info about how to display a type of agent</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        name: str</span>
-<span class="sd">            unit name for values (we support this list</span>
-<span class="sd">            https://github.com/hgrecco/pint/blob/master/pint/default_en.txt)</span>
-<span class="sd">        magnitude: float (optional)</span>
-<span class="sd">            multiplier for values (in case they are not given in whole units)</span>
+<span class="sd">        name : str</span>
+<span class="sd">            A string display name for this type of agent</span>
+<span class="sd">            Default: &quot;[MEDYAN object type][agent type index from MEDYAN data]&quot;</span>
+<span class="sd">                e.g. &quot;filament1&quot;, &quot;motor0&quot;</span>
+<span class="sd">        radius : float (optional)</span>
+<span class="sd">            A float radius for rendering this agent.</span>
+<span class="sd">            this is the thickness of the line</span>
+<span class="sd">            Default : 1.0</span>
+<span class="sd">        draw_points : bool</span>
+<span class="sd">            Draw spheres at the end points that define the object</span>
+<span class="sd">            in addition to a line connecting them?</span>
+<span class="sd">            Default: False</span>
+<span class="sd">        endpoint_radius : float</span>
+<span class="sd">            If drawing spheres at the end points that define the object,</span>
+<span class="sd">            what is their visualized radius?</span>
 <span class="sd">            Default: 1.0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># standardize and simplify units with pint</span>
-        <span class="n">ureg</span> <span class="o">=</span> <span class="n">UnitRegistry</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span> <span class="o">=</span> <span class="n">magnitude</span> <span class="o">*</span> <span class="n">ureg</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_update_units</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">_clamp_precision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        clamp float precision to 4 significant figures</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.4g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">number</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_update_units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        update magnitude and name after setting quantity</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span><span class="o">.</span><span class="n">to_compact</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clamp_precision</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span><span class="o">.</span><span class="n">units</span><span class="si">:</span><span class="s2">~</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="c1"># pint has the wrong abbreviation for microns? (µ instead of µm)</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="s2">&quot;µ&quot;</span><span class="p">:</span>
-            <span class="n">n</span> <span class="o">+=</span> <span class="s2">&quot;m&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">n</span>
-
-<div class="viewcode-block" id="UnitData.multiply"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData.multiply">[docs]</a>    <span class="k">def</span> <span class="nf">multiply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        multiply quantity and simplify</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span> <span class="o">*=</span> <span class="n">multiplier</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_update_units</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="UnitData.to_string"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData.to_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        get a string for the units</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">magnitude</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">epsilon</span>
-            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">epsilon</span>
-            <span class="k">else</span> <span class="s2">&quot;&quot;</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">magnitude</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span></div>
-
-    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
-            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">magnitude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_endpoints</span> <span class="o">=</span> <span class="n">draw_endpoints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_radius</span> <span class="o">=</span> <span class="n">endpoint_radius</span></div>
 </pre></div>
 
            </div>
