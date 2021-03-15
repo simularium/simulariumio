@@ -50,12 +50,22 @@ class TranslateFilter(Filter):
         # get dimensions
         total_steps = data.agent_data.times.size
         max_agents = int(np.amax(data.agent_data.n_agents))
-        max_subpoints = int(np.amax(data.agent_data.n_subpoints)) if data.agent_data.n_subpoints is not None else 0
+        max_subpoints = (
+            int(np.amax(data.agent_data.n_subpoints))
+            if data.agent_data.n_subpoints is not None
+            else 0
+        )
         # get filtered data
         positions = np.zeros((total_steps, max_agents, 3))
-        subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3)) if data.agent_data.n_subpoints is not None else None
+        subpoints = (
+            np.zeros((total_steps, max_agents, max_subpoints, 3))
+            if data.agent_data.n_subpoints is not None
+            else None
+        )
         if data.agent_data.type_ids is None:
-            data.agent_data.type_ids, tnm = AgentData.get_type_ids_and_mapping(data.agent_data.types)
+            data.agent_data.type_ids, tnm = AgentData.get_type_ids_and_mapping(
+                data.agent_data.types
+            )
         for t in range(total_steps):
             for n in range(int(data.agent_data.n_agents[t])):
                 if data.agent_data.type_ids[t][n] in self.translation_per_type_id:
@@ -64,7 +74,11 @@ class TranslateFilter(Filter):
                     ]
                 else:
                     translation = self.default_translation
-                n_subpoints = int(data.agent_data.n_subpoints[t][n]) if data.agent_data.n_subpoints is not None else 0
+                n_subpoints = (
+                    int(data.agent_data.n_subpoints[t][n])
+                    if data.agent_data.n_subpoints is not None
+                    else 0
+                )
                 if n_subpoints > 0:
                     for s in range(int(data.agent_data.n_subpoints[t][n])):
                         for d in range(3):
