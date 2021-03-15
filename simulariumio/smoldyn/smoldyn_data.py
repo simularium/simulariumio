@@ -4,7 +4,6 @@
 import logging
 from typing import Any, Dict, List
 
-from .cytosim_object_info import CytosimObjectInfo
 from ..data_objects import MetaData, UnitData
 
 ###############################################################################
@@ -17,7 +16,7 @@ log = logging.getLogger(__name__)
 class SmoldynData:
     meta_data: MetaData
     path_to_output_txt: str
-    radii : Dict[str,float]
+    radii: Dict[str, float]
     time_units: UnitData
     spatial_units: UnitData
     plots: List[Dict[str, Any]]
@@ -26,7 +25,7 @@ class SmoldynData:
         self,
         meta_data: MetaData,
         path_to_output_txt: str,
-        radii : Dict[str,float],
+        radii: Dict[str, float],
         time_units: UnitData = UnitData("s"),
         spatial_units: UnitData = UnitData("m"),
         plots: List[Dict[str, Any]] = [],
@@ -42,11 +41,12 @@ class SmoldynData:
             including box size, scale factor, and camera defaults
         path_to_output_txt : str
             A string path to the output txt file
-            Generate by adding to your config.txt file: 
-                `output_files example.txt`
-                `cmd n 1 savesim example.txt`
+            Generate by adding to your config.txt file:
+                `output_files output.txt
+                `cmd n 1 executiontime output.txt`
+                `cmd n 1 listmols output.txt`
         radii : Dict[str,float] (optional)
-            A mapping of type names to the radii 
+            A mapping of type names to the radii
             with which to draw them
             Default : 1.0 for any type name not specified
         time_units: UnitData (optional)

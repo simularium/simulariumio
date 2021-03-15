@@ -7,7 +7,7 @@ from typing import List, Tuple
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData
+from ..data_objects import TrajectoryData, AgentData, MetaData
 from ..constants import VIZ_TYPE
 from .smoldyn_data import SmoldynData
 
@@ -39,18 +39,33 @@ class SmoldynConverter(TrajectoryConverter):
         Parse Smoldyn output files to get the number of timesteps
         and maximum agents per timestep
         """
-        time_steps = 0
+        time_steps = -1
         max_agents = 0
         current_agents = 0
         for line in smoldyn_data_lines:
-            if line.startswith("mol") or line.startswith("surface_mol"):
-                current_agents += 1
-            elif line.contains("end_file"):
+            cols = line.split()
+            if len(cols) == 2:
                 if current_agents > max_agents:
                     max_agents = current_agents
                 current_agents = 0
                 time_steps += 1
-        return (time_steps, max_agents)
+            else:
+                current_agents += 1
+        if current_agents > max_agents:
+            max_agents = current_agents
+        return (time_steps + 1, max_agents)
+
+    @staticmethod
+    def _format_type_name(raw_name: str) -> Tuple[str, str]:
+        """
+        Format a type name to take advantage of Simularium state names
+        return ("type#state", "type") if state is found,
+        otherwise ("type", "type")
+        """
+        if "(" in raw_name:
+            cols = raw_name.split("(")
+            return f"{cols[0]}#{cols[1][:-1]}", cols[0]
+        return raw_name, raw_name
 
     def _parse_objects(
         self,
@@ -70,32 +85,42 @@ class SmoldynConverter(TrajectoryConverter):
             positions=np.zeros((totalSteps, max_agents, 3)),
             radii=np.ones((totalSteps, max_agents)),
         )
-        t = 0
+        t = -1
         n = 0
         for line in smoldyn_data_lines:
+            if len(line) < 1:
+                continue
             cols = line.split()
-            if line.startswith("time_now"):
-                result.times[t] = float(cols[1])
-            elif line.startswith("mol") or line.startswith("surface_mol"):
-                position_ix = [3, 4, 5]
-                if line.startswith("surface_mol"):
-                    position_ix = [6, 7, 8]
-                result.unique_ids[t][n] = n
-                type_name = str(cols[2])
+            if len(cols) == 2:
+                if t >= 0:
+                    result.n_agents[t] = n
+                n = 0
+                t += 1
+                result.times[t] = float(cols[0])
+            else:
+                if len(cols) < 4:
+                    raise Exception(
+                        "Smoldyn data is not formatted as expected, "
+                        "please use the Smoldyn `listmols` command for output"
+                    )
+                is_3D = len(cols) > 4
+                result.unique_ids[t][n] = int(cols[4] if is_3D else cols[3])
+                type_name, base_type = SmoldynConverter._format_type_name(str(cols[0]))
                 result.types[t].append(type_name)
                 result.positions[t][n] = input_data.meta_data.scale_factor * np.array(
                     [
-                        float(cols[position_ix[0]]),
-                        float(cols[position_ix[1]]),
-                        float(cols[position_ix[2]]) if len(cols) > position_ix[2] else 0.0,
+                        float(cols[1]),
+                        float(cols[2]),
+                        float(cols[3]) if is_3D else 0.0,
                     ]
                 )
-                result.radii[t][n] = input_data.meta_data.scale_factor * (input_data.radii[type_name] if type_name in input_data.radii else 1.0)
+                result.radii[t][n] = input_data.meta_data.scale_factor * (
+                    input_data.radii[base_type]
+                    if base_type in input_data.radii
+                    else 1.0
+                )
                 n += 1
-            elif line.contains("end_file"):
-                result.n_agents[t] = n
-                n = 0
-                t += 1
+        result.n_agents[t] = n
         return result
 
     def _read(self, input_data: SmoldynData) -> TrajectoryData:

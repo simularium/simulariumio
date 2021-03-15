@@ -25,7 +25,6 @@ class CytosimData:
         meta_data: MetaData,
         object_info: Dict[str, CytosimObjectInfo],
         draw_fiber_points: bool = False,
-        scale_factor: float = 1.0,
         plots: List[Dict[str, Any]] = [],
     ):
         """
