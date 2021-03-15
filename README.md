@@ -23,6 +23,7 @@ Simulariumio converts simulation outputs to the format consumed by the [Simulari
     * CytoSim (https://gitlab.com/f.nedelec/cytosim)
     * ReaDDy (https://readdy.github.io/)
     * PhysiCell (http://physicell.org/)
+    * MEDYAN (http://medyan.org/)
 * Conversions for data from custom engines can be implemented using the TrajectoryConverter class
 * Also accepts metrics data for plots to display alongside spatial data
 
@@ -37,6 +38,7 @@ See the Tutorial for the simulation engine you're using for details:
 * [Cytosim Tutorial](examples/Tutorial_cytosim.ipynb)
 * [ReaDDy Tutorial](examples/Tutorial_readdy.ipynb)
 * [PhysiCell Tutorial](examples/Tutorial_physicell.ipynb)
+* [MEDYAN Tutorial](examples/Tutorial_medyan.ipynb)
 
 An overview for data from ReaDDy:
 ```python

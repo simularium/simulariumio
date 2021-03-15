@@ -338,7 +338,11 @@ class TrajectoryConverter:
         plot_reader_class = self._determine_plot_reader(plot_type)
         self._data.plots.append(plot_reader_class().read(data))
 
-    def add_number_of_agents_plot(self):
+    def add_number_of_agents_plot(
+        self,
+        plot_title: str = "Number of agents over time",
+        yaxis_title: str = "Number of agents",
+    ):
         """
         Add a scatterplot of the number of each type of agent over time
 
@@ -362,9 +366,9 @@ class TrajectoryConverter:
                 n_agents[type_name][t] += 1
         self.add_plot(
             ScatterPlotData(
-                title="Number of agents over time",
+                title=plot_title,
                 xaxis_title=f"Time ({self._data.time_units.to_string()})",
-                yaxis_title="Number of agents",
+                yaxis_title=yaxis_title,
                 xtrace=self._data.agent_data.times,
                 ytraces=n_agents,
                 render_mode="lines",

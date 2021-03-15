@@ -1123,7 +1123,7 @@ from simulariumio.cytosim import (
         ),
     ],
 )
-def test_cytosim_trajectory_reader(trajectory, expected_data):
+def test_cytosim_converter(trajectory, expected_data):
     converter = CytosimConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
     assert expected_data == buffer_data

@@ -556,3 +556,4 @@ def test_every_nth_timestep_filter(input_path, _filter, expected_data):
     filtered_data = converter.filter_data([_filter])
     buffer_data = converter._read_trajectory_data(filtered_data)
     assert expected_data == buffer_data
+    assert converter._check_agent_ids_are_unique_per_frame(buffer_data)
