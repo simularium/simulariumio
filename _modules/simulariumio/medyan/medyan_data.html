@@ -197,9 +197,8 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
 <span class="kn">from</span> <span class="nn">.medyan_agent_info</span> <span class="kn">import</span> <span class="n">MedyanAgentInfo</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">MetaData</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -209,22 +208,20 @@
 
 
 <div class="viewcode-block" id="MedyanData"><a class="viewcode-back" href="../../../simulariumio.medyan.html#simulariumio.medyan.medyan_data.MedyanData">[docs]</a><span class="k">class</span> <span class="nc">MedyanData</span><span class="p">:</span>
-    <span class="n">box_size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
     <span class="n">path_to_snapshot</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">agent_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">MedyanAgentInfo</span><span class="p">]]</span>
     <span class="n">draw_fiber_points</span><span class="p">:</span> <span class="nb">bool</span>
-    <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">box_size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span><span class="p">,</span>
         <span class="n">path_to_snapshot</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">filament_agent_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">MedyanAgentInfo</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
         <span class="n">linker_agent_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">MedyanAgentInfo</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
         <span class="n">motor_agent_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">MedyanAgentInfo</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
         <span class="n">draw_fiber_points</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[],</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -233,9 +230,9 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        box_size : np.ndarray (shape = [3])</span>
-<span class="sd">            A numpy ndarray containing the XYZ dimensions</span>
-<span class="sd">            of the cubic simulation bounding volume</span>
+<span class="sd">        meta_data : MetaData</span>
+<span class="sd">            An object containing metadata for the trajectory</span>
+<span class="sd">            including box size, scale factor, and camera defaults</span>
 <span class="sd">        path_to_snapshot : string</span>
 <span class="sd">            A string path to the MEDYAN snapshot.traj output file</span>
 <span class="sd">        filament_agent_info : Dict[int, MedyanAgentInfo] (optional)</span>
@@ -252,15 +249,11 @@
 <span class="sd">            in addition to drawing a line for each fiber,</span>
 <span class="sd">            also draw spheres at every other point along it?</span>
 <span class="sd">            Default: False</span>
-<span class="sd">        scale_factor : float (optional)</span>
-<span class="sd">            A multiplier for the MEDYAN scene, use if</span>
-<span class="sd">            visualization is too large or small</span>
-<span class="sd">            Default: 1.0</span>
 <span class="sd">        plots : List[Dict[str, Any]] (optional)</span>
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">box_size</span> <span class="o">=</span> <span class="n">box_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_to_snapshot</span> <span class="o">=</span> <span class="n">path_to_snapshot</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent_info</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;filament&quot;</span><span class="p">:</span> <span class="n">filament_agent_info</span><span class="p">,</span>
@@ -268,7 +261,6 @@
             <span class="s2">&quot;motor&quot;</span><span class="p">:</span> <span class="n">motor_agent_info</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span> <span class="o">=</span> <span class="n">draw_fiber_points</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">=</span> <span class="n">scale_factor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span></div>
 </pre></div>
 

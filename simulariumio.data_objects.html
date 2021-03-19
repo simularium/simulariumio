@@ -216,8 +216,7 @@
 <dt id="simulariumio.data_objects.agent_data.AgentData">
 <em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.agent_data.</code><code class="sig-name descname">AgentData</code><span class="sig-paren">(</span><em class="sig-param">times: numpy.ndarray, n_agents: numpy.ndarray, viz_types: numpy.ndarray, unique_ids: numpy.ndarray, types: List[List[str]], positions: numpy.ndarray, radii: numpy.ndarray, n_subpoints: Optional[numpy.ndarray] = None, subpoints: Optional[numpy.ndarray] = None, draw_fiber_points: bool = False, type_ids: Optional[numpy.ndarray] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>This object contains custom simulation trajectory outputs
-and plot data</p>
+<p>This object contains spatial simulation data</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
@@ -344,6 +343,58 @@ generate new unique IDs and type IDs as needed</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-simulariumio.data_objects.camera_data">
+<span id="simulariumio-data-objects-camera-data-module"></span><h2>simulariumio.data_objects.camera_data module<a class="headerlink" href="#module-simulariumio.data_objects.camera_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.camera_data.CameraData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.camera_data.</code><code class="sig-name descname">CameraData</code><span class="sig-paren">(</span><em class="sig-param">position: numpy.ndarray = array([  0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">120.])</em>, <em class="sig-param">look_at_position: numpy.ndarray = array([0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">0.])</em>, <em class="sig-param">up_vector: numpy.ndarray = array([0.</em>, <em class="sig-param">1.</em>, <em class="sig-param">0.])</em>, <em class="sig-param">fov_degrees: float = 50.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/camera_data.html#CameraData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object holds parameters that define
+a camera view of the 3D scene</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>position</strong> (<em>np.ndarray (shape = [3]) (optional)</em>) – 3D position of the camera itself
+Default: np.array([0.0, 0.0, 120.0])</p></li>
+<li><p><strong>look_at_position</strong> (<em>np.ndarray (shape = [3]) (optional)</em>) – position the camera looks at
+Default: np.zeros(3)</p></li>
+<li><p><strong>up_vector</strong> (<em>np.ndarray (shape = [3]) (optional)</em>) – the vector that defines which direction
+is “up” in the camera’s view
+Default: np.array([0.0, 1.0, 0.0])</p></li>
+<li><p><strong>fov_degrees</strong> (<em>float (optional)</em>) – the angle defining the extent of the 3D world
+that is seen from bottom to top of the camera view
+Default: 50.0</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.camera_data.CameraData.fov_degrees">
+<code class="sig-name descname">fov_degrees</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData.fov_degrees" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.data_objects.camera_data.CameraData.from_buffer_data">
+<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><em class="sig-param">buffer_data: Dict[str, Any]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/camera_data.html#CameraData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.camera_data.CameraData.look_at_position">
+<code class="sig-name descname">look_at_position</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData.look_at_position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.camera_data.CameraData.position">
+<code class="sig-name descname">position</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData.position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.camera_data.CameraData.up_vector">
+<code class="sig-name descname">up_vector</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData.up_vector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-simulariumio.data_objects.histogram_plot_data">
 <span id="simulariumio-data-objects-histogram-plot-data-module"></span><h2>simulariumio.data_objects.histogram_plot_data module<a class="headerlink" href="#module-simulariumio.data_objects.histogram_plot_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -379,6 +430,58 @@ each mapped to a numpy ndarray of values</p></li>
 <dl class="attribute">
 <dt id="simulariumio.data_objects.histogram_plot_data.HistogramPlotData.xtrace">
 <code class="sig-name descname">xtrace</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.histogram_plot_data.HistogramPlotData.xtrace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects.meta_data">
+<span id="simulariumio-data-objects-meta-data-module"></span><h2>simulariumio.data_objects.meta_data module<a class="headerlink" href="#module-simulariumio.data_objects.meta_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.meta_data.MetaData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.meta_data.</code><code class="sig-name descname">MetaData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">camera_defaults: simulariumio.data_objects.camera_data.CameraData = &lt;simulariumio.data_objects.camera_data.CameraData object&gt;</em>, <em class="sig-param">scale_factor: float = 1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/meta_data.html#MetaData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object holds metadata for simulation trajectories</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
+of the simulation bounding volume</p></li>
+<li><p><strong>camera_defaults</strong> (<em>CameraData (optional)</em>) – camera’s initial settings
+which it also returns to when reset
+Default: CameraData(</p>
+<blockquote>
+<div><p>position=[0,0,120],
+look_at_position=[0,0,0],
+up_vector=[0,1,0],
+fov_degrees=50</p>
+</div></blockquote>
+<p>)</p>
+</li>
+<li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the scene, use if
+visualization is too large or small
+Default: 1.0</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.meta_data.MetaData.box_size">
+<code class="sig-name descname">box_size</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.box_size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.meta_data.MetaData.camera_defaults">
+<code class="sig-name descname">camera_defaults</code><em class="property">: CameraData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.camera_defaults" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.data_objects.meta_data.MetaData.from_buffer_data">
+<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><em class="sig-param">buffer_data: Dict[str, Any]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/meta_data.html#MetaData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.meta_data.MetaData.scale_factor">
+<code class="sig-name descname">scale_factor</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.scale_factor" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -450,15 +553,15 @@ Options:</p>
 <span id="simulariumio-data-objects-trajectory-data-module"></span><h2>simulariumio.data_objects.trajectory_data module<a class="headerlink" href="#module-simulariumio.data_objects.trajectory_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.data_objects.trajectory_data.TrajectoryData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.trajectory_data.</code><code class="sig-name descname">TrajectoryData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">agent_data: simulariumio.data_objects.agent_data.AgentData</em>, <em class="sig-param">time_units: simulariumio.data_objects.unit_data.UnitData = &lt;simulariumio.data_objects.unit_data.UnitData object&gt;</em>, <em class="sig-param">spatial_units: simulariumio.data_objects.unit_data.UnitData = &lt;simulariumio.data_objects.unit_data.UnitData object&gt;</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/trajectory_data.html#TrajectoryData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.trajectory_data.</code><code class="sig-name descname">TrajectoryData</code><span class="sig-paren">(</span><em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData</em>, <em class="sig-param">agent_data: simulariumio.data_objects.agent_data.AgentData</em>, <em class="sig-param">time_units: simulariumio.data_objects.unit_data.UnitData = &lt;simulariumio.data_objects.unit_data.UnitData object&gt;</em>, <em class="sig-param">spatial_units: simulariumio.data_objects.unit_data.UnitData = &lt;simulariumio.data_objects.unit_data.UnitData object&gt;</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/trajectory_data.html#TrajectoryData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 and plot data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
-of the simulation bounding volume</p></li>
+<li><p><strong>meta_data</strong> (<em>MetaData</em>) – An object containing metadata for the trajectory
+including box size, scale factor, and camera defaults</p></li>
 <li><p><strong>agent_data</strong> (<em>AgentData</em>) – An object containing data for each agent
 at each timestep</p></li>
 <li><p><strong>time_units</strong> (<em>UnitData (optional)</em>) – multiplier and unit name for time values
@@ -475,16 +578,16 @@ in Simularium format</p></li>
 <code class="sig-name descname">agent_data</code><em class="property">: AgentData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData.agent_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.data_objects.trajectory_data.TrajectoryData.box_size">
-<code class="sig-name descname">box_size</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData.box_size" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="simulariumio.data_objects.trajectory_data.TrajectoryData.from_buffer_data">
 <em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><em class="sig-param">buffer_data: Dict[str, Any]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/trajectory_data.html#TrajectoryData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create TrajectoryData from a simularium JSON dict containing buffers</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.trajectory_data.TrajectoryData.meta_data">
+<code class="sig-name descname">meta_data</code><em class="property">: MetaData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData.meta_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="simulariumio.data_objects.trajectory_data.TrajectoryData.plots">

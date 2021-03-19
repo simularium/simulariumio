@@ -201,7 +201,7 @@
 <span class="kn">import</span> <span class="nn">readdy</span>
 
 <span class="kn">from</span> <span class="nn">..trajectory_converter</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span>
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">MetaData</span>
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">VIZ_TYPE</span>
 <span class="kn">from</span> <span class="nn">.readdy_data</span> <span class="kn">import</span> <span class="n">ReaddyData</span>
 
@@ -243,7 +243,7 @@
             <span class="n">viz_types</span><span class="o">=</span><span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
             <span class="n">unique_ids</span><span class="o">=</span><span class="n">ids</span><span class="p">,</span>
             <span class="n">types</span><span class="o">=</span><span class="p">[[]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">)],</span>
-            <span class="n">positions</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">positions</span><span class="p">,</span>
+            <span class="n">positions</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">positions</span><span class="p">,</span>
             <span class="n">radii</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
         <span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">type_ids</span> <span class="o">=</span> <span class="n">types</span>
@@ -392,7 +392,11 @@
             <span class="n">agent_data</span><span class="p">,</span> <span class="n">traj</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">type_grouping</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">TrajectoryData</span><span class="p">(</span>
-            <span class="n">box_size</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">input_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">,</span>
+            <span class="n">meta_data</span><span class="o">=</span><span class="n">MetaData</span><span class="p">(</span>
+                <span class="n">box_size</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span>
+                <span class="o">*</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">,</span>
+                <span class="n">camera_defaults</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">camera_defaults</span><span class="p">,</span>
+            <span class="p">),</span>
             <span class="n">agent_data</span><span class="o">=</span><span class="n">agent_data</span><span class="p">,</span>
             <span class="n">time_units</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">time_units</span><span class="p">,</span>
             <span class="n">spatial_units</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">spatial_units</span><span class="p">,</span>

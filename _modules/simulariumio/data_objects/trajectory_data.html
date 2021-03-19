@@ -198,10 +198,9 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
 <span class="kn">from</span> <span class="nn">.agent_data</span> <span class="kn">import</span> <span class="n">AgentData</span>
 <span class="kn">from</span> <span class="nn">.unit_data</span> <span class="kn">import</span> <span class="n">UnitData</span>
+<span class="kn">from</span> <span class="nn">.meta_data</span> <span class="kn">import</span> <span class="n">MetaData</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -211,7 +210,7 @@
 
 
 <div class="viewcode-block" id="TrajectoryData"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData">[docs]</a><span class="k">class</span> <span class="nc">TrajectoryData</span><span class="p">:</span>
-    <span class="n">box_size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
     <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span>
     <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span>
     <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span>
@@ -219,7 +218,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">box_size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span><span class="p">,</span>
         <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
         <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">),</span>
         <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">),</span>
@@ -231,9 +230,9 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        box_size : np.ndarray (shape = [3])</span>
-<span class="sd">            A numpy ndarray containing the XYZ dimensions</span>
-<span class="sd">            of the simulation bounding volume</span>
+<span class="sd">        meta_data : MetaData</span>
+<span class="sd">            An object containing metadata for the trajectory</span>
+<span class="sd">            including box size, scale factor, and camera defaults</span>
 <span class="sd">        agent_data : AgentData</span>
 <span class="sd">            An object containing data for each agent</span>
 <span class="sd">            at each timestep</span>
@@ -247,7 +246,7 @@
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">box_size</span> <span class="o">=</span> <span class="n">box_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent_data</span> <span class="o">=</span> <span class="n">agent_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spatial_units</span> <span class="o">=</span> <span class="n">spatial_units</span>
@@ -259,13 +258,7 @@
 <span class="sd">        Create TrajectoryData from a simularium JSON dict containing buffers</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">box_size</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="nb">float</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]),</span>
-                    <span class="nb">float</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]),</span>
-                    <span class="nb">float</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">][</span><span class="s2">&quot;z&quot;</span><span class="p">]),</span>
-                <span class="p">]</span>
-            <span class="p">),</span>
+            <span class="n">meta_data</span><span class="o">=</span><span class="n">MetaData</span><span class="o">.</span><span class="n">from_buffer_data</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">),</span>
             <span class="n">agent_data</span><span class="o">=</span><span class="n">AgentData</span><span class="o">.</span><span class="n">from_buffer_data</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">),</span>
             <span class="n">time_units</span><span class="o">=</span><span class="n">UnitData</span><span class="p">(</span>
                 <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;timeUnits&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
@@ -278,14 +271,9 @@
             <span class="n">plots</span><span class="o">=</span><span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;plotData&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
         <span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)()</span>
-        <span class="n">result</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span>
-
     <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
-            <span class="n">box_size</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_size</span><span class="p">),</span>
+            <span class="n">meta_data</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
             <span class="n">agent_data</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agent_data</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
             <span class="n">time_units</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_units</span><span class="p">),</span>
             <span class="n">spatial_units</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spatial_units</span><span class="p">),</span>

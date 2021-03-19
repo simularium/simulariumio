@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>simulariumio.data_objects.camera_data &mdash; Simularium Conversion 1.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Simularium Conversion
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../simulariumio.html">simulariumio package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.filters.html">simulariumio.filters package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.medyan.html">simulariumio.medyan package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#deploying">Deploying</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#questions-or-thoughts">Questions or Thoughts?</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Simularium Conversion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
+        
+      <li>simulariumio.data_objects.camera_data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for simulariumio.data_objects.camera_data</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1">###############################################################################</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">###############################################################################</span>
+
+
+<div class="viewcode-block" id="CameraData"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.camera_data.CameraData">[docs]</a><span class="k">class</span> <span class="nc">CameraData</span><span class="p">:</span>
+    <span class="n">position</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">look_at_position</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">up_vector</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">fov_degrees</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">position</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">120.0</span><span class="p">]),</span>
+        <span class="n">look_at_position</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+        <span class="n">up_vector</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>
+        <span class="n">fov_degrees</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">50.0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This object holds parameters that define</span>
+<span class="sd">        a camera view of the 3D scene</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        position : np.ndarray (shape = [3]) (optional)</span>
+<span class="sd">            3D position of the camera itself</span>
+<span class="sd">            Default: np.array([0.0, 0.0, 120.0])</span>
+<span class="sd">        look_at_position: np.ndarray (shape = [3]) (optional)</span>
+<span class="sd">            position the camera looks at</span>
+<span class="sd">            Default: np.zeros(3)</span>
+<span class="sd">        up_vector: np.ndarray (shape = [3]) (optional)</span>
+<span class="sd">            the vector that defines which direction</span>
+<span class="sd">            is &quot;up&quot; in the camera&#39;s view</span>
+<span class="sd">            Default: np.array([0.0, 1.0, 0.0])</span>
+<span class="sd">        fov_degrees : float (optional)</span>
+<span class="sd">            the angle defining the extent of the 3D world</span>
+<span class="sd">            that is seen from bottom to top of the camera view</span>
+<span class="sd">            Default: 50.0</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">look_at_position</span> <span class="o">=</span> <span class="n">look_at_position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">up_vector</span> <span class="o">=</span> <span class="n">up_vector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fov_degrees</span> <span class="o">=</span> <span class="n">fov_degrees</span>
+
+<div class="viewcode-block" id="CameraData.from_buffer_data"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.camera_data.CameraData.from_buffer_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_buffer_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">buffer_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">look_at_position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span>
+                            <span class="s2">&quot;lookAtPosition&quot;</span>
+                        <span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span>
+                            <span class="s2">&quot;lookAtPosition&quot;</span>
+                        <span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span>
+                            <span class="s2">&quot;lookAtPosition&quot;</span>
+                        <span class="p">][</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">up_vector</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;upVector&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;upVector&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                    <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;upVector&quot;</span><span class="p">][</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
+                    <span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">fov_degrees</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span>
+                <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;fovDegrees&quot;</span><span class="p">]</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
+            <span class="n">position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">),</span>
+            <span class="n">look_at_position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">look_at_position</span><span class="p">),</span>
+            <span class="n">up_vector</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">up_vector</span><span class="p">),</span>
+            <span class="n">fov_degrees</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fov_degrees</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Blair Lyons.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

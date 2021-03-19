@@ -284,15 +284,15 @@ MEDYAN simulation trajectory outputs and plot data</p>
 <span id="simulariumio-medyan-medyan-data-module"></span><h2>simulariumio.medyan.medyan_data module<a class="headerlink" href="#module-simulariumio.medyan.medyan_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.medyan.medyan_data.MedyanData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.medyan.medyan_data.</code><code class="sig-name descname">MedyanData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">path_to_snapshot: str</em>, <em class="sig-param">filament_agent_info: Dict[int</em>, <em class="sig-param">simulariumio.medyan.medyan_agent_info.MedyanAgentInfo] = {}</em>, <em class="sig-param">linker_agent_info: Dict[int</em>, <em class="sig-param">simulariumio.medyan.medyan_agent_info.MedyanAgentInfo] = {}</em>, <em class="sig-param">motor_agent_info: Dict[int</em>, <em class="sig-param">simulariumio.medyan.medyan_agent_info.MedyanAgentInfo] = {}</em>, <em class="sig-param">draw_fiber_points: bool = False</em>, <em class="sig-param">scale_factor: float = 1.0</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/medyan/medyan_data.html#MedyanData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.medyan.medyan_data.MedyanData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.medyan.medyan_data.</code><code class="sig-name descname">MedyanData</code><span class="sig-paren">(</span><em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData</em>, <em class="sig-param">path_to_snapshot: str</em>, <em class="sig-param">filament_agent_info: Dict[int</em>, <em class="sig-param">simulariumio.medyan.medyan_agent_info.MedyanAgentInfo] = {}</em>, <em class="sig-param">linker_agent_info: Dict[int</em>, <em class="sig-param">simulariumio.medyan.medyan_agent_info.MedyanAgentInfo] = {}</em>, <em class="sig-param">motor_agent_info: Dict[int</em>, <em class="sig-param">simulariumio.medyan.medyan_agent_info.MedyanAgentInfo] = {}</em>, <em class="sig-param">draw_fiber_points: bool = False</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/medyan/medyan_data.html#MedyanData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.medyan.medyan_data.MedyanData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 from MEDYAN (<a class="reference external" href="http://medyan.org/">http://medyan.org/</a>) and plot data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
-of the cubic simulation bounding volume</p></li>
+<li><p><strong>meta_data</strong> (<em>MetaData</em>) – An object containing metadata for the trajectory
+including box size, scale factor, and camera defaults</p></li>
 <li><p><strong>path_to_snapshot</strong> (<em>string</em>) – A string path to the MEDYAN snapshot.traj output file</p></li>
 <li><p><strong>filament_agent_info</strong> (<em>Dict[int, MedyanAgentInfo] (optional)</em>) – A dict mapping MEDYAN type ID for filaments
 to info (name, radius) for filament agents</p></li>
@@ -304,9 +304,6 @@ to info (name, radius) for motor agents</p></li>
 in addition to drawing a line for each fiber,
 also draw spheres at every other point along it?
 Default: False</p></li>
-<li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the MEDYAN scene, use if
-visualization is too large or small
-Default: 1.0</p></li>
 <li><p><strong>plots</strong> (<em>List[Dict[str, Any]] (optional)</em>) – An object containing plot data already
 in Simularium format</p></li>
 </ul>
@@ -318,13 +315,13 @@ in Simularium format</p></li>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="simulariumio.medyan.medyan_data.MedyanData.box_size">
-<code class="sig-name descname">box_size</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.medyan.medyan_data.MedyanData.box_size" title="Permalink to this definition">¶</a></dt>
+<dt id="simulariumio.medyan.medyan_data.MedyanData.draw_fiber_points">
+<code class="sig-name descname">draw_fiber_points</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.medyan.medyan_data.MedyanData.draw_fiber_points" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="simulariumio.medyan.medyan_data.MedyanData.draw_fiber_points">
-<code class="sig-name descname">draw_fiber_points</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.medyan.medyan_data.MedyanData.draw_fiber_points" title="Permalink to this definition">¶</a></dt>
+<dt id="simulariumio.medyan.medyan_data.MedyanData.meta_data">
+<code class="sig-name descname">meta_data</code><em class="property">: MetaData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.medyan.medyan_data.MedyanData.meta_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -335,11 +332,6 @@ in Simularium format</p></li>
 <dl class="attribute">
 <dt id="simulariumio.medyan.medyan_data.MedyanData.plots">
 <code class="sig-name descname">plots</code><em class="property">: List[Dict[str, Any]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.medyan.medyan_data.MedyanData.plots" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="simulariumio.medyan.medyan_data.MedyanData.scale_factor">
-<code class="sig-name descname">scale_factor</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.medyan.medyan_data.MedyanData.scale_factor" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
