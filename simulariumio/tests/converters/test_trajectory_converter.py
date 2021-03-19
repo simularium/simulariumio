@@ -10,6 +10,7 @@ from simulariumio import (
     AgentData,
     UnitData,
     MetaData,
+    CameraData,
 )
 from simulariumio.tests.conftest import three_default_agents
 
@@ -185,6 +186,12 @@ from simulariumio.tests.conftest import three_default_agents
             TrajectoryData(
                 meta_data=MetaData(
                     box_size=np.array([1000.0, 1000.0, 1000.0]),
+                    camera_defaults=CameraData(
+                        position=np.array([0.0, 120.0, 0.0]),
+                        look_at_position=np.array([10.0, 0.0, 0.0]),
+                        up_vector=np.array([0.0, 0.0, 1.0]),
+                        fov_degrees=60.0,
+                    ),
                 ),
                 agent_data=AgentData(
                     times=1.0 * np.array(list(range(3))),
@@ -363,10 +370,10 @@ from simulariumio.tests.conftest import three_default_agents
                     },
                     "size": {"x": 1000.0, "y": 1000.0, "z": 1000.0},
                     "cameraDefault": {
-                        "position": {"x": 0, "y": 0, "z": 120},
-                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
-                        "upVector": {"x": 0, "y": 1, "z": 0},
-                        "fovDegrees": 50.0,
+                        "position": {"x": 0, "y": 120, "z": 0},
+                        "lookAtPosition": {"x": 10, "y": 0, "z": 0},
+                        "upVector": {"x": 0, "y": 0, "z": 1},
+                        "fovDegrees": 60.0,
                     },
                     "typeMapping": {
                         "0": {"name": "H"},
