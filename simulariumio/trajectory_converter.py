@@ -43,14 +43,14 @@ class TrajectoryConverter:
 
     def __init__(self, input_data: TrajectoryData):
         """
-        This object reads custom simulation trajectory outputs
+        This object reads simulation trajectory outputs
         and plot data and writes them in the JSON format used
         by the Simularium viewer
 
         Parameters
         ----------
         input_data : TrajectoryData
-            An object containing custom simulation trajectory outputs
+            An object containing simulation trajectory outputs
             and plot data
         """
         self._data = input_data
@@ -60,7 +60,7 @@ class TrajectoryConverter:
         """
         Return an object containing the data shaped for Simularium format
         """
-        print("Reading Custom Data -------------")
+        print("Reading Trajectory Data -------------")
         simularium_data = {}
         # trajectory info
         totalSteps = input_data.agent_data.times.size
@@ -88,9 +88,33 @@ class TrajectoryConverter:
                 "name": input_data.spatial_units.name,
             },
             "size": {
-                "x": float(input_data.box_size[0]),
-                "y": float(input_data.box_size[1]),
-                "z": float(input_data.box_size[2]),
+                "x": float(input_data.meta_data.box_size[0]),
+                "y": float(input_data.meta_data.box_size[1]),
+                "z": float(input_data.meta_data.box_size[2]),
+            },
+            "cameraDefault": {
+                "position": {
+                    "x": float(input_data.meta_data.camera_defaults.position[0]),
+                    "y": float(input_data.meta_data.camera_defaults.position[1]),
+                    "z": float(input_data.meta_data.camera_defaults.position[2]),
+                },
+                "lookAtPosition": {
+                    "x": float(
+                        input_data.meta_data.camera_defaults.look_at_position[0]
+                    ),
+                    "y": float(
+                        input_data.meta_data.camera_defaults.look_at_position[1]
+                    ),
+                    "z": float(
+                        input_data.meta_data.camera_defaults.look_at_position[2]
+                    ),
+                },
+                "upVector": {
+                    "x": float(input_data.meta_data.camera_defaults.up_vector[0]),
+                    "y": float(input_data.meta_data.camera_defaults.up_vector[1]),
+                    "z": float(input_data.meta_data.camera_defaults.up_vector[2]),
+                },
+                "fovDegrees": float(input_data.meta_data.camera_defaults.fov_degrees),
             },
             "typeMapping": input_data.agent_data.type_mapping,
         }

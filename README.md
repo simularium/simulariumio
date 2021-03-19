@@ -46,9 +46,8 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
 
 # see ReaDDy Tutorial for parameter details
 input_data = ReaddyData(
-    spatial_unit_factor_meters=1e-9,  # nanometers
     box_size=BOX_SIZE,
-    timestep=TIMESTEP,  # seconds
+    timestep=TIMESTEP,
     path_to_readdy_h5=PATH_TO_H5_FILE,
 )
 ReaddyConverter(input_data).write_JSON("output_file_name")
@@ -60,11 +59,10 @@ See the [Custom Data Tutorial](examples/Tutorial_custom.ipynb) for details. An o
 from simulariumio import TrajectoryConverter, TrajectoryData, AgentData
 
 # see Custom Data Tutorial for parameter details
-input_data = TrajectoryData(  
-    spatial_unit_factor_meters=1e-9,  # nanometers
+input_data = TrajectoryData(
     box_size=BOX_SIZE,
     agent_data=AgentData(
-        times=TIMES,  # seconds
+        times=TIMES,
         n_agents=N_AGENTS,
         viz_types=VIZ_TYPES,
         unique_ids=UNIQUE_IDS,

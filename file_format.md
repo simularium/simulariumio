@@ -12,6 +12,11 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
     * magnitude - multiplier for spatial values (in case they are not given in whole units)
     * name - unit name for spatial values (we support units in this list https://github.com/hgrecco/pint/blob/master/pint/default_en.txt)
   * size X, Y, Z - size of the bounding volume for the simulation. for now only rectangular prisms are supported, and the width in X, Y, and Z dimensions is provided
+  * cameraDefault - the default view of the camera (when the trajectory is loaded and when the view is reset)
+    * position X, Y, Z - 3D position of the camera itself (default = [0, 0, 120])
+    * lookAtPoint X, Y, Z - position the camera looks at (default = [0, 0, 0])
+    * up_vector X, Y, Z - the vector that defines which direction is "up" in the camera's view (default = [0, 1, 0])
+    * fov_degrees - the angle defining the extent of the 3D world that is seen from bottom to top of the camera view (default = 50)
   * type mapping - for each agent type ID in the trajectory, information about how to display and render it:
     * name - the type name to display for all agents of this type. Optionally, this name can be followed by a hash and state tags for the agent’s current state delimited with underscores
       * ex: "actin#barbed_ATP_1" is parsed as agent type "actin" in states "barbed", "ATP", and "1"
@@ -82,6 +87,25 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
             "x" : 300,
             "y" : 300,
             "z" : 300
+        },
+        // default camera position and orientation
+        "cameraDefault" : {
+            "position" : {            
+                "x" : 0,
+                "y" : 0,
+                "z" : 120
+            },
+            "lookAtPosition" : {            
+                "x" : 0,
+                "y" : 0,
+                "z" : 0
+            },
+            "upVector" : {            
+                "x" : 0,
+                "y" : 1,
+                "z" : 0
+            },
+            "fovDegrees" : 50,
         },
         // agent display data
         "typeMapping": {

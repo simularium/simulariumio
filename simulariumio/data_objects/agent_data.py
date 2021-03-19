@@ -48,8 +48,7 @@ class AgentData:
         type_ids: np.ndarray = None,
     ):
         """
-        This object contains custom simulation trajectory outputs
-        and plot data
+        This object contains spatial simulation data
 
         Parameters
         ----------
@@ -340,11 +339,6 @@ class AgentData:
         self.types = types
         self.type_ids = type_ids
         self.n_agents = n_agents
-
-    def __copy__(self):
-        result = type(self)()
-        result.__dict__.update(self.__dict__)
-        return result
 
     def __deepcopy__(self, memo):
         if self.type_ids is None:

@@ -4,9 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-import numpy as np
-
-from ..data_objects import UnitData
+from ..data_objects import UnitData, MetaData
 
 ###############################################################################
 
@@ -16,22 +14,20 @@ log = logging.getLogger(__name__)
 
 
 class PhysicellData:
-    box_size: np.ndarray
+    meta_data: MetaData
     timestep: float
     time_units: UnitData
     path_to_output_dir: str
     types: Dict[int, Dict[Any, str]]
-    scale_factor: float
     plots: List[Dict[str, Any]]
 
     def __init__(
         self,
-        box_size: np.ndarray,
+        meta_data: MetaData,
         timestep: float,
         path_to_output_dir: str,
         types: Dict[int, Dict[Any, str]] = None,
         time_units: UnitData = UnitData("s"),
-        scale_factor: float = 1.0,
         plots: List[Dict[str, Any]] = [],
     ):
         """
@@ -41,9 +37,9 @@ class PhysicellData:
 
         Parameters
         ----------
-        box_size : np.ndarray (shape = [3])
-            A numpy ndarray containing the XYZ dimensions
-            of the simulation bounding volume
+        meta_data : MetaData
+            An object containing metadata for the trajectory
+            including box size, scale factor, and camera defaults
         timestep : float
             A float amount of time that passes each step
         path_to_output_dir : string
@@ -61,18 +57,13 @@ class PhysicellData:
         time_units: UnitData (optional)
             multiplier and unit name for time values
             Default: 1.0 second
-        scale_factor : float (optional)
-            A multiplier for the PhysiCell scene, use if
-            visualization is too large or small
-            Default: 1.0
         plots : List[Dict[str, Any]] (optional)
             An object containing plot data already
             in Simularium format
         """
-        self.box_size = box_size
+        self.meta_data = meta_data
         self.timestep = timestep
         self.path_to_output_dir = path_to_output_dir
         self.types = types
         self.time_units = time_units
-        self.scale_factor = scale_factor
         self.plots = plots

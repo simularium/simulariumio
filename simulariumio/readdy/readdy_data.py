@@ -4,9 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-import numpy as np
-
-from ..data_objects import UnitData
+from ..data_objects import UnitData, MetaData
 
 ###############################################################################
 
@@ -16,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 class ReaddyData:
-    box_size: np.ndarray
+    meta_data: MetaData
     timestep: float
     path_to_readdy_h5: str
     radii: Dict[str, float]
@@ -24,12 +22,11 @@ class ReaddyData:
     type_grouping: Dict[str, List[str]]
     time_units: UnitData
     spatial_units: UnitData
-    scale_factor: float
     plots: List[Dict[str, Any]]
 
     def __init__(
         self,
-        box_size: np.ndarray,
+        meta_data: MetaData,
         timestep: float,
         path_to_readdy_h5: str,
         radii: Dict[str, float] = None,
@@ -37,7 +34,6 @@ class ReaddyData:
         type_grouping: Dict[str, List[str]] = None,
         time_units: UnitData = UnitData("s"),
         spatial_units: UnitData = UnitData("m"),
-        scale_factor: float = 1.0,
         plots: List[Dict[str, Any]] = [],
     ):
         """
@@ -47,9 +43,9 @@ class ReaddyData:
 
         Parameters
         ----------
-        box_size : np.ndarray (shape = [3])
-            A numpy ndarray containing the XYZ dimensions
-            of the simulation bounding volume
+        meta_data : MetaData
+            An object containing metadata for the trajectory
+            including box size, scale factor, and camera defaults
         timestep : float
             A float amount of time in seconds that passes each step
             Default: 0.0
@@ -72,21 +68,16 @@ class ReaddyData:
             multiplier and unit name for spatial values
             (including positions, radii, and box size)
             Default: 1.0 meter
-        scale_factor : float (optional)
-            A multiplier for the ReaDDy scene, use if
-            visualization is too large or small
-            Default: 1.0
         plots : List[Dict[str, Any]] (optional)
             An object containing plot data already
             in Simularium format
         """
-        self.spatial_units = spatial_units
-        self.box_size = box_size
+        self.meta_data = meta_data
         self.timestep = timestep
         self.path_to_readdy_h5 = path_to_readdy_h5
         self.radii = radii
         self.ignore_types = ignore_types
         self.type_grouping = type_grouping
         self.time_units = time_units
-        self.scale_factor = scale_factor
+        self.spatial_units = spatial_units
         self.plots = plots

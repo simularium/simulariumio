@@ -20,6 +20,8 @@ from .data_objects import (  # noqa: F401
     TrajectoryData,
     AgentData,
     UnitData,
+    MetaData,
+    CameraData,
     ScatterPlotData,
     HistogramPlotData,
 )

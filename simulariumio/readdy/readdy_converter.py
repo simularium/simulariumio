@@ -8,7 +8,7 @@ import numpy as np
 import readdy
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData
+from ..data_objects import TrajectoryData, AgentData, MetaData
 from ..constants import VIZ_TYPE
 from .readdy_data import ReaddyData
 
@@ -50,7 +50,7 @@ class ReaddyConverter(TrajectoryConverter):
             viz_types=VIZ_TYPE.DEFAULT * np.ones(shape=(totalSteps, max_agents)),
             unique_ids=ids,
             types=[[] for t in range(totalSteps)],
-            positions=input_data.scale_factor * positions,
+            positions=input_data.meta_data.scale_factor * positions,
             radii=np.ones(shape=(totalSteps, max_agents)),
         )
         result.type_ids = types
@@ -199,7 +199,11 @@ class ReaddyConverter(TrajectoryConverter):
             agent_data, traj, input_data.type_grouping
         )
         return TrajectoryData(
-            box_size=input_data.scale_factor * input_data.box_size,
+            meta_data=MetaData(
+                box_size=input_data.meta_data.scale_factor
+                * input_data.meta_data.box_size,
+                camera_defaults=input_data.meta_data.camera_defaults,
+            ),
             agent_data=agent_data,
             time_units=input_data.time_units,
             spatial_units=input_data.spatial_units,

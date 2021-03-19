@@ -5,10 +5,9 @@ import copy
 import logging
 from typing import Any, Dict, List
 
-import numpy as np
-
 from .agent_data import AgentData
 from .unit_data import UnitData
+from .meta_data import MetaData
 
 ###############################################################################
 
@@ -18,7 +17,7 @@ log = logging.getLogger(__name__)
 
 
 class TrajectoryData:
-    box_size: np.ndarray
+    meta_data: MetaData
     agent_data: AgentData
     time_units: UnitData
     spatial_units: UnitData
@@ -26,7 +25,7 @@ class TrajectoryData:
 
     def __init__(
         self,
-        box_size: np.ndarray,
+        meta_data: MetaData,
         agent_data: AgentData,
         time_units: UnitData = UnitData("s"),
         spatial_units: UnitData = UnitData("m"),
@@ -38,9 +37,9 @@ class TrajectoryData:
 
         Parameters
         ----------
-        box_size : np.ndarray (shape = [3])
-            A numpy ndarray containing the XYZ dimensions
-            of the simulation bounding volume
+        meta_data : MetaData
+            An object containing metadata for the trajectory
+            including box size, scale factor, and camera defaults
         agent_data : AgentData
             An object containing data for each agent
             at each timestep
@@ -54,7 +53,7 @@ class TrajectoryData:
             An object containing plot data already
             in Simularium format
         """
-        self.box_size = box_size
+        self.meta_data = meta_data
         self.agent_data = agent_data
         self.time_units = time_units
         self.spatial_units = spatial_units
@@ -66,13 +65,7 @@ class TrajectoryData:
         Create TrajectoryData from a simularium JSON dict containing buffers
         """
         return cls(
-            box_size=np.array(
-                [
-                    float(buffer_data["trajectoryInfo"]["size"]["x"]),
-                    float(buffer_data["trajectoryInfo"]["size"]["y"]),
-                    float(buffer_data["trajectoryInfo"]["size"]["z"]),
-                ]
-            ),
+            meta_data=MetaData.from_buffer_data(buffer_data),
             agent_data=AgentData.from_buffer_data(buffer_data),
             time_units=UnitData(
                 buffer_data["trajectoryInfo"]["timeUnits"]["name"],
@@ -85,14 +78,9 @@ class TrajectoryData:
             plots=buffer_data["plotData"]["data"],
         )
 
-    def __copy__(self):
-        result = type(self)()
-        result.__dict__.update(self.__dict__)
-        return result
-
     def __deepcopy__(self, memo):
         result = type(self)(
-            box_size=np.copy(self.box_size),
+            meta_data=copy.deepcopy(self.meta_data, memo),
             agent_data=copy.deepcopy(self.agent_data, memo),
             time_units=copy.copy(self.time_units),
             spatial_units=copy.copy(self.spatial_units),

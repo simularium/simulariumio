@@ -4,9 +4,8 @@
 import logging
 from typing import Any, Dict, List
 
-import numpy as np
-
 from .medyan_agent_info import MedyanAgentInfo
+from ..data_objects import MetaData
 
 ###############################################################################
 
@@ -16,22 +15,20 @@ log = logging.getLogger(__name__)
 
 
 class MedyanData:
-    box_size: np.ndarray
+    meta_data: MetaData
     path_to_snapshot: str
     agent_info: Dict[str, Dict[int, MedyanAgentInfo]]
     draw_fiber_points: bool
-    scale_factor: float
     plots: List[Dict[str, Any]]
 
     def __init__(
         self,
-        box_size: np.ndarray,
+        meta_data: MetaData,
         path_to_snapshot: str,
         filament_agent_info: Dict[int, MedyanAgentInfo] = {},
         linker_agent_info: Dict[int, MedyanAgentInfo] = {},
         motor_agent_info: Dict[int, MedyanAgentInfo] = {},
         draw_fiber_points: bool = False,
-        scale_factor: float = 1.0,
         plots: List[Dict[str, Any]] = [],
     ):
         """
@@ -40,9 +37,9 @@ class MedyanData:
 
         Parameters
         ----------
-        box_size : np.ndarray (shape = [3])
-            A numpy ndarray containing the XYZ dimensions
-            of the cubic simulation bounding volume
+        meta_data : MetaData
+            An object containing metadata for the trajectory
+            including box size, scale factor, and camera defaults
         path_to_snapshot : string
             A string path to the MEDYAN snapshot.traj output file
         filament_agent_info : Dict[int, MedyanAgentInfo] (optional)
@@ -59,15 +56,11 @@ class MedyanData:
             in addition to drawing a line for each fiber,
             also draw spheres at every other point along it?
             Default: False
-        scale_factor : float (optional)
-            A multiplier for the MEDYAN scene, use if
-            visualization is too large or small
-            Default: 1.0
         plots : List[Dict[str, Any]] (optional)
             An object containing plot data already
             in Simularium format
         """
-        self.box_size = box_size
+        self.meta_data = meta_data
         self.path_to_snapshot = path_to_snapshot
         self.agent_info = {
             "filament": filament_agent_info,
@@ -75,5 +68,4 @@ class MedyanData:
             "motor": motor_agent_info,
         }
         self.draw_fiber_points = draw_fiber_points
-        self.scale_factor = scale_factor
         self.plots = plots

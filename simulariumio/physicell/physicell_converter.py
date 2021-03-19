@@ -9,7 +9,7 @@ import numpy as np
 from .dep.pyMCDS import pyMCDS
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData
+from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData
 from ..exceptions import MissingDataError
 from ..constants import VIZ_TYPE
 from .physicell_data import PhysicellData
@@ -133,20 +133,20 @@ class PhysicellConverter(TrajectoryConverter):
                 while i >= len(result.types[t]):
                     result.types[t].append("")
                 result.types[t][i] = self._type_mapping[tid]
-                result.positions[t][i] = input_data.scale_factor * np.array(
+                result.positions[t][i] = input_data.meta_data.scale_factor * np.array(
                     [
                         discrete_cells[t]["position_x"][n],
                         discrete_cells[t]["position_y"][n],
                         discrete_cells[t]["position_z"][n],
                     ]
                 )
-                result.radii[t][i] = input_data.scale_factor * np.cbrt(
+                result.radii[t][i] = input_data.meta_data.scale_factor * np.cbrt(
                     3.0 / 4.0 * discrete_cells[t]["total_volume"][n] / np.pi
                 )
                 i += 1
         spatial_units = UnitData(
             physicell_data[0].data["metadata"]["spatial_units"],
-            1.0 / input_data.scale_factor,
+            1.0 / input_data.meta_data.scale_factor,
         )
         return result, spatial_units
 
@@ -157,7 +157,11 @@ class PhysicellConverter(TrajectoryConverter):
         print("Reading PhysiCell Data -------------")
         agent_data, spatial_units = self._get_trajectory_data(input_data)
         return TrajectoryData(
-            box_size=input_data.scale_factor * input_data.box_size,
+            meta_data=MetaData(
+                box_size=input_data.meta_data.scale_factor
+                * input_data.meta_data.box_size,
+                camera_defaults=input_data.meta_data.camera_defaults,
+            ),
             agent_data=agent_data,
             time_units=input_data.time_units,
             spatial_units=spatial_units,

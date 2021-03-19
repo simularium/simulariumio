@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.medyan import MedyanConverter, MedyanData, MedyanAgentInfo
+from simulariumio import MetaData
 
 
 @pytest.mark.parametrize(
@@ -13,7 +14,9 @@ from simulariumio.medyan import MedyanConverter, MedyanData, MedyanAgentInfo
         # truncated data from 50filaments_motor_linker example
         (
             MedyanData(
-                box_size=np.array([1000.0, 1000.0, 500.0]),
+                meta_data=MetaData(
+                    box_size=np.array([1000.0, 1000.0, 500.0]),
+                ),
                 path_to_snapshot="simulariumio/tests/data/medyan/snapshot.traj",
                 filament_agent_info={
                     0: MedyanAgentInfo(
@@ -42,6 +45,12 @@ from simulariumio.medyan import MedyanConverter, MedyanData, MedyanAgentInfo
                         "name": "nm",
                     },
                     "size": {"x": 1000.0, "y": 1000.0, "z": 500.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
+                        "upVector": {"x": 0, "y": 1, "z": 0},
+                        "fovDegrees": 50.0,
+                    },
                     "typeMapping": {
                         "0": {"name": "Actin"},
                         "1": {"name": "linker0"},
@@ -370,7 +379,9 @@ from simulariumio.medyan import MedyanConverter, MedyanData, MedyanAgentInfo
         # same data but add drawing endpoints
         (
             MedyanData(
-                box_size=np.array([1000.0, 1000.0, 500.0]),
+                meta_data=MetaData(
+                    box_size=np.array([1000.0, 1000.0, 500.0]),
+                ),
                 path_to_snapshot="simulariumio/tests/data/medyan/snapshot.traj",
                 filament_agent_info={
                     0: MedyanAgentInfo(
@@ -407,6 +418,12 @@ from simulariumio.medyan import MedyanConverter, MedyanData, MedyanAgentInfo
                         "name": "nm",
                     },
                     "size": {"x": 1000.0, "y": 1000.0, "z": 500.0},
+                    "cameraDefault": {
+                        "position": {"x": 0, "y": 0, "z": 120},
+                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
+                        "upVector": {"x": 0, "y": 1, "z": 0},
+                        "fovDegrees": 50.0,
+                    },
                     "typeMapping": {
                         "0": {"name": "Actin"},
                         "1": {"name": "Xlink0"},
