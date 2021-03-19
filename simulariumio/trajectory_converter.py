@@ -60,7 +60,7 @@ class TrajectoryConverter:
         """
         Return an object containing the data shaped for Simularium format
         """
-        print("Reading Trajectory Data -------------")
+        print("Converting Trajectory Data -------------")
         simularium_data = {}
         # trajectory info
         totalSteps = input_data.agent_data.times.size
@@ -377,7 +377,9 @@ class TrajectoryConverter:
             Default: None (use the currently loaded data)
         """
         n_agents = {}
-        type_mapping = self._data.agent_data.get_type_mapping()
+        type_ids, type_mapping = AgentData.get_type_ids_and_mapping(self._data.agent_data.types)
+        if self._data.agent_data.type_ids is None:
+            self._data.agent_data.type_ids = type_ids
         for t in range(self._data.agent_data.times.size):
             for n in range(int(self._data.agent_data.n_agents[t])):
                 type_name = type_mapping[
