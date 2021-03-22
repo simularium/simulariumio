@@ -377,7 +377,9 @@ class TrajectoryConverter:
             Default: None (use the currently loaded data)
         """
         n_agents = {}
-        type_ids, type_mapping = AgentData.get_type_ids_and_mapping(self._data.agent_data.types)
+        type_ids, type_mapping = AgentData.get_type_ids_and_mapping(
+            self._data.agent_data.types
+        )
         if self._data.agent_data.type_ids is None:
             self._data.agent_data.type_ids = type_ids
         for t in range(self._data.agent_data.times.size):
