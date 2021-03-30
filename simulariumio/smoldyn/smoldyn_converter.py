@@ -62,9 +62,9 @@ class SmoldynConverter(TrajectoryConverter):
         return ("type#state", "type") if state is found,
         otherwise ("type", "type")
         """
-        if "(" in raw_name:
-            cols = raw_name.split("(")
-            return f"{cols[0]}#{cols[1][:-1]}", cols[0]
+        # if "(" in raw_name:
+        #     cols = raw_name.split("(")
+        #     return f"{cols[0]}#{cols[1][:-1]}", cols[0]
         return raw_name, raw_name
 
     def _parse_objects(

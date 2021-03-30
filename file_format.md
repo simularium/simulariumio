@@ -15,8 +15,8 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
   * cameraDefault - the default view of the camera (when the trajectory is loaded and when the view is reset)
     * position X, Y, Z - 3D position of the camera itself (default = [0, 0, 120])
     * lookAtPoint X, Y, Z - position the camera looks at (default = [0, 0, 0])
-    * up_vector X, Y, Z - the vector that defines which direction is "up" in the camera's view (default = [0, 1, 0])
-    * fov_degrees - the angle defining the extent of the 3D world that is seen from bottom to top of the camera view (default = 50)
+    * upVector X, Y, Z - the vector that defines which direction is "up" in the camera's view (default = [0, 1, 0])
+    * fovDegrees - the angle defining the extent of the 3D world that is seen from bottom to top of the camera view (default = 50)
   * type mapping - for each agent type ID in the trajectory, information about how to display and render it:
     * name - the type name to display for all agents of this type. Optionally, this name can be followed by a hash and state tags for the agent’s current state delimited with underscores
       * ex: "actin#barbed_ATP_1" is parsed as agent type "actin" in states "barbed", "ATP", and "1"
@@ -72,15 +72,15 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
         // time units
         "timeUnits": {
             "magnitude": 1.0,
-            "name": "microseconds",
+            "name": "ms",
         },
         // time
         "timeStepSize" : 0.5,
         "totalSteps" : 1000,
         // spatial units
-        "timeUnits": {
+        "spatialUnits": {
             "magnitude": 1.0,
-            "name": "nanometers",
+            "name": "nm",
         },
         // box size
         "size" : {
