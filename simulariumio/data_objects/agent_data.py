@@ -8,8 +8,9 @@ from typing import List, Tuple, Dict, Any
 import math
 
 import numpy as np
+import pandas as pd
 
-from ..constants import V1_SPATIAL_BUFFER_STRUCT
+from ..constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE
 from ..exceptions import DataError
 
 ###############################################################################
@@ -266,6 +267,56 @@ class AgentData:
             subpoints=subpoints,
             draw_fiber_points=False,
             type_ids=type_ids,
+        )
+
+    @classmethod
+    def from_dataframe(cls, traj: pd.DataFrame):
+        """
+        Create AgentData from a pandas DataFrame with columns:
+        time, unique_id, type, positionX, positionY, positionZ, radius
+        (only for default agents, no fibers)
+        """
+        times = np.unique(traj.loc[0, "time"].to_numpy())
+        n_agents = np.squeeze(
+            traj.groupby("time").agg(["count"])["unique_id"].to_numpy()
+        )
+        grouped_traj = (
+            traj.set_index(["time", traj.groupby("time").cumcount()])
+            .unstack(fill_value=0)
+            .stack()
+        )
+        unique_ids = np.array(
+            grouped_traj["unique_id"]
+            .groupby(level=0)
+            .apply(lambda x: x.values.tolist())
+            .tolist()
+        )
+        type_names = (
+            grouped_traj["type"]
+            .groupby(level=0)
+            .apply(lambda x: x.values.tolist())
+            .tolist()
+        )
+        positions = np.array(
+            grouped_traj[["positionX", "positionY", "positionZ"]]
+            .groupby(level=0)
+            .apply(lambda x: x.values.tolist())
+            .tolist()
+        )
+        radii = np.array(
+            grouped_traj["radius"]
+            .groupby(level=0)
+            .apply(lambda x: x.values.tolist())
+            .tolist()
+        )
+        return cls(
+            times=times,
+            n_agents=n_agents,
+            viz_types=VIZ_TYPE.DEFAULT * np.ones_like(unique_ids),
+            unique_ids=unique_ids,
+            types=type_names,
+            positions=positions,
+            radii=radii,
         )
 
     def append_agents(self, new_agents: AgentData):
