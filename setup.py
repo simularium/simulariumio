@@ -13,6 +13,10 @@ physicell_requirements = [
     "scipy>=1.5.2",
 ]
 
+springsalad_requirements = [
+    "pandas>=1.1.2",
+]
+
 setup_requirements = [
     "pytest-runner>=5.2",
 ]
@@ -26,6 +30,7 @@ test_requirements = [
     "pytest-cov>=2.9.0",
     "pytest-raises>=0.11",
     *physicell_requirements,
+    *springsalad_requirements,
 ]
 
 dev_requirements = [
@@ -53,10 +58,12 @@ extra_requirements = {
     "test": test_requirements,
     "dev": dev_requirements,
     "physicell": physicell_requirements,
+    "springsalad": springsalad_requirements,
     "all": [
         *requirements,
         *dev_requirements,
-        *physicell_requirements
+        *physicell_requirements,
+        *springsalad_requirements
     ]
 }
 
