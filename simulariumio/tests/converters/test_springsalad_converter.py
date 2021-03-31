@@ -16,6 +16,7 @@ from simulariumio.springsalad import SpringsaladConverter, SpringsaladData
                     "simulariumio/tests/data/springsalad/"
                     "Simulation0_SIM_VIEW_Run0.txt"
                 ),
+                display_names={"GREEN": "A", "RED": "B"},
                 scale_factor=0.1,
             ),
             {
@@ -31,7 +32,7 @@ from simulariumio.springsalad import SpringsaladConverter, SpringsaladData
                         "magnitude": 10.0,
                         "name": "nm",
                     },
-                    "size": {"x": 5.0, "y": 5.0, "z": 10.0},
+                    "size": {"x": 10.0, "y": 10.0, "z": 20.0},
                     "cameraDefault": {
                         "position": {"x": 0, "y": 0, "z": 120},
                         "lookAtPosition": {"x": 0, "y": 0, "z": 0},
@@ -39,8 +40,8 @@ from simulariumio.springsalad import SpringsaladConverter, SpringsaladData
                         "fovDegrees": 50.0,
                     },
                     "typeMapping": {
-                        "0": {"name": "GREEN"},
-                        "1": {"name": "RED"},
+                        "0": {"name": "A"},
+                        "1": {"name": "B"},
                         "2": {"name": "GRAY"},
                         "3": {"name": "CYAN"},
                         "4": {"name": "BLUE"},
