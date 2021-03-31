@@ -26,6 +26,11 @@ from simulariumio import MetaData, UnitData
                     "S(solution)": 0.01,
                     "E(front)": 0.1,
                 },
+                display_names={
+                    "S(solution)": "S",
+                    "E(front)": "E",
+                    "ES(front)": "ES",
+                },
             ),
             {
                 "trajectoryInfo": {
@@ -48,9 +53,9 @@ from simulariumio import MetaData, UnitData
                         "fovDegrees": 50.0,
                     },
                     "typeMapping": {
-                        "0": {"name": "S(solution)"},
-                        "1": {"name": "E(front)"},
-                        "2": {"name": "ES(front)"},
+                        "0": {"name": "S"},
+                        "1": {"name": "E"},
+                        "2": {"name": "ES"},
                     },
                 },
                 "spatialData": {

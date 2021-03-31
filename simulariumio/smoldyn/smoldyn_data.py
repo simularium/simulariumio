@@ -17,6 +17,7 @@ class SmoldynData:
     meta_data: MetaData
     path_to_output_txt: str
     radii: Dict[str, float]
+    display_names: Dict[str, str]
     time_units: UnitData
     spatial_units: UnitData
     plots: List[Dict[str, Any]]
@@ -26,6 +27,7 @@ class SmoldynData:
         meta_data: MetaData,
         path_to_output_txt: str,
         radii: Dict[str, float],
+        display_names: Dict[str, str] = {},
         time_units: UnitData = UnitData("s"),
         spatial_units: UnitData = UnitData("m"),
         plots: List[Dict[str, Any]] = [],
@@ -49,6 +51,10 @@ class SmoldynData:
             A mapping of type names to the radii
             with which to draw them
             Default : 1.0 for any type name not specified
+        display_names : Dict[str, str] (optional)
+            A mapping from molecule names in the sim view txt file
+            to names to display in the Simularium Viewer
+            Default: use names from sim view txt file
         time_units: UnitData (optional)
             multiplier and unit name for time values
             Default: 1.0 second
@@ -63,6 +69,7 @@ class SmoldynData:
         self.meta_data = meta_data
         self.path_to_output_txt = path_to_output_txt
         self.radii = radii
+        self.display_names = display_names
         self.time_units = time_units
         self.spatial_units = spatial_units
         self.plots = plots
