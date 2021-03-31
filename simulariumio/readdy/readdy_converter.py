@@ -69,7 +69,10 @@ class ReaddyConverter(TrajectoryConverter):
                 for n in range(n_particles_per_frame[t]):
                     type_name = traj.species_name(types[t][n])
                     if type_name in input_data.radii:
-                        result.radii[t][n] = input_data.radii[type_name]
+                        result.radii[t][n] = (
+                            input_data.meta_data.scale_factor
+                            * input_data.radii[type_name]
+                        )
         return (result, traj)
 
     def _filter_trajectory_data(
@@ -198,6 +201,7 @@ class ReaddyConverter(TrajectoryConverter):
         agent_data = self._set_particle_types(
             agent_data, traj, input_data.type_grouping
         )
+        input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
         return TrajectoryData(
             meta_data=MetaData(
                 box_size=input_data.meta_data.scale_factor
