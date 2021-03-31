@@ -13,6 +13,7 @@ Subpackages
    simulariumio.physicell
    simulariumio.plot_readers
    simulariumio.readdy
+   simulariumio.smoldyn
 
 Submodules
 ----------

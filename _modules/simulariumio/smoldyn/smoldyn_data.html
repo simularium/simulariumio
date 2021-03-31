@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>simulariumio.cytosim.cytosim_data &mdash; Simularium Conversion 1.0.1 documentation</title>
+  <title>simulariumio.smoldyn.smoldyn_data &mdash; Simularium Conversion 1.0.1 documentation</title>
   
 
   
@@ -176,7 +176,7 @@
         
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
         
-      <li>simulariumio.cytosim.cytosim_data</li>
+      <li>simulariumio.smoldyn.smoldyn_data</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -191,15 +191,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for simulariumio.cytosim.cytosim_data</h1><div class="highlight"><pre>
+  <h1>Source code for simulariumio.smoldyn.smoldyn_data</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">.cytosim_object_info</span> <span class="kn">import</span> <span class="n">CytosimObjectInfo</span>
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">UnitData</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -208,46 +207,58 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="CytosimData"><a class="viewcode-back" href="../../../simulariumio.cytosim.html#simulariumio.cytosim.cytosim_data.CytosimData">[docs]</a><span class="k">class</span> <span class="nc">CytosimData</span><span class="p">:</span>
+<div class="viewcode-block" id="SmoldynData"><a class="viewcode-back" href="../../../simulariumio.smoldyn.html#simulariumio.smoldyn.smoldyn_data.SmoldynData">[docs]</a><span class="k">class</span> <span class="nc">SmoldynData</span><span class="p">:</span>
     <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
-    <span class="n">object_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CytosimObjectInfo</span><span class="p">]</span>
-    <span class="n">draw_fiber_points</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">path_to_output_txt</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">radii</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+    <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span>
+    <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span>
     <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span><span class="p">,</span>
-        <span class="n">object_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CytosimObjectInfo</span><span class="p">],</span>
-        <span class="n">draw_fiber_points</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">path_to_output_txt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">radii</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">),</span>
+        <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">),</span>
         <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[],</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object holds simulation trajectory outputs</span>
-<span class="sd">        from CytoSim (https://gitlab.com/f.nedelec/cytosim)</span>
-<span class="sd">        and plot data</span>
+<span class="sd">        from Smoldyn (http://www.smoldyn.org) and plot data</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        meta_data : MetaData</span>
 <span class="sd">            An object containing metadata for the trajectory</span>
 <span class="sd">            including box size, scale factor, and camera defaults</span>
-<span class="sd">        object_info : Dict[str, CytosimObjectInfo]</span>
-<span class="sd">            A dict mapping Cytosim object type</span>
-<span class="sd">            (either &quot;fibers&quot;, &quot;solids&quot;, &quot;singles&quot;, or &quot;couples&quot;)</span>
-<span class="sd">            to info for reading the Cytosim data for agents</span>
-<span class="sd">            of that object type</span>
-<span class="sd">        draw_fiber_points : bool (optional)</span>
-<span class="sd">            (only used for fibers)</span>
-<span class="sd">            in addition to drawing a line for each fiber,</span>
-<span class="sd">            also draw spheres at every other point along it?</span>
-<span class="sd">            Default: False</span>
+<span class="sd">        path_to_output_txt : str</span>
+<span class="sd">            A string path to the output txt file</span>
+<span class="sd">            Generate by adding to your config.txt file:</span>
+<span class="sd">                `output_files output.txt</span>
+<span class="sd">                `cmd n 1 executiontime output.txt`</span>
+<span class="sd">                `cmd n 1 listmols output.txt`</span>
+<span class="sd">        radii : Dict[str,float] (optional)</span>
+<span class="sd">            A mapping of type names to the radii</span>
+<span class="sd">            with which to draw them</span>
+<span class="sd">            Default : 1.0 for any type name not specified</span>
+<span class="sd">        time_units: UnitData (optional)</span>
+<span class="sd">            multiplier and unit name for time values</span>
+<span class="sd">            Default: 1.0 second</span>
+<span class="sd">        spatial_units: UnitData (optional)</span>
+<span class="sd">            multiplier and unit name for spatial values</span>
+<span class="sd">            (including positions, radii, and box size)</span>
+<span class="sd">            Default: 1.0 meter</span>
 <span class="sd">        plots : List[Dict[str, Any]] (optional)</span>
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">object_info</span> <span class="o">=</span> <span class="n">object_info</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span> <span class="o">=</span> <span class="n">draw_fiber_points</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_to_output_txt</span> <span class="o">=</span> <span class="n">path_to_output_txt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radii</span> <span class="o">=</span> <span class="n">radii</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spatial_units</span> <span class="o">=</span> <span class="n">spatial_units</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span></div>
 </pre></div>
 
