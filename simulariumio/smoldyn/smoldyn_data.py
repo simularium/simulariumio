@@ -52,9 +52,9 @@ class SmoldynData:
             with which to draw them
             Default : 1.0 for any type name not specified
         display_names : Dict[str, str] (optional)
-            A mapping from molecule names in the sim view txt file
+            A mapping from original species names
             to names to display in the Simularium Viewer
-            Default: use names from sim view txt file
+            Default: use original names
         time_units: UnitData (optional)
             multiplier and unit name for time values
             Default: 1.0 second
