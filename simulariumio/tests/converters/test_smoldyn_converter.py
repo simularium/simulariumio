@@ -23,8 +23,8 @@ from simulariumio import MetaData, UnitData
                 ),
                 path_to_output_txt="simulariumio/tests/data/smoldyn/example_2D.txt",
                 radii={
-                    "S": 0.01,
-                    "E": 0.1,
+                    "S(solution)": 0.01,
+                    "E(front)": 0.1,
                 },
             ),
             {
@@ -48,9 +48,9 @@ from simulariumio import MetaData, UnitData
                         "fovDegrees": 50.0,
                     },
                     "typeMapping": {
-                        "0": {"name": "S#solution"},
-                        "1": {"name": "E#front"},
-                        "2": {"name": "ES#front"},
+                        "0": {"name": "S(solution)"},
+                        "1": {"name": "E(front)"},
+                        "2": {"name": "ES(front)"},
                     },
                 },
                 "spatialData": {
@@ -200,7 +200,7 @@ from simulariumio import MetaData, UnitData
                 ),
                 path_to_output_txt="simulariumio/tests/data/smoldyn/example_3D.txt",
                 radii={
-                    "green": 2.0,
+                    "green(solution)": 2.0,
                 },
                 spatial_units=UnitData("m"),
             ),
@@ -225,8 +225,8 @@ from simulariumio import MetaData, UnitData
                         "fovDegrees": 50.0,
                     },
                     "typeMapping": {
-                        "0": {"name": "green#solution"},
-                        "1": {"name": "red#solution"},
+                        "0": {"name": "green(solution)"},
+                        "1": {"name": "red(solution)"},
                     },
                 },
                 "spatialData": {

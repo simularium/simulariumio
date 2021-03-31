@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Any, Dict, List, Tuple
+from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, MetaData, UnitData
-from ..constants import VIZ_TYPE
 from .springsalad_data import SpringsaladData
 
 ###############################################################################
@@ -36,7 +35,7 @@ class SpringsaladConverter(TrajectoryConverter):
         self._data = self._read(input_data)
 
     def _parse_springsalad_data(
-        self, springsalad_data: List[str]
+        self, springsalad_data: List[str], scale_factor: float
     ) -> Tuple[AgentData, np.ndarray]:
         """
         Parse SpringSaLaD SIM_VIEW txt file to get the total steps
@@ -52,19 +51,18 @@ class SpringsaladConverter(TrajectoryConverter):
             "radius",
         ]
         traj = pd.DataFrame([], columns=columns_list)
-        t = -1
         timestamp = 0.0
         box_size = np.zeros(3)
         for line in springsalad_data:
             cols = line.split()
             if "xsize" in line:
-                box_size[0] = float(cols[1])
+                box_size[0] = scale_factor * float(cols[1])
             if "ysize" in line:
-                box_size[1] = float(cols[1])
+                box_size[1] = scale_factor * float(cols[1])
             if "z_outside" in line:
-                box_size[2] += float(cols[1])
+                box_size[2] += scale_factor * float(cols[1])
             if "z_inside" in line:
-                box_size[2] += float(cols[1])
+                box_size[2] += scale_factor * float(cols[1])
             if "CurrentTime" in line:  # beginning of a scene
                 timestamp = float(line.split("CurrentTime")[1].split()[0])
             if "ID" in line:  # line has data for one agent in scene
@@ -74,10 +72,10 @@ class SpringsaladConverter(TrajectoryConverter):
                             timestamp,
                             int(cols[1]),  # unique id
                             cols[3],  # type
-                            float(cols[4]),  # position X
-                            float(cols[5]),  # position Y
-                            float(cols[6]),  # position Z
-                            float(cols[2]),  # radius
+                            scale_factor * float(cols[4]),  # position X
+                            scale_factor * float(cols[5]),  # position Y
+                            scale_factor * float(cols[6]),  # position Z
+                            scale_factor * float(cols[2]),  # radius
                         ]
                     ],
                     columns=columns_list,
@@ -92,7 +90,9 @@ class SpringsaladConverter(TrajectoryConverter):
         print("Reading SpringSaLaD Data -------------")
         with open(input_data.path_to_sim_view_txt, "r") as myfile:
             springsalad_data = myfile.read().split("\n")
-        agent_data, box_size = self._parse_springsalad_data(springsalad_data)
+        agent_data, box_size = self._parse_springsalad_data(
+            springsalad_data, input_data.scale_factor
+        )
         return TrajectoryData(
             meta_data=MetaData(
                 box_size=box_size,

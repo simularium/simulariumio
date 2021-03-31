@@ -159,16 +159,19 @@ class AgentData:
         last_tid = 0
         for t in range(total_steps):
             for n in range(len(type_names[t])):
-                if type_names[t][n] not in type_id_mapping:
+                tn = type_names[t][n]
+                if len(tn) == 0:
+                    continue
+                if tn not in type_id_mapping:
                     if use_existing_ids:
                         tid = int(type_ids[t][n])
                     else:
                         tid = last_tid
                         last_tid += 1
-                    type_id_mapping[type_names[t][n]] = tid
-                    type_name_mapping[str(tid)] = {"name": type_names[t][n]}
+                    type_id_mapping[tn] = tid
+                    type_name_mapping[str(tid)] = {"name": tn}
                 if not use_existing_ids:
-                    type_ids[t][n] = type_id_mapping[type_names[t][n]]
+                    type_ids[t][n] = type_id_mapping[tn]
         return type_ids, type_name_mapping
 
     @staticmethod
@@ -291,12 +294,6 @@ class AgentData:
             .apply(lambda x: x.values.tolist())
             .tolist()
         )
-        type_names = (
-            grouped_traj["type"]
-            .groupby(level=0)
-            .apply(lambda x: x.values.tolist())
-            .tolist()
-        )
         positions = np.array(
             grouped_traj[["positionX", "positionY", "positionZ"]]
             .groupby(level=0)
@@ -305,6 +302,17 @@ class AgentData:
         )
         radii = np.array(
             grouped_traj["radius"]
+            .groupby(level=0)
+            .apply(lambda x: x.values.tolist())
+            .tolist()
+        )
+        grouped_traj = (
+            traj.set_index(["time", traj.groupby("time").cumcount()])
+            .unstack(fill_value="")
+            .stack()
+        )
+        type_names = (
+            grouped_traj["type"]
             .groupby(level=0)
             .apply(lambda x: x.values.tolist())
             .tolist()
