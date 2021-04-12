@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>simulariumio.springsalad package &mdash; Simularium Conversion 1.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="simulariumio.smoldyn package" href="simulariumio.smoldyn.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Simularium Conversion
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="simulariumio.html">simulariumio package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="simulariumio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.filters.html">simulariumio.filters package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.medyan.html">simulariumio.medyan package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.smoldyn.html">simulariumio.smoldyn package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">simulariumio.springsalad package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#questions-or-thoughts">Questions or Thoughts?</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Simularium Conversion</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">simulariumio</a> &raquo;</li>
+        
+          <li><a href="simulariumio.html">simulariumio package</a> &raquo;</li>
+        
+      <li>simulariumio.springsalad package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/simulariumio.springsalad.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+      
+      
+        <a href="simulariumio.smoldyn.html" class="btn btn-neutral float-left" title="simulariumio.smoldyn package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="simulariumio-springsalad-package">
+<h1>simulariumio.springsalad package<a class="headerlink" href="#simulariumio-springsalad-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-simulariumio.springsalad.springsalad_converter">
+<span id="simulariumio-springsalad-springsalad-converter-module"></span><h2>simulariumio.springsalad.springsalad_converter module<a class="headerlink" href="#module-simulariumio.springsalad.springsalad_converter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.springsalad.springsalad_converter.SpringsaladConverter">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.springsalad.springsalad_converter.</code><code class="sig-name descname">SpringsaladConverter</code><span class="sig-paren">(</span><em class="sig-param">input_data: simulariumio.springsalad.springsalad_data.SpringsaladData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/springsalad/springsalad_converter.html#SpringsaladConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.springsalad.springsalad_converter.SpringsaladConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter" title="simulariumio.trajectory_converter.TrajectoryConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.trajectory_converter.TrajectoryConverter</span></code></a></p>
+<p>This object reads simulation trajectory outputs
+from SpringSaLaD (<a class="reference external" href="https://vcell.org/ssalad">https://vcell.org/ssalad</a>)
+and plot data and writes them in the JSON format used
+by the Simularium viewer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_data</strong> (<em>SpringsaladData</em>) – An object containing info for reading
+SpringSaLaD simulation trajectory outputs and plot data</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.springsalad.springsalad_data">
+<span id="simulariumio-springsalad-springsalad-data-module"></span><h2>simulariumio.springsalad.springsalad_data module<a class="headerlink" href="#module-simulariumio.springsalad.springsalad_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.springsalad.springsalad_data.SpringsaladData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.springsalad.springsalad_data.</code><code class="sig-name descname">SpringsaladData</code><span class="sig-paren">(</span><em class="sig-param">path_to_sim_view_txt: str</em>, <em class="sig-param">display_names: Dict[str</em>, <em class="sig-param">str] = {}</em>, <em class="sig-param">camera_defaults: simulariumio.data_objects.camera_data.CameraData = &lt;simulariumio.data_objects.camera_data.CameraData object&gt;</em>, <em class="sig-param">scale_factor: float = 1.0</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/springsalad/springsalad_data.html#SpringsaladData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object holds simulation trajectory outputs
+from SpringSaLaD (<a class="reference external" href="https://vcell.org/ssalad">https://vcell.org/ssalad</a>)
+and plot data</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>path_to_sim_view_txt</strong> (<em>str</em>) – A string path to the txt file named
+“[model name]_SIM_VIEW_[run name].txt”</p></li>
+<li><p><strong>display_names</strong> (<em>Dict[str, str] (optional)</em>) – A mapping from molecule names in the sim view txt file
+to names to display in the Simularium Viewer
+Default: use names from sim view txt file</p></li>
+<li><p><strong>camera_defaults</strong> (<em>CameraData (optional)</em>) – camera’s initial settings
+which it also returns to when reset
+Default: CameraData(</p>
+<blockquote>
+<div><p>position=[0,0,120],
+look_at_position=[0,0,0],
+up_vector=[0,1,0],
+fov_degrees=50</p>
+</div></blockquote>
+<p>)</p>
+</li>
+<li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the scene, use if
+visualization is too large or small
+Default: 1.0</p></li>
+<li><p><strong>plots</strong> (<em>List[Dict[str, Any]] (optional)</em>) – An object containing plot data already
+in Simularium format</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.springsalad.springsalad_data.SpringsaladData.camera_defaults">
+<code class="sig-name descname">camera_defaults</code><em class="property">: CameraData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData.camera_defaults" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.springsalad.springsalad_data.SpringsaladData.display_names">
+<code class="sig-name descname">display_names</code><em class="property">: Dict[str, str]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData.display_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.springsalad.springsalad_data.SpringsaladData.path_to_sim_view_txt">
+<code class="sig-name descname">path_to_sim_view_txt</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData.path_to_sim_view_txt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.springsalad.springsalad_data.SpringsaladData.plots">
+<code class="sig-name descname">plots</code><em class="property">: List[Dict[str, Any]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData.plots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.springsalad.springsalad_data.SpringsaladData.scale_factor">
+<code class="sig-name descname">scale_factor</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData.scale_factor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.springsalad">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.springsalad" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Blair Lyons.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -107,6 +107,7 @@
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.smoldyn.html">simulariumio.smoldyn package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.springsalad.html">simulariumio.springsalad package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#submodules">Submodules</a></li>
@@ -280,7 +281,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.meta_data.MetaData.camera_defaults">camera_defaults (simulariumio.data_objects.meta_data.MetaData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.springsalad.html#simulariumio.springsalad.springsalad_data.SpringsaladData.camera_defaults">(simulariumio.springsalad.springsalad_data.SpringsaladData attribute)</a>
 </li>
+      </ul></li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.camera_data.CameraData">CameraData (class in simulariumio.data_objects.camera_data)</a>
 </li>
       <li><a href="simulariumio.html#simulariumio.file_converter.FileConverter.current_trajectory_info_version">current_trajectory_info_version (simulariumio.file_converter.FileConverter attribute)</a>
@@ -311,10 +316,16 @@
         <li><a href="simulariumio.filters.html#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.default_n">(simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.filters.html#simulariumio.filters.translate_filter.TranslateFilter.default_translation">default_translation (simulariumio.filters.translate_filter.TranslateFilter attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.smoldyn.html#simulariumio.smoldyn.smoldyn_data.SmoldynData.display_names">display_names (simulariumio.smoldyn.smoldyn_data.SmoldynData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.springsalad.html#simulariumio.springsalad.springsalad_data.SpringsaladData.display_names">(simulariumio.springsalad.springsalad_data.SpringsaladData attribute)</a>
+</li>
+      </ul></li>
       <li><a href="simulariumio.medyan.html#simulariumio.medyan.medyan_agent_info.MedyanAgentInfo.draw_endpoints">draw_endpoints (simulariumio.medyan.medyan_agent_info.MedyanAgentInfo attribute)</a>
 </li>
       <li><a href="simulariumio.cytosim.html#simulariumio.cytosim.cytosim_data.CytosimData.draw_fiber_points">draw_fiber_points (simulariumio.cytosim.cytosim_data.CytosimData attribute)</a>
@@ -371,6 +382,8 @@
         <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData.from_buffer_data">(simulariumio.data_objects.trajectory_data.TrajectoryData class method)</a>
 </li>
       </ul></li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.from_dataframe">from_dataframe() (simulariumio.data_objects.agent_data.AgentData class method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -535,6 +548,8 @@
 </li>
       <li><a href="simulariumio.readdy.html#simulariumio.readdy.readdy_data.ReaddyData.path_to_readdy_h5">path_to_readdy_h5 (simulariumio.readdy.readdy_data.ReaddyData attribute)</a>
 </li>
+      <li><a href="simulariumio.springsalad.html#simulariumio.springsalad.springsalad_data.SpringsaladData.path_to_sim_view_txt">path_to_sim_view_txt (simulariumio.springsalad.springsalad_data.SpringsaladData attribute)</a>
+</li>
       <li><a href="simulariumio.medyan.html#simulariumio.medyan.medyan_data.MedyanData.path_to_snapshot">path_to_snapshot (simulariumio.medyan.medyan_data.MedyanData attribute)</a>
 </li>
       <li><a href="simulariumio.physicell.html#simulariumio.physicell.physicell_converter.PhysicellConverter">PhysicellConverter (class in simulariumio.physicell.physicell_converter)</a>
@@ -555,6 +570,8 @@
         <li><a href="simulariumio.readdy.html#simulariumio.readdy.readdy_data.ReaddyData.plots">(simulariumio.readdy.readdy_data.ReaddyData attribute)</a>
 </li>
         <li><a href="simulariumio.smoldyn.html#simulariumio.smoldyn.smoldyn_data.SmoldynData.plots">(simulariumio.smoldyn.smoldyn_data.SmoldynData attribute)</a>
+</li>
+        <li><a href="simulariumio.springsalad.html#simulariumio.springsalad.springsalad_data.SpringsaladData.plots">(simulariumio.springsalad.springsalad_data.SpringsaladData attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -626,7 +643,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.meta_data.MetaData.scale_factor">scale_factor (simulariumio.data_objects.meta_data.MetaData attribute)</a>
+
+      <ul>
+        <li><a href="simulariumio.springsalad.html#simulariumio.springsalad.springsalad_data.SpringsaladData.scale_factor">(simulariumio.springsalad.springsalad_data.SpringsaladData attribute)</a>
 </li>
+      </ul></li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.scatter_plot_data.ScatterPlotData">ScatterPlotData (class in simulariumio.data_objects.scatter_plot_data)</a>
 </li>
       <li><a href="simulariumio.plot_readers.html#simulariumio.plot_readers.scatter_plot_reader.ScatterPlotReader">ScatterPlotReader (class in simulariumio.plot_readers.scatter_plot_reader)</a>
@@ -683,12 +704,12 @@
 </li>
       <li><a href="simulariumio.filters.html#module-simulariumio.filters.reorder_agents_filter">simulariumio.filters.reorder_agents_filter (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.filters.html#module-simulariumio.filters.transform_spatial_axes_filter">simulariumio.filters.transform_spatial_axes_filter (module)</a>
 </li>
       <li><a href="simulariumio.filters.html#module-simulariumio.filters.translate_filter">simulariumio.filters.translate_filter (module)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.medyan.html#module-simulariumio.medyan">simulariumio.medyan (module)</a>
 </li>
       <li><a href="simulariumio.medyan.html#module-simulariumio.medyan.medyan_agent_info">simulariumio.medyan.medyan_agent_info (module)</a>
@@ -727,6 +748,12 @@
 </li>
       <li><a href="simulariumio.smoldyn.html#module-simulariumio.smoldyn.smoldyn_data">simulariumio.smoldyn.smoldyn_data (module)</a>
 </li>
+      <li><a href="simulariumio.springsalad.html#module-simulariumio.springsalad">simulariumio.springsalad (module)</a>
+</li>
+      <li><a href="simulariumio.springsalad.html#module-simulariumio.springsalad.springsalad_converter">simulariumio.springsalad.springsalad_converter (module)</a>
+</li>
+      <li><a href="simulariumio.springsalad.html#module-simulariumio.springsalad.springsalad_data">simulariumio.springsalad.springsalad_data (module)</a>
+</li>
       <li><a href="simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter (module)</a>
 </li>
       <li><a href="simulariumio.smoldyn.html#simulariumio.smoldyn.smoldyn_converter.SmoldynConverter">SmoldynConverter (class in simulariumio.smoldyn.smoldyn_converter)</a>
@@ -743,6 +770,10 @@
         <li><a href="simulariumio.smoldyn.html#simulariumio.smoldyn.smoldyn_data.SmoldynData.spatial_units">(simulariumio.smoldyn.smoldyn_data.SmoldynData attribute)</a>
 </li>
       </ul></li>
+      <li><a href="simulariumio.springsalad.html#simulariumio.springsalad.springsalad_converter.SpringsaladConverter">SpringsaladConverter (class in simulariumio.springsalad.springsalad_converter)</a>
+</li>
+      <li><a href="simulariumio.springsalad.html#simulariumio.springsalad.springsalad_data.SpringsaladData">SpringsaladData (class in simulariumio.springsalad.springsalad_data)</a>
+</li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.subpoints">subpoints (simulariumio.data_objects.agent_data.AgentData attribute)</a>
 </li>
   </ul></td>

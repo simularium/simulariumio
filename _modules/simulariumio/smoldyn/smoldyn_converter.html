@@ -106,6 +106,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.smoldyn.html">simulariumio.smoldyn package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.springsalad.html">simulariumio.springsalad package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#submodules">Submodules</a></li>
@@ -249,18 +250,6 @@
             <span class="n">max_agents</span> <span class="o">=</span> <span class="n">current_agents</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">time_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_format_type_name</span><span class="p">(</span><span class="n">raw_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Format a type name to take advantage of Simularium state names</span>
-<span class="sd">        return (&quot;type#state&quot;, &quot;type&quot;) if state is found,</span>
-<span class="sd">        otherwise (&quot;type&quot;, &quot;type&quot;)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s2">&quot;(&quot;</span> <span class="ow">in</span> <span class="n">raw_name</span><span class="p">:</span>
-            <span class="n">cols</span> <span class="o">=</span> <span class="n">raw_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">#</span><span class="si">{</span><span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">raw_name</span><span class="p">,</span> <span class="n">raw_name</span>
-
     <span class="k">def</span> <span class="nf">_parse_objects</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">smoldyn_data_lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -299,7 +288,11 @@
                     <span class="p">)</span>
                 <span class="n">is_3D</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">4</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="k">if</span> <span class="n">is_3D</span> <span class="k">else</span> <span class="n">cols</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-                <span class="n">type_name</span><span class="p">,</span> <span class="n">base_type</span> <span class="o">=</span> <span class="n">SmoldynConverter</span><span class="o">.</span><span class="n">_format_type_name</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="n">raw_type_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">raw_type_name</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_names</span><span class="p">:</span>
+                    <span class="n">type_name</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_names</span><span class="p">[</span><span class="n">raw_type_name</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">type_name</span> <span class="o">=</span> <span class="n">raw_type_name</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">type_name</span><span class="p">)</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                     <span class="p">[</span>
@@ -309,8 +302,8 @@
                     <span class="p">]</span>
                 <span class="p">)</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="p">(</span>
-                    <span class="n">input_data</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">base_type</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="n">base_type</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">radii</span>
+                    <span class="n">input_data</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">raw_type_name</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">raw_type_name</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">radii</span>
                     <span class="k">else</span> <span class="mf">1.0</span>
                 <span class="p">)</span>
                 <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>

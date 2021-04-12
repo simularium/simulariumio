@@ -14,6 +14,7 @@ Subpackages
    simulariumio.plot_readers
    simulariumio.readdy
    simulariumio.smoldyn
+   simulariumio.springsalad
 
 Submodules
 ----------

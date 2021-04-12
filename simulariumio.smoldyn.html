@@ -39,7 +39,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="next" title="simulariumio.springsalad package" href="simulariumio.springsalad.html" />
     <link rel="prev" title="simulariumio.readdy package" href="simulariumio.readdy.html" /> 
 </head>
 
@@ -108,6 +108,7 @@
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">simulariumio.smoldyn package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.springsalad.html">simulariumio.springsalad package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.html#submodules">Submodules</a></li>
@@ -194,7 +195,7 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="contributing.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="simulariumio.springsalad.html" class="btn btn-neutral float-right" title="simulariumio.springsalad package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
       
       
         <a href="simulariumio.readdy.html" class="btn btn-neutral float-left" title="simulariumio.readdy package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
@@ -234,7 +235,7 @@ Smoldyn simulation trajectory outputs and plot data</p>
 <span id="simulariumio-smoldyn-smoldyn-data-module"></span><h2>simulariumio.smoldyn.smoldyn_data module<a class="headerlink" href="#module-simulariumio.smoldyn.smoldyn_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.smoldyn.smoldyn_data.SmoldynData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.smoldyn.smoldyn_data.</code><code class="sig-name descname">SmoldynData</code><span class="sig-paren">(</span><em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData, path_to_output_txt: str, radii: Dict[str, float], time_units: simulariumio.data_objects.unit_data.UnitData = &lt;simulariumio.data_objects.unit_data.UnitData object&gt;, spatial_units: simulariumio.data_objects.unit_data.UnitData = &lt;simulariumio.data_objects.unit_data.UnitData object&gt;, plots: List[Dict[str, Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/smoldyn/smoldyn_data.html#SmoldynData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.smoldyn.smoldyn_data.</code><code class="sig-name descname">SmoldynData</code><span class="sig-paren">(</span><em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData, path_to_output_txt: str, radii: Dict[str, float], display_names: Dict[str, str] = {}, time_units: simulariumio.data_objects.unit_data.UnitData = &lt;simulariumio.data_objects.unit_data.UnitData object&gt;, spatial_units: simulariumio.data_objects.unit_data.UnitData = &lt;simulariumio.data_objects.unit_data.UnitData object&gt;, plots: List[Dict[str, Any]] = []</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/smoldyn/smoldyn_data.html#SmoldynData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 from Smoldyn (<a class="reference external" href="http://www.smoldyn.org">http://www.smoldyn.org</a>) and plot data</p>
@@ -254,6 +255,9 @@ Generate by adding to your config.txt file:</p>
 <li><p><strong>radii</strong> (<em>Dict[str,float] (optional)</em>) – A mapping of type names to the radii
 with which to draw them
 Default : 1.0 for any type name not specified</p></li>
+<li><p><strong>display_names</strong> (<em>Dict[str, str] (optional)</em>) – A mapping from original species names
+to names to display in the Simularium Viewer
+Default: use original names</p></li>
 <li><p><strong>time_units</strong> (<em>UnitData (optional)</em>) – multiplier and unit name for time values
 Default: 1.0 second</p></li>
 <li><p><strong>spatial_units</strong> (<em>UnitData (optional)</em>) – multiplier and unit name for spatial values
@@ -264,6 +268,11 @@ in Simularium format</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="attribute">
+<dt id="simulariumio.smoldyn.smoldyn_data.SmoldynData.display_names">
+<code class="sig-name descname">display_names</code><em class="property">: Dict[str, str]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData.display_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="simulariumio.smoldyn.smoldyn_data.SmoldynData.meta_data">
 <code class="sig-name descname">meta_data</code><em class="property">: MetaData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData.meta_data" title="Permalink to this definition">¶</a></dt>
