@@ -35,10 +35,10 @@ class CameraData:
         position : np.ndarray (shape = [3]) (optional)
             3D position of the camera itself
             Default: np.array([0.0, 0.0, 120.0])
-        look_at_position: np.ndarray (shape = [3]) (optional)
+        look_at_position : np.ndarray (shape = [3]) (optional)
             position the camera looks at
             Default: np.zeros(3)
-        up_vector: np.ndarray (shape = [3]) (optional)
+        up_vector : np.ndarray (shape = [3]) (optional)
             the vector that defines which direction
             is "up" in the camera's view
             Default: np.array([0.0, 1.0, 0.0])

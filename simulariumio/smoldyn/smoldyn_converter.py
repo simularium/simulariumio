@@ -55,18 +55,6 @@ class SmoldynConverter(TrajectoryConverter):
             max_agents = current_agents
         return (time_steps + 1, max_agents)
 
-    @staticmethod
-    def _format_type_name(raw_name: str) -> Tuple[str, str]:
-        """
-        Format a type name to take advantage of Simularium state names
-        return ("type#state", "type") if state is found,
-        otherwise ("type", "type")
-        """
-        if "(" in raw_name:
-            cols = raw_name.split("(")
-            return f"{cols[0]}#{cols[1][:-1]}", cols[0]
-        return raw_name, raw_name
-
     def _parse_objects(
         self,
         smoldyn_data_lines: List[str],
@@ -105,7 +93,11 @@ class SmoldynConverter(TrajectoryConverter):
                     )
                 is_3D = len(cols) > 4
                 result.unique_ids[t][n] = int(cols[4] if is_3D else cols[3])
-                type_name, base_type = SmoldynConverter._format_type_name(str(cols[0]))
+                raw_type_name = str(cols[0])
+                if raw_type_name in input_data.display_names:
+                    type_name = input_data.display_names[raw_type_name]
+                else:
+                    type_name = raw_type_name
                 result.types[t].append(type_name)
                 result.positions[t][n] = input_data.meta_data.scale_factor * np.array(
                     [
@@ -115,8 +107,8 @@ class SmoldynConverter(TrajectoryConverter):
                     ]
                 )
                 result.radii[t][n] = input_data.meta_data.scale_factor * (
-                    input_data.radii[base_type]
-                    if base_type in input_data.radii
+                    input_data.radii[raw_type_name]
+                    if raw_type_name in input_data.radii
                     else 1.0
                 )
                 n += 1

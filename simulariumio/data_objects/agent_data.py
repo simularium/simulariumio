@@ -8,8 +8,9 @@ from typing import List, Tuple, Dict, Any
 import math
 
 import numpy as np
+import pandas as pd
 
-from ..constants import V1_SPATIAL_BUFFER_STRUCT
+from ..constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE
 from ..exceptions import DataError
 
 ###############################################################################
@@ -158,16 +159,19 @@ class AgentData:
         last_tid = 0
         for t in range(total_steps):
             for n in range(len(type_names[t])):
-                if type_names[t][n] not in type_id_mapping:
+                tn = type_names[t][n]
+                if len(tn) == 0:
+                    continue
+                if tn not in type_id_mapping:
                     if use_existing_ids:
                         tid = int(type_ids[t][n])
                     else:
                         tid = last_tid
                         last_tid += 1
-                    type_id_mapping[type_names[t][n]] = tid
-                    type_name_mapping[str(tid)] = {"name": type_names[t][n]}
+                    type_id_mapping[tn] = tid
+                    type_name_mapping[str(tid)] = {"name": tn}
                 if not use_existing_ids:
-                    type_ids[t][n] = type_id_mapping[type_names[t][n]]
+                    type_ids[t][n] = type_id_mapping[tn]
         return type_ids, type_name_mapping
 
     @staticmethod
@@ -266,6 +270,61 @@ class AgentData:
             subpoints=subpoints,
             draw_fiber_points=False,
             type_ids=type_ids,
+        )
+
+    @classmethod
+    def from_dataframe(cls, traj: pd.DataFrame):
+        """
+        Create AgentData from a pandas DataFrame with columns:
+        time, unique_id, type, positionX, positionY, positionZ, radius
+        (only for default agents, no fibers)
+        """
+        times = np.unique(traj.loc[0, "time"].to_numpy())
+        n_agents = np.squeeze(
+            traj.groupby("time").agg(["count"])["unique_id"].to_numpy()
+        )
+        grouped_traj = (
+            traj.set_index(["time", traj.groupby("time").cumcount()])
+            .unstack(fill_value=0)
+            .stack()
+        )
+        unique_ids = np.array(
+            grouped_traj["unique_id"]
+            .groupby(level=0)
+            .apply(lambda x: x.values.tolist())
+            .tolist()
+        )
+        positions = np.array(
+            grouped_traj[["positionX", "positionY", "positionZ"]]
+            .groupby(level=0)
+            .apply(lambda x: x.values.tolist())
+            .tolist()
+        )
+        radii = np.array(
+            grouped_traj["radius"]
+            .groupby(level=0)
+            .apply(lambda x: x.values.tolist())
+            .tolist()
+        )
+        grouped_traj = (
+            traj.set_index(["time", traj.groupby("time").cumcount()])
+            .unstack(fill_value="")
+            .stack()
+        )
+        type_names = (
+            grouped_traj["type"]
+            .groupby(level=0)
+            .apply(lambda x: x.values.tolist())
+            .tolist()
+        )
+        return cls(
+            times=times,
+            n_agents=n_agents,
+            viz_types=VIZ_TYPE.DEFAULT * np.ones_like(unique_ids),
+            unique_ids=unique_ids,
+            types=type_names,
+            positions=positions,
+            radii=radii,
         )
 
     def append_agents(self, new_agents: AgentData):
