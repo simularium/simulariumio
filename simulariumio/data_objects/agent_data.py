@@ -33,6 +33,7 @@ class AgentData:
     draw_fiber_points: bool = False
     type_ids: np.ndarray
     type_mapping: Dict[str, Any]
+    rotations: np.ndarray
 
     def __init__(
         self,
@@ -47,6 +48,7 @@ class AgentData:
         subpoints: np.ndarray = None,
         draw_fiber_points: bool = False,
         type_ids: np.ndarray = None,
+        rotations: np.ndarray = None,
     ):
         """
         This object contains spatial simulation data
@@ -92,6 +94,12 @@ class AgentData:
         draw_fiber_points: bool (optional)
             Draw spheres at every other fiber point for fibers?
             Default: False
+        type_ids: np.ndarray (optional)
+            A numpy ndarray containing the type id
+            of each agent at each timestep
+        rotations: np.ndarray (optional)
+            A numpy ndarray containing the rotation euler angles XYZ
+            of each agent at each timestep
         """
         self.times = times
         self.n_agents = n_agents
@@ -105,6 +113,7 @@ class AgentData:
         self.draw_fiber_points = draw_fiber_points
         self.type_ids = type_ids
         self.type_mapping = None
+        self.rotations = rotations
 
     @staticmethod
     def _get_buffer_data_dimensions(buffer_data: Dict[str, Any]) -> Tuple[int]:
@@ -207,6 +216,7 @@ class AgentData:
         unique_ids = np.zeros((total_steps, max_agents))
         type_ids = np.zeros((total_steps, max_agents))
         positions = np.zeros((total_steps, max_agents, 3))
+        rotations = np.zeros((total_steps, max_agents, 3))
         radii = np.ones((total_steps, max_agents))
         n_subpoints = np.zeros((total_steps, max_agents))
         subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
@@ -226,6 +236,11 @@ class AgentData:
                     frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX],
                     frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSY_INDEX],
                     frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSZ_INDEX],
+                ]
+                rotations[t][n] = [
+                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX],
+                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.ROTY_INDEX],
+                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.ROTZ_INDEX],
                 ]
                 radii[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX]
                 i += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
@@ -270,6 +285,7 @@ class AgentData:
             subpoints=subpoints,
             draw_fiber_points=False,
             type_ids=type_ids,
+            rotations=rotations,
         )
 
     @classmethod
@@ -300,6 +316,12 @@ class AgentData:
             .apply(lambda x: x.values.tolist())
             .tolist()
         )
+        rotations = np.array(
+            grouped_traj[["rotationX", "rotationY", "rotationZ"]]
+            .groupby(level=0)
+            .apply(lambda x: x.values.tolist())
+            .tolist()
+        )
         radii = np.array(
             grouped_traj["radius"]
             .groupby(level=0)
@@ -325,6 +347,7 @@ class AgentData:
             types=type_names,
             positions=positions,
             radii=radii,
+            rotations=rotations,
         )
 
     def append_agents(self, new_agents: AgentData):
