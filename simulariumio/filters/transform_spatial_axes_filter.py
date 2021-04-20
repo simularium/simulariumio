@@ -71,21 +71,24 @@ class TransformSpatialAxesFilter(Filter):
         # get dimensions
         total_steps = data.agent_data.times.size
         max_agents = int(np.amax(data.agent_data.n_agents))
-        max_subpoints = int(np.amax(data.agent_data.n_subpoints))
-        # get filtered data
+        use_subpoints = data.agent_data.n_subpoints is not None
+        if use_subpoints:
+            max_subpoints = int(np.amax(data.agent_data.n_subpoints))
+            subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
         positions = np.zeros((total_steps, max_agents, 3))
-        subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
+        # get filtered data
         for t in range(total_steps):
             for n in range(int(data.agent_data.n_agents[t])):
                 positions[t][n] = self._transform_coordinate(
                     data.agent_data.positions[t][n]
                 )
-                if data.agent_data.n_subpoints[t][n] > 0:
+                if use_subpoints and data.agent_data.n_subpoints[t][n] > 0:
                     for s in range(int(data.agent_data.n_subpoints[t][n])):
                         subpoints[t][n][s] = self._transform_coordinate(
                             data.agent_data.subpoints[t][n][s]
                         )
         data.meta_data.box_size = box_size
         data.agent_data.positions = positions
-        data.agent_data.subpoints = subpoints
+        if use_subpoints:
+            data.agent_data.subpoints = subpoints
         return data

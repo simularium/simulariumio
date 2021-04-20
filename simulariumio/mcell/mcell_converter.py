@@ -5,6 +5,8 @@ import logging
 from typing import List, Dict, Any
 import json
 import os
+import array
+import codecs
 
 import numpy as np
 import pandas as pd
@@ -19,6 +21,8 @@ log = logging.getLogger(__name__)
 
 ###############################################################################
 
+
+BLENDER_GEOMETRY_SCALE_FACTOR = 0.005
 
 class McellConverter(TrajectoryConverter):
     def __init__(self, input_data: McellData):
@@ -46,12 +50,21 @@ class McellConverter(TrajectoryConverter):
         return normals
 
     @staticmethod
+    def _convert_ubytes_to_string(ubyte_array: np.ndarray) -> str:
+        """
+        Convert a numpy array of unsigned char to a string
+        """
+        decoder = codecs.getdecoder("utf-8")
+        return np.array([decoder(item)[0] for item in ubyte_array], dtype="unicode")[0]
+
+    @staticmethod
     def _read_binary_cellblender_viz_frame(
         file_name: str,
         current_time: float,
         molecule_info: Dict[str, Dict[str, Any]],
         display_names: Dict[str, str],
         columns_list: List[str],
+        scale_factor: float
     ) -> pd.DataFrame:
         """
         Read MCell binary visualization files
@@ -59,10 +72,12 @@ class McellConverter(TrajectoryConverter):
         code based on cellblender/cellblender_mol_viz.py function mol_viz_file_read
         """
         result = pd.DataFrame([], columns=columns_list)
+        total_mols = 0
         with open(file_name, "rb") as mol_file:
             # first 4 bytes must contain value '1'
-            is_binary = np.fromfile(mol_file, dtype=bytes, count=1)[0] == 1
-            assert is_binary
+            b = array.array("I")
+            b.fromfile(mol_file, 1)
+            assert b[0] == 1
             while True:
                 try:
                     """
@@ -74,25 +89,34 @@ class McellConverter(TrajectoryConverter):
                     mt = Surface molecule flag.
                     """
                     # get type name
-                    n_chars_type_name = np.fromfile(mol_file, dtype=bytes, count=1)[0]
-                    type_name_chars_array = np.fromfile(
-                        mol_file, dtype=bytes, count=n_chars_type_name
-                    )
-                    type_name = np.array2string(
-                        type_name_chars_array, formatter={"str_kind": lambda x: x}
-                    ).replace(" ", "")[1:-1]
+                    n_chars_type_name = array.array("B")
+                    n_chars_type_name.fromfile(mol_file, 1)
+                    type_name_array = array.array("B")
+                    type_name_array.fromfile(mol_file, n_chars_type_name[0])
+                    type_name = type_name_array.tostring().decode()
                     display_type_name = (
                         display_names[type_name]
                         if type_name in display_names
                         else type_name
                     )
                     # get positions and rotations
-                    is_surface_mol = np.fromfile(mol_file, dtype=bytes, count=1)[0] == 1
-                    n_data = np.fromfile(mol_file, dtype=int, count=1)[0]
-                    n_mol = int(n_data / 3.0)
-                    positions = np.fromfile(mol_file, dtype=float, count=n_data)
+                    is_surface_mol = array.array("B")
+                    is_surface_mol.fromfile(mol_file, 1)
+                    is_surface_mol = is_surface_mol[0] == 1
+                    n_data = array.array("I")
+                    n_data.fromfile(mol_file, 1)
+                    n_data = n_data[0]
+                    n_mols = int(n_data / 3.0)
+                    positions = array.array("f")
+                    positions.fromfile(mol_file, n_data)
+                    positions = scale_factor * np.array(positions)
+                    # if "a" in type_name:
+                    #     print(scale_factor * BLENDER_GEOMETRY_SCALE_FACTOR * molecule_info[type_name]["display"]["scale"] * np.ones(n_mols))
+                    #     print(positions)
                     if is_surface_mol:
-                        normals = np.fromfile(mol_file, dtype=float, count=n_data)
+                        normals = array.array("f")
+                        normals.fromfile(mol_file, n_data)   
+                        normals = np.array(normals)
                         rotations = (
                             McellConverter._get_rotation_euler_angles_for_normals(
                                 normals
@@ -104,19 +128,20 @@ class McellConverter(TrajectoryConverter):
                     result = result.append(
                         pd.DataFrame(
                             {
-                                "time": current_time,
-                                "unique_id": np.arange(n_mol),
-                                "type": display_type_name,
+                                "time": current_time * np.ones(n_mols),
+                                "unique_id": np.arange(n_mols) + total_mols, # MCell binary format has no IDs
+                                "type": np.repeat(display_type_name, n_mols),
                                 "positionX": positions[::3],
                                 "positionY": positions[1::3],
                                 "positionZ": positions[2::3],
                                 "rotationX": rotations[::3],
                                 "rotationY": rotations[1::3],
                                 "rotationZ": rotations[2::3],
-                                "radius": molecule_info[type_name]["display"]["scale"],
+                                "radius": scale_factor * BLENDER_GEOMETRY_SCALE_FACTOR * molecule_info[type_name]["display"]["scale"] * np.ones(n_mols),
                             }
                         )
                     )
+                    total_mols += n_mols
                 except EOFError:
                     mol_file.close()
                     break
@@ -137,8 +162,6 @@ class McellConverter(TrajectoryConverter):
             if "ascii" not in file_name and file_name.endswith(".dat"):
                 n_frames += 1
         timestep = float(data_model["mcell"]["initialization"]["time_step"])
-        total_steps = int(data_model["mcell"]["initialization"]["file_stop_index"])
-        frame_timestep = (timestep * total_steps) / float(n_frames)
         # get metadata for each agent type
         molecule_info = {}
         molecule_list = data_model["mcell"]["define_molecules"]["molecule_list"]
@@ -162,12 +185,15 @@ class McellConverter(TrajectoryConverter):
             if "ascii" not in file_name and file_name.endswith(".dat"):
                 split_file_name = file_name.split(".")
                 time_index = int(split_file_name[split_file_name.index("dat") - 1])
+                if time_index % input_data.nth_timestep_to_read != 0:
+                    continue
                 frame_data = McellConverter._read_binary_cellblender_viz_frame(
                     os.path.join(input_data.path_to_binary_files, file_name),
-                    time_index * frame_timestep,
+                    time_index * timestep,
                     molecule_info,
                     input_data.display_names,
                     columns_list,
+                    input_data.scale_factor,
                 )
                 traj = traj.append(frame_data)
         # get box size

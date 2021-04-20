@@ -1,0 +1,26 @@
+{
+ "data_layout" : 
+ [
+  [
+   "/DIR",
+   [
+    "."
+   ]
+  ],
+  [
+   "/FILE_TYPE",
+   [
+    "react_data",
+    "viz_data"
+   ]
+  ],
+  [
+   "/SEED",
+   [
+    "1"
+   ]
+  ]
+ ],
+ "mcell4_mode" : true,
+ "version" : 2
+}
