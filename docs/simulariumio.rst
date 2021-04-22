@@ -9,6 +9,7 @@ Subpackages
    simulariumio.cytosim
    simulariumio.data_objects
    simulariumio.filters
+   simulariumio.mcell
    simulariumio.medyan
    simulariumio.physicell
    simulariumio.plot_readers

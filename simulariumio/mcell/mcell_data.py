@@ -50,9 +50,9 @@ class McellData:
             e.g. if 10, only every 10th timestep will be visualized
             Default: 1
         display_names : Dict[str, str] (optional)
-            A mapping from molecule names in the sim view txt file
+            A mapping from molecule names in the MCell data
             to names to display in the Simularium Viewer
-            Default: use names from sim view txt file
+            Default: use names from MCell
         camera_defaults : CameraData (optional)
             camera's initial settings
             which it also returns to when reset
