@@ -1,1 +1,16 @@
-/* This file is written to signal to CellBlender that the project has been exported. */
+INCLUDE_FILE = "Scene.initialization.mdl"
+
+INCLUDE_FILE = "Scene.molecules.mdl"
+
+INCLUDE_FILE = "Scene.reactions.mdl"
+
+INCLUDE_FILE = "Scene.geometry.mdl"
+
+INCLUDE_FILE = "Scene.instantiation.mdl"
+
+sprintf(seed,"%05g",SEED)
+
+INCLUDE_FILE = "Scene.viz_output.mdl"
+
+INCLUDE_FILE = "Scene.rxn_output.mdl"
+

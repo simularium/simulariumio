@@ -31,7 +31,7 @@
       ],
       "emit" : 0.0,
       "glyph" : "Sphere_1",
-      "scale" : 1.0
+      "scale" : 3.0
      },
      "export_viz" : false,
      "maximum_step_length" : "",
@@ -22069,7 +22069,7 @@
    "data_model_version" : "DM_2017_11_18_0130",
    "export_all_ascii" : true,
    "interaction_radius" : "",
-   "iterations" : "3",
+   "iterations" : "10",
    "microscopic_reversibility" : "OFF",
    "notifications" : 
    {
@@ -22141,7 +22141,7 @@
     }
    }
   },
-  "model_language" : "mcell3",
+  "model_language" : "mcell4",
   "model_objects" : 
   {
    "data_model_version" : "DM_2018_01_11_1330",

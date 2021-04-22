@@ -24,6 +24,7 @@ log = logging.getLogger(__name__)
 
 BLENDER_GEOMETRY_SCALE_FACTOR = 0.005
 
+
 class McellConverter(TrajectoryConverter):
     def __init__(self, input_data: McellData):
         """
@@ -64,7 +65,7 @@ class McellConverter(TrajectoryConverter):
         molecule_info: Dict[str, Dict[str, Any]],
         display_names: Dict[str, str],
         columns_list: List[str],
-        scale_factor: float
+        scale_factor: float,
     ) -> pd.DataFrame:
         """
         Read MCell binary visualization files
@@ -110,12 +111,9 @@ class McellConverter(TrajectoryConverter):
                     positions = array.array("f")
                     positions.fromfile(mol_file, n_data)
                     positions = scale_factor * np.array(positions)
-                    # if "a" in type_name:
-                    #     print(scale_factor * BLENDER_GEOMETRY_SCALE_FACTOR * molecule_info[type_name]["display"]["scale"] * np.ones(n_mols))
-                    #     print(positions)
                     if is_surface_mol:
                         normals = array.array("f")
-                        normals.fromfile(mol_file, n_data)   
+                        normals.fromfile(mol_file, n_data)
                         normals = np.array(normals)
                         rotations = (
                             McellConverter._get_rotation_euler_angles_for_normals(
@@ -129,7 +127,8 @@ class McellConverter(TrajectoryConverter):
                         pd.DataFrame(
                             {
                                 "time": current_time * np.ones(n_mols),
-                                "unique_id": np.arange(n_mols) + total_mols, # MCell binary format has no IDs
+                                "unique_id": np.arange(n_mols)
+                                + total_mols,  # MCell binary format has no IDs
                                 "type": np.repeat(display_type_name, n_mols),
                                 "positionX": positions[::3],
                                 "positionY": positions[1::3],
@@ -137,7 +136,10 @@ class McellConverter(TrajectoryConverter):
                                 "rotationX": rotations[::3],
                                 "rotationY": rotations[1::3],
                                 "rotationZ": rotations[2::3],
-                                "radius": scale_factor * BLENDER_GEOMETRY_SCALE_FACTOR * molecule_info[type_name]["display"]["scale"] * np.ones(n_mols),
+                                "radius": scale_factor
+                                * BLENDER_GEOMETRY_SCALE_FACTOR
+                                * molecule_info[type_name]["display"]["scale"]
+                                * np.ones(n_mols),
                             }
                         )
                     )
