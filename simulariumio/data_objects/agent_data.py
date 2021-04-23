@@ -27,6 +27,7 @@ class AgentData:
     unique_ids: np.ndarray
     types: List[List[str]]
     positions: np.ndarray
+    rotations: np.ndarray
     radii: np.ndarray
     n_subpoints: np.ndarray = None
     subpoints: np.ndarray = None
@@ -44,6 +45,7 @@ class AgentData:
         types: List[List[str]],
         positions: np.ndarray,
         radii: np.ndarray,
+        rotations: np.ndarray = None,
         n_subpoints: np.ndarray = None,
         subpoints: np.ndarray = None,
         draw_fiber_points: bool = False,
@@ -80,6 +82,10 @@ class AgentData:
         radii : np.ndarray (shape = [timesteps, agents])
             A numpy ndarray containing the radius
             for each agent at each timestep
+        rotations : np.ndarray (shape = [timesteps, agents, 3]) (optional)
+            A numpy ndarray containing the XYZ euler angles representing
+            the rotation for each agent at each timestep in degrees
+            Default: [0, 0, 0] for each agent
         n_subpoints : np.ndarray (shape = [timesteps, agents]) (optional)
             A numpy ndarray containing the number of subpoints
             belonging to each agent at each timestep. Required if
@@ -108,8 +114,13 @@ class AgentData:
         self.types = types
         self.positions = positions
         self.radii = radii
-        self.n_subpoints = n_subpoints
-        self.subpoints = subpoints
+        self.rotations = (
+            rotations if rotations is not None else np.zeros_like(positions)
+        )
+        self.n_subpoints = (
+            n_subpoints if n_subpoints is not None else np.zeros_like(radii)
+        )
+        self.subpoints = subpoints if subpoints is not None else np.zeros_like(radii)
         self.draw_fiber_points = draw_fiber_points
         self.type_ids = type_ids
         self.type_mapping = None
@@ -281,6 +292,7 @@ class AgentData:
             types=type_names,
             positions=positions,
             radii=radii,
+            rotations=rotations,
             n_subpoints=n_subpoints,
             subpoints=subpoints,
             draw_fiber_points=False,
@@ -372,19 +384,12 @@ class AgentData:
         types = []
         type_ids = np.zeros((total_steps, max_agents))
         self.positions = np.concatenate((self.positions, new_agents.positions), axis=1)
+        self.rotations = np.concatenate((self.rotations, new_agents.rotations), axis=1)
         self.radii = np.concatenate((self.radii, new_agents.radii), axis=1)
-        if self.n_subpoints is not None and new_agents.n_subpoints is not None:
-            self.n_subpoints = np.concatenate(
-                (self.n_subpoints, new_agents.n_subpoints), axis=1
-            )
-        elif new_agents.n_subpoints is not None:
-            self.n_subpoints = np.copy(new_agents.n_subpoints)
-        if self.subpoints is not None and new_agents.subpoints is not None:
-            self.subpoints = np.concatenate(
-                (self.subpoints, new_agents.subpoints), axis=1
-            )
-        elif new_agents.subpoints is not None:
-            self.subpoints = np.copy(new_agents.subpoints)
+        self.n_subpoints = np.concatenate(
+            (self.n_subpoints, new_agents.n_subpoints), axis=1
+        )
+        self.subpoints = np.concatenate((self.subpoints, new_agents.subpoints), axis=1)
         # generate new unique IDs and type IDs so they don't overlap
         if self.type_ids is None:
             self.type_ids, tm = AgentData.get_type_ids_and_mapping(self.types)
@@ -427,14 +432,6 @@ class AgentData:
             type_ids = None
         else:
             type_ids = np.copy(self.type_ids)
-        if self.n_subpoints is None:
-            n_subpoints = None
-        else:
-            n_subpoints = np.copy(self.n_subpoints)
-        if self.subpoints is None:
-            subpoints = None
-        else:
-            subpoints = np.copy(self.subpoints)
         result = type(self)(
             times=np.copy(self.times),
             n_agents=np.copy(self.n_agents),
@@ -443,8 +440,9 @@ class AgentData:
             types=copy.deepcopy(self.types, memo),
             positions=np.copy(self.positions),
             radii=np.copy(self.radii),
-            n_subpoints=n_subpoints,
-            subpoints=subpoints,
+            rotations=np.copy(self.rotations),
+            n_subpoints=np.copy(self.n_subpoints),
+            subpoints=np.copy(self.subpoints),
             draw_fiber_points=self.draw_fiber_points,
             type_ids=type_ids,
         )

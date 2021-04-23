@@ -81,9 +81,9 @@ class SpringsaladConverter(TrajectoryConverter):
                             input_data.scale_factor * float(cols[4]),  # position X
                             input_data.scale_factor * float(cols[5]),  # position Y
                             input_data.scale_factor * float(cols[6]),  # position Z
-                            0,  # rotation X
-                            0,  # rotation Y
-                            0,  # rotation Z
+                            0.0,  # rotation X
+                            0.0,  # rotation Y
+                            0.0,  # rotation Z
                             input_data.scale_factor * float(cols[2]),  # radius
                         ]
                     ],
