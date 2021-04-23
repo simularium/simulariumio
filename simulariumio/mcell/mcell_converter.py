@@ -51,14 +51,6 @@ class McellConverter(TrajectoryConverter):
         return normals
 
     @staticmethod
-    def _convert_ubytes_to_string(ubyte_array: np.ndarray) -> str:
-        """
-        Convert a numpy array of unsigned char to a string
-        """
-        decoder = codecs.getdecoder("utf-8")
-        return np.array([decoder(item)[0] for item in ubyte_array], dtype="unicode")[0]
-
-    @staticmethod
     def _read_binary_cellblender_viz_frame(
         file_name: str,
         current_time: float,
