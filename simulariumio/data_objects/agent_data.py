@@ -77,13 +77,13 @@ class AgentData:
             A numpy ndarray containing the XYZ position
             for each agent at each timestep (in the units
             specified by TrajectoryData.spatial_units)
+        radii : np.ndarray (shape = [timesteps, agents])
+            A numpy ndarray containing the radius
+            for each agent at each timestep
         rotations : np.ndarray (shape = [timesteps, agents, 3]) (optional)
             A numpy ndarray containing the XYZ euler angles representing
             the rotation for each agent at each timestep in degrees
             Default: [0, 0, 0] for each agent
-        radii : np.ndarray (shape = [timesteps, agents])
-            A numpy ndarray containing the radius
-            for each agent at each timestep
         n_subpoints : np.ndarray (shape = [timesteps, agents]) (optional)
             A numpy ndarray containing the number of subpoints
             belonging to each agent at each timestep. Required if
