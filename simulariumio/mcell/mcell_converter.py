@@ -6,7 +6,6 @@ from typing import List, Dict, Any
 import json
 import os
 import array
-import codecs
 
 import numpy as np
 import pandas as pd

@@ -27,7 +27,6 @@ class AgentData:
     unique_ids: np.ndarray
     types: List[List[str]]
     positions: np.ndarray
-    rotations: np.ndarray
     radii: np.ndarray
     n_subpoints: np.ndarray = None
     subpoints: np.ndarray = None
@@ -50,7 +49,6 @@ class AgentData:
         subpoints: np.ndarray = None,
         draw_fiber_points: bool = False,
         type_ids: np.ndarray = None,
-        rotations: np.ndarray = None,
     ):
         """
         This object contains spatial simulation data
@@ -103,9 +101,6 @@ class AgentData:
         type_ids: np.ndarray (optional)
             A numpy ndarray containing the type id
             of each agent at each timestep
-        rotations: np.ndarray (optional)
-            A numpy ndarray containing the rotation euler angles XYZ
-            of each agent at each timestep
         """
         self.times = times
         self.n_agents = n_agents
@@ -124,7 +119,6 @@ class AgentData:
         self.draw_fiber_points = draw_fiber_points
         self.type_ids = type_ids
         self.type_mapping = None
-        self.rotations = rotations
 
     @staticmethod
     def _get_buffer_data_dimensions(buffer_data: Dict[str, Any]) -> Tuple[int]:
@@ -297,7 +291,6 @@ class AgentData:
             subpoints=subpoints,
             draw_fiber_points=False,
             type_ids=type_ids,
-            rotations=rotations,
         )
 
     @classmethod
