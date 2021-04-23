@@ -45,11 +45,7 @@ class EveryNthTimestepFilter(Filter):
         # get filtered dimensions
         total_steps = int(math.ceil(data.agent_data.times.size / float(self.n)))
         max_agents = int(np.amax(data.agent_data.n_agents))
-        max_subpoints = (
-            int(np.amax(data.agent_data.n_subpoints))
-            if data.agent_data.n_subpoints is not None
-            else 0
-        )
+        max_subpoints = int(np.amax(data.agent_data.n_subpoints))
         # get filtered data
         times = np.zeros(total_steps)
         n_agents = np.zeros(total_steps)
@@ -75,12 +71,10 @@ class EveryNthTimestepFilter(Filter):
                 types[i].append(data.agent_data.types[t][n])
                 positions[i][n] = data.agent_data.positions[t][n]
                 radii[i][n] = data.agent_data.radii[t][n]
-                if data.agent_data.n_subpoints is not None:
-                    n_subpoints[i][n] = data.agent_data.n_subpoints[t][n]
-                if data.agent_data.subpoints is not None:
-                    subpoints[i][n][
-                        : np.shape(data.agent_data.subpoints[t][n])[0]
-                    ] = data.agent_data.subpoints[t][n]
+                n_subpoints[i][n] = data.agent_data.n_subpoints[t][n]
+                subpoints[i][n][
+                    : np.shape(data.agent_data.subpoints[t][n])[0]
+                ] = data.agent_data.subpoints[t][n]
             i += 1
         data.agent_data.times = times
         data.agent_data.n_agents = n_agents
@@ -90,10 +84,8 @@ class EveryNthTimestepFilter(Filter):
         data.agent_data.type_ids = type_ids
         data.agent_data.positions = positions
         data.agent_data.radii = radii
-        if data.agent_data.n_subpoints is not None:
-            data.agent_data.n_subpoints = n_subpoints
-        if data.agent_data.subpoints is not None:
-            data.agent_data.subpoints = subpoints
+        data.agent_data.n_subpoints = n_subpoints
+        data.agent_data.subpoints = subpoints
         print(
             f"filtered dims = {times.shape[0]} timesteps X "
             f"{max_agents} agents X {max_subpoints} subpoints"
