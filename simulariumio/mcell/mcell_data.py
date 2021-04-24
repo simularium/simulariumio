@@ -18,6 +18,7 @@ class McellData:
     path_to_binary_files: str
     nth_timestep_to_read: int
     display_names: Dict[str, str]
+    surface_mol_rotation_angle: float
     camera_defaults: CameraData
     scale_factor: float
     plots: List[Dict[str, Any]]
@@ -28,6 +29,7 @@ class McellData:
         path_to_binary_files: str,
         nth_timestep_to_read: int = 1,
         display_names: Dict[str, str] = {},
+        surface_mol_rotation_angle: float = None,
         camera_defaults: CameraData = CameraData(),
         scale_factor: float = 1.0,
         plots: List[Dict[str, Any]] = [],
@@ -53,6 +55,10 @@ class McellData:
             A mapping from molecule names in the MCell data
             to names to display in the Simularium Viewer
             Default: use names from MCell
+        surface_mol_rotation_angle: float (optional)
+            The angle to use to calculate rotations 
+            around surface molecules' normals
+            Default: use random angles
         camera_defaults : CameraData (optional)
             camera's initial settings
             which it also returns to when reset
@@ -74,6 +80,7 @@ class McellData:
         self.path_to_binary_files = path_to_binary_files
         self.nth_timestep_to_read = nth_timestep_to_read
         self.display_names = display_names
+        self.surface_mol_rotation_angle = surface_mol_rotation_angle
         self.camera_defaults = camera_defaults
         self.scale_factor = scale_factor
         self.plots = plots

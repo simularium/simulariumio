@@ -16,6 +16,7 @@ from simulariumio.mcell import McellConverter, McellData
                 "organelle_model_viz_output/Scene.data_model.00.json",
                 path_to_binary_files="simulariumio/tests/data/mcell/"
                 "organelle_model_viz_output",
+                surface_mol_rotation_angle=0.0,
             ),
             {
                 "trajectoryInfo": {
@@ -176,5 +177,6 @@ from simulariumio.mcell import McellConverter, McellData
 def test_mcell_converter(trajectory, expected_data):
     converter = McellConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
+    raise Exception(buffer_data["spatialData"]["bundleData"][0]["data"])
     assert expected_data == buffer_data
     assert converter._check_agent_ids_are_unique_per_frame(buffer_data)

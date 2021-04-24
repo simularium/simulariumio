@@ -6,8 +6,11 @@ from typing import List, Dict, Any
 import json
 import os
 import array
+import random
 
 import numpy as np
+import scipy.linalg as linalg
+from scipy.spatial.transform import Rotation
 import pandas as pd
 
 from ..trajectory_converter import TrajectoryConverter
@@ -41,22 +44,75 @@ class McellConverter(TrajectoryConverter):
         self._data = self._read(input_data)
 
     @staticmethod
-    def _get_rotation_euler_angles_for_normals(normals: np.ndarray) -> np.ndarray:
+    def normalize(v: np.ndarray) -> np.ndarray:
         """
-        TODO
-        Generate a random orientation around the normal
-        and return its euler angles
+        normalize a vector
         """
-        return normals
+        return v / np.linalg.norm(v)
+
+    @staticmethod
+    def rotate(v: np.ndarray, axis: np.ndarray, angle: float) -> np.ndarray:
+        """
+        rotate a vector around axis by angle (radians)
+        """
+        rotation = linalg.expm(np.cross(np.eye(3), McellConverter.normalize(axis) * angle))
+        return np.dot(rotation, np.copy(v))
+
+    @staticmethod
+    def get_perpendicular_vector(v: np.ndarray, angle: float) -> np.ndarray:
+        """
+        Get a unit vector perpendicular to the given vector 
+        rotated by the given angle
+        """
+        if v[0] == 0 and v[1] == 0: 
+            if v[2] == 0:
+                raise ValueError("Cannot calculate perpendicular vector to zero vector")
+            return np.array([0, 1, 0])
+        u = McellConverter.normalize(np.array([-v[1], v[0], 0]))
+        return McellConverter.rotate(u, v, angle)
+
+    @staticmethod
+    def get_rotation_matrix(v1: np.ndarray, v2: np.ndarray) -> np.matrix:
+        """
+        Orthonormalize and cross the vectors to get a rotation matrix
+        """
+        v1 = McellConverter.normalize(v1)
+        v2 = McellConverter.normalize(v2)
+        v2 = McellConverter.normalize(v2 - (np.dot(v1, v2) / np.dot(v1, v1)) * v1)
+        v3 = np.cross(v2, v1)
+        return np.matrix([[v2[0], v1[0], v3[0]],
+                          [v2[1], v1[1], v3[1]],
+                          [v2[2], v1[2], v3[2]]])
+
+    @staticmethod
+    def get_euler_angles(normal: np.ndarray, angle: float) -> np.ndarray:
+        """
+        Get euler angles in degrees representing a rotation defined by the basis
+        between the given normal and a perpendicular vector rotated at angle
+        """
+        perpendicular = McellConverter.get_perpendicular_vector(normal, angle)
+        rotation = McellConverter.get_rotation_matrix(normal, perpendicular)
+        return Rotation.from_matrix(rotation).as_euler('zxy', degrees=True)
+
+    @staticmethod
+    def _get_rotation_euler_angles_for_normals(normals: np.ndarray, angle: float = None) -> np.ndarray:
+        """
+        Generate an orientation around each normal and return euler angles
+        Either use the given angle or random ones
+        """
+        if angle is None:
+            angles = np.rad2deg(2 * np.pi) * np.random.random(normals.shape[0])
+        else:
+            angles = np.array(normals.shape[0] * [angle])
+        return np.array([McellConverter.get_euler_angles(n, a) for n, a in zip(normals, angles)])
 
     @staticmethod
     def _read_binary_cellblender_viz_frame(
         file_name: str,
         current_time: float,
         molecule_info: Dict[str, Dict[str, Any]],
-        display_names: Dict[str, str],
         columns_list: List[str],
-        scale_factor: float,
+        input_data: McellData
     ) -> pd.DataFrame:
         """
         Read MCell binary visualization files
@@ -87,8 +143,8 @@ class McellConverter(TrajectoryConverter):
                     type_name_array.fromfile(mol_file, n_chars_type_name[0])
                     type_name = type_name_array.tostring().decode()
                     display_type_name = (
-                        display_names[type_name]
-                        if type_name in display_names
+                        input_data.display_names[type_name]
+                        if type_name in input_data.display_names
                         else type_name
                     )
                     # get positions and rotations
@@ -101,16 +157,16 @@ class McellConverter(TrajectoryConverter):
                     n_mols = int(n_data / 3.0)
                     positions = array.array("f")
                     positions.fromfile(mol_file, n_data)
-                    positions = scale_factor * np.array(positions)
+                    positions = input_data.scale_factor * np.array(positions)
                     if is_surface_mol:
                         normals = array.array("f")
                         normals.fromfile(mol_file, n_data)
                         normals = np.array(normals)
-                        rotations = (
-                            McellConverter._get_rotation_euler_angles_for_normals(
-                                normals
-                            )
+                        normals = normals.reshape(n_mols, 3)
+                        rotations = McellConverter._get_rotation_euler_angles_for_normals(
+                            normals, input_data.surface_mol_rotation_angle
                         )
+                        rotations = rotations.reshape(3 * n_mols)
                     else:
                         rotations = np.zeros_like(positions)
                     # append to DataFrame
@@ -127,7 +183,7 @@ class McellConverter(TrajectoryConverter):
                                 "rotationX": rotations[::3],
                                 "rotationY": rotations[1::3],
                                 "rotationZ": rotations[2::3],
-                                "radius": scale_factor
+                                "radius": input_data.scale_factor
                                 * BLENDER_GEOMETRY_SCALE_FACTOR
                                 * molecule_info[type_name]["display"]["scale"]
                                 * np.ones(n_mols),
@@ -184,9 +240,8 @@ class McellConverter(TrajectoryConverter):
                     os.path.join(input_data.path_to_binary_files, file_name),
                     time_index * timestep,
                     molecule_info,
-                    input_data.display_names,
                     columns_list,
-                    input_data.scale_factor,
+                    input_data
                 )
                 traj = traj.append(frame_data)
         # get box size
