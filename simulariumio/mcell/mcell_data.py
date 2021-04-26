@@ -56,7 +56,7 @@ class McellData:
             to names to display in the Simularium Viewer
             Default: use names from MCell
         surface_mol_rotation_angle: float (optional)
-            The angle to use to calculate rotations 
+            The angle to use to calculate rotations
             around surface molecules' normals
             Default: use random angles
         camera_defaults : CameraData (optional)

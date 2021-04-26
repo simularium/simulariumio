@@ -71,9 +71,9 @@ from simulariumio.mcell import McellConverter, McellData
                                 -0.027653440833091736,
                                 0.1265464723110199,
                                 -0.07352104783058167,
-                                -0.15157891809940338,
-                                -0.9325763583183289,
-                                -0.3276052474975586,
+                                -160.8765121025542,
+                                0.0,
+                                -9.231996800714258,
                                 0.005,
                                 0.0,
                                 1000.0,
@@ -110,9 +110,9 @@ from simulariumio.mcell import McellConverter, McellData
                                 -0.0269027017056942,
                                 0.12665313482284546,
                                 -0.07417202740907669,
-                                -0.15157891809940338,
-                                -0.9325763583183289,
-                                -0.3276052474975586,
+                                -160.8765121025542,
+                                0.0,
+                                -9.231996800714258,
                                 0.005,
                                 0.0,
                                 1000.0,
@@ -149,9 +149,9 @@ from simulariumio.mcell import McellConverter, McellData
                                 -0.024035021662712097,
                                 0.12565766274929047,
                                 -0.07266511768102646,
-                                -0.15157891809940338,
-                                -0.9325763583183289,
-                                -0.3276052474975586,
+                                -160.8765121025542,
+                                0.0,
+                                -9.231996800714258,
                                 0.005,
                                 0.0,
                                 1000.0,
@@ -177,6 +177,5 @@ from simulariumio.mcell import McellConverter, McellData
 def test_mcell_converter(trajectory, expected_data):
     converter = McellConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
-    raise Exception(buffer_data["spatialData"]["bundleData"][0]["data"])
     assert expected_data == buffer_data
     assert converter._check_agent_ids_are_unique_per_frame(buffer_data)
