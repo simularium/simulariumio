@@ -9,12 +9,7 @@ with open("README.md") as readme_file:
     readme = readme_file.read()
 
 physicell_requirements = [
-    "pandas>=1.1.2",
     "scipy>=1.5.2",
-]
-
-springsalad_requirements = [
-    "pandas>=1.1.2",
 ]
 
 setup_requirements = [
@@ -30,7 +25,6 @@ test_requirements = [
     "pytest-cov>=2.9.0",
     "pytest-raises>=0.11",
     *physicell_requirements,
-    *springsalad_requirements,
 ]
 
 dev_requirements = [
@@ -51,6 +45,7 @@ dev_requirements = [
 
 requirements = [
     "numpy>=1.16",
+    "pandas>=1.1.2",
 ]
 
 extra_requirements = {
@@ -58,12 +53,10 @@ extra_requirements = {
     "test": test_requirements,
     "dev": dev_requirements,
     "physicell": physicell_requirements,
-    "springsalad": springsalad_requirements,
     "all": [
         *requirements,
         *dev_requirements,
-        *physicell_requirements,
-        *springsalad_requirements
+        *physicell_requirements
     ]
 }
 
