@@ -54,7 +54,7 @@ class CameraData:
 
     @classmethod
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):
-        """"""
+        """ """
         return cls(
             position=np.array(
                 [

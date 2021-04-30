@@ -119,7 +119,7 @@ class AgentData:
 
     @staticmethod
     def _get_buffer_data_dimensions(buffer_data: Dict[str, Any]) -> Tuple[int]:
-        """"""
+        """ """
         bundle_data = buffer_data["spatialData"]["bundleData"]
         total_steps = len(bundle_data)
         max_n_agents = 0

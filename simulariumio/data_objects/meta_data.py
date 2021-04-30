@@ -55,7 +55,7 @@ class MetaData:
 
     @classmethod
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):
-        """"""
+        """ """
         return cls(
             box_size=np.array(
                 [
