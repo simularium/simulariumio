@@ -121,7 +121,7 @@ class CytosimConverter(TrajectoryConverter):
         types: Dict[int, int],
         used_type_IDs: List[int],
     ) -> [AgentData, Dict[int, int], List[int], Dict[int, int], List[int]]:
-        """"""
+        """ """
         if "fiber" in object_type:
             result.viz_types[t][n] = VIZ_TYPE.FIBER
             fiber_info = data_columns[2].split(":")
