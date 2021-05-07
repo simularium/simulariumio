@@ -69,6 +69,7 @@ class SpringsaladConverter(TrajectoryConverter):
             types=[[] for t in range(total_steps)],
             positions=np.zeros((total_steps, max_agents, 3)),
             radii=np.ones((total_steps, max_agents)),
+            rotations=np.zeros((total_steps, max_agents, 3)),
         )
         box_size = np.zeros(3)
         t = -1

@@ -69,6 +69,7 @@ input_data = TrajectoryData(
         types=TYPE_IDS,
         positions=POSITIONS,
         radii=RADII,
+        rotations=ROTATIONS,
     )
 )
 TrajectoryConverter(input_data).write_JSON("output_file_name")

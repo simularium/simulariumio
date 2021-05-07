@@ -191,6 +191,12 @@ class TrajectoryConverter:
                     + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX
                     + 3
                 ] = agent_data.positions[t, n]
+                local_buf[
+                    i
+                    + V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX : i
+                    + V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX
+                    + 3
+                ] = agent_data.rotations[t, n]
                 local_buf[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX] = agent_data.radii[t, n]
                 n_subpoints = int(agent_data.n_subpoints[t][n])
                 if n_subpoints > 0:
@@ -258,11 +264,16 @@ class TrajectoryConverter:
         bundle_data: List[Dict[str, Any]] = []
         max_n_agents = int(np.amax(agent_data.n_agents, 0))
         ix_positions = np.empty((3 * max_n_agents,), dtype=int)
+        ix_rotations = np.empty((3 * max_n_agents,), dtype=int)
         buffer_struct = V1_SPATIAL_BUFFER_STRUCT
         for i in range(max_n_agents):
             ix_positions[3 * i : 3 * i + 3] = np.arange(
                 i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.POSX_INDEX,
                 i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.POSX_INDEX + 3,
+            )
+            ix_rotations[3 * i : 3 * i + 3] = np.arange(
+                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.ROTX_INDEX,
+                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.ROTX_INDEX + 3,
             )
         frame_buf = np.zeros((buffer_struct.VALUES_PER_AGENT - 1) * max_n_agents)
         for t in range(len(agent_data.times)):
@@ -281,6 +292,7 @@ class TrajectoryConverter:
                 buffer_struct.TID_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
             ] = agent_data.type_ids[t, :n]
             local_buf[ix_positions[: 3 * n]] = agent_data.positions[t, :n].flatten()
+            local_buf[ix_rotations[: 3 * n]] = agent_data.rotations[t, :n].flatten()
             local_buf[
                 buffer_struct.R_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
             ] = agent_data.radii[t, :n]
