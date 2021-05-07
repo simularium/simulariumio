@@ -222,6 +222,7 @@
     <span class="n">unique_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
     <span class="n">positions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">rotations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">radii</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">n_subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span>
@@ -238,6 +239,7 @@
         <span class="n">types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
         <span class="n">positions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">radii</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">rotations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">draw_fiber_points</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -273,6 +275,10 @@
 <span class="sd">        radii : np.ndarray (shape = [timesteps, agents])</span>
 <span class="sd">            A numpy ndarray containing the radius</span>
 <span class="sd">            for each agent at each timestep</span>
+<span class="sd">        rotations : np.ndarray (shape = [timesteps, agents, 3]) (optional)</span>
+<span class="sd">            A numpy ndarray containing the XYZ euler angles representing</span>
+<span class="sd">            the rotation for each agent at each timestep in degrees</span>
+<span class="sd">            Default: [0, 0, 0] for each agent</span>
 <span class="sd">        n_subpoints : np.ndarray (shape = [timesteps, agents]) (optional)</span>
 <span class="sd">            A numpy ndarray containing the number of subpoints</span>
 <span class="sd">            belonging to each agent at each timestep. Required if</span>
@@ -295,15 +301,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="n">types</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">positions</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radii</span> <span class="o">=</span> <span class="n">radii</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">n_subpoints</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">subpoints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotations</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">rotations</span> <span class="k">if</span> <span class="n">rotations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">n_subpoints</span> <span class="k">if</span> <span class="n">n_subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">subpoints</span> <span class="k">if</span> <span class="n">subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span> <span class="o">=</span> <span class="n">draw_fiber_points</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_ids</span> <span class="o">=</span> <span class="n">type_ids</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_mapping</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_buffer_data_dimensions</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
         <span class="n">bundle_data</span> <span class="o">=</span> <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;spatialData&quot;</span><span class="p">][</span><span class="s2">&quot;bundleData&quot;</span><span class="p">]</span>
         <span class="n">total_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bundle_data</span><span class="p">)</span>
         <span class="n">max_n_agents</span> <span class="o">=</span> <span class="mi">0</span>
@@ -402,6 +413,7 @@
         <span class="n">unique_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
         <span class="n">type_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
         <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">rotations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
         <span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
         <span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
         <span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="n">max_subpoints</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -421,6 +433,11 @@
                     <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">POSX_INDEX</span><span class="p">],</span>
                     <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">POSY_INDEX</span><span class="p">],</span>
                     <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">POSZ_INDEX</span><span class="p">],</span>
+                <span class="p">]</span>
+                <span class="n">rotations</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">ROTX_INDEX</span><span class="p">],</span>
+                    <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">ROTY_INDEX</span><span class="p">],</span>
+                    <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">ROTZ_INDEX</span><span class="p">],</span>
                 <span class="p">]</span>
                 <span class="n">radii</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">R_INDEX</span><span class="p">]</span>
                 <span class="n">i</span> <span class="o">+=</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">NSP_INDEX</span>
@@ -461,6 +478,7 @@
             <span class="n">types</span><span class="o">=</span><span class="n">type_names</span><span class="p">,</span>
             <span class="n">positions</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span>
             <span class="n">radii</span><span class="o">=</span><span class="n">radii</span><span class="p">,</span>
+            <span class="n">rotations</span><span class="o">=</span><span class="n">rotations</span><span class="p">,</span>
             <span class="n">n_subpoints</span><span class="o">=</span><span class="n">n_subpoints</span><span class="p">,</span>
             <span class="n">subpoints</span><span class="o">=</span><span class="n">subpoints</span><span class="p">,</span>
             <span class="n">draw_fiber_points</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -495,6 +513,12 @@
             <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
             <span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="p">)</span>
+        <span class="n">rotations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="n">grouped_traj</span><span class="p">[[</span><span class="s2">&quot;rotationX&quot;</span><span class="p">,</span> <span class="s2">&quot;rotationY&quot;</span><span class="p">,</span> <span class="s2">&quot;rotationZ&quot;</span><span class="p">]]</span>
+            <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+            <span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
             <span class="n">grouped_traj</span><span class="p">[</span><span class="s2">&quot;radius&quot;</span><span class="p">]</span>
             <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -520,6 +544,7 @@
             <span class="n">types</span><span class="o">=</span><span class="n">type_names</span><span class="p">,</span>
             <span class="n">positions</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span>
             <span class="n">radii</span><span class="o">=</span><span class="n">radii</span><span class="p">,</span>
+            <span class="n">rotations</span><span class="o">=</span><span class="n">rotations</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="AgentData.append_agents"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.append_agents">[docs]</a>    <span class="k">def</span> <span class="nf">append_agents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_agents</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">):</span>
@@ -544,19 +569,12 @@
         <span class="n">types</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">type_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">positions</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">rotations</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">rotations</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">radii</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
-            <span class="p">)</span>
-        <span class="k">elif</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">new_agents</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">subpoints</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
-            <span class="p">)</span>
-        <span class="k">elif</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">new_agents</span><span class="o">.</span><span class="n">subpoints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span><span class="p">,</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">subpoints</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="c1"># generate new unique IDs and type IDs so they don&#39;t overlap</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">type_ids</span><span class="p">,</span> <span class="n">tm</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">get_type_ids_and_mapping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">)</span>
@@ -599,14 +617,6 @@
             <span class="n">type_ids</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">type_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type_ids</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">n_subpoints</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">subpoints</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
             <span class="n">times</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">),</span>
             <span class="n">n_agents</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">),</span>
@@ -615,8 +625,9 @@
             <span class="n">types</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
             <span class="n">positions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">),</span>
             <span class="n">radii</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">),</span>
-            <span class="n">n_subpoints</span><span class="o">=</span><span class="n">n_subpoints</span><span class="p">,</span>
-            <span class="n">subpoints</span><span class="o">=</span><span class="n">subpoints</span><span class="p">,</span>
+            <span class="n">rotations</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotations</span><span class="p">),</span>
+            <span class="n">n_subpoints</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">),</span>
+            <span class="n">subpoints</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span><span class="p">),</span>
             <span class="n">draw_fiber_points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span><span class="p">,</span>
             <span class="n">type_ids</span><span class="o">=</span><span class="n">type_ids</span><span class="p">,</span>
         <span class="p">)</span>

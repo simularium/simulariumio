@@ -243,6 +243,9 @@
             <span class="s2">&quot;positionX&quot;</span><span class="p">,</span>
             <span class="s2">&quot;positionY&quot;</span><span class="p">,</span>
             <span class="s2">&quot;positionZ&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rotationX&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rotationY&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rotationZ&quot;</span><span class="p">,</span>
             <span class="s2">&quot;radius&quot;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="n">traj</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([],</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns_list</span><span class="p">)</span>
@@ -273,6 +276,9 @@
                             <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span>  <span class="c1"># position X</span>
                             <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">5</span><span class="p">]),</span>  <span class="c1"># position Y</span>
                             <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">6</span><span class="p">]),</span>  <span class="c1"># position Z</span>
+                            <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># rotation X</span>
+                            <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># rotation Y</span>
+                            <span class="mf">0.0</span><span class="p">,</span>  <span class="c1"># rotation Z</span>
                             <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>  <span class="c1"># radius</span>
                         <span class="p">]</span>
                     <span class="p">],</span>

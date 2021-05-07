@@ -216,7 +216,7 @@
 <span id="simulariumio-data-objects-agent-data-module"></span><h2>simulariumio.data_objects.agent_data module<a class="headerlink" href="#module-simulariumio.data_objects.agent_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.data_objects.agent_data.AgentData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.agent_data.</code><code class="sig-name descname">AgentData</code><span class="sig-paren">(</span><em class="sig-param">times: numpy.ndarray, n_agents: numpy.ndarray, viz_types: numpy.ndarray, unique_ids: numpy.ndarray, types: List[List[str]], positions: numpy.ndarray, radii: numpy.ndarray, n_subpoints: Optional[numpy.ndarray] = None, subpoints: Optional[numpy.ndarray] = None, draw_fiber_points: bool = False, type_ids: Optional[numpy.ndarray] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.agent_data.</code><code class="sig-name descname">AgentData</code><span class="sig-paren">(</span><em class="sig-param">times: numpy.ndarray, n_agents: numpy.ndarray, viz_types: numpy.ndarray, unique_ids: numpy.ndarray, types: List[List[str]], positions: numpy.ndarray, radii: numpy.ndarray, rotations: Optional[numpy.ndarray] = None, n_subpoints: Optional[numpy.ndarray] = None, subpoints: Optional[numpy.ndarray] = None, draw_fiber_points: bool = False, type_ids: Optional[numpy.ndarray] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object contains spatial simulation data</p>
 <dl class="field-list">
@@ -243,6 +243,9 @@ for each agent at each timestep (in the units
 specified by TrajectoryData.spatial_units)</p></li>
 <li><p><strong>radii</strong> (<em>np.ndarray (shape = [timesteps, agents])</em>) – A numpy ndarray containing the radius
 for each agent at each timestep</p></li>
+<li><p><strong>rotations</strong> (<em>np.ndarray (shape = [timesteps, agents, 3]) (optional)</em>) – A numpy ndarray containing the XYZ euler angles representing
+the rotation for each agent at each timestep in degrees
+Default: [0, 0, 0] for each agent</p></li>
 <li><p><strong>n_subpoints</strong> (<em>np.ndarray (shape = [timesteps, agents]) (optional)</em>) – A numpy ndarray containing the number of subpoints
 belonging to each agent at each timestep. Required if
 subpoints are provided
@@ -313,6 +316,11 @@ time, unique_id, type, positionX, positionY, positionZ, radius
 <dl class="attribute">
 <dt id="simulariumio.data_objects.agent_data.AgentData.radii">
 <code class="sig-name descname">radii</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.radii" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.rotations">
+<code class="sig-name descname">rotations</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.rotations" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
