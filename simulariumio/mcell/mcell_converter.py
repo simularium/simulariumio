@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Dict, Any
+from typing import Dict, Any, Tuple
 import json
 import os
 import array
@@ -10,11 +10,11 @@ import array
 import numpy as np
 import scipy.linalg as linalg
 from scipy.spatial.transform import Rotation
-import pandas as pd
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, MetaData, UnitData
 from .mcell_data import McellData
+from ..constants import VIZ_TYPE
 
 ###############################################################################
 
@@ -112,19 +112,24 @@ class McellConverter(TrajectoryConverter):
         )
 
     @staticmethod
-    def _read_binary_cellblender_viz_frame(
-        file_name: str,
-        current_time: float,
-        molecule_info: Dict[str, Dict[str, Any]],
-        columns_list: List[str],
-        input_data: McellData,
-    ) -> pd.DataFrame:
+    def _should_read_cellblender_binary_file(
+        file_name: str, nth_timestep_to_read: int
+    ) -> bool:
         """
-        Read MCell binary visualization files
+        Is this a cellblender binary file?
+        And should this frame of data be included in the visualization?
+        """
+        if "ascii" in file_name or not file_name.endswith(".dat"):
+            return False
+        split_file_name = file_name.split(".")
+        time_index = int(split_file_name[split_file_name.index("dat") - 1])
+        return time_index % nth_timestep_to_read == 0
 
-        code based on cellblender/cellblender_mol_viz.py function mol_viz_file_read
+    @staticmethod
+    def _count_agents_in_binary_cellblender_viz_frame(file_name: str) -> int:
         """
-        result = pd.DataFrame([], columns=columns_list)
+        Count the number of agents in the frame of cellblender data
+        """
         total_mols = 0
         with open(file_name, "rb") as mol_file:
             # first 4 bytes must contain value '1'
@@ -133,14 +138,70 @@ class McellConverter(TrajectoryConverter):
             assert b[0] == 1
             while True:
                 try:
-                    """
-                    ni = Initially, byte array of molecule name length.
-                    Later, array of number of molecule positions in xyz
-                    (essentially, the number of molecules multiplied by 3).
-                    ns = Array of ascii character codes for molecule name.
-                    s = String of molecule name.
-                    mt = Surface molecule flag.
-                    """
+                    # advance through file to get
+                    # number of instances of each molecule type
+                    n_chars_type_name = array.array("B")
+                    n_chars_type_name.fromfile(mol_file, 1)
+                    mol_file.seek(n_chars_type_name[0], os.SEEK_CUR)
+                    is_surface_mol = array.array("B")
+                    is_surface_mol.fromfile(mol_file, 1)
+                    is_surface_mol = is_surface_mol[0] == 1
+                    n_data = array.array("I")
+                    n_data.fromfile(mol_file, 1)
+                    n_data = n_data[0]
+                    data = array.array("f")
+                    data.fromfile(mol_file, n_data)
+                    if is_surface_mol:
+                        data.fromfile(mol_file, n_data)
+                    total_mols += int(n_data / 3.0)
+                except EOFError:
+                    mol_file.close()
+                    break
+        return total_mols
+
+    @staticmethod
+    def _get_dimensions_of_cellblender_data(
+        path_to_binary_files: str, nth_timestep_to_read: int
+    ) -> Tuple[int]:
+        """
+        Parse cellblender binary files to get the number of timesteps
+        and maximum agents per timestep
+        """
+        total_steps = 0
+        max_agents = 0
+        for file_name in os.listdir(path_to_binary_files):
+            if not McellConverter._should_read_cellblender_binary_file(
+                file_name, nth_timestep_to_read
+            ):
+                continue
+            total_steps += 1
+            n_agents = McellConverter._count_agents_in_binary_cellblender_viz_frame(
+                os.path.join(path_to_binary_files, file_name)
+            )
+            if n_agents > max_agents:
+                max_agents = n_agents
+        return (total_steps, max_agents)
+
+    @staticmethod
+    def _read_binary_cellblender_viz_frame(
+        file_name: str,
+        time_index: int,
+        molecule_info: Dict[str, Dict[str, Any]],
+        input_data: McellData,
+        result: AgentData,
+    ) -> AgentData:
+        """
+        Read MCell binary visualization files
+
+        code based on cellblender/cellblender_mol_viz.py function mol_viz_file_read
+        """
+        with open(file_name, "rb") as mol_file:
+            # first 4 bytes must contain value '1'
+            b = array.array("I")
+            b.fromfile(mol_file, 1)
+            assert b[0] == 1
+            while True:
+                try:
                     # get type name
                     n_chars_type_name = array.array("B")
                     n_chars_type_name.fromfile(mol_file, 1)
@@ -163,6 +224,7 @@ class McellConverter(TrajectoryConverter):
                     positions = array.array("f")
                     positions.fromfile(mol_file, n_data)
                     positions = input_data.scale_factor * np.array(positions)
+                    positions = positions.reshape(n_mols, 3)
                     if is_surface_mol:
                         normals = array.array("f")
                         normals.fromfile(mol_file, n_data)
@@ -176,31 +238,71 @@ class McellConverter(TrajectoryConverter):
                         rotations = rotations.reshape(3 * n_mols)
                     else:
                         rotations = np.zeros_like(positions)
-                    # append to DataFrame
-                    result = result.append(
-                        pd.DataFrame(
-                            {
-                                "time": current_time * np.ones(n_mols),
-                                "unique_id": np.arange(n_mols)
-                                + total_mols,  # MCell binary format has no IDs
-                                "type": np.repeat(display_type_name, n_mols),
-                                "positionX": positions[::3],
-                                "positionY": positions[1::3],
-                                "positionZ": positions[2::3],
-                                "rotationX": rotations[::3],
-                                "rotationY": rotations[1::3],
-                                "rotationZ": rotations[2::3],
-                                "radius": input_data.scale_factor
-                                * BLENDER_GEOMETRY_SCALE_FACTOR
-                                * molecule_info[type_name]["display"]["scale"]
-                                * np.ones(n_mols),
-                            }
-                        )
+                    # save to AgentData
+                    # MCell binary format has no IDs, so use molecule index
+                    total_mols = int(result.n_agents[time_index])
+                    result.unique_ids[time_index, total_mols : total_mols + n_mols] = (
+                        np.arange(n_mols) + total_mols
                     )
-                    total_mols += n_mols
+                    result.types[time_index] += n_mols * [display_type_name]
+                    result.positions[
+                        time_index, total_mols : total_mols + n_mols, :
+                    ] = positions
+                    result.radii[time_index, total_mols : total_mols + n_mols] = (
+                        input_data.scale_factor
+                        * BLENDER_GEOMETRY_SCALE_FACTOR
+                        * molecule_info[type_name]["display"]["scale"]
+                        * np.ones(n_mols)
+                    )
+                    result.rotations[
+                        time_index, total_mols : total_mols + n_mols, :
+                    ] = rotations
+                    result.n_agents[time_index] += n_mols
                 except EOFError:
                     mol_file.close()
                     break
+        return result
+
+    @staticmethod
+    def _read_cellblender_data(
+        total_steps: int,
+        max_agents: int,
+        timestep: float,
+        molecule_list: Dict[str, Any],
+        input_data: McellData,
+    ) -> AgentData:
+        """
+        Parse cellblender binary files to get spatial data
+        """
+        result = AgentData(
+            times=np.zeros(total_steps),
+            n_agents=np.zeros(total_steps),
+            viz_types=VIZ_TYPE.DEFAULT * np.ones((total_steps, max_agents)),
+            unique_ids=np.zeros((total_steps, max_agents)),
+            types=[[] for t in range(total_steps)],
+            positions=np.zeros((total_steps, max_agents, 3)),
+            radii=np.ones((total_steps, max_agents)),
+            rotations=np.zeros((total_steps, max_agents, 3)),
+        )
+        # get metadata for each agent type
+        molecule_info = {}
+        for molecule in molecule_list:
+            molecule_info[molecule["mol_name"]] = molecule
+        for file_name in os.listdir(input_data.path_to_binary_files):
+            if not McellConverter._should_read_cellblender_binary_file(
+                file_name, input_data.nth_timestep_to_read
+            ):
+                continue
+            split_file_name = file_name.split(".")
+            time_index = int(split_file_name[split_file_name.index("dat") - 1])
+            result.times[time_index] = time_index * timestep
+            result = McellConverter._read_binary_cellblender_viz_frame(
+                os.path.join(input_data.path_to_binary_files, file_name),
+                time_index,
+                molecule_info,
+                input_data,
+                result,
+            )
         return result
 
     @staticmethod
@@ -212,45 +314,18 @@ class McellConverter(TrajectoryConverter):
         # read data model json
         with open(input_data.path_to_data_model_json) as data_model_file:
             data_model = json.load(data_model_file)
-        # get the timestep per visualized frame
-        n_frames = 0
-        for file_name in os.listdir(input_data.path_to_binary_files):
-            if "ascii" not in file_name and file_name.endswith(".dat"):
-                n_frames += 1
+        # read spatial data
+        total_steps, max_agents = McellConverter._get_dimensions_of_cellblender_data(
+            input_data.path_to_binary_files, input_data.nth_timestep_to_read
+        )
         timestep = float(data_model["mcell"]["initialization"]["time_step"])
-        # get metadata for each agent type
-        molecule_info = {}
-        molecule_list = data_model["mcell"]["define_molecules"]["molecule_list"]
-        for molecule in molecule_list:
-            molecule_info[molecule["mol_name"]] = molecule
-        # read agent data for each frame
-        columns_list = [
-            "time",
-            "unique_id",
-            "type",
-            "positionX",
-            "positionY",
-            "positionZ",
-            "rotationX",
-            "rotationY",
-            "rotationZ",
-            "radius",
-        ]
-        traj = pd.DataFrame([], columns=columns_list)
-        for file_name in os.listdir(input_data.path_to_binary_files):
-            if "ascii" not in file_name and file_name.endswith(".dat"):
-                split_file_name = file_name.split(".")
-                time_index = int(split_file_name[split_file_name.index("dat") - 1])
-                if time_index % input_data.nth_timestep_to_read != 0:
-                    continue
-                frame_data = McellConverter._read_binary_cellblender_viz_frame(
-                    os.path.join(input_data.path_to_binary_files, file_name),
-                    time_index * timestep,
-                    molecule_info,
-                    columns_list,
-                    input_data,
-                )
-                traj = traj.append(frame_data)
+        agent_data = McellConverter._read_cellblender_data(
+            total_steps,
+            max_agents,
+            timestep,
+            data_model["mcell"]["define_molecules"]["molecule_list"],
+            input_data,
+        )
         # get box size
         partitions = data_model["mcell"]["initialization"]["partitions"]
         box_size = np.array(
@@ -265,7 +340,7 @@ class McellConverter(TrajectoryConverter):
                 box_size=input_data.scale_factor * box_size,
                 camera_defaults=input_data.camera_defaults,
             ),
-            agent_data=AgentData.from_dataframe(traj),
+            agent_data=agent_data,
             time_units=UnitData("s"),
             spatial_units=UnitData("µm", 1.0 / input_data.scale_factor),
             plots=input_data.plots,
