@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>simulariumio.data_objects.histogram_plot_data &mdash; Simularium Conversion 1.0.1 documentation</title>
+  <title>simulariumio.mcell.mcell_data &mdash; Simularium Conversion 1.0.1 documentation</title>
   
 
   
@@ -178,7 +178,7 @@
         
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
         
-      <li>simulariumio.data_objects.histogram_plot_data</li>
+      <li>simulariumio.mcell.mcell_data</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -193,14 +193,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for simulariumio.data_objects.histogram_plot_data</h1><div class="highlight"><pre>
+  <h1>Source code for simulariumio.mcell.mcell_data</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">CameraData</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -209,29 +209,77 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="HistogramPlotData"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.histogram_plot_data.HistogramPlotData">[docs]</a><span class="k">class</span> <span class="nc">HistogramPlotData</span><span class="p">:</span>
-    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">xaxis_title</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">xtrace</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
-    <span class="n">traces</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+<div class="viewcode-block" id="McellData"><a class="viewcode-back" href="../../../simulariumio.mcell.html#simulariumio.mcell.mcell_data.McellData">[docs]</a><span class="k">class</span> <span class="nc">McellData</span><span class="p">:</span>
+    <span class="n">path_to_data_model_json</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">path_to_binary_files</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">nth_timestep_to_read</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">display_names</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="n">surface_mol_rotation_angle</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">camera_defaults</span><span class="p">:</span> <span class="n">CameraData</span>
+    <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">xaxis_title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">traces</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">path_to_data_model_json</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">path_to_binary_files</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">nth_timestep_to_read</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">display_names</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
+        <span class="n">surface_mol_rotation_angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">camera_defaults</span><span class="p">:</span> <span class="n">CameraData</span> <span class="o">=</span> <span class="n">CameraData</span><span class="p">(),</span>
+        <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This object contains data for a scatterplot</span>
+<span class="sd">        This object holds simulation trajectory outputs</span>
+<span class="sd">        from MCell (https://mcell.org/)</span>
+<span class="sd">        and plot data</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        title: str</span>
-<span class="sd">            A string display title for the plot</span>
-<span class="sd">        xaxis_title: str</span>
-<span class="sd">            A string label (with units) for the x-axis</span>
-<span class="sd">        traces: Dict[str, np.ndarray] (shape = [values])]</span>
-<span class="sd">            A dictionary with trace display names as keys,</span>
-<span class="sd">            each mapped to a numpy ndarray of values</span>
+<span class="sd">        path_to_data_model_json : str</span>
+<span class="sd">            A string path to the json file</span>
+<span class="sd">            containing the data model</span>
+<span class="sd">        path_to_binary_files : str</span>
+<span class="sd">            A string path to the directory containing</span>
+<span class="sd">            visualization .dat binary files</span>
+<span class="sd">        nth_timestep_to_read: int (optional)</span>
+<span class="sd">            Visualize every Nth timestep</span>
+<span class="sd">            e.g. if 10, only every 10th timestep will be visualized</span>
+<span class="sd">            Default: 1</span>
+<span class="sd">        display_names : Dict[str, str] (optional)</span>
+<span class="sd">            A mapping from molecule names in the MCell data</span>
+<span class="sd">            to names to display in the Simularium Viewer</span>
+<span class="sd">            Default: use names from MCell</span>
+<span class="sd">        surface_mol_rotation_angle: float (optional)</span>
+<span class="sd">            The angle to use to calculate rotations</span>
+<span class="sd">            around surface molecules&#39; normals</span>
+<span class="sd">            Default: use random angles</span>
+<span class="sd">        camera_defaults : CameraData (optional)</span>
+<span class="sd">            camera&#39;s initial settings</span>
+<span class="sd">            which it also returns to when reset</span>
+<span class="sd">            Default: CameraData(</span>
+<span class="sd">                position=[0,0,120],</span>
+<span class="sd">                look_at_position=[0,0,0],</span>
+<span class="sd">                up_vector=[0,1,0],</span>
+<span class="sd">                fov_degrees=50</span>
+<span class="sd">            )</span>
+<span class="sd">        scale_factor : float (optional)</span>
+<span class="sd">            A multiplier for the scene, use if</span>
+<span class="sd">            visualization is too large or small</span>
+<span class="sd">            Default: 1.0</span>
+<span class="sd">        plots : List[Dict[str, Any]] (optional)</span>
+<span class="sd">            An object containing plot data already</span>
+<span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">xaxis_title</span> <span class="o">=</span> <span class="n">xaxis_title</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">traces</span> <span class="o">=</span> <span class="n">traces</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_to_data_model_json</span> <span class="o">=</span> <span class="n">path_to_data_model_json</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path_to_binary_files</span> <span class="o">=</span> <span class="n">path_to_binary_files</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nth_timestep_to_read</span> <span class="o">=</span> <span class="n">nth_timestep_to_read</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_names</span> <span class="o">=</span> <span class="n">display_names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surface_mol_rotation_angle</span> <span class="o">=</span> <span class="n">surface_mol_rotation_angle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">camera_defaults</span> <span class="o">=</span> <span class="n">camera_defaults</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">=</span> <span class="n">scale_factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span></div>
 </pre></div>
 
            </div>
