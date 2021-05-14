@@ -374,11 +374,14 @@ class AgentData:
         unique_ids = np.zeros((total_steps, max_agents))
         used_uids = list(np.unique(self.unique_ids))
         new_uids = {}
+        types = []
         for t in range(total_steps):
             i = 0
+            types.append([])
             n_a = int(self.n_agents[t])
             for n in range(n_a):
                 unique_ids[t][i] = self.unique_ids[t][n]
+                types[t].append(self.types[t][n])
                 i += 1
             n_a = int(new_agents.n_agents[t])
             for n in range(n_a):
@@ -390,17 +393,11 @@ class AgentData:
                     new_uids[raw_uid] = uid
                     used_uids.append(uid)
                 unique_ids[t][i] = new_uids[raw_uid]
+                types[t].append(new_agents.types[t][n])
                 i += 1
         # add agents
         self.viz_types = np.concatenate((self.viz_types, new_agents.viz_types), axis=1)
         self.unique_ids = unique_ids
-        types = []
-        for t in range(total_steps):
-            types.append([])
-            for n in range(len(self.types[t])):
-                types[t].append(self.types[t][n])
-            for n in range(len(new_agents.types[t])):
-                types[t].append(new_agents.types[t][n])
         self.types = types
         self.type_ids, tm = AgentData.get_type_ids_and_mapping(self.types)
         self.type_mapping = None
