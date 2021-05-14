@@ -1,0 +1,8 @@
+DEFINE_REACTIONS
+{
+  a + b -> c [1e9]
+  a' + t1' -> a, + t1' [3e8]
+  c' + t2' -> d, + t2' [3e9]
+  c, + t1' -> c' + t1' [3e8]
+}
+

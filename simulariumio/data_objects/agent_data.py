@@ -27,13 +27,13 @@ class AgentData:
     unique_ids: np.ndarray
     types: List[List[str]]
     positions: np.ndarray
-    rotations: np.ndarray
     radii: np.ndarray
     n_subpoints: np.ndarray = None
     subpoints: np.ndarray = None
     draw_fiber_points: bool = False
     type_ids: np.ndarray
     type_mapping: Dict[str, Any]
+    rotations: np.ndarray
 
     def __init__(
         self,
@@ -98,6 +98,9 @@ class AgentData:
         draw_fiber_points: bool (optional)
             Draw spheres at every other fiber point for fibers?
             Default: False
+        type_ids: np.ndarray (optional)
+            A numpy ndarray containing the type id
+            of each agent at each timestep
         """
         self.times = times
         self.n_agents = n_agents
