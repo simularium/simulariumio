@@ -370,6 +370,16 @@ class AgentData:
                 f"existing data has {total_steps}"
             )
         max_agents = int(np.amax(self.n_agents)) + int(np.amax(new_agents.n_agents))
+        # add agents
+        n_agents = np.add(self.n_agents, new_agents.n_agents)
+        self.viz_types = np.concatenate((self.viz_types, new_agents.viz_types), axis=1)
+        self.positions = np.concatenate((self.positions, new_agents.positions), axis=1)
+        self.rotations = np.concatenate((self.rotations, new_agents.rotations), axis=1)
+        self.radii = np.concatenate((self.radii, new_agents.radii), axis=1)
+        self.n_subpoints = np.concatenate(
+            (self.n_subpoints, new_agents.n_subpoints), axis=1
+        )
+        self.subpoints = np.concatenate((self.subpoints, new_agents.subpoints), axis=1)
         # generate new unique IDs so they don't overlap
         unique_ids = np.zeros((total_steps, max_agents))
         used_uids = list(np.unique(self.unique_ids))
@@ -396,19 +406,11 @@ class AgentData:
                 types[t].append(new_agents.types[t][n])
                 i += 1
         # add agents
-        self.viz_types = np.concatenate((self.viz_types, new_agents.viz_types), axis=1)
         self.unique_ids = unique_ids
         self.types = types
         self.type_ids, tm = AgentData.get_type_ids_and_mapping(self.types)
         self.type_mapping = None
-        self.positions = np.concatenate((self.positions, new_agents.positions), axis=1)
-        self.rotations = np.concatenate((self.rotations, new_agents.rotations), axis=1)
-        self.radii = np.concatenate((self.radii, new_agents.radii), axis=1)
-        self.n_subpoints = np.concatenate(
-            (self.n_subpoints, new_agents.n_subpoints), axis=1
-        )
-        self.subpoints = np.concatenate((self.subpoints, new_agents.subpoints), axis=1)
-        self.n_agents = np.add(self.n_agents, new_agents.n_agents)
+        self.n_agents = n_agents
 
     def __deepcopy__(self, memo):
         if self.type_ids is None:
