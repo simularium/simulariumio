@@ -373,6 +373,8 @@ class AgentData:
         # add agents
         n_agents = np.add(self.n_agents, new_agents.n_agents)
         self.viz_types = np.concatenate((self.viz_types, new_agents.viz_types), axis=1)
+        unique_ids = np.zeros((total_steps, max_agents))
+        types = []
         self.positions = np.concatenate((self.positions, new_agents.positions), axis=1)
         self.rotations = np.concatenate((self.rotations, new_agents.rotations), axis=1)
         self.radii = np.concatenate((self.radii, new_agents.radii), axis=1)
@@ -380,11 +382,9 @@ class AgentData:
             (self.n_subpoints, new_agents.n_subpoints), axis=1
         )
         self.subpoints = np.concatenate((self.subpoints, new_agents.subpoints), axis=1)
-        # generate new unique IDs so they don't overlap
-        unique_ids = np.zeros((total_steps, max_agents))
+        # generate new unique IDs and type IDs so they don't overlap
         used_uids = list(np.unique(self.unique_ids))
         new_uids = {}
-        types = []
         for t in range(total_steps):
             i = 0
             types.append([])
@@ -405,7 +405,6 @@ class AgentData:
                 unique_ids[t][i] = new_uids[raw_uid]
                 types[t].append(new_agents.types[t][n])
                 i += 1
-        # add agents
         self.unique_ids = unique_ids
         self.types = types
         self.type_ids, tm = AgentData.get_type_ids_and_mapping(self.types)
