@@ -32,7 +32,6 @@ class AgentData:
     subpoints: np.ndarray = None
     draw_fiber_points: bool = False
     type_ids: np.ndarray
-    type_mapping: Dict[str, Any]
     rotations: np.ndarray
 
     def __init__(
@@ -118,7 +117,6 @@ class AgentData:
         self.subpoints = subpoints if subpoints is not None else np.zeros_like(radii)
         self.draw_fiber_points = draw_fiber_points
         self.type_ids = type_ids
-        self.type_mapping = None
 
     @staticmethod
     def _get_buffer_data_dimensions(buffer_data: Dict[str, Any]) -> Tuple[int]:
@@ -375,7 +373,6 @@ class AgentData:
         self.viz_types = np.concatenate((self.viz_types, new_agents.viz_types), axis=1)
         unique_ids = np.zeros((total_steps, max_agents))
         types = []
-        type_ids = np.zeros((total_steps, max_agents))
         self.positions = np.concatenate((self.positions, new_agents.positions), axis=1)
         self.rotations = np.concatenate((self.rotations, new_agents.rotations), axis=1)
         self.radii = np.concatenate((self.radii, new_agents.radii), axis=1)
@@ -384,13 +381,6 @@ class AgentData:
         )
         self.subpoints = np.concatenate((self.subpoints, new_agents.subpoints), axis=1)
         # generate new unique IDs and type IDs so they don't overlap
-        if self.type_ids is None:
-            self.type_ids, tm = AgentData.get_type_ids_and_mapping(self.types)
-        if new_agents.type_ids is None:
-            new_agents.type_ids, tm = AgentData.get_type_ids_and_mapping(
-                new_agents.types
-            )
-        self.type_mapping = None
         used_uids = list(np.unique(self.unique_ids))
         new_uids = {}
         for t in range(total_steps):
@@ -399,7 +389,6 @@ class AgentData:
             n_a = int(self.n_agents[t])
             for n in range(n_a):
                 unique_ids[t][i] = self.unique_ids[t][n]
-                type_ids[t][i] = self.type_ids[t][n]
                 types[t].append(self.types[t][n])
                 i += 1
             n_a = int(new_agents.n_agents[t])
@@ -412,12 +401,11 @@ class AgentData:
                     new_uids[raw_uid] = uid
                     used_uids.append(uid)
                 unique_ids[t][i] = new_uids[raw_uid]
-                type_ids[t][i] = new_agents.type_ids[t][n]
                 types[t].append(new_agents.types[t][n])
                 i += 1
         self.unique_ids = unique_ids
         self.types = types
-        self.type_ids = type_ids
+        self.type_ids, tm = AgentData.get_type_ids_and_mapping(self.types)
         self.n_agents = n_agents
 
     def __deepcopy__(self, memo):
