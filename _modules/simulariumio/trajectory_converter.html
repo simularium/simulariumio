@@ -260,13 +260,11 @@
         <span class="n">simularium_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># trajectory info</span>
         <span class="n">totalSteps</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">size</span>
-        <span class="n">type_ids</span><span class="p">,</span> <span class="n">type_name_mapping</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">get_type_ids_and_mapping</span><span class="p">(</span>
+        <span class="n">type_ids</span><span class="p">,</span> <span class="n">type_mapping</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">get_type_ids_and_mapping</span><span class="p">(</span>
             <span class="n">input_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">types</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">input_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span> <span class="o">=</span> <span class="n">type_ids</span>
-        <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_mapping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">input_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_mapping</span> <span class="o">=</span> <span class="n">type_name_mapping</span>
         <span class="n">traj_info</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
             <span class="s2">&quot;timeUnits&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -312,7 +310,7 @@
                 <span class="p">},</span>
                 <span class="s2">&quot;fovDegrees&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">camera_defaults</span><span class="o">.</span><span class="n">fov_degrees</span><span class="p">),</span>
             <span class="p">},</span>
-            <span class="s2">&quot;typeMapping&quot;</span><span class="p">:</span> <span class="n">input_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_mapping</span><span class="p">,</span>
+            <span class="s2">&quot;typeMapping&quot;</span><span class="p">:</span> <span class="n">type_mapping</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">traj_info</span>
         <span class="c1"># spatial data</span>
