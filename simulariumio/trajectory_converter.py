@@ -64,13 +64,11 @@ class TrajectoryConverter:
         simularium_data = {}
         # trajectory info
         totalSteps = input_data.agent_data.times.size
-        type_ids, type_name_mapping = AgentData.get_type_ids_and_mapping(
+        type_ids, type_mapping = AgentData.get_type_ids_and_mapping(
             input_data.agent_data.types, input_data.agent_data.type_ids
         )
         if input_data.agent_data.type_ids is None:
             input_data.agent_data.type_ids = type_ids
-        if input_data.agent_data.type_mapping is None:
-            input_data.agent_data.type_mapping = type_name_mapping
         traj_info = {
             "version": 2,
             "timeUnits": {
@@ -116,7 +114,7 @@ class TrajectoryConverter:
                 },
                 "fovDegrees": float(input_data.meta_data.camera_defaults.fov_degrees),
             },
-            "typeMapping": input_data.agent_data.type_mapping,
+            "typeMapping": type_mapping,
         }
         simularium_data["trajectoryInfo"] = traj_info
         # spatial data

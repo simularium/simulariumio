@@ -32,7 +32,6 @@ class AgentData:
     subpoints: np.ndarray = None
     draw_fiber_points: bool = False
     type_ids: np.ndarray
-    type_mapping: Dict[str, Any]
     rotations: np.ndarray
 
     def __init__(
@@ -118,7 +117,6 @@ class AgentData:
         self.subpoints = subpoints if subpoints is not None else np.zeros_like(radii)
         self.draw_fiber_points = draw_fiber_points
         self.type_ids = type_ids
-        self.type_mapping = None
 
     @staticmethod
     def _get_buffer_data_dimensions(buffer_data: Dict[str, Any]) -> Tuple[int]:
@@ -408,7 +406,6 @@ class AgentData:
         self.unique_ids = unique_ids
         self.types = types
         self.type_ids, tm = AgentData.get_type_ids_and_mapping(self.types)
-        self.type_mapping = None
         self.n_agents = n_agents
 
     def __deepcopy__(self, memo):

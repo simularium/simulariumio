@@ -51,5 +51,4 @@ class ReorderAgentsFilter(Filter):
                     tid = self.type_id_mapping[tid]
                 type_ids[t][n] = tid
         data.agent_data.type_ids = type_ids
-        data.agent_data.type_mapping = None
         return data
