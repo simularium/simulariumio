@@ -24,7 +24,7 @@ class CameraData:
         position: np.ndarray = np.array([0.0, 0.0, 120.0]),
         look_at_position: np.ndarray = np.zeros(3),
         up_vector: np.ndarray = np.array([0.0, 1.0, 0.0]),
-        fov_degrees: float = 50.0,
+        fov_degrees: float = 75.0,
     ):
         """
         This object holds parameters that define
@@ -45,7 +45,7 @@ class CameraData:
         fov_degrees : float (optional)
             the angle defining the extent of the 3D world
             that is seen from bottom to top of the camera view
-            Default: 50.0
+            Default: 75.0
         """
         self.position = position
         self.look_at_position = look_at_position

@@ -39,7 +39,7 @@ from simulariumio import MetaData
                         "position": {"x": 0, "y": 0, "z": 120},
                         "lookAtPosition": {"x": 0, "y": 0, "z": 0},
                         "upVector": {"x": 0, "y": 1, "z": 0},
-                        "fovDegrees": 50.0,
+                        "fovDegrees": 75.0,
                     },
                     "typeMapping": {
                         "0": {"name": "cell 1#phase 4"},
