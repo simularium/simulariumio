@@ -363,7 +363,7 @@ time, unique_id, type, positionX, positionY, positionZ, radius
 <span id="simulariumio-data-objects-camera-data-module"></span><h2>simulariumio.data_objects.camera_data module<a class="headerlink" href="#module-simulariumio.data_objects.camera_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.data_objects.camera_data.CameraData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.camera_data.</code><code class="sig-name descname">CameraData</code><span class="sig-paren">(</span><em class="sig-param">position: numpy.ndarray = array([  0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">120.])</em>, <em class="sig-param">look_at_position: numpy.ndarray = array([0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">0.])</em>, <em class="sig-param">up_vector: numpy.ndarray = array([0.</em>, <em class="sig-param">1.</em>, <em class="sig-param">0.])</em>, <em class="sig-param">fov_degrees: float = 50.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/camera_data.html#CameraData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.camera_data.</code><code class="sig-name descname">CameraData</code><span class="sig-paren">(</span><em class="sig-param">position: numpy.ndarray = array([  0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">120.])</em>, <em class="sig-param">look_at_position: numpy.ndarray = array([0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">0.])</em>, <em class="sig-param">up_vector: numpy.ndarray = array([0.</em>, <em class="sig-param">1.</em>, <em class="sig-param">0.])</em>, <em class="sig-param">fov_degrees: float = 75.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/camera_data.html#CameraData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds parameters that define
 a camera view of the 3D scene</p>
@@ -379,7 +379,7 @@ is “up” in the camera’s view
 Default: np.array([0.0, 1.0, 0.0])</p></li>
 <li><p><strong>fov_degrees</strong> (<em>float (optional)</em>) – the angle defining the extent of the 3D world
 that is seen from bottom to top of the camera view
-Default: 50.0</p></li>
+Default: 75.0</p></li>
 </ul>
 </dd>
 </dl>
@@ -470,7 +470,7 @@ Default: CameraData(</p>
 <div><p>position=[0,0,120],
 look_at_position=[0,0,0],
 up_vector=[0,1,0],
-fov_degrees=50</p>
+fov_degrees=75</p>
 </div></blockquote>
 <p>)</p>
 </li>
