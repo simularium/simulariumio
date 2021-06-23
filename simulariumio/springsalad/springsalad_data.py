@@ -49,7 +49,7 @@ class SpringsaladData:
                 position=[0,0,120],
                 look_at_position=[0,0,0],
                 up_vector=[0,1,0],
-                fov_degrees=50
+                fov_degrees=75
             )
         scale_factor : float (optional)
             A multiplier for the scene, use if

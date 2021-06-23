@@ -66,7 +66,7 @@ class FileConverter(TrajectoryConverter):
                 "position": {"x": 0, "y": 0, "z": 120},
                 "lookAtPosition": {"x": 0, "y": 0, "z": 0},
                 "upVector": {"x": 0, "y": 1, "z": 0},
-                "fovDegrees": 50.0,
+                "fovDegrees": 75.0,
             }
             data["trajectoryInfo"]["version"] = 2
         print(f"Updated TrajectoryInfo v1 -> v{self.current_trajectory_info_version}")
