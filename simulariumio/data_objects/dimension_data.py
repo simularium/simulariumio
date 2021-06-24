@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from __future__ import annotations
+
+import logging
+
+from ..exceptions import DataError
+
+
+###############################################################################
+
+log = logging.getLogger(__name__)
+
+###############################################################################
+
+
+class DimensionData:
+    total_steps: int
+    max_agents: int
+    max_subpoints: int
+
+    def __init__(
+        self,
+        total_steps: int,
+        max_agents: int,
+        max_subpoints: int = 0,
+    ):
+        """
+        This object contains dimension data
+
+        Parameters
+        ----------
+        total_steps : int
+            The total number of timesteps in a trajectory
+        max_agents : int
+            The number of agents at the timestep with the most agents
+        max_subpoints : int (optional)
+            The number of subpoints on the agent at any timestep
+            with the most subpoints
+            Default: 0
+        """
+        self.total_steps = total_steps
+        self.max_agents = max_agents
+        self.max_subpoints = max_subpoints
+
+    def add(self, added_dimensions: DimensionData, axis: int = 1) -> DimensionData:
+        """
+        Add the given dimensions with this object's
+        """
+        if axis == 1:
+            if added_dimensions.total_steps != self.total_steps:
+                raise DataError(
+                    "Total steps must be equal when adding dimensions on agent axis: "
+                    f"{added_dimensions.total_steps} != {self.total_steps}"
+                )
+            result_total_steps = self.total_steps
+        else:
+            result_total_steps = self.total_steps + added_dimensions.total_steps
+        return DimensionData(
+            total_steps=result_total_steps,
+            max_agents=self.max_agents + added_dimensions.max_agents,
+            max_subpoints=max(self.max_subpoints, added_dimensions.max_subpoints),
+        )

@@ -2,14 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List
 import math
-
-import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData
-from ..constants import VIZ_TYPE
+from ..constants import VIZ_TYPE, FIBER_AGENT_BUFFER_DIMENSIONS
 from .medyan_data import MedyanData
 
 ###############################################################################
@@ -48,77 +45,14 @@ class MedyanConverter(TrajectoryConverter):
             return input_data.agent_info[object_type][raw_tid].draw_endpoints
         return False
 
-    def _parse_data_dimensions(
-        self, lines: List[str], input_data: MedyanData
-    ) -> List[int]:
-        """
-        Parse a MEDYAN snapshot.traj output file to get the number
-        of subpoints per agent per timestep
-        """
-        totalSteps = 0
-        max_agents = 0
-        max_subpoints = 0
-        n = 0
-        at_frame_start = True
-        for line in lines:
-            if len(line) < 1:
-                at_frame_start = True
-                continue
-            if at_frame_start:
-                # start of timestep
-                cols = line.split()
-                if n > max_agents:
-                    max_agents = n
-                n = int(cols[2]) + int(cols[3]) + int(cols[4])
-                totalSteps += 1
-                at_frame_start = False
-            elif "FILAMENT" in line or "LINKER" in line or "MOTOR" in line:
-                # start of object
-                if "FILAMENT" in line:
-                    object_type = "filament"
-                elif "LINKER" in line:
-                    object_type = "linker"
-                else:
-                    object_type = "motor"
-                if self._draw_endpoints(line, object_type, input_data):
-                    n += 2
-                if "FILAMENT" in line:
-                    # start of filament
-                    cols = line.split()
-                    s = int(cols[3])
-                    if max_subpoints < s:
-                        max_subpoints = s
-                else:
-                    # start of linker or motor
-                    if max_subpoints < 2:
-                        max_subpoints = 2
-        if n > max_agents:
-            max_agents = n
-        return totalSteps, max_agents, max_subpoints
-
     def _get_trajectory_data(self, input_data: MedyanData) -> AgentData:
         """
         Parse a MEDYAN snapshot.traj output file to get agents
         """
         with open(input_data.path_to_snapshot, "r") as myfile:
             lines = myfile.read().split("\n")
-        totalSteps, max_agents, max_subpoints = self._parse_data_dimensions(
-            lines, input_data
-        )
-        result = AgentData(
-            times=np.zeros(totalSteps),
-            n_agents=np.zeros(totalSteps),
-            viz_types=np.zeros((totalSteps, max_agents)),
-            unique_ids=np.zeros((totalSteps, max_agents)),
-            types=[[] for t in range(totalSteps)],
-            positions=np.zeros((totalSteps, max_agents, 3)),
-            radii=np.ones((totalSteps, max_agents)),
-            n_subpoints=np.zeros((totalSteps, max_agents)),
-            subpoints=np.zeros((totalSteps, max_agents, max_subpoints, 3)),
-            draw_fiber_points=input_data.draw_fiber_points,
-        )
-        result.type_ids = np.zeros((totalSteps, max_agents))
-        t = -1
+        result = AgentData.from_dimensions(FIBER_AGENT_BUFFER_DIMENSIONS)
+        time_index = -1
         at_frame_start = True
         parsing_object = False
         uids = {
@@ -142,14 +76,16 @@ class MedyanConverter(TrajectoryConverter):
             cols = line.split()
             if at_frame_start:
                 # start of timestep
-                t += 1
-                n = 0
-                result.times[t] = float(cols[1])
-                result.n_agents[t] = int(cols[2]) + int(cols[3]) + int(cols[4])
+                time_index += 1
+                result = result.check_increase_buffer_size(time_index, axis=0)
+                agent_index = 0
+                result.times[time_index] = float(cols[1])
+                result.n_agents[time_index] = int(cols[2]) + int(cols[3]) + int(cols[4])
                 at_frame_start = False
             if "FILAMENT" in line or "LINKER" in line or "MOTOR" in line:
                 # start of object
-                result.viz_types[t][n] = VIZ_TYPE.FIBER
+                result = result.check_increase_buffer_size(agent_index, axis=1)
+                result.viz_types[time_index][agent_index] = VIZ_TYPE.FIBER
                 if "FILAMENT" in line:
                     object_type = "filament"
                 elif "LINKER" in line:
@@ -162,44 +98,45 @@ class MedyanConverter(TrajectoryConverter):
                 if raw_uid not in uids[object_type]:
                     uids[object_type][raw_uid] = last_uid
                     last_uid += 1 if not draw_endpoints else 3
-                result.unique_ids[t][n] = uids[object_type][raw_uid]
+                result.unique_ids[time_index][agent_index] = uids[object_type][raw_uid]
                 # type ID
                 raw_tid = int(cols[2])
                 if raw_tid not in tids[object_type]:
                     tids[object_type][raw_tid] = last_tid
                     last_tid += 1
-                result.type_ids[t][n] = tids[object_type][raw_tid]
                 # type name
-                while n >= len(result.types[t]):
-                    result.types[t].append("")
-                result.types[t][n] = (
+                result.types[time_index].append(
                     input_data.agent_info[object_type][raw_tid].name
                     if raw_tid in input_data.agent_info[object_type]
                     else object_type + str(raw_tid)
                 )
                 # radius
-                result.radii[t][n] = input_data.meta_data.scale_factor * (
+                result.radii[time_index][
+                    agent_index
+                ] = input_data.meta_data.scale_factor * (
                     input_data.agent_info[object_type][raw_tid].radius
                     if raw_tid in input_data.agent_info[object_type]
                     else 1.0
                 )
-                if "FILAMENT" in line:
-                    result.n_subpoints[t][n] = int(cols[3])
+                if object_type == "filament":
+                    result.n_subpoints[time_index][agent_index] = int(cols[3])
                 else:
-                    result.n_subpoints[t][n] = 2
+                    result.n_subpoints[time_index][agent_index] = 2
                 # draw endpoints?
                 if draw_endpoints:
+                    result = result.check_increase_buffer_size(agent_index + 2, axis=1)
                     for i in range(2):
-                        result.viz_types[t][n + i + 1] = VIZ_TYPE.DEFAULT
-                        result.unique_ids[t][n + i + 1] = (
+                        result.viz_types[time_index][
+                            agent_index + i + 1
+                        ] = VIZ_TYPE.DEFAULT
+                        result.unique_ids[time_index][agent_index + i + 1] = (
                             uids[object_type][raw_uid] + i + 1
                         )
-                        result.type_ids[t][n + i + 1] = tids[object_type][raw_tid]
-                        while n + i + 1 >= len(result.types[t]):
-                            result.types[t].append("")
-                        result.types[t][n + i + 1] = result.types[t][n]
-                        result.radii[t][
-                            n + i + 1
+                        result.types[time_index].append(
+                            result.types[time_index][agent_index]
+                        )
+                        result.radii[time_index][
+                            agent_index + i + 1
                         ] = input_data.meta_data.scale_factor * (
                             input_data.agent_info[object_type][raw_tid].endpoint_radius
                             if raw_tid in input_data.agent_info[object_type]
@@ -209,20 +146,21 @@ class MedyanConverter(TrajectoryConverter):
             elif parsing_object:
                 # object coordinates
                 for i in range(len(cols)):
-                    s = math.floor(i / 3)
+                    subpoint_index = math.floor(i / 3)
+                    result = result.check_increase_buffer_size(subpoint_index, axis=2)
                     d = i % 3
-                    result.subpoints[t][n][s][
+                    result.subpoints[time_index][agent_index][subpoint_index][
                         d
                     ] = input_data.meta_data.scale_factor * float(cols[i])
                     if draw_endpoints:
-                        result.positions[t][n + s + 1][
+                        result.positions[time_index][agent_index + subpoint_index + 1][
                             d
                         ] = input_data.meta_data.scale_factor * float(cols[i])
                 parsing_object = False
-                n += 1
+                agent_index += 1
                 if draw_endpoints:
-                    n += 2
-                    result.n_agents[t] += 2
+                    agent_index += 2
+                    result.n_agents[time_index] += 2
         return result
 
     def _read(self, input_data: MedyanData) -> TrajectoryData:

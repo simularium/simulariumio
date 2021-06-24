@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from simulariumio.data_objects.dimension_data import DimensionData
 from typing import Dict, Tuple
 from pathlib import Path
 
@@ -11,7 +12,6 @@ from .dep.pyMCDS import pyMCDS
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData
 from ..exceptions import MissingDataError
-from ..constants import VIZ_TYPE
 from .physicell_data import PhysicellData
 
 ###############################################################################
@@ -93,57 +93,58 @@ class PhysicellConverter(TrajectoryConverter):
         """
         physicell_data = self._load_data(input_data.path_to_output_dir)
         # get data dimensions
-        totalSteps = len(physicell_data)
+        total_steps = len(physicell_data)
         max_agents = 0
         discrete_cells = []
-        for t in range(totalSteps):
-            discrete_cells.append(physicell_data[t].get_cell_df())
-            n = len(discrete_cells[t]["position_x"])
+        for time_index in range(total_steps):
+            discrete_cells.append(physicell_data[time_index].get_cell_df())
+            n = len(discrete_cells[time_index]["position_x"])
             if n > max_agents:
                 max_agents = n
-        if totalSteps < 1 or max_agents < 1:
+        if total_steps < 1 or max_agents < 1:
             raise MissingDataError(
-                "no timesteps or no agents found "
-                "in PhysiCell data, is the path_to_output_dir "
-                "pointing to an output directory?"
+                "no timesteps or no agents found in PhysiCell data, "
+                "is the path_to_output_dir pointing to an output directory?"
             )
-        result = AgentData(
-            times=input_data.timestep * np.arange(totalSteps),
-            n_agents=np.zeros(totalSteps),
-            viz_types=VIZ_TYPE.DEFAULT * np.ones(shape=(totalSteps, max_agents)),
-            unique_ids=np.zeros((totalSteps, max_agents)),
-            types=[[] for t in range(totalSteps)],
-            positions=np.zeros((totalSteps, max_agents, 3)),
-            radii=np.ones((totalSteps, max_agents)),
+        result = AgentData.from_dimensions(
+            DimensionData(
+                total_steps=total_steps,
+                max_agents=max_agents,
+            )
         )
-        result.type_ids = np.zeros((totalSteps, max_agents))
         # get data
-        for t in range(totalSteps):
-            n_agents = int(len(discrete_cells[t]["position_x"]))
-            result.n_agents[t] = n_agents
-            i = 0
-            for n in range(n_agents):
-                result.unique_ids[t][i] = i
+        for time_index in range(total_steps):
+            result = result.check_increase_buffer_size(time_index, axis=0)
+            n_agents = int(len(discrete_cells[time_index]["position_x"]))
+            result.n_agents[time_index] = n_agents
+            for agent_index in range(n_agents):
+                result = result.check_increase_buffer_size(agent_index, axis=1)
+                result.unique_ids[time_index][agent_index] = agent_index
                 tid = self._get_agent_type(
-                    cell_type=int(discrete_cells[t]["cell_type"][n]),
-                    cell_phase=int(discrete_cells[t]["current_phase"][n]),
+                    cell_type=int(discrete_cells[time_index]["cell_type"][agent_index]),
+                    cell_phase=int(
+                        discrete_cells[time_index]["current_phase"][agent_index]
+                    ),
                     type_names=input_data.types,
                 )
-                result.type_ids[t][i] = tid
-                while i >= len(result.types[t]):
-                    result.types[t].append("")
-                result.types[t][i] = self._type_mapping[tid]
-                result.positions[t][i] = input_data.meta_data.scale_factor * np.array(
+                result.types[time_index].append(self._type_mapping[tid])
+                result.positions[time_index][
+                    agent_index
+                ] = input_data.meta_data.scale_factor * np.array(
                     [
-                        discrete_cells[t]["position_x"][n],
-                        discrete_cells[t]["position_y"][n],
-                        discrete_cells[t]["position_z"][n],
+                        discrete_cells[time_index]["position_x"][agent_index],
+                        discrete_cells[time_index]["position_y"][agent_index],
+                        discrete_cells[time_index]["position_z"][agent_index],
                     ]
                 )
-                result.radii[t][i] = input_data.meta_data.scale_factor * np.cbrt(
-                    3.0 / 4.0 * discrete_cells[t]["total_volume"][n] / np.pi
+                result.radii[time_index][
+                    agent_index
+                ] = input_data.meta_data.scale_factor * np.cbrt(
+                    3.0
+                    / 4.0
+                    * discrete_cells[time_index]["total_volume"][agent_index]
+                    / np.pi
                 )
-                i += 1
         spatial_units = UnitData(
             physicell_data[0].data["metadata"]["spatial_units"],
             1.0 / input_data.meta_data.scale_factor,

@@ -64,11 +64,7 @@ class TrajectoryConverter:
         simularium_data = {}
         # trajectory info
         totalSteps = input_data.agent_data.times.size
-        type_ids, type_mapping = AgentData.get_type_ids_and_mapping(
-            input_data.agent_data.types, input_data.agent_data.type_ids
-        )
-        if input_data.agent_data.type_ids is None:
-            input_data.agent_data.type_ids = type_ids
+        type_ids, type_mapping = input_data.agent_data.get_type_ids_and_mapping()
         traj_info = {
             "version": 2,
             "timeUnits": {
@@ -128,13 +124,13 @@ class TrajectoryConverter:
             spatialData[
                 "bundleData"
             ] = TrajectoryConverter._get_spatial_bundle_data_subpoints(
-                input_data.agent_data
+                input_data.agent_data, type_ids
             )
         else:
             spatialData[
                 "bundleData"
             ] = TrajectoryConverter._get_spatial_bundle_data_no_subpoints(
-                input_data.agent_data
+                input_data.agent_data, type_ids
             )
         simularium_data["spatialData"] = spatialData
         # plot data
@@ -147,6 +143,7 @@ class TrajectoryConverter:
     @staticmethod
     def _get_spatial_bundle_data_subpoints(
         agent_data: AgentData,
+        type_ids: np.ndarray,
     ) -> List[Dict[str, Any]]:
         """
         Return the spatialData's bundleData for a simulation
@@ -180,9 +177,7 @@ class TrajectoryConverter:
                 local_buf[
                     i + V1_SPATIAL_BUFFER_STRUCT.UID_INDEX
                 ] = agent_data.unique_ids[t, n]
-                local_buf[i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX] = agent_data.type_ids[
-                    t, n
-                ]
+                local_buf[i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX] = type_ids[t, n]
                 local_buf[
                     i
                     + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX : i
@@ -236,7 +231,7 @@ class TrajectoryConverter:
                             ]
                             local_buf[
                                 i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX
-                            ] = agent_data.type_ids[t, n]
+                            ] = type_ids[t, n]
                             local_buf[
                                 i
                                 + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX : i
@@ -254,6 +249,7 @@ class TrajectoryConverter:
     @staticmethod
     def _get_spatial_bundle_data_no_subpoints(
         agent_data: AgentData,
+        type_ids: np.ndarray,
     ) -> List[Dict[str, Any]]:
         """
         Return the spatialData's bundleData for a simulation
@@ -288,7 +284,7 @@ class TrajectoryConverter:
             ] = agent_data.unique_ids[t, :n]
             local_buf[
                 buffer_struct.TID_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
-            ] = agent_data.type_ids[t, :n]
+            ] = type_ids[t, :n]
             local_buf[ix_positions[: 3 * n]] = agent_data.positions[t, :n].flatten()
             local_buf[ix_rotations[: 3 * n]] = agent_data.rotations[t, :n].flatten()
             local_buf[
@@ -387,16 +383,10 @@ class TrajectoryConverter:
             Default: None (use the currently loaded data)
         """
         n_agents = {}
-        type_ids, type_mapping = AgentData.get_type_ids_and_mapping(
-            self._data.agent_data.types
-        )
-        if self._data.agent_data.type_ids is None:
-            self._data.agent_data.type_ids = type_ids
+        type_ids, type_mapping = self._data.agent_data.get_type_ids_and_mapping()
         for t in range(self._data.agent_data.times.size):
             for n in range(int(self._data.agent_data.n_agents[t])):
-                type_name = type_mapping[
-                    str(int(self._data.agent_data.type_ids[t][n]))
-                ]["name"]
+                type_name = type_mapping[str(int(type_ids[t][n]))]["name"]
                 if "#" in type_name:
                     type_name = type_name.split("#")[0]
                 if type_name not in n_agents:

@@ -17,12 +17,12 @@ log = logging.getLogger(__name__)
 
 
 class TranslateFilter(Filter):
-    translation_per_type_id: Dict[int, np.ndarray]
+    translation_per_type: Dict[str, np.ndarray]
     default_translation: np.ndarray
 
     def __init__(
         self,
-        translation_per_type_id: Dict[int, np.ndarray] = {},
+        translation_per_type: Dict[str, np.ndarray] = {},
         default_translation: np.ndarray = np.zeros(3),
     ):
         """
@@ -31,15 +31,15 @@ class TranslateFilter(Filter):
 
         Parameters
         ----------
-        translation_per_type_id : Dict[int, int]
-            translation for agents of each type ID
+        translation_per_type : Dict[str, int]
+            translation for agents of each type
             Default: {}
         default_translation : int
             translation for any agent types not specified
-            in translation_per_type_id
+            in translation_per_type
             Default: np.zeros(3)
         """
-        self.translation_per_type_id = translation_per_type_id
+        self.translation_per_type = translation_per_type
         self.default_translation = default_translation
 
     def apply(self, data: TrajectoryData) -> TrajectoryData:
@@ -54,16 +54,10 @@ class TranslateFilter(Filter):
         # get filtered data
         positions = np.zeros((total_steps, max_agents, 3))
         subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
-        if data.agent_data.type_ids is None:
-            data.agent_data.type_ids, tnm = AgentData.get_type_ids_and_mapping(
-                data.agent_data.types
-            )
         for t in range(total_steps):
             for n in range(int(data.agent_data.n_agents[t])):
-                if data.agent_data.type_ids[t][n] in self.translation_per_type_id:
-                    translation = self.translation_per_type_id[
-                        data.agent_data.type_ids[t][n]
-                    ]
+                if data.agent_data.types[t][n] in self.translation_per_type:
+                    translation = self.translation_per_type[data.agent_data.types[t][n]]
                 else:
                     translation = self.default_translation
                 n_subpoints = int(data.agent_data.n_subpoints[t][n])
