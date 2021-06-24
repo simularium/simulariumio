@@ -46,12 +46,12 @@ class MultiplyTimeFilter(Filter):
         print(f"Filtering: multiplying time by {self.multiplier} -------------")
         # plot data
         if self.apply_to_plots:
-            for p in range(len(data.plots)):
-                x_title = data.plots[p]["layout"]["xaxis"]["title"]
+            for plot in range(len(data.plots)):
+                x_title = data.plots[plot]["layout"]["xaxis"]["title"]
                 if "time" not in x_title.lower():
                     continue
-                for tr in range(len(data.plots[p]["data"])):
-                    trace = data.plots[p]["data"][tr]
+                for tr in range(len(data.plots[plot]["data"])):
+                    trace = data.plots[plot]["data"][tr]
                     trace["x"] = (self.multiplier * np.array(trace["x"])).tolist()
         # spatial data
         data.agent_data.times = self.multiplier * data.agent_data.times

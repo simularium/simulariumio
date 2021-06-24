@@ -7,7 +7,7 @@ import logging
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import TrajectoryData, AgentData
+from ..data_objects import TrajectoryData
 
 ###############################################################################
 
@@ -54,23 +54,34 @@ class TranslateFilter(Filter):
         # get filtered data
         positions = np.zeros((total_steps, max_agents, 3))
         subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
-        for t in range(total_steps):
-            for n in range(int(data.agent_data.n_agents[t])):
-                if data.agent_data.types[t][n] in self.translation_per_type:
-                    translation = self.translation_per_type[data.agent_data.types[t][n]]
+        for time_index in range(total_steps):
+            for agent_index in range(int(data.agent_data.n_agents[time_index])):
+                if (
+                    data.agent_data.types[time_index][agent_index]
+                    in self.translation_per_type
+                ):
+                    translation = self.translation_per_type[
+                        data.agent_data.types[time_index][agent_index]
+                    ]
                 else:
                     translation = self.default_translation
-                n_subpoints = int(data.agent_data.n_subpoints[t][n])
+                n_subpoints = int(data.agent_data.n_subpoints[time_index][agent_index])
                 if n_subpoints > 0:
-                    for s in range(int(data.agent_data.n_subpoints[t][n])):
-                        for d in range(3):
-                            subpoints[t][n][s][d] = (
-                                data.agent_data.subpoints[t][n][s][d] + translation[d]
+                    for subpoint_index in range(
+                        int(data.agent_data.n_subpoints[time_index][agent_index])
+                    ):
+                        for dim in range(3):
+                            subpoints[time_index][agent_index][subpoint_index][dim] = (
+                                data.agent_data.subpoints[time_index][agent_index][
+                                    subpoint_index
+                                ][dim]
+                                + translation[dim]
                             )
                 else:
-                    for d in range(3):
-                        positions[t][n][d] = (
-                            data.agent_data.positions[t][n][d] + translation[d]
+                    for dim in range(3):
+                        positions[time_index][agent_index][dim] = (
+                            data.agent_data.positions[time_index][agent_index][dim]
+                            + translation[dim]
                         )
         data.agent_data.positions = positions
         data.agent_data.subpoints = subpoints

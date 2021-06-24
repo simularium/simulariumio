@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Dict, Any, Tuple
+from typing import Dict, Any
 import json
 import os
 import array
@@ -183,11 +183,11 @@ class McellConverter(TrajectoryConverter):
                     else:
                         rotations = np.zeros_like(positions)
                     # save to AgentData
+                    total_mols = int(result.n_agents[time_index])
                     result = result.check_increase_buffer_size(
                         total_mols + n_mols, axis=1
                     )
                     # MCell binary format has no IDs, so use molecule index
-                    total_mols = int(result.n_agents[time_index])
                     result.unique_ids[time_index, total_mols : total_mols + n_mols] = (
                         np.arange(n_mols) + total_mols
                     )
@@ -239,6 +239,7 @@ class McellConverter(TrajectoryConverter):
                 input_data,
                 result,
             )
+        result.n_timesteps = time_index + 1
         return result
 
     @staticmethod

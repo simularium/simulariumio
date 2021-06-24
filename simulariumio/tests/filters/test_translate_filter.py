@@ -15,7 +15,9 @@ from simulariumio.filters import TranslateFilter
             # translate agents
             "simulariumio/tests/data/cytosim/aster_pull3D_couples_actin_solid_3_frames"
             "/aster_pull3D_couples_actin_solid_3_frames_small.json",
-            TranslateFilter(translation_per_type_id={1: np.array([10, 0, 50])}),
+            TranslateFilter(
+                translation_per_type={"microtubule": np.array([10, 0, 50])}
+            ),
             {
                 "trajectoryInfo": {
                     "version": 2,
@@ -37,8 +39,8 @@ from simulariumio.filters import TranslateFilter
                         "fovDegrees": 50.0,
                     },
                     "typeMapping": {
-                        "1": {"name": "microtubule"},
-                        "7": {"name": "motor complex"},
+                        "0": {"name": "microtubule"},
+                        "1": {"name": "motor complex"},
                     },
                 },
                 "spatialData": {
@@ -53,7 +55,7 @@ from simulariumio.filters import TranslateFilter
                             "data": [
                                 1001.0,
                                 1.0,
-                                1.0,
+                                0.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -79,7 +81,7 @@ from simulariumio.filters import TranslateFilter
                                 79.01,
                                 1000.0,
                                 12.0,
-                                7.0,
+                                1.0,
                                 -73.8,
                                 -25.2,
                                 -43.89,
@@ -96,7 +98,7 @@ from simulariumio.filters import TranslateFilter
                             "data": [
                                 1001.0,
                                 1.0,
-                                1.0,
+                                0.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -125,7 +127,7 @@ from simulariumio.filters import TranslateFilter
                                 48.53,
                                 1000.0,
                                 12.0,
-                                7.0,
+                                1.0,
                                 -72.519999999999996,
                                 -21.9,
                                 -43.59,
@@ -142,7 +144,7 @@ from simulariumio.filters import TranslateFilter
                             "data": [
                                 1001.0,
                                 1.0,
-                                1.0,
+                                0.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -168,7 +170,7 @@ from simulariumio.filters import TranslateFilter
                                 46.42,
                                 1000.0,
                                 12.0,
-                                7.0,
+                                1.0,
                                 -72.519999999999996,
                                 -21.9,
                                 -43.59,

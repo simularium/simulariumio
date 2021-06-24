@@ -63,7 +63,11 @@ class TrajectoryConverter:
         print("Converting Trajectory Data -------------")
         simularium_data = {}
         # trajectory info
-        totalSteps = input_data.agent_data.times.size
+        total_steps = (
+            input_data.agent_data.n_timesteps
+            if input_data.agent_data.n_timesteps >= 0
+            else len(input_data.agent_data.times)
+        )
         type_ids, type_mapping = input_data.agent_data.get_type_ids_and_mapping()
         traj_info = {
             "version": 2,
@@ -73,10 +77,10 @@ class TrajectoryConverter:
             },
             "timeStepSize": TrajectoryConverter._format_timestep(
                 float(input_data.agent_data.times[1] - input_data.agent_data.times[0])
-                if totalSteps > 1
+                if total_steps > 1
                 else 0.0
             ),
-            "totalSteps": totalSteps,
+            "totalSteps": total_steps,
             "spatialUnits": {
                 "magnitude": input_data.spatial_units.magnitude,
                 "name": input_data.spatial_units.name,
@@ -118,7 +122,7 @@ class TrajectoryConverter:
             "version": 1,
             "msgType": 1,
             "bundleStart": 0,
-            "bundleSize": totalSteps,
+            "bundleSize": total_steps,
         }
         if input_data.agent_data.subpoints is not None:
             spatialData[
@@ -152,52 +156,63 @@ class TrajectoryConverter:
         bundle_data: List[Dict[str, Any]] = []
         uids = {}
         used_unique_IDs = list(np.unique(agent_data.unique_ids))
-        for t in range(len(agent_data.times)):
+        total_steps = (
+            agent_data.n_timesteps
+            if agent_data.n_timesteps >= 0
+            else len(agent_data.times)
+        )
+        for time_index in range(total_steps):
             # timestep
             frame_data = {}
-            frame_data["frameNumber"] = t
-            frame_data["time"] = float(agent_data.times[t])
-            n_agents = int(agent_data.n_agents[t])
+            frame_data["frameNumber"] = time_index
+            frame_data["time"] = float(agent_data.times[time_index])
+            n_agents = int(agent_data.n_agents[time_index])
             i = 0
             buffer_size = (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1) * n_agents
-            for n in range(n_agents):
-                s = int(agent_data.n_subpoints[t][n])
-                if s > 0:
-                    buffer_size += 3 * s
+            for agent_index in range(n_agents):
+                n_subpoints = int(agent_data.n_subpoints[time_index][agent_index])
+                if n_subpoints > 0:
+                    buffer_size += 3 * n_subpoints
                     if agent_data.draw_fiber_points:
                         buffer_size += (
                             V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
-                        ) * max(math.ceil(s / 2.0), 1)
+                        ) * max(math.ceil(n_subpoints / 2.0), 1)
             local_buf = np.zeros(buffer_size)
-            for n in range(n_agents):
+            for agent_index in range(n_agents):
                 # add agent
                 local_buf[
                     i + V1_SPATIAL_BUFFER_STRUCT.VIZ_TYPE_INDEX
-                ] = agent_data.viz_types[t, n]
+                ] = agent_data.viz_types[time_index, agent_index]
                 local_buf[
                     i + V1_SPATIAL_BUFFER_STRUCT.UID_INDEX
-                ] = agent_data.unique_ids[t, n]
-                local_buf[i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX] = type_ids[t, n]
+                ] = agent_data.unique_ids[time_index, agent_index]
+                local_buf[i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX] = type_ids[
+                    time_index, agent_index
+                ]
                 local_buf[
                     i
                     + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX : i
                     + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX
                     + 3
-                ] = agent_data.positions[t, n]
+                ] = agent_data.positions[time_index, agent_index]
                 local_buf[
                     i
                     + V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX : i
                     + V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX
                     + 3
-                ] = agent_data.rotations[t, n]
-                local_buf[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX] = agent_data.radii[t, n]
-                n_subpoints = int(agent_data.n_subpoints[t][n])
+                ] = agent_data.rotations[time_index, agent_index]
+                local_buf[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX] = agent_data.radii[
+                    time_index, agent_index
+                ]
+                n_subpoints = int(agent_data.n_subpoints[time_index][agent_index])
                 if n_subpoints > 0:
                     # add subpoints to fiber agent
                     subpoints = [3 * n_subpoints]
                     for p in range(n_subpoints):
                         for d in range(3):
-                            subpoints.append(agent_data.subpoints[t][n][p][d])
+                            subpoints.append(
+                                agent_data.subpoints[time_index][agent_index][p][d]
+                            )
                     local_buf[
                         i
                         + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX : i
@@ -215,7 +230,11 @@ class TrajectoryConverter:
                             if p % 2 != 0:
                                 continue
                             # unique instance ID
-                            raw_uid = 100 * (agent_data.unique_ids[t, n] + 1) + p
+                            raw_uid = (
+                                100
+                                * (agent_data.unique_ids[time_index, agent_index] + 1)
+                                + p
+                            )
                             if raw_uid not in uids:
                                 uid = raw_uid
                                 while uid in used_unique_IDs:
@@ -231,13 +250,13 @@ class TrajectoryConverter:
                             ]
                             local_buf[
                                 i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX
-                            ] = type_ids[t, n]
+                            ] = type_ids[time_index, agent_index]
                             local_buf[
                                 i
                                 + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX : i
                                 + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX
                                 + 3
-                            ] = agent_data.subpoints[t][n][p]
+                            ] = agent_data.subpoints[time_index][agent_index][p]
                             local_buf[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX] = 0.5
                             i += V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
                 else:
@@ -270,26 +289,35 @@ class TrajectoryConverter:
                 i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.ROTX_INDEX + 3,
             )
         frame_buf = np.zeros((buffer_struct.VALUES_PER_AGENT - 1) * max_n_agents)
-        for t in range(len(agent_data.times)):
+        total_steps = (
+            agent_data.n_timesteps
+            if agent_data.n_timesteps >= 0
+            else len(agent_data.times)
+        )
+        for time_index in range(total_steps):
             frame_data = {}
-            frame_data["frameNumber"] = t
-            frame_data["time"] = float(agent_data.times[t])
-            n = int(agent_data.n_agents[t])
-            local_buf = frame_buf[: (buffer_struct.VALUES_PER_AGENT - 1) * n]
+            frame_data["frameNumber"] = time_index
+            frame_data["time"] = float(agent_data.times[time_index])
+            n_agents = int(agent_data.n_agents[time_index])
+            local_buf = frame_buf[: (buffer_struct.VALUES_PER_AGENT - 1) * n_agents]
             local_buf[
                 buffer_struct.VIZ_TYPE_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
-            ] = agent_data.viz_types[t, :n]
+            ] = agent_data.viz_types[time_index, :n_agents]
             local_buf[
                 buffer_struct.UID_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
-            ] = agent_data.unique_ids[t, :n]
+            ] = agent_data.unique_ids[time_index, :n_agents]
             local_buf[
                 buffer_struct.TID_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
-            ] = type_ids[t, :n]
-            local_buf[ix_positions[: 3 * n]] = agent_data.positions[t, :n].flatten()
-            local_buf[ix_rotations[: 3 * n]] = agent_data.rotations[t, :n].flatten()
+            ] = type_ids[time_index, :n_agents]
+            local_buf[ix_positions[: 3 * n_agents]] = agent_data.positions[
+                time_index, :n_agents
+            ].flatten()
+            local_buf[ix_rotations[: 3 * n_agents]] = agent_data.rotations[
+                time_index, :n_agents
+            ].flatten()
             local_buf[
                 buffer_struct.R_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
-            ] = agent_data.radii[t, :n]
+            ] = agent_data.radii[time_index, :n_agents]
             frame_data["data"] = local_buf.tolist()
             bundle_data.append(frame_data)
         return bundle_data
@@ -300,17 +328,17 @@ class TrajectoryConverter:
         For each frame, check that none of the unique agent IDs overlap
         """
         bundle_data = buffer_data["spatialData"]["bundleData"]
-        for t in range(len(bundle_data)):
-            data = bundle_data[t]["data"]
-            i = 1
+        for time_index in range(len(bundle_data)):
+            data = bundle_data[time_index]["data"]
+            agent_index = 1
             uids = []
             get_n_subpoints = False
-            while i < len(data):
+            while agent_index < len(data):
                 # get the number of subpoints
                 # in order to correctly increment index
                 if get_n_subpoints:
-                    i += int(
-                        data[i]
+                    agent_index += int(
+                        data[agent_index]
                         + (
                             V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
                             - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
@@ -319,13 +347,14 @@ class TrajectoryConverter:
                     get_n_subpoints = False
                     continue
                 # there should be a unique ID at this index, check for duplicate
-                uid = data[i]
+                uid = data[agent_index]
                 if uid in uids:
                     raise Exception(
-                        f"found duplicate ID {uid} in frame {t} at index {i}"
+                        f"found duplicate ID {uid} in frame {time_index} "
+                        f"at index {agent_index}"
                     )
                 uids.append(uid)
-                i += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX - 1
+                agent_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX - 1
                 get_n_subpoints = True
         return True
 
@@ -384,14 +413,16 @@ class TrajectoryConverter:
         """
         n_agents = {}
         type_ids, type_mapping = self._data.agent_data.get_type_ids_and_mapping()
-        for t in range(self._data.agent_data.times.size):
-            for n in range(int(self._data.agent_data.n_agents[t])):
-                type_name = type_mapping[str(int(type_ids[t][n]))]["name"]
+        for time_index in range(self._data.agent_data.times.size):
+            for agent_index in range(int(self._data.agent_data.n_agents[time_index])):
+                type_name = type_mapping[str(int(type_ids[time_index][agent_index]))][
+                    "name"
+                ]
                 if "#" in type_name:
                     type_name = type_name.split("#")[0]
                 if type_name not in n_agents:
                     n_agents[type_name] = np.zeros_like(self._data.agent_data.times)
-                n_agents[type_name][t] += 1
+                n_agents[type_name][time_index] += 1
         self.add_plot(
             ScatterPlotData(
                 title=plot_title,

@@ -161,6 +161,7 @@ class MedyanConverter(TrajectoryConverter):
                 if draw_endpoints:
                     agent_index += 2
                     result.n_agents[time_index] += 2
+        result.n_timesteps = time_index + 1
         return result
 
     def _read(self, input_data: MedyanData) -> TrajectoryData:

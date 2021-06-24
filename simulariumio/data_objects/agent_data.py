@@ -114,7 +114,7 @@ class AgentData:
         self.n_subpoints = (
             n_subpoints if n_subpoints is not None else np.zeros_like(radii)
         )
-        self.subpoints = subpoints if subpoints is not None else np.zeros_like(radii)
+        self.subpoints = subpoints if subpoints is not None else np.zeros((3, 3, 0, 3))
         self.draw_fiber_points = draw_fiber_points
         self.n_timesteps = n_timesteps
 
@@ -127,20 +127,20 @@ class AgentData:
         total_steps = len(bundle_data)
         max_n_agents = 0
         max_n_subpoints = 0
-        for t in range(total_steps):
-            data = bundle_data[t]["data"]
-            i = 0
+        for time_index in range(total_steps):
+            data = bundle_data[time_index]["data"]
+            buffer_index = 0
             n_agents = 0
-            while i < len(data):
+            while buffer_index < len(data):
                 # a new agent should start at this index
                 n_agents += 1
-                i += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
+                buffer_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                 # get the number of subpoints
-                n_sp = math.floor(data[i] / 3.0)
+                n_sp = math.floor(data[buffer_index] / 3.0)
                 if n_sp > max_n_subpoints:
                     max_n_subpoints = n_sp
-                i += int(
-                    data[i]
+                buffer_index += int(
+                    data[buffer_index]
                     + (
                         V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
                         - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
@@ -151,8 +151,8 @@ class AgentData:
                 max_n_agents = n_agents
         return DimensionData(
             total_steps=total_steps,
-            max_n_agents=max_n_agents,
-            max_n_subpoints=max_n_subpoints,
+            max_agents=max_n_agents,
+            max_subpoints=max_n_subpoints,
         )
 
     @classmethod
@@ -168,60 +168,66 @@ class AgentData:
         )
         agent_data = AgentData.from_dimensions(dimensions)
         type_ids = np.zeros((dimensions.total_steps, dimensions.max_agents))
-        for t in range(dimensions.total_steps):
-            agent_data.times[t] = bundle_data[t]["time"]
-            frame_data = bundle_data[t]["data"]
-            n = 0
-            i = 0
-            while i + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX < len(frame_data):
+        for time_index in range(dimensions.total_steps):
+            agent_data.times[time_index] = bundle_data[time_index]["time"]
+            frame_data = bundle_data[time_index]["data"]
+            agent_index = 0
+            buffer_index = 0
+            while buffer_index + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX < len(frame_data):
                 # a new agent should start at this index
-                agent_data.viz_types[t][n] = frame_data[
-                    i + V1_SPATIAL_BUFFER_STRUCT.VIZ_TYPE_INDEX
+                agent_data.viz_types[time_index][agent_index] = frame_data[
+                    buffer_index + V1_SPATIAL_BUFFER_STRUCT.VIZ_TYPE_INDEX
                 ]
-                agent_data.unique_ids[t][n] = frame_data[
-                    i + V1_SPATIAL_BUFFER_STRUCT.UID_INDEX
+                agent_data.unique_ids[time_index][agent_index] = frame_data[
+                    buffer_index + V1_SPATIAL_BUFFER_STRUCT.UID_INDEX
                 ]
-                type_ids[t][n] = frame_data[i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX]
-                agent_data.positions[t][n] = [
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX],
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSY_INDEX],
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.POSZ_INDEX],
+                type_ids[time_index][agent_index] = frame_data[
+                    buffer_index + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX
                 ]
-                agent_data.rotations[t][n] = [
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX],
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.ROTY_INDEX],
-                    frame_data[i + V1_SPATIAL_BUFFER_STRUCT.ROTZ_INDEX],
+                agent_data.positions[time_index][agent_index] = [
+                    frame_data[buffer_index + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX],
+                    frame_data[buffer_index + V1_SPATIAL_BUFFER_STRUCT.POSY_INDEX],
+                    frame_data[buffer_index + V1_SPATIAL_BUFFER_STRUCT.POSZ_INDEX],
                 ]
-                agent_data.radii[t][n] = frame_data[
-                    i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX
+                agent_data.rotations[time_index][agent_index] = [
+                    frame_data[buffer_index + V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX],
+                    frame_data[buffer_index + V1_SPATIAL_BUFFER_STRUCT.ROTY_INDEX],
+                    frame_data[buffer_index + V1_SPATIAL_BUFFER_STRUCT.ROTZ_INDEX],
                 ]
-                i += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
+                agent_data.radii[time_index][agent_index] = frame_data[
+                    buffer_index + V1_SPATIAL_BUFFER_STRUCT.R_INDEX
+                ]
+                buffer_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                 # get the subpoints
                 if dimensions.max_subpoints < 1:
-                    i += int(
+                    buffer_index += int(
                         V1_SPATIAL_BUFFER_STRUCT.SP_INDEX
                         - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                     )
-                    n += 1
+                    agent_index += 1
                     continue
-                agent_data.n_subpoints[t][n] = int(frame_data[i] / 3.0)
-                p = 0
-                d = 0
-                for j in range(int(frame_data[i])):
-                    agent_data.subpoints[t][n][p][d] = frame_data[i + 1 + j]
-                    d += 1
-                    if d > 2:
-                        d = 0
-                        p += 1
-                i += int(
-                    frame_data[i]
+                agent_data.n_subpoints[time_index][agent_index] = int(
+                    frame_data[buffer_index] / 3.0
+                )
+                subpoint_index = 0
+                dim = 0
+                for i in range(int(frame_data[buffer_index])):
+                    agent_data.subpoints[time_index][agent_index][subpoint_index][
+                        dim
+                    ] = frame_data[buffer_index + 1 + i]
+                    dim += 1
+                    if dim > 2:
+                        dim = 0
+                        subpoint_index += 1
+                buffer_index += int(
+                    frame_data[buffer_index]
                     + (
                         V1_SPATIAL_BUFFER_STRUCT.SP_INDEX
                         - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                     )
                 )
-                n += 1
-            agent_data.n_agents[t] = n
+                agent_index += 1
+            agent_data.n_agents[time_index] = agent_index
         type_names = AgentData.get_type_names(
             type_ids, buffer_data["trajectoryInfo"]["typeMapping"]
         )
@@ -336,7 +342,9 @@ class AgentData:
         return DimensionData(
             total_steps=self.times.shape[0],
             max_agents=self.viz_types.shape[1],
-            max_subpoints=self.subpoints.shape[2],
+            max_subpoints=self.subpoints.shape[2]
+            if len(self.subpoints.shape) > 2
+            else 0,
         )
 
     def increase_buffer_size(
@@ -355,10 +363,10 @@ class AgentData:
         result.unique_ids[
             0 : current_dimensions.total_steps, 0 : current_dimensions.max_agents
         ] = self.unique_ids[:]
-        for t in range(current_dimensions.total_steps):
-            n_a = int(self.n_agents[t])
-            for n in range(n_a):
-                result.types[t].append(self.types[t][n])
+        for time_index in range(current_dimensions.total_steps):
+            n_a = int(self.n_agents[time_index])
+            for agent_index in range(n_a):
+                result.types[time_index].append(self.types[time_index][agent_index])
         result.positions[
             0 : current_dimensions.total_steps, 0 : current_dimensions.max_agents
         ] = self.positions[:]
@@ -417,7 +425,7 @@ class AgentData:
         # create appropriate length buffer with current agents
         current_dimensions = self.get_dimensions()
         added_dimensions = new_agents.get_dimensions()
-        new_dimensions = current_dimensions.add(added_dimensions, axis=0)
+        new_dimensions = current_dimensions.add(added_dimensions, axis=1)
         result = self.increase_buffer_size(added_dimensions)
         # add new agents
         result.n_agents = np.add(result.n_agents, new_agents.n_agents)
@@ -432,20 +440,22 @@ class AgentData:
         # generate new unique IDs and type IDs so they don't overlap
         used_uids = list(np.unique(self.unique_ids))
         new_uids = {}
-        for t in range(new_dimensions.total_steps):
-            i = self.n_agents[t] - 1
-            n_a = int(new_agents.n_agents[t])
-            for n in range(n_a):
-                raw_uid = new_agents.unique_ids[t][n]
+        for time_index in range(new_dimensions.total_steps):
+            new_agent_index = self.n_agents[time_index]
+            n_a = int(new_agents.n_agents[time_index])
+            for agent_index in range(n_a):
+                raw_uid = new_agents.unique_ids[time_index][agent_index]
                 if raw_uid not in new_uids:
                     uid = raw_uid
                     while uid in used_uids:
                         uid += 1
                     new_uids[raw_uid] = uid
                     used_uids.append(uid)
-                result.unique_ids[t][i] = new_uids[raw_uid]
-                result.types[t].append(new_agents.types[t][n])
-                i += 1
+                result.unique_ids[time_index][new_agent_index] = new_uids[raw_uid]
+                result.types[time_index].append(
+                    new_agents.types[time_index][agent_index]
+                )
+                new_agent_index += 1
         return result
 
     def get_type_ids_and_mapping(self) -> Tuple[np.ndarray, Dict[str, Any]]:
@@ -454,17 +464,17 @@ class AgentData:
         """
         total_steps = len(self.types)
         max_agents = 0
-        for t in range(len(self.types)):
-            n = len(self.types[t])
-            if n > max_agents:
-                max_agents = n
+        for time_index in range(len(self.types)):
+            agent_index = len(self.types[time_index])
+            if agent_index > max_agents:
+                max_agents = agent_index
         type_ids = np.zeros((len(self.types), max_agents))
         type_name_mapping = {}
         type_id_mapping = {}
         last_tid = 0
-        for t in range(total_steps):
-            for n in range(len(self.types[t])):
-                tn = self.types[t][n]
+        for time_index in range(total_steps):
+            for agent_index in range(len(self.types[time_index])):
+                tn = self.types[time_index][agent_index]
                 if len(tn) == 0:
                     continue
                 if tn not in type_id_mapping:
@@ -472,7 +482,7 @@ class AgentData:
                     last_tid += 1
                     type_id_mapping[tn] = tid
                     type_name_mapping[str(tid)] = {"name": tn}
-                type_ids[t][n] = type_id_mapping[tn]
+                type_ids[time_index][agent_index] = type_id_mapping[tn]
         return type_ids, type_name_mapping
 
     @staticmethod
@@ -483,10 +493,12 @@ class AgentData:
         Generate the type_names list from a type_ids array and a type_mapping
         """
         result = []
-        for t in range(type_ids.shape[0]):
+        for time_index in range(type_ids.shape[0]):
             result.append([])
-            for n in range(int(len(type_ids[t]))):
-                result[t].append(type_mapping[str(int(type_ids[t][n]))]["name"])
+            for agent_index in range(int(len(type_ids[time_index]))):
+                result[time_index].append(
+                    type_mapping[str(int(type_ids[time_index][agent_index]))]["name"]
+                )
         return result
 
     def __deepcopy__(self, memo):

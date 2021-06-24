@@ -112,6 +112,7 @@ class PhysicellConverter(TrajectoryConverter):
                 max_agents=max_agents,
             )
         )
+        result.times = input_data.timestep * np.arange(total_steps)
         # get data
         for time_index in range(total_steps):
             result = result.check_increase_buffer_size(time_index, axis=0)
@@ -149,6 +150,7 @@ class PhysicellConverter(TrajectoryConverter):
             physicell_data[0].data["metadata"]["spatial_units"],
             1.0 / input_data.meta_data.scale_factor,
         )
+        result.n_timesteps = total_steps
         return result, spatial_units
 
     def _read(self, input_data: PhysicellData) -> TrajectoryData:

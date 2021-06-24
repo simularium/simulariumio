@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from simulariumio.data_objects.dimension_data import DimensionData
 from typing import List
 
 import numpy as np
@@ -92,6 +91,7 @@ class SmoldynConverter(TrajectoryConverter):
                 )
                 agent_index += 1
         result.n_agents[time_index] = agent_index
+        result.n_timesteps = time_index + 1
         return result
 
     def _read(self, input_data: SmoldynData) -> TrajectoryData:

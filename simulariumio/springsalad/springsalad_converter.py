@@ -78,6 +78,7 @@ class SpringsaladConverter(TrajectoryConverter):
                     cols[2]
                 )
                 agent_index += 1
+        result.n_timesteps = time_index + 1
         return result, box_size
 
     def _read(self, input_data: SpringsaladData) -> TrajectoryData:

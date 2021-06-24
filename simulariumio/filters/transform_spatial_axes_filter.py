@@ -67,28 +67,45 @@ class TransformSpatialAxesFilter(Filter):
         """
         print(f"Filtering: transform spatial axes {self.axes_mapping} -------------")
         # box size
-        box_size = self._transform_coordinate(data.meta_data.box_size, False)
+        data.meta_data.box_size = self._transform_coordinate(
+            data.meta_data.box_size, False
+        )
         # get dimensions
-        total_steps = data.agent_data.times.size
-        max_agents = int(np.amax(data.agent_data.n_agents))
-        use_subpoints = data.agent_data.n_subpoints is not None
-        if use_subpoints:
-            max_subpoints = int(np.amax(data.agent_data.n_subpoints))
-            subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
-        positions = np.zeros((total_steps, max_agents, 3))
-        # get filtered data
-        for t in range(total_steps):
-            for n in range(int(data.agent_data.n_agents[t])):
-                positions[t][n] = self._transform_coordinate(
-                    data.agent_data.positions[t][n]
+        start_dimensions = data.agent_data.get_dimensions()
+        max_subpoints = int(np.amax(data.agent_data.n_subpoints))
+        if max_subpoints > 0:
+            subpoints = np.zeros(
+                (
+                    start_dimensions.total_steps,
+                    start_dimensions.max_agents,
+                    max_subpoints,
+                    3,
                 )
-                if use_subpoints and data.agent_data.n_subpoints[t][n] > 0:
-                    for s in range(int(data.agent_data.n_subpoints[t][n])):
-                        subpoints[t][n][s] = self._transform_coordinate(
-                            data.agent_data.subpoints[t][n][s]
+            )
+        positions = np.zeros(
+            (start_dimensions.total_steps, start_dimensions.max_agents, 3)
+        )
+        # get filtered data
+        for time_index in range(start_dimensions.total_steps):
+            for agent_index in range(int(data.agent_data.n_agents[time_index])):
+                positions[time_index][agent_index] = self._transform_coordinate(
+                    data.agent_data.positions[time_index][agent_index]
+                )
+                if (
+                    max_subpoints > 0
+                    and data.agent_data.n_subpoints[time_index][agent_index] > 0
+                ):
+                    for subpoint_index in range(
+                        int(data.agent_data.n_subpoints[time_index][agent_index])
+                    ):
+                        subpoints[time_index][agent_index][
+                            subpoint_index
+                        ] = self._transform_coordinate(
+                            data.agent_data.subpoints[time_index][agent_index][
+                                subpoint_index
+                            ]
                         )
-        data.meta_data.box_size = box_size
         data.agent_data.positions = positions
-        if use_subpoints:
+        if max_subpoints > 0:
             data.agent_data.subpoints = subpoints
         return data

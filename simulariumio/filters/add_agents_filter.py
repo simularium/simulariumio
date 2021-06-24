@@ -33,5 +33,5 @@ class AddAgentsFilter(Filter):
         Add the given agents to each frame of the simularium data
         """
         print("Filtering: add agents -------------")
-        data.agent_data.append_agents(self.new_agent_data)
+        data.agent_data = data.agent_data.append_agents(self.new_agent_data)
         return data

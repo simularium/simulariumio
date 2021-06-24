@@ -46,16 +46,16 @@ class ReaddyConverter(TrajectoryConverter):
         n_particles_per_frame, positions, type_ids, ids = traj.to_numpy(
             start=0, stop=None
         )
-        totalSteps = n_particles_per_frame.shape[0]
+        total_steps = n_particles_per_frame.shape[0]
         max_agents = int(np.amax(n_particles_per_frame))
         result = AgentData(
-            times=input_data.timestep * np.arange(totalSteps),
+            times=input_data.timestep * np.arange(total_steps),
             n_agents=n_particles_per_frame,
-            viz_types=VIZ_TYPE.DEFAULT * np.ones(shape=(totalSteps, max_agents)),
+            viz_types=VIZ_TYPE.DEFAULT * np.ones(shape=(total_steps, max_agents)),
             unique_ids=ids,
-            types=[[] for t in range(totalSteps)],
+            types=[[] for t in range(total_steps)],
             positions=input_data.meta_data.scale_factor * positions,
-            radii=np.ones(shape=(totalSteps, max_agents)),
+            radii=np.ones(shape=(total_steps, max_agents)),
         )
         # optionally set radius by particle type
         if input_data.radii is not None:
@@ -68,7 +68,7 @@ class ReaddyConverter(TrajectoryConverter):
                         "radius won't be used. "
                         "Please provide radii for the original ReaDDy type(s)."
                     )
-            for time_index in range(totalSteps):
+            for time_index in range(total_steps):
                 for agent_index in range(n_particles_per_frame[time_index]):
                     type_name = traj.species_name(type_ids[time_index][agent_index])
                     if type_name in input_data.radii:
@@ -76,6 +76,7 @@ class ReaddyConverter(TrajectoryConverter):
                             input_data.meta_data.scale_factor
                             * input_data.radii[type_name]
                         )
+        result.n_timesteps = total_steps
         return (result, traj, type_ids)
 
     def _filter_trajectory_data(
@@ -102,9 +103,9 @@ class ReaddyConverter(TrajectoryConverter):
         if not atleast_one_type_to_ignore:
             return agent_data
         # get number of filtered particles
-        totalSteps = agent_data.times.size
-        n_filtered_particles_per_frame = np.zeros(totalSteps)
-        for time_index in range(totalSteps):
+        total_steps = agent_data.times.size
+        n_filtered_particles_per_frame = np.zeros(total_steps)
+        for time_index in range(total_steps):
             agent_index = 0
             for i in range(int(agent_data.n_agents[time_index])):
                 if traj.species_name(type_ids[time_index][i]) not in ignore_types:
@@ -116,10 +117,10 @@ class ReaddyConverter(TrajectoryConverter):
             times=agent_data.times,
             n_agents=n_filtered_particles_per_frame,
             viz_types=agent_data.viz_types,
-            unique_ids=-1 * np.ones((totalSteps, max_agents)),
-            types=[[] for t in range(totalSteps)],
-            positions=np.zeros((totalSteps, max_agents, 3)),
-            radii=np.ones(shape=(totalSteps, max_agents)),
+            unique_ids=-1 * np.ones((total_steps, max_agents)),
+            types=[[] for t in range(total_steps)],
+            positions=np.zeros((total_steps, max_agents, 3)),
+            radii=np.ones(shape=(total_steps, max_agents)),
         )
         for time_index in range(agent_data.n_agents.shape[0]):
             for agent_index in range(agent_data.n_agents[time_index]):

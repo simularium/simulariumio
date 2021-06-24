@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from simulariumio.data_objects.dimension_data import DimensionData
 from typing import Any, Dict, List, Tuple
 import sys
 
@@ -131,7 +130,7 @@ class CytosimConverter(TrajectoryConverter):
                     # start of fiber object
                     if agent_index >= 0 and subpoint_index >= 0:
                         result.n_subpoints[time_index][n_other_agents + agent_index] = (
-                            s + 1
+                            subpoint_index + 1
                         )
                     agent_index += 1
                     subpoint_index = -1
@@ -194,6 +193,7 @@ class CytosimConverter(TrajectoryConverter):
                         ]
                     )
                 )
+        result.n_timesteps = time_index + 1
         return (result, used_unique_IDs)
 
     def _read(self, input_data: CytosimData) -> TrajectoryData:
