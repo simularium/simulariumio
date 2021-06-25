@@ -22,6 +22,7 @@ from .data_objects import (  # noqa: F401
     UnitData,
     MetaData,
     CameraData,
+    DimensionData,
     ScatterPlotData,
     HistogramPlotData,
 )

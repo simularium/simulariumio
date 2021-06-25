@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import numpy as np
 
-from simulariumio.data_objects.dimension_data import DimensionData
+from simulariumio.data_objects import DimensionData
 
 
 class V1_SPATIAL_BUFFER_STRUCT:
@@ -48,3 +49,11 @@ FIBER_AGENT_BUFFER_DIMENSIONS: DimensionData = DimensionData(
     max_agents=BUFFER_SIZE_INC.AGENTS,
     max_subpoints=BUFFER_SIZE_INC.SUBPOINTS,
 )
+
+class DEFAULT_CAMERA_SETTINGS:
+    CAMERA_POSITION: np.ndarray = np.array([0, 0, 120]),
+    LOOK_AT_POSITION: np.ndarray = np.zeros(3),
+    UP_VECTOR: np.ndarray = np.array([0, 1, 0]),
+    FOV_DEGREES: float = 75,
+
+DEFAULT_PLOT_MODE = "markers"

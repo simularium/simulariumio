@@ -14,7 +14,7 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
   * size X, Y, Z - size of the bounding volume for the simulation. for now only rectangular prisms are supported, and the width in X, Y, and Z dimensions is provided
   * cameraDefault - the default view of the camera (when the trajectory is loaded and when the view is reset)
     * position X, Y, Z - 3D position of the camera itself (default = [0, 0, 120])
-    * lookAtPoint X, Y, Z - position the camera looks at (default = [0, 0, 0])
+    * lookAtPosition X, Y, Z - position the camera looks at (default = [0, 0, 0])
     * upVector X, Y, Z - the vector that defines which direction is "up" in the camera's view (default = [0, 1, 0])
     * fovDegrees - the angle defining the extent of the 3D world that is seen from bottom to top of the camera view (default = 50)
   * type mapping - for each agent type ID in the trajectory, information about how to display and render it:
