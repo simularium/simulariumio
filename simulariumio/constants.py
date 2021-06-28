@@ -52,10 +52,10 @@ FIBER_AGENT_BUFFER_DIMENSIONS: DimensionData = DimensionData(
 
 
 class DEFAULT_CAMERA_SETTINGS:
-    CAMERA_POSITION: np.ndarray = np.array([0, 0, 120])
-    LOOK_AT_POSITION: np.ndarray = np.zeros(3)
-    UP_VECTOR: np.ndarray = np.array([0, 1, 0])
-    FOV_DEGREES: float = 75
+    CAMERA_POSITION: np.ndarray = np.array([0.0, 0.0, 120.0])
+    LOOK_AT_POSITION: np.ndarray = np.array([0.0, 0.0, 0.0])
+    UP_VECTOR: np.ndarray = np.array([0.0, 1.0, 0.0])
+    FOV_DEGREES: float = 75.0
 
 
 DEFAULT_PLOT_MODE = "markers"
