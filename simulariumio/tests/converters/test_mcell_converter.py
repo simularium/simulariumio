@@ -190,5 +190,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 def test_mcell_converter(trajectory, expected_data):
     converter = McellConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
+    raise Exception(buffer_data)
     assert expected_data == buffer_data
     assert converter._check_agent_ids_are_unique_per_frame(buffer_data)
