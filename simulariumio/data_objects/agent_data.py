@@ -155,6 +155,49 @@ class AgentData:
             max_subpoints=max_n_subpoints,
         )
 
+    def get_type_ids_and_mapping(self) -> Tuple[np.ndarray, Dict[str, Any]]:
+        """
+        Generate a type_ids array from the type_names list
+        """
+        total_steps = len(self.types)
+        max_agents = 0
+        for time_index in range(len(self.types)):
+            agent_index = len(self.types[time_index])
+            if agent_index > max_agents:
+                max_agents = agent_index
+        type_ids = np.zeros((len(self.types), max_agents))
+        type_name_mapping = {}
+        type_id_mapping = {}
+        last_tid = 0
+        for time_index in range(total_steps):
+            for agent_index in range(len(self.types[time_index])):
+                tn = self.types[time_index][agent_index]
+                if len(tn) == 0:
+                    continue
+                if tn not in type_id_mapping:
+                    tid = last_tid
+                    last_tid += 1
+                    type_id_mapping[tn] = tid
+                    type_name_mapping[str(tid)] = {"name": tn}
+                type_ids[time_index][agent_index] = type_id_mapping[tn]
+        return type_ids, type_name_mapping
+
+    @staticmethod
+    def get_type_names(
+        type_ids: np.ndarray, type_mapping: Dict[str, Any]
+    ) -> List[List[str]]:
+        """
+        Generate the type_names list from a type_ids array and a type_mapping
+        """
+        result = []
+        for time_index in range(type_ids.shape[0]):
+            result.append([])
+            for agent_index in range(int(len(type_ids[time_index]))):
+                result[time_index].append(
+                    type_mapping[str(int(type_ids[time_index][agent_index]))]["name"]
+                )
+        return result
+
     @classmethod
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):
         """
@@ -456,49 +499,6 @@ class AgentData:
                     new_agents.types[time_index][agent_index]
                 )
                 new_agent_index += 1
-        return result
-
-    def get_type_ids_and_mapping(self) -> Tuple[np.ndarray, Dict[str, Any]]:
-        """
-        Generate a type_ids array from the type_names list
-        """
-        total_steps = len(self.types)
-        max_agents = 0
-        for time_index in range(len(self.types)):
-            agent_index = len(self.types[time_index])
-            if agent_index > max_agents:
-                max_agents = agent_index
-        type_ids = np.zeros((len(self.types), max_agents))
-        type_name_mapping = {}
-        type_id_mapping = {}
-        last_tid = 0
-        for time_index in range(total_steps):
-            for agent_index in range(len(self.types[time_index])):
-                tn = self.types[time_index][agent_index]
-                if len(tn) == 0:
-                    continue
-                if tn not in type_id_mapping:
-                    tid = last_tid
-                    last_tid += 1
-                    type_id_mapping[tn] = tid
-                    type_name_mapping[str(tid)] = {"name": tn}
-                type_ids[time_index][agent_index] = type_id_mapping[tn]
-        return type_ids, type_name_mapping
-
-    @staticmethod
-    def get_type_names(
-        type_ids: np.ndarray, type_mapping: Dict[str, Any]
-    ) -> List[List[str]]:
-        """
-        Generate the type_names list from a type_ids array and a type_mapping
-        """
-        result = []
-        for time_index in range(type_ids.shape[0]):
-            result.append([])
-            for agent_index in range(int(len(type_ids[time_index]))):
-                result[time_index].append(
-                    type_mapping[str(int(type_ids[time_index][agent_index]))]["name"]
-                )
         return result
 
     def __deepcopy__(self, memo):
