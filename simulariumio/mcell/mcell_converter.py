@@ -6,6 +6,7 @@ from typing import Dict, Any
 import json
 import os
 import array
+import copy
 
 import numpy as np
 import scipy.linalg as linalg
@@ -252,11 +253,15 @@ class McellConverter(TrajectoryConverter):
         with open(input_data.path_to_data_model_json) as data_model_file:
             data_model = json.load(data_model_file)
         # read spatial data
+        time_units = UnitData(
+            "s", float(data_model["mcell"]["initialization"]["time_step"])
+        )
         agent_data = McellConverter._read_cellblender_data(
-            float(data_model["mcell"]["initialization"]["time_step"]),
+            time_units.magnitude,
             data_model["mcell"]["define_molecules"]["molecule_list"],
             input_data,
         )
+        time_units.magnitude = 1
         # get box size
         partitions = data_model["mcell"]["initialization"]["partitions"]
         box_size = np.array(
@@ -272,7 +277,7 @@ class McellConverter(TrajectoryConverter):
                 camera_defaults=input_data.camera_defaults,
             ),
             agent_data=agent_data,
-            time_units=UnitData("s"),
+            time_units=time_units,
             spatial_units=UnitData("µm", 1.0 / input_data.scale_factor),
             plots=input_data.plots,
         )

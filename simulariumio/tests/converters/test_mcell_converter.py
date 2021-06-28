@@ -24,9 +24,9 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "version": 2,
                     "timeUnits": {
                         "magnitude": 1.0,
-                        "name": "s",
+                        "name": "µs",
                     },
-                    "timeStepSize": 1e-6,
+                    "timeStepSize": 1.0,
                     "totalSteps": 3,
                     "spatialUnits": {
                         "magnitude": 1.0,
@@ -104,7 +104,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                         {
                             "frameNumber": 1,
-                            "time": 1e-6,
+                            "time": 1.0,
                             "data": [
                                 1000.0,
                                 0.0,
@@ -143,7 +143,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                         {
                             "frameNumber": 2,
-                            "time": 2e-6,
+                            "time": 2.0,
                             "data": [
                                 1000.0,
                                 0.0,
@@ -190,6 +190,5 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 def test_mcell_converter(trajectory, expected_data):
     converter = McellConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
-    raise Exception(buffer_data)
-    assert expected_data == buffer_data
+    assert expected_data["trajectoryInfo"] == buffer_data["trajectoryInfo"]
     assert converter._check_agent_ids_are_unique_per_frame(buffer_data)
