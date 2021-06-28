@@ -6,6 +6,8 @@ from typing import Any, Dict
 
 import numpy as np
 
+from ..constants import DEFAULT_CAMERA_SETTINGS
+
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -21,10 +23,12 @@ class CameraData:
 
     def __init__(
         self,
-        position: np.ndarray = np.array([0.0, 0.0, 120.0]),
-        look_at_position: np.ndarray = np.zeros(3),
-        up_vector: np.ndarray = np.array([0.0, 1.0, 0.0]),
-        fov_degrees: float = 75.0,
+        position: np.ndarray = np.array(DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION),
+        look_at_position: np.ndarray = np.array(
+            DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION
+        ),
+        up_vector: np.ndarray = np.array(DEFAULT_CAMERA_SETTINGS.UP_VECTOR),
+        fov_degrees: float = np.array(DEFAULT_CAMERA_SETTINGS.FOV_DEGREES),
     ):
         """
         This object holds parameters that define

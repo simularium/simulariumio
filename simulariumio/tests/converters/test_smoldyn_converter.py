@@ -9,6 +9,7 @@ from simulariumio.smoldyn import (
     SmoldynData,
 )
 from simulariumio import MetaData, UnitData
+from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
 @pytest.mark.parametrize(
@@ -47,10 +48,22 @@ from simulariumio import MetaData, UnitData
                     },
                     "size": {"x": 200.0, "y": 200.0, "z": 10.0},
                     "cameraDefault": {
-                        "position": {"x": 0, "y": 0, "z": 120},
-                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
-                        "upVector": {"x": 0, "y": 1, "z": 0},
-                        "fovDegrees": 75.0,
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
                         "0": {"name": "S"},
@@ -224,10 +237,22 @@ from simulariumio import MetaData, UnitData
                     },
                     "size": {"x": 100.0, "y": 100.0, "z": 100.0},
                     "cameraDefault": {
-                        "position": {"x": 0, "y": 0, "z": 120},
-                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
-                        "upVector": {"x": 0, "y": 1, "z": 0},
-                        "fovDegrees": 75.0,
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
                         "0": {"name": "green(solution)"},
