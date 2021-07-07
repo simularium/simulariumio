@@ -48,7 +48,10 @@ class DimensionData:
         Add the given dimensions with this object's
         """
         if axis == 1:
-            if added_dimensions.total_steps != self.total_steps:
+            if (
+                added_dimensions.total_steps > 0
+                and added_dimensions.total_steps != self.total_steps
+            ):
                 raise DataError(
                     "Total steps must be equal when adding dimensions on agent axis: "
                     f"{added_dimensions.total_steps} != {self.total_steps}"
@@ -59,5 +62,20 @@ class DimensionData:
         return DimensionData(
             total_steps=result_total_steps,
             max_agents=self.max_agents + added_dimensions.max_agents,
-            max_subpoints=max(self.max_subpoints, added_dimensions.max_subpoints),
+            max_subpoints=self.max_subpoints + added_dimensions.max_subpoints,
         )
+
+    def to_string(self):
+        return (
+            f"{self.total_steps} timesteps X {self.max_agents} agents "
+            "X {self.max_subpoints} subpoints"
+        )
+
+    def __eq__(self, other):
+        if isinstance(other, DimensionData):
+            return (
+                self.total_steps == other.total_steps
+                and self.max_agents == other.max_agents
+                and self.max_subpoints == other.max_subpoints
+            )
+        return False

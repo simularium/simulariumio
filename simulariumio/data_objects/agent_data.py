@@ -422,9 +422,10 @@ class AgentData:
         result.n_subpoints[
             0 : current_dimensions.total_steps, 0 : current_dimensions.max_agents
         ] = self.n_subpoints[:]
-        result.subpoints[
-            0 : current_dimensions.total_steps, 0 : current_dimensions.max_agents
-        ] = self.subpoints[:]
+        if self.subpoints.shape[2] > 0:
+            result.subpoints[
+                0 : current_dimensions.total_steps, 0 : current_dimensions.max_agents
+            ] = self.subpoints[:]
         result.draw_fiber_points = self.draw_fiber_points
         return result
 
@@ -439,7 +440,8 @@ class AgentData:
                     DimensionData(
                         total_steps=BUFFER_SIZE_INC.TIMESTEPS,
                         max_agents=0,
-                    )
+                    ),
+                    axis,
                 )
         elif axis == 1:  # agents dimension
             while next_index >= result.get_dimensions().max_agents:
@@ -447,7 +449,8 @@ class AgentData:
                     DimensionData(
                         total_steps=0,
                         max_agents=BUFFER_SIZE_INC.AGENTS,
-                    )
+                    ),
+                    axis,
                 )
         elif axis == 2:  # subpoints dimension
             while next_index >= result.get_dimensions().max_subpoints:
@@ -456,7 +459,8 @@ class AgentData:
                         total_steps=0,
                         max_agents=0,
                         max_subpoints=BUFFER_SIZE_INC.SUBPOINTS,
-                    )
+                    ),
+                    axis,
                 )
         return result
 
