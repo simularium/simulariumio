@@ -6,7 +6,6 @@ from typing import Dict, Any
 import json
 import os
 import array
-import copy
 
 import numpy as np
 import scipy.linalg as linalg
@@ -223,6 +222,7 @@ class McellConverter(TrajectoryConverter):
         result = AgentData.from_dimensions(DEFAULT_AGENT_BUFFER_DIMENSIONS)
         # get metadata for each agent type
         molecule_info = {}
+        total_steps = 0
         for molecule in molecule_list:
             molecule_info[molecule["mol_name"]] = molecule
         for file_name in os.listdir(input_data.path_to_binary_files):
@@ -232,6 +232,8 @@ class McellConverter(TrajectoryConverter):
                 continue
             split_file_name = file_name.split(".")
             time_index = int(split_file_name[split_file_name.index("dat") - 1])
+            if time_index > total_steps:
+                total_steps = time_index
             result.times[time_index] = time_index * timestep
             result = McellConverter._read_binary_cellblender_viz_frame(
                 os.path.join(input_data.path_to_binary_files, file_name),
@@ -240,7 +242,7 @@ class McellConverter(TrajectoryConverter):
                 input_data,
                 result,
             )
-        result.n_timesteps = time_index + 1
+        result.n_timesteps = total_steps + 1
         return result
 
     @staticmethod
