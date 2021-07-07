@@ -11,7 +11,7 @@ This repository is part of the Simularium project ([simularium.allencell.org](ht
 
 [![Build Status](https://github.com/allen-cell-animated/simulariumio/workflows/Build%20Master/badge.svg)](https://github.com/allen-cell-animated/simulariumio/actions)
 [![Documentation](https://github.com/allen-cell-animated/simulariumio/workflows/Documentation/badge.svg)](https://allen-cell-animated.github.io/simulariumio)
-[![Code Coverage](https://codecov.io/gh/allen-cell-animated/simulariumio/branch/main/graph/badge.svg)](https://codecov.io/gh/allen-cell-animated/simulariumio)
+[![Code Coverage](https://codecov.io/gh/allen-cell-animated/simulariumio/branch/master/graph/badge.svg)](https://codecov.io/gh/allen-cell-animated/simulariumio)
 
 Simulariumio converts simulation outputs to the format consumed by the [Simularium viewer](https://simularium.allencell.org/).
 
