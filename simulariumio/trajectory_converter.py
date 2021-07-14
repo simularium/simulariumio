@@ -412,12 +412,9 @@ class TrajectoryConverter:
             Default: None (use the currently loaded data)
         """
         n_agents = {}
-        type_ids, type_mapping = self._data.agent_data.get_type_ids_and_mapping()
         for time_index in range(self._data.agent_data.times.size):
             for agent_index in range(int(self._data.agent_data.n_agents[time_index])):
-                type_name = type_mapping[str(int(type_ids[time_index][agent_index]))][
-                    "name"
-                ]
+                type_name = self._data.agent_data.types[time_index][agent_index]
                 if "#" in type_name:
                     type_name = type_name.split("#")[0]
                 if type_name not in n_agents:
