@@ -390,16 +390,18 @@ class AgentData:
             else 0,
         )
 
-    def increase_buffer_size(
+    def get_copy_with_increased_buffer_size(
         self, added_dimensions: DimensionData, axis: int = 1
     ) -> AgentData:
         """
-        Increase the size of this object's numpy arrays by the given dimensions
+        Create a copy of this object with the size of the numpy arrays increased
+        by the given added_dimensions
         """
         current_dimensions = self.get_dimensions()
         new_dimensions = current_dimensions.add(added_dimensions, axis)
         result = AgentData.from_dimensions(new_dimensions)
-        result.n_agents = self.n_agents
+        result.times[0 : current_dimensions.total_steps] = self.times[:]
+        result.n_agents[0 : current_dimensions.total_steps] = self.n_agents[:]
         result.viz_types[
             0 : current_dimensions.total_steps, 0 : current_dimensions.max_agents
         ] = self.viz_types[:]
@@ -431,12 +433,13 @@ class AgentData:
 
     def check_increase_buffer_size(self, next_index: int, axis: int = 1) -> AgentData:
         """
-        Increase the size of this object's numpy arrays as much as needed
+        If needed for the next_index to fit in the arrays, create a copy of this object
+        with the size of the numpy arrays increased by the BUFFER_SIZE_INC
         """
         result = self
         if axis == 0:  # time dimension
             while next_index >= result.get_dimensions().total_steps:
-                result = result.increase_buffer_size(
+                result = result.get_copy_with_increased_buffer_size(
                     DimensionData(
                         total_steps=BUFFER_SIZE_INC.TIMESTEPS,
                         max_agents=0,
@@ -445,7 +448,7 @@ class AgentData:
                 )
         elif axis == 1:  # agents dimension
             while next_index >= result.get_dimensions().max_agents:
-                result = result.increase_buffer_size(
+                result = result.get_copy_with_increased_buffer_size(
                     DimensionData(
                         total_steps=0,
                         max_agents=BUFFER_SIZE_INC.AGENTS,
@@ -454,7 +457,7 @@ class AgentData:
                 )
         elif axis == 2:  # subpoints dimension
             while next_index >= result.get_dimensions().max_subpoints:
-                result = result.increase_buffer_size(
+                result = result.get_copy_with_increased_buffer_size(
                     DimensionData(
                         total_steps=0,
                         max_agents=0,
@@ -462,47 +465,6 @@ class AgentData:
                     ),
                     axis,
                 )
-        return result
-
-    def append_agents(self, new_agents: AgentData) -> AgentData:
-        """
-        Concatenate the new AgentData with the current data,
-        generate new unique IDs and type IDs as needed
-        """
-        # create appropriate length buffer with current agents
-        current_dimensions = self.get_dimensions()
-        added_dimensions = new_agents.get_dimensions()
-        new_dimensions = current_dimensions.add(added_dimensions, axis=1)
-        result = self.increase_buffer_size(added_dimensions)
-        # add new agents
-        result.n_agents = np.add(result.n_agents, new_agents.n_agents)
-        result.viz_types[:, current_dimensions.max_agents :] = new_agents.viz_types[:]
-        result.positions[:, current_dimensions.max_agents :] = new_agents.positions[:]
-        result.radii[:, current_dimensions.max_agents :] = new_agents.radii[:]
-        result.rotations[:, current_dimensions.max_agents :] = new_agents.rotations[:]
-        result.n_subpoints[:, current_dimensions.max_agents :] = new_agents.n_subpoints[
-            :
-        ]
-        result.subpoints[:, current_dimensions.max_agents :] = new_agents.subpoints[:]
-        # generate new unique IDs and type IDs so they don't overlap
-        used_uids = list(np.unique(self.unique_ids))
-        new_uids = {}
-        for time_index in range(new_dimensions.total_steps):
-            new_agent_index = self.n_agents[time_index]
-            n_a = int(new_agents.n_agents[time_index])
-            for agent_index in range(n_a):
-                raw_uid = new_agents.unique_ids[time_index][agent_index]
-                if raw_uid not in new_uids:
-                    uid = raw_uid
-                    while uid in used_uids:
-                        uid += 1
-                    new_uids[raw_uid] = uid
-                    used_uids.append(uid)
-                result.unique_ids[time_index][new_agent_index] = new_uids[raw_uid]
-                result.types[time_index].append(
-                    new_agents.types[time_index][agent_index]
-                )
-                new_agent_index += 1
         return result
 
     def __deepcopy__(self, memo):
