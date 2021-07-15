@@ -128,19 +128,20 @@ class AgentData:
         max_n_agents = 0
         max_n_subpoints = 0
         for time_index in range(total_steps):
-            data = bundle_data[time_index]["data"]
+            # buffer = packed agent data as a list of numbers
+            buffer = bundle_data[time_index]["data"]
             buffer_index = 0
             n_agents = 0
-            while buffer_index < len(data):
+            while buffer_index < len(buffer):
                 # a new agent should start at this index
                 n_agents += 1
                 buffer_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                 # get the number of subpoints
-                n_sp = math.floor(data[buffer_index] / 3.0)
+                n_sp = math.floor(buffer[buffer_index] / 3.0)
                 if n_sp > max_n_subpoints:
                     max_n_subpoints = n_sp
                 buffer_index += int(
-                    data[buffer_index]
+                    buffer[buffer_index]
                     + (
                         V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
                         - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
