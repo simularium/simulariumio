@@ -3,7 +3,7 @@
 
 import pytest
 
-from simulariumio.tests.conftest import agent_data_buffer
+from simulariumio.tests.conftest import empty_buffer
 from simulariumio import DimensionData
 from simulariumio.constants import BUFFER_SIZE_INC
 
@@ -100,6 +100,6 @@ from simulariumio.constants import BUFFER_SIZE_INC
 def test_buffer_size(
     total_steps, n_agents, n_subpoints, next_index, axis, expected_dimensions
 ):
-    agent_data = agent_data_buffer(total_steps, n_agents, n_subpoints)
+    agent_data = empty_buffer(total_steps, n_agents, n_subpoints)
     agent_data = agent_data.check_increase_buffer_size(next_index, axis)
     assert agent_data.get_dimensions() == expected_dimensions

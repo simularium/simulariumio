@@ -206,10 +206,7 @@ class AgentData:
         """
         bundle_data = buffer_data["spatialData"]["bundleData"]
         dimensions = AgentData._get_buffer_data_dimensions(buffer_data)
-        print(
-            f"original dim = {dimensions.total_steps} timesteps X "
-            f"{dimensions.max_agents} agents X {dimensions.max_subpoints} subpoints"
-        )
+        print(f"original dim = {dimensions.to_string()}")
         agent_data = AgentData.from_dimensions(dimensions)
         type_ids = np.zeros((dimensions.total_steps, dimensions.max_agents))
         for time_index in range(dimensions.total_steps):
@@ -400,6 +397,7 @@ class AgentData:
         """
         current_dimensions = self.get_dimensions()
         new_dimensions = current_dimensions.add(added_dimensions, axis)
+        current_types = self.types
         result = AgentData.from_dimensions(new_dimensions)
         result.times[0 : current_dimensions.total_steps] = self.times[:]
         result.n_agents[0 : current_dimensions.total_steps] = self.n_agents[:]
@@ -412,7 +410,7 @@ class AgentData:
         for time_index in range(current_dimensions.total_steps):
             n_a = int(self.n_agents[time_index])
             for agent_index in range(n_a):
-                result.types[time_index].append(self.types[time_index][agent_index])
+                result.types[time_index].append(current_types[time_index][agent_index])
         result.positions[
             0 : current_dimensions.total_steps, 0 : current_dimensions.max_agents
         ] = self.positions[:]
@@ -427,7 +425,9 @@ class AgentData:
         ] = self.n_subpoints[:]
         if self.subpoints.shape[2] > 0:
             result.subpoints[
-                0 : current_dimensions.total_steps, 0 : current_dimensions.max_agents
+                0 : current_dimensions.total_steps,
+                0 : current_dimensions.max_agents,
+                0 : current_dimensions.max_subpoints,
             ] = self.subpoints[:]
         result.draw_fiber_points = self.draw_fiber_points
         return result
@@ -483,3 +483,19 @@ class AgentData:
             draw_fiber_points=self.draw_fiber_points,
         )
         return result
+
+    def __eq__(self, other):
+        return (
+            self.n_timesteps == other.n_timesteps
+            and False not in np.isclose(self.times, other.times)
+            and False not in np.isclose(self.n_agents, other.n_agents)
+            and False not in np.isclose(self.viz_types, other.viz_types)
+            and False not in np.isclose(self.unique_ids, other.unique_ids)
+            and self.types == other.types
+            and False not in np.isclose(self.positions, other.positions)
+            and False not in np.isclose(self.radii, other.radii)
+            and False not in np.isclose(self.rotations, other.rotations)
+            and False not in np.isclose(self.n_subpoints, other.n_subpoints)
+            and False not in np.isclose(self.subpoints, other.subpoints)
+            and self.draw_fiber_points == other.draw_fiber_points
+        )

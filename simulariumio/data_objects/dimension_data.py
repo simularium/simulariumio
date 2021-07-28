@@ -68,7 +68,7 @@ class DimensionData:
     def to_string(self):
         return (
             f"{self.total_steps} timesteps X {self.max_agents} agents "
-            "X {self.max_subpoints} subpoints"
+            f"X {self.max_subpoints} subpoints"
         )
 
     def __eq__(self, other):
