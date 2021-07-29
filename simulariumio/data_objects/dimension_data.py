@@ -45,18 +45,18 @@ class DimensionData:
 
     def add(self, added_dimensions: DimensionData, axis: int = 1) -> DimensionData:
         """
-        Add the given dimensions with this object's
+        Add the given dimensions with this object's and return a copy
         """
         if axis == 1:
             if (
-                added_dimensions.total_steps > 0
+                self.total_steps > 0
                 and added_dimensions.total_steps != self.total_steps
             ):
                 raise DataError(
                     "Total steps must be equal when adding dimensions on agent axis: "
                     f"{added_dimensions.total_steps} != {self.total_steps}"
                 )
-            result_total_steps = self.total_steps
+            result_total_steps = added_dimensions.total_steps
         else:
             result_total_steps = self.total_steps + added_dimensions.total_steps
         return DimensionData(

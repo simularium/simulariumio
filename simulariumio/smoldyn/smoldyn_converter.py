@@ -7,8 +7,7 @@ from typing import List
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, MetaData
-from ..constants import DEFAULT_AGENT_BUFFER_DIMENSIONS
+from ..data_objects import TrajectoryData, AgentData, MetaData, DimensionData
 from .smoldyn_data import SmoldynData
 
 ###############################################################################
@@ -34,15 +33,37 @@ class SmoldynConverter(TrajectoryConverter):
         """
         self._data = self._read(input_data)
 
+    @staticmethod
+    def _parse_dimensions(smoldyn_data_lines: List[str]) -> DimensionData:
+        """
+        Parse Smoldyn output files to get the number of timesteps
+        and maximum agents per timestep
+        """
+        result = DimensionData(0, 0)
+        agents = 0
+        for line in smoldyn_data_lines:
+            cols = line.split()
+            if len(cols) == 2:
+                if agents > result.max_agents:
+                    result.max_agents = agents
+                agents = 0
+                result.total_steps += 1
+            else:
+                agents += 1
+        if agents > result.max_agents:
+            result.max_agents = agents
+        return result
+
+    @staticmethod
     def _parse_objects(
-        self,
         smoldyn_data_lines: List[str],
         input_data: SmoldynData,
     ) -> AgentData:
         """
         Parse a Smoldyn output file to get AgentData
         """
-        result = AgentData.from_dimensions(DEFAULT_AGENT_BUFFER_DIMENSIONS)
+        dimensions = SmoldynConverter._parse_dimensions(smoldyn_data_lines)
+        result = AgentData.from_dimensions(dimensions)
         time_index = -1
         agent_index = 0
         for line in smoldyn_data_lines:
@@ -54,7 +75,6 @@ class SmoldynConverter(TrajectoryConverter):
                     result.n_agents[time_index] = agent_index
                 agent_index = 0
                 time_index += 1
-                result = result.check_increase_buffer_size(time_index, axis=0)
                 result.times[time_index] = float(cols[0])
             else:
                 if len(cols) < 4:
@@ -62,7 +82,6 @@ class SmoldynConverter(TrajectoryConverter):
                         "Smoldyn data is not formatted as expected, "
                         "please use the Smoldyn `listmols` command for output"
                     )
-                result = result.check_increase_buffer_size(agent_index, axis=1)
                 is_3D = len(cols) > 4
                 result.unique_ids[time_index][agent_index] = int(
                     cols[4] if is_3D else cols[3]
@@ -94,7 +113,8 @@ class SmoldynConverter(TrajectoryConverter):
         result.n_timesteps = time_index + 1
         return result
 
-    def _read(self, input_data: SmoldynData) -> TrajectoryData:
+    @staticmethod
+    def _read(input_data: SmoldynData) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the Smoldyn data
         """
@@ -104,7 +124,7 @@ class SmoldynConverter(TrajectoryConverter):
         with open(input_data.path_to_output_txt, "r") as myfile:
             smoldyn_data = myfile.read().split("\n")
         # parse
-        agent_data = self._parse_objects(smoldyn_data, input_data)
+        agent_data = SmoldynConverter._parse_objects(smoldyn_data, input_data)
         # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
         return TrajectoryData(

@@ -27,27 +27,13 @@ class VIZ_TYPE:
     FIBER: float = 1001.0
 
 
-class BUFFER_SIZE_INC:
-    """
-    How large to make numpy arrays before reading agent data
-    from other simulation engine formats.
-    Also increment by this amount when increasing the buffer size
-    """
-
-    TIMESTEPS: int = 1000
-    AGENTS: int = 1000
-    SUBPOINTS: int = 10
-
-
-DEFAULT_AGENT_BUFFER_DIMENSIONS: DimensionData = DimensionData(
-    total_steps=BUFFER_SIZE_INC.TIMESTEPS,
-    max_agents=BUFFER_SIZE_INC.AGENTS,
-)
-
-FIBER_AGENT_BUFFER_DIMENSIONS: DimensionData = DimensionData(
-    total_steps=BUFFER_SIZE_INC.TIMESTEPS,
-    max_agents=BUFFER_SIZE_INC.AGENTS,
-    max_subpoints=BUFFER_SIZE_INC.SUBPOINTS,
+"""
+Default size to make numpy arrays when data dimensions are unknown
+"""
+BUFFER_SIZE_INC: DimensionData = DimensionData(
+    total_steps=1000,
+    max_agents=1000,
+    max_subpoints=100,
 )
 
 

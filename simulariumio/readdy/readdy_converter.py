@@ -35,8 +35,9 @@ class ReaddyConverter(TrajectoryConverter):
         """
         self._data = self._read(input_data)
 
+    @staticmethod
     def _get_raw_trajectory_data(
-        self, input_data: ReaddyData
+        input_data: ReaddyData,
     ) -> Tuple[AgentData, Any, np.ndarray]:
         """
         Return agent data populated from a ReaDDy .h5 trajectory file
@@ -79,8 +80,8 @@ class ReaddyConverter(TrajectoryConverter):
         result.n_timesteps = total_steps
         return (result, traj, type_ids)
 
+    @staticmethod
     def _filter_trajectory_data(
-        self,
         agent_data: AgentData,
         traj: Any,
         ignore_types: List[str],
@@ -141,8 +142,8 @@ class ReaddyConverter(TrajectoryConverter):
                 ]
         return result
 
+    @staticmethod
     def _set_particle_types(
-        self,
         agent_data: AgentData,
         traj: Any,
         type_grouping: Dict[str, List[str]],
@@ -201,18 +202,21 @@ class ReaddyConverter(TrajectoryConverter):
                     agent_data.types[time_index].append(type_mapping[readdy_id])
         return agent_data
 
-    def _read(self, input_data: ReaddyData) -> TrajectoryData:
+    @staticmethod
+    def _read(input_data: ReaddyData) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
         print("Reading ReaDDy Data -------------")
-        agent_data, traj, type_ids = self._get_raw_trajectory_data(input_data)
+        agent_data, traj, type_ids = ReaddyConverter._get_raw_trajectory_data(
+            input_data
+        )
         # optionally filter and group
         if input_data.ignore_types is not None:
-            agent_data = self._filter_trajectory_data(
+            agent_data = ReaddyConverter._filter_trajectory_data(
                 agent_data, traj, input_data.ignore_types, type_ids
             )
-        agent_data = self._set_particle_types(
+        agent_data = ReaddyConverter._set_particle_types(
             agent_data, traj, input_data.type_grouping, type_ids
         )
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)

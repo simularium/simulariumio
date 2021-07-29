@@ -35,12 +35,10 @@ class PhysicellConverter(TrajectoryConverter):
             An object containing info for reading
             PhysiCell simulation trajectory outputs and plot data
         """
-        self._ids = {}
-        self._last_id = 0
-        self._type_mapping = {}
         self._data = self._read(input_data)
 
-    def _load_data(self, path_to_output_dir) -> np.ndarray:
+    @staticmethod
+    def _load_data(path_to_output_dir) -> np.ndarray:
         """
         Load simulation data from PhysiCell MultiCellDS XML files
         """
@@ -54,16 +52,22 @@ class PhysicellConverter(TrajectoryConverter):
             data.append(pyMCDS(xml_file.name, False, path_to_output_dir))
         return np.array(data)
 
+    @staticmethod
     def _get_agent_type(
-        self, cell_type: int, cell_phase: int, type_names: Dict[int, Dict[int, str]]
+        cell_type: int,
+        cell_phase: int,
+        type_names: Dict[int, Dict[int, str]],
+        ids: Dict[int, Dict[int, int]],
+        last_id: int,
+        type_mapping: Dict[int, str],
     ) -> int:
         """
         Get a unique agent type ID for a specific cell type and phase combination
         """
-        if cell_type not in self._ids:
-            self._ids[cell_type] = {}
-        if cell_phase not in self._ids[cell_type]:
-            self._ids[cell_type][cell_phase] = self._last_id
+        if cell_type not in ids:
+            ids[cell_type] = {}
+        if cell_phase not in ids[cell_type]:
+            ids[cell_type][cell_phase] = last_id
             type_name = ""
             if (
                 type_names is not None
@@ -81,17 +85,19 @@ class PhysicellConverter(TrajectoryConverter):
                 type_name += "#" + type_names[cell_type][cell_phase]
             else:
                 type_name += f"#phase {cell_phase}"
-            self._type_mapping[self._last_id] = type_name
-            self._last_id += 1
-        return self._ids[cell_type][cell_phase]
+            type_mapping[last_id] = type_name
+            last_id += 1
+        return ids[cell_type][cell_phase], ids, last_id, type_mapping
 
-    def _get_trajectory_data(
-        self, input_data: PhysicellData
-    ) -> Tuple[AgentData, UnitData]:
+    @staticmethod
+    def _get_trajectory_data(input_data: PhysicellData) -> Tuple[AgentData, UnitData]:
         """
         Get data from one time step in Simularium format
         """
-        physicell_data = self._load_data(input_data.path_to_output_dir)
+        ids = {}
+        last_id = 0
+        type_mapping = {}
+        physicell_data = PhysicellConverter._load_data(input_data.path_to_output_dir)
         # get data dimensions
         total_steps = len(physicell_data)
         max_agents = 0
@@ -115,20 +121,21 @@ class PhysicellConverter(TrajectoryConverter):
         result.times = input_data.timestep * np.arange(total_steps)
         # get data
         for time_index in range(total_steps):
-            result = result.check_increase_buffer_size(time_index, axis=0)
             n_agents = int(len(discrete_cells[time_index]["position_x"]))
             result.n_agents[time_index] = n_agents
             for agent_index in range(n_agents):
-                result = result.check_increase_buffer_size(agent_index, axis=1)
                 result.unique_ids[time_index][agent_index] = agent_index
-                tid = self._get_agent_type(
+                tid, ids, last_id, type_mapping = PhysicellConverter._get_agent_type(
                     cell_type=int(discrete_cells[time_index]["cell_type"][agent_index]),
                     cell_phase=int(
                         discrete_cells[time_index]["current_phase"][agent_index]
                     ),
                     type_names=input_data.types,
+                    ids=ids,
+                    last_id=last_id,
+                    type_mapping=type_mapping,
                 )
-                result.types[time_index].append(self._type_mapping[tid])
+                result.types[time_index].append(type_mapping[tid])
                 result.positions[time_index][
                     agent_index
                 ] = input_data.meta_data.scale_factor * np.array(
@@ -153,12 +160,13 @@ class PhysicellConverter(TrajectoryConverter):
         result.n_timesteps = total_steps
         return result, spatial_units
 
-    def _read(self, input_data: PhysicellData) -> TrajectoryData:
+    @staticmethod
+    def _read(input_data: PhysicellData) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the PhysiCell data
         """
         print("Reading PhysiCell Data -------------")
-        agent_data, spatial_units = self._get_trajectory_data(input_data)
+        agent_data, spatial_units = PhysicellConverter._get_trajectory_data(input_data)
         return TrajectoryData(
             meta_data=MetaData(
                 box_size=input_data.meta_data.scale_factor

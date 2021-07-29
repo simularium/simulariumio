@@ -30,7 +30,7 @@ from simulariumio.constants import BUFFER_SIZE_INC
             10,
             0,
             DimensionData(
-                total_steps=BUFFER_SIZE_INC.TIMESTEPS + 10,
+                total_steps=BUFFER_SIZE_INC.total_steps + 10,
                 max_agents=10,
                 max_subpoints=0,
             ),
@@ -55,7 +55,7 @@ from simulariumio.constants import BUFFER_SIZE_INC
             1,
             DimensionData(
                 total_steps=1000,
-                max_agents=BUFFER_SIZE_INC.AGENTS + 10,
+                max_agents=BUFFER_SIZE_INC.max_agents + 10,
                 max_subpoints=0,
             ),
         ),
@@ -80,7 +80,7 @@ from simulariumio.constants import BUFFER_SIZE_INC
             DimensionData(
                 total_steps=10,
                 max_agents=10,
-                max_subpoints=BUFFER_SIZE_INC.SUBPOINTS,
+                max_subpoints=BUFFER_SIZE_INC.max_subpoints,
             ),
         ),
         (
@@ -92,7 +92,7 @@ from simulariumio.constants import BUFFER_SIZE_INC
             DimensionData(
                 total_steps=10,
                 max_agents=10,
-                max_subpoints=BUFFER_SIZE_INC.SUBPOINTS + 1,
+                max_subpoints=BUFFER_SIZE_INC.max_subpoints + 1,
             ),
         ),
     ],

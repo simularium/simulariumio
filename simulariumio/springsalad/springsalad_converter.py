@@ -7,9 +7,8 @@ from typing import List, Tuple
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, MetaData, UnitData
+from ..data_objects import TrajectoryData, AgentData, MetaData, UnitData, DimensionData
 from .springsalad_data import SpringsaladData
-from ..constants import DEFAULT_AGENT_BUFFER_DIMENSIONS
 
 ###############################################################################
 
@@ -34,13 +33,35 @@ class SpringsaladConverter(TrajectoryConverter):
         """
         self._data = self._read(input_data)
 
+    @staticmethod
+    def _parse_dimensions(springsalad_data: List[str]) -> DimensionData:
+        """
+        Parse SpringSaLaD SIM_VIEW txt file to get the number of timesteps
+        and maximum agents per timestep
+        """
+        result = DimensionData(0, 0)
+        agents = 0
+        for line in springsalad_data:
+            if "CurrentTime" in line:  # beginning of a frame
+                if agents > result.max_agents:
+                    result.max_agents = agents
+                agents = 0
+                result.total_steps += 1
+            if "ID" in line:  # line has data for one agent
+                agents += 1
+        if agents > result.max_agents:
+            result.max_agents = agents
+        return result
+
+    @staticmethod
     def _parse_springsalad_data(
-        self, springsalad_data: List[str], input_data: SpringsaladData
+        springsalad_data: List[str], input_data: SpringsaladData
     ) -> Tuple[AgentData, np.ndarray]:
         """
         Parse SpringSaLaD SIM_VIEW txt file to get spatial data
         """
-        result = AgentData.from_dimensions(DEFAULT_AGENT_BUFFER_DIMENSIONS)
+        dimensions = SpringsaladConverter._parse_dimensions(springsalad_data)
+        result = AgentData.from_dimensions(dimensions)
         box_size = np.zeros(3)
         time_index = -1
         agent_index = 0
@@ -57,12 +78,10 @@ class SpringsaladConverter(TrajectoryConverter):
             if "CurrentTime" in line:  # beginning of a scene
                 agent_index = 0
                 time_index += 1
-                result = result.check_increase_buffer_size(time_index, axis=0)
                 result.times[time_index] = float(
                     line.split("CurrentTime")[1].split()[0]
                 )
             if "ID" in line:  # line has data for one agent in scene
-                result = result.check_increase_buffer_size(agent_index, axis=1)
                 result.n_agents[time_index] += 1
                 result.unique_ids[time_index][agent_index] = int(cols[1])
                 type_name = cols[3]
@@ -81,14 +100,15 @@ class SpringsaladConverter(TrajectoryConverter):
         result.n_timesteps = time_index + 1
         return result, box_size
 
-    def _read(self, input_data: SpringsaladData) -> TrajectoryData:
+    @staticmethod
+    def _read(input_data: SpringsaladData) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
         print("Reading SpringSaLaD Data -------------")
         with open(input_data.path_to_sim_view_txt, "r") as myfile:
             springsalad_data = myfile.read().split("\n")
-        agent_data, box_size = self._parse_springsalad_data(
+        agent_data, box_size = SpringsaladConverter._parse_springsalad_data(
             springsalad_data, input_data
         )
         return TrajectoryData(

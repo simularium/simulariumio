@@ -13,7 +13,7 @@ import pandas as pd
 from ..constants import (
     V1_SPATIAL_BUFFER_STRUCT,
     VIZ_TYPE,
-    FIBER_AGENT_BUFFER_DIMENSIONS,
+    BUFFER_SIZE_INC,
 )
 from .dimension_data import DimensionData
 
@@ -128,22 +128,20 @@ class AgentData:
         Get dimensions of a simularium JSON dict containing buffers
         """
         bundle_data = buffer_data["spatialData"]["bundleData"]
-        total_steps = len(bundle_data)
-        max_n_agents = 0
-        max_n_subpoints = 0
-        for time_index in range(total_steps):
+        result = DimensionData(total_steps=len(bundle_data), max_agents=0)
+        for time_index in range(result.total_steps):
             # buffer = packed agent data as a list of numbers
             buffer = bundle_data[time_index]["data"]
             buffer_index = 0
-            n_agents = 0
+            agents = 0
             while buffer_index < len(buffer):
                 # a new agent should start at this index
-                n_agents += 1
+                agents += 1
                 buffer_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                 # get the number of subpoints
-                n_sp = math.floor(buffer[buffer_index] / 3.0)
-                if n_sp > max_n_subpoints:
-                    max_n_subpoints = n_sp
+                subpoints = math.floor(buffer[buffer_index] / 3.0)
+                if subpoints > result.max_subpoints:
+                    result.max_subpoints = subpoints
                 buffer_index += int(
                     buffer[buffer_index]
                     + (
@@ -152,13 +150,9 @@ class AgentData:
                         - 1
                     )
                 )
-            if n_agents > max_n_agents:
-                max_n_agents = n_agents
-        return DimensionData(
-            total_steps=total_steps,
-            max_agents=max_n_agents,
-            max_subpoints=max_n_subpoints,
-        )
+            if agents > result.max_agents:
+                result.max_agents = agents
+        return result
 
     def get_type_ids_and_mapping(self) -> Tuple[np.ndarray, Dict[str, Any]]:
         """
@@ -401,7 +395,8 @@ class AgentData:
         """
         print(f"increase buffer {axis}")
         current_dimensions = self.get_dimensions()
-        new_dimensions = current_dimensions.add(added_dimensions, axis)
+        # raise Exception(added_dimensions.to_string())
+        new_dimensions = added_dimensions.add(current_dimensions, axis)
         current_types = copy.deepcopy(self.types)
         result = AgentData.from_dimensions(new_dimensions)
         result.times[0 : current_dimensions.total_steps] = self.times[:]
@@ -441,7 +436,7 @@ class AgentData:
         self,
         next_index: int,
         axis: int = 1,
-        buffer_size_inc: DimensionData = FIBER_AGENT_BUFFER_DIMENSIONS,
+        buffer_size_inc: DimensionData = BUFFER_SIZE_INC,
     ) -> AgentData:
         """
         If needed for the next_index to fit in the arrays, create a copy of this object
