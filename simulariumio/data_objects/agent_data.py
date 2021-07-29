@@ -10,7 +10,11 @@ import math
 import numpy as np
 import pandas as pd
 
-from ..constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE, BUFFER_SIZE_INC
+from ..constants import (
+    V1_SPATIAL_BUFFER_STRUCT,
+    VIZ_TYPE,
+    FIBER_AGENT_BUFFER_DIMENSIONS,
+)
 from .dimension_data import DimensionData
 
 ###############################################################################
@@ -395,9 +399,10 @@ class AgentData:
         Create a copy of this object with the size of the numpy arrays increased
         by the given added_dimensions
         """
+        print(f"increase buffer {axis}")
         current_dimensions = self.get_dimensions()
         new_dimensions = current_dimensions.add(added_dimensions, axis)
-        current_types = self.types
+        current_types = copy.deepcopy(self.types)
         result = AgentData.from_dimensions(new_dimensions)
         result.times[0 : current_dimensions.total_steps] = self.times[:]
         result.n_agents[0 : current_dimensions.total_steps] = self.n_agents[:]
@@ -432,17 +437,22 @@ class AgentData:
         result.draw_fiber_points = self.draw_fiber_points
         return result
 
-    def check_increase_buffer_size(self, next_index: int, axis: int = 1) -> AgentData:
+    def check_increase_buffer_size(
+        self,
+        next_index: int,
+        axis: int = 1,
+        buffer_size_inc: DimensionData = FIBER_AGENT_BUFFER_DIMENSIONS,
+    ) -> AgentData:
         """
         If needed for the next_index to fit in the arrays, create a copy of this object
-        with the size of the numpy arrays increased by the BUFFER_SIZE_INC
+        with the size of the numpy arrays increased by the buffer_size_inc
         """
         result = self
         if axis == 0:  # time dimension
             while next_index >= result.get_dimensions().total_steps:
                 result = result.get_copy_with_increased_buffer_size(
                     DimensionData(
-                        total_steps=BUFFER_SIZE_INC.TIMESTEPS,
+                        total_steps=buffer_size_inc.total_steps,
                         max_agents=0,
                     ),
                     axis,
@@ -452,7 +462,7 @@ class AgentData:
                 result = result.get_copy_with_increased_buffer_size(
                     DimensionData(
                         total_steps=0,
-                        max_agents=BUFFER_SIZE_INC.AGENTS,
+                        max_agents=buffer_size_inc.max_agents,
                     ),
                     axis,
                 )
@@ -462,7 +472,7 @@ class AgentData:
                     DimensionData(
                         total_steps=0,
                         max_agents=0,
-                        max_subpoints=BUFFER_SIZE_INC.SUBPOINTS,
+                        max_subpoints=buffer_size_inc.max_subpoints,
                     ),
                     axis,
                 )

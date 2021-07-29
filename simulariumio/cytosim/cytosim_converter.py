@@ -3,12 +3,11 @@
 
 import logging
 from typing import Any, Dict, List, Tuple
-import sys
 
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData
+from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData, DimensionData
 from ..constants import VIZ_TYPE, FIBER_AGENT_BUFFER_DIMENSIONS
 from .cytosim_data import CytosimData
 from .cytosim_object_info import CytosimObjectInfo
@@ -36,28 +35,32 @@ class CytosimConverter(TrajectoryConverter):
         """
         self._data = self._read(input_data)
 
-    def _ignore_line(self, line: str) -> bool:
+    @staticmethod
+    def _ignore_line(line: str) -> bool:
         """
         if the line doesn't have any data, it can be ignored
         """
         return len(line) < 1 or line[0:7] == "warning" or "report" in line
 
+    @staticmethod
     def _parse_object(
-        self,
         object_type: str,
         data_columns: List[str],
         time_index: int,
-        agent_index: int,
         scale_factor: float,
         object_info: CytosimObjectInfo,
         result: AgentData,
         uids: Dict[int, int],
         used_unique_IDs: List[int],
+        buffer_size_inc: DimensionData = FIBER_AGENT_BUFFER_DIMENSIONS,
     ) -> Tuple[AgentData, Dict[int, int], List[int]]:
         """
         Parse an object from Cytosim
         """
-        result = result.check_increase_buffer_size(agent_index, axis=1)
+        agent_index = int(result.n_agents[time_index])
+        result = result.check_increase_buffer_size(
+            agent_index, axis=1, buffer_size_inc=buffer_size_inc
+        )
         # viz type and raw IDs
         if "fiber" in object_type:
             result.viz_types[time_index][agent_index] = VIZ_TYPE.FIBER
@@ -90,75 +93,62 @@ class CytosimConverter(TrajectoryConverter):
         )
         return (result, uids, used_unique_IDs)
 
+    @staticmethod
     def _parse_objects(
-        self,
         object_type: str,
         data_lines: List[str],
         scale_factor: float,
         object_info: CytosimObjectInfo,
         result: AgentData,
         used_unique_IDs: List[int],
+        buffer_size_inc: DimensionData = FIBER_AGENT_BUFFER_DIMENSIONS,
     ) -> Tuple[Dict[str, Any], List[int]]:
         """
         Parse a Cytosim output file containing objects
         (fibers, solids, singles, or couples) to get agents
         """
         time_index = -1
-        agent_index = -1
-        subpoint_index = -1
-        n_other_agents = 0
-        parse_time = (
-            result.times.size > 1 and float(result.times[1]) < sys.float_info.epsilon
-        )
         uids = {}
         is_fiber = "fiber" in object_type
         for line in data_lines:
-            if self._ignore_line(line):
+            if CytosimConverter._ignore_line(line):
                 continue
             columns = line.split()
             if line[0] == "%":
                 if "frame" in line:
                     # start of frame
                     time_index += 1
-                    result = result.check_increase_buffer_size(time_index, axis=0)
-                    n_other_agents = int(result.n_agents[time_index])
-                    agent_index = -1
-                elif parse_time and "time" in line:
+                    result = result.check_increase_buffer_size(
+                        time_index, axis=0, buffer_size_inc=buffer_size_inc
+                    )
+                elif "time" in line:
                     # time metadata
                     result.times[time_index] = float(columns[2])
                 elif "fiber" in columns[1]:
                     # start of fiber object
-                    if agent_index >= 0 and subpoint_index >= 0:
-                        result.n_subpoints[time_index][n_other_agents + agent_index] = (
-                            subpoint_index + 1
-                        )
-                    agent_index += 1
-                    subpoint_index = -1
-                    result, uids, used_unique_IDs = self._parse_object(
+                    result, uids, used_unique_IDs = CytosimConverter._parse_object(
                         object_type,
                         columns,
                         time_index,
-                        n_other_agents + agent_index,
                         scale_factor,
                         object_info,
                         result,
                         uids,
                         used_unique_IDs,
+                        buffer_size_inc,
                     )
-                elif "end" in line:
-                    # end of frame
-                    if is_fiber:
-                        result.n_subpoints[time_index][n_other_agents + agent_index] = (
-                            subpoint_index + 1
-                        )
-                    result.n_agents[time_index] += agent_index + 1
+                    result.n_agents[time_index] += 1
                 continue
             elif is_fiber:
                 # each fiber point
-                subpoint_index += 1
-                result = result.check_increase_buffer_size(subpoint_index, axis=2)
+                subpoint_index = int(
+                    result.n_subpoints[time_index][int(result.n_agents[time_index] - 1)]
+                )
+                result = result.check_increase_buffer_size(
+                    subpoint_index, axis=2, buffer_size_inc=buffer_size_inc
+                )
                 # position
-                result.subpoints[time_index][n_other_agents + agent_index][
+                result.subpoints[time_index][int(result.n_agents[time_index] - 1)][
                     subpoint_index
                 ] = scale_factor * np.array(
                     [
@@ -167,23 +157,25 @@ class CytosimConverter(TrajectoryConverter):
                         float(columns[3].strip("+,")),
                     ]
                 )
+                result.n_subpoints[time_index][
+                    int(result.n_agents[time_index] - 1)
+                ] += 1
             else:
                 # each non-fiber object
-                agent_index += 1
-                result, uids, used_unique_IDs = self._parse_object(
+                result, uids, used_unique_IDs = CytosimConverter._parse_object(
                     object_type,
                     columns,
                     time_index,
-                    n_other_agents + agent_index,
                     scale_factor,
                     object_info,
                     result,
                     uids,
                     used_unique_IDs,
+                    buffer_size_inc,
                 )
                 # position
                 result.positions[time_index][
-                    n_other_agents + agent_index
+                    int(result.n_agents[time_index])
                 ] = scale_factor * (
                     np.array(
                         [
@@ -193,10 +185,15 @@ class CytosimConverter(TrajectoryConverter):
                         ]
                     )
                 )
+                result.n_agents[time_index] += 1
         result.n_timesteps = time_index + 1
         return (result, used_unique_IDs)
 
-    def _read(self, input_data: CytosimData) -> TrajectoryData:
+    @staticmethod
+    def _read(
+        input_data: CytosimData,
+        buffer_size_inc: DimensionData = FIBER_AGENT_BUFFER_DIMENSIONS,
+    ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the CytoSim data
         """
@@ -211,13 +208,14 @@ class CytosimConverter(TrajectoryConverter):
         agent_data.draw_fiber_points = input_data.draw_fiber_points
         uids = []
         for object_type in input_data.object_info:
-            agent_data, uids = self._parse_objects(
+            agent_data, uids = CytosimConverter._parse_objects(
                 object_type,
                 cytosim_data[object_type],
                 input_data.meta_data.scale_factor,
                 input_data.object_info[object_type],
                 agent_data,
                 uids,
+                buffer_size_inc,
             )
         # create TrajectoryData
         return TrajectoryData(
