@@ -34,6 +34,16 @@ We're working to improve performance for converting large trajectories, and also
 
 ___
 
+## Visualize results
+1. In a supported browser (Firefox, Chrome, or Edge), navigate to https://simularium.allencell.org/viewer.
+2. Drag the file output from SimulariumIO from your file browser onto the window or use the file upload dialogue to choose your file
+
+## Sharing links to results
+1. Upload your Simularium file to one of the supported public cloud providers, currently Dropbox, Google Drive, or Amazon S3, and get a publicly accessible link to the file.
+2. In a supported browser, navigate to https://simularium.allencell.org/viewer?trajUrl=[link to your file]. You can share this link with collaborators or post it on your website so that others can interactively view your results.
+
+___
+
 ## Quick Start
 
 ### Convert spatial trajectory from a supported engine
