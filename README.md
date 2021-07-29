@@ -21,9 +21,12 @@ Simulariumio converts simulation outputs to the format consumed by the [Simulari
 * Converts 3D spatiotemporal trajectories to .simularium JSON format
 * Accepts spatial trajectories from the following biological simulation engines:
     * CytoSim (https://gitlab.com/f.nedelec/cytosim)
-    * ReaDDy (https://readdy.github.io/)
-    * PhysiCell (http://physicell.org/)
+    * MCell (https://mcell.org/)
     * MEDYAN (http://medyan.org/)
+    * PhysiCell (http://physicell.org/)
+    * ReaDDy (https://readdy.github.io/)
+    * Smoldyn (http://www.smoldyn.org/)
+    * SpringSaLaD (https://vcell.org/ssalad)
 * Conversions for data from custom engines can be implemented using the TrajectoryConverter class
 * Also accepts metrics data for plots to display alongside spatial data
 
@@ -36,9 +39,12 @@ ___
 ### Convert spatial trajectory from a supported engine
 See the Tutorial for the simulation engine you're using for details:
 * [Cytosim Tutorial](examples/Tutorial_cytosim.ipynb)
-* [ReaDDy Tutorial](examples/Tutorial_readdy.ipynb)
-* [PhysiCell Tutorial](examples/Tutorial_physicell.ipynb)
+* [MCell Tutorial](examples/Tutorial_mcell.ipynb)
 * [MEDYAN Tutorial](examples/Tutorial_medyan.ipynb)
+* [PhysiCell Tutorial](examples/Tutorial_physicell.ipynb)
+* [ReaDDy Tutorial](examples/Tutorial_readdy.ipynb)
+* [Smoldyn Tutorial](examples/Tutorial_smoldyn.ipynb)
+* [SpringSaLaD Tutorial](examples/Tutorial_springsalad.ipynb)
 
 An overview for data from ReaDDy:
 ```python

@@ -60,14 +60,6 @@ simulariumio.filters.multiply\_time\_filter module
    :undoc-members:
    :show-inheritance:
 
-simulariumio.filters.reorder\_agents\_filter module
----------------------------------------------------
-
-.. automodule:: simulariumio.filters.reorder_agents_filter
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 simulariumio.filters.transform\_spatial\_axes\_filter module
 ------------------------------------------------------------
 
