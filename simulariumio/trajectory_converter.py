@@ -422,6 +422,14 @@ class TrajectoryConverter:
             filtered_data = f.apply(filtered_data)
         return filtered_data
 
+    def to_JSON(self):
+        """
+        Return the current simularium data in JSON format
+
+        """
+        buffer_data = TrajectoryConverter._read_trajectory_data(self._data)
+        return json.dumps(buffer_data)
+
     def write_JSON(self, output_path: str):
         """
         Save the current simularium data in .simularium JSON format
