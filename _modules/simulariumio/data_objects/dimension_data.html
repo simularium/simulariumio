@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>simulariumio.filters.multiply_time_filter &mdash; Simularium Conversion 1.0.1 documentation</title>
+  <title>simulariumio.data_objects.dimension_data &mdash; Simularium Conversion 1.0.1 documentation</title>
   
 
   
@@ -178,7 +178,7 @@
         
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
         
-      <li>simulariumio.filters.multiply_time_filter</li>
+      <li>simulariumio.data_objects.dimension_data</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -193,16 +193,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for simulariumio.filters.multiply_time_filter</h1><div class="highlight"><pre>
+  <h1>Source code for simulariumio.data_objects.dimension_data</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">DataError</span>
 
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span>
-<span class="kn">from</span> <span class="nn">.filter</span> <span class="kn">import</span> <span class="n">Filter</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -211,47 +210,71 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="MultiplyTimeFilter"><a class="viewcode-back" href="../../../simulariumio.filters.html#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter">[docs]</a><span class="k">class</span> <span class="nc">MultiplyTimeFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
-    <span class="n">multiplier</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">apply_to_plots</span><span class="p">:</span> <span class="nb">bool</span>
+<div class="viewcode-block" id="DimensionData"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData">[docs]</a><span class="k">class</span> <span class="nc">DimensionData</span><span class="p">:</span>
+    <span class="n">total_steps</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">max_agents</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">max_subpoints</span><span class="p">:</span> <span class="nb">int</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">multiplier</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">apply_to_plots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">total_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">max_agents</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">max_subpoints</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This filter scales the time-stamp values</span>
-<span class="sd">        for each simulation frame by a provided multiplier</span>
+<span class="sd">        This object contains dimension data</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        multiplier : float</span>
-<span class="sd">            float by which to multiply time values</span>
-<span class="sd">        apply_to_plots : bool (optional)</span>
-<span class="sd">            also multiply time values in plot data?</span>
-<span class="sd">            Default = True</span>
+<span class="sd">        total_steps : int</span>
+<span class="sd">            The total number of timesteps in a trajectory</span>
+<span class="sd">        max_agents : int</span>
+<span class="sd">            The number of agents at the timestep with the most agents</span>
+<span class="sd">        max_subpoints : int (optional)</span>
+<span class="sd">            The number of subpoints on the agent at any timestep</span>
+<span class="sd">            with the most subpoints</span>
+<span class="sd">            Default: 0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span> <span class="o">=</span> <span class="n">multiplier</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">apply_to_plots</span> <span class="o">=</span> <span class="n">apply_to_plots</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">=</span> <span class="n">total_steps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">=</span> <span class="n">max_agents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_subpoints</span> <span class="o">=</span> <span class="n">max_subpoints</span>
 
-<div class="viewcode-block" id="MultiplyTimeFilter.apply"><a class="viewcode-back" href="../../../simulariumio.filters.html#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
+<div class="viewcode-block" id="DimensionData.add"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">added_dimensions</span><span class="p">:</span> <span class="n">DimensionData</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DimensionData</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Multiply time values in the data</span>
+<span class="sd">        Add the given dimensions with this object&#39;s and return a copy</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Filtering: multiplying time by </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span><span class="si">}</span><span class="s2"> -------------&quot;</span><span class="p">)</span>
-        <span class="c1"># plot data</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_to_plots</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">plot</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">plots</span><span class="p">)):</span>
-                <span class="n">x_title</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="n">plot</span><span class="p">][</span><span class="s2">&quot;layout&quot;</span><span class="p">][</span><span class="s2">&quot;xaxis&quot;</span><span class="p">][</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">x_title</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-                    <span class="k">continue</span>
-                <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="n">plot</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">])):</span>
-                    <span class="n">trace</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">plots</span><span class="p">[</span><span class="n">plot</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="n">tr</span><span class="p">]</span>
-                    <span class="n">trace</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trace</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="c1"># spatial data</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span>
-        <span class="k">return</span> <span class="n">data</span></div></div>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                <span class="ow">and</span> <span class="n">added_dimensions</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span>
+                    <span class="s2">&quot;Total steps must be equal when adding dimensions on agent axis: &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">added_dimensions</span><span class="o">.</span><span class="n">total_steps</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="n">result_total_steps</span> <span class="o">=</span> <span class="n">added_dimensions</span><span class="o">.</span><span class="n">total_steps</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result_total_steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">+</span> <span class="n">added_dimensions</span><span class="o">.</span><span class="n">total_steps</span>
+        <span class="k">return</span> <span class="n">DimensionData</span><span class="p">(</span>
+            <span class="n">total_steps</span><span class="o">=</span><span class="n">result_total_steps</span><span class="p">,</span>
+            <span class="n">max_agents</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">+</span> <span class="n">added_dimensions</span><span class="o">.</span><span class="n">max_agents</span><span class="p">,</span>
+            <span class="n">max_subpoints</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_subpoints</span> <span class="o">+</span> <span class="n">added_dimensions</span><span class="o">.</span><span class="n">max_subpoints</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="DimensionData.to_string"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData.to_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span><span class="si">}</span><span class="s2"> timesteps X </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_agents</span><span class="si">}</span><span class="s2"> agents &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;X </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_subpoints</span><span class="si">}</span><span class="s2"> subpoints&quot;</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DimensionData</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">total_steps</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">max_agents</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_subpoints</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">max_subpoints</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 </pre></div>
 
            </div>

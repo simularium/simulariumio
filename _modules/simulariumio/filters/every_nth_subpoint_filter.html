@@ -213,25 +213,25 @@
 
 
 <div class="viewcode-block" id="EveryNthSubpointFilter"><a class="viewcode-back" href="../../../simulariumio.filters.html#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter">[docs]</a><span class="k">class</span> <span class="nc">EveryNthSubpointFilter</span><span class="p">(</span><span class="n">Filter</span><span class="p">):</span>
-    <span class="n">n_per_type_id</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+    <span class="n">n_per_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
     <span class="n">default_n</span><span class="p">:</span> <span class="nb">int</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_per_type_id</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">default_n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_per_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">default_n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This filter reduces the number of subpoints in each frame</span>
 <span class="sd">        of simularium data</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n_per_type_id : Dict[int, int]</span>
-<span class="sd">            N for agents of each type ID,</span>
-<span class="sd">            keep every nth subpoint for that type ID (if subpoints exist),</span>
+<span class="sd">        n_per_type : Dict[str, int]</span>
+<span class="sd">            N for agents of each type,</span>
+<span class="sd">            keep every nth subpoint for that type (if subpoints exist),</span>
 <span class="sd">            filter out all the others</span>
 <span class="sd">        default_n : int (optional)</span>
-<span class="sd">            N for any agents of type not specified in n_per_type_id</span>
+<span class="sd">            N for any agents of type not specified in n_per_type</span>
 <span class="sd">            Default: 1</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_per_type_id</span> <span class="o">=</span> <span class="n">n_per_type_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_per_type</span> <span class="o">=</span> <span class="n">n_per_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_n</span> <span class="o">=</span> <span class="n">default_n</span>
 
 <div class="viewcode-block" id="EveryNthSubpointFilter.apply"><a class="viewcode-back" href="../../../simulariumio.filters.html#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
@@ -247,21 +247,27 @@
         <span class="c1"># get filtered data</span>
         <span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
         <span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="n">max_subpoints</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">])):</span>
-                <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">type_id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="n">type_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_per_type_id</span><span class="p">:</span>
-                        <span class="n">inc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_per_type_id</span><span class="p">[</span><span class="n">type_id</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">agent_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">])):</span>
+                <span class="n">new_subpoint_index</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">type_name</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_per_type</span><span class="p">:</span>
+                        <span class="n">inc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_per_type</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">inc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_n</span>
-                    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">])):</span>
-                        <span class="k">if</span> <span class="n">s</span> <span class="o">%</span> <span class="n">inc</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">subpoint_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">])</span>
+                    <span class="p">):</span>
+                        <span class="k">if</span> <span class="n">subpoint_index</span> <span class="o">%</span> <span class="n">inc</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                             <span class="k">continue</span>
-                        <span class="n">subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>
-                        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">n_subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+                        <span class="n">subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">][</span>
+                            <span class="n">new_subpoint_index</span>
+                        <span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">][</span>
+                            <span class="n">subpoint_index</span>
+                        <span class="p">]</span>
+                        <span class="n">new_subpoint_index</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_subpoint_index</span>
         <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="o">=</span> <span class="n">n_subpoints</span>
         <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">subpoints</span>
         <span class="nb">print</span><span class="p">(</span>

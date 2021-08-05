@@ -225,6 +225,7 @@
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.agent_data">simulariumio.data_objects.agent_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.camera_data">simulariumio.data_objects.camera_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.dimension_data">simulariumio.data_objects.dimension_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.histogram_plot_data">simulariumio.data_objects.histogram_plot_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.meta_data">simulariumio.data_objects.meta_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.scatter_plot_data">simulariumio.data_objects.scatter_plot_data module</a></li>
@@ -242,7 +243,6 @@
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.filter">simulariumio.filters.filter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.multiply_space_filter">simulariumio.filters.multiply_space_filter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.multiply_time_filter">simulariumio.filters.multiply_time_filter module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.reorder_agents_filter">simulariumio.filters.reorder_agents_filter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.transform_spatial_axes_filter">simulariumio.filters.transform_spatial_axes_filter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters.translate_filter">simulariumio.filters.translate_filter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.filters.html#module-simulariumio.filters">Module contents</a></li>
@@ -316,6 +316,32 @@
 </div>
 <div class="section" id="module-simulariumio.constants">
 <span id="simulariumio-constants-module"></span><h2>simulariumio.constants module<a class="headerlink" href="#module-simulariumio.constants" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.constants.DEFAULT_CAMERA_SETTINGS">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.constants.</code><code class="sig-name descname">DEFAULT_CAMERA_SETTINGS</code><a class="reference internal" href="_modules/simulariumio/constants.html#DEFAULT_CAMERA_SETTINGS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.constants.DEFAULT_CAMERA_SETTINGS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="simulariumio.constants.DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION">
+<code class="sig-name descname">CAMERA_POSITION</code><em class="property">: numpy.ndarray</em><em class="property"> = array([  0.,   0., 120.])</em><a class="headerlink" href="#simulariumio.constants.DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.DEFAULT_CAMERA_SETTINGS.FOV_DEGREES">
+<code class="sig-name descname">FOV_DEGREES</code><em class="property">: float</em><em class="property"> = 75.0</em><a class="headerlink" href="#simulariumio.constants.DEFAULT_CAMERA_SETTINGS.FOV_DEGREES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION">
+<code class="sig-name descname">LOOK_AT_POSITION</code><em class="property">: numpy.ndarray</em><em class="property"> = array([0., 0., 0.])</em><a class="headerlink" href="#simulariumio.constants.DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.constants.DEFAULT_CAMERA_SETTINGS.UP_VECTOR">
+<code class="sig-name descname">UP_VECTOR</code><em class="property">: numpy.ndarray</em><em class="property"> = array([0., 1., 0.])</em><a class="headerlink" href="#simulariumio.constants.DEFAULT_CAMERA_SETTINGS.UP_VECTOR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT">
 <em class="property">class </em><code class="sig-prename descclassname">simulariumio.constants.</code><code class="sig-name descname">V1_SPATIAL_BUFFER_STRUCT</code><a class="reference internal" href="_modules/simulariumio/constants.html#V1_SPATIAL_BUFFER_STRUCT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT" title="Permalink to this definition">¶</a></dt>
@@ -516,6 +542,12 @@ corresponding to the number of values in each interval</p>
 <dt id="simulariumio.trajectory_converter.TrajectoryConverter.filter_data">
 <code class="sig-name descname">filter_data</code><span class="sig-paren">(</span><em class="sig-param">filters: List[simulariumio.filters.filter.Filter]</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/trajectory_converter.html#TrajectoryConverter.filter_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.trajectory_converter.TrajectoryConverter.filter_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the simularium data with the given filter applied</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.trajectory_converter.TrajectoryConverter.to_JSON">
+<code class="sig-name descname">to_JSON</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/trajectory_converter.html#TrajectoryConverter.to_JSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.trajectory_converter.TrajectoryConverter.to_JSON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current simularium data in JSON format</p>
 </dd></dl>
 
 <dl class="method">

@@ -198,7 +198,7 @@
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">array</span>
@@ -208,9 +208,8 @@
 <span class="kn">from</span> <span class="nn">scipy.spatial.transform</span> <span class="kn">import</span> <span class="n">Rotation</span>
 
 <span class="kn">from</span> <span class="nn">..trajectory_converter</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span>
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">UnitData</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">,</span> <span class="n">DimensionData</span>
 <span class="kn">from</span> <span class="nn">.mcell_data</span> <span class="kn">import</span> <span class="n">McellData</span>
-<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">VIZ_TYPE</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -238,25 +237,25 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
-<div class="viewcode-block" id="McellConverter.normalize"><a class="viewcode-back" href="../../../simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter.normalize">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_normalize</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        normalize a vector</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">v</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">v</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
-<div class="viewcode-block" id="McellConverter.rotate"><a class="viewcode-back" href="../../../simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter.rotate">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_rotate</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        rotate a vector around axis by angle (radians)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rotation</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">*</span> <span class="n">angle</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">*</span> <span class="n">angle</span><span class="p">)</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">v</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
 
-<div class="viewcode-block" id="McellConverter.get_perpendicular_vector"><a class="viewcode-back" href="../../../simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter.get_perpendicular_vector">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_perpendicular_vector</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_perpendicular_vector</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a unit vector perpendicular to the given vector</span>
 <span class="sd">        rotated by the given angle</span>
@@ -265,31 +264,31 @@
             <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot calculate perpendicular vector to zero vector&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-        <span class="n">u</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]))</span>
-        <span class="k">return</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span></div>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_rotate</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
 
-<div class="viewcode-block" id="McellConverter.get_rotation_matrix"><a class="viewcode-back" href="../../../simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter.get_rotation_matrix">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_rotation_matrix</span><span class="p">(</span><span class="n">v1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">v2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_rotation_matrix</span><span class="p">(</span><span class="n">v1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">v2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Orthonormalize and cross the vectors to get a rotation matrix</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">v1</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
-        <span class="n">v2</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
-        <span class="n">v2</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">v2</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v1</span><span class="p">))</span> <span class="o">*</span> <span class="n">v1</span><span class="p">)</span>
+        <span class="n">v1</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="n">v2</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v1</span><span class="p">))</span> <span class="o">*</span> <span class="n">v1</span><span class="p">)</span>
         <span class="n">v3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span>
             <span class="p">[[</span><span class="n">v2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">v3</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">v2</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v3</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">v2</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">v1</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">v3</span><span class="p">[</span><span class="mi">2</span><span class="p">]]]</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
 
-<div class="viewcode-block" id="McellConverter.get_euler_angles"><a class="viewcode-back" href="../../../simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter.get_euler_angles">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_euler_angles</span><span class="p">(</span><span class="n">normal</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_euler_angles</span><span class="p">(</span><span class="n">normal</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get euler angles in degrees representing a rotation defined by the basis</span>
 <span class="sd">        between the given normal and a perpendicular vector rotated at angle</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">perpendicular</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">get_perpendicular_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
-        <span class="n">rotation</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">get_rotation_matrix</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">perpendicular</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Rotation</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span><span class="o">.</span><span class="n">as_euler</span><span class="p">(</span><span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="n">perpendicular</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_get_perpendicular_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+        <span class="n">rotation</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_get_rotation_matrix</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">perpendicular</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Rotation</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span><span class="o">.</span><span class="n">as_euler</span><span class="p">(</span><span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_rotation_euler_angles_for_normals</span><span class="p">(</span>
@@ -304,7 +303,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">normals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">[</span><span class="n">angle</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">McellConverter</span><span class="o">.</span><span class="n">get_euler_angles</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">normals</span><span class="p">,</span> <span class="n">angles</span><span class="p">)]</span>
+            <span class="p">[</span><span class="n">McellConverter</span><span class="o">.</span><span class="n">_get_euler_angles</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">normals</span><span class="p">,</span> <span class="n">angles</span><span class="p">)]</span>
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
@@ -358,25 +357,24 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_dimensions_of_cellblender_data</span><span class="p">(</span>
         <span class="n">path_to_binary_files</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nth_timestep_to_read</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DimensionData</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse cellblender binary files to get the number of timesteps</span>
 <span class="sd">        and maximum agents per timestep</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">total_steps</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">max_agents</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">DimensionData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path_to_binary_files</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_should_read_cellblender_binary_file</span><span class="p">(</span>
                 <span class="n">file_name</span><span class="p">,</span> <span class="n">nth_timestep_to_read</span>
             <span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="n">total_steps</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">n_agents</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_count_agents_in_binary_cellblender_viz_frame</span><span class="p">(</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_to_binary_files</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
             <span class="p">)</span>
-            <span class="k">if</span> <span class="n">n_agents</span> <span class="o">&gt;</span> <span class="n">max_agents</span><span class="p">:</span>
-                <span class="n">max_agents</span> <span class="o">=</span> <span class="n">n_agents</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_agents</span> <span class="o">&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">max_agents</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">=</span> <span class="n">n_agents</span>
+        <span class="k">return</span> <span class="n">result</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_read_binary_cellblender_viz_frame</span><span class="p">(</span>
@@ -435,8 +433,8 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">rotations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
                     <span class="c1"># save to AgentData</span>
-                    <span class="c1"># MCell binary format has no IDs, so use molecule index</span>
                     <span class="n">total_mols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">])</span>
+                    <span class="c1"># MCell binary format has no IDs, so use molecule index</span>
                     <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">time_index</span><span class="p">,</span> <span class="n">total_mols</span> <span class="p">:</span> <span class="n">total_mols</span> <span class="o">+</span> <span class="n">n_mols</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_mols</span><span class="p">)</span> <span class="o">+</span> <span class="n">total_mols</span>
                     <span class="p">)</span>
@@ -461,8 +459,6 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_read_cellblender_data</span><span class="p">(</span>
-        <span class="n">total_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">max_agents</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">molecule_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">input_data</span><span class="p">:</span> <span class="n">McellData</span><span class="p">,</span>
@@ -470,18 +466,13 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse cellblender binary files to get spatial data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">AgentData</span><span class="p">(</span>
-            <span class="n">times</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">total_steps</span><span class="p">),</span>
-            <span class="n">n_agents</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">total_steps</span><span class="p">),</span>
-            <span class="n">viz_types</span><span class="o">=</span><span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">unique_ids</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">types</span><span class="o">=</span><span class="p">[[]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">)],</span>
-            <span class="n">positions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
-            <span class="n">radii</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">rotations</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+        <span class="n">dimensions</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_get_dimensions_of_cellblender_data</span><span class="p">(</span>
+            <span class="n">input_data</span><span class="o">.</span><span class="n">path_to_binary_files</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">nth_timestep_to_read</span>
         <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">from_dimensions</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
         <span class="c1"># get metadata for each agent type</span>
         <span class="n">molecule_info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">total_steps</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="n">molecule_list</span><span class="p">:</span>
             <span class="n">molecule_info</span><span class="p">[</span><span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;mol_name&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">molecule</span>
         <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">path_to_binary_files</span><span class="p">):</span>
@@ -491,6 +482,8 @@
                 <span class="k">continue</span>
             <span class="n">split_file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
             <span class="n">time_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split_file_name</span><span class="p">[</span><span class="n">split_file_name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;dat&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">time_index</span> <span class="o">&gt;</span> <span class="n">total_steps</span><span class="p">:</span>
+                <span class="n">total_steps</span> <span class="o">=</span> <span class="n">time_index</span>
             <span class="n">result</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_index</span> <span class="o">*</span> <span class="n">timestep</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_read_binary_cellblender_viz_frame</span><span class="p">(</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">path_to_binary_files</span><span class="p">,</span> <span class="n">file_name</span><span class="p">),</span>
@@ -499,6 +492,7 @@
                 <span class="n">input_data</span><span class="p">,</span>
                 <span class="n">result</span><span class="p">,</span>
             <span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">n_timesteps</span> <span class="o">=</span> <span class="n">total_steps</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">result</span>
 
     <span class="nd">@staticmethod</span>
@@ -511,17 +505,15 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">path_to_data_model_json</span><span class="p">)</span> <span class="k">as</span> <span class="n">data_model_file</span><span class="p">:</span>
             <span class="n">data_model</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data_model_file</span><span class="p">)</span>
         <span class="c1"># read spatial data</span>
-        <span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_get_dimensions_of_cellblender_data</span><span class="p">(</span>
-            <span class="n">input_data</span><span class="o">.</span><span class="n">path_to_binary_files</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">nth_timestep_to_read</span>
+        <span class="n">time_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">data_model</span><span class="p">[</span><span class="s2">&quot;mcell&quot;</span><span class="p">][</span><span class="s2">&quot;initialization&quot;</span><span class="p">][</span><span class="s2">&quot;time_step&quot;</span><span class="p">])</span>
         <span class="p">)</span>
-        <span class="n">timestep</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">data_model</span><span class="p">[</span><span class="s2">&quot;mcell&quot;</span><span class="p">][</span><span class="s2">&quot;initialization&quot;</span><span class="p">][</span><span class="s2">&quot;time_step&quot;</span><span class="p">])</span>
         <span class="n">agent_data</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_read_cellblender_data</span><span class="p">(</span>
-            <span class="n">total_steps</span><span class="p">,</span>
-            <span class="n">max_agents</span><span class="p">,</span>
-            <span class="n">timestep</span><span class="p">,</span>
+            <span class="n">time_units</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">data_model</span><span class="p">[</span><span class="s2">&quot;mcell&quot;</span><span class="p">][</span><span class="s2">&quot;define_molecules&quot;</span><span class="p">][</span><span class="s2">&quot;molecule_list&quot;</span><span class="p">],</span>
             <span class="n">input_data</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="n">time_units</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="c1"># get box size</span>
         <span class="n">partitions</span> <span class="o">=</span> <span class="n">data_model</span><span class="p">[</span><span class="s2">&quot;mcell&quot;</span><span class="p">][</span><span class="s2">&quot;initialization&quot;</span><span class="p">][</span><span class="s2">&quot;partitions&quot;</span><span class="p">]</span>
         <span class="n">box_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -537,7 +529,7 @@
                 <span class="n">camera_defaults</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">camera_defaults</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">agent_data</span><span class="o">=</span><span class="n">agent_data</span><span class="p">,</span>
-            <span class="n">time_units</span><span class="o">=</span><span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">),</span>
+            <span class="n">time_units</span><span class="o">=</span><span class="n">time_units</span><span class="p">,</span>
             <span class="n">spatial_units</span><span class="o">=</span><span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;µm&quot;</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">),</span>
             <span class="n">plots</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">plots</span><span class="p">,</span>
         <span class="p">)</span></div>

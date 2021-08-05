@@ -198,6 +198,7 @@
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">simulariumio.data_objects.dimension_data</span> <span class="kn">import</span> <span class="n">DimensionData</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
@@ -207,7 +208,6 @@
 <span class="kn">from</span> <span class="nn">..trajectory_converter</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span>
 <span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">,</span> <span class="n">MetaData</span>
 <span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">MissingDataError</span>
-<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">VIZ_TYPE</span>
 <span class="kn">from</span> <span class="nn">.physicell_data</span> <span class="kn">import</span> <span class="n">PhysicellData</span>
 
 <span class="c1">###############################################################################</span>
@@ -231,12 +231,10 @@
 <span class="sd">            An object containing info for reading</span>
 <span class="sd">            PhysiCell simulation trajectory outputs and plot data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_last_id</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_type_mapping</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_output_dir</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_load_data</span><span class="p">(</span><span class="n">path_to_output_dir</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load simulation data from PhysiCell MultiCellDS XML files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -250,16 +248,22 @@
             <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pyMCDS</span><span class="p">(</span><span class="n">xml_file</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">path_to_output_dir</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_agent_type</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">cell_phase</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">type_names</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+        <span class="n">cell_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">cell_phase</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">type_names</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+        <span class="n">ids</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+        <span class="n">last_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">type_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a unique agent type ID for a specific cell type and phase combination</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">cell_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">[</span><span class="n">cell_type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="n">cell_phase</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">[</span><span class="n">cell_type</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">[</span><span class="n">cell_type</span><span class="p">][</span><span class="n">cell_phase</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_id</span>
+        <span class="k">if</span> <span class="n">cell_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+            <span class="n">ids</span><span class="p">[</span><span class="n">cell_type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">cell_phase</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">[</span><span class="n">cell_type</span><span class="p">]:</span>
+            <span class="n">ids</span><span class="p">[</span><span class="n">cell_type</span><span class="p">][</span><span class="n">cell_phase</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_id</span>
             <span class="n">type_name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="k">if</span> <span class="p">(</span>
                 <span class="n">type_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -277,81 +281,88 @@
                 <span class="n">type_name</span> <span class="o">+=</span> <span class="s2">&quot;#&quot;</span> <span class="o">+</span> <span class="n">type_names</span><span class="p">[</span><span class="n">cell_type</span><span class="p">][</span><span class="n">cell_phase</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">type_name</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;#phase </span><span class="si">{</span><span class="n">cell_phase</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_type_mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_last_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_name</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_last_id</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ids</span><span class="p">[</span><span class="n">cell_type</span><span class="p">][</span><span class="n">cell_phase</span><span class="p">]</span>
+            <span class="n">type_mapping</span><span class="p">[</span><span class="n">last_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_name</span>
+            <span class="n">last_id</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">ids</span><span class="p">[</span><span class="n">cell_type</span><span class="p">][</span><span class="n">cell_phase</span><span class="p">],</span> <span class="n">ids</span><span class="p">,</span> <span class="n">last_id</span><span class="p">,</span> <span class="n">type_mapping</span>
 
-    <span class="k">def</span> <span class="nf">_get_trajectory_data</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">PhysicellData</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">]:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_trajectory_data</span><span class="p">(</span><span class="n">input_data</span><span class="p">:</span> <span class="n">PhysicellData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get data from one time step in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">physicell_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_data</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">path_to_output_dir</span><span class="p">)</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">last_id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">type_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">physicell_data</span> <span class="o">=</span> <span class="n">PhysicellConverter</span><span class="o">.</span><span class="n">_load_data</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">path_to_output_dir</span><span class="p">)</span>
         <span class="c1"># get data dimensions</span>
-        <span class="n">totalSteps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">physicell_data</span><span class="p">)</span>
+        <span class="n">total_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">physicell_data</span><span class="p">)</span>
         <span class="n">max_agents</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">discrete_cells</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">):</span>
-            <span class="n">discrete_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">physicell_data</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">get_cell_df</span><span class="p">())</span>
-            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">discrete_cells</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;position_x&quot;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
+            <span class="n">discrete_cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">physicell_data</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span><span class="o">.</span><span class="n">get_cell_df</span><span class="p">())</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;position_x&quot;</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">max_agents</span><span class="p">:</span>
                 <span class="n">max_agents</span> <span class="o">=</span> <span class="n">n</span>
-        <span class="k">if</span> <span class="n">totalSteps</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">max_agents</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">total_steps</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">max_agents</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">MissingDataError</span><span class="p">(</span>
-                <span class="s2">&quot;no timesteps or no agents found &quot;</span>
-                <span class="s2">&quot;in PhysiCell data, is the path_to_output_dir &quot;</span>
-                <span class="s2">&quot;pointing to an output directory?&quot;</span>
+                <span class="s2">&quot;no timesteps or no agents found in PhysiCell data, &quot;</span>
+                <span class="s2">&quot;is the path_to_output_dir pointing to an output directory?&quot;</span>
             <span class="p">)</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">AgentData</span><span class="p">(</span>
-            <span class="n">times</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">timestep</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">),</span>
-            <span class="n">n_agents</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">),</span>
-            <span class="n">viz_types</span><span class="o">=</span><span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">unique_ids</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">types</span><span class="o">=</span><span class="p">[[]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">)],</span>
-            <span class="n">positions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
-            <span class="n">radii</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">from_dimensions</span><span class="p">(</span>
+            <span class="n">DimensionData</span><span class="p">(</span>
+                <span class="n">total_steps</span><span class="o">=</span><span class="n">total_steps</span><span class="p">,</span>
+                <span class="n">max_agents</span><span class="o">=</span><span class="n">max_agents</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="p">)</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">type_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">timestep</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">total_steps</span><span class="p">)</span>
         <span class="c1"># get data</span>
-        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">):</span>
-            <span class="n">n_agents</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">discrete_cells</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;position_x&quot;</span><span class="p">]))</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_agents</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_agents</span><span class="p">):</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
-                <span class="n">tid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_agent_type</span><span class="p">(</span>
-                    <span class="n">cell_type</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">discrete_cells</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;cell_type&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">]),</span>
-                    <span class="n">cell_phase</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">discrete_cells</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;current_phase&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">]),</span>
+        <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
+            <span class="n">n_agents</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;position_x&quot;</span><span class="p">]))</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_agents</span>
+            <span class="k">for</span> <span class="n">agent_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_agents</span><span class="p">):</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">agent_index</span>
+                <span class="n">tid</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">last_id</span><span class="p">,</span> <span class="n">type_mapping</span> <span class="o">=</span> <span class="n">PhysicellConverter</span><span class="o">.</span><span class="n">_get_agent_type</span><span class="p">(</span>
+                    <span class="n">cell_type</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;cell_type&quot;</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]),</span>
+                    <span class="n">cell_phase</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span>
+                        <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;current_phase&quot;</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span>
+                    <span class="p">),</span>
                     <span class="n">type_names</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">types</span><span class="p">,</span>
+                    <span class="n">ids</span><span class="o">=</span><span class="n">ids</span><span class="p">,</span>
+                    <span class="n">last_id</span><span class="o">=</span><span class="n">last_id</span><span class="p">,</span>
+                    <span class="n">type_mapping</span><span class="o">=</span><span class="n">type_mapping</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tid</span>
-                <span class="k">while</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">]):</span>
-                    <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type_mapping</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">type_mapping</span><span class="p">[</span><span class="n">tid</span><span class="p">])</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span>
+                    <span class="n">agent_index</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                     <span class="p">[</span>
-                        <span class="n">discrete_cells</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;position_x&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">],</span>
-                        <span class="n">discrete_cells</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;position_y&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">],</span>
-                        <span class="n">discrete_cells</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;position_z&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">],</span>
+                        <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;position_x&quot;</span><span class="p">][</span><span class="n">agent_index</span><span class="p">],</span>
+                        <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;position_y&quot;</span><span class="p">][</span><span class="n">agent_index</span><span class="p">],</span>
+                        <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;position_z&quot;</span><span class="p">][</span><span class="n">agent_index</span><span class="p">],</span>
                     <span class="p">]</span>
                 <span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cbrt</span><span class="p">(</span>
-                    <span class="mf">3.0</span> <span class="o">/</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">discrete_cells</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;total_volume&quot;</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span>
+                    <span class="n">agent_index</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cbrt</span><span class="p">(</span>
+                    <span class="mf">3.0</span>
+                    <span class="o">/</span> <span class="mf">4.0</span>
+                    <span class="o">*</span> <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;total_volume&quot;</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span>
+                    <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
                 <span class="p">)</span>
-                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">spatial_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span>
             <span class="n">physicell_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;spatial_units&quot;</span><span class="p">],</span>
             <span class="mf">1.0</span> <span class="o">/</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">n_timesteps</span> <span class="o">=</span> <span class="n">total_steps</span>
         <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">spatial_units</span>
 
-    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">PhysicellData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">:</span> <span class="n">PhysicellData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a TrajectoryData object containing the PhysiCell data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading PhysiCell Data -------------&quot;</span><span class="p">)</span>
-        <span class="n">agent_data</span><span class="p">,</span> <span class="n">spatial_units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_trajectory_data</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="n">agent_data</span><span class="p">,</span> <span class="n">spatial_units</span> <span class="o">=</span> <span class="n">PhysicellConverter</span><span class="o">.</span><span class="n">_get_trajectory_data</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">TrajectoryData</span><span class="p">(</span>
             <span class="n">meta_data</span><span class="o">=</span><span class="n">MetaData</span><span class="p">(</span>
                 <span class="n">box_size</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span>

@@ -263,29 +263,46 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Filtering: transform spatial axes </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">axes_mapping</span><span class="si">}</span><span class="s2"> -------------&quot;</span><span class="p">)</span>
         <span class="c1"># box size</span>
-        <span class="n">box_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_coordinate</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">box_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_coordinate</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="p">)</span>
         <span class="c1"># get dimensions</span>
-        <span class="n">total_steps</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">size</span>
-        <span class="n">max_agents</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">))</span>
-        <span class="n">use_subpoints</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">use_subpoints</span><span class="p">:</span>
-            <span class="n">max_subpoints</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">))</span>
-            <span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="n">max_subpoints</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-        <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-        <span class="c1"># get filtered data</span>
-        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">])):</span>
-                <span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_coordinate</span><span class="p">(</span>
-                    <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+        <span class="n">start_dimensions</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">get_dimensions</span><span class="p">()</span>
+        <span class="n">max_subpoints</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">max_subpoints</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">start_dimensions</span><span class="o">.</span><span class="n">total_steps</span><span class="p">,</span>
+                    <span class="n">start_dimensions</span><span class="o">.</span><span class="n">max_agents</span><span class="p">,</span>
+                    <span class="n">max_subpoints</span><span class="p">,</span>
+                    <span class="mi">3</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="k">if</span> <span class="n">use_subpoints</span> <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">])):</span>
-                        <span class="n">subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_coordinate</span><span class="p">(</span>
-                            <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">start_dimensions</span><span class="o">.</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">start_dimensions</span><span class="o">.</span><span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="c1"># get filtered data</span>
+        <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_dimensions</span><span class="o">.</span><span class="n">total_steps</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">agent_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">])):</span>
+                <span class="n">positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_coordinate</span><span class="p">(</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">max_subpoints</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                    <span class="ow">and</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                <span class="p">):</span>
+                    <span class="k">for</span> <span class="n">subpoint_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">])</span>
+                    <span class="p">):</span>
+                        <span class="n">subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">][</span>
+                            <span class="n">subpoint_index</span>
+                        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_coordinate</span><span class="p">(</span>
+                            <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">][</span>
+                                <span class="n">subpoint_index</span>
+                            <span class="p">]</span>
                         <span class="p">)</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">box_size</span> <span class="o">=</span> <span class="n">box_size</span>
         <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">positions</span>
-        <span class="k">if</span> <span class="n">use_subpoints</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">max_subpoints</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">subpoints</span>
         <span class="k">return</span> <span class="n">data</span></div></div>
 </pre></div>

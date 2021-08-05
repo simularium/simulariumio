@@ -229,38 +229,6 @@ by the Simularium viewer</p>
 MCell simulation trajectory outputs and plot data</p>
 </dd>
 </dl>
-<dl class="method">
-<dt id="simulariumio.mcell.mcell_converter.McellConverter.get_euler_angles">
-<em class="property">static </em><code class="sig-name descname">get_euler_angles</code><span class="sig-paren">(</span><em class="sig-param">normal: numpy.ndarray</em>, <em class="sig-param">angle: float</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="_modules/simulariumio/mcell/mcell_converter.html#McellConverter.get_euler_angles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.mcell.mcell_converter.McellConverter.get_euler_angles" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get euler angles in degrees representing a rotation defined by the basis
-between the given normal and a perpendicular vector rotated at angle</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="simulariumio.mcell.mcell_converter.McellConverter.get_perpendicular_vector">
-<em class="property">static </em><code class="sig-name descname">get_perpendicular_vector</code><span class="sig-paren">(</span><em class="sig-param">v: numpy.ndarray</em>, <em class="sig-param">angle: float</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="_modules/simulariumio/mcell/mcell_converter.html#McellConverter.get_perpendicular_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.mcell.mcell_converter.McellConverter.get_perpendicular_vector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a unit vector perpendicular to the given vector
-rotated by the given angle</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="simulariumio.mcell.mcell_converter.McellConverter.get_rotation_matrix">
-<em class="property">static </em><code class="sig-name descname">get_rotation_matrix</code><span class="sig-paren">(</span><em class="sig-param">v1: numpy.ndarray</em>, <em class="sig-param">v2: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.matrix<a class="reference internal" href="_modules/simulariumio/mcell/mcell_converter.html#McellConverter.get_rotation_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.mcell.mcell_converter.McellConverter.get_rotation_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Orthonormalize and cross the vectors to get a rotation matrix</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="simulariumio.mcell.mcell_converter.McellConverter.normalize">
-<em class="property">static </em><code class="sig-name descname">normalize</code><span class="sig-paren">(</span><em class="sig-param">v: numpy.ndarray</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="_modules/simulariumio/mcell/mcell_converter.html#McellConverter.normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.mcell.mcell_converter.McellConverter.normalize" title="Permalink to this definition">¶</a></dt>
-<dd><p>normalize a vector</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="simulariumio.mcell.mcell_converter.McellConverter.rotate">
-<em class="property">static </em><code class="sig-name descname">rotate</code><span class="sig-paren">(</span><em class="sig-param">v: numpy.ndarray</em>, <em class="sig-param">axis: numpy.ndarray</em>, <em class="sig-param">angle: float</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray<a class="reference internal" href="_modules/simulariumio/mcell/mcell_converter.html#McellConverter.rotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.mcell.mcell_converter.McellConverter.rotate" title="Permalink to this definition">¶</a></dt>
-<dd><p>rotate a vector around axis by angle (radians)</p>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -273,9 +241,9 @@ rotated by the given angle</p>
 <p>This object holds simulation trajectory outputs
 from MCell (<a class="reference external" href="https://mcell.org/">https://mcell.org/</a>)
 and plot data</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>path_to_data_model_json</strong> (<em>str</em>) – A string path to the json file
 containing the data model</p></li>
 <li><p><strong>path_to_binary_files</strong> (<em>str</em>) – A string path to the directory containing
@@ -291,15 +259,7 @@ around surface molecules’ normals
 Default: use random angles</p></li>
 <li><p><strong>camera_defaults</strong> (<em>CameraData (optional)</em>) – camera’s initial settings
 which it also returns to when reset
-Default: CameraData(</p>
-<blockquote>
-<div><p>position=[0,0,120],
-look_at_position=[0,0,0],
-up_vector=[0,1,0],
-fov_degrees=75</p>
-</div></blockquote>
-<p>)</p>
-</li>
+Default: CameraData()</p></li>
 <li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the scene, use if
 visualization is too large or small
 Default: 1.0</p></li>

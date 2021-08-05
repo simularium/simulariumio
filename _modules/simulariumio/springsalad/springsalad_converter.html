@@ -203,9 +203,8 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">..trajectory_converter</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span>
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">UnitData</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">,</span> <span class="n">DimensionData</span>
 <span class="kn">from</span> <span class="nn">.springsalad_data</span> <span class="kn">import</span> <span class="n">SpringsaladData</span>
-<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">VIZ_TYPE</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -230,46 +229,38 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_parse_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">springsalad_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_parse_dimensions</span><span class="p">(</span><span class="n">springsalad_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">DimensionData</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse SpringSaLaD SIM_VIEW txt file to get the number of timesteps</span>
 <span class="sd">        and maximum agents per timestep</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">total_steps</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">max_agents</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">current_agents</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">DimensionData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">agents</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">springsalad_data</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;CurrentTime&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>  <span class="c1"># beginning of a frame</span>
-                <span class="k">if</span> <span class="n">current_agents</span> <span class="o">&gt;</span> <span class="n">max_agents</span><span class="p">:</span>
-                    <span class="n">max_agents</span> <span class="o">=</span> <span class="n">current_agents</span>
-                <span class="n">current_agents</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="n">total_steps</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">agents</span> <span class="o">&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">max_agents</span><span class="p">:</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">=</span> <span class="n">agents</span>
+                <span class="n">agents</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="s2">&quot;ID&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>  <span class="c1"># line has data for one agent</span>
-                <span class="n">current_agents</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">current_agents</span> <span class="o">&gt;</span> <span class="n">max_agents</span><span class="p">:</span>
-            <span class="n">max_agents</span> <span class="o">=</span> <span class="n">current_agents</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)</span>
+                <span class="n">agents</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">agents</span> <span class="o">&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">max_agents</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">=</span> <span class="n">agents</span>
+        <span class="k">return</span> <span class="n">result</span>
 
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_springsalad_data</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">springsalad_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">SpringsaladData</span>
+        <span class="n">springsalad_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">SpringsaladData</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse SpringSaLaD SIM_VIEW txt file to get spatial data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_dimensions</span><span class="p">(</span><span class="n">springsalad_data</span><span class="p">)</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">AgentData</span><span class="p">(</span>
-            <span class="n">times</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">total_steps</span><span class="p">),</span>
-            <span class="n">n_agents</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">total_steps</span><span class="p">),</span>
-            <span class="n">viz_types</span><span class="o">=</span><span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">DEFAULT</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">unique_ids</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">types</span><span class="o">=</span><span class="p">[[]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">)],</span>
-            <span class="n">positions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
-            <span class="n">radii</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">rotations</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">total_steps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
-        <span class="p">)</span>
+        <span class="n">dimensions</span> <span class="o">=</span> <span class="n">SpringsaladConverter</span><span class="o">.</span><span class="n">_parse_dimensions</span><span class="p">(</span><span class="n">springsalad_data</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">from_dimensions</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
         <span class="n">box_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">time_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">agent_index</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">springsalad_data</span><span class="p">:</span>
             <span class="n">cols</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="k">if</span> <span class="s2">&quot;xsize&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
@@ -281,31 +272,39 @@
             <span class="k">if</span> <span class="s2">&quot;z_inside&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="n">box_size</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="k">if</span> <span class="s2">&quot;CurrentTime&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>  <span class="c1"># beginning of a scene</span>
-                <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;CurrentTime&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">agent_index</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">time_index</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;CurrentTime&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="p">)</span>
             <span class="k">if</span> <span class="s2">&quot;ID&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>  <span class="c1"># line has data for one agent in scene</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">type_name</span> <span class="o">=</span> <span class="n">cols</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_names</span><span class="p">:</span>
                     <span class="n">type_name</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_names</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">type_name</span><span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">type_name</span><span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span>
+                    <span class="n">agent_index</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                     <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">5</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">6</span><span class="p">])]</span>
                 <span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-                <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">agent_index</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">n_timesteps</span> <span class="o">=</span> <span class="n">time_index</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">box_size</span>
 
-    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">SpringsaladData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">:</span> <span class="n">SpringsaladData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return an object containing the data shaped for Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading SpringSaLaD Data -------------&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">path_to_sim_view_txt</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
             <span class="n">springsalad_data</span> <span class="o">=</span> <span class="n">myfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">agent_data</span><span class="p">,</span> <span class="n">box_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_springsalad_data</span><span class="p">(</span>
+        <span class="n">agent_data</span><span class="p">,</span> <span class="n">box_size</span> <span class="o">=</span> <span class="n">SpringsaladConverter</span><span class="o">.</span><span class="n">_parse_springsalad_data</span><span class="p">(</span>
             <span class="n">springsalad_data</span><span class="p">,</span> <span class="n">input_data</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">TrajectoryData</span><span class="p">(</span>

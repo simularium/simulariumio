@@ -217,7 +217,7 @@
 <span id="simulariumio-data-objects-agent-data-module"></span><h2>simulariumio.data_objects.agent_data module<a class="headerlink" href="#module-simulariumio.data_objects.agent_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.data_objects.agent_data.AgentData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.agent_data.</code><code class="sig-name descname">AgentData</code><span class="sig-paren">(</span><em class="sig-param">times: numpy.ndarray, n_agents: numpy.ndarray, viz_types: numpy.ndarray, unique_ids: numpy.ndarray, types: List[List[str]], positions: numpy.ndarray, radii: numpy.ndarray, rotations: Optional[numpy.ndarray] = None, n_subpoints: Optional[numpy.ndarray] = None, subpoints: Optional[numpy.ndarray] = None, draw_fiber_points: bool = False, type_ids: Optional[numpy.ndarray] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.agent_data.</code><code class="sig-name descname">AgentData</code><span class="sig-paren">(</span><em class="sig-param">times: numpy.ndarray, n_agents: numpy.ndarray, viz_types: numpy.ndarray, unique_ids: numpy.ndarray, types: List[List[str]], positions: numpy.ndarray, radii: numpy.ndarray, rotations: Optional[numpy.ndarray] = None, n_subpoints: Optional[numpy.ndarray] = None, subpoints: Optional[numpy.ndarray] = None, draw_fiber_points: bool = False, n_timesteps: int = -1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object contains spatial simulation data</p>
 <dl class="field-list">
@@ -258,16 +258,16 @@ currently only used for fiber agents
 Default: None</p></li>
 <li><p><strong>draw_fiber_points</strong> (<em>bool (optional)</em>) – Draw spheres at every other fiber point for fibers?
 Default: False</p></li>
-<li><p><strong>type_ids</strong> (<em>np.ndarray (optional)</em>) – A numpy ndarray containing the type id
-of each agent at each timestep</p></li>
+<li><p><strong>n_timesteps</strong> (<em>int (optional)</em>) – Use the first n_timesteps frames of data
+Default: -1 (use the full length of the buffer)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="method">
-<dt id="simulariumio.data_objects.agent_data.AgentData.append_agents">
-<code class="sig-name descname">append_agents</code><span class="sig-paren">(</span><em class="sig-param">new_agents: simulariumio.data_objects.agent_data.AgentData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.append_agents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.append_agents" title="Permalink to this definition">¶</a></dt>
-<dd><p>Concatenate the new AgentData with the current data,
-generate new unique IDs and type IDs as needed</p>
+<dt id="simulariumio.data_objects.agent_data.AgentData.check_increase_buffer_size">
+<code class="sig-name descname">check_increase_buffer_size</code><span class="sig-paren">(</span><em class="sig-param">next_index: int</em>, <em class="sig-param">axis: int = 1</em>, <em class="sig-param">buffer_size_inc: simulariumio.data_objects.dimension_data.DimensionData = &lt;simulariumio.data_objects.dimension_data.DimensionData object&gt;</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.agent_data.AgentData<a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.check_increase_buffer_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.check_increase_buffer_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>If needed for the next_index to fit in the arrays, create a copy of this object
+with the size of the numpy arrays increased by the buffer_size_inc</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -290,15 +290,34 @@ time, unique_id, type, positionX, positionY, positionZ, radius
 </dd></dl>
 
 <dl class="method">
+<dt id="simulariumio.data_objects.agent_data.AgentData.from_dimensions">
+<em class="property">classmethod </em><code class="sig-name descname">from_dimensions</code><span class="sig-paren">(</span><em class="sig-param">dimensions: simulariumio.data_objects.dimension_data.DimensionData</em>, <em class="sig-param">default_viz_type: float = 1000.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.from_dimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.from_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create AgentData with empty numpy arrays of the required dimensions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.data_objects.agent_data.AgentData.get_copy_with_increased_buffer_size">
+<code class="sig-name descname">get_copy_with_increased_buffer_size</code><span class="sig-paren">(</span><em class="sig-param">added_dimensions: simulariumio.data_objects.dimension_data.DimensionData</em>, <em class="sig-param">axis: int = 1</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.agent_data.AgentData<a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.get_copy_with_increased_buffer_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.get_copy_with_increased_buffer_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of this object with the size of the numpy arrays increased
+by the given added_dimensions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.data_objects.agent_data.AgentData.get_dimensions">
+<code class="sig-name descname">get_dimensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.dimension_data.DimensionData<a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.get_dimensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.get_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the dimensions of this object’s numpy arrays</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="simulariumio.data_objects.agent_data.AgentData.get_type_ids_and_mapping">
-<em class="property">static </em><code class="sig-name descname">get_type_ids_and_mapping</code><span class="sig-paren">(</span><em class="sig-param">type_names: List[List[str]], type_ids: Optional[numpy.ndarray] = None</em><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray, Dict[str, Any]]<a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.get_type_ids_and_mapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.get_type_ids_and_mapping" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate the type_ids array from the type_names list</p>
+<code class="sig-name descname">get_type_ids_and_mapping</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray, Dict[str, Any]]<a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.get_type_ids_and_mapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.get_type_ids_and_mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a type_ids array from the type_names list</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="simulariumio.data_objects.agent_data.AgentData.get_type_names">
 <em class="property">static </em><code class="sig-name descname">get_type_names</code><span class="sig-paren">(</span><em class="sig-param">type_ids: numpy.ndarray, type_mapping: Dict[str, Any]</em><span class="sig-paren">)</span> &#x2192; List[List[str]]<a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.get_type_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.get_type_names" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate the type_names list from the type_ids array</p>
+<dd><p>Generate the type_names list from a type_ids array and a type_mapping</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -309,6 +328,11 @@ time, unique_id, type, positionX, positionY, positionZ, radius
 <dl class="attribute">
 <dt id="simulariumio.data_objects.agent_data.AgentData.n_subpoints">
 <code class="sig-name descname">n_subpoints</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.n_subpoints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.agent_data.AgentData.n_timesteps">
+<code class="sig-name descname">n_timesteps</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.n_timesteps" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -337,11 +361,6 @@ time, unique_id, type, positionX, positionY, positionZ, radius
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="simulariumio.data_objects.agent_data.AgentData.type_ids">
-<code class="sig-name descname">type_ids</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.type_ids" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
 <dt id="simulariumio.data_objects.agent_data.AgentData.types">
 <code class="sig-name descname">types</code><em class="property">: List[List[str]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.types" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -363,7 +382,7 @@ time, unique_id, type, positionX, positionY, positionZ, radius
 <span id="simulariumio-data-objects-camera-data-module"></span><h2>simulariumio.data_objects.camera_data module<a class="headerlink" href="#module-simulariumio.data_objects.camera_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.data_objects.camera_data.CameraData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.camera_data.</code><code class="sig-name descname">CameraData</code><span class="sig-paren">(</span><em class="sig-param">position: numpy.ndarray = array([  0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">120.])</em>, <em class="sig-param">look_at_position: numpy.ndarray = array([0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">0.])</em>, <em class="sig-param">up_vector: numpy.ndarray = array([0.</em>, <em class="sig-param">1.</em>, <em class="sig-param">0.])</em>, <em class="sig-param">fov_degrees: float = 75.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/camera_data.html#CameraData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.camera_data.</code><code class="sig-name descname">CameraData</code><span class="sig-paren">(</span><em class="sig-param">position: numpy.ndarray = array([  0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">120.])</em>, <em class="sig-param">look_at_position: numpy.ndarray = array([0.</em>, <em class="sig-param">0.</em>, <em class="sig-param">0.])</em>, <em class="sig-param">up_vector: numpy.ndarray = array([0.</em>, <em class="sig-param">1.</em>, <em class="sig-param">0.])</em>, <em class="sig-param">fov_degrees: float = array(75.)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/camera_data.html#CameraData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds parameters that define
 a camera view of the 3D scene</p>
@@ -406,6 +425,53 @@ Default: 75.0</p></li>
 <dl class="attribute">
 <dt id="simulariumio.data_objects.camera_data.CameraData.up_vector">
 <code class="sig-name descname">up_vector</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData.up_vector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects.dimension_data">
+<span id="simulariumio-data-objects-dimension-data-module"></span><h2>simulariumio.data_objects.dimension_data module<a class="headerlink" href="#module-simulariumio.data_objects.dimension_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.dimension_data.DimensionData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.dimension_data.</code><code class="sig-name descname">DimensionData</code><span class="sig-paren">(</span><em class="sig-param">total_steps: int</em>, <em class="sig-param">max_agents: int</em>, <em class="sig-param">max_subpoints: int = 0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/dimension_data.html#DimensionData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.dimension_data.DimensionData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object contains dimension data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>total_steps</strong> (<em>int</em>) – The total number of timesteps in a trajectory</p></li>
+<li><p><strong>max_agents</strong> (<em>int</em>) – The number of agents at the timestep with the most agents</p></li>
+<li><p><strong>max_subpoints</strong> (<em>int (optional)</em>) – The number of subpoints on the agent at any timestep
+with the most subpoints
+Default: 0</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="simulariumio.data_objects.dimension_data.DimensionData.add">
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">added_dimensions: simulariumio.data_objects.dimension_data.DimensionData</em>, <em class="sig-param">axis: int = 1</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.dimension_data.DimensionData<a class="reference internal" href="_modules/simulariumio/data_objects/dimension_data.html#DimensionData.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.dimension_data.DimensionData.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the given dimensions with this object’s and return a copy</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.dimension_data.DimensionData.max_agents">
+<code class="sig-name descname">max_agents</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.dimension_data.DimensionData.max_agents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.dimension_data.DimensionData.max_subpoints">
+<code class="sig-name descname">max_subpoints</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.dimension_data.DimensionData.max_subpoints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.data_objects.dimension_data.DimensionData.to_string">
+<code class="sig-name descname">to_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/dimension_data.html#DimensionData.to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.dimension_data.DimensionData.to_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.dimension_data.DimensionData.total_steps">
+<code class="sig-name descname">total_steps</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.dimension_data.DimensionData.total_steps" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -458,22 +524,14 @@ each mapped to a numpy ndarray of values</p></li>
 <em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.meta_data.</code><code class="sig-name descname">MetaData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">camera_defaults: simulariumio.data_objects.camera_data.CameraData = &lt;simulariumio.data_objects.camera_data.CameraData object&gt;</em>, <em class="sig-param">scale_factor: float = 1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/meta_data.html#MetaData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds metadata for simulation trajectories</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
 of the simulation bounding volume</p></li>
 <li><p><strong>camera_defaults</strong> (<em>CameraData (optional)</em>) – camera’s initial settings
 which it also returns to when reset
-Default: CameraData(</p>
-<blockquote>
-<div><p>position=[0,0,120],
-look_at_position=[0,0,0],
-up_vector=[0,1,0],
-fov_degrees=75</p>
-</div></blockquote>
-<p>)</p>
-</li>
+Default: CameraData()</p></li>
 <li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the scene, use if
 visualization is too large or small
 Default: 1.0</p></li>
@@ -593,6 +651,13 @@ in Simularium format</p></li>
 <dt id="simulariumio.data_objects.trajectory_data.TrajectoryData.agent_data">
 <code class="sig-name descname">agent_data</code><em class="property">: AgentData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData.agent_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.data_objects.trajectory_data.TrajectoryData.append_agents">
+<code class="sig-name descname">append_agents</code><span class="sig-paren">(</span><em class="sig-param">new_agents: simulariumio.data_objects.agent_data.AgentData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/trajectory_data.html#TrajectoryData.append_agents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData.append_agents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenate the new AgentData with the current data,
+generate new unique IDs and type IDs as needed</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="simulariumio.data_objects.trajectory_data.TrajectoryData.from_buffer_data">

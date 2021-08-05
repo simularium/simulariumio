@@ -223,6 +223,8 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData.add">add() (simulariumio.data_objects.dimension_data.DimensionData method)</a>
+</li>
       <li><a href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.add_number_of_agents_plot">add_number_of_agents_plot() (simulariumio.trajectory_converter.TrajectoryConverter method)</a>
 </li>
       <li><a href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.add_plot">add_plot() (simulariumio.trajectory_converter.TrajectoryConverter method)</a>
@@ -237,7 +239,7 @@
 </li>
       <li><a href="simulariumio.cytosim.html#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.agents">agents (simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo attribute)</a>
 </li>
-      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.append_agents">append_agents() (simulariumio.data_objects.agent_data.AgentData method)</a>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData.append_agents">append_agents() (simulariumio.data_objects.trajectory_data.TrajectoryData method)</a>
 </li>
       <li><a href="simulariumio.filters.html#simulariumio.filters.add_agents_filter.AddAgentsFilter.apply">apply() (simulariumio.filters.add_agents_filter.AddAgentsFilter method)</a>
 
@@ -253,8 +255,6 @@
         <li><a href="simulariumio.filters.html#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.apply">(simulariumio.filters.multiply_space_filter.MultiplySpaceFilter method)</a>
 </li>
         <li><a href="simulariumio.filters.html#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply">(simulariumio.filters.multiply_time_filter.MultiplyTimeFilter method)</a>
-</li>
-        <li><a href="simulariumio.filters.html#simulariumio.filters.reorder_agents_filter.ReorderAgentsFilter.apply">(simulariumio.filters.reorder_agents_filter.ReorderAgentsFilter method)</a>
 </li>
         <li><a href="simulariumio.filters.html#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.apply">(simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter method)</a>
 </li>
@@ -289,10 +289,14 @@
         <li><a href="simulariumio.springsalad.html#simulariumio.springsalad.springsalad_data.SpringsaladData.camera_defaults">(simulariumio.springsalad.springsalad_data.SpringsaladData attribute)</a>
 </li>
       </ul></li>
+      <li><a href="simulariumio.html#simulariumio.constants.DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION">CAMERA_POSITION (simulariumio.constants.DEFAULT_CAMERA_SETTINGS attribute)</a>
+</li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.camera_data.CameraData">CameraData (class in simulariumio.data_objects.camera_data)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.check_increase_buffer_size">check_increase_buffer_size() (simulariumio.data_objects.agent_data.AgentData method)</a>
+</li>
       <li><a href="simulariumio.html#simulariumio.file_converter.FileConverter.current_trajectory_info_version">current_trajectory_info_version (simulariumio.file_converter.FileConverter attribute)</a>
 </li>
       <li><a href="simulariumio.cytosim.html#simulariumio.cytosim.cytosim_agent_info.CytosimAgentInfo">CytosimAgentInfo (class in simulariumio.cytosim.cytosim_agent_info)</a>
@@ -313,6 +317,8 @@
 </li>
       <li><a href="simulariumio.html#simulariumio.constants.VIZ_TYPE.DEFAULT">DEFAULT (simulariumio.constants.VIZ_TYPE attribute)</a>
 </li>
+      <li><a href="simulariumio.html#simulariumio.constants.DEFAULT_CAMERA_SETTINGS">DEFAULT_CAMERA_SETTINGS (class in simulariumio.constants)</a>
+</li>
       <li><a href="simulariumio.filters.html#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.default_n">default_n (simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter attribute)</a>
 
       <ul>
@@ -321,6 +327,10 @@
       </ul></li>
       <li><a href="simulariumio.filters.html#simulariumio.filters.translate_filter.TranslateFilter.default_translation">default_translation (simulariumio.filters.translate_filter.TranslateFilter attribute)</a>
 </li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData">DimensionData (class in simulariumio.data_objects.dimension_data)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.mcell.html#simulariumio.mcell.mcell_data.McellData.display_names">display_names (simulariumio.mcell.mcell_data.McellData attribute)</a>
 
       <ul>
@@ -329,8 +339,6 @@
         <li><a href="simulariumio.springsalad.html#simulariumio.springsalad.springsalad_data.SpringsaladData.display_names">(simulariumio.springsalad.springsalad_data.SpringsaladData attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.medyan.html#simulariumio.medyan.medyan_agent_info.MedyanAgentInfo.draw_endpoints">draw_endpoints (simulariumio.medyan.medyan_agent_info.MedyanAgentInfo attribute)</a>
 </li>
       <li><a href="simulariumio.cytosim.html#simulariumio.cytosim.cytosim_data.CytosimData.draw_fiber_points">draw_fiber_points (simulariumio.cytosim.cytosim_data.CytosimData attribute)</a>
@@ -373,6 +381,8 @@
 </li>
       <li><a href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.filter_data">filter_data() (simulariumio.trajectory_converter.TrajectoryConverter method)</a>
 </li>
+      <li><a href="simulariumio.html#simulariumio.constants.DEFAULT_CAMERA_SETTINGS.FOV_DEGREES">FOV_DEGREES (simulariumio.constants.DEFAULT_CAMERA_SETTINGS attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.camera_data.CameraData.fov_degrees">fov_degrees (simulariumio.data_objects.camera_data.CameraData attribute)</a>
@@ -388,6 +398,8 @@
 </li>
       </ul></li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.from_dataframe">from_dataframe() (simulariumio.data_objects.agent_data.AgentData class method)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.from_dimensions">from_dimensions() (simulariumio.data_objects.agent_data.AgentData class method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -409,27 +421,25 @@
 </li>
       <li><a href="simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_containing_voxel_ijk">get_containing_voxel_ijk() (simulariumio.physicell.dep.pyMCDS.pyMCDS method)</a>
 </li>
-      <li><a href="simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter.get_euler_angles">get_euler_angles() (simulariumio.mcell.mcell_converter.McellConverter static method)</a>
-</li>
-      <li><a href="simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_linear_voxels">get_linear_voxels() (simulariumio.physicell.dep.pyMCDS.pyMCDS method)</a>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.get_copy_with_increased_buffer_size">get_copy_with_increased_buffer_size() (simulariumio.data_objects.agent_data.AgentData method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.get_dimensions">get_dimensions() (simulariumio.data_objects.agent_data.AgentData method)</a>
+</li>
+      <li><a href="simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_linear_voxels">get_linear_voxels() (simulariumio.physicell.dep.pyMCDS.pyMCDS method)</a>
+</li>
       <li><a href="simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_mesh">get_mesh() (simulariumio.physicell.dep.pyMCDS.pyMCDS method)</a>
 </li>
       <li><a href="simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_mesh_spacing">get_mesh_spacing() (simulariumio.physicell.dep.pyMCDS.pyMCDS method)</a>
 </li>
       <li><a href="simulariumio.html#simulariumio.get_module_version">get_module_version() (in module simulariumio)</a>
 </li>
-      <li><a href="simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter.get_perpendicular_vector">get_perpendicular_vector() (simulariumio.mcell.mcell_converter.McellConverter static method)</a>
-</li>
-      <li><a href="simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter.get_rotation_matrix">get_rotation_matrix() (simulariumio.mcell.mcell_converter.McellConverter static method)</a>
-</li>
       <li><a href="simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_substrate_names">get_substrate_names() (simulariumio.physicell.dep.pyMCDS.pyMCDS method)</a>
 </li>
       <li><a href="simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_time">get_time() (simulariumio.physicell.dep.pyMCDS.pyMCDS method)</a>
 </li>
-      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.get_type_ids_and_mapping">get_type_ids_and_mapping() (simulariumio.data_objects.agent_data.AgentData static method)</a>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.get_type_ids_and_mapping">get_type_ids_and_mapping() (simulariumio.data_objects.agent_data.AgentData method)</a>
 </li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.get_type_names">get_type_names() (simulariumio.data_objects.agent_data.AgentData static method)</a>
 </li>
@@ -459,6 +469,10 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.html#simulariumio.constants.DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION">LOOK_AT_POSITION (simulariumio.constants.DEFAULT_CAMERA_SETTINGS attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.camera_data.CameraData.look_at_position">look_at_position (simulariumio.data_objects.camera_data.CameraData attribute)</a>
 </li>
   </ul></td>
@@ -468,6 +482,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData.magnitude">magnitude (simulariumio.data_objects.unit_data.UnitData attribute)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData.max_agents">max_agents (simulariumio.data_objects.dimension_data.DimensionData attribute)</a>
+</li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData.max_subpoints">max_subpoints (simulariumio.data_objects.dimension_data.DimensionData attribute)</a>
 </li>
       <li><a href="simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter">McellConverter (class in simulariumio.mcell.mcell_converter)</a>
 </li>
@@ -521,14 +539,18 @@
 </li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.n_agents">n_agents (simulariumio.data_objects.agent_data.AgentData attribute)</a>
 </li>
-      <li><a href="simulariumio.filters.html#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.n_per_type_id">n_per_type_id (simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter attribute)</a>
+      <li><a href="simulariumio.filters.html#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.n_per_type">n_per_type (simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter attribute)</a>
 
       <ul>
-        <li><a href="simulariumio.filters.html#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.n_per_type_id">(simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter attribute)</a>
+        <li><a href="simulariumio.filters.html#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.n_per_type">(simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter attribute)</a>
 </li>
       </ul></li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.n_subpoints">n_subpoints (simulariumio.data_objects.agent_data.AgentData attribute)</a>
 </li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.n_timesteps">n_timesteps (simulariumio.data_objects.agent_data.AgentData attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.cytosim.html#simulariumio.cytosim.cytosim_agent_info.CytosimAgentInfo.name">name (simulariumio.cytosim.cytosim_agent_info.CytosimAgentInfo attribute)</a>
 
       <ul>
@@ -537,11 +559,7 @@
         <li><a href="simulariumio.medyan.html#simulariumio.medyan.medyan_agent_info.MedyanAgentInfo.name">(simulariumio.medyan.medyan_agent_info.MedyanAgentInfo attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.filters.html#simulariumio.filters.add_agents_filter.AddAgentsFilter.new_agent_data">new_agent_data (simulariumio.filters.add_agents_filter.AddAgentsFilter attribute)</a>
-</li>
-      <li><a href="simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter.normalize">normalize() (simulariumio.mcell.mcell_converter.McellConverter static method)</a>
 </li>
       <li><a href="simulariumio.html#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX">NSP_INDEX (simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT attribute)</a>
 </li>
@@ -653,10 +671,6 @@
 </li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.render_mode">render_mode (simulariumio.data_objects.scatter_plot_data.ScatterPlotData attribute)</a>
 </li>
-      <li><a href="simulariumio.filters.html#simulariumio.filters.reorder_agents_filter.ReorderAgentsFilter">ReorderAgentsFilter (class in simulariumio.filters.reorder_agents_filter)</a>
-</li>
-      <li><a href="simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter.rotate">rotate() (simulariumio.mcell.mcell_converter.McellConverter static method)</a>
-</li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.rotations">rotations (simulariumio.data_objects.agent_data.AgentData attribute)</a>
 </li>
       <li><a href="simulariumio.html#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX">ROTX_INDEX (simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT attribute)</a>
@@ -703,6 +717,8 @@
 </li>
       <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.camera_data">simulariumio.data_objects.camera_data (module)</a>
 </li>
+      <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.dimension_data">simulariumio.data_objects.dimension_data (module)</a>
+</li>
       <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.histogram_plot_data">simulariumio.data_objects.histogram_plot_data (module)</a>
 </li>
       <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.meta_data">simulariumio.data_objects.meta_data (module)</a>
@@ -732,8 +748,6 @@
       <li><a href="simulariumio.filters.html#module-simulariumio.filters.multiply_space_filter">simulariumio.filters.multiply_space_filter (module)</a>
 </li>
       <li><a href="simulariumio.filters.html#module-simulariumio.filters.multiply_time_filter">simulariumio.filters.multiply_time_filter (module)</a>
-</li>
-      <li><a href="simulariumio.filters.html#module-simulariumio.filters.reorder_agents_filter">simulariumio.filters.reorder_agents_filter (module)</a>
 </li>
       <li><a href="simulariumio.filters.html#module-simulariumio.filters.transform_spatial_axes_filter">simulariumio.filters.transform_spatial_axes_filter (module)</a>
 </li>
@@ -847,10 +861,18 @@
         <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.scatter_plot_data.ScatterPlotData.title">(simulariumio.data_objects.scatter_plot_data.ScatterPlotData attribute)</a>
 </li>
       </ul></li>
-      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData.to_string">to_string() (simulariumio.data_objects.unit_data.UnitData method)</a>
+      <li><a href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.to_JSON">to_JSON() (simulariumio.trajectory_converter.TrajectoryConverter method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData.to_string">to_string() (simulariumio.data_objects.dimension_data.DimensionData method)</a>
+
+      <ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData.to_string">(simulariumio.data_objects.unit_data.UnitData method)</a>
+</li>
+      </ul></li>
+      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData.total_steps">total_steps (simulariumio.data_objects.dimension_data.DimensionData attribute)</a>
+</li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.histogram_plot_data.HistogramPlotData.traces">traces (simulariumio.data_objects.histogram_plot_data.HistogramPlotData attribute)</a>
 </li>
       <li><a href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter">TrajectoryConverter (class in simulariumio.trajectory_converter)</a>
@@ -861,13 +883,9 @@
 </li>
       <li><a href="simulariumio.filters.html#simulariumio.filters.translate_filter.TranslateFilter">TranslateFilter (class in simulariumio.filters.translate_filter)</a>
 </li>
-      <li><a href="simulariumio.filters.html#simulariumio.filters.translate_filter.TranslateFilter.translation_per_type_id">translation_per_type_id (simulariumio.filters.translate_filter.TranslateFilter attribute)</a>
+      <li><a href="simulariumio.filters.html#simulariumio.filters.translate_filter.TranslateFilter.translation_per_type">translation_per_type (simulariumio.filters.translate_filter.TranslateFilter attribute)</a>
 </li>
       <li><a href="simulariumio.readdy.html#simulariumio.readdy.readdy_data.ReaddyData.type_grouping">type_grouping (simulariumio.readdy.readdy_data.ReaddyData attribute)</a>
-</li>
-      <li><a href="simulariumio.filters.html#simulariumio.filters.reorder_agents_filter.ReorderAgentsFilter.type_id_mapping">type_id_mapping (simulariumio.filters.reorder_agents_filter.ReorderAgentsFilter attribute)</a>
-</li>
-      <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.type_ids">type_ids (simulariumio.data_objects.agent_data.AgentData attribute)</a>
 </li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.types">types (simulariumio.data_objects.agent_data.AgentData attribute)</a>
 
@@ -890,6 +908,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="simulariumio.html#simulariumio.exceptions.UnsupportedPlotTypeError">UnsupportedPlotTypeError</a>
+</li>
+      <li><a href="simulariumio.html#simulariumio.constants.DEFAULT_CAMERA_SETTINGS.UP_VECTOR">UP_VECTOR (simulariumio.constants.DEFAULT_CAMERA_SETTINGS attribute)</a>
 </li>
       <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.camera_data.CameraData.up_vector">up_vector (simulariumio.data_objects.camera_data.CameraData attribute)</a>
 </li>

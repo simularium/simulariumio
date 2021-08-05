@@ -197,6 +197,10 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.data_objects.dimension_data</span> <span class="kn">import</span> <span class="n">DimensionData</span>
+
 
 <div class="viewcode-block" id="V1_SPATIAL_BUFFER_STRUCT"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.constants.V1_SPATIAL_BUFFER_STRUCT">[docs]</a><span class="k">class</span> <span class="nc">V1_SPATIAL_BUFFER_STRUCT</span><span class="p">:</span>
     <span class="n">VIZ_TYPE_INDEX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
@@ -217,6 +221,26 @@
 <div class="viewcode-block" id="VIZ_TYPE"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.constants.VIZ_TYPE">[docs]</a><span class="k">class</span> <span class="nc">VIZ_TYPE</span><span class="p">:</span>
     <span class="n">DEFAULT</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1000.0</span>
     <span class="n">FIBER</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1001.0</span></div>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Default size to make numpy arrays when data dimensions are unknown</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">BUFFER_SIZE_INC</span><span class="p">:</span> <span class="n">DimensionData</span> <span class="o">=</span> <span class="n">DimensionData</span><span class="p">(</span>
+    <span class="n">total_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">max_agents</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">max_subpoints</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="DEFAULT_CAMERA_SETTINGS"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.constants.DEFAULT_CAMERA_SETTINGS">[docs]</a><span class="k">class</span> <span class="nc">DEFAULT_CAMERA_SETTINGS</span><span class="p">:</span>
+    <span class="n">CAMERA_POSITION</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">120.0</span><span class="p">])</span>
+    <span class="n">LOOK_AT_POSITION</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+    <span class="n">UP_VECTOR</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+    <span class="n">FOV_DEGREES</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">75.0</span></div>
+
+
+<span class="n">DEFAULT_PLOT_MODE</span> <span class="o">=</span> <span class="s2">&quot;markers&quot;</span>
 </pre></div>
 
            </div>

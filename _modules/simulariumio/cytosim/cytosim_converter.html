@@ -199,13 +199,11 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">..trajectory_converter</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span>
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">,</span> <span class="n">MetaData</span>
-<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">DataError</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">DimensionData</span>
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">VIZ_TYPE</span>
 <span class="kn">from</span> <span class="nn">.cytosim_data</span> <span class="kn">import</span> <span class="n">CytosimData</span>
 <span class="kn">from</span> <span class="nn">.cytosim_object_info</span> <span class="kn">import</span> <span class="n">CytosimObjectInfo</span>
@@ -233,98 +231,89 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_ignore_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_ignore_line</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        if the line doesn&#39;t have any data, it can be ignored</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;warning&quot;</span> <span class="ow">or</span> <span class="s2">&quot;report&quot;</span> <span class="ow">in</span> <span class="n">line</span>
 
-    <span class="k">def</span> <span class="nf">_parse_object_type_dimensions</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_parse_object_dimensions</span><span class="p">(</span>
         <span class="n">data_lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">is_fiber</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DimensionData</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse a Cytosim output file containing objects</span>
 <span class="sd">        (fibers, solids, singles, or couples) to get the number</span>
 <span class="sd">        of subpoints per agent per timestep</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">max_subpoints</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">DimensionData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">agents</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">subpoints</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data_lines</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_line</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">CytosimConverter</span><span class="o">.</span><span class="n">_ignore_line</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;%&quot;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="s2">&quot;frame&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                    <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">agents</span> <span class="o">&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">max_agents</span><span class="p">:</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">=</span> <span class="n">agents</span>
+                    <span class="n">agents</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">elif</span> <span class="s2">&quot;fiber&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                    <span class="n">result</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="n">max_subpoints</span><span class="p">:</span>
-                        <span class="n">max_subpoints</span> <span class="o">=</span> <span class="n">s</span>
-                    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="k">if</span> <span class="n">subpoints</span> <span class="o">&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">max_subpoints</span><span class="p">:</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">max_subpoints</span> <span class="o">=</span> <span class="n">subpoints</span>
+                    <span class="n">subpoints</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">agents</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">is_fiber</span><span class="p">:</span>
-                <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">subpoints</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="n">max_subpoints</span><span class="p">:</span>
-            <span class="n">max_subpoints</span> <span class="o">=</span> <span class="n">s</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">max_subpoints</span><span class="p">)</span>
+                <span class="n">agents</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">agents</span> <span class="o">&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">max_agents</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">=</span> <span class="n">agents</span>
+        <span class="k">if</span> <span class="n">subpoints</span> <span class="o">&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">max_subpoints</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">max_subpoints</span> <span class="o">=</span> <span class="n">subpoints</span>
+        <span class="k">return</span> <span class="n">result</span>
 
-    <span class="k">def</span> <span class="nf">_parse_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cytosim_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_parse_dimensions</span><span class="p">(</span><span class="n">cytosim_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">DimensionData</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse Cytosim output files to get the total steps,</span>
 <span class="sd">        maximum agents per timestep, and maximum subpoints per agent</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">dimensions</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">max_subpoints</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">DimensionData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">object_type</span> <span class="ow">in</span> <span class="n">cytosim_data</span><span class="p">:</span>
-            <span class="n">dims</span><span class="p">,</span> <span class="n">n_subpoints</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_object_type_dimensions</span><span class="p">(</span>
+            <span class="n">object_dimensions</span> <span class="o">=</span> <span class="n">CytosimConverter</span><span class="o">.</span><span class="n">_parse_object_dimensions</span><span class="p">(</span>
                 <span class="n">cytosim_data</span><span class="p">[</span><span class="n">object_type</span><span class="p">],</span>
                 <span class="s2">&quot;fiber&quot;</span> <span class="ow">in</span> <span class="n">object_type</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="k">if</span> <span class="n">n_subpoints</span> <span class="o">&gt;</span> <span class="n">max_subpoints</span><span class="p">:</span>
-                <span class="n">max_subpoints</span> <span class="o">=</span> <span class="n">n_subpoints</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">dimensions</span> <span class="o">=</span> <span class="n">dims</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span>
-                        <span class="s2">&quot;number of timesteps in Cytosim data is not consistent&quot;</span>
-                    <span class="p">)</span>
-                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)):</span>
-                    <span class="n">dimensions</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+=</span> <span class="n">dims</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
-        <span class="n">max_agents</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="n">dimensions</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_agents</span><span class="p">:</span>
-                <span class="n">max_agents</span> <span class="o">=</span> <span class="n">dimensions</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">),</span> <span class="n">max_agents</span><span class="p">,</span> <span class="n">max_subpoints</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">object_dimensions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
 
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_object</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
         <span class="n">object_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">data_columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
-        <span class="n">t</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">time_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">object_info</span><span class="p">:</span> <span class="n">CytosimObjectInfo</span><span class="p">,</span>
         <span class="n">result</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
         <span class="n">uids</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
         <span class="n">used_unique_IDs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-        <span class="n">types</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
-        <span class="n">used_type_IDs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parse an object from Cytosim</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">agent_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">])</span>
+        <span class="c1"># viz type and raw IDs</span>
         <span class="k">if</span> <span class="s2">&quot;fiber&quot;</span> <span class="ow">in</span> <span class="n">object_type</span><span class="p">:</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">viz_types</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">FIBER</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">viz_types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">FIBER</span>
             <span class="n">fiber_info</span> <span class="o">=</span> <span class="n">data_columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
             <span class="n">raw_uid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fiber_info</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">raw_tid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fiber_info</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">:])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">viz_types</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">DEFAULT</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">viz_types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">DEFAULT</span>
             <span class="n">raw_uid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data_columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">))</span>
             <span class="n">raw_tid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data_columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">))</span>
         <span class="c1"># unique instance ID</span>
@@ -334,135 +323,96 @@
                 <span class="n">uid</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">uids</span><span class="p">[</span><span class="n">raw_uid</span><span class="p">]</span> <span class="o">=</span> <span class="n">uid</span>
             <span class="n">used_unique_IDs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">uid</span><span class="p">)</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">uids</span><span class="p">[</span><span class="n">raw_uid</span><span class="p">]</span>
-        <span class="c1"># type ID</span>
-        <span class="k">if</span> <span class="n">raw_tid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">types</span><span class="p">:</span>
-            <span class="n">tid</span> <span class="o">=</span> <span class="n">raw_tid</span>
-            <span class="k">while</span> <span class="n">tid</span> <span class="ow">in</span> <span class="n">used_type_IDs</span><span class="p">:</span>
-                <span class="n">tid</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">types</span><span class="p">[</span><span class="n">raw_tid</span><span class="p">]</span> <span class="o">=</span> <span class="n">tid</span>
-            <span class="n">used_type_IDs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tid</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">tid</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">raw_tid</span><span class="p">]</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">type_ids</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">tid</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">uids</span><span class="p">[</span><span class="n">raw_uid</span><span class="p">]</span>
         <span class="c1"># type name</span>
-        <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">]):</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">raw_tid</span> <span class="ow">in</span> <span class="n">object_info</span><span class="o">.</span><span class="n">agents</span><span class="p">:</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">object_info</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="n">raw_tid</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">object_type</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">raw_tid</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">object_info</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="n">raw_tid</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">raw_tid</span> <span class="ow">in</span> <span class="n">object_info</span><span class="o">.</span><span class="n">agents</span>
+            <span class="k">else</span> <span class="n">object_type</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">raw_tid</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="c1"># radius</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">(</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">object_info</span><span class="o">.</span><span class="n">agents</span><span class="p">[</span><span class="n">raw_tid</span><span class="p">]</span><span class="o">.</span><span class="n">radius</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">raw_tid</span> <span class="ow">in</span> <span class="n">object_info</span><span class="o">.</span><span class="n">agents</span>
             <span class="k">else</span> <span class="mf">1.0</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">uids</span><span class="p">,</span> <span class="n">used_unique_IDs</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">used_type_IDs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">uids</span><span class="p">,</span> <span class="n">used_unique_IDs</span><span class="p">)</span>
 
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_objects</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
         <span class="n">object_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">data_lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">object_info</span><span class="p">:</span> <span class="n">CytosimObjectInfo</span><span class="p">,</span>
         <span class="n">result</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
         <span class="n">used_unique_IDs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-        <span class="n">used_type_IDs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse a Cytosim output file containing objects</span>
 <span class="sd">        (fibers, solids, singles, or couples) to get agents</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="n">n_other_agents</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">parse_time</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">epsilon</span>
-        <span class="p">)</span>
-        <span class="n">types</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">time_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">uids</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">is_fiber</span> <span class="o">=</span> <span class="s2">&quot;fiber&quot;</span> <span class="ow">in</span> <span class="n">object_type</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data_lines</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ignore_line</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">CytosimConverter</span><span class="o">.</span><span class="n">_ignore_line</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
                 <span class="k">continue</span>
             <span class="n">columns</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;%&quot;</span><span class="p">:</span>
                 <span class="k">if</span> <span class="s2">&quot;frame&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                     <span class="c1"># start of frame</span>
-                    <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="n">n_other_agents</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
-                    <span class="n">n</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-                <span class="k">elif</span> <span class="n">parse_time</span> <span class="ow">and</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">time_index</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                     <span class="c1"># time metadata</span>
-                    <span class="n">result</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
                 <span class="k">elif</span> <span class="s2">&quot;fiber&quot;</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                     <span class="c1"># start of fiber object</span>
-                    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">s</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-                        <span class="n">result</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n_other_agents</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="mi">1</span>
-                    <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="n">s</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-                    <span class="p">(</span>
-                        <span class="n">result</span><span class="p">,</span>
-                        <span class="n">uids</span><span class="p">,</span>
-                        <span class="n">used_unique_IDs</span><span class="p">,</span>
-                        <span class="n">types</span><span class="p">,</span>
-                        <span class="n">used_type_IDs</span><span class="p">,</span>
-                    <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_object</span><span class="p">(</span>
+                    <span class="n">result</span><span class="p">,</span> <span class="n">uids</span><span class="p">,</span> <span class="n">used_unique_IDs</span> <span class="o">=</span> <span class="n">CytosimConverter</span><span class="o">.</span><span class="n">_parse_object</span><span class="p">(</span>
                         <span class="n">object_type</span><span class="p">,</span>
                         <span class="n">columns</span><span class="p">,</span>
-                        <span class="n">t</span><span class="p">,</span>
-                        <span class="n">n_other_agents</span> <span class="o">+</span> <span class="n">n</span><span class="p">,</span>
+                        <span class="n">time_index</span><span class="p">,</span>
                         <span class="n">scale_factor</span><span class="p">,</span>
                         <span class="n">object_info</span><span class="p">,</span>
                         <span class="n">result</span><span class="p">,</span>
                         <span class="n">uids</span><span class="p">,</span>
                         <span class="n">used_unique_IDs</span><span class="p">,</span>
-                        <span class="n">types</span><span class="p">,</span>
-                        <span class="n">used_type_IDs</span><span class="p">,</span>
                     <span class="p">)</span>
-                <span class="k">elif</span> <span class="s2">&quot;end&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                    <span class="c1"># end of frame</span>
-                    <span class="k">if</span> <span class="n">is_fiber</span><span class="p">:</span>
-                        <span class="n">result</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n_other_agents</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="mi">1</span>
-                    <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">continue</span>
             <span class="k">elif</span> <span class="n">is_fiber</span><span class="p">:</span>
                 <span class="c1"># each fiber point</span>
-                <span class="n">s</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">subpoint_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+                <span class="p">)</span>
                 <span class="c1"># position</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n_other_agents</span> <span class="o">+</span> <span class="n">n</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)][</span>
+                    <span class="n">subpoint_index</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                     <span class="p">[</span>
                         <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">)),</span>
                         <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">)),</span>
                         <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">)),</span>
                     <span class="p">]</span>
                 <span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># each non-fiber object</span>
-                <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="p">(</span>
-                    <span class="n">result</span><span class="p">,</span>
-                    <span class="n">uids</span><span class="p">,</span>
-                    <span class="n">used_unique_IDs</span><span class="p">,</span>
-                    <span class="n">types</span><span class="p">,</span>
-                    <span class="n">used_type_IDs</span><span class="p">,</span>
-                <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_object</span><span class="p">(</span>
+                <span class="n">result</span><span class="p">,</span> <span class="n">uids</span><span class="p">,</span> <span class="n">used_unique_IDs</span> <span class="o">=</span> <span class="n">CytosimConverter</span><span class="o">.</span><span class="n">_parse_object</span><span class="p">(</span>
                     <span class="n">object_type</span><span class="p">,</span>
                     <span class="n">columns</span><span class="p">,</span>
-                    <span class="n">t</span><span class="p">,</span>
-                    <span class="n">n_other_agents</span> <span class="o">+</span> <span class="n">n</span><span class="p">,</span>
+                    <span class="n">time_index</span><span class="p">,</span>
                     <span class="n">scale_factor</span><span class="p">,</span>
                     <span class="n">object_info</span><span class="p">,</span>
                     <span class="n">result</span><span class="p">,</span>
                     <span class="n">uids</span><span class="p">,</span>
                     <span class="n">used_unique_IDs</span><span class="p">,</span>
-                    <span class="n">types</span><span class="p">,</span>
-                    <span class="n">used_type_IDs</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="c1"># position</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">t</span><span class="p">][</span><span class="n">n_other_agents</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">])</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="p">(</span>
                     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                         <span class="p">[</span>
                             <span class="nb">float</span><span class="p">(</span><span class="n">columns</span><span class="p">[</span><span class="n">object_info</span><span class="o">.</span><span class="n">position_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;+,&quot;</span><span class="p">)),</span>
@@ -471,9 +421,12 @@
                         <span class="p">]</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">used_unique_IDs</span><span class="p">,</span> <span class="n">used_type_IDs</span><span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">n_timesteps</span> <span class="o">=</span> <span class="n">time_index</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">used_unique_IDs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">CytosimData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">:</span> <span class="n">CytosimData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a TrajectoryData object containing the CytoSim data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -484,31 +437,18 @@
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">object_info</span><span class="p">[</span><span class="n">object_type</span><span class="p">]</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
                 <span class="n">cytosim_data</span><span class="p">[</span><span class="n">object_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">myfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># parse</span>
-        <span class="p">(</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="n">max_subpoints</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_dimensions</span><span class="p">(</span><span class="n">cytosim_data</span><span class="p">)</span>
-        <span class="n">agent_data</span> <span class="o">=</span> <span class="n">AgentData</span><span class="p">(</span>
-            <span class="n">times</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">),</span>
-            <span class="n">n_agents</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">),</span>
-            <span class="n">viz_types</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">unique_ids</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">types</span><span class="o">=</span><span class="p">[[]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">totalSteps</span><span class="p">)],</span>
-            <span class="n">positions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
-            <span class="n">radii</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">n_subpoints</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">)),</span>
-            <span class="n">subpoints</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">,</span> <span class="n">max_subpoints</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
-            <span class="n">draw_fiber_points</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">draw_fiber_points</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">agent_data</span><span class="o">.</span><span class="n">type_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">totalSteps</span><span class="p">,</span> <span class="n">max_agents</span><span class="p">))</span>
+        <span class="n">dimensions</span> <span class="o">=</span> <span class="n">CytosimConverter</span><span class="o">.</span><span class="n">_parse_dimensions</span><span class="p">(</span><span class="n">cytosim_data</span><span class="p">)</span>
+        <span class="n">agent_data</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">from_dimensions</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
+        <span class="n">agent_data</span><span class="o">.</span><span class="n">draw_fiber_points</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">draw_fiber_points</span>
         <span class="n">uids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">types</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">object_type</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">object_info</span><span class="p">:</span>
-            <span class="n">agent_data</span><span class="p">,</span> <span class="n">uids</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_objects</span><span class="p">(</span>
+            <span class="n">agent_data</span><span class="p">,</span> <span class="n">uids</span> <span class="o">=</span> <span class="n">CytosimConverter</span><span class="o">.</span><span class="n">_parse_objects</span><span class="p">(</span>
                 <span class="n">object_type</span><span class="p">,</span>
                 <span class="n">cytosim_data</span><span class="p">[</span><span class="n">object_type</span><span class="p">],</span>
                 <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">,</span>
                 <span class="n">input_data</span><span class="o">.</span><span class="n">object_info</span><span class="p">[</span><span class="n">object_type</span><span class="p">],</span>
                 <span class="n">agent_data</span><span class="p">,</span>
                 <span class="n">uids</span><span class="p">,</span>
-                <span class="n">types</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="c1"># create TrajectoryData</span>
         <span class="k">return</span> <span class="n">TrajectoryData</span><span class="p">(</span>
