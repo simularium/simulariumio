@@ -35,25 +35,29 @@ class ReaddyConverter(TrajectoryConverter):
         """
         self._data = self._read(input_data)
 
-    def _get_raw_trajectory_data(self, input_data: ReaddyData) -> Tuple[AgentData, Any]:
+    @staticmethod
+    def _get_raw_trajectory_data(
+        input_data: ReaddyData,
+    ) -> Tuple[AgentData, Any, np.ndarray]:
         """
         Return agent data populated from a ReaDDy .h5 trajectory file
         """
         # load the trajectory
         traj = readdy.Trajectory(input_data.path_to_readdy_h5)
-        n_particles_per_frame, positions, types, ids = traj.to_numpy(start=0, stop=None)
-        totalSteps = n_particles_per_frame.shape[0]
+        n_particles_per_frame, positions, type_ids, ids = traj.to_numpy(
+            start=0, stop=None
+        )
+        total_steps = n_particles_per_frame.shape[0]
         max_agents = int(np.amax(n_particles_per_frame))
         result = AgentData(
-            times=input_data.timestep * np.arange(totalSteps),
+            times=input_data.timestep * np.arange(total_steps),
             n_agents=n_particles_per_frame,
-            viz_types=VIZ_TYPE.DEFAULT * np.ones(shape=(totalSteps, max_agents)),
+            viz_types=VIZ_TYPE.DEFAULT * np.ones(shape=(total_steps, max_agents)),
             unique_ids=ids,
-            types=[[] for t in range(totalSteps)],
+            types=[[] for t in range(total_steps)],
             positions=input_data.meta_data.scale_factor * positions,
-            radii=np.ones(shape=(totalSteps, max_agents)),
+            radii=np.ones(shape=(total_steps, max_agents)),
         )
-        result.type_ids = types
         # optionally set radius by particle type
         if input_data.radii is not None:
             type_map = traj.particle_types
@@ -65,18 +69,23 @@ class ReaddyConverter(TrajectoryConverter):
                         "radius won't be used. "
                         "Please provide radii for the original ReaDDy type(s)."
                     )
-            for t in range(totalSteps):
-                for n in range(n_particles_per_frame[t]):
-                    type_name = traj.species_name(types[t][n])
+            for time_index in range(total_steps):
+                for agent_index in range(n_particles_per_frame[time_index]):
+                    type_name = traj.species_name(type_ids[time_index][agent_index])
                     if type_name in input_data.radii:
-                        result.radii[t][n] = (
+                        result.radii[time_index][agent_index] = (
                             input_data.meta_data.scale_factor
                             * input_data.radii[type_name]
                         )
-        return (result, traj)
+        result.n_timesteps = total_steps
+        return (result, traj, type_ids)
 
+    @staticmethod
     def _filter_trajectory_data(
-        self, agent_data: AgentData, traj: Any, ignore_types: List[str]
+        agent_data: AgentData,
+        traj: Any,
+        ignore_types: List[str],
+        type_ids: np.ndarray,
     ) -> AgentData:
         """
         Remove particles with types to be ignored
@@ -95,41 +104,50 @@ class ReaddyConverter(TrajectoryConverter):
         if not atleast_one_type_to_ignore:
             return agent_data
         # get number of filtered particles
-        totalSteps = agent_data.times.size
-        n_filtered_particles_per_frame = np.zeros(totalSteps)
-        for t in range(totalSteps):
-            n = 0
-            for i in range(int(agent_data.n_agents[t])):
-                if traj.species_name(agent_data.type_ids[t][i]) not in ignore_types:
-                    n += 1
-            n_filtered_particles_per_frame[t] = n
+        total_steps = agent_data.times.size
+        n_filtered_particles_per_frame = np.zeros(total_steps)
+        for time_index in range(total_steps):
+            agent_index = 0
+            for i in range(int(agent_data.n_agents[time_index])):
+                if traj.species_name(type_ids[time_index][i]) not in ignore_types:
+                    agent_index += 1
+            n_filtered_particles_per_frame[time_index] = agent_index
         # filter particle data to remove ignored types
         max_agents = int(np.amax(n_filtered_particles_per_frame))
         result = AgentData(
             times=agent_data.times,
             n_agents=n_filtered_particles_per_frame,
             viz_types=agent_data.viz_types,
-            unique_ids=-1 * np.ones((totalSteps, max_agents)),
-            types=[[] for t in range(totalSteps)],
-            positions=np.zeros((totalSteps, max_agents, 3)),
-            radii=np.ones(shape=(totalSteps, max_agents)),
+            unique_ids=-1 * np.ones((total_steps, max_agents)),
+            types=[[] for t in range(total_steps)],
+            positions=np.zeros((total_steps, max_agents, 3)),
+            radii=np.ones(shape=(total_steps, max_agents)),
         )
-        result.type_ids = np.zeros((totalSteps, max_agents))
-        for t in range(agent_data.n_agents.shape[0]):
-            n = 0
-            for i in range(agent_data.n_agents[t]):
-                type_name = traj.species_name(agent_data.type_ids[t][i])
-                if type_name in ignore_types or n >= n_filtered_particles_per_frame[t]:
+        for time_index in range(agent_data.n_agents.shape[0]):
+            for agent_index in range(agent_data.n_agents[time_index]):
+                type_name = traj.species_name(type_ids[time_index][agent_index])
+                if (
+                    type_name in ignore_types
+                    or agent_index >= n_filtered_particles_per_frame[time_index]
+                ):
                     continue
-                result.unique_ids[t][n] = agent_data.unique_ids[t][i]
-                result.type_ids[t][n] = agent_data.type_ids[t][i]
-                result.positions[t][n] = agent_data.positions[t][i]
-                result.radii[t][n] = agent_data.radii[t][i]
-                n += 1
+                result.unique_ids[time_index][agent_index] = agent_data.unique_ids[
+                    time_index
+                ][agent_index]
+                result.positions[time_index][agent_index] = agent_data.positions[
+                    time_index
+                ][agent_index]
+                result.radii[time_index][agent_index] = agent_data.radii[time_index][
+                    agent_index
+                ]
         return result
 
+    @staticmethod
     def _set_particle_types(
-        self, agent_data: AgentData, traj: Any, type_grouping: Dict[str, List[str]]
+        agent_data: AgentData,
+        traj: Any,
+        type_grouping: Dict[str, List[str]],
+        type_ids: np.ndarray,
     ) -> AgentData:
         """
         Set particle type names and optionally group ReaDDy particle types
@@ -137,7 +155,7 @@ class ReaddyConverter(TrajectoryConverter):
         """
         # warn user if a given type doesn't exist in ReaDDy
         readdy_type_map = traj.particle_types
-        i = int(np.amax(agent_data.type_ids)) + 1
+        i = int(np.amax(type_ids)) + 1
         if type_grouping is not None:
             for group_type_name in type_grouping:
                 for readdy_type_name in type_grouping[group_type_name]:
@@ -173,33 +191,33 @@ class ReaddyConverter(TrajectoryConverter):
                     float(readdy_type_map[readdy_type_name])
                 ] = readdy_type_name
         # assign group ID to each particle of a type in the group, and assign type names
-        for t in range(agent_data.n_agents.shape[0]):
-            for n in range(int(agent_data.n_agents[t])):
-                readdy_id = agent_data.type_ids[t][n]
-                while n >= len(agent_data.types[t]):
-                    agent_data.types[t].append("")
+        for time_index in range(agent_data.n_agents.shape[0]):
+            for agent_index in range(int(agent_data.n_agents[time_index])):
+                readdy_id = type_ids[time_index][agent_index]
                 if readdy_id in group_mapping:
                     group_id = group_mapping[readdy_id]
                     group_name = group_name_mapping[group_id]
-                    agent_data.type_ids[t][n] = group_id
-                    agent_data.types[t][n] = group_name
+                    agent_data.types[time_index].append(group_name)
                 else:
-                    agent_data.types[t][n] = type_mapping[readdy_id]
+                    agent_data.types[time_index].append(type_mapping[readdy_id])
         return agent_data
 
-    def _read(self, input_data: ReaddyData) -> TrajectoryData:
+    @staticmethod
+    def _read(input_data: ReaddyData) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
         print("Reading ReaDDy Data -------------")
-        agent_data, traj = self._get_raw_trajectory_data(input_data)
+        agent_data, traj, type_ids = ReaddyConverter._get_raw_trajectory_data(
+            input_data
+        )
         # optionally filter and group
         if input_data.ignore_types is not None:
-            agent_data = self._filter_trajectory_data(
-                agent_data, traj, input_data.ignore_types
+            agent_data = ReaddyConverter._filter_trajectory_data(
+                agent_data, traj, input_data.ignore_types, type_ids
             )
-        agent_data = self._set_particle_types(
-            agent_data, traj, input_data.type_grouping
+        agent_data = ReaddyConverter._set_particle_types(
+            agent_data, traj, input_data.type_grouping, type_ids
         )
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
         return TrajectoryData(

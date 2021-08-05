@@ -5,6 +5,8 @@ import copy
 import logging
 from typing import Any, Dict, List
 
+import numpy as np
+
 from .agent_data import AgentData
 from .unit_data import UnitData
 from .meta_data import MetaData
@@ -77,6 +79,49 @@ class TrajectoryData:
             ),
             plots=buffer_data["plotData"]["data"],
         )
+
+    def append_agents(self, new_agents: AgentData):
+        """
+        Concatenate the new AgentData with the current data,
+        generate new unique IDs and type IDs as needed
+        """
+        # create appropriate length buffer with current agents
+        current_dimensions = self.agent_data.get_dimensions()
+        added_dimensions = new_agents.get_dimensions()
+        new_dimensions = current_dimensions.add(added_dimensions, axis=1)
+        result = self.agent_data.check_increase_buffer_size(
+            new_dimensions.max_agents - 1, axis=1
+        )
+        # add new agents
+        result.n_agents = np.add(result.n_agents, new_agents.n_agents)
+        start_i = current_dimensions.max_agents
+        end_i = start_i + added_dimensions.max_agents
+        result.viz_types[:, start_i:end_i] = new_agents.viz_types[:]
+        result.positions[:, start_i:end_i] = new_agents.positions[:]
+        result.radii[:, start_i:end_i] = new_agents.radii[:]
+        result.rotations[:, start_i:end_i] = new_agents.rotations[:]
+        result.n_subpoints[:, start_i:end_i] = new_agents.n_subpoints[:]
+        result.subpoints[:, start_i:end_i] = new_agents.subpoints[:]
+        # generate new unique IDs and type IDs so they don't overlap
+        used_uids = list(np.unique(self.agent_data.unique_ids))
+        new_uids = {}
+        for time_index in range(new_dimensions.total_steps):
+            new_agent_index = self.agent_data.n_agents[time_index]
+            n_a = int(new_agents.n_agents[time_index])
+            for agent_index in range(n_a):
+                raw_uid = new_agents.unique_ids[time_index][agent_index]
+                if raw_uid not in new_uids:
+                    uid = raw_uid
+                    while uid in used_uids:
+                        uid += 1
+                    new_uids[raw_uid] = uid
+                    used_uids.append(uid)
+                result.unique_ids[time_index][new_agent_index] = new_uids[raw_uid]
+                result.types[time_index].append(
+                    new_agents.types[time_index][agent_index]
+                )
+                new_agent_index += 1
+        self.agent_data = result
 
     def __deepcopy__(self, memo):
         result = type(self)(

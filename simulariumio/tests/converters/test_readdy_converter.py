@@ -6,6 +6,7 @@ import pytest
 
 from simulariumio.readdy import ReaddyConverter, ReaddyData
 from simulariumio import UnitData, MetaData
+from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
 @pytest.mark.parametrize(
@@ -40,12 +41,24 @@ from simulariumio import UnitData, MetaData
                     },
                     "size": {"x": 20.0, "y": 20.0, "z": 20.0},
                     "cameraDefault": {
-                        "position": {"x": 0, "y": 0, "z": 120},
-                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
-                        "upVector": {"x": 0, "y": 1, "z": 0},
-                        "fovDegrees": 75.0,
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
-                    "typeMapping": {"2": {"name": "C"}, "1": {"name": "B"}},
+                    "typeMapping": {"0": {"name": "C"}, "1": {"name": "B"}},
                 },
                 "spatialData": {
                     "version": 1,
@@ -59,7 +72,7 @@ from simulariumio import UnitData, MetaData
                             "data": [
                                 1000.0,
                                 0.0,
-                                2.0,
+                                0.0,
                                 -4.076107488021348,
                                 3.9849372168961708,
                                 7.892235671222785,
@@ -81,7 +94,7 @@ from simulariumio import UnitData, MetaData
                                 0.0,
                                 1000.0,
                                 2.0,
-                                2.0,
+                                0.0,
                                 8.19869797660185,
                                 1.4425866729829266,
                                 6.215047907498356,
@@ -109,7 +122,7 @@ from simulariumio import UnitData, MetaData
                             "data": [
                                 1000.0,
                                 0.0,
-                                2.0,
+                                0.0,
                                 -3.600301271046627,
                                 4.360124409946104,
                                 6.956371030429721,
@@ -131,7 +144,7 @@ from simulariumio import UnitData, MetaData
                                 0.0,
                                 1000.0,
                                 2.0,
-                                2.0,
+                                0.0,
                                 7.755862317430045,
                                 1.3102736549734222,
                                 6.862906605118455,
@@ -159,7 +172,7 @@ from simulariumio import UnitData, MetaData
                             "data": [
                                 1000.0,
                                 0.0,
-                                2.0,
+                                0.0,
                                 -2.5613935239104135,
                                 5.2768511678362575,
                                 -9.666619435197141,
@@ -181,7 +194,7 @@ from simulariumio import UnitData, MetaData
                                 0.0,
                                 1000.0,
                                 2.0,
-                                2.0,
+                                0.0,
                                 4.230292288749659,
                                 0.2170518151763472,
                                 3.88903614029613,

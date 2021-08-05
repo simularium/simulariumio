@@ -17,25 +17,25 @@ log = logging.getLogger(__name__)
 
 
 class EveryNthSubpointFilter(Filter):
-    n_per_type_id: Dict[int, int]
+    n_per_type: Dict[str, int]
     default_n: int
 
-    def __init__(self, n_per_type_id: Dict[int, int], default_n: int = 1):
+    def __init__(self, n_per_type: Dict[str, int], default_n: int = 1):
         """
         This filter reduces the number of subpoints in each frame
         of simularium data
 
         Parameters
         ----------
-        n_per_type_id : Dict[int, int]
-            N for agents of each type ID,
-            keep every nth subpoint for that type ID (if subpoints exist),
+        n_per_type : Dict[str, int]
+            N for agents of each type,
+            keep every nth subpoint for that type (if subpoints exist),
             filter out all the others
         default_n : int (optional)
-            N for any agents of type not specified in n_per_type_id
+            N for any agents of type not specified in n_per_type
             Default: 1
         """
-        self.n_per_type_id = n_per_type_id
+        self.n_per_type = n_per_type
         self.default_n = default_n
 
     def apply(self, data: TrajectoryData) -> TrajectoryData:
@@ -51,21 +51,27 @@ class EveryNthSubpointFilter(Filter):
         # get filtered data
         n_subpoints = np.zeros((total_steps, max_agents))
         subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
-        for t in range(total_steps):
-            for n in range(int(data.agent_data.n_agents[t])):
-                i = 0
-                if data.agent_data.n_subpoints[t][n] > 0:
-                    type_id = data.agent_data.type_ids[t][n]
-                    if type_id in self.n_per_type_id:
-                        inc = self.n_per_type_id[type_id]
+        for time_index in range(total_steps):
+            for agent_index in range(int(data.agent_data.n_agents[time_index])):
+                new_subpoint_index = 0
+                if data.agent_data.n_subpoints[time_index][agent_index] > 0:
+                    type_name = data.agent_data.types[time_index][agent_index]
+                    if type_name in self.n_per_type:
+                        inc = self.n_per_type[type_name]
                     else:
                         inc = self.default_n
-                    for s in range(int(data.agent_data.n_subpoints[t][n])):
-                        if s % inc != 0:
+                    for subpoint_index in range(
+                        int(data.agent_data.n_subpoints[time_index][agent_index])
+                    ):
+                        if subpoint_index % inc != 0:
                             continue
-                        subpoints[t][n][i] = data.agent_data.subpoints[t][n][s]
-                        i += 1
-                n_subpoints[t][n] = i
+                        subpoints[time_index][agent_index][
+                            new_subpoint_index
+                        ] = data.agent_data.subpoints[time_index][agent_index][
+                            subpoint_index
+                        ]
+                        new_subpoint_index += 1
+                n_subpoints[time_index][agent_index] = new_subpoint_index
         data.agent_data.n_subpoints = n_subpoints
         data.agent_data.subpoints = subpoints
         print(

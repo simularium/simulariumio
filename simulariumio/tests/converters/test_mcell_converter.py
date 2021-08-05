@@ -4,6 +4,7 @@
 import pytest
 
 from simulariumio.mcell import McellConverter, McellData
+from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
 @pytest.mark.parametrize(
@@ -23,9 +24,9 @@ from simulariumio.mcell import McellConverter, McellData
                     "version": 2,
                     "timeUnits": {
                         "magnitude": 1.0,
-                        "name": "s",
+                        "name": "µs",
                     },
-                    "timeStepSize": 1e-6,
+                    "timeStepSize": 1.0,
                     "totalSteps": 3,
                     "spatialUnits": {
                         "magnitude": 1.0,
@@ -33,10 +34,22 @@ from simulariumio.mcell import McellConverter, McellData
                     },
                     "size": {"x": 1.28, "y": 1.28, "z": 1.28},
                     "cameraDefault": {
-                        "position": {"x": 0, "y": 0, "z": 120},
-                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
-                        "upVector": {"x": 0, "y": 1, "z": 0},
-                        "fovDegrees": 75.0,
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
                         "0": {"name": "b"},
@@ -91,7 +104,7 @@ from simulariumio.mcell import McellConverter, McellData
                         },
                         {
                             "frameNumber": 1,
-                            "time": 1e-6,
+                            "time": 1.0,
                             "data": [
                                 1000.0,
                                 0.0,
@@ -130,7 +143,7 @@ from simulariumio.mcell import McellConverter, McellData
                         },
                         {
                             "frameNumber": 2,
-                            "time": 2e-6,
+                            "time": 2.0,
                             "data": [
                                 1000.0,
                                 0.0,

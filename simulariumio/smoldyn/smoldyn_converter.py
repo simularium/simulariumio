@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Tuple
+from typing import List
 
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, MetaData
-from ..constants import VIZ_TYPE
+from ..data_objects import TrajectoryData, AgentData, MetaData, DimensionData
 from .smoldyn_data import SmoldynData
 
 ###############################################################################
@@ -34,57 +33,49 @@ class SmoldynConverter(TrajectoryConverter):
         """
         self._data = self._read(input_data)
 
-    def _parse_dimensions(self, smoldyn_data_lines: List[str]) -> Tuple[int]:
+    @staticmethod
+    def _parse_dimensions(smoldyn_data_lines: List[str]) -> DimensionData:
         """
         Parse Smoldyn output files to get the number of timesteps
         and maximum agents per timestep
         """
-        time_steps = -1
-        max_agents = 0
-        current_agents = 0
+        result = DimensionData(0, 0)
+        agents = 0
         for line in smoldyn_data_lines:
             cols = line.split()
             if len(cols) == 2:
-                if current_agents > max_agents:
-                    max_agents = current_agents
-                current_agents = 0
-                time_steps += 1
+                if agents > result.max_agents:
+                    result.max_agents = agents
+                agents = 0
+                result.total_steps += 1
             else:
-                current_agents += 1
-        if current_agents > max_agents:
-            max_agents = current_agents
-        return (time_steps + 1, max_agents)
+                agents += 1
+        if agents > result.max_agents:
+            result.max_agents = agents
+        return result
 
+    @staticmethod
     def _parse_objects(
-        self,
         smoldyn_data_lines: List[str],
         input_data: SmoldynData,
     ) -> AgentData:
         """
         Parse a Smoldyn output file to get AgentData
         """
-        (totalSteps, max_agents) = self._parse_dimensions(smoldyn_data_lines)
-        result = AgentData(
-            times=np.zeros(totalSteps),
-            n_agents=np.zeros(totalSteps),
-            viz_types=VIZ_TYPE.DEFAULT * np.ones((totalSteps, max_agents)),
-            unique_ids=np.zeros((totalSteps, max_agents)),
-            types=[[] for t in range(totalSteps)],
-            positions=np.zeros((totalSteps, max_agents, 3)),
-            radii=np.ones((totalSteps, max_agents)),
-        )
-        t = -1
-        n = 0
+        dimensions = SmoldynConverter._parse_dimensions(smoldyn_data_lines)
+        result = AgentData.from_dimensions(dimensions)
+        time_index = -1
+        agent_index = 0
         for line in smoldyn_data_lines:
             if len(line) < 1:
                 continue
             cols = line.split()
             if len(cols) == 2:
-                if t >= 0:
-                    result.n_agents[t] = n
-                n = 0
-                t += 1
-                result.times[t] = float(cols[0])
+                if time_index >= 0:
+                    result.n_agents[time_index] = agent_index
+                agent_index = 0
+                time_index += 1
+                result.times[time_index] = float(cols[0])
             else:
                 if len(cols) < 4:
                     raise Exception(
@@ -92,30 +83,38 @@ class SmoldynConverter(TrajectoryConverter):
                         "please use the Smoldyn `listmols` command for output"
                     )
                 is_3D = len(cols) > 4
-                result.unique_ids[t][n] = int(cols[4] if is_3D else cols[3])
+                result.unique_ids[time_index][agent_index] = int(
+                    cols[4] if is_3D else cols[3]
+                )
                 raw_type_name = str(cols[0])
                 if raw_type_name in input_data.display_names:
                     type_name = input_data.display_names[raw_type_name]
                 else:
                     type_name = raw_type_name
-                result.types[t].append(type_name)
-                result.positions[t][n] = input_data.meta_data.scale_factor * np.array(
+                result.types[time_index].append(type_name)
+                result.positions[time_index][
+                    agent_index
+                ] = input_data.meta_data.scale_factor * np.array(
                     [
                         float(cols[1]),
                         float(cols[2]),
                         float(cols[3]) if is_3D else 0.0,
                     ]
                 )
-                result.radii[t][n] = input_data.meta_data.scale_factor * (
+                result.radii[time_index][
+                    agent_index
+                ] = input_data.meta_data.scale_factor * (
                     input_data.radii[raw_type_name]
                     if raw_type_name in input_data.radii
                     else 1.0
                 )
-                n += 1
-        result.n_agents[t] = n
+                agent_index += 1
+        result.n_agents[time_index] = agent_index
+        result.n_timesteps = time_index + 1
         return result
 
-    def _read(self, input_data: SmoldynData) -> TrajectoryData:
+    @staticmethod
+    def _read(input_data: SmoldynData) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the Smoldyn data
         """
@@ -125,7 +124,7 @@ class SmoldynConverter(TrajectoryConverter):
         with open(input_data.path_to_output_txt, "r") as myfile:
             smoldyn_data = myfile.read().split("\n")
         # parse
-        agent_data = self._parse_objects(smoldyn_data, input_data)
+        agent_data = SmoldynConverter._parse_objects(smoldyn_data, input_data)
         # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
         return TrajectoryData(

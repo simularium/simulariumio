@@ -62,12 +62,7 @@ class McellData:
         camera_defaults : CameraData (optional)
             camera's initial settings
             which it also returns to when reset
-            Default: CameraData(
-                position=[0,0,120],
-                look_at_position=[0,0,0],
-                up_vector=[0,1,0],
-                fov_degrees=75
-            )
+            Default: CameraData()
         scale_factor : float (optional)
             A multiplier for the scene, use if
             visualization is too large or small

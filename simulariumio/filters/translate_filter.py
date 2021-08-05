@@ -7,7 +7,7 @@ import logging
 import numpy as np
 
 from .filter import Filter
-from ..data_objects import TrajectoryData, AgentData
+from ..data_objects import TrajectoryData
 
 ###############################################################################
 
@@ -17,12 +17,12 @@ log = logging.getLogger(__name__)
 
 
 class TranslateFilter(Filter):
-    translation_per_type_id: Dict[int, np.ndarray]
+    translation_per_type: Dict[str, np.ndarray]
     default_translation: np.ndarray
 
     def __init__(
         self,
-        translation_per_type_id: Dict[int, np.ndarray] = {},
+        translation_per_type: Dict[str, np.ndarray] = {},
         default_translation: np.ndarray = np.zeros(3),
     ):
         """
@@ -31,15 +31,15 @@ class TranslateFilter(Filter):
 
         Parameters
         ----------
-        translation_per_type_id : Dict[int, int]
-            translation for agents of each type ID
+        translation_per_type : Dict[str, int]
+            translation for agents of each type
             Default: {}
         default_translation : int
             translation for any agent types not specified
-            in translation_per_type_id
+            in translation_per_type
             Default: np.zeros(3)
         """
-        self.translation_per_type_id = translation_per_type_id
+        self.translation_per_type = translation_per_type
         self.default_translation = default_translation
 
     def apply(self, data: TrajectoryData) -> TrajectoryData:
@@ -54,29 +54,34 @@ class TranslateFilter(Filter):
         # get filtered data
         positions = np.zeros((total_steps, max_agents, 3))
         subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
-        if data.agent_data.type_ids is None:
-            data.agent_data.type_ids, tnm = AgentData.get_type_ids_and_mapping(
-                data.agent_data.types
-            )
-        for t in range(total_steps):
-            for n in range(int(data.agent_data.n_agents[t])):
-                if data.agent_data.type_ids[t][n] in self.translation_per_type_id:
-                    translation = self.translation_per_type_id[
-                        data.agent_data.type_ids[t][n]
+        for time_index in range(total_steps):
+            for agent_index in range(int(data.agent_data.n_agents[time_index])):
+                if (
+                    data.agent_data.types[time_index][agent_index]
+                    in self.translation_per_type
+                ):
+                    translation = self.translation_per_type[
+                        data.agent_data.types[time_index][agent_index]
                     ]
                 else:
                     translation = self.default_translation
-                n_subpoints = int(data.agent_data.n_subpoints[t][n])
+                n_subpoints = int(data.agent_data.n_subpoints[time_index][agent_index])
                 if n_subpoints > 0:
-                    for s in range(int(data.agent_data.n_subpoints[t][n])):
-                        for d in range(3):
-                            subpoints[t][n][s][d] = (
-                                data.agent_data.subpoints[t][n][s][d] + translation[d]
+                    for subpoint_index in range(
+                        int(data.agent_data.n_subpoints[time_index][agent_index])
+                    ):
+                        for dim in range(3):
+                            subpoints[time_index][agent_index][subpoint_index][dim] = (
+                                data.agent_data.subpoints[time_index][agent_index][
+                                    subpoint_index
+                                ][dim]
+                                + translation[dim]
                             )
                 else:
-                    for d in range(3):
-                        positions[t][n][d] = (
-                            data.agent_data.positions[t][n][d] + translation[d]
+                    for dim in range(3):
+                        positions[time_index][agent_index][dim] = (
+                            data.agent_data.positions[time_index][agent_index][dim]
+                            + translation[dim]
                         )
         data.agent_data.positions = positions
         data.agent_data.subpoints = subpoints

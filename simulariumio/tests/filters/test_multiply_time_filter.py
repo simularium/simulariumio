@@ -6,6 +6,7 @@ import pytest
 from simulariumio import FileConverter
 from simulariumio.filters import MultiplyTimeFilter
 from simulariumio.tests.conftest import test_scatter_plot
+from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
 @pytest.mark.parametrize(
@@ -31,14 +32,26 @@ from simulariumio.tests.conftest import test_scatter_plot
                     },
                     "size": {"x": 200.0, "y": 200.0, "z": 200.0},
                     "cameraDefault": {
-                        "position": {"x": 0, "y": 0, "z": 120},
-                        "lookAtPosition": {"x": 0, "y": 0, "z": 0},
-                        "upVector": {"x": 0, "y": 1, "z": 0},
-                        "fovDegrees": 75.0,
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "1": {"name": "microtubule"},
-                        "7": {"name": "motor complex"},
+                        "0": {"name": "microtubule"},
+                        "1": {"name": "motor complex"},
                     },
                 },
                 "spatialData": {
@@ -53,7 +66,7 @@ from simulariumio.tests.conftest import test_scatter_plot
                             "data": [
                                 1001.0,
                                 1.0,
-                                1.0,
+                                0.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -79,7 +92,7 @@ from simulariumio.tests.conftest import test_scatter_plot
                                 29.01,
                                 1000.0,
                                 12.0,
-                                7.0,
+                                1.0,
                                 -73.8,
                                 -25.2,
                                 -43.89,
@@ -96,7 +109,7 @@ from simulariumio.tests.conftest import test_scatter_plot
                             "data": [
                                 1001.0,
                                 1.0,
-                                1.0,
+                                0.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -125,7 +138,7 @@ from simulariumio.tests.conftest import test_scatter_plot
                                 -1.47,
                                 1000.0,
                                 12.0,
-                                7.0,
+                                1.0,
                                 -72.52,
                                 -21.9,
                                 -43.59,
@@ -142,7 +155,7 @@ from simulariumio.tests.conftest import test_scatter_plot
                             "data": [
                                 1001.0,
                                 1.0,
-                                1.0,
+                                0.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -168,7 +181,7 @@ from simulariumio.tests.conftest import test_scatter_plot
                                 -3.58,
                                 1000.0,
                                 12.0,
-                                7.0,
+                                1.0,
                                 -72.52,
                                 -21.9,
                                 -43.59,

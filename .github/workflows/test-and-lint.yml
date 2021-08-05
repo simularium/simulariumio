@@ -17,7 +17,7 @@ jobs:
       with:
         auto-update-conda: true
         python-version: ${{ matrix.python-version }}
-        channels: readdy/label/dev,conda-forge
+        channels: readdy,conda-forge
     - name: Install Conda Deps
       shell: bash -l {0}
       run: |
@@ -44,7 +44,7 @@ jobs:
       with:
         auto-update-conda: true
         python-version: 3.8
-        channels: readdy/label/dev,conda-forge
+        channels: readdy,conda-forge
     - name: Install Conda Deps
       shell: bash -l {0}
       run: |

@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from typing import Dict, Any
+from string import ascii_uppercase
+from random import choice
 
 import numpy as np
 
@@ -121,4 +123,50 @@ def test_scatter_plot() -> Dict[str, Any]:
             ),
         },
         render_mode="lines",
+    )
+
+
+def empty_buffer(total_steps: int, n_agents: int, n_subpoints: int) -> AgentData:
+    box_size = 100
+    type_names = []
+    for t in range(total_steps):
+        type_names.append([choice(ascii_uppercase) for i in range(n_agents)])
+    return AgentData(
+        times=0.1 * np.array(list(range(total_steps))),
+        n_agents=np.array(total_steps * [n_agents]),
+        viz_types=np.array(
+            total_steps * [n_agents * [1000.0]]
+        ),  # default viz type = 1000
+        unique_ids=np.array(total_steps * [list(range(n_agents))]),
+        types=type_names,
+        positions=np.ones((total_steps, n_agents, 3)) * box_size - box_size * 0.5,
+        radii=np.ones((total_steps, n_agents)),
+        rotations=np.ones((total_steps, n_agents, 3)) * 360,
+        n_subpoints=n_subpoints * np.ones((total_steps, n_agents)),
+        subpoints=np.ones((total_steps, n_agents, n_subpoints, 3)),
+    )
+
+
+def full_default_buffer():
+    total_steps = 3
+    max_agents = 4
+    max_subpoints = 2
+    return AgentData(
+        times=0.1 * np.arange(total_steps),
+        n_agents=np.array([2, 4, 0]),
+        viz_types=np.array(total_steps * [int(0.5 * max_agents) * [1001.0, 1000.0]]),
+        unique_ids=np.arange(total_steps * max_agents).reshape(
+            (total_steps, max_agents)
+        ),
+        types=np.array(total_steps * [int(0.5 * max_agents) * ["A", "B"]]).tolist(),
+        positions=0.1
+        * np.arange(total_steps * max_agents * 3).reshape((total_steps, max_agents, 3)),
+        radii=np.array(total_steps * [int(0.5 * max_agents) * [1.0, 3.0]]),
+        rotations=10.0
+        * np.arange(total_steps * max_agents * 3).reshape((total_steps, max_agents, 3)),
+        n_subpoints=np.array(total_steps * [int(0.5 * max_agents) * [2, 0]]),
+        subpoints=0.1
+        * np.arange(total_steps * max_agents * max_subpoints * 3).reshape(
+            (total_steps, max_agents, max_subpoints, 3)
+        ),
     )
