@@ -3,7 +3,9 @@
 
 """The setup script."""
 
+import fnmatch
 from setuptools import find_packages, setup
+from setuptools.command.build_py import build_py as build_py_orig
 
 with open("README.md") as readme_file:
     readme = readme_file.read()
@@ -60,6 +62,16 @@ extra_requirements = {
     ]
 }
 
+
+# exclude benchmarks from builds
+class build_py(build_py_orig):
+    def find_package_modules(self, package, package_dir):
+        modules = super().find_package_modules(package, package_dir)
+        return [(pkg, mod, file, ) for (pkg, mod, file, ) in modules
+                if not any(fnmatch.fnmatchcase(pkg + '.' + mod, pat=pattern)
+                for pattern in ['benchmarks'])]
+
+
 setup(
     author="Blair Lyons",
     author_email="blairl@alleninstitute.org",
@@ -83,6 +95,7 @@ setup(
     keywords="simulariumio",
     name="simulariumio",
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*"]),
+    cmdclass={'build_py': build_py},
     python_requires=">=3.7",
     setup_requires=setup_requirements,
     test_suite="simulariumio/tests",
