@@ -636,14 +636,6 @@
             <span class="n">filtered_data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">filtered_data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">filtered_data</span></div>
 
-<div class="viewcode-block" id="TrajectoryConverter.to_JSON"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.to_JSON">[docs]</a>    <span class="k">def</span> <span class="nf">to_JSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the current simularium data in JSON format</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">buffer_data</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">_read_trajectory_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="TrajectoryConverter.write_JSON"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.write_JSON">[docs]</a>    <span class="k">def</span> <span class="nf">write_JSON</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save the current simularium data in .simularium JSON format</span>
