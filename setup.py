@@ -92,6 +92,6 @@ setup(
     url="https://github.com/allen-cell-animated/simulariumio",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
-    version="1.0.1",
+    version="1.1.0",
     zip_safe=False,
 )
