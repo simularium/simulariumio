@@ -231,15 +231,33 @@
 <li><p>Accepts spatial trajectories from the following biological simulation engines:</p>
 <ul>
 <li><p>CytoSim (<a class="reference external" href="https://gitlab.com/f.nedelec/cytosim">https://gitlab.com/f.nedelec/cytosim</a>)</p></li>
-<li><p>ReaDDy (<a class="reference external" href="https://readdy.github.io/">https://readdy.github.io/</a>)</p></li>
-<li><p>PhysiCell (<a class="reference external" href="http://physicell.org/">http://physicell.org/</a>)</p></li>
+<li><p>MCell (<a class="reference external" href="https://mcell.org/">https://mcell.org/</a>)</p></li>
 <li><p>MEDYAN (<a class="reference external" href="http://medyan.org/">http://medyan.org/</a>)</p></li>
+<li><p>PhysiCell (<a class="reference external" href="http://physicell.org/">http://physicell.org/</a>)</p></li>
+<li><p>ReaDDy (<a class="reference external" href="https://readdy.github.io/">https://readdy.github.io/</a>)</p></li>
+<li><p>Smoldyn (<a class="reference external" href="http://www.smoldyn.org/">http://www.smoldyn.org/</a>)</p></li>
+<li><p>SpringSaLaD (<a class="reference external" href="https://vcell.org/ssalad">https://vcell.org/ssalad</a>)</p></li>
 </ul>
 </li>
 <li><p>Conversions for data from custom engines can be implemented using the TrajectoryConverter class</p></li>
 <li><p>Also accepts metrics data for plots to display alongside spatial data</p></li>
 </ul>
 <p>We’re working to improve performance for converting large trajectories, and also discussing with the authors of some packages the possibility of adding the ability to export Simularium files directly.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="visualize-results">
+<h2>Visualize results<a class="headerlink" href="#visualize-results" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>In a supported browser (Firefox, Chrome, or Edge), navigate to <a class="reference external" href="https://simularium.allencell.org/viewer">https://simularium.allencell.org/viewer</a>.</p></li>
+<li><p>Drag the file output from SimulariumIO from your file browser onto the window or use the file upload dialogue to choose your file</p></li>
+</ol>
+</div>
+<div class="section" id="sharing-links-to-results">
+<h2>Sharing links to results<a class="headerlink" href="#sharing-links-to-results" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Upload your Simularium file to one of the supported public cloud providers, currently Dropbox, Google Drive, or Amazon S3, and get a publicly accessible link to the file.</p></li>
+<li><p>In a supported browser, navigate to <a class="reference external" href="https://simularium.allencell.org/viewer?trajUrl=[link">https://simularium.allencell.org/viewer?trajUrl=[link</a> to your file]. You can share this link with collaborators or post it on your website so that others can interactively view your results.</p></li>
+</ol>
 </div>
 <hr class="docutils" />
 <div class="section" id="quick-start">
@@ -249,9 +267,12 @@
 <p>See the Tutorial for the simulation engine you’re using for details:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="examples/Tutorial_cytosim.ipynb">Cytosim Tutorial</a></p></li>
-<li><p><a class="reference external" href="examples/Tutorial_readdy.ipynb">ReaDDy Tutorial</a></p></li>
-<li><p><a class="reference external" href="examples/Tutorial_physicell.ipynb">PhysiCell Tutorial</a></p></li>
+<li><p><a class="reference external" href="examples/Tutorial_mcell.ipynb">MCell Tutorial</a></p></li>
 <li><p><a class="reference external" href="examples/Tutorial_medyan.ipynb">MEDYAN Tutorial</a></p></li>
+<li><p><a class="reference external" href="examples/Tutorial_physicell.ipynb">PhysiCell Tutorial</a></p></li>
+<li><p><a class="reference external" href="examples/Tutorial_readdy.ipynb">ReaDDy Tutorial</a></p></li>
+<li><p><a class="reference external" href="examples/Tutorial_smoldyn.ipynb">Smoldyn Tutorial</a></p></li>
+<li><p><a class="reference external" href="examples/Tutorial_springsalad.ipynb">SpringSaLaD Tutorial</a></p></li>
 </ul>
 <p>An overview for data from ReaDDy:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simulariumio.readdy</span> <span class="kn">import</span> <span class="n">ReaddyConverter</span><span class="p">,</span> <span class="n">ReaddyData</span>
