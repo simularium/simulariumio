@@ -21,13 +21,26 @@ Simulariumio converts simulation outputs to the format consumed by the [Simulari
 * Converts 3D spatiotemporal trajectories to .simularium JSON format
 * Accepts spatial trajectories from the following biological simulation engines:
     * CytoSim (https://gitlab.com/f.nedelec/cytosim)
-    * ReaDDy (https://readdy.github.io/)
-    * PhysiCell (http://physicell.org/)
+    * MCell (https://mcell.org/)
     * MEDYAN (http://medyan.org/)
+    * PhysiCell (http://physicell.org/)
+    * ReaDDy (https://readdy.github.io/)
+    * Smoldyn (http://www.smoldyn.org/)
+    * SpringSaLaD (https://vcell.org/ssalad)
 * Conversions for data from custom engines can be implemented using the TrajectoryConverter class
 * Also accepts metrics data for plots to display alongside spatial data
 
 We're working to improve performance for converting large trajectories, and also discussing with the authors of some packages the possibility of adding the ability to export Simularium files directly.
+
+___
+
+## Visualize results
+1. In a supported browser (Firefox, Chrome, or Edge), navigate to https://simularium.allencell.org/viewer.
+2. Drag the file output from SimulariumIO from your file browser onto the window or use the file upload dialogue to choose your file
+
+## Sharing links to results
+1. Upload your Simularium file to one of the supported public cloud providers, currently Dropbox, Google Drive, or Amazon S3, and get a publicly accessible link to the file.
+2. In a supported browser, navigate to https://simularium.allencell.org/viewer?trajUrl=[link to your file]. You can share this link with collaborators or post it on your website so that others can interactively view your results.
 
 ___
 
@@ -36,9 +49,12 @@ ___
 ### Convert spatial trajectory from a supported engine
 See the Tutorial for the simulation engine you're using for details:
 * [Cytosim Tutorial](examples/Tutorial_cytosim.ipynb)
-* [ReaDDy Tutorial](examples/Tutorial_readdy.ipynb)
-* [PhysiCell Tutorial](examples/Tutorial_physicell.ipynb)
+* [MCell Tutorial](examples/Tutorial_mcell.ipynb)
 * [MEDYAN Tutorial](examples/Tutorial_medyan.ipynb)
+* [PhysiCell Tutorial](examples/Tutorial_physicell.ipynb)
+* [ReaDDy Tutorial](examples/Tutorial_readdy.ipynb)
+* [Smoldyn Tutorial](examples/Tutorial_smoldyn.ipynb)
+* [SpringSaLaD Tutorial](examples/Tutorial_springsalad.ipynb)
 
 An overview for data from ReaDDy:
 ```python
