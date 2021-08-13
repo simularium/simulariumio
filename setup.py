@@ -51,6 +51,7 @@ benchmark_requirements = [
 requirements = [
     "numpy>=1.16",
     "pandas>=1.1.2",
+    "pint>=0.17",
 ]
 
 extra_requirements = {
