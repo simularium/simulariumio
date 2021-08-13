@@ -27,9 +27,15 @@ test_requirements = [
     *physicell_requirements,
 ]
 
+benchmark_requirements = [
+    "awscli>=1.20"
+    "quilt3>=3.4",
+]
+
 dev_requirements = [
     *setup_requirements,
     *test_requirements,
+    *benchmark_requirements,
     "bumpversion>=0.6.0",
     "coverage>=5.1",
     "ipython>=7.15.0",
@@ -41,11 +47,6 @@ dev_requirements = [
     "tox-conda>=0.2.1",
     "twine>=3.1.1",
     "wheel>=0.34.2",
-]
-
-benchmark_requirements = [
-    "awscli>=1.20"
-    "quilt3>=3.4",
 ]
 
 requirements = [
