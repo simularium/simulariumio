@@ -18,6 +18,14 @@ from simulariumio.springsalad import (
     SpringsaladConverter,
     SpringsaladData,
 )
+from download_benchmark_resources import download_benchmark_resources, Args
+
+###############################################################################
+
+LOCAL_RESOURCES_DIR = os.path.join(os.getcwd(), "resources")
+
+###############################################################################
+
 
 def convert_d_c_cytosim(input_path):
     data = CytosimData(
@@ -38,6 +46,7 @@ def convert_d_c_cytosim(input_path):
     )
     return CytosimConverter(data)
 
+
 def convert_condensate_springsalad(input_path):
     data = SpringsaladData(
         path_to_sim_view_txt=f"{input_path}/Above_Ksp_viewer.txt",
@@ -53,20 +62,31 @@ def convert_condensate_springsalad(input_path):
 
 
 convert_benchmarks = {
-    "d_c" : convert_d_c_cytosim,
-    "springsalad_condensate" : convert_condensate_springsalad,
-}   
+    "d_c": convert_d_c_cytosim,
+    "springsalad_condensate": convert_condensate_springsalad,
+}
+
 
 def main():
     parser = argparse.ArgumentParser(
         description="Parses large data files to test speed of SimulariumIO"
     )
-    current_dir = os.getcwd()
-    for item in os.listdir(current_dir):
-        if not os.path.isdir(item):
+    # download data if there's none in resources
+    found_data = False
+    for item in os.listdir(LOCAL_RESOURCES_DIR):
+        if os.path.isdir(os.path.join(LOCAL_RESOURCES_DIR, item)):
+            found_data = True
+            break
+    if not found_data:
+        args = Args()
+        download_benchmark_resources(args)
+    # run benchmarks
+    for item in os.listdir(LOCAL_RESOURCES_DIR):
+        item_path = os.path.join(LOCAL_RESOURCES_DIR, item)
+        if not os.path.isdir(item_path):
             continue
         start_time = time.time()
-        converter = convert_benchmarks[item](item)
+        converter = convert_benchmarks[item](item_path)
         convert_time = time.time() - start_time
         print(f"{item} convert ran in {convert_time}")
         converter.write_JSON(f"{item}_benchmark")

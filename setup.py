@@ -43,6 +43,11 @@ dev_requirements = [
     "wheel>=0.34.2",
 ]
 
+benchmark_requirements = [
+    "awscli>=1.20"
+    "quilt3>=3.4",
+]
+
 requirements = [
     "numpy>=1.16",
     "pandas>=1.1.2",
@@ -53,10 +58,12 @@ extra_requirements = {
     "test": test_requirements,
     "dev": dev_requirements,
     "physicell": physicell_requirements,
+    "benchmark": benchmark_requirements,
     "all": [
         *requirements,
         *dev_requirements,
-        *physicell_requirements
+        *physicell_requirements,
+        *benchmark_requirements
     ]
 }
 
