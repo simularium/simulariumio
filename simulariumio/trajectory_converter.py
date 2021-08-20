@@ -178,26 +178,20 @@ class TrajectoryConverter:
         buffer_data = JsonWriter.format_trajectory_data(self._data)
         return json.dumps(buffer_data)
 
-    def write_JSON(self, output_path: str):
+    def save(self, output_path: str, binary: bool = True):
         """
-        Save the current simularium data in .simularium JSON format
+        Save the current simularium data in .simularium format
         at the output path
 
         Parameters
         ----------
         output_path: str
             where to save the file
+        binary: bool (optional)
+            save in binary format? otherwise use JSON
+            Default: True
         """
-        JsonWriter.save(self._data, output_path)
-
-    def write_binary(self, output_path: str):
-        """
-        Save the current simularium data in .simularium binary format
-        at the output path
-
-        Parameters
-        ----------
-        output_path: str
-            where to save the file
-        """
-        BinaryWriter.save(self._data, output_path)
+        if binary:
+            BinaryWriter.save(self._data, output_path)
+        else:
+            JsonWriter.save(self._data, output_path)
