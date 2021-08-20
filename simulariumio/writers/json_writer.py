@@ -115,6 +115,11 @@ class JsonWriter(Writer):
     def format_trajectory_data(trajectory_data: TrajectoryData) -> Dict[str, Any]:
         """
         Return the data shaped for Simularium JSON
+
+        Parameters
+        ----------
+        trajectory_data: TrajectoryData
+            the data to format
         """
         print("Converting Trajectory Data to JSON -------------")
         simularium_data = {}
@@ -205,6 +210,17 @@ class JsonWriter(Writer):
 
     @staticmethod
     def save(trajectory_data: TrajectoryData, output_path: str) -> None:
+        """
+        Save the simularium data in .simularium JSON format
+        at the output path
+
+        Parameters
+        ----------
+        trajectory_data: TrajectoryData
+            the data to save
+        output_path: str
+            where to save the file
+        """
         json_data = JsonWriter.format_trajectory_data(trajectory_data)
         print("Writing JSON -------------")
         with open(f"{output_path}.simularium", "w+") as outfile:

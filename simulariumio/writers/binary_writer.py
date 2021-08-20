@@ -38,7 +38,7 @@ class BinaryWriter(Writer):
         )
 
     @staticmethod
-    def format_trajectory_frame(
+    def _format_trajectory_frame(
         time_index: int,
         agent_data: AgentData,
         type_ids: np.ndarray,
@@ -64,6 +64,11 @@ class BinaryWriter(Writer):
     def format_trajectory_data(trajectory_data: TrajectoryData) -> np.ndarray:
         """
         Return the data shaped for Simularium binary
+
+        Parameters
+        ----------
+        trajectory_data: TrajectoryData
+            the data to format
         """
         print("Converting Trajectory Data to Binary -------------")
         # get dimensions
@@ -95,13 +100,24 @@ class BinaryWriter(Writer):
                 + buffer_sizes[time_index]
                 + 3
                 + len(BINARY_EOF)
-            ] = BinaryWriter.format_trajectory_frame(
+            ] = BinaryWriter._format_trajectory_frame(
                 time_index, trajectory_data.agent_data, type_ids, buffer_sizes
             )
         return result
 
     @staticmethod
     def save(trajectory_data: TrajectoryData, output_path: str) -> None:
+        """
+        Save the simularium data in .simularium binary format
+        at the output path
+
+        Parameters
+        ----------
+        trajectory_data: TrajectoryData
+            the data to save
+        output_path: str
+            where to save the file
+        """
         data_buffer = BinaryWriter.format_trajectory_data(trajectory_data)
         print("Writing Binary -------------")
         data_buffer.astype("<f4").tofile(f"{output_path}.simularium")
