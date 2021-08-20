@@ -74,7 +74,7 @@ class BinaryWriter(Writer):
         )
         offsets = []
         buffer_sizes = []
-        data_index = len(BINARY_HEADER) + len(BINARY_VERSION) + 1 + total_steps + 1
+        data_index = len(BINARY_HEADER) + len(BINARY_VERSION) + 1 + total_steps
         for time_index in range(total_steps):
             offsets.append(data_index)
             buffer_size = Writer._get_frame_buffer_size(
@@ -86,12 +86,15 @@ class BinaryWriter(Writer):
         result = np.zeros(data_index, dtype="<f4")
         header = BinaryWriter._header_to_float_array()
         result[: len(header)] = header[:]
-        result[len(header) + 1] = float(total_steps)
-        result[len(header) + 2 : len(header) + 2 + total_steps] = offsets[:]
+        result[len(header)] = float(total_steps)
+        result[len(header) + 1 : len(header) + 1 + total_steps] = offsets[:]
         type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
         for time_index in range(total_steps):
             result[
-                offsets[time_index] : offsets[time_index] + buffer_sizes[time_index]
+                offsets[time_index] : offsets[time_index]
+                + buffer_sizes[time_index]
+                + 3
+                + len(BINARY_EOF)
             ] = BinaryWriter.format_trajectory_frame(
                 time_index, trajectory_data.agent_data, type_ids, buffer_sizes
             )
