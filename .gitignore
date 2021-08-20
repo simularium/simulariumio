@@ -139,3 +139,7 @@ cython_debug/
 
 .DS_Store
 *.simularium
+
+# Ignore benchmark data
+benchmarks/resources/
+benchmarks/upload_manifest.jsonl
