@@ -11,6 +11,7 @@ from simulariumio import (
     UnitData,
     MetaData,
     CameraData,
+    JsonWriter,
 )
 from simulariumio.tests.conftest import three_default_agents
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
@@ -1155,6 +1156,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 )
 def test_trajectory_reader(trajectory, expected_data):
     converter = TrajectoryConverter(trajectory)
-    buffer_data = converter._read_trajectory_data(converter._data)
+    buffer_data = JsonWriter.format_trajectory_data(converter._data)
     assert expected_data == buffer_data
     assert converter._check_agent_ids_are_unique_per_frame(buffer_data)

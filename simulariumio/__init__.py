@@ -26,3 +26,7 @@ from .data_objects import (  # noqa: F401
     ScatterPlotData,
     HistogramPlotData,
 )
+
+from .writers import (  # noqa: F401
+    JsonWriter,
+)

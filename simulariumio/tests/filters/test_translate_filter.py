@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from simulariumio import FileConverter
+from simulariumio import FileConverter, JsonWriter
 from simulariumio.filters import TranslateFilter
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
@@ -204,5 +204,5 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 def test_translate_filter(input_path, _filter, expected_data):
     converter = FileConverter(input_path)
     filtered_data = converter.filter_data([_filter])
-    buffer_data = converter._read_trajectory_data(filtered_data)
+    buffer_data = JsonWriter.format_trajectory_data(filtered_data)
     assert expected_data == buffer_data

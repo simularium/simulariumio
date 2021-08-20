@@ -3,6 +3,7 @@
 
 import pytest
 
+from simulariumio import JsonWriter
 from simulariumio.mcell import McellConverter, McellData
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
@@ -189,6 +190,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 )
 def test_mcell_converter(trajectory, expected_data):
     converter = McellConverter(trajectory)
-    buffer_data = converter._read_trajectory_data(converter._data)
+    buffer_data = JsonWriter.format_trajectory_data(converter._data)
     assert expected_data == buffer_data
     assert converter._check_agent_ids_are_unique_per_frame(buffer_data)

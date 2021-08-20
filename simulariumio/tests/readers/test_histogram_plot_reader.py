@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from simulariumio import HistogramPlotData, UnitData, MetaData
+from simulariumio import HistogramPlotData, UnitData, MetaData, JsonWriter
 from simulariumio.readdy import ReaddyConverter, ReaddyData
 
 
@@ -217,5 +217,5 @@ def test_add_two_histogram_plots(trajectory, plot_data1, plot_data2, expected_da
     converter = ReaddyConverter(trajectory)
     converter.add_plot(plot_data1, "histogram")
     converter.add_plot(plot_data2, "histogram")
-    buffer_data = converter._read_trajectory_data(converter._data)
+    buffer_data = JsonWriter.format_trajectory_data(converter._data)
     assert expected_data == buffer_data["plotData"]
