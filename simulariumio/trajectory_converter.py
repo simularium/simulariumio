@@ -23,6 +23,7 @@ from .exceptions import UnsupportedPlotTypeError
 from .constants import V1_SPATIAL_BUFFER_STRUCT
 from .writers import (
     JsonWriter,
+    BinaryWriter,
 )
 
 ###############################################################################
@@ -188,3 +189,15 @@ class TrajectoryConverter:
             where to save the file
         """
         JsonWriter.save(self._data, output_path)
+
+    def write_binary(self, output_path: str):
+        """
+        Save the current simularium data in .simularium binary format
+        at the output path
+
+        Parameters
+        ----------
+        output_path: str
+            where to save the file
+        """
+        BinaryWriter.save(self._data, output_path)

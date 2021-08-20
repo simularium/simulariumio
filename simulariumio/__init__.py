@@ -29,4 +29,5 @@ from .data_objects import (  # noqa: F401
 
 from .writers import (  # noqa: F401
     JsonWriter,
+    BinaryWriter,
 )
