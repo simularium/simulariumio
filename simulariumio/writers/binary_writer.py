@@ -181,5 +181,9 @@ class BinaryWriter(Writer):
         data_buffers = BinaryWriter.format_trajectory_data(trajectory_data)
         print("Writing Binary -------------")
         for index, data_buffer in enumerate(data_buffers):
-            data_buffer.astype("<f4").tofile(f"{output_path}_{index}.simularium")
-            print(f"saved to {output_path}_{index}.simularium")
+            if len(data_buffers) < 2:
+                output_name = f"{output_path}.simularium"
+            else:
+                output_name = f"{output_path}_{index}.simularium"
+            data_buffer.astype("<f4").tofile(output_name)
+            print(f"saved to {output_name}")

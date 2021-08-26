@@ -4,6 +4,14 @@ simulariumio.writers package
 Submodules
 ----------
 
+simulariumio.writers.binary\_chunk module
+-----------------------------------------
+
+.. automodule:: simulariumio.writers.binary_chunk
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.writers.binary\_writer module
 ------------------------------------------
 
