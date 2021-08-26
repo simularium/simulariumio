@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from typing import List
+
 import numpy as np
 
 from .data_objects.dimension_data import DimensionData
@@ -46,6 +48,10 @@ class DEFAULT_CAMERA_SETTINGS:
 
 DEFAULT_PLOT_MODE = "markers"
 
-BINARY_HEADER = "SIMULARIUMBIN"
-BINARY_VERSION = [1, 0, 0]
-BINARY_EOF = "\u005CEOFTHEFRAMEENDSHERE"
+
+class BINARY_SETTINGS:
+    HEADER: str = "SIMULARIUMBIN"
+    VERSION: List[int] = [1, 0, 0]
+    EOF: str = "\u005CEOFTHEFRAMEENDSHERE"
+    MAX_FRAMES: int = 10000
+    MAX_BYTES: int = 500000000
