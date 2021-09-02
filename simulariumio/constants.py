@@ -45,3 +45,12 @@ class DEFAULT_CAMERA_SETTINGS:
 
 
 DEFAULT_PLOT_MODE = "markers"
+
+
+class DISPLAY_TYPE:
+    SPHERE: str = "SPHERE"
+    CUBE: str = "CUBE"
+    GIZMO: str = "GIZMO"
+    PDB: str = "PDB"
+    OBJ: str = "OBJ"
+    DEFAULT: str = "SPHERE"

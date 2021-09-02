@@ -16,6 +16,7 @@ from ..constants import (
     BUFFER_SIZE_INC,
 )
 from .dimension_data import DimensionData
+from .display_data import DisplayData
 
 ###############################################################################
 
@@ -36,6 +37,7 @@ class AgentData:
     rotations: np.ndarray
     n_subpoints: np.ndarray = None
     subpoints: np.ndarray = None
+    display_info: Dict[str, DisplayData] = {}
     draw_fiber_points: bool = False
 
     def __init__(
@@ -50,6 +52,7 @@ class AgentData:
         rotations: np.ndarray = None,
         n_subpoints: np.ndarray = None,
         subpoints: np.ndarray = None,
+        display_info: Dict[str, DisplayData] = None,
         draw_fiber_points: bool = False,
         n_timesteps: int = -1,
     ):
@@ -98,6 +101,10 @@ class AgentData:
             for each agent at each timestep. These values are
             currently only used for fiber agents
             Default: None
+        display_info: Dict[str,DisplayData] (optional)
+            A dictionary mapping agent type name to DisplayData
+            to use for that type
+            Default: None
         draw_fiber_points: bool (optional)
             Draw spheres at every other fiber point for fibers?
             Default: False
@@ -119,6 +126,7 @@ class AgentData:
             n_subpoints if n_subpoints is not None else np.zeros_like(radii)
         )
         self.subpoints = subpoints if subpoints is not None else np.zeros((3, 3, 0, 3))
+        self.display_info = display_info if display_info is not None else {}
         self.draw_fiber_points = draw_fiber_points
         self.n_timesteps = n_timesteps
 
@@ -178,6 +186,10 @@ class AgentData:
                     last_tid += 1
                     type_id_mapping[tn] = tid
                     type_name_mapping[str(tid)] = {"name": tn}
+                    if tn in self.display_info:
+                        type_name_mapping[str(tid)]["geometry"] = dict(
+                            self.display_info[tn]
+                        )
                 type_ids[time_index][agent_index] = type_id_mapping[tn]
         return type_ids, type_name_mapping
 
@@ -195,6 +207,27 @@ class AgentData:
                 result[time_index].append(
                     type_mapping[str(int(type_ids[time_index][agent_index]))]["name"]
                 )
+        return result
+
+    @staticmethod
+    def get_display_info(type_mapping: Dict[str, Any]) -> Dict[str, DisplayData]:
+        """
+        Generate the display_info mapping from a type_mapping
+        """
+        result = {}
+        for type_id in type_mapping:
+            type_info = type_mapping[type_id]
+            if "geometry" not in type_info:
+                continue
+            result[type_info["name"]] = DisplayData(
+                display_type=type_info["geometry"]["displayType"],
+                url=type_info["geometry"]["url"]
+                if "url" in type_info["geometry"]
+                else None,
+                color=type_info["geometry"]["color"]
+                if "color" in type_info["geometry"]
+                else None,
+            )
         return result
 
     @classmethod
@@ -270,6 +303,9 @@ class AgentData:
         type_names = AgentData.get_type_names(
             type_ids, buffer_data["trajectoryInfo"]["typeMapping"]
         )
+        display_info = AgentData.get_display_info(
+            buffer_data["trajectoryInfo"]["typeMapping"]
+        )
         return cls(
             times=agent_data.times,
             n_agents=agent_data.n_agents,
@@ -281,6 +317,7 @@ class AgentData:
             rotations=agent_data.rotations,
             n_subpoints=agent_data.n_subpoints,
             subpoints=agent_data.subpoints,
+            display_info=display_info,
             draw_fiber_points=False,
         )
 
@@ -429,6 +466,7 @@ class AgentData:
                 0 : current_dimensions.max_agents,
                 0 : current_dimensions.max_subpoints,
             ] = self.subpoints[:]
+        result.display_info = copy.deepcopy(self.display_info)
         result.draw_fiber_points = self.draw_fiber_points
         return result
 
@@ -485,6 +523,7 @@ class AgentData:
             rotations=np.copy(self.rotations),
             n_subpoints=np.copy(self.n_subpoints),
             subpoints=np.copy(self.subpoints),
+            display_info=copy.deepcopy(self.display_info, memo),
             draw_fiber_points=self.draw_fiber_points,
         )
         return result
@@ -502,5 +541,6 @@ class AgentData:
             and False not in np.isclose(self.rotations, other.rotations)
             and False not in np.isclose(self.n_subpoints, other.n_subpoints)
             and False not in np.isclose(self.subpoints, other.subpoints)
+            and self.display_info == other.display_info
             and self.draw_fiber_points == other.draw_fiber_points
         )
