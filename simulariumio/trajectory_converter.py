@@ -70,7 +70,7 @@ class TrajectoryConverter:
         )
         type_ids, type_mapping = input_data.agent_data.get_type_ids_and_mapping()
         traj_info = {
-            "version": 2,
+            "version": 3,
             "timeUnits": {
                 "magnitude": input_data.time_units.magnitude,
                 "name": input_data.time_units.name,

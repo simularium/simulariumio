@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 
 class FileConverter(TrajectoryConverter):
-    current_trajectory_info_version: int = 2
+    current_trajectory_info_version: int = 3
 
     def __init__(self, input_path: str):
         """
@@ -82,5 +82,8 @@ class FileConverter(TrajectoryConverter):
                 "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
             }
             data["trajectoryInfo"]["version"] = 2
+        if int(data["trajectoryInfo"]["version"]) == 2:
+            # all the new fields from v2 to v3 are optional
+            data["trajectoryInfo"]["version"] = 3
         print(f"Updated TrajectoryInfo v1 -> v{self.current_trajectory_info_version}")
         return data
