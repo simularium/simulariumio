@@ -40,10 +40,29 @@ class MedyanConverter(TrajectoryConverter):
         and use MedyanAgentInfo for that agent type to
         determine whether to also draw the endpoints as spheres
         """
-        raw_tid = int(line.split()[2])
-        if raw_tid in input_data.agent_info[object_type]:
-            return input_data.agent_info[object_type][raw_tid].draw_endpoints
+        if object_type == "motor" or object_type == "linker":
+            type_name = MedyanConverter._get_output_type_name(
+                line, object_type, input_data
+            )
+            if type_name in input_data.agents_with_endpoints:
+                return True
         return False
+
+    @staticmethod
+    def _get_output_type_name(
+        line: str, object_type: str, input_data: MedyanData
+    ) -> bool:
+        """
+        Parse a line of a MEDYAN snapshot.traj output file
+        and use MedyanAgentInfo for that agent type to
+        determine whether to also draw the endpoints as spheres
+        """
+        raw_tid = int(line.split()[2])
+        return (
+            input_data.agent_info[object_type][raw_tid].name
+            if raw_tid in input_data.agent_info[object_type]
+            else object_type + str(raw_tid)
+        )
 
     @staticmethod
     def _parse_data_dimensions(
@@ -155,9 +174,7 @@ class MedyanConverter(TrajectoryConverter):
                     last_tid += 1
                 # type name
                 result.types[time_index].append(
-                    input_data.agent_info[object_type][raw_tid].name
-                    if raw_tid in input_data.agent_info[object_type]
-                    else object_type + str(raw_tid)
+                    MedyanConverter._get_output_type_name(line, object_type, input_data)
                 )
                 # radius
                 result.radii[time_index][
@@ -186,7 +203,7 @@ class MedyanConverter(TrajectoryConverter):
                         result.radii[time_index][
                             agent_index + i + 1
                         ] = input_data.meta_data.scale_factor * (
-                            input_data.agent_info[object_type][raw_tid].endpoint_radius
+                            2 * input_data.agent_info[object_type][raw_tid].radius
                             if raw_tid in input_data.agent_info[object_type]
                             else 1.0
                         )
@@ -220,6 +237,14 @@ class MedyanConverter(TrajectoryConverter):
         agent_data = MedyanConverter._get_trajectory_data(input_data)
         time_units = UnitData("s")
         spatial_units = UnitData("nm", 1.0 / input_data.meta_data.scale_factor)
+        # get display data (geometry and color)
+        for object_type in input_data.agent_info:
+            for tid in input_data.agent_info[object_type]:
+                agent_type_info = input_data.agent_info[object_type][tid]
+                if agent_type_info.display_data is not None:
+                    agent_data.display_data[
+                        agent_type_info.name
+                    ] = agent_type_info.display_data
         return TrajectoryData(
             meta_data=MetaData(
                 box_size=input_data.meta_data.scale_factor
