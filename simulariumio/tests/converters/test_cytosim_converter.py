@@ -8,9 +8,8 @@ from simulariumio.cytosim import (
     CytosimConverter,
     CytosimData,
     CytosimObjectInfo,
-    CytosimAgentInfo,
 )
-from simulariumio import MetaData, DisplayData
+from simulariumio import MetaData, AgentTypeInfo, DisplayData
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
@@ -29,7 +28,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         filepath="simulariumio/tests/data/cytosim"
                         "/3_fibers_3_frames/fiber_points.txt",
                         agents={
-                            0: CytosimAgentInfo(
+                            0: AgentTypeInfo(
                                 name="fiber",
                                 radius=0.001,
                                 display_data=DisplayData(color="#d71f5f"),
@@ -337,8 +336,8 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/fiber_points.txt",
                         agents={
-                            1: CytosimAgentInfo(name="microtubule", radius=0.01),
-                            2: CytosimAgentInfo(
+                            1: AgentTypeInfo(name="microtubule", radius=0.01),
+                            2: AgentTypeInfo(
                                 name="actin",
                                 radius=0.01,
                                 display_data=DisplayData(
@@ -351,16 +350,16 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/solids.txt",
                         agents={
-                            1: CytosimAgentInfo(name="aster", radius=0.1),
-                            2: CytosimAgentInfo(name="vesicle", radius=0.1),
+                            1: AgentTypeInfo(name="aster"),
+                            2: AgentTypeInfo(name="vesicle", radius=0.1),
                         },
                     ),
                     "singles": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/singles.txt",
                         agents={
-                            1: CytosimAgentInfo(name="dynein", radius=0.01),
-                            2: CytosimAgentInfo(
+                            1: AgentTypeInfo(name="dynein", radius=0.01),
+                            2: AgentTypeInfo(
                                 name="kinesin",
                                 radius=0.01,
                                 display_data=DisplayData(
@@ -374,7 +373,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "couples": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/couples.txt",
-                        agents={1: CytosimAgentInfo(name="motor complex", radius=0.02)},
+                        agents={1: AgentTypeInfo(name="motor complex", radius=0.02)},
                         position_indices=[3, 4, 5],
                     ),
                 },
@@ -571,7 +570,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                10.0,
+                                100.0,
                                 0.0,
                                 1000.0,
                                 5.0,
@@ -830,7 +829,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                10.0,
+                                100.0,
                                 0.0,
                                 1000.0,
                                 5.0,
@@ -1074,7 +1073,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                10.0,
+                                100.0,
                                 0.0,
                                 1000.0,
                                 5.0,

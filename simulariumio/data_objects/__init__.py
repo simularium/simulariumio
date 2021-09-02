@@ -7,6 +7,7 @@ from .meta_data import MetaData  # noqa: F401
 from .unit_data import UnitData  # noqa: F401
 from .camera_data import CameraData  # noqa: F401
 from .dimension_data import DimensionData  # noqa: F401
+from .agent_type_info import AgentTypeInfo  # noqa: F401
 from .display_data import DisplayData  # noqa: F401
 from .histogram_plot_data import HistogramPlotData  # noqa: F401
 from .scatter_plot_data import ScatterPlotData  # noqa: F401

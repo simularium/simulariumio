@@ -4,6 +4,7 @@
 import pytest
 
 from simulariumio.mcell import McellConverter, McellData
+from simulariumio import AgentTypeInfo, DisplayData
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
@@ -17,6 +18,23 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                 "organelle_model_viz_output/Scene.data_model.00.json",
                 path_to_binary_files="simulariumio/tests/data/mcell/"
                 "organelle_model_viz_output",
+                display_info={
+                    "a": AgentTypeInfo(
+                        name="Kinesin",
+                        radius=0.03,
+                        display_data=DisplayData(
+                            display_type="PDB",
+                            url="https://files.rcsb.org/download/3KIN.pdb",
+                            color="#0080ff",
+                        ),
+                    ),
+                    "t2": AgentTypeInfo(
+                        name="Transporter",
+                        display_data=DisplayData(
+                            color="#ff1493",
+                        ),
+                    ),
+                },
                 surface_mol_rotation_angle=0.0,
             ),
             {
@@ -53,8 +71,21 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     },
                     "typeMapping": {
                         "0": {"name": "b"},
-                        "1": {"name": "t2"},
-                        "2": {"name": "a"},
+                        "1": {
+                            "name": "Transporter",
+                            "geometry": {
+                                "displayType": "DEFAULT",
+                                "color": "#ff1493",
+                            },
+                        },
+                        "2": {
+                            "name": "Kinesin",
+                            "geometry": {
+                                "displayType": "PDB",
+                                "url": "https://files.rcsb.org/download/3KIN.pdb",
+                                "color": "#0080ff",
+                            },
+                        },
                     },
                 },
                 "spatialData": {
@@ -98,7 +129,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.015,
+                                0.00015,
                                 0.0,
                             ],
                         },
@@ -137,7 +168,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.015,
+                                0.00015,
                                 0.0,
                             ],
                         },
@@ -176,7 +207,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.015,
+                                0.00015,
                                 0.0,
                             ],
                         },

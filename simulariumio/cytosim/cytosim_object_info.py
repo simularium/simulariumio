@@ -4,7 +4,7 @@
 import logging
 from typing import Dict, List
 
-from .cytosim_agent_info import CytosimAgentInfo
+from ..data_objects.agent_type_info import AgentTypeInfo
 
 ###############################################################################
 
@@ -15,13 +15,13 @@ log = logging.getLogger(__name__)
 
 class CytosimObjectInfo:
     filepath: str
-    agents: Dict[int, CytosimAgentInfo]
+    agents: Dict[int, AgentTypeInfo]
     position_indices: List[int]
 
     def __init__(
         self,
         filepath: str,
-        agents: Dict[int, CytosimAgentInfo] = {},
+        agents: Dict[int, AgentTypeInfo] = {},
         position_indices: List[int] = [2, 3, 4],
     ):
         """
@@ -33,7 +33,7 @@ class CytosimObjectInfo:
         ----------
         filepath : str
             A string path to fiber_points.txt
-        agents : Dict[int, CytosimAgentInfo] (optional)
+        agents : Dict[int, AgentTypeInfo] (optional)
             A dict mapping the type index from Cytosim data
             to display names and radii for each type of agent
             of this type of Cytosim object

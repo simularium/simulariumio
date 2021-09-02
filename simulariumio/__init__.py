@@ -23,6 +23,7 @@ from .data_objects import (  # noqa: F401
     MetaData,
     CameraData,
     DimensionData,
+    AgentTypeInfo,
     DisplayData,
     ScatterPlotData,
     HistogramPlotData,

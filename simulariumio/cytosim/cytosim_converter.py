@@ -135,9 +135,10 @@ class CytosimConverter(TrajectoryConverter):
             else object_type[:-1] + str(raw_tid)
         )
         # radius
-        result.radii[time_index][agent_index] = (
-            (scale_factor * float(object_info.agents[raw_tid].radius))
+        result.radii[time_index][agent_index] = scale_factor * (
+            float(object_info.agents[raw_tid].radius)
             if raw_tid in object_info.agents
+            and object_info.agents[raw_tid].radius is not None
             else 1.0
         )
         return (result, uids, used_unique_IDs)
@@ -257,9 +258,11 @@ class CytosimConverter(TrajectoryConverter):
         # get display data (geometry and color)
         for object_type in input_data.object_info:
             for tid in input_data.object_info[object_type].agents:
-                agent_info = input_data.object_info[object_type].agents[tid]
-                if agent_info.display_data is not None:
-                    agent_data.display_data[agent_info.name] = agent_info.display_data
+                agent_type_info = input_data.object_info[object_type].agents[tid]
+                if agent_type_info.display_data is not None:
+                    agent_data.display_data[
+                        agent_type_info.name
+                    ] = agent_type_info.display_data
         # create TrajectoryData
         return TrajectoryData(
             meta_data=MetaData(

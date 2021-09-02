@@ -207,8 +207,8 @@ class McellConverter(TrajectoryConverter):
                     type_name_array.fromfile(mol_file, n_chars_type_name[0])
                     type_name = type_name_array.tostring().decode()
                     display_type_name = (
-                        input_data.display_names[type_name]
-                        if type_name in input_data.display_names
+                        input_data.display_info[type_name].name
+                        if type_name in input_data.display_info
                         else type_name
                     )
                     # get positions and rotations
@@ -249,7 +249,12 @@ class McellConverter(TrajectoryConverter):
                     result.radii[time_index, total_mols : total_mols + n_mols] = (
                         input_data.scale_factor
                         * BLENDER_GEOMETRY_SCALE_FACTOR
-                        * molecule_info[type_name]["display"]["scale"]
+                        * (
+                            input_data.display_info[type_name].radius
+                            if type_name in input_data.display_info
+                            and input_data.display_info[type_name].radius is not None
+                            else molecule_info[type_name]["display"]["scale"]
+                        )
                         * np.ones(n_mols)
                     )
                     result.rotations[
@@ -327,6 +332,13 @@ class McellConverter(TrajectoryConverter):
                 float(partitions["z_end"]) - float(partitions["z_start"]),
             ]
         )
+        # get display data (geometry and color)
+        for type_name in input_data.display_info:
+            agent_type_info = input_data.display_info[type_name]
+            if agent_type_info.display_data is not None:
+                agent_data.display_data[
+                    agent_type_info.name
+                ] = agent_type_info.display_data
         return TrajectoryData(
             meta_data=MetaData(
                 box_size=input_data.scale_factor * box_size,
