@@ -25,7 +25,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
             three_default_agents(),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": 3,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "ns",
@@ -84,7 +84,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "6": {
                             "name": "W",
                             "geometry": {
-                                "displayType": "SPHERE",
+                                "displayType": "DEFAULT",
                                 "color": "#666",
                             },
                         },
@@ -395,7 +395,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": 3,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -783,7 +783,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": 3,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "µs",

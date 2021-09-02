@@ -19,7 +19,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
             MultiplyTimeFilter(multiplier=100),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": 3,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",

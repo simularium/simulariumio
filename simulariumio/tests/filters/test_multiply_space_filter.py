@@ -17,7 +17,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
             MultiplySpaceFilter(multiplier=10.0),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": 3,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",

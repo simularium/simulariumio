@@ -19,7 +19,7 @@ class DisplayData:
 
     def __init__(
         self,
-        display_type: str = DISPLAY_TYPE.SPHERE,
+        display_type: str = DISPLAY_TYPE.DEFAULT,
         url: str = None,
         color: str = None,
     ):
@@ -30,8 +30,8 @@ class DisplayData:
         ----------
         display_type: str (optional)
             the type of geometry to display
-            Options: “SPHERE”, “CUBE”, “GIZMO”, “PDB”, or “OBJ”
-            Default: "SPHERE"
+            Options: "DEFAULT", “SPHERE”, “CUBE”, “GIZMO”, “PDB”, or “OBJ”
+            Default: "DEFAULT"
         url: str (optional)
             local path or web URL for the geometry file to display,
             web URLs are required for streaming
@@ -53,7 +53,7 @@ class DisplayData:
         """
         Check if this DisplayData is only holding default data
         """
-        return self.display_type == "SPHERE" and not self.url and not self.color
+        return self.display_type == "DEFAULT" and not self.url and not self.color
 
     def __iter__(self):
         yield "displayType", self.display_type

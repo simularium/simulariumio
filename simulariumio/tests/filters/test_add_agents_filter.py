@@ -17,7 +17,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
             AddAgentsFilter(new_agent_data=three_default_agents().agent_data),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": 3,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "ns",
@@ -76,7 +76,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "6": {
                             "name": "W",
                             "geometry": {
-                                "displayType": "SPHERE",
+                                "displayType": "DEFAULT",
                                 "color": "#666",
                             },
                         },
