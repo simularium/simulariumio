@@ -28,7 +28,13 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "fibers": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim"
                         "/3_fibers_3_frames/fiber_points.txt",
-                        agents={0: CytosimAgentInfo(name="fiber", radius=0.001)},
+                        agents={
+                            0: CytosimAgentInfo(
+                                name="fiber", 
+                                radius=0.001,
+                                display_data=
+                            )
+                        },
                     )
                 },
             ),

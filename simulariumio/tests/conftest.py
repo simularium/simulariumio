@@ -73,7 +73,7 @@ def three_default_agents() -> Dict[str, Any]:
                     ],
                 ]
             ),
-            display_info={
+            display_data={
                 "C": DisplayData(),
                 "W": DisplayData(
                     color="#666",
