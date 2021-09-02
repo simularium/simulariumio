@@ -254,6 +254,12 @@ class CytosimConverter(TrajectoryConverter):
                 agent_data,
                 uids,
             )
+        # get display data (geometry and color)
+        for object_type in input_data.object_info:
+            for tid in input_data.object_info[object_type].agents:
+                agent_info = input_data.object_info[object_type].agents[tid]
+                if agent_info.display_data is not None:
+                    agent_data.display_data[agent_info.name] = agent_info.display_data
         # create TrajectoryData
         return TrajectoryData(
             meta_data=MetaData(

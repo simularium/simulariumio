@@ -10,7 +10,7 @@ from simulariumio.cytosim import (
     CytosimObjectInfo,
     CytosimAgentInfo,
 )
-from simulariumio import MetaData
+from simulariumio import MetaData, DisplayData
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
@@ -30,9 +30,9 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "/3_fibers_3_frames/fiber_points.txt",
                         agents={
                             0: CytosimAgentInfo(
-                                name="fiber", 
+                                name="fiber",
                                 radius=0.001,
-                                display_data=
+                                display_data=DisplayData(color="#d71f5f"),
                             )
                         },
                     )
@@ -40,7 +40,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": 3,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -70,7 +70,15 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
-                    "typeMapping": {"0": {"name": "fiber"}},
+                    "typeMapping": {
+                        "0": {
+                            "name": "fiber",
+                            "geometry": {
+                                "displayType": "DEFAULT",
+                                "color": "#d71f5f",
+                            },
+                        },
+                    },
                 },
                 "spatialData": {
                     "version": 1,
@@ -330,7 +338,13 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "aster_pull3D_couples_actin_solid_3_frames/fiber_points.txt",
                         agents={
                             1: CytosimAgentInfo(name="microtubule", radius=0.01),
-                            2: CytosimAgentInfo(name="actin", radius=0.01),
+                            2: CytosimAgentInfo(
+                                name="actin",
+                                radius=0.01,
+                                display_data=DisplayData(
+                                    color="#ffc100",
+                                ),
+                            ),
                         },
                     ),
                     "solids": CytosimObjectInfo(
@@ -346,7 +360,15 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "aster_pull3D_couples_actin_solid_3_frames/singles.txt",
                         agents={
                             1: CytosimAgentInfo(name="dynein", radius=0.01),
-                            2: CytosimAgentInfo(name="kinesin", radius=0.01),
+                            2: CytosimAgentInfo(
+                                name="kinesin",
+                                radius=0.01,
+                                display_data=DisplayData(
+                                    display_type="PDB",
+                                    url="https://files.rcsb.org/download/3KIN.pdb",
+                                    color="#0080ff",
+                                ),
+                            ),
                         },
                     ),
                     "couples": CytosimObjectInfo(
@@ -359,7 +381,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": 3,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -391,10 +413,23 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     },
                     "typeMapping": {
                         "0": {"name": "microtubule"},
-                        "1": {"name": "actin"},
+                        "1": {
+                            "name": "actin",
+                            "geometry": {
+                                "displayType": "DEFAULT",
+                                "color": "#ffc100",
+                            },
+                        },
                         "2": {"name": "aster"},
                         "3": {"name": "vesicle"},
-                        "4": {"name": "kinesin"},
+                        "4": {
+                            "name": "kinesin",
+                            "geometry": {
+                                "displayType": "PDB",
+                                "url": "https://files.rcsb.org/download/3KIN.pdb",
+                                "color": "#0080ff",
+                            },
+                        },
                         "5": {"name": "dynein"},
                         "6": {"name": "motor complex"},
                     },
