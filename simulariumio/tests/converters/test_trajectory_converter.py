@@ -58,11 +58,36 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "typeMapping": {
                         "0": {"name": "C"},
                         "1": {"name": "U"},
-                        "2": {"name": "L"},
-                        "3": {"name": "S"},
+                        "2": {
+                            "name": "L",
+                            "geometry": {
+                                "displayType": "OBJ",
+                                "url": "molecule.obj",
+                                "color": "#333333",
+                            },
+                        },
+                        "3": {
+                            "name": "S",
+                            "geometry": {
+                                "displayType": "GIZMO",
+                                "color": "#000000",
+                            },
+                        },
                         "4": {"name": "O"},
-                        "5": {"name": "Y"},
-                        "6": {"name": "W"},
+                        "5": {
+                            "name": "Y",
+                            "geometry": {
+                                "displayType": "PDB",
+                                "url": "https://files.rcsb.org/download/7PDZ.pdb",
+                            },
+                        },
+                        "6": {
+                            "name": "W",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                                "color": "#666",
+                            },
+                        },
                     },
                 },
                 "spatialData": {

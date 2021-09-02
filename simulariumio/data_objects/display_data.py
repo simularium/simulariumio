@@ -43,14 +43,24 @@ class DisplayData:
         """
         self.display_type = display_type
         self.url = url
-        if len(color) != 7 or color[0] != "#":
+        if color is not None and (
+            (len(color) != 4 and len(color) != 7) or color[0] != "#"
+        ):
             raise Exception(f"{color} should be provided as '#xxxxxx'")
         self.color = color
 
+    def is_default(self):
+        """
+        Check if this DisplayData is only holding default data
+        """
+        return self.display_type == "SPHERE" and not self.url and not self.color
+
     def __iter__(self):
         yield "displayType", self.display_type
-        yield "url", self.url
-        yield "color", self.color
+        if self.url:
+            yield "url", self.url
+        if self.color:
+            yield "color", self.color
 
     def __copy__(self):
         result = type(self)(

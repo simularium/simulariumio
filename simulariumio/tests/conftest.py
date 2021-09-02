@@ -7,7 +7,14 @@ from random import choice
 
 import numpy as np
 
-from simulariumio import AgentData, TrajectoryData, UnitData, MetaData, ScatterPlotData
+from simulariumio import (
+    AgentData,
+    TrajectoryData,
+    UnitData,
+    MetaData,
+    ScatterPlotData,
+    DisplayData,
+)
 
 
 def three_default_agents() -> Dict[str, Any]:
@@ -66,6 +73,25 @@ def three_default_agents() -> Dict[str, Any]:
                     ],
                 ]
             ),
+            display_info={
+                "C": DisplayData(),
+                "W": DisplayData(
+                    color="#666",
+                ),
+                "S": DisplayData(
+                    display_type="GIZMO",
+                    color="#000000",
+                ),
+                "Y": DisplayData(
+                    display_type="PDB",
+                    url="https://files.rcsb.org/download/7PDZ.pdb",
+                ),
+                "L": DisplayData(
+                    display_type="OBJ",
+                    url="molecule.obj",
+                    color="#333333",
+                ),
+            },
         ),
         time_units=UnitData("ns"),
         spatial_units=UnitData("nm"),

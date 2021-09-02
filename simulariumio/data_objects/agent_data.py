@@ -186,7 +186,10 @@ class AgentData:
                     last_tid += 1
                     type_id_mapping[tn] = tid
                     type_name_mapping[str(tid)] = {"name": tn}
-                    if tn in self.display_info:
+                    if (
+                        tn in self.display_info
+                        and not self.display_info[tn].is_default()
+                    ):
                         type_name_mapping[str(tid)]["geometry"] = dict(
                             self.display_info[tn]
                         )
