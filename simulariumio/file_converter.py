@@ -29,7 +29,7 @@ class FileConverter(TrajectoryConverter):
         input_path: str
             path to the .simularium JSON file to load
         """
-        print("Reading Simularium JSON -------------")
+        print(f"Reading Simularium JSON {input_path} -------------")
         with open(input_path) as simularium_file:
             buffer_data = json.load(simularium_file)
         if (

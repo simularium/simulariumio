@@ -178,6 +178,18 @@ class TrajectoryConverter:
         buffer_data = JsonWriter.format_trajectory_data(self._data)
         return json.dumps(buffer_data)
 
+    def save_plot_data(self, output_path: str):
+        """
+        Save the current plot data in JSON format
+        at the output path
+
+        Parameters
+        ----------
+        output_path: str
+            where to save the file
+        """
+        JsonWriter.save_plot_data(self._data.plots, output_path)
+
     def save(self, output_path: str, binary: bool = True):
         """
         Save the current simularium data in .simularium format

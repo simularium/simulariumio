@@ -226,3 +226,25 @@ class JsonWriter(Writer):
         with open(f"{output_path}.simularium", "w+") as outfile:
             json.dump(json_data, outfile)
         print(f"saved to {output_path}.simularium")
+
+    @staticmethod
+    def save_plot_data(plot_data: List[Dict[str, Any]], output_path: str):
+        """
+        Save the current plot data in JSON format
+        at the output path
+
+        Parameters
+        ----------
+        plot_data: List[Dict[str, Any]]
+            the data to save
+        output_path: str
+            where to save the file
+        """
+        with open(f"{output_path}_plot-data.json", "w+") as outfile:
+            json.dump(
+                {
+                    "version": 1,
+                    "data": plot_data,
+                }, 
+                outfile
+            )
