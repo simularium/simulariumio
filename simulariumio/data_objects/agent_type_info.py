@@ -35,7 +35,7 @@ class AgentTypeInfo:
             Default : 1.0
         display_data: DisplayData (optional)
             Information about how to render this type of agent
-            Default: None
+            Default: use default rendering and colors
         """
         self.name = name
         self.radius = radius

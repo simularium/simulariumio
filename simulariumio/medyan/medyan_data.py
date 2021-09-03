@@ -45,13 +45,19 @@ class MedyanData:
             A string path to the MEDYAN snapshot.traj output file
         filament_agent_info : Dict[int, AgentTypeInfo] (optional)
             A dict mapping MEDYAN type ID for filaments
-            to info (name, radius) for filament agents
+            to info (name, radius, rendering) for filament agents
+            Default: for names, use "filament[type ID]"
+                for rendering, use default representation and colors
         linker_agent_info : Dict[int, AgentTypeInfo] (optional)
             A dict mapping MEDYAN type ID for linkers
-            to info (name, radius) for linker agents
+            to info (name, radius, rendering) for linker agents
+            Default: for names, use "linker[type ID]"
+                for rendering, use default representation and colors
         motor_agent_info : Dict[int, AgentTypeInfo] (optional)
             A dict mapping MEDYAN type ID for motors
-            to info (name, radius) for motor agents
+            to info (name, radius, rendering) for motor agents
+            Default: for names, use "motor[type ID]"
+                for rendering, use default representation and colors
         agents_with_endpoints: List[str]
             (only used for motors and linkers)
             A list of output agent names for which to draw spheres

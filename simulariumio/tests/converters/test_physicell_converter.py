@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.physicell import PhysicellConverter, PhysicellData
-from simulariumio import MetaData
+from simulariumio import MetaData, AgentTypeInfo, DisplayData
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
@@ -21,6 +21,16 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                 ),
                 timestep=360.0,
                 path_to_output_dir="simulariumio/tests/data/physicell/output/",
+                agent_info={
+                    0: AgentTypeInfo(
+                        name="Cancer cell",
+                        radius=30.0,
+                        display_data=DisplayData(
+                            color="#0080ff",
+                        ),
+                    ),
+                },
+                phase_names={1: {4: "interphase"}},
             ),
             {
                 "trajectoryInfo": {
@@ -55,8 +65,14 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "cell 1#phase 4"},
-                        "1": {"name": "cell 0#phase 4"},
+                        "0": {"name": "cell1#interphase"},
+                        "1": {
+                            "name": "Cancer cell#phase4",
+                            "geometry": {
+                                "displayType": "DEFAULT",
+                                "color": "#0080ff",
+                            },
+                        },
                     },
                 },
                 "spatialData": {
@@ -89,7 +105,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                                 1000.0,
                                 2.0,
@@ -100,7 +116,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                             ],
                         },
@@ -128,7 +144,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                                 1000.0,
                                 2.0,
@@ -139,7 +155,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                             ],
                         },
@@ -167,7 +183,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                                 1000.0,
                                 2.0,
@@ -178,7 +194,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                             ],
                         },
