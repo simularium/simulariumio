@@ -59,8 +59,8 @@ class MedyanConverter(TrajectoryConverter):
         """
         raw_tid = int(line.split()[2])
         return (
-            input_data.agent_info[object_type][raw_tid].name
-            if raw_tid in input_data.agent_info[object_type]
+            input_data.display_info[object_type][raw_tid].name
+            if raw_tid in input_data.display_info[object_type]
             else object_type + str(raw_tid)
         )
 
@@ -180,8 +180,8 @@ class MedyanConverter(TrajectoryConverter):
                 result.radii[time_index][
                     agent_index
                 ] = input_data.meta_data.scale_factor * (
-                    input_data.agent_info[object_type][raw_tid].radius
-                    if raw_tid in input_data.agent_info[object_type]
+                    input_data.display_info[object_type][raw_tid].radius
+                    if raw_tid in input_data.display_info[object_type]
                     else 1.0
                 )
                 if object_type == "filament":
@@ -200,12 +200,14 @@ class MedyanConverter(TrajectoryConverter):
                         result.types[time_index].append(
                             result.types[time_index][agent_index]
                         )
-                        result.radii[time_index][
-                            agent_index + i + 1
-                        ] = input_data.meta_data.scale_factor * (
-                            2 * input_data.agent_info[object_type][raw_tid].radius
-                            if raw_tid in input_data.agent_info[object_type]
-                            else 1.0
+                        result.radii[time_index][agent_index + i + 1] = (
+                            2
+                            * input_data.meta_data.scale_factor
+                            * (
+                                input_data.display_info[object_type][raw_tid].radius
+                                if raw_tid in input_data.display_info[object_type]
+                                else 1.0
+                            )
                         )
                 parsing_object = True
             elif parsing_object:
@@ -238,13 +240,10 @@ class MedyanConverter(TrajectoryConverter):
         time_units = UnitData("s")
         spatial_units = UnitData("nm", 1.0 / input_data.meta_data.scale_factor)
         # get display data (geometry and color)
-        for object_type in input_data.agent_info:
-            for tid in input_data.agent_info[object_type]:
-                agent_type_info = input_data.agent_info[object_type][tid]
-                if agent_type_info.display_data is not None:
-                    agent_data.display_data[
-                        agent_type_info.name
-                    ] = agent_type_info.display_data
+        for object_type in input_data.display_info:
+            for tid in input_data.display_info[object_type]:
+                display_data = input_data.display_info[object_type][tid]
+                agent_data.display_data[display_data.name] = display_data
         return TrajectoryData(
             meta_data=MetaData(
                 box_size=input_data.meta_data.scale_factor

@@ -4,7 +4,7 @@
 import logging
 from typing import Dict, List
 
-from ..data_objects.agent_type_info import AgentTypeInfo
+from ..data_objects import DisplayData
 
 ###############################################################################
 
@@ -15,13 +15,13 @@ log = logging.getLogger(__name__)
 
 class CytosimObjectInfo:
     filepath: str
-    agents: Dict[int, AgentTypeInfo]
+    display_info: Dict[int, DisplayData]
     position_indices: List[int]
 
     def __init__(
         self,
         filepath: str,
-        agents: Dict[int, AgentTypeInfo] = None,
+        display_info: Dict[int, DisplayData] = None,
         position_indices: List[int] = [2, 3, 4],
     ):
         """
@@ -33,10 +33,10 @@ class CytosimObjectInfo:
         ----------
         filepath : str
             A string path to fiber_points.txt
-        agents : Dict[int, AgentTypeInfo] (optional)
+        display_info : Dict[int, DisplayData] (optional)
             A dict mapping the type index from Cytosim data
-            to display names and radii for each type of agent
-            of this type of Cytosim object
+            to DisplayData, including names and display info
+            to use for rendering this agent type in the Simularium Viewer
         position_indices : List[int] (optional)
             the columns in Cytosim's reports are not
             always consistent, use this to override them
@@ -45,5 +45,5 @@ class CytosimObjectInfo:
             Default: [2, 3, 4]
         """
         self.filepath = filepath
-        self.agents = agents if agents is not None else {}
+        self.display_info = display_info if display_info is not None else {}
         self.position_indices = position_indices

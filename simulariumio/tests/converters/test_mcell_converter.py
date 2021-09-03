@@ -4,7 +4,7 @@
 import pytest
 
 from simulariumio.mcell import McellConverter, McellData
-from simulariumio import AgentTypeInfo, DisplayData
+from simulariumio import DisplayData
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
@@ -19,20 +19,16 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                 path_to_binary_files="simulariumio/tests/data/mcell/"
                 "organelle_model_viz_output",
                 display_info={
-                    "a": AgentTypeInfo(
+                    "a": DisplayData(
                         name="Kinesin",
                         radius=0.03,
-                        display_data=DisplayData(
-                            display_type="PDB",
-                            url="https://files.rcsb.org/download/3KIN.pdb",
-                            color="#0080ff",
-                        ),
+                        display_type="PDB",
+                        url="https://files.rcsb.org/download/3KIN.pdb",
+                        color="#0080ff",
                     ),
-                    "t2": AgentTypeInfo(
+                    "t2": DisplayData(
                         name="Transporter",
-                        display_data=DisplayData(
-                            color="#ff1493",
-                        ),
+                        color="#ff1493",
                     ),
                 },
                 surface_mol_rotation_angle=0.0,

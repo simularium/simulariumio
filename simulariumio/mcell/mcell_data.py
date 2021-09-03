@@ -4,7 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-from ..data_objects import CameraData, AgentTypeInfo
+from ..data_objects import CameraData, DisplayData
 
 ###############################################################################
 
@@ -17,7 +17,7 @@ class McellData:
     path_to_data_model_json: str
     path_to_binary_files: str
     nth_timestep_to_read: int
-    display_info: Dict[str, AgentTypeInfo]
+    display_info: Dict[str, DisplayData]
     surface_mol_rotation_angle: float
     camera_defaults: CameraData
     scale_factor: float
@@ -28,7 +28,7 @@ class McellData:
         path_to_data_model_json: str,
         path_to_binary_files: str,
         nth_timestep_to_read: int = 1,
-        display_info: Dict[str, AgentTypeInfo] = None,
+        display_info: Dict[str, DisplayData] = None,
         surface_mol_rotation_angle: float = None,
         camera_defaults: CameraData = CameraData(),
         scale_factor: float = 1.0,
@@ -51,9 +51,9 @@ class McellData:
             Visualize every Nth timestep
             e.g. if 10, only every 10th timestep will be visualized
             Default: 1
-        display_info: Dict[str, AgentTypeInfo] (optional)
+        display_info: Dict[str, DisplayData] (optional)
             A mapping from molecule names in the MCell data
-            to AgentTypeInfo, including names and display data
+            to DisplayData, including names and display info
             to use for rendering this agent type in the Simularium Viewer
             Default: use names from MCell and default rendering and colors
         surface_mol_rotation_angle: float (optional)

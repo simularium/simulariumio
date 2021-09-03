@@ -13,21 +13,33 @@ log = logging.getLogger(__name__)
 
 
 class DisplayData:
+    name: str
+    radius: float
     display_type: str
     url: str
     color: str
 
     def __init__(
         self,
+        name: str,
+        radius: float = None,
         display_type: str = DISPLAY_TYPE.DEFAULT,
         url: str = None,
         color: str = None,
     ):
         """
-        This object contains data for displaying an agent
+        This object contains info about how to display an agent
 
         Parameters
         ----------
+        name : str
+            A string display name for this type of agent
+            Default: use names from simulator data if possible
+        radius : float (optional)
+            A float radius for rendering this agent.
+            For fibers, this is the thickness of the line
+            For default agents, this is the scale of the representation
+            Default : 1.0
         display_type: str (optional)
             the type of geometry to display
             Options: "DEFAULT", “SPHERE”, “CUBE”, “GIZMO”, “PDB”, or “OBJ”
@@ -41,6 +53,8 @@ class DisplayData:
             the hex value for the color to display, e.g "#FFFFFF"
             Default: Use default colors from Simularium Viewer
         """
+        self.name = name
+        self.radius = radius
         self.display_type = display_type
         self.url = url
         if color is not None and (

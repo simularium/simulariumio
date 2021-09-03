@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.physicell import PhysicellConverter, PhysicellData
-from simulariumio import MetaData, AgentTypeInfo, DisplayData
+from simulariumio import MetaData, DisplayData
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
@@ -21,13 +21,11 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                 ),
                 timestep=360.0,
                 path_to_output_dir="simulariumio/tests/data/physicell/output/",
-                agent_info={
-                    0: AgentTypeInfo(
+                display_info={
+                    0: DisplayData(
                         name="Cancer cell",
                         radius=30.0,
-                        display_data=DisplayData(
-                            color="#0080ff",
-                        ),
+                        color="#0080ff",
                     ),
                 },
                 phase_names={1: {4: "interphase"}},

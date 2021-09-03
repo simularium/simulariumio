@@ -9,7 +9,7 @@ from simulariumio.cytosim import (
     CytosimData,
     CytosimObjectInfo,
 )
-from simulariumio import MetaData, AgentTypeInfo, DisplayData
+from simulariumio import MetaData, DisplayData
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
@@ -27,11 +27,11 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "fibers": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim"
                         "/3_fibers_3_frames/fiber_points.txt",
-                        agents={
-                            0: AgentTypeInfo(
+                        display_info={
+                            0: DisplayData(
                                 name="fiber",
                                 radius=0.001,
-                                display_data=DisplayData(color="#d71f5f"),
+                                color="#d71f5f",
                             )
                         },
                     )
@@ -335,45 +335,43 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "fibers": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/fiber_points.txt",
-                        agents={
-                            1: AgentTypeInfo(name="microtubule", radius=0.01),
-                            2: AgentTypeInfo(
+                        display_info={
+                            1: DisplayData(name="microtubule", radius=0.01),
+                            2: DisplayData(
                                 name="actin",
                                 radius=0.01,
-                                display_data=DisplayData(
-                                    color="#ffc100",
-                                ),
+                                color="#ffc100",
                             ),
                         },
                     ),
                     "solids": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/solids.txt",
-                        agents={
-                            1: AgentTypeInfo(name="aster"),
-                            2: AgentTypeInfo(name="vesicle", radius=0.1),
+                        display_info={
+                            1: DisplayData(name="aster"),
+                            2: DisplayData(name="vesicle", radius=0.1),
                         },
                     ),
                     "singles": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/singles.txt",
-                        agents={
-                            1: AgentTypeInfo(name="dynein", radius=0.01),
-                            2: AgentTypeInfo(
+                        display_info={
+                            1: DisplayData(name="dynein", radius=0.01),
+                            2: DisplayData(
                                 name="kinesin",
                                 radius=0.01,
-                                display_data=DisplayData(
-                                    display_type="PDB",
-                                    url="https://files.rcsb.org/download/3KIN.pdb",
-                                    color="#0080ff",
-                                ),
+                                display_type="PDB",
+                                url="https://files.rcsb.org/download/3KIN.pdb",
+                                color="#0080ff",
                             ),
                         },
                     ),
                     "couples": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/couples.txt",
-                        agents={1: AgentTypeInfo(name="motor complex", radius=0.02)},
+                        display_info={
+                            1: DisplayData(name="motor complex", radius=0.02)
+                        },
                         position_indices=[3, 4, 5],
                     ),
                 },

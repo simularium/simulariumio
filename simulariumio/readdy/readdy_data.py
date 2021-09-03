@@ -4,7 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-from ..data_objects import UnitData, MetaData
+from ..data_objects import UnitData, MetaData, DisplayData
 
 ###############################################################################
 
@@ -17,9 +17,8 @@ class ReaddyData:
     meta_data: MetaData
     timestep: float
     path_to_readdy_h5: str
-    radii: Dict[str, float]
+    display_info: Dict[str, DisplayData]
     ignore_types: List[str]
-    type_grouping: Dict[str, List[str]]
     time_units: UnitData
     spatial_units: UnitData
     plots: List[Dict[str, Any]]
@@ -29,11 +28,10 @@ class ReaddyData:
         meta_data: MetaData,
         timestep: float,
         path_to_readdy_h5: str,
-        radii: Dict[str, float] = None,
+        display_info: Dict[str, DisplayData] = None,
         ignore_types: List[str] = None,
-        type_grouping: Dict[str, List[str]] = None,
-        time_units: UnitData = UnitData("s"),
-        spatial_units: UnitData = UnitData("m"),
+        time_units: UnitData = None,
+        spatial_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
     ):
         """
@@ -51,16 +49,13 @@ class ReaddyData:
             Default: 0.0
         path_to_readdy_h5 : str
             A string path to the ReaDDy trajectory file (.h5)
-        radii : Dict[str, float] (optional)
-            A mapping of ReaDDy particle type to radius
-            of each visualized sphere for that type
-            Default: 1.0 (for each particle)
+        display_info : Dict[str, DisplayData] (optional)
+            The cell type name from ReaDDy data mapped
+            to display names and rendering info for that type,
+            Default: for names, use ReaDDy name,
+                for rendering, use default representations and colors
         ignore_types : List[str] (optional)
             A list of string ReaDDy particle types to ignore
-        type_grouping : Dict[str, List[str]] (optional)
-            A mapping of a new group type name to a list of
-            ReaDDy particle types to include in that group
-            e.g. {"moleculeA":["A1","A2","A3"]}
         time_units: UnitData (optional)
             multiplier and unit name for time values
             Default: 1.0 second
@@ -75,9 +70,8 @@ class ReaddyData:
         self.meta_data = meta_data
         self.timestep = timestep
         self.path_to_readdy_h5 = path_to_readdy_h5
-        self.radii = radii
+        self.display_info = display_info if display_info is not None else {}
         self.ignore_types = ignore_types
-        self.type_grouping = type_grouping
-        self.time_units = time_units
-        self.spatial_units = spatial_units
+        self.time_units = time_units if time_units is not None else UnitData("s")
+        self.spatial_units = spatial_units if time_units is not None else UnitData("m")
         self.plots = plots if plots is not None else []

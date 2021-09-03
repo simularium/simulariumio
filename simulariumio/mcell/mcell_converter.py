@@ -334,11 +334,8 @@ class McellConverter(TrajectoryConverter):
         )
         # get display data (geometry and color)
         for type_name in input_data.display_info:
-            agent_type_info = input_data.display_info[type_name]
-            if agent_type_info.display_data is not None:
-                agent_data.display_data[
-                    agent_type_info.name
-                ] = agent_type_info.display_data
+            display_data = input_data.display_info[type_name]
+            agent_data.display_data[display_data.name] = display_data
         return TrajectoryData(
             meta_data=MetaData(
                 box_size=input_data.scale_factor * box_size,

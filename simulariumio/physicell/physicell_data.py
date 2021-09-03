@@ -4,7 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-from ..data_objects import UnitData, MetaData, AgentTypeInfo
+from ..data_objects import UnitData, MetaData, DisplayData
 
 ###############################################################################
 
@@ -18,7 +18,7 @@ class PhysicellData:
     timestep: float
     time_units: UnitData
     path_to_output_dir: str
-    agent_info: Dict[int, AgentTypeInfo]
+    display_info: Dict[int, DisplayData]
     phase_names: Dict[int, Dict[int, str]]
     plots: List[Dict[str, Any]]
 
@@ -27,7 +27,7 @@ class PhysicellData:
         meta_data: MetaData,
         timestep: float,
         path_to_output_dir: str,
-        agent_info: Dict[int, AgentTypeInfo] = None,
+        display_info: Dict[int, DisplayData] = None,
         phase_names: Dict[int, Dict[int, str]] = None,
         time_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
@@ -47,9 +47,10 @@ class PhysicellData:
         path_to_output_dir : string
             A string path to the PhysiCell output directory
             containing MultiCellDS XML and MATLAB files
-        agent_info : Dict[int, AgentTypeInfo] (optional)
+        display_info : Dict[int, DisplayData] (optional)
             The cell type ID from PhysiCell data mapped
-            to display names and rendering info for that type,
+            to DisplayData, including names and display info
+            to use for rendering that agent type in the Simularium Viewer
             Default: for names, "cell[cell type ID from PhysiCell data]",
                 for rendering, use default representations and colors
         phase_names : Dict[int, Dict[int, str]] (optional)
@@ -66,7 +67,7 @@ class PhysicellData:
         self.meta_data = meta_data
         self.timestep = timestep
         self.path_to_output_dir = path_to_output_dir
-        self.agent_info = agent_info if agent_info is not None else {}
+        self.display_info = display_info if display_info is not None else {}
         self.phase_names = phase_names if phase_names is not None else {}
         self.time_units = time_units if time_units is not None else UnitData("s")
         self.plots = plots if plots is not None else []
