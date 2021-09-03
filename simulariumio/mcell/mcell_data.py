@@ -28,11 +28,11 @@ class McellData:
         path_to_data_model_json: str,
         path_to_binary_files: str,
         nth_timestep_to_read: int = 1,
-        display_info: Dict[str, AgentTypeInfo] = {},
+        display_info: Dict[str, AgentTypeInfo] = None,
         surface_mol_rotation_angle: float = None,
         camera_defaults: CameraData = CameraData(),
         scale_factor: float = 1.0,
-        plots: List[Dict[str, Any]] = [],
+        plots: List[Dict[str, Any]] = None,
     ):
         """
         This object holds simulation trajectory outputs
@@ -75,8 +75,8 @@ class McellData:
         self.path_to_data_model_json = path_to_data_model_json
         self.path_to_binary_files = path_to_binary_files
         self.nth_timestep_to_read = nth_timestep_to_read
-        self.display_info = display_info
+        self.display_info = display_info if display_info is not None else {}
         self.surface_mol_rotation_angle = surface_mol_rotation_angle
         self.camera_defaults = camera_defaults
         self.scale_factor = scale_factor
-        self.plots = plots
+        self.plots = plots if plots is not None else []

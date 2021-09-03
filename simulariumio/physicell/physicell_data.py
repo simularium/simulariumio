@@ -27,8 +27,8 @@ class PhysicellData:
         timestep: float,
         path_to_output_dir: str,
         types: Dict[int, Dict[Any, str]] = None,
-        time_units: UnitData = UnitData("s"),
-        plots: List[Dict[str, Any]] = [],
+        time_units: UnitData = None,
+        plots: List[Dict[str, Any]] = None,
     ):
         """
         This object holds simulation trajectory outputs
@@ -65,5 +65,5 @@ class PhysicellData:
         self.timestep = timestep
         self.path_to_output_dir = path_to_output_dir
         self.types = types
-        self.time_units = time_units
-        self.plots = plots
+        self.time_units = time_units if time_units is not None else UnitData("s")
+        self.plots = plots if plots is not None else []

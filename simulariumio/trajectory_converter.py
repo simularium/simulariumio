@@ -153,7 +153,7 @@ class TrajectoryConverter:
         Return the spatialData's bundleData for a simulation
         of agents with subpoints, packing buffer with jagged data is slower
         """
-        bundle_data: List[Dict[str, Any]] = []
+        bundle_data = []
         uids = {}
         used_unique_IDs = list(np.unique(agent_data.unique_ids))
         total_steps = (
@@ -274,7 +274,7 @@ class TrajectoryConverter:
         Return the spatialData's bundleData for a simulation
         of agents without subpoints, using list slicing for speed
         """
-        bundle_data: List[Dict[str, Any]] = []
+        bundle_data = []
         max_n_agents = int(np.amax(agent_data.n_agents, 0))
         ix_positions = np.empty((3 * max_n_agents,), dtype=int)
         ix_rotations = np.empty((3 * max_n_agents,), dtype=int)

@@ -31,7 +31,7 @@ class TrajectoryData:
         agent_data: AgentData,
         time_units: UnitData = UnitData("s"),
         spatial_units: UnitData = UnitData("m"),
-        plots: List[Dict[str, Any]] = [],
+        plots: List[Dict[str, Any]] = None,
     ):
         """
         This object holds simulation trajectory outputs
@@ -59,7 +59,7 @@ class TrajectoryData:
         self.agent_data = agent_data
         self.time_units = time_units
         self.spatial_units = spatial_units
-        self.plots = plots
+        self.plots = plots if plots is not None else []
 
     @classmethod
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):

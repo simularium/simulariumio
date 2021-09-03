@@ -21,7 +21,7 @@ class CytosimObjectInfo:
     def __init__(
         self,
         filepath: str,
-        agents: Dict[int, AgentTypeInfo] = {},
+        agents: Dict[int, AgentTypeInfo] = None,
         position_indices: List[int] = [2, 3, 4],
     ):
         """
@@ -45,5 +45,5 @@ class CytosimObjectInfo:
             Default: [2, 3, 4]
         """
         self.filepath = filepath
-        self.agents = agents
+        self.agents = agents if agents is not None else {}
         self.position_indices = position_indices

@@ -34,7 +34,7 @@ class ReaddyData:
         type_grouping: Dict[str, List[str]] = None,
         time_units: UnitData = UnitData("s"),
         spatial_units: UnitData = UnitData("m"),
-        plots: List[Dict[str, Any]] = [],
+        plots: List[Dict[str, Any]] = None,
     ):
         """
         This object holds simulation trajectory outputs
@@ -80,4 +80,4 @@ class ReaddyData:
         self.type_grouping = type_grouping
         self.time_units = time_units
         self.spatial_units = spatial_units
-        self.plots = plots
+        self.plots = plots if plots is not None else []

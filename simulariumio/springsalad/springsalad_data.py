@@ -23,10 +23,10 @@ class SpringsaladData:
     def __init__(
         self,
         path_to_sim_view_txt: str,
-        display_names: Dict[str, str] = {},
+        display_names: Dict[str, str] = None,
         camera_defaults: CameraData = CameraData(),
         scale_factor: float = 1.0,
-        plots: List[Dict[str, Any]] = [],
+        plots: List[Dict[str, Any]] = None,
     ):
         """
         This object holds simulation trajectory outputs
@@ -55,7 +55,7 @@ class SpringsaladData:
             in Simularium format
         """
         self.path_to_sim_view_txt = path_to_sim_view_txt
-        self.display_names = display_names
+        self.display_names = display_names if display_names is not None else {}
         self.camera_defaults = camera_defaults
         self.scale_factor = scale_factor
-        self.plots = plots
+        self.plots = plots if plots is not None else []

@@ -27,10 +27,10 @@ class SmoldynData:
         meta_data: MetaData,
         path_to_output_txt: str,
         radii: Dict[str, float],
-        display_names: Dict[str, str] = {},
+        display_names: Dict[str, str] = None,
         time_units: UnitData = UnitData("s"),
         spatial_units: UnitData = UnitData("m"),
-        plots: List[Dict[str, Any]] = [],
+        plots: List[Dict[str, Any]] = None,
     ):
         """
         This object holds simulation trajectory outputs
@@ -69,7 +69,7 @@ class SmoldynData:
         self.meta_data = meta_data
         self.path_to_output_txt = path_to_output_txt
         self.radii = radii
-        self.display_names = display_names
+        self.display_names = display_names if display_names is not None else {}
         self.time_units = time_units
         self.spatial_units = spatial_units
-        self.plots = plots
+        self.plots = plots if plots is not None else []

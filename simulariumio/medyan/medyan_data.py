@@ -25,12 +25,12 @@ class MedyanData:
         self,
         meta_data: MetaData,
         path_to_snapshot: str,
-        filament_agent_info: Dict[int, AgentTypeInfo] = {},
-        linker_agent_info: Dict[int, AgentTypeInfo] = {},
-        motor_agent_info: Dict[int, AgentTypeInfo] = {},
+        filament_agent_info: Dict[int, AgentTypeInfo] = None,
+        linker_agent_info: Dict[int, AgentTypeInfo] = None,
+        motor_agent_info: Dict[int, AgentTypeInfo] = None,
         agents_with_endpoints: List[str] = None,
         draw_fiber_points: bool = False,
-        plots: List[Dict[str, Any]] = [],
+        plots: List[Dict[str, Any]] = None,
     ):
         """
         This object holds simulation trajectory outputs
@@ -71,12 +71,12 @@ class MedyanData:
         self.meta_data = meta_data
         self.path_to_snapshot = path_to_snapshot
         self.agent_info = {
-            "filament": filament_agent_info,
-            "linker": linker_agent_info,
-            "motor": motor_agent_info,
+            "filament": filament_agent_info if filament_agent_info is not None else {},
+            "linker": linker_agent_info if linker_agent_info is not None else {},
+            "motor": motor_agent_info if motor_agent_info is not None else {},
         }
         self.agents_with_endpoints = (
             agents_with_endpoints if agents_with_endpoints is not None else []
         )
         self.draw_fiber_points = draw_fiber_points
-        self.plots = plots
+        self.plots = plots if plots is not None else []
