@@ -4,6 +4,7 @@
 import pytest
 
 from simulariumio.springsalad import SpringsaladConverter, SpringsaladData
+from simulariumio import DisplayData
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
@@ -17,7 +18,19 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "simulariumio/tests/data/springsalad/"
                     "Simulation0_SIM_VIEW_Run0.txt"
                 ),
-                display_names={"GREEN": "A", "RED": "B"},
+                display_info={
+                    "GREEN": DisplayData(
+                        name="A",
+                        radius=10.0,
+                        display_type="OBJ",
+                        url="a.obj",
+                        color="#dfdacd",
+                    ),
+                    "RED": DisplayData(
+                        name="B",
+                        color="#0080ff",
+                    ),
+                },
                 scale_factor=0.1,
             ),
             {
@@ -53,8 +66,21 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "A"},
-                        "1": {"name": "B"},
+                        "0": {
+                            "name": "A",
+                            "geometry": {
+                                "displayType": "OBJ",
+                                "url": "a.obj",
+                                "color": "#dfdacd",
+                            },
+                        },
+                        "1": {
+                            "name": "B",
+                            "geometry": {
+                                "displayType": "DEFAULT",
+                                "color": "#0080ff",
+                            },
+                        },
                         "2": {"name": "GRAY"},
                         "3": {"name": "CYAN"},
                         "4": {"name": "BLUE"},
@@ -79,7 +105,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.2,
+                                1.0,
                                 0.0,
                                 1000.0,
                                 100010000.0,
@@ -90,7 +116,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.2,
+                                1.0,
                                 0.0,
                                 1000.0,
                                 100200001.0,
