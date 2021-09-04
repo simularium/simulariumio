@@ -96,7 +96,9 @@ class ReaddyConverter(TrajectoryConverter):
                     * positions[time_index][agent_index]
                 )
                 result.radii[time_index][new_agent_index] = (
-                    display_data.radius if display_data is not None else 1.0
+                    display_data.radius
+                    if display_data is not None and display_data.radius is not None
+                    else 1.0
                 )
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index
@@ -109,6 +111,7 @@ class ReaddyConverter(TrajectoryConverter):
         """
         print("Reading ReaDDy Data -------------")
         agent_data = ReaddyConverter._get_agent_data(input_data)
+        # get display data (geometry and color)
         for tid in input_data.display_info:
             display_data = input_data.display_info[tid]
             agent_data.display_data[display_data.name] = display_data

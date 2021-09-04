@@ -29,8 +29,8 @@ class TrajectoryData:
         self,
         meta_data: MetaData,
         agent_data: AgentData,
-        time_units: UnitData = UnitData("s"),
-        spatial_units: UnitData = UnitData("m"),
+        time_units: UnitData = None,
+        spatial_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
     ):
         """
@@ -57,8 +57,10 @@ class TrajectoryData:
         """
         self.meta_data = meta_data
         self.agent_data = agent_data
-        self.time_units = time_units
-        self.spatial_units = spatial_units
+        self.time_units = time_units if time_units is not None else UnitData("s")
+        self.spatial_units = (
+            spatial_units if spatial_units is not None else UnitData("m")
+        )
         self.plots = plots if plots is not None else []
 
     @classmethod

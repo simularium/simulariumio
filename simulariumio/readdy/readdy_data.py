@@ -50,9 +50,10 @@ class ReaddyData:
         path_to_readdy_h5 : str
             A string path to the ReaDDy trajectory file (.h5)
         display_info : Dict[str, DisplayData] (optional)
-            The cell type name from ReaDDy data mapped
+            The particle type name from ReaDDy data mapped
             to display names and rendering info for that type,
             Default: for names, use ReaDDy name,
+                for radius, use 1.0,
                 for rendering, use default representations and colors
         ignore_types : List[str] (optional)
             A list of string ReaDDy particle types to ignore

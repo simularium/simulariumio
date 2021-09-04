@@ -37,6 +37,9 @@ class CytosimObjectInfo:
             A dict mapping the type index from Cytosim data
             to DisplayData, including names and display info
             to use for rendering this agent type in the Simularium Viewer
+            Default: for names, use "[object type][type ID]". e.g. "filament1",
+                for radius, use 1.0,
+                for rendering, use default representations and colors
         position_indices : List[int] (optional)
             the columns in Cytosim's reports are not
             always consistent, use this to override them

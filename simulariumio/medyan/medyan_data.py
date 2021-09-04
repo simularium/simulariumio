@@ -48,6 +48,7 @@ class MedyanData:
             to DisplayData, including names and display info
             to use for rendering filament agent types in the Simularium Viewer
             Default: for names, use "filament[type ID]"
+                for radius, use 1.0,
                 for rendering, use default representation and colors
         linker_display_info : Dict[int, DisplayData] (optional)
             A dict mapping MEDYAN type ID for linkers

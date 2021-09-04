@@ -52,6 +52,7 @@ class PhysicellData:
             to DisplayData, including names and display info
             to use for rendering that agent type in the Simularium Viewer
             Default: for names, "cell[cell type ID from PhysiCell data]",
+                for radius, calculate from cell's volume,
                 for rendering, use default representations and colors
         phase_names : Dict[int, Dict[int, str]] (optional)
             the cell type ID from PhysiCell data mapped

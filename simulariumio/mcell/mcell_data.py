@@ -55,7 +55,9 @@ class McellData:
             A mapping from molecule names in the MCell data
             to DisplayData, including names and display info
             to use for rendering this agent type in the Simularium Viewer
-            Default: use names from MCell and default rendering and colors
+            Default: for names, use names from MCell,
+                for radius, use value from MCell,
+                for rendering, use default representations and colors
         surface_mol_rotation_angle: float (optional)
             The angle to use to calculate rotations
             around surface molecules' normals

@@ -40,9 +40,8 @@ class CytosimData:
         object_info : Dict[str, CytosimObjectInfo]
             A dict mapping Cytosim object type
             (either "fibers", "solids", "singles", or "couples")
-            to info for reading the Cytosim data for agents
-            of that object type
-            Default:
+            to info for reading and rendering the Cytosim data
+            for agents of that object type
         draw_fiber_points : bool (optional)
             (only used for fibers)
             in addition to drawing a line for each fiber,

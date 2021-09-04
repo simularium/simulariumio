@@ -177,12 +177,14 @@ class MedyanConverter(TrajectoryConverter):
                     MedyanConverter._get_output_type_name(line, object_type, input_data)
                 )
                 # radius
-                result.radii[time_index][
-                    agent_index
-                ] = input_data.meta_data.scale_factor * (
+                radius = (
                     input_data.display_info[object_type][raw_tid].radius
                     if raw_tid in input_data.display_info[object_type]
+                    and input_data.display_info[object_type][raw_tid].radius is not None
                     else 1.0
+                )
+                result.radii[time_index][agent_index] = (
+                    input_data.meta_data.scale_factor * radius
                 )
                 if object_type == "filament":
                     result.n_subpoints[time_index][agent_index] = int(cols[3])
@@ -201,13 +203,7 @@ class MedyanConverter(TrajectoryConverter):
                             result.types[time_index][agent_index]
                         )
                         result.radii[time_index][agent_index + i + 1] = (
-                            2
-                            * input_data.meta_data.scale_factor
-                            * (
-                                input_data.display_info[object_type][raw_tid].radius
-                                if raw_tid in input_data.display_info[object_type]
-                                else 1.0
-                            )
+                            2 * input_data.meta_data.scale_factor * radius
                         )
                 parsing_object = True
             elif parsing_object:

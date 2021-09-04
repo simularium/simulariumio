@@ -8,7 +8,7 @@ from simulariumio.smoldyn import (
     SmoldynConverter,
     SmoldynData,
 )
-from simulariumio import MetaData, UnitData
+from simulariumio import MetaData, UnitData, DisplayData
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 
 
@@ -23,14 +23,22 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     scale_factor=100,
                 ),
                 path_to_output_txt="simulariumio/tests/data/smoldyn/example_2D.txt",
-                radii={
-                    "S(solution)": 0.01,
-                    "E(front)": 0.1,
-                },
-                display_names={
-                    "S(solution)": "S",
-                    "E(front)": "E",
-                    "ES(front)": "ES",
+                display_info={
+                    "S(solution)": DisplayData(
+                        name="S",
+                        radius=0.01,
+                        display_type="OBJ",
+                        url="s.obj",
+                        color="#dfdacd",
+                    ),
+                    "E(front)": DisplayData(
+                        name="E",
+                        radius=0.1,
+                        color="#0080ff",
+                    ),
+                    "ES(front)": DisplayData(
+                        name="ES",
+                    ),
                 },
             ),
             {
@@ -66,8 +74,21 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "S"},
-                        "1": {"name": "E"},
+                        "0": {
+                            "name": "S",
+                            "geometry": {
+                                "displayType": "OBJ",
+                                "url": "s.obj",
+                                "color": "#dfdacd",
+                            },
+                        },
+                        "1": {
+                            "name": "E",
+                            "geometry": {
+                                "displayType": "DEFAULT",
+                                "color": "#0080ff",
+                            },
+                        },
                         "2": {"name": "ES"},
                     },
                 },
@@ -217,8 +238,12 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     box_size=np.array([100.0, 100.0, 100.0]),
                 ),
                 path_to_output_txt="simulariumio/tests/data/smoldyn/example_3D.txt",
-                radii={
-                    "green(solution)": 2.0,
+                display_info={
+                    "green(solution)": DisplayData(
+                        name="Green",
+                        radius=2.0,
+                        color="#dfdacd",
+                    ),
                 },
                 spatial_units=UnitData("m"),
             ),
@@ -255,7 +280,13 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "green(solution)"},
+                        "0": {
+                            "name": "Green",
+                            "geometry": {
+                                "displayType": "DEFAULT",
+                                "color": "#dfdacd",
+                            },
+                        },
                         "1": {"name": "red(solution)"},
                     },
                 },
