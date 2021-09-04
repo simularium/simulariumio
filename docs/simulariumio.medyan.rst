@@ -4,14 +4,6 @@ simulariumio.medyan package
 Submodules
 ----------
 
-simulariumio.medyan.medyan\_agent\_info module
-----------------------------------------------
-
-.. automodule:: simulariumio.medyan.medyan_agent_info
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 simulariumio.medyan.medyan\_converter module
 --------------------------------------------
 

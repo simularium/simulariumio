@@ -74,19 +74,25 @@ def three_default_agents() -> Dict[str, Any]:
                 ]
             ),
             display_data={
-                "C": DisplayData(),
+                "C": DisplayData(
+                    name="C",
+                ),
                 "W": DisplayData(
+                    name="W",
                     color="#666",
                 ),
                 "S": DisplayData(
+                    name="S",
                     display_type="GIZMO",
                     color="#000000",
                 ),
                 "Y": DisplayData(
+                    name="Y",
                     display_type="PDB",
                     url="https://files.rcsb.org/download/7PDZ.pdb",
                 ),
                 "L": DisplayData(
+                    name="L",
                     display_type="OBJ",
                     url="molecule.obj",
                     color="#333333",

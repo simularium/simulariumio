@@ -4,14 +4,6 @@ simulariumio.cytosim package
 Submodules
 ----------
 
-simulariumio.cytosim.cytosim\_agent\_info module
-------------------------------------------------
-
-.. automodule:: simulariumio.cytosim.cytosim_agent_info
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 simulariumio.cytosim.cytosim\_converter module
 ----------------------------------------------
 

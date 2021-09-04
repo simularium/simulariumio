@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from simulariumio import HistogramPlotData, UnitData, MetaData
+from simulariumio import HistogramPlotData, UnitData, MetaData, DisplayData
 from simulariumio.readdy import ReaddyConverter, ReaddyData
 
 
@@ -19,9 +19,26 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
                 ),
                 timestep=0.1,
                 path_to_readdy_h5="simulariumio/tests/data/readdy/test.h5",
-                radii={"C": 3.0, "A": 2.0, "B": 2.0},
+                display_info={
+                    "A": DisplayData(
+                        name="C",
+                        radius=3.0,
+                        color="#0080ff",
+                    ),
+                    "B": DisplayData(
+                        name="B",
+                        radius=2.0,
+                        display_type="OBJ",
+                        url="c.obj",
+                        color="#dfdacd",
+                    ),
+                    "D": DisplayData(
+                        name="C",
+                        radius=3.0,
+                        color="#0080ff",
+                    ),
+                },
                 ignore_types=["E"],
-                type_grouping={"C": ["A", "D"]},
                 time_units=UnitData("ms", 1e-6),
                 spatial_units=UnitData("nm"),
             ),
