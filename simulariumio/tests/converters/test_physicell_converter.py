@@ -67,7 +67,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "1": {
                             "name": "Cancer cell#phase4",
                             "geometry": {
-                                "displayType": "DEFAULT",
+                                "displayType": "SPHERE",
                                 "color": "#0080ff",
                             },
                         },

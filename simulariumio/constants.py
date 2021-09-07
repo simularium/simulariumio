@@ -53,4 +53,4 @@ class DISPLAY_TYPE:
     GIZMO: str = "GIZMO"
     PDB: str = "PDB"
     OBJ: str = "OBJ"
-    DEFAULT: str = "DEFAULT"
+    FIBER: str = "FIBER"

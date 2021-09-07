@@ -31,6 +31,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                             0: DisplayData(
                                 name="fiber",
                                 radius=0.001,
+                                display_type="SPHERE",
                                 color="#d71f5f",
                             )
                         },
@@ -73,7 +74,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "0": {
                             "name": "fiber",
                             "geometry": {
-                                "displayType": "DEFAULT",
+                                "displayType": "FIBER",
                                 "color": "#d71f5f",
                             },
                         },
@@ -336,7 +337,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/fiber_points.txt",
                         display_info={
-                            1: DisplayData(name="microtubule", radius=0.01),
                             2: DisplayData(
                                 name="actin",
                                 radius=0.01,
@@ -409,11 +409,16 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "microtubule"},
+                        "0": {
+                            "name": "fiber1",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
                         "1": {
                             "name": "actin",
                             "geometry": {
-                                "displayType": "DEFAULT",
+                                "displayType": "FIBER",
                                 "color": "#ffc100",
                             },
                         },
@@ -450,7 +455,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 15.0,
                                 36.93,
                                 36.80,
@@ -476,7 +481,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 12.0,
                                 36.93,
                                 36.80,
@@ -499,7 +504,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 15.0,
                                 36.93,
                                 36.80,
@@ -706,7 +711,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 18.0,
                                 44.55,
                                 33.97,
@@ -735,7 +740,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 9.0,
                                 44.230000000000004,
                                 33.56,
@@ -755,7 +760,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 15.0,
                                 44.22,
                                 33.18,
@@ -965,7 +970,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 15.0,
                                 44.55,
                                 33.97,
@@ -991,7 +996,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 6.0,
                                 44.230000000000004,
                                 33.56,
@@ -1008,7 +1013,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 12.0,
                                 44.22,
                                 33.18,

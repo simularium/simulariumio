@@ -70,7 +70,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "1": {
                             "name": "Transporter",
                             "geometry": {
-                                "displayType": "DEFAULT",
+                                "displayType": "SPHERE",
                                 "color": "#ff1493",
                             },
                         },
