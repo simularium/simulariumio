@@ -480,9 +480,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "2": {"name": "Xlink0 End"},
                         "3": {
                             "name": "Xlink1",
-                            "geometry": {
-                                "displayType": "FIBER",
-                            },
                         },
                         "4": {"name": "Xlink1 End"},
                         "5": {"name": "linker2"},

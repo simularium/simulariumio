@@ -53,17 +53,6 @@ class TrajectoryConverter:
             An object containing simulation trajectory outputs
             and plot data
         """
-        inconsistent_type = TrajectoryConverter._check_display_types_match_subpoints(
-            input_data
-        )
-        if inconsistent_type:
-            raise DataError(
-                f"Type {inconsistent_type}'s display type is inconsistent "
-                "with its subpoints. All objects with subpoints "
-                f"should be '{DISPLAY_TYPE.FIBER}' display type, "
-                f"and all '{DISPLAY_TYPE.FIBER}' display types "
-                "should have subpoints"
-            )
         self._data = input_data
 
     @staticmethod
@@ -72,6 +61,9 @@ class TrajectoryConverter:
         Return an object containing the data shaped for Simularium format
         """
         print("Converting Trajectory Data -------------")
+        inconsistent_type = TrajectoryConverter._check_types_match_subpoints(input_data)
+        if inconsistent_type:
+            raise DataError(inconsistent_type)
         simularium_data = {}
         # trajectory info
         total_steps = (
@@ -81,7 +73,7 @@ class TrajectoryConverter:
         )
         type_ids, type_mapping = input_data.agent_data.get_type_ids_and_mapping()
         traj_info = {
-            "version": 2,
+            "version": 3,
             "timeUnits": {
                 "magnitude": input_data.time_units.magnitude,
                 "name": input_data.time_units.name,
@@ -370,25 +362,39 @@ class TrajectoryConverter:
         return True
 
     @staticmethod
-    def _check_display_types_match_subpoints(trajectory_data: TrajectoryData) -> str:
+    def _check_types_match_subpoints(trajectory_data: TrajectoryData) -> str:
         """
         For each frame, check that agents that have subpoints
-        also have a display_type of "FIBER", and vice versa.
-        return the type name of the first agent that is inconsistent
+        also have a display_type of "FIBER" and viz type of "FIBER", and vice versa.
+        return a message with the type name of the first agent that is inconsistent
         """
         n_subpoints = trajectory_data.agent_data.n_subpoints
         display_data = trajectory_data.agent_data.display_data
         for time_index in range(n_subpoints.shape[0]):
-            for agent_index in range(n_subpoints.shape[1]):
+            for agent_index in range(
+                int(trajectory_data.agent_data.n_agents[time_index])
+            ):
                 type_name = trajectory_data.agent_data.types[time_index][agent_index]
+                has_subpoints = n_subpoints[time_index][agent_index] > 0
+                viz_type = trajectory_data.agent_data.viz_types[time_index][agent_index]
+                if has_subpoints != (viz_type == VIZ_TYPE.FIBER):
+                    return (
+                        f"For agent at index Time = {time_index}, "
+                        f"Agent = {agent_index}: Type {type_name} " + "has"
+                        if has_subpoints
+                        else "does not have" + f" subpoints and viz type is {viz_type}"
+                    )
                 if type_name not in display_data:
                     continue
-                if n_subpoints[time_index][agent_index] > 0:
-                    if display_data[type_name].display_type != DISPLAY_TYPE.FIBER:
-                        return type_name
-                else:
-                    if display_data[type_name].display_type == DISPLAY_TYPE.FIBER:
-                        return type_name
+                display_type = display_data[type_name].display_type
+                if has_subpoints != (display_type == DISPLAY_TYPE.FIBER):
+                    return (
+                        f"For agent at index Time = {time_index}, "
+                        f"Agent = {agent_index}: Type {type_name} " + "has"
+                        if has_subpoints
+                        else "does not have"
+                        + f" subpoints and display type is {display_type}"
+                    )
         return ""
 
     @staticmethod

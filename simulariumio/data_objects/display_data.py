@@ -67,7 +67,11 @@ class DisplayData:
         """
         Check if this DisplayData is only holding default data
         """
-        return self.display_type == "SPHERE" and not self.url and not self.color
+        return (
+            (self.display_type == "SPHERE" or self.display_type == "FIBER")
+            and not self.url
+            and not self.color
+        )
 
     def __iter__(self):
         yield "displayType", self.display_type

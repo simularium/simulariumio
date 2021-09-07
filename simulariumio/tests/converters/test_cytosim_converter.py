@@ -411,9 +411,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "typeMapping": {
                         "0": {
                             "name": "fiber1",
-                            "geometry": {
-                                "displayType": "FIBER",
-                            },
                         },
                         "1": {
                             "name": "actin",
