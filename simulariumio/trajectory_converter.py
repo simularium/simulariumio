@@ -21,8 +21,8 @@ from .data_objects import (
     TrajectoryData,
 )
 from .filters import Filter
-from .exceptions import UnsupportedPlotTypeError
-from .constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE
+from .exceptions import UnsupportedPlotTypeError, DataError
+from .constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE, DISPLAY_TYPE
 
 ###############################################################################
 
@@ -53,6 +53,17 @@ class TrajectoryConverter:
             An object containing simulation trajectory outputs
             and plot data
         """
+        inconsistent_type = TrajectoryConverter._check_display_types_match_subpoints(
+            input_data
+        )
+        if inconsistent_type:
+            raise DataError(
+                f"Type {inconsistent_type}'s display type is inconsistent "
+                "with its subpoints. All objects with subpoints "
+                f"should be '{DISPLAY_TYPE.FIBER}' display type, "
+                f"and all '{DISPLAY_TYPE.FIBER}' display types "
+                "should have subpoints"
+            )
         self._data = input_data
 
     @staticmethod
@@ -70,7 +81,7 @@ class TrajectoryConverter:
         )
         type_ids, type_mapping = input_data.agent_data.get_type_ids_and_mapping()
         traj_info = {
-            "version": 3,
+            "version": 2,
             "timeUnits": {
                 "magnitude": input_data.time_units.magnitude,
                 "name": input_data.time_units.name,
@@ -357,6 +368,28 @@ class TrajectoryConverter:
                 agent_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX - 1
                 get_n_subpoints = True
         return True
+
+    @staticmethod
+    def _check_display_types_match_subpoints(trajectory_data: TrajectoryData) -> str:
+        """
+        For each frame, check that agents that have subpoints
+        also have a display_type of "FIBER", and vice versa.
+        return the type name of the first agent that is inconsistent
+        """
+        n_subpoints = trajectory_data.agent_data.n_subpoints
+        display_data = trajectory_data.agent_data.display_data
+        for time_index in range(n_subpoints.shape[0]):
+            for agent_index in range(n_subpoints.shape[1]):
+                type_name = trajectory_data.agent_data.types[time_index][agent_index]
+                if type_name not in display_data:
+                    continue
+                if n_subpoints[time_index][agent_index] > 0:
+                    if display_data[type_name].display_type != DISPLAY_TYPE.FIBER:
+                        return type_name
+                else:
+                    if display_data[type_name].display_type == DISPLAY_TYPE.FIBER:
+                        return type_name
+        return ""
 
     @staticmethod
     def _format_timestep(number: float) -> float:
