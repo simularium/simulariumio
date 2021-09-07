@@ -7,14 +7,7 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import (
-    TrajectoryData,
-    AgentData,
-    UnitData,
-    MetaData,
-    DimensionData,
-    DisplayData,
-)
+from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData, DimensionData
 from ..constants import VIZ_TYPE, DISPLAY_TYPE
 from .cytosim_data import CytosimData
 from .cytosim_object_info import CytosimObjectInfo
@@ -112,7 +105,6 @@ class CytosimConverter(TrajectoryConverter):
         result: AgentData,
         uids: Dict[int, int],
         used_unique_IDs: List[int],
-        fiber_type_names: List[str],
     ) -> Tuple[AgentData, Dict[int, int], List[int]]:
         """
         Parse an object from Cytosim
@@ -137,15 +129,11 @@ class CytosimConverter(TrajectoryConverter):
             used_unique_IDs.append(uid)
         result.unique_ids[time_index][agent_index] = uids[raw_uid]
         # type name
-        type_name = (
+        result.types[time_index].append(
             object_info.display_info[raw_tid].name
             if raw_tid in object_info.display_info
             else object_type[:-1] + str(raw_tid)
         )
-        result.types[time_index].append(type_name)
-        if "fiber" in object_type:
-            if type_name not in fiber_type_names:
-                fiber_type_names.append(type_name)
         # radius
         result.radii[time_index][agent_index] = scale_factor * (
             float(object_info.display_info[raw_tid].radius)
@@ -153,7 +141,7 @@ class CytosimConverter(TrajectoryConverter):
             and object_info.display_info[raw_tid].radius is not None
             else 1.0
         )
-        return (result, uids, used_unique_IDs, fiber_type_names)
+        return (result, uids, used_unique_IDs)
 
     @staticmethod
     def _parse_objects(
@@ -163,7 +151,6 @@ class CytosimConverter(TrajectoryConverter):
         object_info: CytosimObjectInfo,
         result: AgentData,
         used_unique_IDs: List[int],
-        fiber_type_names: List[str],
     ) -> Tuple[Dict[str, Any], List[int]]:
         """
         Parse a Cytosim output file containing objects
@@ -185,12 +172,7 @@ class CytosimConverter(TrajectoryConverter):
                     result.times[time_index] = float(columns[2])
                 elif "fiber" in columns[1]:
                     # start of fiber object
-                    (
-                        result,
-                        uids,
-                        used_unique_IDs,
-                        fiber_type_names,
-                    ) = CytosimConverter._parse_object(
+                    (result, uids, used_unique_IDs,) = CytosimConverter._parse_object(
                         object_type,
                         columns,
                         time_index,
@@ -199,7 +181,6 @@ class CytosimConverter(TrajectoryConverter):
                         result,
                         uids,
                         used_unique_IDs,
-                        fiber_type_names,
                     )
                     result.n_agents[time_index] += 1
                 continue
@@ -223,12 +204,7 @@ class CytosimConverter(TrajectoryConverter):
                 ] += 1
             else:
                 # each non-fiber object
-                (
-                    result,
-                    uids,
-                    used_unique_IDs,
-                    fiber_type_names,
-                ) = CytosimConverter._parse_object(
+                (result, uids, used_unique_IDs,) = CytosimConverter._parse_object(
                     object_type,
                     columns,
                     time_index,
@@ -237,7 +213,6 @@ class CytosimConverter(TrajectoryConverter):
                     result,
                     uids,
                     used_unique_IDs,
-                    fiber_type_names,
                 )
                 # position
                 result.positions[time_index][
@@ -253,7 +228,7 @@ class CytosimConverter(TrajectoryConverter):
                 )
                 result.n_agents[time_index] += 1
         result.n_timesteps = time_index + 1
-        return (result, used_unique_IDs, fiber_type_names)
+        return (result, used_unique_IDs)
 
     @staticmethod
     def _read(input_data: CytosimData) -> TrajectoryData:
@@ -271,16 +246,14 @@ class CytosimConverter(TrajectoryConverter):
         agent_data = AgentData.from_dimensions(dimensions)
         agent_data.draw_fiber_points = input_data.draw_fiber_points
         uids = []
-        fiber_type_names = []
         for object_type in input_data.object_info:
-            agent_data, uids, fiber_type_names = CytosimConverter._parse_objects(
+            agent_data, uids = CytosimConverter._parse_objects(
                 object_type,
                 cytosim_data[object_type],
                 input_data.meta_data.scale_factor,
                 input_data.object_info[object_type],
                 agent_data,
                 uids,
-                fiber_type_names,
             )
         # get display data (geometry and color)
         for object_type in input_data.object_info:
@@ -298,12 +271,6 @@ class CytosimConverter(TrajectoryConverter):
                         )
                         display_data.display_type = DISPLAY_TYPE.FIBER
                 agent_data.display_data[display_data.name] = display_data
-        for fiber_type_name in fiber_type_names:
-            if fiber_type_name not in agent_data.display_data:
-                agent_data.display_data[fiber_type_name] = DisplayData(
-                    name=fiber_type_name,
-                    display_type=DISPLAY_TYPE.FIBER,
-                )
         # create TrajectoryData
         return TrajectoryData(
             meta_data=MetaData(
