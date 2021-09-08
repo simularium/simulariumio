@@ -19,14 +19,14 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     box_size=np.array([1000.0, 1000.0, 500.0]),
                 ),
                 path_to_snapshot="simulariumio/tests/data/medyan/snapshot.traj",
-                filament_display_info={
+                filament_display_data={
                     0: DisplayData(
                         name="Actin",
                         radius=2,
                         color="#d71f5f",
                     ),
                 },
-                linker_display_info={
+                linker_display_data={
                     1: DisplayData(
                         name="Xlink",
                         radius=0.5,
@@ -410,14 +410,14 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     box_size=np.array([1000.0, 1000.0, 500.0]),
                 ),
                 path_to_snapshot="simulariumio/tests/data/medyan/snapshot.traj",
-                filament_display_info={
+                filament_display_data={
                     0: DisplayData(
                         name="Actin",
                         radius=2,
                         color="#ff1493",
                     ),
                 },
-                linker_display_info={
+                linker_display_data={
                     0: DisplayData(
                         name="Xlink0",
                         radius=1.0,

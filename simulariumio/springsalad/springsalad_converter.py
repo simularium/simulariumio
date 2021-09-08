@@ -86,8 +86,8 @@ class SpringsaladConverter(TrajectoryConverter):
                 result.unique_ids[time_index][agent_index] = int(cols[1])
                 raw_type_name = cols[3]
                 result.types[time_index].append(
-                    input_data.display_info[raw_type_name].name
-                    if raw_type_name in input_data.display_info
+                    input_data.display_data[raw_type_name].name
+                    if raw_type_name in input_data.display_data
                     else raw_type_name
                 )
                 result.positions[time_index][
@@ -96,9 +96,9 @@ class SpringsaladConverter(TrajectoryConverter):
                     [float(cols[4]), float(cols[5]), float(cols[6])]
                 )
                 result.radii[time_index][agent_index] = input_data.scale_factor * (
-                    input_data.display_info[raw_type_name].radius
-                    if raw_type_name in input_data.display_info
-                    and input_data.display_info[raw_type_name].radius is not None
+                    input_data.display_data[raw_type_name].radius
+                    if raw_type_name in input_data.display_data
+                    and input_data.display_data[raw_type_name].radius is not None
                     else float(cols[2])
                 )
                 agent_index += 1
@@ -117,8 +117,8 @@ class SpringsaladConverter(TrajectoryConverter):
             springsalad_data, input_data
         )
         # get display data (geometry and color)
-        for tid in input_data.display_info:
-            display_data = input_data.display_info[tid]
+        for tid in input_data.display_data:
+            display_data = input_data.display_data[tid]
             agent_data.display_data[display_data.name] = display_data
         return TrajectoryData(
             meta_data=MetaData(

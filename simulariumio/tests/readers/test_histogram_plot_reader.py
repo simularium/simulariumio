@@ -19,7 +19,7 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
                 ),
                 timestep=0.1,
                 path_to_readdy_h5="simulariumio/tests/data/readdy/test.h5",
-                display_info={
+                display_data={
                     "A": DisplayData(
                         name="C",
                         radius=3.0,

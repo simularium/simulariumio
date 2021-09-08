@@ -21,7 +21,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                 ),
                 timestep=360.0,
                 path_to_output_dir="simulariumio/tests/data/physicell/output/",
-                display_info={
+                display_data={
                     0: DisplayData(
                         name="Cancer cell",
                         radius=30.0,

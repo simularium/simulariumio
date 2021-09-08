@@ -18,7 +18,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "simulariumio/tests/data/springsalad/"
                     "Simulation0_SIM_VIEW_Run0.txt"
                 ),
-                display_info={
+                display_data={
                     "GREEN": DisplayData(
                         name="A",
                         radius=10.0,

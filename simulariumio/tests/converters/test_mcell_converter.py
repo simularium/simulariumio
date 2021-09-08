@@ -18,7 +18,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                 "organelle_model_viz_output/Scene.data_model.00.json",
                 path_to_binary_files="simulariumio/tests/data/mcell/"
                 "organelle_model_viz_output",
-                display_info={
+                display_data={
                     "a": DisplayData(
                         name="Kinesin",
                         radius=0.03,

@@ -15,13 +15,13 @@ log = logging.getLogger(__name__)
 
 class CytosimObjectInfo:
     filepath: str
-    display_info: Dict[int, DisplayData]
+    display_data: Dict[int, DisplayData]
     position_indices: List[int]
 
     def __init__(
         self,
         filepath: str,
-        display_info: Dict[int, DisplayData] = None,
+        display_data: Dict[int, DisplayData] = None,
         position_indices: List[int] = [2, 3, 4],
     ):
         """
@@ -33,7 +33,7 @@ class CytosimObjectInfo:
         ----------
         filepath : str
             A string path to fiber_points.txt
-        display_info : Dict[int, DisplayData] (optional)
+        display_data : Dict[int, DisplayData] (optional)
             A dict mapping the type index from Cytosim data
             to DisplayData, including names and display info
             to use for rendering this agent type in the Simularium Viewer
@@ -48,5 +48,5 @@ class CytosimObjectInfo:
             Default: [2, 3, 4]
         """
         self.filepath = filepath
-        self.display_info = display_info if display_info is not None else {}
+        self.display_data = display_data if display_data is not None else {}
         self.position_indices = position_indices

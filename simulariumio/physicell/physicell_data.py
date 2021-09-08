@@ -18,7 +18,7 @@ class PhysicellData:
     timestep: float
     time_units: UnitData
     path_to_output_dir: str
-    display_info: Dict[int, DisplayData]
+    display_data: Dict[int, DisplayData]
     phase_names: Dict[int, Dict[int, str]]
     plots: List[Dict[str, Any]]
 
@@ -27,7 +27,7 @@ class PhysicellData:
         meta_data: MetaData,
         timestep: float,
         path_to_output_dir: str,
-        display_info: Dict[int, DisplayData] = None,
+        display_data: Dict[int, DisplayData] = None,
         phase_names: Dict[int, Dict[int, str]] = None,
         time_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
@@ -47,7 +47,7 @@ class PhysicellData:
         path_to_output_dir : string
             A string path to the PhysiCell output directory
             containing MultiCellDS XML and MATLAB files
-        display_info : Dict[int, DisplayData] (optional)
+        display_data : Dict[int, DisplayData] (optional)
             The cell type ID from PhysiCell data mapped
             to DisplayData, including names and display info
             to use for rendering that agent type in the Simularium Viewer
@@ -68,7 +68,7 @@ class PhysicellData:
         self.meta_data = meta_data
         self.timestep = timestep
         self.path_to_output_dir = path_to_output_dir
-        self.display_info = display_info if display_info is not None else {}
+        self.display_data = display_data if display_data is not None else {}
         self.phase_names = phase_names if phase_names is not None else {}
         self.time_units = time_units if time_units is not None else UnitData("s")
         self.plots = plots if plots is not None else []

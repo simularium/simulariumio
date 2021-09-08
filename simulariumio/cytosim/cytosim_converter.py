@@ -130,15 +130,15 @@ class CytosimConverter(TrajectoryConverter):
         result.unique_ids[time_index][agent_index] = uids[raw_uid]
         # type name
         result.types[time_index].append(
-            object_info.display_info[raw_tid].name
-            if raw_tid in object_info.display_info
+            object_info.display_data[raw_tid].name
+            if raw_tid in object_info.display_data
             else object_type[:-1] + str(raw_tid)
         )
         # radius
         result.radii[time_index][agent_index] = scale_factor * (
-            float(object_info.display_info[raw_tid].radius)
-            if raw_tid in object_info.display_info
-            and object_info.display_info[raw_tid].radius is not None
+            float(object_info.display_data[raw_tid].radius)
+            if raw_tid in object_info.display_data
+            and object_info.display_data[raw_tid].radius is not None
             else 1.0
         )
         return (result, uids, used_unique_IDs)
@@ -257,8 +257,8 @@ class CytosimConverter(TrajectoryConverter):
             )
         # get display data (geometry and color)
         for object_type in input_data.object_info:
-            for tid in input_data.object_info[object_type].display_info:
-                display_data = input_data.object_info[object_type].display_info[tid]
+            for tid in input_data.object_info[object_type].display_data:
+                display_data = input_data.object_info[object_type].display_data[tid]
                 if (
                     "fiber" in object_type
                     and display_data.display_type != DISPLAY_TYPE.FIBER

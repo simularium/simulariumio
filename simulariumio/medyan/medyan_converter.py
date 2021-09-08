@@ -60,12 +60,12 @@ class MedyanConverter(TrajectoryConverter):
     ) -> bool:
         """
         Parse a line of a MEDYAN snapshot.traj output file
-        and determine whether to also draw the endpoints as spheres
+        and return the type name to display for this agent type
         """
         raw_tid = int(line.split()[2])
         return (
-            input_data.display_info[object_type][raw_tid].name
-            if raw_tid in input_data.display_info[object_type]
+            input_data.display_data[object_type][raw_tid].name
+            if raw_tid in input_data.display_data[object_type]
             else object_type + str(raw_tid)
         )
 
@@ -183,9 +183,9 @@ class MedyanConverter(TrajectoryConverter):
                 )
                 # radius
                 radius = (
-                    input_data.display_info[object_type][raw_tid].radius
-                    if raw_tid in input_data.display_info[object_type]
-                    and input_data.display_info[object_type][raw_tid].radius is not None
+                    input_data.display_data[object_type][raw_tid].radius
+                    if raw_tid in input_data.display_data[object_type]
+                    and input_data.display_data[object_type][raw_tid].radius is not None
                     else 1.0
                 )
                 result.radii[time_index][agent_index] = (
@@ -241,9 +241,9 @@ class MedyanConverter(TrajectoryConverter):
         time_units = UnitData("s")
         spatial_units = UnitData("nm", 1.0 / input_data.meta_data.scale_factor)
         # get display data (geometry and color)
-        for object_type in input_data.display_info:
-            for tid in input_data.display_info[object_type]:
-                display_data = input_data.display_info[object_type][tid]
+        for object_type in input_data.display_data:
+            for tid in input_data.display_data[object_type]:
+                display_data = input_data.display_data[object_type][tid]
                 if display_data.display_type != DISPLAY_TYPE.FIBER:
                     print(
                         f"{display_data.name} display type of "

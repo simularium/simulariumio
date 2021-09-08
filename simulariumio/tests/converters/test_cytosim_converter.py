@@ -27,7 +27,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "fibers": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim"
                         "/3_fibers_3_frames/fiber_points.txt",
-                        display_info={
+                        display_data={
                             0: DisplayData(
                                 name="fiber",
                                 radius=0.001,
@@ -336,7 +336,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "fibers": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/fiber_points.txt",
-                        display_info={
+                        display_data={
                             2: DisplayData(
                                 name="actin",
                                 radius=0.01,
@@ -347,7 +347,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "solids": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/solids.txt",
-                        display_info={
+                        display_data={
                             1: DisplayData(name="aster"),
                             2: DisplayData(name="vesicle", radius=0.1),
                         },
@@ -355,7 +355,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "singles": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/singles.txt",
-                        display_info={
+                        display_data={
                             1: DisplayData(name="dynein", radius=0.01),
                             2: DisplayData(
                                 name="kinesin",
@@ -369,7 +369,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "couples": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/couples.txt",
-                        display_info={
+                        display_data={
                             1: DisplayData(name="motor complex", radius=0.02)
                         },
                         position_indices=[3, 4, 5],

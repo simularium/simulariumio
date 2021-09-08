@@ -81,8 +81,8 @@ class ReaddyConverter(TrajectoryConverter):
                     continue
                 raw_type_name = traj.species_name(type_ids[time_index][agent_index])
                 display_data = (
-                    input_data.display_info[raw_type_name]
-                    if raw_type_name in input_data.display_info
+                    input_data.display_data[raw_type_name]
+                    if raw_type_name in input_data.display_data
                     else None
                 )
                 result.unique_ids[time_index][new_agent_index] = ids[time_index][
@@ -112,8 +112,8 @@ class ReaddyConverter(TrajectoryConverter):
         print("Reading ReaDDy Data -------------")
         agent_data = ReaddyConverter._get_agent_data(input_data)
         # get display data (geometry and color)
-        for tid in input_data.display_info:
-            display_data = input_data.display_info[tid]
+        for tid in input_data.display_data:
+            display_data = input_data.display_data[tid]
             agent_data.display_data[display_data.name] = display_data
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
         return TrajectoryData(

@@ -23,7 +23,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     scale_factor=100,
                 ),
                 path_to_output_txt="simulariumio/tests/data/smoldyn/example_2D.txt",
-                display_info={
+                display_data={
                     "S(solution)": DisplayData(
                         name="S",
                         radius=0.01,
@@ -238,7 +238,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     box_size=np.array([100.0, 100.0, 100.0]),
                 ),
                 path_to_output_txt="simulariumio/tests/data/smoldyn/example_3D.txt",
-                display_info={
+                display_data={
                     "green(solution)": DisplayData(
                         name="Green",
                         radius=2.0,

@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 class SmoldynData:
     meta_data: MetaData
     path_to_output_txt: str
-    display_info: Dict[str, DisplayData]
+    display_data: Dict[str, DisplayData]
     time_units: UnitData
     spatial_units: UnitData
     plots: List[Dict[str, Any]]
@@ -25,7 +25,7 @@ class SmoldynData:
         self,
         meta_data: MetaData,
         path_to_output_txt: str,
-        display_info: Dict[str, DisplayData] = None,
+        display_data: Dict[str, DisplayData] = None,
         time_units: UnitData = None,
         spatial_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
@@ -45,7 +45,7 @@ class SmoldynData:
                 `output_files output.txt
                 `cmd n 1 executiontime output.txt`
                 `cmd n 1 listmols output.txt`
-        display_info: Dict[str, DisplayData] (optional)
+        display_data: Dict[str, DisplayData] (optional)
             The particle type name from Smoldyn data mapped
             to display names and rendering info for that type,
             Default: for names, use Smoldyn name,
@@ -64,7 +64,7 @@ class SmoldynData:
         """
         self.meta_data = meta_data
         self.path_to_output_txt = path_to_output_txt
-        self.display_info = display_info if display_info is not None else {}
+        self.display_data = display_data if display_data is not None else {}
         self.time_units = time_units if time_units is not None else UnitData("s")
         self.spatial_units = (
             spatial_units if spatial_units is not None else UnitData("m")

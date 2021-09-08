@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 
 class SpringsaladData:
     path_to_sim_view_txt: str
-    display_info: Dict[str, DisplayData]
+    display_data: Dict[str, DisplayData]
     camera_defaults: CameraData
     scale_factor: float
     plots: List[Dict[str, Any]]
@@ -23,7 +23,7 @@ class SpringsaladData:
     def __init__(
         self,
         path_to_sim_view_txt: str,
-        display_info: Dict[str, DisplayData] = None,
+        display_data: Dict[str, DisplayData] = None,
         camera_defaults: CameraData = None,
         scale_factor: float = 1.0,
         plots: List[Dict[str, Any]] = None,
@@ -38,7 +38,7 @@ class SpringsaladData:
         path_to_sim_view_txt : str
             A string path to the txt file named
             "[model name]_SIM_VIEW_[run name].txt"
-        display_info: Dict[str, DisplayData] (optional)
+        display_data: Dict[str, DisplayData] (optional)
             The particle type name from SpringSaLaD data mapped
             to display names and rendering info for that type,
             Default: for names, use names from sim view txt file,
@@ -57,7 +57,7 @@ class SpringsaladData:
             in Simularium format
         """
         self.path_to_sim_view_txt = path_to_sim_view_txt
-        self.display_info = display_info if display_info is not None else {}
+        self.display_data = display_data if display_data is not None else {}
         self.camera_defaults = (
             camera_defaults if camera_defaults is not None else CameraData()
         )

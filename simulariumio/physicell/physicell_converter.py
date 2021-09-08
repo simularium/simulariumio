@@ -77,8 +77,8 @@ class PhysicellConverter(TrajectoryConverter):
         if cell_phase not in ids[cell_type]:
             ids[cell_type][cell_phase] = last_id
             type_name = ""
-            if cell_type in input_data.display_info:
-                type_name = input_data.display_info[cell_type].name
+            if cell_type in input_data.display_data:
+                type_name = input_data.display_data[cell_type].name
             else:
                 type_name = PhysicellConverter._get_default_cell_name(cell_type)
             if (
@@ -153,9 +153,9 @@ class PhysicellConverter(TrajectoryConverter):
                 result.radii[time_index][
                     agent_index
                 ] = input_data.meta_data.scale_factor * (
-                    input_data.display_info[cell_type].radius
-                    if cell_type in input_data.display_info
-                    and input_data.display_info[cell_type].radius is not None
+                    input_data.display_data[cell_type].radius
+                    if cell_type in input_data.display_data
+                    and input_data.display_data[cell_type].radius is not None
                     else np.cbrt(
                         3.0
                         / 4.0
@@ -180,11 +180,11 @@ class PhysicellConverter(TrajectoryConverter):
             input_data
         )
         # get display data (geometry and color)
-        for cell_id in input_data.display_info:
-            display_data = input_data.display_info[cell_id]
+        for cell_id in input_data.display_data:
+            display_data = input_data.display_data[cell_id]
             if cell_id not in id_mapping:
                 print(
-                    f"cell type ID {cell_id} provided in display_info does not exist "
+                    f"cell type ID {cell_id} provided in display_data does not exist "
                     "in PhysiCell data, skipping its rendering info"
                 )
                 continue

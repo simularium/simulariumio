@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 class MedyanData:
     meta_data: MetaData
     path_to_snapshot: str
-    display_info: Dict[str, Dict[int, DisplayData]]
+    display_data: Dict[str, Dict[int, DisplayData]]
     agents_with_endpoints: List[str]
     draw_fiber_points: bool
     plots: List[Dict[str, Any]]
@@ -25,9 +25,9 @@ class MedyanData:
         self,
         meta_data: MetaData,
         path_to_snapshot: str,
-        filament_display_info: Dict[int, DisplayData] = None,
-        linker_display_info: Dict[int, DisplayData] = None,
-        motor_display_info: Dict[int, DisplayData] = None,
+        filament_display_data: Dict[int, DisplayData] = None,
+        linker_display_data: Dict[int, DisplayData] = None,
+        motor_display_data: Dict[int, DisplayData] = None,
         agents_with_endpoints: List[str] = None,
         draw_fiber_points: bool = False,
         plots: List[Dict[str, Any]] = None,
@@ -43,20 +43,20 @@ class MedyanData:
             including box size, scale factor, and camera defaults
         path_to_snapshot : string
             A string path to the MEDYAN snapshot.traj output file
-        filament_display_info : Dict[int, DisplayData] (optional)
+        filament_display_data : Dict[int, DisplayData] (optional)
             A dict mapping MEDYAN type ID for filaments
             to DisplayData, including names and display info
             to use for rendering filament agent types in the Simularium Viewer
             Default: for names, use "filament[type ID]"
                 for radius, use 1.0,
                 for rendering, use default representation and colors
-        linker_display_info : Dict[int, DisplayData] (optional)
+        linker_display_data : Dict[int, DisplayData] (optional)
             A dict mapping MEDYAN type ID for linkers
             to DisplayData, including names and display info
             to use for rendering linker agent types in the Simularium Viewer
             Default: for names, use "linker[type ID]"
                 for rendering, use default representation and colors
-        motor_display_info : Dict[int, DisplayData] (optional)
+        motor_display_data : Dict[int, DisplayData] (optional)
             A dict mapping MEDYAN type ID for motors
             to DisplayData, including names and display info
             to use for rendering motor agent types in the Simularium Viewer
@@ -80,12 +80,12 @@ class MedyanData:
         """
         self.meta_data = meta_data
         self.path_to_snapshot = path_to_snapshot
-        self.display_info = {
-            "filament": filament_display_info
-            if filament_display_info is not None
+        self.display_data = {
+            "filament": filament_display_data
+            if filament_display_data is not None
             else {},
-            "linker": linker_display_info if linker_display_info is not None else {},
-            "motor": motor_display_info if motor_display_info is not None else {},
+            "linker": linker_display_data if linker_display_data is not None else {},
+            "motor": motor_display_data if motor_display_data is not None else {},
         }
         self.agents_with_endpoints = (
             agents_with_endpoints if agents_with_endpoints is not None else []

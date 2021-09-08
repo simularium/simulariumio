@@ -207,8 +207,8 @@ class McellConverter(TrajectoryConverter):
                     type_name_array.fromfile(mol_file, n_chars_type_name[0])
                     type_name = type_name_array.tostring().decode()
                     display_type_name = (
-                        input_data.display_info[type_name].name
-                        if type_name in input_data.display_info
+                        input_data.display_data[type_name].name
+                        if type_name in input_data.display_data
                         else type_name
                     )
                     # get positions and rotations
@@ -250,9 +250,9 @@ class McellConverter(TrajectoryConverter):
                         input_data.scale_factor
                         * BLENDER_GEOMETRY_SCALE_FACTOR
                         * (
-                            input_data.display_info[type_name].radius
-                            if type_name in input_data.display_info
-                            and input_data.display_info[type_name].radius is not None
+                            input_data.display_data[type_name].radius
+                            if type_name in input_data.display_data
+                            and input_data.display_data[type_name].radius is not None
                             else molecule_info[type_name]["display"]["scale"]
                         )
                         * np.ones(n_mols)
@@ -333,8 +333,8 @@ class McellConverter(TrajectoryConverter):
             ]
         )
         # get display data (geometry and color)
-        for type_name in input_data.display_info:
-            display_data = input_data.display_info[type_name]
+        for type_name in input_data.display_data:
+            display_data = input_data.display_data[type_name]
             agent_data.display_data[display_data.name] = display_data
         return TrajectoryData(
             meta_data=MetaData(
