@@ -12,7 +12,6 @@ from ..data_objects import (
     UnitData,
     MetaData,
     DimensionData,
-    DisplayData,
 )
 from ..constants import VIZ_TYPE, DISPLAY_TYPE
 from .medyan_data import MedyanData
@@ -244,7 +243,10 @@ class MedyanConverter(TrajectoryConverter):
         for object_type in input_data.display_data:
             for tid in input_data.display_data[object_type]:
                 display_data = input_data.display_data[object_type][tid]
-                if display_data.display_type != DISPLAY_TYPE.FIBER:
+                if (
+                    display_data.display_type is not None
+                    and display_data.display_type != DISPLAY_TYPE.FIBER
+                ):
                     print(
                         f"{display_data.name} display type of "
                         f"{display_data.display_type} was changed to "
@@ -252,13 +254,6 @@ class MedyanConverter(TrajectoryConverter):
                     )
                     display_data.display_type = DISPLAY_TYPE.FIBER
                 agent_data.display_data[display_data.name] = display_data
-        for base_type_name in input_data.agents_with_endpoints:
-            type_name = base_type_name + " End"
-            if type_name not in agent_data.display_data:
-                agent_data.display_data[type_name] = DisplayData(
-                    name=type_name,
-                    display_type=DISPLAY_TYPE.SPHERE,
-                )
         return TrajectoryData(
             meta_data=MetaData(
                 box_size=input_data.meta_data.scale_factor

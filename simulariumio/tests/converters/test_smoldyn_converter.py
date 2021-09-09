@@ -85,7 +85,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "1": {
                             "name": "E",
                             "geometry": {
-                                "displayType": "SPHERE",
                                 "color": "#0080ff",
                             },
                         },
@@ -283,7 +282,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "0": {
                             "name": "Green",
                             "geometry": {
-                                "displayType": "SPHERE",
                                 "color": "#dfdacd",
                             },
                         },

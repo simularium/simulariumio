@@ -70,7 +70,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "0": {
                             "name": "Actin",
                             "geometry": {
-                                "displayType": "FIBER",
                                 "color": "#d71f5f",
                             },
                         },
@@ -78,7 +77,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "2": {
                             "name": "Xlink",
                             "geometry": {
-                                "displayType": "FIBER",
                                 "color": "#0080ff",
                             },
                         },
@@ -466,14 +464,12 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "0": {
                             "name": "Actin",
                             "geometry": {
-                                "displayType": "FIBER",
                                 "color": "#ff1493",
                             },
                         },
                         "1": {
                             "name": "Xlink0",
                             "geometry": {
-                                "displayType": "FIBER",
                                 "color": "#0080ff",
                             },
                         },

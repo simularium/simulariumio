@@ -15,7 +15,6 @@ from simulariumio import (
     DisplayData,
     CameraData,
 )
-from simulariumio.constants import DISPLAY_TYPE
 
 
 def three_default_agents() -> TrajectoryData:
@@ -460,47 +459,36 @@ def mixed_agents() -> TrajectoryData:
             display_data={
                 "H": DisplayData(
                     name="H",
-                    display_type=DISPLAY_TYPE.SPHERE,
                 ),
                 "A": DisplayData(
                     name="A",
-                    display_type=DISPLAY_TYPE.FIBER,
                 ),
                 "C": DisplayData(
                     name="C",
-                    display_type=DISPLAY_TYPE.FIBER,
                 ),
                 "X": DisplayData(
                     name="X",
-                    display_type=DISPLAY_TYPE.SPHERE,
                 ),
                 "J": DisplayData(
                     name="J",
-                    display_type=DISPLAY_TYPE.FIBER,
                 ),
                 "L": DisplayData(
                     name="L",
-                    display_type=DISPLAY_TYPE.FIBER,
                 ),
                 "D": DisplayData(
                     name="D",
-                    display_type=DISPLAY_TYPE.SPHERE,
                 ),
                 "U": DisplayData(
                     name="U",
-                    display_type=DISPLAY_TYPE.FIBER,
                 ),
                 "E": DisplayData(
                     name="E",
-                    display_type=DISPLAY_TYPE.SPHERE,
                 ),
                 "Q": DisplayData(
                     name="Q",
-                    display_type=DISPLAY_TYPE.SPHERE,
                 ),
                 "K": DisplayData(
                     name="K",
-                    display_type=DISPLAY_TYPE.FIBER,
                 ),
             },
         ),

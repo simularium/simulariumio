@@ -3,8 +3,6 @@
 
 import logging
 
-from ..constants import DISPLAY_TYPE
-
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -23,7 +21,7 @@ class DisplayData:
         self,
         name: str,
         radius: float = None,
-        display_type: str = DISPLAY_TYPE.SPHERE,
+        display_type: str = None,
         url: str = None,
         color: str = None,
     ):
@@ -43,7 +41,7 @@ class DisplayData:
         display_type: str (optional)
             the type of geometry to display
             Options: "SPHERE", "CUBE", "GIZMO", "FIBER", "PDB", or "OBJ"
-            Default: "SPHERE"
+            Default: "SPHERE" or "FIBER"
         url: str (optional)
             local path or web URL for the geometry file to display,
             web URLs are required for streaming
@@ -67,14 +65,18 @@ class DisplayData:
         """
         Check if this DisplayData is only holding default data
         """
+        return self.display_type is None and not self.url and not self.color
+
+    def to_string(self):
+        default = self.is_default()
         return (
-            (self.display_type == "SPHERE" or self.display_type == "FIBER")
-            and not self.url
-            and not self.color
+            f"{self.display_type}: url={self.url}, color={self.color} "
+            f"DEFAULT? {default}"
         )
 
     def __iter__(self):
-        yield "displayType", self.display_type
+        if self.display_type:
+            yield "displayType", self.display_type
         if self.url:
             yield "url", self.url
         if self.color:

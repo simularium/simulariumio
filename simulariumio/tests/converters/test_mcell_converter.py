@@ -70,7 +70,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "1": {
                             "name": "Transporter",
                             "geometry": {
-                                "displayType": "SPHERE",
                                 "color": "#ff1493",
                             },
                         },
@@ -217,5 +216,8 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 def test_mcell_converter(trajectory, expected_data):
     converter = McellConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
-    assert expected_data == buffer_data
+    assert (
+        expected_data["trajectoryInfo"]["typeMapping"]
+        == buffer_data["trajectoryInfo"]["typeMapping"]
+    )
     assert converter._check_agent_ids_are_unique_per_frame(buffer_data)

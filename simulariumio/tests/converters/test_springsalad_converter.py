@@ -77,7 +77,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "1": {
                             "name": "B",
                             "geometry": {
-                                "displayType": "SPHERE",
                                 "color": "#0080ff",
                             },
                         },

@@ -115,7 +115,6 @@ def mixed_agents_wrong_display_type2():
                         "6": {
                             "name": "W",
                             "geometry": {
-                                "displayType": "SPHERE",
                                 "color": "#666",
                             },
                         },
@@ -553,8 +552,8 @@ def mixed_agents_wrong_display_type2():
                 "plotData": {"version": 1, "data": ["plot data goes here"]},
             },
         ),
-        # # 3 fiber agents with points drawn
-        # # at given positions for 3 frames, no plots
+        # 3 fiber agents with points drawn
+        # at given positions for 3 frames, no plots
         (
             fiber_agents(),
             {

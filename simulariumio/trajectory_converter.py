@@ -380,19 +380,20 @@ class TrajectoryConverter:
                 if has_subpoints != (viz_type == VIZ_TYPE.FIBER):
                     return (
                         f"For agent at index Time = {time_index}, "
-                        f"Agent = {agent_index}: Type {type_name} " + "has"
-                        if has_subpoints
-                        else "does not have" + f" subpoints and viz type is {viz_type}"
+                        f"Agent = {agent_index}: Type {type_name} "
+                        + ("has" if has_subpoints else "does not have")
+                        + f" subpoints and viz type is {viz_type}"
                     )
                 if type_name not in display_data:
                     continue
                 display_type = display_data[type_name].display_type
-                if has_subpoints != (display_type == DISPLAY_TYPE.FIBER):
+                if display_type is not None and has_subpoints != (
+                    display_type == DISPLAY_TYPE.FIBER
+                ):
                     return (
                         f"For agent at index Time = {time_index}, "
-                        f"Agent = {agent_index}: Type {type_name} " + "has"
-                        if has_subpoints
-                        else "does not have"
+                        f"Agent = {agent_index}: Type {type_name} "
+                        + ("has" if has_subpoints else "does not have")
                         + f" subpoints and display type is {display_type}"
                     )
         return ""
