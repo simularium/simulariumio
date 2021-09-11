@@ -42,6 +42,7 @@ class FileConverter(TrajectoryConverter):
         Update the trajectory info block
         to match the current version
         """
+        original_version = int(data["trajectoryInfo"]["version"])
         if int(data["trajectoryInfo"]["version"]) == 1:
             # units
             if "spatialUnitFactorMeters" in data["trajectoryInfo"]:
@@ -83,5 +84,8 @@ class FileConverter(TrajectoryConverter):
         if int(data["trajectoryInfo"]["version"]) == 2:
             # all the new fields from v2 to v3 are optional
             data["trajectoryInfo"]["version"] = 3
-        print(f"Updated TrajectoryInfo v1 -> v{CURRENT_VERSION.TRAJECTORY_INFO}")
+        print(
+            f"Updated TrajectoryInfo {original_version} -> "
+            f"v{CURRENT_VERSION.TRAJECTORY_INFO}"
+        )
         return data
