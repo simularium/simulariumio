@@ -4,8 +4,18 @@
 import pytest
 
 from simulariumio import TrajectoryConverter
-from simulariumio.tests.conftest import three_default_agents, mixed_agents, fiber_agents
-from simulariumio.constants import VIZ_TYPE, DISPLAY_TYPE, DEFAULT_CAMERA_SETTINGS
+from simulariumio.tests.conftest import (
+    three_default_agents,
+    mixed_agents,
+    fiber_agents,
+    default_agents_type_mapping,
+)
+from simulariumio.constants import (
+    VIZ_TYPE,
+    DISPLAY_TYPE,
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+)
 from simulariumio.exceptions import DataError
 
 
@@ -56,7 +66,7 @@ def mixed_agents_wrong_display_type2():
             three_default_agents(),
             {
                 "trajectoryInfo": {
-                    "version": 3,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "ns",
@@ -86,42 +96,10 @@ def mixed_agents_wrong_display_type2():
                         },
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
-                    "typeMapping": {
-                        "0": {"name": "C"},
-                        "1": {"name": "U"},
-                        "2": {
-                            "name": "L",
-                            "geometry": {
-                                "displayType": "OBJ",
-                                "url": "molecule.obj",
-                                "color": "#333333",
-                            },
-                        },
-                        "3": {
-                            "name": "S",
-                            "geometry": {
-                                "displayType": "GIZMO",
-                                "color": "#000000",
-                            },
-                        },
-                        "4": {"name": "O"},
-                        "5": {
-                            "name": "Y",
-                            "geometry": {
-                                "displayType": "PDB",
-                                "url": "https://files.rcsb.org/download/7PDZ.pdb",
-                            },
-                        },
-                        "6": {
-                            "name": "W",
-                            "geometry": {
-                                "color": "#666",
-                            },
-                        },
-                    },
+                    "typeMapping": default_agents_type_mapping(),
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -245,7 +223,7 @@ def mixed_agents_wrong_display_type2():
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
         # # 2 default agents (radius 5-10) and 3 fiber agents
@@ -254,7 +232,7 @@ def mixed_agents_wrong_display_type2():
             mixed_agents(),
             {
                 "trajectoryInfo": {
-                    "version": 3,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -287,7 +265,7 @@ def mixed_agents_wrong_display_type2():
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -549,7 +527,10 @@ def mixed_agents_wrong_display_type2():
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": ["plot data goes here"]},
+                "plotData": {
+                    "version": CURRENT_VERSION.PLOT_DATA,
+                    "data": ["plot data goes here"],
+                },
             },
         ),
         # 3 fiber agents with points drawn
@@ -558,7 +539,7 @@ def mixed_agents_wrong_display_type2():
             fiber_agents(),
             {
                 "trajectoryInfo": {
-                    "version": 3,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "µs",
@@ -598,7 +579,7 @@ def mixed_agents_wrong_display_type2():
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -948,7 +929,10 @@ def mixed_agents_wrong_display_type2():
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": ["plot data goes here"]},
+                "plotData": {
+                    "version": CURRENT_VERSION.PLOT_DATA,
+                    "data": ["plot data goes here"],
+                },
             },
         ),
         # subpoints and viz or display types are inconsistent

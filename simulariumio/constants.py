@@ -54,3 +54,9 @@ class DISPLAY_TYPE:
     PDB: str = "PDB"
     OBJ: str = "OBJ"
     FIBER: str = "FIBER"
+
+
+class CURRENT_VERSION:
+    TRAJECTORY_INFO: int = 3
+    SPATIAL_DATA: int = 1
+    PLOT_DATA: int = 1

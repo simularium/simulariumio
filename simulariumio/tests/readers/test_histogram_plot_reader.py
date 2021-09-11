@@ -6,6 +6,7 @@ import numpy as np
 
 from simulariumio import HistogramPlotData, UnitData, MetaData, DisplayData
 from simulariumio.readdy import ReaddyConverter, ReaddyData
+from simulariumio.constants import CURRENT_VERSION
 
 
 @pytest.mark.parametrize(
@@ -127,7 +128,7 @@ from simulariumio.readdy import ReaddyConverter, ReaddyData
                 },
             ),
             {
-                "version": 1,
+                "version": CURRENT_VERSION.PLOT_DATA,
                 "data": [
                     {
                         "layout": {

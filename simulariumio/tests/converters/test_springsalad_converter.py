@@ -5,7 +5,7 @@ import pytest
 
 from simulariumio.springsalad import SpringsaladConverter, SpringsaladData
 from simulariumio import DisplayData
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
+from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
 
 @pytest.mark.parametrize(
@@ -35,7 +35,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
             ),
             {
                 "trajectoryInfo": {
-                    "version": 3,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -86,7 +86,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 2,
@@ -226,7 +226,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
     ],

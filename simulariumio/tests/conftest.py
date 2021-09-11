@@ -3,6 +3,7 @@
 
 from string import ascii_uppercase
 from random import choice
+from typing import Dict, Any
 
 import numpy as np
 
@@ -15,6 +16,42 @@ from simulariumio import (
     DisplayData,
     CameraData,
 )
+
+
+def default_agents_type_mapping() -> Dict[str, Any]:
+    return {
+        "0": {"name": "C"},
+        "1": {"name": "U"},
+        "2": {
+            "name": "L",
+            "geometry": {
+                "displayType": "OBJ",
+                "url": "molecule.obj",
+                "color": "#333333",
+            },
+        },
+        "3": {
+            "name": "S",
+            "geometry": {
+                "displayType": "GIZMO",
+                "color": "#000000",
+            },
+        },
+        "4": {"name": "O"},
+        "5": {
+            "name": "Y",
+            "geometry": {
+                "displayType": "PDB",
+                "url": "https://files.rcsb.org/download/7PDZ.pdb",
+            },
+        },
+        "6": {
+            "name": "W",
+            "geometry": {
+                "color": "#666",
+            },
+        },
+    }
 
 
 def three_default_agents() -> TrajectoryData:

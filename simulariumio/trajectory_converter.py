@@ -22,7 +22,7 @@ from .data_objects import (
 )
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError, DataError
-from .constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE, DISPLAY_TYPE
+from .constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE, DISPLAY_TYPE, CURRENT_VERSION
 
 ###############################################################################
 
@@ -73,7 +73,7 @@ class TrajectoryConverter:
         )
         type_ids, type_mapping = input_data.agent_data.get_type_ids_and_mapping()
         traj_info = {
-            "version": 3,
+            "version": CURRENT_VERSION.TRAJECTORY_INFO,
             "timeUnits": {
                 "magnitude": input_data.time_units.magnitude,
                 "name": input_data.time_units.name,
@@ -122,7 +122,7 @@ class TrajectoryConverter:
         simularium_data["trajectoryInfo"] = traj_info
         # spatial data
         spatialData = {
-            "version": 1,
+            "version": CURRENT_VERSION.SPATIAL_DATA,
             "msgType": 1,
             "bundleStart": 0,
             "bundleSize": total_steps,
@@ -142,7 +142,7 @@ class TrajectoryConverter:
         simularium_data["spatialData"] = spatialData
         # plot data
         simularium_data["plotData"] = {
-            "version": 1,
+            "version": CURRENT_VERSION.PLOT_DATA,
             "data": input_data.plots,
         }
         return simularium_data

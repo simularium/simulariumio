@@ -52,6 +52,9 @@ class DisplayData:
             Default: Use default colors from Simularium Viewer
         """
         self.name = name
+        # radius defaults to None here so that later,
+        # when it's used to override radius in data,
+        # it's easy to test whether the user has specified it
         self.radius = radius
         self.display_type = display_type
         self.url = url

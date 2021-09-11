@@ -7,7 +7,7 @@ from typing import Any, Dict
 
 from .trajectory_converter import TrajectoryConverter
 from .data_objects import TrajectoryData, UnitData
-from .constants import DEFAULT_CAMERA_SETTINGS
+from .constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
 ###############################################################################
 
@@ -17,8 +17,6 @@ log = logging.getLogger(__name__)
 
 
 class FileConverter(TrajectoryConverter):
-    current_trajectory_info_version: int = 3
-
     def __init__(self, input_path: str):
         """
         This object loads the data in .simularium JSON format
@@ -34,7 +32,7 @@ class FileConverter(TrajectoryConverter):
             buffer_data = json.load(simularium_file)
         if (
             int(buffer_data["trajectoryInfo"]["version"])
-            < self.current_trajectory_info_version
+            < CURRENT_VERSION.TRAJECTORY_INFO
         ):
             buffer_data = self.update_trajectory_info_version(buffer_data)
         self._data = TrajectoryData.from_buffer_data(buffer_data)
@@ -85,5 +83,5 @@ class FileConverter(TrajectoryConverter):
         if int(data["trajectoryInfo"]["version"]) == 2:
             # all the new fields from v2 to v3 are optional
             data["trajectoryInfo"]["version"] = 3
-        print(f"Updated TrajectoryInfo v1 -> v{self.current_trajectory_info_version}")
+        print(f"Updated TrajectoryInfo v1 -> v{CURRENT_VERSION.TRAJECTORY_INFO}")
         return data
