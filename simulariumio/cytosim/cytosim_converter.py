@@ -259,16 +259,15 @@ class CytosimConverter(TrajectoryConverter):
         for object_type in input_data.object_info:
             for tid in input_data.object_info[object_type].display_data:
                 display_data = input_data.object_info[object_type].display_data[tid]
-                if "fiber" in object_type:
-                    if (
-                        display_data.display_type != DISPLAY_TYPE.NONE
-                        and display_data.display_type != DISPLAY_TYPE.FIBER
-                    ):
-                        display_data.display_type = DISPLAY_TYPE.FIBER
-                        print(
-                            f"{display_data.name} display type of "
-                            f"{display_data.display_type} was changed to FIBER"
-                        )
+                if "fiber" in object_type and (
+                    display_data.display_type != DISPLAY_TYPE.NONE
+                    and display_data.display_type != DISPLAY_TYPE.FIBER
+                ):
+                    display_data.display_type = DISPLAY_TYPE.FIBER
+                    print(
+                        f"{display_data.name} display type of "
+                        f"{display_data.display_type} was changed to FIBER"
+                    )
                 agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
         return TrajectoryData(
