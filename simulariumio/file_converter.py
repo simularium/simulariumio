@@ -37,55 +37,73 @@ class FileConverter(TrajectoryConverter):
             buffer_data = self.update_trajectory_info_version(buffer_data)
         self._data = TrajectoryData.from_buffer_data(buffer_data)
 
-    def update_trajectory_info_version(self, data: Dict[str, Any]) -> Dict[str, Any]:
+    @staticmethod
+    def update_trajectory_info_v1_to_v2(data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Update the trajectory info block from v1 to v2
+        """
+        # units
+        if "spatialUnitFactorMeters" in data["trajectoryInfo"]:
+            spatial_units = UnitData(
+                "m", data["trajectoryInfo"]["spatialUnitFactorMeters"]
+            )
+            data["trajectoryInfo"].pop("spatialUnitFactorMeters")
+        else:
+            spatial_units = UnitData("m")
+        data["trajectoryInfo"]["spatialUnits"] = {
+            "magnitude": spatial_units.magnitude,
+            "name": spatial_units.name,
+        }
+        time_units = UnitData("s", 1.0)
+        data["trajectoryInfo"]["timeUnits"] = {
+            "magnitude": time_units.magnitude,
+            "name": time_units.name,
+        }
+        # default camera transform
+        data["trajectoryInfo"]["cameraDefault"] = {
+            "position": {
+                "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+            },
+            "lookAtPosition": {
+                "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+            },
+            "upVector": {
+                "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+            },
+            "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+        }
+        data["trajectoryInfo"]["version"] = 2
+        return data
+
+    @staticmethod
+    def update_trajectory_info_v2_to_v3(data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Update the trajectory info block from v2 to v3
+        """
+        # all the new fields from v2 to v3 are optional
+        data["trajectoryInfo"]["version"] = 3
+        return data
+
+    @staticmethod
+    def update_trajectory_info_version(data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Update the trajectory info block
         to match the current version
         """
         original_version = int(data["trajectoryInfo"]["version"])
+        if original_version == 1:
+            data = FileConverter.update_trajectory_info_v1_to_v2(data)
+            data = FileConverter.update_trajectory_info_v2_to_v3(data)
+        if original_version == 2:
+            data = FileConverter.update_trajectory_info_v2_to_v3(data)
         print(
-            f"Updating TrajectoryInfo v{original_version} -> "
+            f"Updated TrajectoryInfo v{original_version} -> "
             f"v{CURRENT_VERSION.TRAJECTORY_INFO}"
         )
-        if int(data["trajectoryInfo"]["version"]) == 1:
-            # units
-            if "spatialUnitFactorMeters" in data["trajectoryInfo"]:
-                spatial_units = UnitData(
-                    "m", data["trajectoryInfo"]["spatialUnitFactorMeters"]
-                )
-                data["trajectoryInfo"].pop("spatialUnitFactorMeters")
-            else:
-                spatial_units = UnitData("m")
-            data["trajectoryInfo"]["spatialUnits"] = {
-                "magnitude": spatial_units.magnitude,
-                "name": spatial_units.name,
-            }
-            time_units = UnitData("s", 1.0)
-            data["trajectoryInfo"]["timeUnits"] = {
-                "magnitude": time_units.magnitude,
-                "name": time_units.name,
-            }
-            # default camera transform
-            data["trajectoryInfo"]["cameraDefault"] = {
-                "position": {
-                    "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
-                    "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
-                    "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
-                },
-                "lookAtPosition": {
-                    "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
-                    "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
-                    "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
-                },
-                "upVector": {
-                    "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
-                    "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
-                    "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
-                },
-                "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
-            }
-            data["trajectoryInfo"]["version"] = 2
-        if int(data["trajectoryInfo"]["version"]) == 2:
-            # all the new fields from v2 to v3 are optional
-            data["trajectoryInfo"]["version"] = 3
         return data
