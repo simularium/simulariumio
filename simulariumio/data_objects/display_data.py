@@ -71,7 +71,7 @@ class DisplayData:
         if color is not None and (
             (len(color) != 4 and len(color) != 7) or color[0] != "#"
         ):
-            raise Exception(f"{color} should be provided as '#xxxxxx' or '#xxx'")
+            raise DataError(f"{color} should be provided as '#xxxxxx' or '#xxx'")
         self.color = color
 
     @staticmethod
