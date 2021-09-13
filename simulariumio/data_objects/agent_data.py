@@ -215,7 +215,8 @@ class AgentData:
     @staticmethod
     def get_display_data(type_mapping: Dict[str, Any]) -> Dict[str, DisplayData]:
         """
-        Generate the display_data mapping from a type_mapping
+        Generate the display_data mapping using a type_mapping
+        from a simularium JSON dict containing buffers
         """
         result = {}
         for type_id in type_mapping:

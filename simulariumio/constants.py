@@ -49,8 +49,8 @@ DEFAULT_PLOT_MODE = "markers"
 
 class DISPLAY_TYPE:
     SPHERE: str = "SPHERE"
-    CUBE: str = "CUBE"
-    GIZMO: str = "GIZMO"
+    # CUBE: str = "CUBE"  # coming soon
+    # GIZMO: str = "GIZMO"  # coming soon
     PDB: str = "PDB"
     OBJ: str = "OBJ"
     FIBER: str = "FIBER"
