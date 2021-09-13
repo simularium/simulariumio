@@ -74,26 +74,6 @@ class DisplayData:
             raise DataError(f"{color} should be provided as '#xxxxxx' or '#xxx'")
         self.color = color
 
-    @staticmethod
-    def display_type_to_string(display_type: DISPLAY_TYPE) -> str:
-        """
-        Get a string representation for the given DISPLAY_TYPE
-        """
-        if display_type == DISPLAY_TYPE.NONE:
-            return None
-        if display_type == DISPLAY_TYPE.SPHERE:
-            return "SPHERE"
-        if display_type == DISPLAY_TYPE.PDB:
-            return "PDB"
-        if display_type == DISPLAY_TYPE.OBJ:
-            return "OBJ"
-        if display_type == DISPLAY_TYPE.FIBER:
-            return "FIBER"
-        # if display_type == DISPLAY_TYPE.CUBE:
-        #     return "CUBE"  # coming soon
-        # if display_type == DISPLAY_TYPE.GIZMO:
-        #     return "GIZMO"  # coming soon
-
     def is_default(self):
         """
         Check if this DisplayData is only holding default data
@@ -103,15 +83,14 @@ class DisplayData:
         )
 
     def to_string(self):
-        display_type = DisplayData.display_type_to_string(self.display_type)
         return (
-            f"{display_type}: url={self.url}, color={self.color} "
+            f"{self.display_type.value}: url={self.url}, color={self.color} "
             f"is_default? {self.is_default()}"
         )
 
     def __iter__(self):
         if self.display_type != DISPLAY_TYPE.NONE:
-            yield "displayType", DisplayData.display_type_to_string(self.display_type)
+            yield "displayType", self.display_type.value
         if self.url:
             yield "url", self.url
         if self.color:

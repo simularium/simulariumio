@@ -50,13 +50,18 @@ DEFAULT_PLOT_MODE = "markers"
 
 
 class DISPLAY_TYPE(Enum):
-    NONE = 0
-    SPHERE = 1
-    PDB = 2
-    OBJ = 3
-    FIBER = 4
-    # CUBE = 5  # coming soon
-    # GIZMO = 6  # coming soon
+    """
+    These values are required for file I/O,
+    changing them requires a version bump
+    """
+
+    NONE = None
+    SPHERE = "SPHERE"
+    PDB = "PDB"
+    OBJ = "OBJ"
+    FIBER = "FIBER"
+    # CUBE = "CUBE"  # coming soon
+    # GIZMO = "GIZMO"  # coming soon
 
 
 class CURRENT_VERSION:

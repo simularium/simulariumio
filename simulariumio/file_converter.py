@@ -38,7 +38,7 @@ class FileConverter(TrajectoryConverter):
         self._data = TrajectoryData.from_buffer_data(buffer_data)
 
     @staticmethod
-    def update_trajectory_info_v1_to_v2(data: Dict[str, Any]) -> Dict[str, Any]:
+    def _update_trajectory_info_v1_to_v2(data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Update the trajectory info block from v1 to v2
         """
@@ -82,7 +82,7 @@ class FileConverter(TrajectoryConverter):
         return data
 
     @staticmethod
-    def update_trajectory_info_v2_to_v3(data: Dict[str, Any]) -> Dict[str, Any]:
+    def _update_trajectory_info_v2_to_v3(data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Update the trajectory info block from v2 to v3
         """
@@ -95,13 +95,19 @@ class FileConverter(TrajectoryConverter):
         """
         Update the trajectory info block
         to match the current version
+
+        Parameters
+        ----------
+        data: Dict[str, Any]
+            A .simularium JSON file loaded in memory as a Dict.
+            This object will be mutated, not copied.
         """
         original_version = int(data["trajectoryInfo"]["version"])
         if original_version == 1:
-            data = FileConverter.update_trajectory_info_v1_to_v2(data)
-            data = FileConverter.update_trajectory_info_v2_to_v3(data)
+            data = FileConverter._update_trajectory_info_v1_to_v2(data)
+            data = FileConverter._update_trajectory_info_v2_to_v3(data)
         if original_version == 2:
-            data = FileConverter.update_trajectory_info_v2_to_v3(data)
+            data = FileConverter._update_trajectory_info_v2_to_v3(data)
         print(
             f"Updated TrajectoryInfo v{original_version} -> "
             f"v{CURRENT_VERSION.TRAJECTORY_INFO}"

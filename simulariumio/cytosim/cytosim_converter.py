@@ -266,7 +266,7 @@ class CytosimConverter(TrajectoryConverter):
                     display_data.display_type = DISPLAY_TYPE.FIBER
                     print(
                         f"{display_data.name} display type of "
-                        f"{display_data.display_type} was changed to FIBER"
+                        f"{display_data.display_type.value} was changed to FIBER"
                     )
                 agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
