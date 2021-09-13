@@ -44,7 +44,7 @@ class FileConverter(TrajectoryConverter):
         """
         original_version = int(data["trajectoryInfo"]["version"])
         print(
-            f"Updating TrajectoryInfo {original_version} -> "
+            f"Updating TrajectoryInfo v{original_version} -> "
             f"v{CURRENT_VERSION.TRAJECTORY_INFO}"
         )
         if int(data["trajectoryInfo"]["version"]) == 1:

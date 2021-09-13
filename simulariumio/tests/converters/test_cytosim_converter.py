@@ -10,7 +10,11 @@ from simulariumio.cytosim import (
     CytosimObjectInfo,
 )
 from simulariumio import MetaData, DisplayData
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
+from simulariumio.constants import (
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+    DISPLAY_TYPE,
+)
 
 
 @pytest.mark.parametrize(
@@ -31,7 +35,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                             0: DisplayData(
                                 name="fiber",
                                 radius=0.001,
-                                display_type="SPHERE",
+                                display_type=DISPLAY_TYPE.SPHERE,
                                 color="#d71f5f",
                             )
                         },
@@ -360,7 +364,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                             2: DisplayData(
                                 name="kinesin",
                                 radius=0.01,
-                                display_type="PDB",
+                                display_type=DISPLAY_TYPE.PDB,
                                 url="https://files.rcsb.org/download/3KIN.pdb",
                                 color="#0080ff",
                             ),
@@ -415,7 +419,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                         "1": {
                             "name": "actin",
                             "geometry": {
-                                "displayType": "FIBER",
                                 "color": "#ffc100",
                             },
                         },

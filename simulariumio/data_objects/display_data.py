@@ -3,6 +3,9 @@
 
 import logging
 
+from ..constants import DISPLAY_TYPE
+from ..exceptions import DataError
+
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -13,7 +16,7 @@ log = logging.getLogger(__name__)
 class DisplayData:
     name: str
     radius: float
-    display_type: str
+    display_type: DISPLAY_TYPE
     url: str
     color: str
 
@@ -21,7 +24,7 @@ class DisplayData:
         self,
         name: str,
         radius: float = None,
-        display_type: str = None,
+        display_type: DISPLAY_TYPE = DISPLAY_TYPE.NONE,
         url: str = None,
         color: str = None,
     ):
@@ -38,10 +41,12 @@ class DisplayData:
             For fibers, this is the thickness of the line
             For default agents, this is the scale of the representation
             Default : 1.0
-        display_type: str (optional)
+        display_type: DISPLAY_TYPE (optional)
             the type of geometry to display
-            Options: "SPHERE", "CUBE", "GIZMO", "FIBER", "PDB", or "OBJ"
-            Default: "SPHERE" or "FIBER"
+            Options: SPHERE, FIBER, PDB, or OBJ
+            Default: If not specified, the Simularium Viewer
+                defaults to SPHERE or FIBER depending on
+                the viz type of each agent
         url: str (optional)
             local path or web URL for the geometry file to display,
             web URLs are required for streaming
@@ -56,29 +61,57 @@ class DisplayData:
         # when it's used to override radius in data,
         # it's easy to test whether the user has specified it
         self.radius = radius
+        if not isinstance(display_type, DISPLAY_TYPE):
+            raise DataError(
+                f"In {name}'s DisplayData, display_type is {type(display_type)}"
+                " instead of DISPLAY_TYPE"
+            )
         self.display_type = display_type
         self.url = url
         if color is not None and (
             (len(color) != 4 and len(color) != 7) or color[0] != "#"
         ):
-            raise Exception(f"{color} should be provided as '#xxxxxx'")
+            raise Exception(f"{color} should be provided as '#xxxxxx' or '#xxx'")
         self.color = color
+
+    @staticmethod
+    def display_type_to_string(display_type: DISPLAY_TYPE) -> str:
+        """
+        Get a string representation for the given DISPLAY_TYPE
+        """
+        if display_type == DISPLAY_TYPE.NONE:
+            return None
+        if display_type == DISPLAY_TYPE.SPHERE:
+            return "SPHERE"
+        if display_type == DISPLAY_TYPE.PDB:
+            return "PDB"
+        if display_type == DISPLAY_TYPE.OBJ:
+            return "OBJ"
+        if display_type == DISPLAY_TYPE.FIBER:
+            return "FIBER"
+        # if display_type == DISPLAY_TYPE.CUBE:
+        #     return "CUBE"  # coming soon
+        # if display_type == DISPLAY_TYPE.GIZMO:
+        #     return "GIZMO"  # coming soon
 
     def is_default(self):
         """
         Check if this DisplayData is only holding default data
         """
-        return self.display_type is None and not self.url and not self.color
+        return (
+            self.display_type == DISPLAY_TYPE.NONE and not self.url and not self.color
+        )
 
     def to_string(self):
+        display_type = DisplayData.display_type_to_string(self.display_type)
         return (
-            f"{self.display_type}: url={self.url}, color={self.color} "
-            f"DEFAULT? {self.is_default()}"
+            f"{display_type}: url={self.url}, color={self.color} "
+            f"is_default? {self.is_default()}"
         )
 
     def __iter__(self):
-        if self.display_type:
-            yield "displayType", self.display_type
+        if self.display_type != DISPLAY_TYPE.NONE:
+            yield "displayType", DisplayData.display_type_to_string(self.display_type)
         if self.url:
             yield "url", self.url
         if self.color:

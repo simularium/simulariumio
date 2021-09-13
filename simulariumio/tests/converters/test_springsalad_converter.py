@@ -5,7 +5,11 @@ import pytest
 
 from simulariumio.springsalad import SpringsaladConverter, SpringsaladData
 from simulariumio import DisplayData
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
+from simulariumio.constants import (
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+    DISPLAY_TYPE,
+)
 
 
 @pytest.mark.parametrize(
@@ -22,7 +26,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                     "GREEN": DisplayData(
                         name="A",
                         radius=10.0,
-                        display_type="OBJ",
+                        display_type=DISPLAY_TYPE.OBJ,
                         url="a.obj",
                         color="#dfdacd",
                     ),

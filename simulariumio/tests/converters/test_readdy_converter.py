@@ -6,7 +6,11 @@ import pytest
 
 from simulariumio.readdy import ReaddyConverter, ReaddyData
 from simulariumio import UnitData, MetaData, DisplayData
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
+from simulariumio.constants import (
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+    DISPLAY_TYPE,
+)
 
 
 @pytest.mark.parametrize(
@@ -29,7 +33,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                     "B": DisplayData(
                         name="B",
                         radius=2.0,
-                        display_type="OBJ",
+                        display_type=DISPLAY_TYPE.OBJ,
                         url="c.obj",
                         color="#dfdacd",
                     ),

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from enum import Enum
+
 import numpy as np
 
 from .data_objects.dimension_data import DimensionData
@@ -47,13 +49,14 @@ class DEFAULT_CAMERA_SETTINGS:
 DEFAULT_PLOT_MODE = "markers"
 
 
-class DISPLAY_TYPE:
-    SPHERE: str = "SPHERE"
-    # CUBE: str = "CUBE"  # coming soon
-    # GIZMO: str = "GIZMO"  # coming soon
-    PDB: str = "PDB"
-    OBJ: str = "OBJ"
-    FIBER: str = "FIBER"
+class DISPLAY_TYPE(Enum):
+    NONE = 0
+    SPHERE = 1
+    PDB = 2
+    OBJ = 3
+    FIBER = 4
+    # CUBE = 5  # coming soon
+    # GIZMO = 6  # coming soon
 
 
 class CURRENT_VERSION:

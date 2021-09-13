@@ -27,3 +27,4 @@ from .data_objects import (  # noqa: F401
     ScatterPlotData,
     HistogramPlotData,
 )
+from .constants import DISPLAY_TYPE  # noqa: F401

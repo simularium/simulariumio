@@ -9,7 +9,11 @@ from simulariumio.smoldyn import (
     SmoldynData,
 )
 from simulariumio import MetaData, UnitData, DisplayData
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
+from simulariumio.constants import (
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+    DISPLAY_TYPE,
+)
 
 
 @pytest.mark.parametrize(
@@ -27,7 +31,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                     "S(solution)": DisplayData(
                         name="S",
                         radius=0.01,
-                        display_type="OBJ",
+                        display_type=DISPLAY_TYPE.OBJ,
                         url="s.obj",
                         color="#dfdacd",
                     ),

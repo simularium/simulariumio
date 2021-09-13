@@ -19,6 +19,7 @@ from .data_objects import (
     ScatterPlotData,
     AgentData,
     TrajectoryData,
+    DisplayData,
 )
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError, DataError
@@ -362,6 +363,35 @@ class TrajectoryConverter:
         return True
 
     @staticmethod
+    def _check_type_matches_subpoints(
+        type_name: str,
+        n_subpoints: int,
+        viz_type: float,
+        display_data: DisplayData,
+        debug_name: str = None,
+    ) -> str:
+        """
+        If the agent has subpoints, check that it
+        also has a display_type of "FIBER" and viz type of "FIBER", and vice versa.
+        return a message saying what is inconsistent
+        """
+        has_subpoints = n_subpoints > 0
+        msg = (
+            f"Agent {debug_name}: Type {type_name} "
+            + ("has" if has_subpoints else "does not have")
+            + " subpoints and "
+        )
+        if has_subpoints != (viz_type == VIZ_TYPE.FIBER):
+            return msg + f"viz type is {viz_type}"
+        if type_name in display_data:
+            display_type = display_data[type_name].display_type
+            if display_type is not DISPLAY_TYPE.NONE and has_subpoints != (
+                display_type == DISPLAY_TYPE.FIBER
+            ):
+                return msg + f"display type is {display_type}"
+        return ""
+
+    @staticmethod
     def _check_types_match_subpoints(trajectory_data: TrajectoryData) -> str:
         """
         For each frame, check that agents that have subpoints
@@ -374,28 +404,15 @@ class TrajectoryConverter:
             for agent_index in range(
                 int(trajectory_data.agent_data.n_agents[time_index])
             ):
-                type_name = trajectory_data.agent_data.types[time_index][agent_index]
-                has_subpoints = n_subpoints[time_index][agent_index] > 0
-                viz_type = trajectory_data.agent_data.viz_types[time_index][agent_index]
-                if has_subpoints != (viz_type == VIZ_TYPE.FIBER):
-                    return (
-                        f"For agent at index Time = {time_index}, "
-                        f"Agent = {agent_index}: Type {type_name} "
-                        + ("has" if has_subpoints else "does not have")
-                        + f" subpoints and viz type is {viz_type}"
-                    )
-                if type_name not in display_data:
-                    continue
-                display_type = display_data[type_name].display_type
-                if display_type is not None and has_subpoints != (
-                    display_type == DISPLAY_TYPE.FIBER
-                ):
-                    return (
-                        f"For agent at index Time = {time_index}, "
-                        f"Agent = {agent_index}: Type {type_name} "
-                        + ("has" if has_subpoints else "does not have")
-                        + f" subpoints and display type is {display_type}"
-                    )
+                inconsistent_type = TrajectoryConverter._check_type_matches_subpoints(
+                    trajectory_data.agent_data.types[time_index][agent_index],
+                    n_subpoints[time_index][agent_index],
+                    trajectory_data.agent_data.viz_types[time_index][agent_index],
+                    display_data,
+                    f"at index Time = {time_index}, Agent = {agent_index}",
+                )
+                if inconsistent_type:
+                    return inconsistent_type
         return ""
 
     @staticmethod

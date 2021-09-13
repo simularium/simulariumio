@@ -16,6 +16,7 @@ from simulariumio import (
     DisplayData,
     CameraData,
 )
+from simulariumio.constants import DISPLAY_TYPE
 
 
 def default_agents_type_mapping() -> Dict[str, Any]:
@@ -33,7 +34,7 @@ def default_agents_type_mapping() -> Dict[str, Any]:
         "3": {
             "name": "S",
             "geometry": {
-                "displayType": "GIZMO",
+                "displayType": "SPHERE",
                 "color": "#000000",
             },
         },
@@ -120,17 +121,17 @@ def three_default_agents() -> TrajectoryData:
                 ),
                 "S": DisplayData(
                     name="S",
-                    display_type="GIZMO",
+                    display_type=DISPLAY_TYPE.SPHERE,
                     color="#000000",
                 ),
                 "Y": DisplayData(
                     name="Y",
-                    display_type="PDB",
+                    display_type=DISPLAY_TYPE.PDB,
                     url="https://files.rcsb.org/download/7PDZ.pdb",
                 ),
                 "L": DisplayData(
                     name="L",
-                    display_type="OBJ",
+                    display_type=DISPLAY_TYPE.OBJ,
                     url="molecule.obj",
                     color="#333333",
                 ),

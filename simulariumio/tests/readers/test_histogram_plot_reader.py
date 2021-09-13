@@ -6,7 +6,7 @@ import numpy as np
 
 from simulariumio import HistogramPlotData, UnitData, MetaData, DisplayData
 from simulariumio.readdy import ReaddyConverter, ReaddyData
-from simulariumio.constants import CURRENT_VERSION
+from simulariumio.constants import CURRENT_VERSION, DISPLAY_TYPE
 
 
 @pytest.mark.parametrize(
@@ -29,7 +29,7 @@ from simulariumio.constants import CURRENT_VERSION
                     "B": DisplayData(
                         name="B",
                         radius=2.0,
-                        display_type="OBJ",
+                        display_type=DISPLAY_TYPE.OBJ,
                         url="c.obj",
                         color="#dfdacd",
                     ),

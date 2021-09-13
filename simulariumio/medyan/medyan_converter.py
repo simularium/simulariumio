@@ -244,15 +244,14 @@ class MedyanConverter(TrajectoryConverter):
             for tid in input_data.display_data[object_type]:
                 display_data = input_data.display_data[object_type][tid]
                 if (
-                    display_data.display_type is not None
+                    display_data.display_type != DISPLAY_TYPE.NONE
                     and display_data.display_type != DISPLAY_TYPE.FIBER
                 ):
+                    display_data.display_type = DISPLAY_TYPE.FIBER
                     print(
                         f"{display_data.name} display type of "
-                        f"{display_data.display_type} was changed to "
-                        f"{DISPLAY_TYPE.FIBER}"
+                        f"{display_data.display_type} was changed to FIBER"
                     )
-                    display_data.display_type = DISPLAY_TYPE.FIBER
                 agent_data.display_data[display_data.name] = display_data
         return TrajectoryData(
             meta_data=MetaData(

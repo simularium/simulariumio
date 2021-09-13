@@ -5,7 +5,11 @@ import pytest
 
 from simulariumio.mcell import McellConverter, McellData
 from simulariumio import DisplayData
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
+from simulariumio.constants import (
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+    DISPLAY_TYPE,
+)
 
 
 @pytest.mark.parametrize(
@@ -22,7 +26,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                     "a": DisplayData(
                         name="Kinesin",
                         radius=0.03,
-                        display_type="PDB",
+                        display_type=DISPLAY_TYPE.PDB,
                         url="https://files.rcsb.org/download/3KIN.pdb",
                         color="#0080ff",
                     ),
