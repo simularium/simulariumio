@@ -71,10 +71,9 @@ class DisplayData:
         return self.display_type is None and not self.url and not self.color
 
     def to_string(self):
-        default = self.is_default()
         return (
             f"{self.display_type}: url={self.url}, color={self.color} "
-            f"DEFAULT? {default}"
+            f"DEFAULT? {self.is_default()}"
         )
 
     def __iter__(self):
