@@ -28,6 +28,14 @@ simulariumio.data\_objects.dimension\_data module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.data\_objects.display\_data module
+-----------------------------------------------
+
+.. automodule:: simulariumio.data_objects.display_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.data\_objects.histogram\_plot\_data module
 -------------------------------------------------------
 

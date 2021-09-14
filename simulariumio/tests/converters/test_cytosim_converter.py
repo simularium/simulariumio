@@ -8,10 +8,13 @@ from simulariumio.cytosim import (
     CytosimConverter,
     CytosimData,
     CytosimObjectInfo,
-    CytosimAgentInfo,
 )
-from simulariumio import MetaData
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
+from simulariumio import MetaData, DisplayData
+from simulariumio.constants import (
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+    DISPLAY_TYPE,
+)
 
 
 @pytest.mark.parametrize(
@@ -28,13 +31,20 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "fibers": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim"
                         "/3_fibers_3_frames/fiber_points.txt",
-                        agents={0: CytosimAgentInfo(name="fiber", radius=0.001)},
+                        display_data={
+                            0: DisplayData(
+                                name="fiber",
+                                radius=0.001,
+                                display_type=DISPLAY_TYPE.SPHERE,
+                                color="#d71f5f",
+                            )
+                        },
                     )
                 },
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -64,10 +74,18 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
-                    "typeMapping": {"0": {"name": "fiber"}},
+                    "typeMapping": {
+                        "0": {
+                            "name": "fiber",
+                            "geometry": {
+                                "displayType": "FIBER",
+                                "color": "#d71f5f",
+                            },
+                        },
+                    },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -308,7 +326,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
         # aster_pull3D example with couples, actin fibers, and solids added
@@ -322,38 +340,49 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "fibers": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/fiber_points.txt",
-                        agents={
-                            1: CytosimAgentInfo(name="microtubule", radius=0.01),
-                            2: CytosimAgentInfo(name="actin", radius=0.01),
+                        display_data={
+                            2: DisplayData(
+                                name="actin",
+                                radius=0.01,
+                                color="#ffc100",
+                            ),
                         },
                     ),
                     "solids": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/solids.txt",
-                        agents={
-                            1: CytosimAgentInfo(name="aster", radius=0.1),
-                            2: CytosimAgentInfo(name="vesicle", radius=0.1),
+                        display_data={
+                            1: DisplayData(name="aster"),
+                            2: DisplayData(name="vesicle", radius=0.1),
                         },
                     ),
                     "singles": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/singles.txt",
-                        agents={
-                            1: CytosimAgentInfo(name="dynein", radius=0.01),
-                            2: CytosimAgentInfo(name="kinesin", radius=0.01),
+                        display_data={
+                            1: DisplayData(name="dynein", radius=0.01),
+                            2: DisplayData(
+                                name="kinesin",
+                                radius=0.01,
+                                display_type=DISPLAY_TYPE.PDB,
+                                url="https://files.rcsb.org/download/3KIN.pdb",
+                                color="#0080ff",
+                            ),
                         },
                     ),
                     "couples": CytosimObjectInfo(
                         filepath="simulariumio/tests/data/cytosim/"
                         "aster_pull3D_couples_actin_solid_3_frames/couples.txt",
-                        agents={1: CytosimAgentInfo(name="motor complex", radius=0.02)},
+                        display_data={
+                            1: DisplayData(name="motor complex", radius=0.02)
+                        },
                         position_indices=[3, 4, 5],
                     ),
                 },
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -384,17 +413,31 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "microtubule"},
-                        "1": {"name": "actin"},
+                        "0": {
+                            "name": "fiber1",
+                        },
+                        "1": {
+                            "name": "actin",
+                            "geometry": {
+                                "color": "#ffc100",
+                            },
+                        },
                         "2": {"name": "aster"},
                         "3": {"name": "vesicle"},
-                        "4": {"name": "kinesin"},
+                        "4": {
+                            "name": "kinesin",
+                            "geometry": {
+                                "displayType": "PDB",
+                                "url": "https://files.rcsb.org/download/3KIN.pdb",
+                                "color": "#0080ff",
+                            },
+                        },
                         "5": {"name": "dynein"},
                         "6": {"name": "motor complex"},
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -412,7 +455,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 15.0,
                                 36.93,
                                 36.80,
@@ -438,7 +481,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 12.0,
                                 36.93,
                                 36.80,
@@ -461,7 +504,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 15.0,
                                 36.93,
                                 36.80,
@@ -530,7 +573,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                10.0,
+                                100.0,
                                 0.0,
                                 1000.0,
                                 5.0,
@@ -668,7 +711,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 18.0,
                                 44.55,
                                 33.97,
@@ -697,7 +740,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 9.0,
                                 44.230000000000004,
                                 33.56,
@@ -717,7 +760,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 15.0,
                                 44.22,
                                 33.18,
@@ -789,7 +832,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                10.0,
+                                100.0,
                                 0.0,
                                 1000.0,
                                 5.0,
@@ -927,7 +970,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 15.0,
                                 44.55,
                                 33.97,
@@ -953,7 +996,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 6.0,
                                 44.230000000000004,
                                 33.56,
@@ -970,7 +1013,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                1.0,
+                                100.0,
                                 12.0,
                                 44.22,
                                 33.18,
@@ -1033,7 +1076,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                10.0,
+                                100.0,
                                 0.0,
                                 1000.0,
                                 5.0,
@@ -1160,7 +1203,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
     ],

@@ -4,7 +4,12 @@
 import pytest
 
 from simulariumio.mcell import McellConverter, McellData
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
+from simulariumio import DisplayData
+from simulariumio.constants import (
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+    DISPLAY_TYPE,
+)
 
 
 @pytest.mark.parametrize(
@@ -17,11 +22,24 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                 "organelle_model_viz_output/Scene.data_model.00.json",
                 path_to_binary_files="simulariumio/tests/data/mcell/"
                 "organelle_model_viz_output",
+                display_data={
+                    "a": DisplayData(
+                        name="Kinesin",
+                        radius=0.03,
+                        display_type=DISPLAY_TYPE.PDB,
+                        url="https://files.rcsb.org/download/3KIN.pdb",
+                        color="#0080ff",
+                    ),
+                    "t2": DisplayData(
+                        name="Transporter",
+                        color="#ff1493",
+                    ),
+                },
                 surface_mol_rotation_angle=0.0,
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "µs",
@@ -53,12 +71,24 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     },
                     "typeMapping": {
                         "0": {"name": "b"},
-                        "1": {"name": "t2"},
-                        "2": {"name": "a"},
+                        "1": {
+                            "name": "Transporter",
+                            "geometry": {
+                                "color": "#ff1493",
+                            },
+                        },
+                        "2": {
+                            "name": "Kinesin",
+                            "geometry": {
+                                "displayType": "PDB",
+                                "url": "https://files.rcsb.org/download/3KIN.pdb",
+                                "color": "#0080ff",
+                            },
+                        },
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -98,7 +128,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.015,
+                                0.00015,
                                 0.0,
                             ],
                         },
@@ -137,7 +167,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.015,
+                                0.00015,
                                 0.0,
                             ],
                         },
@@ -176,13 +206,13 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.015,
+                                0.00015,
                                 0.0,
                             ],
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
     ],
@@ -190,5 +220,8 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
 def test_mcell_converter(trajectory, expected_data):
     converter = McellConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
-    assert expected_data == buffer_data
+    assert (
+        expected_data["trajectoryInfo"]["typeMapping"]
+        == buffer_data["trajectoryInfo"]["typeMapping"]
+    )
     assert converter._check_agent_ids_are_unique_per_frame(buffer_data)

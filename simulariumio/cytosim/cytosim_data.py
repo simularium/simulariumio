@@ -25,7 +25,7 @@ class CytosimData:
         meta_data: MetaData,
         object_info: Dict[str, CytosimObjectInfo],
         draw_fiber_points: bool = False,
-        plots: List[Dict[str, Any]] = [],
+        plots: List[Dict[str, Any]] = None,
     ):
         """
         This object holds simulation trajectory outputs
@@ -40,8 +40,8 @@ class CytosimData:
         object_info : Dict[str, CytosimObjectInfo]
             A dict mapping Cytosim object type
             (either "fibers", "solids", "singles", or "couples")
-            to info for reading the Cytosim data for agents
-            of that object type
+            to info for reading and rendering the Cytosim data
+            for agents of that object type
         draw_fiber_points : bool (optional)
             (only used for fibers)
             in addition to drawing a line for each fiber,
@@ -54,4 +54,4 @@ class CytosimData:
         self.meta_data = meta_data
         self.object_info = object_info
         self.draw_fiber_points = draw_fiber_points
-        self.plots = plots
+        self.plots = plots if plots is not None else []

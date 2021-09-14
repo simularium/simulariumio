@@ -3,4 +3,3 @@
 
 from .medyan_converter import MedyanConverter  # noqa: F401
 from .medyan_data import MedyanData  # noqa: F401
-from .medyan_agent_info import MedyanAgentInfo  # noqa: F401

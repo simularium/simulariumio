@@ -4,9 +4,9 @@
 import numpy as np
 import pytest
 
-from simulariumio.medyan import MedyanConverter, MedyanData, MedyanAgentInfo
-from simulariumio import MetaData
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
+from simulariumio.medyan import MedyanConverter, MedyanData
+from simulariumio import MetaData, DisplayData
+from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
 
 @pytest.mark.parametrize(
@@ -19,22 +19,24 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     box_size=np.array([1000.0, 1000.0, 500.0]),
                 ),
                 path_to_snapshot="simulariumio/tests/data/medyan/snapshot.traj",
-                filament_agent_info={
-                    0: MedyanAgentInfo(
+                filament_display_data={
+                    0: DisplayData(
                         name="Actin",
                         radius=2,
+                        color="#d71f5f",
                     ),
                 },
-                linker_agent_info={
-                    1: MedyanAgentInfo(
+                linker_display_data={
+                    1: DisplayData(
                         name="Xlink",
                         radius=0.5,
+                        color="#0080ff",
                     ),
                 },
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -65,15 +67,25 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "Actin"},
+                        "0": {
+                            "name": "Actin",
+                            "geometry": {
+                                "color": "#d71f5f",
+                            },
+                        },
                         "1": {"name": "linker0"},
-                        "2": {"name": "Xlink"},
+                        "2": {
+                            "name": "Xlink",
+                            "geometry": {
+                                "color": "#0080ff",
+                            },
+                        },
                         "3": {"name": "linker2"},
                         "4": {"name": "motor1"},
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -386,7 +398,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
         # same data but add drawing endpoints
@@ -396,30 +408,29 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     box_size=np.array([1000.0, 1000.0, 500.0]),
                 ),
                 path_to_snapshot="simulariumio/tests/data/medyan/snapshot.traj",
-                filament_agent_info={
-                    0: MedyanAgentInfo(
+                filament_display_data={
+                    0: DisplayData(
                         name="Actin",
                         radius=2,
+                        color="#ff1493",
                     ),
                 },
-                linker_agent_info={
-                    0: MedyanAgentInfo(
+                linker_display_data={
+                    0: DisplayData(
                         name="Xlink0",
                         radius=1.0,
-                        draw_endpoints=True,
-                        endpoint_radius=2.0,
+                        color="#0080ff",
                     ),
-                    1: MedyanAgentInfo(
+                    1: DisplayData(
                         name="Xlink1",
                         radius=0.5,
-                        draw_endpoints=True,
-                        endpoint_radius=3.0,
                     ),
                 },
+                agents_with_endpoints=["Xlink0", "Xlink1"],
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -450,15 +461,29 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "Actin"},
-                        "1": {"name": "Xlink0"},
-                        "2": {"name": "Xlink1"},
-                        "3": {"name": "linker2"},
-                        "4": {"name": "motor1"},
+                        "0": {
+                            "name": "Actin",
+                            "geometry": {
+                                "color": "#ff1493",
+                            },
+                        },
+                        "1": {
+                            "name": "Xlink0",
+                            "geometry": {
+                                "color": "#0080ff",
+                            },
+                        },
+                        "2": {"name": "Xlink0 End"},
+                        "3": {
+                            "name": "Xlink1",
+                        },
+                        "4": {"name": "Xlink1 End"},
+                        "5": {"name": "linker2"},
+                        "6": {"name": "motor1"},
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -581,7 +606,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 281.4725825,
                                 1000.0,
                                 3.0,
-                                1.0,
+                                2.0,
                                 216.8006048,
                                 854.8097767,
                                 302.9108981,
@@ -592,7 +617,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 1000.0,
                                 4.0,
-                                1.0,
+                                2.0,
                                 191.2656514,
                                 867.5975965,
                                 281.4725825,
@@ -603,7 +628,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 1001.0,
                                 5.0,
-                                2.0,
+                                3.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -620,29 +645,29 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 182.6128889,
                                 1000.0,
                                 6.0,
-                                2.0,
+                                4.0,
                                 657.3317212,
                                 421.4935263,
                                 212.7250047,
                                 0.0,
                                 0.0,
                                 0.0,
-                                3.0,
+                                1.0,
                                 0.0,
                                 1000.0,
                                 7.0,
-                                2.0,
+                                4.0,
                                 662.1669685,
                                 436.2944039,
                                 182.6128889,
                                 0.0,
                                 0.0,
                                 0.0,
-                                3.0,
+                                1.0,
                                 0.0,
                                 1001.0,
                                 8.0,
-                                3.0,
+                                5.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -659,7 +684,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 178.0690934,
                                 1001.0,
                                 9.0,
-                                4.0,
+                                6.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -728,7 +753,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 282.8074954,
                                 1000.0,
                                 3.0,
-                                1.0,
+                                2.0,
                                 219.5947346,
                                 861.7155242,
                                 300.8401219,
@@ -739,7 +764,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 1000.0,
                                 4.0,
-                                1.0,
+                                2.0,
                                 190.1993603,
                                 868.6151397,
                                 282.8074954,
@@ -750,7 +775,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 1001.0,
                                 5.0,
-                                2.0,
+                                3.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -767,25 +792,25 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 190.7921575,
                                 1000.0,
                                 6.0,
-                                2.0,
+                                4.0,
                                 655.5447164,
                                 417.8251525,
                                 217.1708231,
                                 0.0,
                                 0.0,
                                 0.0,
-                                3.0,
+                                1.0,
                                 0.0,
                                 1000.0,
                                 7.0,
-                                2.0,
+                                4.0,
                                 669.7077335,
                                 432.941762,
                                 190.7921575,
                                 0.0,
                                 0.0,
                                 0.0,
-                                3.0,
+                                1.0,
                                 0.0,
                                 1001.0,
                                 10.0,
@@ -806,7 +831,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 295.6282915,
                                 1000.0,
                                 11.0,
-                                1.0,
+                                2.0,
                                 748.6131058,
                                 312.0532071,
                                 295.8168199,
@@ -817,7 +842,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 1000.0,
                                 12.0,
-                                1.0,
+                                2.0,
                                 713.2424309,
                                 307.8785764,
                                 295.6282915,
@@ -828,7 +853,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 1001.0,
                                 13.0,
-                                3.0,
+                                5.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -845,7 +870,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 312.4195341,
                                 1001.0,
                                 9.0,
-                                4.0,
+                                6.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -862,7 +887,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 191.6383788,
                                 1001.0,
                                 14.0,
-                                4.0,
+                                6.0,
                                 0.0,
                                 0.0,
                                 0.0,
@@ -881,7 +906,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
     ],

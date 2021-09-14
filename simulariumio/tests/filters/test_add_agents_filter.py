@@ -5,8 +5,11 @@ import pytest
 
 from simulariumio import TrajectoryConverter
 from simulariumio.filters import AddAgentsFilter
-from simulariumio.tests.conftest import three_default_agents
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
+from simulariumio.tests.conftest import (
+    three_default_agents,
+    default_agents_type_mapping,
+)
+from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
 
 @pytest.mark.parametrize(
@@ -17,7 +20,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
             AddAgentsFilter(new_agent_data=three_default_agents().agent_data),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "ns",
@@ -47,18 +50,10 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
-                    "typeMapping": {
-                        "0": {"name": "C"},
-                        "1": {"name": "U"},
-                        "2": {"name": "L"},
-                        "3": {"name": "S"},
-                        "4": {"name": "O"},
-                        "5": {"name": "Y"},
-                        "6": {"name": "W"},
-                    },
+                    "typeMapping": default_agents_type_mapping(),
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -281,7 +276,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
     ],

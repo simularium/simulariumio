@@ -4,7 +4,12 @@
 import pytest
 
 from simulariumio.springsalad import SpringsaladConverter, SpringsaladData
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
+from simulariumio import DisplayData
+from simulariumio.constants import (
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+    DISPLAY_TYPE,
+)
 
 
 @pytest.mark.parametrize(
@@ -17,12 +22,24 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     "simulariumio/tests/data/springsalad/"
                     "Simulation0_SIM_VIEW_Run0.txt"
                 ),
-                display_names={"GREEN": "A", "RED": "B"},
+                display_data={
+                    "GREEN": DisplayData(
+                        name="A",
+                        radius=10.0,
+                        display_type=DISPLAY_TYPE.OBJ,
+                        url="a.obj",
+                        color="#dfdacd",
+                    ),
+                    "RED": DisplayData(
+                        name="B",
+                        color="#0080ff",
+                    ),
+                },
                 scale_factor=0.1,
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -53,15 +70,27 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "A"},
-                        "1": {"name": "B"},
+                        "0": {
+                            "name": "A",
+                            "geometry": {
+                                "displayType": "OBJ",
+                                "url": "a.obj",
+                                "color": "#dfdacd",
+                            },
+                        },
+                        "1": {
+                            "name": "B",
+                            "geometry": {
+                                "color": "#0080ff",
+                            },
+                        },
                         "2": {"name": "GRAY"},
                         "3": {"name": "CYAN"},
                         "4": {"name": "BLUE"},
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 2,
@@ -79,7 +108,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.2,
+                                1.0,
                                 0.0,
                                 1000.0,
                                 100010000.0,
@@ -90,7 +119,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.2,
+                                1.0,
                                 0.0,
                                 1000.0,
                                 100200001.0,
@@ -201,7 +230,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
     ],

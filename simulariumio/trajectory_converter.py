@@ -19,10 +19,11 @@ from .data_objects import (
     ScatterPlotData,
     AgentData,
     TrajectoryData,
+    DisplayData,
 )
 from .filters import Filter
-from .exceptions import UnsupportedPlotTypeError
-from .constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE
+from .exceptions import UnsupportedPlotTypeError, DataError
+from .constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE, DISPLAY_TYPE, CURRENT_VERSION
 
 ###############################################################################
 
@@ -61,6 +62,9 @@ class TrajectoryConverter:
         Return an object containing the data shaped for Simularium format
         """
         print("Converting Trajectory Data -------------")
+        inconsistent_type = TrajectoryConverter._check_types_match_subpoints(input_data)
+        if inconsistent_type:
+            raise DataError(inconsistent_type)
         simularium_data = {}
         # trajectory info
         total_steps = (
@@ -70,7 +74,7 @@ class TrajectoryConverter:
         )
         type_ids, type_mapping = input_data.agent_data.get_type_ids_and_mapping()
         traj_info = {
-            "version": 2,
+            "version": CURRENT_VERSION.TRAJECTORY_INFO,
             "timeUnits": {
                 "magnitude": input_data.time_units.magnitude,
                 "name": input_data.time_units.name,
@@ -119,7 +123,7 @@ class TrajectoryConverter:
         simularium_data["trajectoryInfo"] = traj_info
         # spatial data
         spatialData = {
-            "version": 1,
+            "version": CURRENT_VERSION.SPATIAL_DATA,
             "msgType": 1,
             "bundleStart": 0,
             "bundleSize": total_steps,
@@ -139,7 +143,7 @@ class TrajectoryConverter:
         simularium_data["spatialData"] = spatialData
         # plot data
         simularium_data["plotData"] = {
-            "version": 1,
+            "version": CURRENT_VERSION.PLOT_DATA,
             "data": input_data.plots,
         }
         return simularium_data
@@ -153,7 +157,7 @@ class TrajectoryConverter:
         Return the spatialData's bundleData for a simulation
         of agents with subpoints, packing buffer with jagged data is slower
         """
-        bundle_data: List[Dict[str, Any]] = []
+        bundle_data = []
         uids = {}
         used_unique_IDs = list(np.unique(agent_data.unique_ids))
         total_steps = (
@@ -274,7 +278,7 @@ class TrajectoryConverter:
         Return the spatialData's bundleData for a simulation
         of agents without subpoints, using list slicing for speed
         """
-        bundle_data: List[Dict[str, Any]] = []
+        bundle_data = []
         max_n_agents = int(np.amax(agent_data.n_agents, 0))
         ix_positions = np.empty((3 * max_n_agents,), dtype=int)
         ix_rotations = np.empty((3 * max_n_agents,), dtype=int)
@@ -357,6 +361,59 @@ class TrajectoryConverter:
                 agent_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX - 1
                 get_n_subpoints = True
         return True
+
+    @staticmethod
+    def _check_type_matches_subpoints(
+        type_name: str,
+        n_subpoints: int,
+        viz_type: float,
+        display_data: DisplayData,
+        debug_name: str = None,
+    ) -> str:
+        """
+        If the agent has subpoints, check that it
+        also has a display_type of "FIBER" and viz type of "FIBER", and vice versa.
+        return a message saying what is inconsistent
+        """
+        has_subpoints = n_subpoints > 0
+        msg = (
+            f"Agent {debug_name}: Type {type_name} "
+            + ("has" if has_subpoints else "does not have")
+            + " subpoints and "
+        )
+        if has_subpoints != (viz_type == VIZ_TYPE.FIBER):
+            return msg + f"viz type is {viz_type}"
+        if type_name in display_data:
+            display_type = display_data[type_name].display_type
+            if display_type is not DISPLAY_TYPE.NONE and has_subpoints != (
+                display_type == DISPLAY_TYPE.FIBER
+            ):
+                return msg + f"display type is {display_type}"
+        return ""
+
+    @staticmethod
+    def _check_types_match_subpoints(trajectory_data: TrajectoryData) -> str:
+        """
+        For each frame, check that agents that have subpoints
+        also have a display_type of "FIBER" and viz type of "FIBER", and vice versa.
+        return a message with the type name of the first agent that is inconsistent
+        """
+        n_subpoints = trajectory_data.agent_data.n_subpoints
+        display_data = trajectory_data.agent_data.display_data
+        for time_index in range(n_subpoints.shape[0]):
+            for agent_index in range(
+                int(trajectory_data.agent_data.n_agents[time_index])
+            ):
+                inconsistent_type = TrajectoryConverter._check_type_matches_subpoints(
+                    trajectory_data.agent_data.types[time_index][agent_index],
+                    n_subpoints[time_index][agent_index],
+                    trajectory_data.agent_data.viz_types[time_index][agent_index],
+                    display_data,
+                    f"at index Time = {time_index}, Agent = {agent_index}",
+                )
+                if inconsistent_type:
+                    return inconsistent_type
+        return ""
 
     @staticmethod
     def _format_timestep(number: float) -> float:

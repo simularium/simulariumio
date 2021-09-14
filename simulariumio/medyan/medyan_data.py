@@ -4,8 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-from .medyan_agent_info import MedyanAgentInfo
-from ..data_objects import MetaData
+from ..data_objects import MetaData, DisplayData
 
 ###############################################################################
 
@@ -17,7 +16,8 @@ log = logging.getLogger(__name__)
 class MedyanData:
     meta_data: MetaData
     path_to_snapshot: str
-    agent_info: Dict[str, Dict[int, MedyanAgentInfo]]
+    display_data: Dict[str, Dict[int, DisplayData]]
+    agents_with_endpoints: List[str]
     draw_fiber_points: bool
     plots: List[Dict[str, Any]]
 
@@ -25,11 +25,12 @@ class MedyanData:
         self,
         meta_data: MetaData,
         path_to_snapshot: str,
-        filament_agent_info: Dict[int, MedyanAgentInfo] = {},
-        linker_agent_info: Dict[int, MedyanAgentInfo] = {},
-        motor_agent_info: Dict[int, MedyanAgentInfo] = {},
+        filament_display_data: Dict[int, DisplayData] = None,
+        linker_display_data: Dict[int, DisplayData] = None,
+        motor_display_data: Dict[int, DisplayData] = None,
+        agents_with_endpoints: List[str] = None,
         draw_fiber_points: bool = False,
-        plots: List[Dict[str, Any]] = [],
+        plots: List[Dict[str, Any]] = None,
     ):
         """
         This object holds simulation trajectory outputs
@@ -42,15 +43,32 @@ class MedyanData:
             including box size, scale factor, and camera defaults
         path_to_snapshot : string
             A string path to the MEDYAN snapshot.traj output file
-        filament_agent_info : Dict[int, MedyanAgentInfo] (optional)
+        filament_display_data : Dict[int, DisplayData] (optional)
             A dict mapping MEDYAN type ID for filaments
-            to info (name, radius) for filament agents
-        linker_agent_info : Dict[int, MedyanAgentInfo] (optional)
+            to DisplayData, including names and display info
+            to use for rendering filament agent types in the Simularium Viewer
+            Default: for names, use "filament[type ID]"
+                for radius, use 1.0,
+                for rendering, use default representation and colors
+        linker_display_data : Dict[int, DisplayData] (optional)
             A dict mapping MEDYAN type ID for linkers
-            to info (name, radius) for linker agents
-        motor_agent_info : Dict[int, MedyanAgentInfo] (optional)
+            to DisplayData, including names and display info
+            to use for rendering linker agent types in the Simularium Viewer
+            Default: for names, use "linker[type ID]"
+                for rendering, use default representation and colors
+        motor_display_data : Dict[int, DisplayData] (optional)
             A dict mapping MEDYAN type ID for motors
-            to info (name, radius) for motor agents
+            to DisplayData, including names and display info
+            to use for rendering motor agent types in the Simularium Viewer
+            Default: for names, use "motor[type ID]"
+                for rendering, use default representation and colors
+        agents_with_endpoints: List[str]
+            (only used for motors and linkers)
+            A list of output agent names for which to draw spheres
+            (with 2x radius of the fiber)
+            at the end points that define the object
+            in addition to a line connecting them
+            Default: don't draw any endpoints
         draw_fiber_points : bool (optional)
             (only used for fibers)
             in addition to drawing a line for each fiber,
@@ -62,10 +80,15 @@ class MedyanData:
         """
         self.meta_data = meta_data
         self.path_to_snapshot = path_to_snapshot
-        self.agent_info = {
-            "filament": filament_agent_info,
-            "linker": linker_agent_info,
-            "motor": motor_agent_info,
+        self.display_data = {
+            "filament": filament_display_data
+            if filament_display_data is not None
+            else {},
+            "linker": linker_display_data if linker_display_data is not None else {},
+            "motor": motor_display_data if motor_display_data is not None else {},
         }
+        self.agents_with_endpoints = (
+            agents_with_endpoints if agents_with_endpoints is not None else []
+        )
         self.draw_fiber_points = draw_fiber_points
-        self.plots = plots
+        self.plots = plots if plots is not None else []

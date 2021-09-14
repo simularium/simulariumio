@@ -22,7 +22,7 @@ class TranslateFilter(Filter):
 
     def __init__(
         self,
-        translation_per_type: Dict[str, np.ndarray] = {},
+        translation_per_type: Dict[str, np.ndarray] = None,
         default_translation: np.ndarray = np.zeros(3),
     ):
         """
@@ -39,7 +39,9 @@ class TranslateFilter(Filter):
             in translation_per_type
             Default: np.zeros(3)
         """
-        self.translation_per_type = translation_per_type
+        self.translation_per_type = (
+            translation_per_type if translation_per_type is not None else {}
+        )
         self.default_translation = default_translation
 
     def apply(self, data: TrajectoryData) -> TrajectoryData:

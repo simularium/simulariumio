@@ -84,17 +84,22 @@ class SpringsaladConverter(TrajectoryConverter):
             if "ID" in line:  # line has data for one agent in scene
                 result.n_agents[time_index] += 1
                 result.unique_ids[time_index][agent_index] = int(cols[1])
-                type_name = cols[3]
-                if type_name in input_data.display_names:
-                    type_name = input_data.display_names[type_name]
-                result.types[time_index].append(type_name)
+                raw_type_name = cols[3]
+                result.types[time_index].append(
+                    input_data.display_data[raw_type_name].name
+                    if raw_type_name in input_data.display_data
+                    else raw_type_name
+                )
                 result.positions[time_index][
                     agent_index
                 ] = input_data.scale_factor * np.array(
                     [float(cols[4]), float(cols[5]), float(cols[6])]
                 )
-                result.radii[time_index][agent_index] = input_data.scale_factor * float(
-                    cols[2]
+                result.radii[time_index][agent_index] = input_data.scale_factor * (
+                    input_data.display_data[raw_type_name].radius
+                    if raw_type_name in input_data.display_data
+                    and input_data.display_data[raw_type_name].radius is not None
+                    else float(cols[2])
                 )
                 agent_index += 1
         result.n_timesteps = time_index + 1
@@ -111,6 +116,10 @@ class SpringsaladConverter(TrajectoryConverter):
         agent_data, box_size = SpringsaladConverter._parse_springsalad_data(
             springsalad_data, input_data
         )
+        # get display data (geometry and color)
+        for tid in input_data.display_data:
+            display_data = input_data.display_data[tid]
+            agent_data.display_data[display_data.name] = display_data
         return TrajectoryData(
             meta_data=MetaData(
                 box_size=box_size,
