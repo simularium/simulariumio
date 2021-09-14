@@ -1,73 +1,33 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>simulariumio.data_objects.agent_data &mdash; Simularium Conversion 1.1.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+  <title>simulariumio.data_objects.agent_data &mdash; Simularium Conversion 1.1.1 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../../index.html" class="icon icon-home"> Simularium Conversion
-          
-
-          
           </a>
-
-          
-            
-            
               <div class="version">
                 1.1.1
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -75,18 +35,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../index.html">Overview</a></li>
@@ -128,71 +77,31 @@
 </li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">Simularium Conversion</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
-        
       <li>simulariumio.data_objects.agent_data</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for simulariumio.data_objects.agent_data</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
@@ -212,6 +121,7 @@
     <span class="n">BUFFER_SIZE_INC</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.dimension_data</span> <span class="kn">import</span> <span class="n">DimensionData</span>
+<span class="kn">from</span> <span class="nn">.display_data</span> <span class="kn">import</span> <span class="n">DisplayData</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -232,6 +142,7 @@
     <span class="n">rotations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">n_subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">draw_fiber_points</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -246,6 +157,7 @@
         <span class="n">rotations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">n_subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">draw_fiber_points</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">n_timesteps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
     <span class="p">):</span>
@@ -294,6 +206,10 @@
 <span class="sd">            for each agent at each timestep. These values are</span>
 <span class="sd">            currently only used for fiber agents</span>
 <span class="sd">            Default: None</span>
+<span class="sd">        display_data: Dict[str,DisplayData] (optional)</span>
+<span class="sd">            A dictionary mapping agent type name to DisplayData</span>
+<span class="sd">            to use for that type</span>
+<span class="sd">            Default: None</span>
 <span class="sd">        draw_fiber_points: bool (optional)</span>
 <span class="sd">            Draw spheres at every other fiber point for fibers?</span>
 <span class="sd">            Default: False</span>
@@ -315,6 +231,7 @@
             <span class="n">n_subpoints</span> <span class="k">if</span> <span class="n">n_subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">subpoints</span> <span class="k">if</span> <span class="n">subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">display_data</span> <span class="k">if</span> <span class="n">display_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span> <span class="o">=</span> <span class="n">draw_fiber_points</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_timesteps</span> <span class="o">=</span> <span class="n">n_timesteps</span>
 
@@ -374,6 +291,13 @@
                     <span class="n">last_tid</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="n">type_id_mapping</span><span class="p">[</span><span class="n">tn</span><span class="p">]</span> <span class="o">=</span> <span class="n">tid</span>
                     <span class="n">type_name_mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">tid</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">tn</span><span class="p">}</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">tn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span>
+                        <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">tn</span><span class="p">]</span><span class="o">.</span><span class="n">is_default</span><span class="p">()</span>
+                    <span class="p">):</span>
+                        <span class="n">type_name_mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">tid</span><span class="p">)][</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">tn</span><span class="p">]</span>
+                        <span class="p">)</span>
                 <span class="n">type_ids</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_id_mapping</span><span class="p">[</span><span class="n">tn</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">type_ids</span><span class="p">,</span> <span class="n">type_name_mapping</span></div>
 
@@ -391,6 +315,28 @@
                 <span class="n">result</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">type_mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">type_ids</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]))][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
                 <span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="AgentData.get_display_data"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.get_display_data">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_display_data</span><span class="p">(</span><span class="n">type_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate the display_data mapping using a type_mapping</span>
+<span class="sd">        from a simularium JSON dict containing buffers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">type_id</span> <span class="ow">in</span> <span class="n">type_mapping</span><span class="p">:</span>
+            <span class="n">type_info</span> <span class="o">=</span> <span class="n">type_mapping</span><span class="p">[</span><span class="n">type_id</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;geometry&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">type_info</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">type_info</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">DisplayData</span><span class="p">(</span>
+                <span class="n">display_type</span><span class="o">=</span><span class="n">type_info</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">][</span><span class="s2">&quot;displayType&quot;</span><span class="p">],</span>
+                <span class="n">url</span><span class="o">=</span><span class="n">type_info</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">][</span><span class="s2">&quot;url&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="n">type_info</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span>
+                <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">type_info</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">][</span><span class="s2">&quot;color&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;color&quot;</span> <span class="ow">in</span> <span class="n">type_info</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span>
+                <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="AgentData.from_buffer_data"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.from_buffer_data">[docs]</a>    <span class="nd">@classmethod</span>
@@ -466,6 +412,9 @@
         <span class="n">type_names</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">get_type_names</span><span class="p">(</span>
             <span class="n">type_ids</span><span class="p">,</span> <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;typeMapping&quot;</span><span class="p">]</span>
         <span class="p">)</span>
+        <span class="n">display_data</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">get_display_data</span><span class="p">(</span>
+            <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;typeMapping&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">times</span><span class="o">=</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="p">,</span>
             <span class="n">n_agents</span><span class="o">=</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">,</span>
@@ -477,6 +426,7 @@
             <span class="n">rotations</span><span class="o">=</span><span class="n">agent_data</span><span class="o">.</span><span class="n">rotations</span><span class="p">,</span>
             <span class="n">n_subpoints</span><span class="o">=</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">,</span>
             <span class="n">subpoints</span><span class="o">=</span><span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span><span class="p">,</span>
+            <span class="n">display_data</span><span class="o">=</span><span class="n">display_data</span><span class="p">,</span>
             <span class="n">draw_fiber_points</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -625,6 +575,7 @@
                 <span class="mi">0</span> <span class="p">:</span> <span class="n">current_dimensions</span><span class="o">.</span><span class="n">max_agents</span><span class="p">,</span>
                 <span class="mi">0</span> <span class="p">:</span> <span class="n">current_dimensions</span><span class="o">.</span><span class="n">max_subpoints</span><span class="p">,</span>
             <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[:]</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_data</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">draw_fiber_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
@@ -681,6 +632,7 @@
             <span class="n">rotations</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotations</span><span class="p">),</span>
             <span class="n">n_subpoints</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">),</span>
             <span class="n">subpoints</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span><span class="p">),</span>
+            <span class="n">display_data</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">display_data</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
             <span class="n">draw_fiber_points</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
@@ -698,51 +650,36 @@
             <span class="ow">and</span> <span class="kc">False</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotations</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">rotations</span><span class="p">)</span>
             <span class="ow">and</span> <span class="kc">False</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">)</span>
             <span class="ow">and</span> <span class="kc">False</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subpoints</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">subpoints</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">display_data</span>
             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">draw_fiber_points</span>
         <span class="p">)</span></div>
 </pre></div>
 
            </div>
-           
           </div>
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, Blair Lyons.
-
-    </p>
+    <p>&#169; Copyright 2020, Blair Lyons.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
