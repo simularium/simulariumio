@@ -94,10 +94,11 @@ class MetaData:
         or to the default value if it is currently None.
         If it's not set to the default value, multiply it by the scale_factor
         """
-        if box_size is not None:
-            self.box_size = box_size
         if self.box_size is None:
-            self.box_size = DEFAULT_BOX_SIZE
+            if box_size is not None:
+                self.box_size = box_size * self.scale_factor
+            else:
+                self.box_size = DEFAULT_BOX_SIZE
         else:
             self.box_size *= self.scale_factor
 
