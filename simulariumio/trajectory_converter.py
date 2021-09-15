@@ -120,6 +120,11 @@ class TrajectoryConverter:
             },
             "typeMapping": type_mapping,
         }
+        # add any paper metadata
+        if input_data.meta_data.trajectory_title:
+            traj_info["trajectoryTitle"] = input_data.meta_data.trajectory_title
+        if not input_data.meta_data.model_meta_data.is_default():
+            traj_info["modelInfo"] = dict(input_data.meta_data.model_meta_data)
         simularium_data["trajectoryInfo"] = traj_info
         # spatial data
         spatialData = {
