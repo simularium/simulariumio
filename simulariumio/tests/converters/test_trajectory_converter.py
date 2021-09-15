@@ -233,6 +233,17 @@ def mixed_agents_wrong_display_type2():
             {
                 "trajectoryInfo": {
                     "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "trajectoryTitle": "low concentrations",
+                    "modelInfo": {
+                        "title": "Some agent-based model",
+                        "version": 8.1,
+                        "authors": "A Modeler",
+                        "description": (
+                            "An agent-based model started with "
+                            "low agent concentrations"
+                        ),
+                        "inputDataUrl": "https://allencell.org",
+                    },
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -540,6 +551,10 @@ def mixed_agents_wrong_display_type2():
             {
                 "trajectoryInfo": {
                     "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "modelInfo": {
+                        "title": "Some fibers",
+                        "authors": "A Modeler",
+                    },
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "µs",

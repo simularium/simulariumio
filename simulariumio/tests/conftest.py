@@ -15,6 +15,7 @@ from simulariumio import (
     ScatterPlotData,
     DisplayData,
     CameraData,
+    ModelMetaData,
 )
 from simulariumio.constants import DISPLAY_TYPE
 
@@ -246,6 +247,10 @@ def fiber_agents() -> TrajectoryData:
     return TrajectoryData(
         meta_data=MetaData(
             box_size=np.array([1000.0, 1000.0, 1000.0]),
+            model_meta_data=ModelMetaData(
+                model_title="Some fibers",
+                model_authors="A Modeler",
+            ),
         ),
         agent_data=AgentData(
             times=np.array([0.0, 1.00001, 2.00001]),
@@ -337,6 +342,16 @@ def mixed_agents() -> TrajectoryData:
                 look_at_position=np.array([10.0, 0.0, 0.0]),
                 up_vector=np.array([0.0, 0.0, 1.0]),
                 fov_degrees=60.0,
+            ),
+            trajectory_title="low concentrations",
+            model_meta_data=ModelMetaData(
+                model_title="Some agent-based model",
+                model_version=8.1,
+                model_authors="A Modeler",
+                model_description=(
+                    "An agent-based model started with low agent concentrations"
+                ),
+                input_data_url="https://allencell.org",
             ),
         ),
         agent_data=AgentData(
