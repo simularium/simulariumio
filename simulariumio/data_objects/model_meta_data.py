@@ -76,7 +76,9 @@ class ModelMetaData:
 
     @classmethod
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):
-        """ """
+        """
+        Create ModelMetaData from a simularium JSON dict containing buffers
+        """
         model_info = (
             buffer_data["trajectoryInfo"]["modelInfo"]
             if "modelInfo" in buffer_data["trajectoryInfo"]

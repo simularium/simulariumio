@@ -9,6 +9,7 @@ import numpy as np
 
 from .camera_data import CameraData
 from .model_meta_data import ModelMetaData
+from ..constants import DEFAULT_BOX_SIZE
 
 ###############################################################################
 
@@ -54,7 +55,10 @@ class MetaData:
         model_meta_data: ModelMetaData (optional)
             Metadata for the model that produced this trajectory
         """
-        self.box_size = box_size if box_size is not None else 100.0 * np.ones(3)
+        # box_size defaults to None here so that later,
+        # when it's used to override box_size in data,
+        # it's easy to test whether the user has specified it
+        self.box_size = box_size
         self.camera_defaults = (
             camera_defaults if camera_defaults is not None else CameraData()
         )
@@ -66,7 +70,9 @@ class MetaData:
 
     @classmethod
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):
-        """ """
+        """
+        Create MetaData from a simularium JSON dict containing buffers
+        """
         return cls(
             box_size=np.array(
                 [
@@ -81,6 +87,19 @@ class MetaData:
             else "",
             model_meta_data=ModelMetaData.from_buffer_data(buffer_data),
         )
+
+    def _set_box_size(self, box_size: np.ndarray = None):
+        """
+        Set the box_size to the optional provided override value,
+        or to the default value if it is currently None.
+        If it's not set to the default value, multiply it by the scale_factor
+        """
+        if box_size is not None:
+            self.box_size = box_size
+        if self.box_size is None:
+            self.box_size = DEFAULT_BOX_SIZE
+        else:
+            self.box_size *= self.scale_factor
 
     def __deepcopy__(self, memo):
         result = type(self)(

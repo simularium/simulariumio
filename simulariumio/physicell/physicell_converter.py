@@ -198,7 +198,7 @@ class PhysicellConverter(TrajectoryConverter):
                 else:
                     type_name += PhysicellConverter._get_default_phase_name(phase_id)
                 agent_data.display_data[type_name] = display_data
-        input_data.meta_data.box_size *= input_data.meta_data.scale_factor
+        input_data.meta_data._set_box_size()
         return TrajectoryData(
             meta_data=input_data.meta_data,
             agent_data=agent_data,

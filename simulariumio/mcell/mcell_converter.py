@@ -336,7 +336,7 @@ class McellConverter(TrajectoryConverter):
         for type_name in input_data.display_data:
             display_data = input_data.display_data[type_name]
             agent_data.display_data[display_data.name] = display_data
-        input_data.meta_data.box_size = input_data.meta_data.scale_factor * box_size
+        input_data.meta_data._set_box_size(box_size)
         return TrajectoryData(
             meta_data=input_data.meta_data,
             agent_data=agent_data,
