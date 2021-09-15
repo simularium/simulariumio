@@ -10,7 +10,6 @@ from ..data_objects import (
     TrajectoryData,
     AgentData,
     UnitData,
-    MetaData,
     DimensionData,
 )
 from ..constants import VIZ_TYPE, DISPLAY_TYPE
@@ -253,12 +252,9 @@ class MedyanConverter(TrajectoryConverter):
                         f"{display_data.display_type.value} was changed to FIBER"
                     )
                 agent_data.display_data[display_data.name] = display_data
+        input_data.meta_data.box_size *= input_data.meta_data.scale_factor
         return TrajectoryData(
-            meta_data=MetaData(
-                box_size=input_data.meta_data.scale_factor
-                * input_data.meta_data.box_size,
-                camera_defaults=input_data.meta_data.camera_defaults,
-            ),
+            meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=time_units,
             spatial_units=spatial_units,

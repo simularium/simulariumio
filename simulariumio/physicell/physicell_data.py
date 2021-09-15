@@ -14,19 +14,19 @@ log = logging.getLogger(__name__)
 
 
 class PhysicellData:
-    meta_data: MetaData
     timestep: float
-    time_units: UnitData
     path_to_output_dir: str
+    meta_data: MetaData
     display_data: Dict[int, DisplayData]
     phase_names: Dict[int, Dict[int, str]]
+    time_units: UnitData
     plots: List[Dict[str, Any]]
 
     def __init__(
         self,
-        meta_data: MetaData,
         timestep: float,
         path_to_output_dir: str,
+        meta_data: MetaData = None,
         display_data: Dict[int, DisplayData] = None,
         phase_names: Dict[int, Dict[int, str]] = None,
         time_units: UnitData = None,
@@ -39,14 +39,14 @@ class PhysicellData:
 
         Parameters
         ----------
-        meta_data : MetaData
-            An object containing metadata for the trajectory
-            including box size, scale factor, and camera defaults
         timestep : float
             A float amount of time that passes each step
         path_to_output_dir : string
             A string path to the PhysiCell output directory
             containing MultiCellDS XML and MATLAB files
+        meta_data : MetaData (optional)
+            An object containing metadata for the trajectory
+            including box size, scale factor, and camera defaults
         display_data : Dict[int, DisplayData] (optional)
             The cell type ID from PhysiCell data mapped
             to DisplayData, including names and display info
@@ -65,9 +65,9 @@ class PhysicellData:
             An object containing plot data already
             in Simularium format
         """
-        self.meta_data = meta_data
         self.timestep = timestep
         self.path_to_output_dir = path_to_output_dir
+        self.meta_data = meta_data if meta_data is not None else MetaData()
         self.display_data = display_data if display_data is not None else {}
         self.phase_names = phase_names if phase_names is not None else {}
         self.time_units = time_units if time_units is not None else UnitData("s")

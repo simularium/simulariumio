@@ -4,7 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-from ..data_objects import CameraData, DisplayData
+from ..data_objects import MetaData, DisplayData
 
 ###############################################################################
 
@@ -16,22 +16,20 @@ log = logging.getLogger(__name__)
 class McellData:
     path_to_data_model_json: str
     path_to_binary_files: str
+    meta_data: MetaData
     nth_timestep_to_read: int
     display_data: Dict[str, DisplayData]
     surface_mol_rotation_angle: float
-    camera_defaults: CameraData
-    scale_factor: float
     plots: List[Dict[str, Any]]
 
     def __init__(
         self,
         path_to_data_model_json: str,
         path_to_binary_files: str,
+        meta_data: MetaData = None,
         nth_timestep_to_read: int = 1,
         display_data: Dict[str, DisplayData] = None,
         surface_mol_rotation_angle: float = None,
-        camera_defaults: CameraData = CameraData(),
-        scale_factor: float = 1.0,
         plots: List[Dict[str, Any]] = None,
     ):
         """
@@ -47,6 +45,9 @@ class McellData:
         path_to_binary_files : str
             A string path to the directory containing
             visualization .dat binary files
+        meta_data : MetaData (optional)
+            An object containing metadata for the trajectory
+            including box size, scale factor, and camera defaults
         nth_timestep_to_read: int (optional)
             Visualize every Nth timestep
             e.g. if 10, only every 10th timestep will be visualized
@@ -62,23 +63,14 @@ class McellData:
             The angle to use to calculate rotations
             around surface molecules' normals
             Default: use random angles
-        camera_defaults : CameraData (optional)
-            camera's initial settings
-            which it also returns to when reset
-            Default: CameraData()
-        scale_factor : float (optional)
-            A multiplier for the scene, use if
-            visualization is too large or small
-            Default: 1.0
         plots : List[Dict[str, Any]] (optional)
             An object containing plot data already
             in Simularium format
         """
         self.path_to_data_model_json = path_to_data_model_json
         self.path_to_binary_files = path_to_binary_files
+        self.meta_data = meta_data if meta_data is not None else MetaData()
         self.nth_timestep_to_read = nth_timestep_to_read
         self.display_data = display_data if display_data is not None else {}
         self.surface_mol_rotation_angle = surface_mol_rotation_angle
-        self.camera_defaults = camera_defaults
-        self.scale_factor = scale_factor
         self.plots = plots if plots is not None else []

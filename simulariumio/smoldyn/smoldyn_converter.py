@@ -7,7 +7,7 @@ from typing import List
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, MetaData, DimensionData
+from ..data_objects import TrajectoryData, AgentData, DimensionData
 from .smoldyn_data import SmoldynData
 
 ###############################################################################
@@ -132,12 +132,9 @@ class SmoldynConverter(TrajectoryConverter):
             agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
+        input_data.meta_data.box_size *= input_data.meta_data.scale_factor
         return TrajectoryData(
-            meta_data=MetaData(
-                box_size=input_data.meta_data.scale_factor
-                * input_data.meta_data.box_size,
-                camera_defaults=input_data.meta_data.camera_defaults,
-            ),
+            meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=input_data.time_units,
             spatial_units=input_data.spatial_units,

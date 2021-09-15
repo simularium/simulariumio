@@ -35,10 +35,10 @@ class AgentData:
     positions: np.ndarray
     radii: np.ndarray
     rotations: np.ndarray
-    n_subpoints: np.ndarray = None
-    subpoints: np.ndarray = None
-    display_data: Dict[str, DisplayData] = {}
-    draw_fiber_points: bool = False
+    n_subpoints: np.ndarray
+    subpoints: np.ndarray
+    display_data: Dict[str, DisplayData]
+    draw_fiber_points: bool
 
     def __init__(
         self,

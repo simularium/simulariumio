@@ -14,8 +14,8 @@ log = logging.getLogger(__name__)
 
 
 class MedyanData:
-    meta_data: MetaData
     path_to_snapshot: str
+    meta_data: MetaData
     display_data: Dict[str, Dict[int, DisplayData]]
     agents_with_endpoints: List[str]
     draw_fiber_points: bool
@@ -23,8 +23,8 @@ class MedyanData:
 
     def __init__(
         self,
-        meta_data: MetaData,
         path_to_snapshot: str,
+        meta_data: MetaData = None,
         filament_display_data: Dict[int, DisplayData] = None,
         linker_display_data: Dict[int, DisplayData] = None,
         motor_display_data: Dict[int, DisplayData] = None,
@@ -38,11 +38,11 @@ class MedyanData:
 
         Parameters
         ----------
-        meta_data : MetaData
-            An object containing metadata for the trajectory
-            including box size, scale factor, and camera defaults
         path_to_snapshot : string
             A string path to the MEDYAN snapshot.traj output file
+        meta_data : MetaData (optional)
+            An object containing metadata for the trajectory
+            including box size, scale factor, and camera defaults
         filament_display_data : Dict[int, DisplayData] (optional)
             A dict mapping MEDYAN type ID for filaments
             to DisplayData, including names and display info
@@ -78,8 +78,8 @@ class MedyanData:
             An object containing plot data already
             in Simularium format
         """
-        self.meta_data = meta_data
         self.path_to_snapshot = path_to_snapshot
+        self.meta_data = meta_data if meta_data is not None else MetaData()
         self.display_data = {
             "filament": filament_display_data
             if filament_display_data is not None
