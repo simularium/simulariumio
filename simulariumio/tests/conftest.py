@@ -248,8 +248,8 @@ def fiber_agents() -> TrajectoryData:
         meta_data=MetaData(
             box_size=np.array([1000.0, 1000.0, 1000.0]),
             model_meta_data=ModelMetaData(
-                model_title="Some fibers",
-                model_authors="A Modeler",
+                title="Some fibers",
+                authors="A Modeler",
             ),
         ),
         agent_data=AgentData(
@@ -345,10 +345,10 @@ def mixed_agents() -> TrajectoryData:
             ),
             trajectory_title="low concentrations",
             model_meta_data=ModelMetaData(
-                model_title="Some agent-based model",
-                model_version=8.1,
-                model_authors="A Modeler",
-                model_description=(
+                title="Some agent-based model",
+                version="8.1",
+                authors="A Modeler",
+                description=(
                     "An agent-based model started with low agent concentrations"
                 ),
                 input_data_url="https://allencell.org",

@@ -236,7 +236,7 @@ def mixed_agents_wrong_display_type2():
                     "trajectoryTitle": "low concentrations",
                     "modelInfo": {
                         "title": "Some agent-based model",
-                        "version": 8.1,
+                        "version": "8.1",
                         "authors": "A Modeler",
                         "description": (
                             "An agent-based model started with "
