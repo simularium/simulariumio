@@ -64,13 +64,9 @@ class ModelMetaData:
         self.description = description
         self.doi = doi
         self.source_code_url = source_code_url
-        self.source_code_license_url = (
-            source_code_license_url
-        )
+        self.source_code_license_url = source_code_license_url
         self.input_data_url = input_data_url
-        self.raw_output_data_url = (
-            raw_output_data_url
-        )
+        self.raw_output_data_url = raw_output_data_url
 
     @classmethod
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):

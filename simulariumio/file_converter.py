@@ -7,7 +7,7 @@ from typing import Any, Dict
 
 from .trajectory_converter import TrajectoryConverter
 from .data_objects import TrajectoryData, UnitData
-from .constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
+from .constants import CURRENT_VERSION
 
 ###############################################################################
 
