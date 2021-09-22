@@ -23,6 +23,7 @@ from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError, DataError
 from .writers import (
     JsonWriter,
+    BinaryWriter,
 )
 
 ###############################################################################
@@ -158,7 +159,7 @@ class TrajectoryConverter:
         JsonWriter.save_plot_data(self._data.plots, output_path)
 
     @staticmethod
-    def save(self, output_path: str):
+    def save(self, output_path: str, binary: bool = True):
         """
         Save the current simularium data in .simularium JSON format
         at the output path
@@ -167,5 +168,11 @@ class TrajectoryConverter:
         ----------
         output_path: str
             where to save the file
+        binary: bool (optional)
+            save in binary format? otherwise use JSON
+            Default: True
         """
-        JsonWriter.save(self._data, output_path)
+        if binary:
+            BinaryWriter.save(self._data, output_path)
+        else:
+            JsonWriter.save(self._data, output_path)

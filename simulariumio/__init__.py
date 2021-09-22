@@ -29,3 +29,8 @@ from .data_objects import (  # noqa: F401
     HistogramPlotData,
 )
 from .constants import DISPLAY_TYPE  # noqa: F401
+
+from .writers import (  # noqa: F401
+    JsonWriter,
+    BinaryWriter,
+)

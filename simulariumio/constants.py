@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from enum import Enum
+from typing import List
 
 import numpy as np
 
@@ -71,3 +72,10 @@ class CURRENT_VERSION:
 
 
 DEFAULT_BOX_SIZE = 100.0 * np.ones(3)
+
+class BINARY_SETTINGS:
+    HEADER: str = "SIMULARIUMBIN"
+    VERSION: List[int] = [1, 0, 0]
+    EOF: str = "\u005CEOFTHEFRAMEENDSHERE"
+    MAX_FRAMES: int = 10000
+    MAX_BYTES: int = 500000000
