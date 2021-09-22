@@ -7,7 +7,7 @@ from typing import List
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, MetaData, DimensionData
+from ..data_objects import TrajectoryData, AgentData, DimensionData
 from .smoldyn_data import SmoldynData
 
 ###############################################################################
@@ -87,8 +87,8 @@ class SmoldynConverter(TrajectoryConverter):
                     cols[4] if is_3D else cols[3]
                 )
                 raw_type_name = str(cols[0])
-                if raw_type_name in input_data.display_names:
-                    type_name = input_data.display_names[raw_type_name]
+                if raw_type_name in input_data.display_data:
+                    type_name = input_data.display_data[raw_type_name].name
                 else:
                     type_name = raw_type_name
                 result.types[time_index].append(type_name)
@@ -104,8 +104,9 @@ class SmoldynConverter(TrajectoryConverter):
                 result.radii[time_index][
                     agent_index
                 ] = input_data.meta_data.scale_factor * (
-                    input_data.radii[raw_type_name]
-                    if raw_type_name in input_data.radii
+                    input_data.display_data[raw_type_name].radius
+                    if raw_type_name in input_data.display_data
+                    and input_data.display_data[raw_type_name].radius is not None
                     else 1.0
                 )
                 agent_index += 1
@@ -125,14 +126,15 @@ class SmoldynConverter(TrajectoryConverter):
             smoldyn_data = myfile.read().split("\n")
         # parse
         agent_data = SmoldynConverter._parse_objects(smoldyn_data, input_data)
+        # get display data (geometry and color)
+        for tid in input_data.display_data:
+            display_data = input_data.display_data[tid]
+            agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
+        input_data.meta_data._set_box_size()
         return TrajectoryData(
-            meta_data=MetaData(
-                box_size=input_data.meta_data.scale_factor
-                * input_data.meta_data.box_size,
-                camera_defaults=input_data.meta_data.camera_defaults,
-            ),
+            meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=input_data.time_units,
             spatial_units=input_data.spatial_units,

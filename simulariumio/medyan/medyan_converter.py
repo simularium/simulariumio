@@ -6,8 +6,13 @@ from typing import List
 import math
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData, DimensionData
-from ..constants import VIZ_TYPE
+from ..data_objects import (
+    TrajectoryData,
+    AgentData,
+    UnitData,
+    DimensionData,
+)
+from ..constants import VIZ_TYPE, DISPLAY_TYPE
 from .medyan_data import MedyanData
 
 ###############################################################################
@@ -37,13 +42,30 @@ class MedyanConverter(TrajectoryConverter):
     def _draw_endpoints(line: str, object_type: str, input_data: MedyanData) -> bool:
         """
         Parse a line of a MEDYAN snapshot.traj output file
-        and use MedyanAgentInfo for that agent type to
-        determine whether to also draw the endpoints as spheres
+        and determine whether to also draw the endpoints as spheres
+        """
+        if object_type == "motor" or object_type == "linker":
+            type_name = MedyanConverter._get_output_type_name(
+                line, object_type, input_data
+            )
+            if type_name in input_data.agents_with_endpoints:
+                return True
+        return False
+
+    @staticmethod
+    def _get_output_type_name(
+        line: str, object_type: str, input_data: MedyanData
+    ) -> bool:
+        """
+        Parse a line of a MEDYAN snapshot.traj output file
+        and return the type name to display for this agent type
         """
         raw_tid = int(line.split()[2])
-        if raw_tid in input_data.agent_info[object_type]:
-            return input_data.agent_info[object_type][raw_tid].draw_endpoints
-        return False
+        return (
+            input_data.display_data[object_type][raw_tid].name
+            if raw_tid in input_data.display_data[object_type]
+            else object_type + str(raw_tid)
+        )
 
     @staticmethod
     def _parse_data_dimensions(
@@ -155,17 +177,17 @@ class MedyanConverter(TrajectoryConverter):
                     last_tid += 1
                 # type name
                 result.types[time_index].append(
-                    input_data.agent_info[object_type][raw_tid].name
-                    if raw_tid in input_data.agent_info[object_type]
-                    else object_type + str(raw_tid)
+                    MedyanConverter._get_output_type_name(line, object_type, input_data)
                 )
                 # radius
-                result.radii[time_index][
-                    agent_index
-                ] = input_data.meta_data.scale_factor * (
-                    input_data.agent_info[object_type][raw_tid].radius
-                    if raw_tid in input_data.agent_info[object_type]
+                radius = (
+                    input_data.display_data[object_type][raw_tid].radius
+                    if raw_tid in input_data.display_data[object_type]
+                    and input_data.display_data[object_type][raw_tid].radius is not None
                     else 1.0
+                )
+                result.radii[time_index][agent_index] = (
+                    input_data.meta_data.scale_factor * radius
                 )
                 if object_type == "filament":
                     result.n_subpoints[time_index][agent_index] = int(cols[3])
@@ -181,14 +203,10 @@ class MedyanConverter(TrajectoryConverter):
                             uids[object_type][raw_uid] + i + 1
                         )
                         result.types[time_index].append(
-                            result.types[time_index][agent_index]
+                            result.types[time_index][agent_index] + " End"
                         )
-                        result.radii[time_index][
-                            agent_index + i + 1
-                        ] = input_data.meta_data.scale_factor * (
-                            input_data.agent_info[object_type][raw_tid].endpoint_radius
-                            if raw_tid in input_data.agent_info[object_type]
-                            else 1.0
+                        result.radii[time_index][agent_index + i + 1] = (
+                            2 * input_data.meta_data.scale_factor * radius
                         )
                 parsing_object = True
             elif parsing_object:
@@ -218,16 +236,25 @@ class MedyanConverter(TrajectoryConverter):
         """
         print("Reading MEDYAN Data -------------")
         agent_data = MedyanConverter._get_trajectory_data(input_data)
-        time_units = UnitData("s")
-        spatial_units = UnitData("nm", 1.0 / input_data.meta_data.scale_factor)
+        # get display data (geometry and color)
+        for object_type in input_data.display_data:
+            for tid in input_data.display_data[object_type]:
+                display_data = input_data.display_data[object_type][tid]
+                if (
+                    display_data.display_type != DISPLAY_TYPE.NONE
+                    and display_data.display_type != DISPLAY_TYPE.FIBER
+                ):
+                    display_data.display_type = DISPLAY_TYPE.FIBER
+                    print(
+                        f"{display_data.name} display type of "
+                        f"{display_data.display_type.value} was changed to FIBER"
+                    )
+                agent_data.display_data[display_data.name] = display_data
+        input_data.meta_data._set_box_size()
         return TrajectoryData(
-            meta_data=MetaData(
-                box_size=input_data.meta_data.scale_factor
-                * input_data.meta_data.box_size,
-                camera_defaults=input_data.meta_data.camera_defaults,
-            ),
+            meta_data=input_data.meta_data,
             agent_data=agent_data,
-            time_units=time_units,
-            spatial_units=spatial_units,
+            time_units=UnitData("s"),
+            spatial_units=UnitData("nm", 1.0 / input_data.meta_data.scale_factor),
             plots=input_data.plots,
         )

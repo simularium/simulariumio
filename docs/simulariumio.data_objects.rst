@@ -28,6 +28,14 @@ simulariumio.data\_objects.dimension\_data module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.data\_objects.display\_data module
+-----------------------------------------------
+
+.. automodule:: simulariumio.data_objects.display_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.data\_objects.histogram\_plot\_data module
 -------------------------------------------------------
 
@@ -40,6 +48,14 @@ simulariumio.data\_objects.meta\_data module
 --------------------------------------------
 
 .. automodule:: simulariumio.data_objects.meta_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.data\_objects.model\_meta\_data module
+---------------------------------------------------
+
+.. automodule:: simulariumio.data_objects.model_meta_data
    :members:
    :undoc-members:
    :show-inheritance:

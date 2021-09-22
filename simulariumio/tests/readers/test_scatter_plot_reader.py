@@ -6,6 +6,7 @@ import numpy as np
 
 from simulariumio import TrajectoryConverter, ScatterPlotData, exceptions, JsonWriter
 from simulariumio.tests.conftest import three_default_agents, test_scatter_plot
+from simulariumio.constants import CURRENT_VERSION
 
 
 @pytest.mark.parametrize(
@@ -16,7 +17,7 @@ from simulariumio.tests.conftest import three_default_agents, test_scatter_plot
             three_default_agents(),
             test_scatter_plot(),
             {
-                "version": 1,
+                "version": CURRENT_VERSION.PLOT_DATA,
                 "data": [
                     {
                         "layout": {

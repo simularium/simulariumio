@@ -8,8 +8,12 @@ from simulariumio.smoldyn import (
     SmoldynConverter,
     SmoldynData,
 )
-from simulariumio import MetaData, UnitData, JsonWriter
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
+from simulariumio import MetaData, UnitData, DisplayData, JsonWriter
+from simulariumio.constants import (
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+    DISPLAY_TYPE,
+)
 
 
 @pytest.mark.parametrize(
@@ -23,19 +27,27 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     scale_factor=100,
                 ),
                 path_to_output_txt="simulariumio/tests/data/smoldyn/example_2D.txt",
-                radii={
-                    "S(solution)": 0.01,
-                    "E(front)": 0.1,
-                },
-                display_names={
-                    "S(solution)": "S",
-                    "E(front)": "E",
-                    "ES(front)": "ES",
+                display_data={
+                    "S(solution)": DisplayData(
+                        name="S",
+                        radius=0.01,
+                        display_type=DISPLAY_TYPE.OBJ,
+                        url="s.obj",
+                        color="#dfdacd",
+                    ),
+                    "E(front)": DisplayData(
+                        name="E",
+                        radius=0.1,
+                        color="#0080ff",
+                    ),
+                    "ES(front)": DisplayData(
+                        name="ES",
+                    ),
                 },
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -66,13 +78,25 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "S"},
-                        "1": {"name": "E"},
+                        "0": {
+                            "name": "S",
+                            "geometry": {
+                                "displayType": "OBJ",
+                                "url": "s.obj",
+                                "color": "#dfdacd",
+                            },
+                        },
+                        "1": {
+                            "name": "E",
+                            "geometry": {
+                                "color": "#0080ff",
+                            },
+                        },
                         "2": {"name": "ES"},
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -207,7 +231,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
         # 3D
@@ -217,14 +241,18 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     box_size=np.array([100.0, 100.0, 100.0]),
                 ),
                 path_to_output_txt="simulariumio/tests/data/smoldyn/example_3D.txt",
-                radii={
-                    "green(solution)": 2.0,
+                display_data={
+                    "green(solution)": DisplayData(
+                        name="Green",
+                        radius=2.0,
+                        color="#dfdacd",
+                    ),
                 },
                 spatial_units=UnitData("m"),
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -255,12 +283,17 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "green(solution)"},
+                        "0": {
+                            "name": "Green",
+                            "geometry": {
+                                "color": "#dfdacd",
+                            },
+                        },
                         "1": {"name": "red(solution)"},
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -384,7 +417,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
     ],

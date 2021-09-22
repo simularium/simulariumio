@@ -6,7 +6,7 @@ __author__ = "Blair Lyons"
 __email__ = "blairl@alleninstitute.org"
 # Do not edit this string manually, always use bumpversion
 # Details in CONTRIBUTING.md
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 
 def get_module_version():
@@ -21,8 +21,10 @@ from .data_objects import (  # noqa: F401
     AgentData,
     UnitData,
     MetaData,
+    ModelMetaData,
     CameraData,
     DimensionData,
+    DisplayData,
     ScatterPlotData,
     HistogramPlotData,
 )
@@ -31,3 +33,4 @@ from .writers import (  # noqa: F401
     JsonWriter,
     BinaryWriter,
 )
+from .constants import DISPLAY_TYPE  # noqa: F401

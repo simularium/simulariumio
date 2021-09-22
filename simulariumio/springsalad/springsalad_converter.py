@@ -7,7 +7,7 @@ from typing import List, Tuple
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, MetaData, UnitData, DimensionData
+from ..data_objects import TrajectoryData, AgentData, UnitData, DimensionData
 from .springsalad_data import SpringsaladData
 
 ###############################################################################
@@ -68,13 +68,13 @@ class SpringsaladConverter(TrajectoryConverter):
         for line in springsalad_data:
             cols = line.split()
             if "xsize" in line:
-                box_size[0] = input_data.scale_factor * 2 * float(cols[1])
+                box_size[0] = 2 * float(cols[1])
             if "ysize" in line:
-                box_size[1] = input_data.scale_factor * 2 * float(cols[1])
+                box_size[1] = 2 * float(cols[1])
             if "z_outside" in line:
-                box_size[2] += input_data.scale_factor * 2 * float(cols[1])
+                box_size[2] += 2 * float(cols[1])
             if "z_inside" in line:
-                box_size[2] += input_data.scale_factor * 2 * float(cols[1])
+                box_size[2] += 2 * float(cols[1])
             if "CurrentTime" in line:  # beginning of a scene
                 agent_index = 0
                 time_index += 1
@@ -84,17 +84,24 @@ class SpringsaladConverter(TrajectoryConverter):
             if "ID" in line:  # line has data for one agent in scene
                 result.n_agents[time_index] += 1
                 result.unique_ids[time_index][agent_index] = int(cols[1])
-                type_name = cols[3]
-                if type_name in input_data.display_names:
-                    type_name = input_data.display_names[type_name]
-                result.types[time_index].append(type_name)
+                raw_type_name = cols[3]
+                result.types[time_index].append(
+                    input_data.display_data[raw_type_name].name
+                    if raw_type_name in input_data.display_data
+                    else raw_type_name
+                )
                 result.positions[time_index][
                     agent_index
-                ] = input_data.scale_factor * np.array(
+                ] = input_data.meta_data.scale_factor * np.array(
                     [float(cols[4]), float(cols[5]), float(cols[6])]
                 )
-                result.radii[time_index][agent_index] = input_data.scale_factor * float(
-                    cols[2]
+                result.radii[time_index][
+                    agent_index
+                ] = input_data.meta_data.scale_factor * (
+                    input_data.display_data[raw_type_name].radius
+                    if raw_type_name in input_data.display_data
+                    and input_data.display_data[raw_type_name].radius is not None
+                    else float(cols[2])
                 )
                 agent_index += 1
         result.n_timesteps = time_index + 1
@@ -111,13 +118,15 @@ class SpringsaladConverter(TrajectoryConverter):
         agent_data, box_size = SpringsaladConverter._parse_springsalad_data(
             springsalad_data, input_data
         )
+        # get display data (geometry and color)
+        for tid in input_data.display_data:
+            display_data = input_data.display_data[tid]
+            agent_data.display_data[display_data.name] = display_data
+        input_data.meta_data._set_box_size(box_size)
         return TrajectoryData(
-            meta_data=MetaData(
-                box_size=box_size,
-                camera_defaults=input_data.camera_defaults,
-            ),
+            meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=UnitData("s"),
-            spatial_units=UnitData("nm", 1.0 / input_data.scale_factor),
+            spatial_units=UnitData("nm", 1.0 / input_data.meta_data.scale_factor),
             plots=input_data.plots,
         )

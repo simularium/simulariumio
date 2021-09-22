@@ -2,19 +2,59 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-import numpy as np
 
-from simulariumio import (
-    TrajectoryConverter,
-    TrajectoryData,
-    AgentData,
-    UnitData,
-    MetaData,
-    CameraData,
-    JsonWriter,
+from simulariumio import TrajectoryConverter, JsonWriter
+from simulariumio.tests.conftest import (
+    three_default_agents,
+    mixed_agents,
+    fiber_agents,
+    default_agents_type_mapping,
 )
-from simulariumio.tests.conftest import three_default_agents
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
+from simulariumio.constants import (
+    VIZ_TYPE,
+    DISPLAY_TYPE,
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+)
+from simulariumio.exceptions import DataError
+
+
+def fiber_agents_default_viz_type():
+    result = fiber_agents()
+    result.agent_data.viz_types[1][1] = VIZ_TYPE.DEFAULT
+    return result
+
+
+def default_agents_fiber_viz_type():
+    result = three_default_agents()
+    result.agent_data.viz_types[1][1] = VIZ_TYPE.FIBER
+    return result
+
+
+def mixed_agents_missing_subpoints():
+    result = mixed_agents()
+    result.agent_data.viz_types[2][1] = VIZ_TYPE.FIBER
+    result.agent_data.display_data["Q"].display_type = DISPLAY_TYPE.FIBER
+    return result
+
+
+def mixed_agents_extra_subpoints():
+    result = mixed_agents()
+    result.agent_data.viz_types[0][2] = VIZ_TYPE.DEFAULT
+    result.agent_data.display_data["C"].display_type = DISPLAY_TYPE.SPHERE
+    return result
+
+
+def mixed_agents_wrong_display_type1():
+    result = mixed_agents()
+    result.agent_data.display_data["A"].display_type = DISPLAY_TYPE.SPHERE
+    return result
+
+
+def mixed_agents_wrong_display_type2():
+    result = mixed_agents()
+    result.agent_data.display_data["Q"].display_type = DISPLAY_TYPE.FIBER
+    return result
 
 
 @pytest.mark.parametrize(
@@ -26,7 +66,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
             three_default_agents(),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "ns",
@@ -56,18 +96,10 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
-                    "typeMapping": {
-                        "0": {"name": "C"},
-                        "1": {"name": "U"},
-                        "2": {"name": "L"},
-                        "3": {"name": "S"},
-                        "4": {"name": "O"},
-                        "5": {"name": "Y"},
-                        "6": {"name": "W"},
-                    },
+                    "typeMapping": default_agents_type_mapping(),
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -191,187 +223,28 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
-        # 2 default agents (radius 5-10) and 3 fiber agents
-        # at given positions for 3 frames, no plots
+        # # 2 default agents (radius 5-10) and 3 fiber agents
+        # # at given positions for 3 frames, no plots
         (
-            TrajectoryData(
-                meta_data=MetaData(
-                    box_size=np.array([1000.0, 1000.0, 1000.0]),
-                    camera_defaults=CameraData(
-                        position=np.array([0.0, 120.0, 0.0]),
-                        look_at_position=np.array([10.0, 0.0, 0.0]),
-                        up_vector=np.array([0.0, 0.0, 1.0]),
-                        fov_degrees=60.0,
-                    ),
-                ),
-                agent_data=AgentData(
-                    times=1.0 * np.array(list(range(3))),
-                    n_agents=np.array(3 * [5]),
-                    viz_types=np.array(
-                        [
-                            [1000.0, 1001.0, 1001.0, 1000.0, 1001.0],
-                            [1001.0, 1000.0, 1001.0, 1001.0, 1000.0],
-                            [1000.0, 1000.0, 1001.0, 1001.0, 1001.0],
-                        ]
-                    ),
-                    unique_ids=np.array(
-                        [
-                            [0.0, 1.0, 2.0, 3.0, 4.0],
-                            [0.0, 1.0, 2.0, 3.0, 4.0],
-                            [0.0, 1.0, 2.0, 3.0, 4.0],
-                        ]
-                    ),
-                    types=[
-                        ["H", "A", "C", "X", "J"],
-                        ["L", "D", "A", "U", "D"],
-                        ["E", "Q", "K", "K", "A"],
-                    ],
-                    positions=np.array(
-                        [
-                            [
-                                [4.89610492, -29.81564851, 40.77254057],
-                                [0.0, 0.0, 0.0],
-                                [0.0, 0.0, 0.0],
-                                [43.43048197, 48.00424379, -36.02881338],
-                                [0.0, 0.0, 0.0],
-                            ],
-                            [
-                                [0.0, 0.0, 0.0],
-                                [-43.37181102, -13.41127423, -17.31316927],
-                                [0.0, 0.0, 0.0],
-                                [0.0, 0.0, 0.0],
-                                [9.62132397, 13.4774314, -20.30846039],
-                            ],
-                            [
-                                [-24.91450698, -44.79360525, 13.32273796],
-                                [4.10861266, 43.86451151, 21.93697483],
-                                [0.0, 0.0, 0.0],
-                                [0.0, 0.0, 0.0],
-                                [0.0, 0.0, 0.0],
-                            ],
-                        ]
-                    ),
-                    radii=np.array(
-                        [
-                            [8.38656327, 1.0, 1.0, 6.18568039, 1.0],
-                            [1.0, 6.69209780, 1.0, 1.0, 9.88033853],
-                            [8.91022619, 9.01379396, 1.0, 1.0, 1.0],
-                        ]
-                    ),
-                    n_subpoints=np.array(
-                        [[0, 3, 4, 0, 2], [3, 0, 3, 2, 0], [0, 0, 3, 2, 2]]
-                    ),
-                    subpoints=np.array(
-                        [
-                            [
-                                [
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [-243.14059805, 207.75566987, -95.33921063],
-                                    [-20.54663446, 475.97201603, 14.43506311],
-                                    [-76.45581828, -97.31170699, -144.30184731],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [108.28447939, 175.55049775, -274.34792273],
-                                    [13.44237701, 258.21483663, -65.05452787],
-                                    [224.55922362, -455.56482869, -351.23389958],
-                                    [-286.95502659, 330.12683064, 183.79420473],
-                                ],
-                                [
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [49.76236816, -353.11708296, 226.84570983],
-                                    [-234.5462914, 105.46507228, 17.16552317],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                            ],
-                            [
-                                [
-                                    [-442.27202981, 202.83568625, -262.13407113],
-                                    [-372.23130078, 217.21997368, 404.88561338],
-                                    [171.37918011, 205.80515525, -65.95336727],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [245.9111405, 372.15936027, -261.94702214],
-                                    [3.50037066, 441.92904046, 321.75701298],
-                                    [146.23928574, -315.3241668, 82.00405173],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [104.82606074, -413.76671598, 366.66127719],
-                                    [136.7228888, -210.69313998, -465.59967482],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                            ],
-                            [
-                                [
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [-148.70447678, 225.27562348, -273.51318785],
-                                    [-5.32043612, -55.97783429, 413.32948686],
-                                    [165.64239994, 322.63703294, -2.2348818],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [-317.48515644, -237.70246887, 238.69661676],
-                                    [94.56942257, 346.13786088, -7.93209392],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [7.77508859, 260.16762947, -171.02427873],
-                                    [-20.46326319, 179.43194042, 485.07810635],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                            ],
-                        ]
-                    ),
-                ),
-                time_units=UnitData("s"),
-                spatial_units=UnitData("um"),
-                plots=["plot data goes here"],
-            ),
+            mixed_agents(),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "trajectoryTitle": "low concentrations",
+                    "modelInfo": {
+                        "title": "Some agent-based model",
+                        "version": "8.1",
+                        "authors": "A Modeler",
+                        "description": (
+                            "An agent-based model started with "
+                            "low agent concentrations"
+                        ),
+                        "doi": "10.7554/eLife.49840",
+                        "inputDataUrl": "https://allencell.org",
+                    },
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -404,7 +277,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -666,100 +539,23 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": ["plot data goes here"]},
+                "plotData": {
+                    "version": CURRENT_VERSION.PLOT_DATA,
+                    "data": ["plot data goes here"],
+                },
             },
         ),
         # 3 fiber agents with points drawn
         # at given positions for 3 frames, no plots
         (
-            TrajectoryData(
-                meta_data=MetaData(
-                    box_size=np.array([1000.0, 1000.0, 1000.0]),
-                ),
-                agent_data=AgentData(
-                    times=np.array([0.0, 1.00001, 2.00001]),
-                    n_agents=np.array(3 * [3]),
-                    viz_types=1001.0 * np.ones(shape=(3, 3)),
-                    unique_ids=np.array(
-                        [[1.0, 2.0, 3.0], [1.0, 2.0, 3.0], [1.0, 2.0, 3.0]]
-                    ),
-                    types=[["H", "A", "C"], ["L", "D", "A"], ["K", "K", "A"]],
-                    positions=np.zeros(shape=(3, 3, 3)),
-                    radii=np.ones(shape=(3, 3)),
-                    n_subpoints=np.array([[3, 4, 2], [3, 3, 2], [3, 2, 2]]),
-                    subpoints=np.array(
-                        [
-                            [
-                                [
-                                    [-243.14059805, 207.75566987, -95.33921063],
-                                    [-20.54663446, 475.97201603, 14.43506311],
-                                    [-76.45581828, -97.31170699, -144.30184731],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [108.28447939, 175.55049775, -274.34792273],
-                                    [13.44237701, 258.21483663, -65.05452787],
-                                    [224.55922362, -455.56482869, -351.23389958],
-                                    [-286.95502659, 330.12683064, 183.79420473],
-                                ],
-                                [
-                                    [49.76236816, -353.11708296, 226.84570983],
-                                    [-234.5462914, 105.46507228, 17.16552317],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                            ],
-                            [
-                                [
-                                    [-442.27202981, 202.83568625, -262.13407113],
-                                    [-372.23130078, 217.21997368, 404.88561338],
-                                    [171.37918011, 205.80515525, -65.95336727],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [245.9111405, 372.15936027, -261.94702214],
-                                    [3.50037066, 441.92904046, 321.75701298],
-                                    [146.23928574, -315.3241668, 82.00405173],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [104.82606074, -413.76671598, 366.66127719],
-                                    [136.7228888, -210.69313998, -465.59967482],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                            ],
-                            [
-                                [
-                                    [-148.70447678, 225.27562348, -273.51318785],
-                                    [-5.32043612, -55.97783429, 413.32948686],
-                                    [165.64239994, 322.63703294, -2.2348818],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [-317.48515644, -237.70246887, 238.69661676],
-                                    [94.56942257, 346.13786088, -7.93209392],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                                [
-                                    [7.77508859, 260.16762947, -171.02427873],
-                                    [-20.46326319, 179.43194042, 485.07810635],
-                                    [0.0, 0.0, 0.0],
-                                    [0.0, 0.0, 0.0],
-                                ],
-                            ],
-                        ]
-                    ),
-                    draw_fiber_points=True,
-                ),
-                time_units=UnitData("us"),
-                spatial_units=UnitData("m", 10.0),
-                plots=["plot data goes here"],
-            ),
+            fiber_agents(),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "modelInfo": {
+                        "title": "Some fibers",
+                        "authors": "A Modeler",
+                    },
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "µs",
@@ -799,7 +595,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -1149,8 +945,42 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": ["plot data goes here"]},
+                "plotData": {
+                    "version": CURRENT_VERSION.PLOT_DATA,
+                    "data": ["plot data goes here"],
+                },
             },
+        ),
+        # subpoints and viz or display types are inconsistent
+        pytest.param(
+            fiber_agents_default_viz_type(),
+            {},
+            marks=pytest.mark.raises(exception=DataError),
+        ),
+        pytest.param(
+            default_agents_fiber_viz_type(),
+            {},
+            marks=pytest.mark.raises(exception=DataError),
+        ),
+        pytest.param(
+            mixed_agents_missing_subpoints(),
+            {},
+            marks=pytest.mark.raises(exception=DataError),
+        ),
+        pytest.param(
+            mixed_agents_extra_subpoints(),
+            {},
+            marks=pytest.mark.raises(exception=DataError),
+        ),
+        pytest.param(
+            mixed_agents_wrong_display_type1(),
+            {},
+            marks=pytest.mark.raises(exception=DataError),
+        ),
+        pytest.param(
+            mixed_agents_wrong_display_type2(),
+            {},
+            marks=pytest.mark.raises(exception=DataError),
         ),
     ],
 )

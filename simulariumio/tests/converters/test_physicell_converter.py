@@ -5,8 +5,8 @@ import numpy as np
 import pytest
 
 from simulariumio.physicell import PhysicellConverter, PhysicellData
-from simulariumio import MetaData, JsonWriter
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
+from simulariumio import MetaData, DisplayData, JsonWriter
+from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
 
 @pytest.mark.parametrize(
@@ -21,10 +21,18 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                 ),
                 timestep=360.0,
                 path_to_output_dir="simulariumio/tests/data/physicell/output/",
+                display_data={
+                    0: DisplayData(
+                        name="Cancer cell",
+                        radius=30.0,
+                        color="#0080ff",
+                    ),
+                },
+                phase_names={1: {4: "interphase"}},
             ),
             {
                 "trajectoryInfo": {
-                    "version": 2,
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
                     "timeUnits": {
                         "magnitude": 1.0,
                         "name": "s",
@@ -55,12 +63,17 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "cell 1#phase 4"},
-                        "1": {"name": "cell 0#phase 4"},
+                        "0": {"name": "cell1#interphase"},
+                        "1": {
+                            "name": "Cancer cell#phase4",
+                            "geometry": {
+                                "color": "#0080ff",
+                            },
+                        },
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 3,
@@ -89,7 +102,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                                 1000.0,
                                 2.0,
@@ -100,7 +113,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                             ],
                         },
@@ -128,7 +141,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                                 1000.0,
                                 2.0,
@@ -139,7 +152,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                             ],
                         },
@@ -167,7 +180,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                                 1000.0,
                                 2.0,
@@ -178,13 +191,13 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS
                                 0.0,
                                 0.0,
                                 0.0,
-                                0.08412710547954229,
+                                0.3,
                                 0.0,
                             ],
                         },
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
         pytest.param(

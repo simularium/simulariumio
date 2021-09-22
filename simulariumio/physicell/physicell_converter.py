@@ -10,7 +10,7 @@ import numpy as np
 from .dep.pyMCDS import pyMCDS
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData
+from ..data_objects import TrajectoryData, AgentData, UnitData
 from ..exceptions import MissingDataError
 from .physicell_data import PhysicellData
 
@@ -53,10 +53,18 @@ class PhysicellConverter(TrajectoryConverter):
         return np.array(data)
 
     @staticmethod
+    def _get_default_cell_name(cell_type: int) -> str:
+        return f"cell{cell_type}"
+
+    @staticmethod
+    def _get_default_phase_name(cell_phase: int) -> str:
+        return f"#phase{cell_phase}"
+
+    @staticmethod
     def _get_agent_type(
         cell_type: int,
         cell_phase: int,
-        type_names: Dict[int, Dict[int, str]],
+        input_data: PhysicellData,
         ids: Dict[int, Dict[int, int]],
         last_id: int,
         type_mapping: Dict[int, str],
@@ -69,22 +77,17 @@ class PhysicellConverter(TrajectoryConverter):
         if cell_phase not in ids[cell_type]:
             ids[cell_type][cell_phase] = last_id
             type_name = ""
-            if (
-                type_names is not None
-                and cell_type in type_names
-                and "name" in type_names[cell_type]
-            ):
-                type_name = type_names[cell_type]["name"]
+            if cell_type in input_data.display_data:
+                type_name = input_data.display_data[cell_type].name
             else:
-                type_name = f"cell {cell_type}"
+                type_name = PhysicellConverter._get_default_cell_name(cell_type)
             if (
-                type_names is not None
-                and cell_type in type_names
-                and cell_phase in type_names[cell_type]
+                cell_type in input_data.phase_names
+                and cell_phase in input_data.phase_names[cell_type]
             ):
-                type_name += "#" + type_names[cell_type][cell_phase]
+                type_name += "#" + input_data.phase_names[cell_type][cell_phase]
             else:
-                type_name += f"#phase {cell_phase}"
+                type_name += PhysicellConverter._get_default_phase_name(cell_phase)
             type_mapping[last_id] = type_name
             last_id += 1
         return ids[cell_type][cell_phase], ids, last_id, type_mapping
@@ -125,12 +128,14 @@ class PhysicellConverter(TrajectoryConverter):
             result.n_agents[time_index] = n_agents
             for agent_index in range(n_agents):
                 result.unique_ids[time_index][agent_index] = agent_index
+                cell_type = int(discrete_cells[time_index]["cell_type"][agent_index])
+                cell_phase = int(
+                    discrete_cells[time_index]["current_phase"][agent_index]
+                )
                 tid, ids, last_id, type_mapping = PhysicellConverter._get_agent_type(
-                    cell_type=int(discrete_cells[time_index]["cell_type"][agent_index]),
-                    cell_phase=int(
-                        discrete_cells[time_index]["current_phase"][agent_index]
-                    ),
-                    type_names=input_data.types,
+                    cell_type=cell_type,
+                    cell_phase=cell_phase,
+                    input_data=input_data,
                     ids=ids,
                     last_id=last_id,
                     type_mapping=type_mapping,
@@ -147,18 +152,23 @@ class PhysicellConverter(TrajectoryConverter):
                 )
                 result.radii[time_index][
                     agent_index
-                ] = input_data.meta_data.scale_factor * np.cbrt(
-                    3.0
-                    / 4.0
-                    * discrete_cells[time_index]["total_volume"][agent_index]
-                    / np.pi
+                ] = input_data.meta_data.scale_factor * (
+                    input_data.display_data[cell_type].radius
+                    if cell_type in input_data.display_data
+                    and input_data.display_data[cell_type].radius is not None
+                    else np.cbrt(
+                        3.0
+                        / 4.0
+                        * discrete_cells[time_index]["total_volume"][agent_index]
+                        / np.pi
+                    )
                 )
         spatial_units = UnitData(
             physicell_data[0].data["metadata"]["spatial_units"],
             1.0 / input_data.meta_data.scale_factor,
         )
         result.n_timesteps = total_steps
-        return result, spatial_units
+        return result, spatial_units, ids
 
     @staticmethod
     def _read(input_data: PhysicellData) -> TrajectoryData:
@@ -166,13 +176,31 @@ class PhysicellConverter(TrajectoryConverter):
         Return a TrajectoryData object containing the PhysiCell data
         """
         print("Reading PhysiCell Data -------------")
-        agent_data, spatial_units = PhysicellConverter._get_trajectory_data(input_data)
+        agent_data, spatial_units, id_mapping = PhysicellConverter._get_trajectory_data(
+            input_data
+        )
+        # get display data (geometry and color)
+        for cell_id in input_data.display_data:
+            display_data = input_data.display_data[cell_id]
+            if cell_id not in id_mapping:
+                print(
+                    f"cell type ID {cell_id} provided in display_data does not exist "
+                    "in PhysiCell data, skipping its rendering info"
+                )
+                continue
+            type_name = display_data.name
+            for phase_id in id_mapping[cell_id]:
+                if (
+                    cell_id in input_data.phase_names
+                    and phase_id in input_data.phase_names[cell_id]
+                ):
+                    type_name += "#" + input_data.phase_names[cell_id][phase_id]
+                else:
+                    type_name += PhysicellConverter._get_default_phase_name(phase_id)
+                agent_data.display_data[type_name] = display_data
+        input_data.meta_data._set_box_size()
         return TrajectoryData(
-            meta_data=MetaData(
-                box_size=input_data.meta_data.scale_factor
-                * input_data.meta_data.box_size,
-                camera_defaults=input_data.meta_data.camera_defaults,
-            ),
+            meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=input_data.time_units,
             spatial_units=spatial_units,

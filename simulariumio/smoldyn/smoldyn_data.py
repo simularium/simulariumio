@@ -4,7 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-from ..data_objects import MetaData, UnitData
+from ..data_objects import MetaData, UnitData, DisplayData
 
 ###############################################################################
 
@@ -14,23 +14,21 @@ log = logging.getLogger(__name__)
 
 
 class SmoldynData:
-    meta_data: MetaData
     path_to_output_txt: str
-    radii: Dict[str, float]
-    display_names: Dict[str, str]
+    meta_data: MetaData
+    display_data: Dict[str, DisplayData]
     time_units: UnitData
     spatial_units: UnitData
     plots: List[Dict[str, Any]]
 
     def __init__(
         self,
-        meta_data: MetaData,
         path_to_output_txt: str,
-        radii: Dict[str, float],
-        display_names: Dict[str, str] = {},
-        time_units: UnitData = UnitData("s"),
-        spatial_units: UnitData = UnitData("m"),
-        plots: List[Dict[str, Any]] = [],
+        meta_data: MetaData = None,
+        display_data: Dict[str, DisplayData] = None,
+        time_units: UnitData = None,
+        spatial_units: UnitData = None,
+        plots: List[Dict[str, Any]] = None,
     ):
         """
         This object holds simulation trajectory outputs
@@ -38,23 +36,21 @@ class SmoldynData:
 
         Parameters
         ----------
-        meta_data : MetaData
-            An object containing metadata for the trajectory
-            including box size, scale factor, and camera defaults
         path_to_output_txt : str
             A string path to the output txt file
             Generate by adding to your config.txt file:
                 `output_files output.txt
                 `cmd n 1 executiontime output.txt`
                 `cmd n 1 listmols output.txt`
-        radii : Dict[str,float] (optional)
-            A mapping of type names to the radii
-            with which to draw them
-            Default : 1.0 for any type name not specified
-        display_names : Dict[str, str] (optional)
-            A mapping from original species names
-            to names to display in the Simularium Viewer
-            Default: use original names
+        meta_data : MetaData (optional)
+            An object containing metadata for the trajectory
+            including box size, scale factor, and camera defaults
+        display_data: Dict[str, DisplayData] (optional)
+            The particle type name from Smoldyn data mapped
+            to display names and rendering info for that type,
+            Default: for names, use Smoldyn name,
+                for radius, use 1.0,
+                for rendering, use default representations and colors
         time_units: UnitData (optional)
             multiplier and unit name for time values
             Default: 1.0 second
@@ -66,10 +62,11 @@ class SmoldynData:
             An object containing plot data already
             in Simularium format
         """
-        self.meta_data = meta_data
         self.path_to_output_txt = path_to_output_txt
-        self.radii = radii
-        self.display_names = display_names
-        self.time_units = time_units
-        self.spatial_units = spatial_units
-        self.plots = plots
+        self.meta_data = meta_data if meta_data is not None else MetaData()
+        self.display_data = display_data if display_data is not None else {}
+        self.time_units = time_units if time_units is not None else UnitData("s")
+        self.spatial_units = (
+            spatial_units if spatial_units is not None else UnitData("m")
+        )
+        self.plots = plots if plots is not None else []

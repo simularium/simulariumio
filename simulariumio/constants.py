@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import List
+from enum import Enum
 
 import numpy as np
 
@@ -55,3 +56,27 @@ class BINARY_SETTINGS:
     EOF: str = "\u005CEOFTHEFRAMEENDSHERE"
     MAX_FRAMES: int = 10000
     MAX_BYTES: int = 500000000
+
+
+class DISPLAY_TYPE(Enum):
+    """
+    These values are required for file I/O,
+    changing them requires a version bump
+    """
+
+    NONE = None
+    SPHERE = "SPHERE"
+    PDB = "PDB"
+    OBJ = "OBJ"
+    FIBER = "FIBER"
+    # CUBE = "CUBE"  # coming soon
+    # GIZMO = "GIZMO"  # coming soon
+
+
+class CURRENT_VERSION:
+    TRAJECTORY_INFO: int = 3
+    SPATIAL_DATA: int = 1
+    PLOT_DATA: int = 1
+
+
+DEFAULT_BOX_SIZE = 100.0 * np.ones(3)

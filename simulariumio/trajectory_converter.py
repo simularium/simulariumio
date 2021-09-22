@@ -17,6 +17,7 @@ from .data_objects import (
     HistogramPlotData,
     ScatterPlotData,
     TrajectoryData,
+    DisplayData,
 )
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
@@ -56,42 +57,6 @@ class TrajectoryConverter:
             and plot data
         """
         self._data = input_data
-
-    @staticmethod
-    def _check_agent_ids_are_unique_per_frame(buffer_data: Dict[str, Any]) -> bool:
-        """
-        For each frame, check that none of the unique agent IDs overlap
-        """
-        bundle_data = buffer_data["spatialData"]["bundleData"]
-        for time_index in range(len(bundle_data)):
-            data = bundle_data[time_index]["data"]
-            agent_index = 1
-            uids = []
-            get_n_subpoints = False
-            while agent_index < len(data):
-                # get the number of subpoints
-                # in order to correctly increment index
-                if get_n_subpoints:
-                    agent_index += int(
-                        data[agent_index]
-                        + (
-                            V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
-                            - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
-                        )
-                    )
-                    get_n_subpoints = False
-                    continue
-                # there should be a unique ID at this index, check for duplicate
-                uid = data[agent_index]
-                if uid in uids:
-                    raise Exception(
-                        f"found duplicate ID {uid} in frame {time_index} "
-                        f"at index {agent_index}"
-                    )
-                uids.append(uid)
-                agent_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX - 1
-                get_n_subpoints = True
-        return True
 
     @staticmethod
     def _determine_plot_reader(plot_type: str = "scatter") -> [PlotReader]:
