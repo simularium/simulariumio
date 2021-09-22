@@ -351,6 +351,7 @@ def mixed_agents() -> TrajectoryData:
                 description=(
                     "An agent-based model started with low agent concentrations"
                 ),
+                doi="https://doi.org/10.7554/eLife.49840",
                 input_data_url="https://allencell.org",
             ),
         ),

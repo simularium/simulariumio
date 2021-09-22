@@ -242,6 +242,7 @@ def mixed_agents_wrong_display_type2():
                             "An agent-based model started with "
                             "low agent concentrations"
                         ),
+                        "doi": "10.7554/eLife.49840",
                         "inputDataUrl": "https://allencell.org",
                     },
                     "timeUnits": {
