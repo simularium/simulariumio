@@ -152,3 +152,92 @@ class Writer(ABC):
             else:
                 i += V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
         return result.tolist(), uids, used_unique_IDs
+
+    @staticmethod
+    def _check_agent_ids_are_unique_per_frame(buffer_data: Dict[str, Any]) -> bool:
+        """
+        For each frame, check that none of the unique agent IDs overlap
+        """
+        bundle_data = buffer_data["spatialData"]["bundleData"]
+        for time_index in range(len(bundle_data)):
+            data = bundle_data[time_index]["data"]
+            agent_index = 1
+            uids = []
+            get_n_subpoints = False
+            while agent_index < len(data):
+                # get the number of subpoints
+                # in order to correctly increment index
+                if get_n_subpoints:
+                    agent_index += int(
+                        data[agent_index]
+                        + (
+                            V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
+                            - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
+                        )
+                    )
+                    get_n_subpoints = False
+                    continue
+                # there should be a unique ID at this index, check for duplicate
+                uid = data[agent_index]
+                if uid in uids:
+                    raise Exception(
+                        f"found duplicate ID {uid} in frame {time_index} "
+                        f"at index {agent_index}"
+                    )
+                uids.append(uid)
+                agent_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX - 1
+                get_n_subpoints = True
+        return True
+
+    @staticmethod
+    def _check_type_matches_subpoints(
+        type_name: str,
+        n_subpoints: int,
+        viz_type: float,
+        display_data: DisplayData,
+        debug_name: str = "",
+    ) -> str:
+        """
+        If the agent has subpoints, check that it
+        also has a display_type of "FIBER" and viz type of "FIBER", and vice versa.
+        return a message saying what is inconsistent
+        """
+        has_subpoints = n_subpoints > 0
+        msg = (
+            f"Agent {debug_name}: Type {type_name} "
+            + ("has" if has_subpoints else "does not have")
+            + " subpoints and "
+        )
+        if has_subpoints != (viz_type == VIZ_TYPE.FIBER):
+            return msg + f"viz type is {viz_type}"
+        if type_name in display_data:
+            display_type = display_data[type_name].display_type
+            if display_type is not DISPLAY_TYPE.NONE and has_subpoints != (
+                display_type == DISPLAY_TYPE.FIBER
+            ):
+                return msg + f"display type is {display_type}"
+        return ""
+
+    @staticmethod
+    def _check_types_match_subpoints(trajectory_data: TrajectoryData) -> str:
+        """
+        For each frame, check that agents that have subpoints
+        also have a display_type of "FIBER" and viz type of "FIBER", and vice versa.
+        return a message with the type name of the first agent that is inconsistent
+        """
+        n_subpoints = trajectory_data.agent_data.n_subpoints
+        display_data = trajectory_data.agent_data.display_data
+        for time_index in range(n_subpoints.shape[0]):
+            for agent_index in range(
+                int(trajectory_data.agent_data.n_agents[time_index])
+            ):
+                inconsistent_type = TrajectoryConverter._check_type_matches_subpoints(
+                    trajectory_data.agent_data.types[time_index][agent_index],
+                    n_subpoints[time_index][agent_index],
+                    trajectory_data.agent_data.viz_types[time_index][agent_index],
+                    display_data,
+                    f"at index Time = {time_index}, Agent = {agent_index}",
+                )
+                if inconsistent_type:
+                    return inconsistent_type
+        return ""

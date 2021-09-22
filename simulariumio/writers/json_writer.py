@@ -63,7 +63,7 @@ class JsonWriter(Writer):
         Return the spatialData's bundleData for a simulation
         of agents without subpoints, using list slicing for speed
         """
-        bundle_data: List[Dict[str, Any]] = []
+        bundle_data = []
         max_n_agents = int(np.amax(agent_data.n_agents, 0))
         ix_positions = np.empty((3 * max_n_agents,), dtype=int)
         ix_rotations = np.empty((3 * max_n_agents,), dtype=int)
@@ -122,6 +122,9 @@ class JsonWriter(Writer):
             the data to format
         """
         print("Converting Trajectory Data to JSON -------------")
+        inconsistent_type = TrajectoryConverter._check_types_match_subpoints(input_data)
+        if inconsistent_type:
+            raise DataError(inconsistent_type)
         simularium_data = {}
         # trajectory info
         total_steps = (
@@ -131,7 +134,7 @@ class JsonWriter(Writer):
         )
         type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
         traj_info = {
-            "version": 2,
+            "version": CURRENT_VERSION.TRAJECTORY_INFO,
             "timeUnits": {
                 "magnitude": trajectory_data.time_units.magnitude,
                 "name": trajectory_data.time_units.name,
@@ -182,10 +185,15 @@ class JsonWriter(Writer):
             },
             "typeMapping": type_mapping,
         }
+        # add any paper metadata
+        if input_data.meta_data.trajectory_title:
+            traj_info["trajectoryTitle"] = input_data.meta_data.trajectory_title
+        if not input_data.meta_data.model_meta_data.is_default():
+            traj_info["modelInfo"] = dict(input_data.meta_data.model_meta_data)
         simularium_data["trajectoryInfo"] = traj_info
         # spatial data
         spatialData = {
-            "version": 1,
+            "version": CURRENT_VERSION.SPATIAL_DATA,
             "msgType": 1,
             "bundleStart": 0,
             "bundleSize": total_steps,
@@ -203,7 +211,7 @@ class JsonWriter(Writer):
         simularium_data["spatialData"] = spatialData
         # plot data
         simularium_data["plotData"] = {
-            "version": 1,
+            "version": CURRENT_VERSION.PLOT_DATA,
             "data": trajectory_data.plots,
         }
         return simularium_data
