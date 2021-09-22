@@ -73,6 +73,7 @@ class CURRENT_VERSION:
 
 DEFAULT_BOX_SIZE = 100.0 * np.ones(3)
 
+
 class BINARY_SETTINGS:
     HEADER: str = "SIMULARIUMBIN"
     VERSION: List[int] = [1, 0, 0]

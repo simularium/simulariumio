@@ -11,8 +11,9 @@ from ..data_objects import (
     AgentData,
     TrajectoryData,
 )
-from ..constants import V1_SPATIAL_BUFFER_STRUCT
+from ..constants import V1_SPATIAL_BUFFER_STRUCT, CURRENT_VERSION
 from .writer import Writer
+from ..exceptions import DataError
 
 ###############################################################################
 
@@ -121,7 +122,7 @@ class JsonWriter(Writer):
             the data to format
         """
         print("Converting Trajectory Data to JSON -------------")
-        inconsistent_type = Writer._check_types_match_subpoints(input_data)
+        inconsistent_type = Writer._check_types_match_subpoints(trajectory_data)
         if inconsistent_type:
             raise DataError(inconsistent_type)
         simularium_data = {}
@@ -185,10 +186,10 @@ class JsonWriter(Writer):
             "typeMapping": type_mapping,
         }
         # add any paper metadata
-        if input_data.meta_data.trajectory_title:
-            traj_info["trajectoryTitle"] = input_data.meta_data.trajectory_title
-        if not input_data.meta_data.model_meta_data.is_default():
-            traj_info["modelInfo"] = dict(input_data.meta_data.model_meta_data)
+        if trajectory_data.meta_data.trajectory_title:
+            traj_info["trajectoryTitle"] = trajectory_data.meta_data.trajectory_title
+        if not trajectory_data.meta_data.model_meta_data.is_default():
+            traj_info["modelInfo"] = dict(trajectory_data.meta_data.model_meta_data)
         simularium_data["trajectoryInfo"] = traj_info
         # spatial data
         spatialData = {
@@ -250,6 +251,6 @@ class JsonWriter(Writer):
                 {
                     "version": 1,
                     "data": plot_data,
-                }, 
-                outfile
+                },
+                outfile,
             )

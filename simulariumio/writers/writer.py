@@ -11,8 +11,9 @@ import numpy as np
 from ..data_objects import (
     TrajectoryData,
     AgentData,
+    DisplayData,
 )
-from ..constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE
+from ..constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE, DISPLAY_TYPE
 
 ###############################################################################
 
@@ -231,7 +232,7 @@ class Writer(ABC):
             for agent_index in range(
                 int(trajectory_data.agent_data.n_agents[time_index])
             ):
-                inconsistent_type = TrajectoryConverter._check_type_matches_subpoints(
+                inconsistent_type = Writer._check_type_matches_subpoints(
                     trajectory_data.agent_data.types[time_index][agent_index],
                     n_subpoints[time_index][agent_index],
                     trajectory_data.agent_data.viz_types[time_index][agent_index],

@@ -3,7 +3,7 @@
 
 import json
 import logging
-from typing import Any, Dict, List
+from typing import List
 import copy
 
 import numpy as np
@@ -17,14 +17,10 @@ from .data_objects import (
     HistogramPlotData,
     ScatterPlotData,
     TrajectoryData,
-    DisplayData,
 )
 from .filters import Filter
-from .exceptions import UnsupportedPlotTypeError, DataError
-from .writers import (
-    JsonWriter,
-    BinaryWriter,
-)
+from .exceptions import UnsupportedPlotTypeError
+from .writers import JsonWriter, BinaryWriter
 
 ###############################################################################
 
