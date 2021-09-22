@@ -30,7 +30,7 @@ class MetaData:
         box_size: np.ndarray = None,
         camera_defaults: CameraData = None,
         scale_factor: float = 1.0,
-        trajectory_title: str = None,
+        trajectory_title: str = "",
         model_meta_data: ModelMetaData = None,
     ):
         """
@@ -63,7 +63,7 @@ class MetaData:
             camera_defaults if camera_defaults is not None else CameraData()
         )
         self.scale_factor = scale_factor
-        self.trajectory_title = trajectory_title if trajectory_title is not None else ""
+        self.trajectory_title = trajectory_title
         self.model_meta_data = (
             model_meta_data if model_meta_data is not None else ModelMetaData()
         )

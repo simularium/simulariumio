@@ -373,7 +373,7 @@ class TrajectoryConverter:
         n_subpoints: int,
         viz_type: float,
         display_data: DisplayData,
-        debug_name: str = None,
+        debug_name: str = "",
     ) -> str:
         """
         If the agent has subpoints, check that it

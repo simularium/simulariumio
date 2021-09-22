@@ -24,15 +24,15 @@ class ModelMetaData:
 
     def __init__(
         self,
-        title: str = None,
-        version: str = None,
-        authors: str = None,
-        description: str = None,
-        doi: str = None,
-        source_code_url: str = None,
-        source_code_license_url: str = None,
-        input_data_url: str = None,
-        raw_output_data_url: str = None,
+        title: str = "",
+        version: str = "",
+        authors: str = "",
+        description: str = "",
+        doi: str = "",
+        source_code_url: str = "",
+        source_code_license_url: str = "",
+        input_data_url: str = "",
+        raw_output_data_url: str = "",
     ):
         """
         This object holds metadata for a model that generates simulation trajectories
@@ -58,18 +58,18 @@ class ModelMetaData:
         raw_output_data_url : str (optional)
             A link to any raw outputs from the source code posted publicly
         """
-        self.title = title if title is not None else ""
-        self.version = version if version is not None else ""
-        self.authors = authors if authors is not None else ""
-        self.description = description if description is not None else ""
-        self.doi = doi if doi is not None else ""
-        self.source_code_url = source_code_url if source_code_url is not None else ""
+        self.title = title
+        self.version = version
+        self.authors = authors
+        self.description = description
+        self.doi = doi
+        self.source_code_url = source_code_url
         self.source_code_license_url = (
-            source_code_license_url if source_code_license_url is not None else ""
+            source_code_license_url
         )
-        self.input_data_url = input_data_url if input_data_url is not None else ""
+        self.input_data_url = input_data_url
         self.raw_output_data_url = (
-            raw_output_data_url if raw_output_data_url is not None else ""
+            raw_output_data_url
         )
 
     @classmethod
