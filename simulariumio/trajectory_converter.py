@@ -21,7 +21,6 @@ from .data_objects import (
 )
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
-from .constants import V1_SPATIAL_BUFFER_STRUCT
 from .writers import (
     JsonWriter,
     BinaryWriter,
