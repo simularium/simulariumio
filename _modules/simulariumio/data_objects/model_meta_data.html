@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>simulariumio.data_objects.model_meta_data &mdash; Simularium Conversion 1.1.1 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Simularium Conversion
+          </a>
+              <div class="version">
+                1.1.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#stable-release">Stable release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation.html#from-sources">From sources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../simulariumio.html">simulariumio package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.filters.html">simulariumio.filters package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.mcell.html">simulariumio.mcell package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.medyan.html">simulariumio.medyan package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.smoldyn.html">simulariumio.smoldyn package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../simulariumio.springsalad.html">simulariumio.springsalad package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../simulariumio.html#module-simulariumio">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#get-started">Get Started!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#deploying">Deploying</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing.html#questions-or-thoughts">Questions or Thoughts?</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Simularium Conversion</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+          <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
+      <li>simulariumio.data_objects.model_meta_data</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for simulariumio.data_objects.model_meta_data</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c1">###############################################################################</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">###############################################################################</span>
+
+
+<div class="viewcode-block" id="ModelMetaData"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.model_meta_data.ModelMetaData">[docs]</a><span class="k">class</span> <span class="nc">ModelMetaData</span><span class="p">:</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">authors</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">source_code_url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">source_code_license_url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">input_data_url</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">raw_output_data_url</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">authors</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">source_code_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">source_code_license_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">input_data_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">raw_output_data_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This object holds metadata for a model that generates simulation trajectories</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        title : str (optional)</span>
+<span class="sd">            Display title for this model</span>
+<span class="sd">        version : float (optional)</span>
+<span class="sd">            Version number of the model that produced this trajectory</span>
+<span class="sd">        authors : str (optional)</span>
+<span class="sd">            Modelers name(s)</span>
+<span class="sd">        description : str (optional)</span>
+<span class="sd">            Comments to display with the trajectories generated by this model</span>
+<span class="sd">        doi : str (optional)</span>
+<span class="sd">            The DOI of the publication accompanying this model</span>
+<span class="sd">            Note: if the URL for a DOI is provided,</span>
+<span class="sd">                the ID from the URL will be used</span>
+<span class="sd">        source_code_url : str (optional)</span>
+<span class="sd">            If the code that generated this model is posted publicly,</span>
+<span class="sd">            a link to the repository of source code</span>
+<span class="sd">        source_code_license_url : str (optional)</span>
+<span class="sd">            A link to the license for the source code</span>
+<span class="sd">        input_data_url : str (optional)</span>
+<span class="sd">            A link to any model configuration or parameter files posted publicly</span>
+<span class="sd">        raw_output_data_url : str (optional)</span>
+<span class="sd">            A link to any raw outputs from the source code posted publicly</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">authors</span> <span class="o">=</span> <span class="n">authors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="c1"># remove url prefix from doi</span>
+        <span class="k">if</span> <span class="s2">&quot;doi.org&quot;</span> <span class="ow">in</span> <span class="n">doi</span><span class="p">:</span>
+            <span class="n">doi</span> <span class="o">=</span> <span class="n">doi</span><span class="p">[</span><span class="n">doi</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;doi.org&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span> <span class="p">:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">doi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_code_url</span> <span class="o">=</span> <span class="n">source_code_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_code_license_url</span> <span class="o">=</span> <span class="n">source_code_license_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_data_url</span> <span class="o">=</span> <span class="n">input_data_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span> <span class="o">=</span> <span class="n">raw_output_data_url</span>
+
+<div class="viewcode-block" id="ModelMetaData.from_buffer_data"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.model_meta_data.ModelMetaData.from_buffer_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_buffer_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">buffer_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create ModelMetaData from a simularium JSON dict containing buffers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_info</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;modelInfo&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;modelInfo&quot;</span> <span class="ow">in</span> <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">model_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">model_info</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">version</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;version&quot;</span> <span class="ow">in</span> <span class="n">model_info</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">authors</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;authors&quot;</span> <span class="ow">in</span> <span class="n">model_info</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;description&quot;</span> <span class="ow">in</span> <span class="n">model_info</span>
+            <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">doi</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;doi&quot;</span> <span class="ow">in</span> <span class="n">model_info</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">source_code_url</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;sourceCodeUrl&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;sourceCodeUrl&quot;</span> <span class="ow">in</span> <span class="n">model_info</span>
+            <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">source_code_license_url</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;sourceCodeLicenseUrl&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;sourceCodeLicenseUrl&quot;</span> <span class="ow">in</span> <span class="n">model_info</span>
+            <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">input_data_url</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;inputDataUrl&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;inputDataUrl&quot;</span> <span class="ow">in</span> <span class="n">model_info</span>
+            <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">raw_output_data_url</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;rawOutputDataUrl&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;rawOutputDataUrl&quot;</span> <span class="ow">in</span> <span class="n">model_info</span>
+            <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ModelMetaData.is_default"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.model_meta_data.ModelMetaData.is_default">[docs]</a>    <span class="k">def</span> <span class="nf">is_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if this ModelMetaData is only holding default data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">authors</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">doi</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_url</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_license_url</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_data_url</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">authors</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">authors</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">doi</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_url</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="s2">&quot;sourceCodeUrl&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_url</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_license_url</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="s2">&quot;sourceCodeLicenseUrl&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_license_url</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_data_url</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="s2">&quot;inputDataUrl&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_data_url</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="s2">&quot;rawOutputDataUrl&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, Blair Lyons.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

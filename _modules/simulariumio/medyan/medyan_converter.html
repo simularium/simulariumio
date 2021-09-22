@@ -115,7 +115,6 @@
     <span class="n">TrajectoryData</span><span class="p">,</span>
     <span class="n">AgentData</span><span class="p">,</span>
     <span class="n">UnitData</span><span class="p">,</span>
-    <span class="n">MetaData</span><span class="p">,</span>
     <span class="n">DimensionData</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">VIZ_TYPE</span><span class="p">,</span> <span class="n">DISPLAY_TYPE</span>
@@ -342,8 +341,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading MEDYAN Data -------------&quot;</span><span class="p">)</span>
         <span class="n">agent_data</span> <span class="o">=</span> <span class="n">MedyanConverter</span><span class="o">.</span><span class="n">_get_trajectory_data</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
-        <span class="n">time_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
-        <span class="n">spatial_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;nm&quot;</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">)</span>
         <span class="c1"># get display data (geometry and color)</span>
         <span class="k">for</span> <span class="n">object_type</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">tid</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">object_type</span><span class="p">]:</span>
@@ -358,15 +355,12 @@
                         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">display_data</span><span class="o">.</span><span class="n">display_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> was changed to FIBER&quot;</span>
                     <span class="p">)</span>
                 <span class="n">agent_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">display_data</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_data</span>
+        <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">_set_box_size</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">TrajectoryData</span><span class="p">(</span>
-            <span class="n">meta_data</span><span class="o">=</span><span class="n">MetaData</span><span class="p">(</span>
-                <span class="n">box_size</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span>
-                <span class="o">*</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">,</span>
-                <span class="n">camera_defaults</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">camera_defaults</span><span class="p">,</span>
-            <span class="p">),</span>
+            <span class="n">meta_data</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="p">,</span>
             <span class="n">agent_data</span><span class="o">=</span><span class="n">agent_data</span><span class="p">,</span>
-            <span class="n">time_units</span><span class="o">=</span><span class="n">time_units</span><span class="p">,</span>
-            <span class="n">spatial_units</span><span class="o">=</span><span class="n">spatial_units</span><span class="p">,</span>
+            <span class="n">time_units</span><span class="o">=</span><span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">),</span>
+            <span class="n">spatial_units</span><span class="o">=</span><span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;nm&quot;</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">),</span>
             <span class="n">plots</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">plots</span><span class="p">,</span>
         <span class="p">)</span></div>
 </pre></div>

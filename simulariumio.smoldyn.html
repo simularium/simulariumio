@@ -136,15 +136,13 @@ Smoldyn simulation trajectory outputs and plot data</p>
 <span id="simulariumio-smoldyn-smoldyn-data-module"></span><h2>simulariumio.smoldyn.smoldyn_data module<a class="headerlink" href="#module-simulariumio.smoldyn.smoldyn_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.smoldyn.smoldyn_data.SmoldynData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.smoldyn.smoldyn_data.</code><code class="sig-name descname">SmoldynData</code><span class="sig-paren">(</span><em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData</em>, <em class="sig-param">path_to_output_txt: str</em>, <em class="sig-param">display_data: Dict[str</em>, <em class="sig-param">simulariumio.data_objects.display_data.DisplayData] = None</em>, <em class="sig-param">time_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">spatial_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/smoldyn/smoldyn_data.html#SmoldynData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.smoldyn.smoldyn_data.</code><code class="sig-name descname">SmoldynData</code><span class="sig-paren">(</span><em class="sig-param">path_to_output_txt: str</em>, <em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData = None</em>, <em class="sig-param">display_data: Dict[str</em>, <em class="sig-param">simulariumio.data_objects.display_data.DisplayData] = None</em>, <em class="sig-param">time_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">spatial_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/smoldyn/smoldyn_data.html#SmoldynData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 from Smoldyn (<a class="reference external" href="http://www.smoldyn.org">http://www.smoldyn.org</a>) and plot data</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
-<li><p><strong>meta_data</strong> (<em>MetaData</em>) – An object containing metadata for the trajectory
-including box size, scale factor, and camera defaults</p></li>
 <li><p><strong>path_to_output_txt</strong> (<em>str</em>) – A string path to the output txt file
 Generate by adding to your config.txt file:</p>
 <blockquote>
@@ -153,6 +151,8 @@ Generate by adding to your config.txt file:</p>
 <cite>cmd n 1 listmols output.txt</cite></p>
 </div></blockquote>
 </li>
+<li><p><strong>meta_data</strong> (<em>MetaData (optional)</em>) – An object containing metadata for the trajectory
+including box size, scale factor, and camera defaults</p></li>
 <li><p><strong>display_data</strong> (<em>Dict[str, DisplayData] (optional)</em>) – The particle type name from Smoldyn data mapped
 to display names and rendering info for that type,
 Default: for names, use Smoldyn name,</p>

@@ -109,7 +109,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">CameraData</span><span class="p">,</span> <span class="n">DisplayData</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">DisplayData</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -121,22 +121,20 @@
 <div class="viewcode-block" id="McellData"><a class="viewcode-back" href="../../../simulariumio.mcell.html#simulariumio.mcell.mcell_data.McellData">[docs]</a><span class="k">class</span> <span class="nc">McellData</span><span class="p">:</span>
     <span class="n">path_to_data_model_json</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">path_to_binary_files</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
     <span class="n">nth_timestep_to_read</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span>
     <span class="n">surface_mol_rotation_angle</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">camera_defaults</span><span class="p">:</span> <span class="n">CameraData</span>
-    <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">path_to_data_model_json</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">path_to_binary_files</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">nth_timestep_to_read</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">surface_mol_rotation_angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">camera_defaults</span><span class="p">:</span> <span class="n">CameraData</span> <span class="o">=</span> <span class="n">CameraData</span><span class="p">(),</span>
-        <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -152,6 +150,9 @@
 <span class="sd">        path_to_binary_files : str</span>
 <span class="sd">            A string path to the directory containing</span>
 <span class="sd">            visualization .dat binary files</span>
+<span class="sd">        meta_data : MetaData (optional)</span>
+<span class="sd">            An object containing metadata for the trajectory</span>
+<span class="sd">            including box size, scale factor, and camera defaults</span>
 <span class="sd">        nth_timestep_to_read: int (optional)</span>
 <span class="sd">            Visualize every Nth timestep</span>
 <span class="sd">            e.g. if 10, only every 10th timestep will be visualized</span>
@@ -167,25 +168,16 @@
 <span class="sd">            The angle to use to calculate rotations</span>
 <span class="sd">            around surface molecules&#39; normals</span>
 <span class="sd">            Default: use random angles</span>
-<span class="sd">        camera_defaults : CameraData (optional)</span>
-<span class="sd">            camera&#39;s initial settings</span>
-<span class="sd">            which it also returns to when reset</span>
-<span class="sd">            Default: CameraData()</span>
-<span class="sd">        scale_factor : float (optional)</span>
-<span class="sd">            A multiplier for the scene, use if</span>
-<span class="sd">            visualization is too large or small</span>
-<span class="sd">            Default: 1.0</span>
 <span class="sd">        plots : List[Dict[str, Any]] (optional)</span>
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_to_data_model_json</span> <span class="o">=</span> <span class="n">path_to_data_model_json</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_to_binary_files</span> <span class="o">=</span> <span class="n">path_to_binary_files</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span> <span class="k">if</span> <span class="n">meta_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">MetaData</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nth_timestep_to_read</span> <span class="o">=</span> <span class="n">nth_timestep_to_read</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">display_data</span> <span class="k">if</span> <span class="n">display_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">surface_mol_rotation_angle</span> <span class="o">=</span> <span class="n">surface_mol_rotation_angle</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">camera_defaults</span> <span class="o">=</span> <span class="n">camera_defaults</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">=</span> <span class="n">scale_factor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span> <span class="k">if</span> <span class="n">plots</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span></div>
 </pre></div>
 

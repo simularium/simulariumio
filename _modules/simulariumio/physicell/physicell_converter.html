@@ -115,7 +115,7 @@
 <span class="kn">from</span> <span class="nn">.dep.pyMCDS</span> <span class="kn">import</span> <span class="n">pyMCDS</span>
 
 <span class="kn">from</span> <span class="nn">..trajectory_converter</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span>
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">,</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">UnitData</span>
 <span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">MissingDataError</span>
 <span class="kn">from</span> <span class="nn">.physicell_data</span> <span class="kn">import</span> <span class="n">PhysicellData</span>
 
@@ -303,12 +303,9 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">type_name</span> <span class="o">+=</span> <span class="n">PhysicellConverter</span><span class="o">.</span><span class="n">_get_default_phase_name</span><span class="p">(</span><span class="n">phase_id</span><span class="p">)</span>
                 <span class="n">agent_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_data</span>
+        <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">_set_box_size</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">TrajectoryData</span><span class="p">(</span>
-            <span class="n">meta_data</span><span class="o">=</span><span class="n">MetaData</span><span class="p">(</span>
-                <span class="n">box_size</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span>
-                <span class="o">*</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">box_size</span><span class="p">,</span>
-                <span class="n">camera_defaults</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">camera_defaults</span><span class="p">,</span>
-            <span class="p">),</span>
+            <span class="n">meta_data</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="p">,</span>
             <span class="n">agent_data</span><span class="o">=</span><span class="n">agent_data</span><span class="p">,</span>
             <span class="n">time_units</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">time_units</span><span class="p">,</span>
             <span class="n">spatial_units</span><span class="o">=</span><span class="n">spatial_units</span><span class="p">,</span>

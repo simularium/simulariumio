@@ -149,7 +149,7 @@ PhysiCell simulation trajectory outputs and plot data</p>
 <span id="simulariumio-physicell-physicell-data-module"></span><h2>simulariumio.physicell.physicell_data module<a class="headerlink" href="#module-simulariumio.physicell.physicell_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.physicell.physicell_data.PhysicellData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.physicell.physicell_data.</code><code class="sig-name descname">PhysicellData</code><span class="sig-paren">(</span><em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData</em>, <em class="sig-param">timestep: float</em>, <em class="sig-param">path_to_output_dir: str</em>, <em class="sig-param">display_data: Dict[int</em>, <em class="sig-param">simulariumio.data_objects.display_data.DisplayData] = None</em>, <em class="sig-param">phase_names: Dict[int</em>, <em class="sig-param">Dict[int</em>, <em class="sig-param">str]] = None</em>, <em class="sig-param">time_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/physicell/physicell_data.html#PhysicellData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.physicell.physicell_data.PhysicellData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.physicell.physicell_data.</code><code class="sig-name descname">PhysicellData</code><span class="sig-paren">(</span><em class="sig-param">timestep: float</em>, <em class="sig-param">path_to_output_dir: str</em>, <em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData = None</em>, <em class="sig-param">display_data: Dict[int</em>, <em class="sig-param">simulariumio.data_objects.display_data.DisplayData] = None</em>, <em class="sig-param">phase_names: Dict[int</em>, <em class="sig-param">Dict[int</em>, <em class="sig-param">str]] = None</em>, <em class="sig-param">time_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/physicell/physicell_data.html#PhysicellData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.physicell.physicell_data.PhysicellData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 from PhysiCell (<a class="reference external" href="http://physicell.org/">http://physicell.org/</a>)
@@ -157,11 +157,11 @@ and plot data</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
-<li><p><strong>meta_data</strong> (<em>MetaData</em>) – An object containing metadata for the trajectory
-including box size, scale factor, and camera defaults</p></li>
 <li><p><strong>timestep</strong> (<em>float</em>) – A float amount of time that passes each step</p></li>
 <li><p><strong>path_to_output_dir</strong> (<em>string</em>) – A string path to the PhysiCell output directory
 containing MultiCellDS XML and MATLAB files</p></li>
+<li><p><strong>meta_data</strong> (<em>MetaData (optional)</em>) – An object containing metadata for the trajectory
+including box size, scale factor, and camera defaults</p></li>
 <li><p><strong>display_data</strong> (<em>Dict[int, DisplayData] (optional)</em>) – The cell type ID from PhysiCell data mapped
 to DisplayData, including names and display info
 to use for rendering that agent type in the Simularium Viewer

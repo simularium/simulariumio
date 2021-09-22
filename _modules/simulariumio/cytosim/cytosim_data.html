@@ -120,15 +120,15 @@
 
 
 <div class="viewcode-block" id="CytosimData"><a class="viewcode-back" href="../../../simulariumio.cytosim.html#simulariumio.cytosim.cytosim_data.CytosimData">[docs]</a><span class="k">class</span> <span class="nc">CytosimData</span><span class="p">:</span>
-    <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
     <span class="n">object_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CytosimObjectInfo</span><span class="p">]</span>
+    <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
     <span class="n">draw_fiber_points</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span><span class="p">,</span>
         <span class="n">object_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CytosimObjectInfo</span><span class="p">],</span>
+        <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">draw_fiber_points</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
@@ -139,14 +139,14 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        meta_data : MetaData</span>
-<span class="sd">            An object containing metadata for the trajectory</span>
-<span class="sd">            including box size, scale factor, and camera defaults</span>
 <span class="sd">        object_info : Dict[str, CytosimObjectInfo]</span>
 <span class="sd">            A dict mapping Cytosim object type</span>
 <span class="sd">            (either &quot;fibers&quot;, &quot;solids&quot;, &quot;singles&quot;, or &quot;couples&quot;)</span>
 <span class="sd">            to info for reading and rendering the Cytosim data</span>
 <span class="sd">            for agents of that object type</span>
+<span class="sd">        meta_data : MetaData</span>
+<span class="sd">            An object containing metadata for the trajectory</span>
+<span class="sd">            including box size, scale factor, and camera defaults</span>
 <span class="sd">        draw_fiber_points : bool (optional)</span>
 <span class="sd">            (only used for fibers)</span>
 <span class="sd">            in addition to drawing a line for each fiber,</span>
@@ -156,8 +156,8 @@
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">object_info</span> <span class="o">=</span> <span class="n">object_info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span> <span class="k">if</span> <span class="n">meta_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">MetaData</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_fiber_points</span> <span class="o">=</span> <span class="n">draw_fiber_points</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span> <span class="k">if</span> <span class="n">plots</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span></div>
 </pre></div>

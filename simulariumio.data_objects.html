@@ -175,12 +175,12 @@ with the size of the numpy arrays increased by the buffer_size_inc</p>
 
 <dl class="attribute">
 <dt id="simulariumio.data_objects.agent_data.AgentData.display_data">
-<code class="sig-name descname">display_data</code><em class="property">: Dict[str, DisplayData]</em><em class="property"> = {}</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.display_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">display_data</code><em class="property">: Dict[str, DisplayData]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.display_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="simulariumio.data_objects.agent_data.AgentData.draw_fiber_points">
-<code class="sig-name descname">draw_fiber_points</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.draw_fiber_points" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">draw_fiber_points</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.draw_fiber_points" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -396,7 +396,7 @@ Default: 0</p></li>
 <span id="simulariumio-data-objects-display-data-module"></span><h2>simulariumio.data_objects.display_data module<a class="headerlink" href="#module-simulariumio.data_objects.display_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.data_objects.display_data.DisplayData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.display_data.</code><code class="sig-name descname">DisplayData</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">radius: float = None</em>, <em class="sig-param">display_type: simulariumio.constants.DISPLAY_TYPE = &lt;DISPLAY_TYPE.NONE: None&gt;</em>, <em class="sig-param">url: str = None</em>, <em class="sig-param">color: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/display_data.html#DisplayData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.display_data.DisplayData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.display_data.</code><code class="sig-name descname">DisplayData</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">radius: float = None</em>, <em class="sig-param">display_type: simulariumio.constants.DISPLAY_TYPE = &lt;DISPLAY_TYPE.NONE: None&gt;</em>, <em class="sig-param">url: str = ''</em>, <em class="sig-param">color: str = ''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/display_data.html#DisplayData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.display_data.DisplayData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object contains info about how to display an agent</p>
 <dl class="field-list">
@@ -508,20 +508,23 @@ each mapped to a numpy ndarray of values</p></li>
 <span id="simulariumio-data-objects-meta-data-module"></span><h2>simulariumio.data_objects.meta_data module<a class="headerlink" href="#module-simulariumio.data_objects.meta_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.data_objects.meta_data.MetaData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.meta_data.</code><code class="sig-name descname">MetaData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray</em>, <em class="sig-param">camera_defaults: simulariumio.data_objects.camera_data.CameraData = &lt;simulariumio.data_objects.camera_data.CameraData object&gt;</em>, <em class="sig-param">scale_factor: float = 1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/meta_data.html#MetaData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.meta_data.</code><code class="sig-name descname">MetaData</code><span class="sig-paren">(</span><em class="sig-param">box_size: numpy.ndarray = None</em>, <em class="sig-param">camera_defaults: simulariumio.data_objects.camera_data.CameraData = None</em>, <em class="sig-param">scale_factor: float = 1.0</em>, <em class="sig-param">trajectory_title: str = ''</em>, <em class="sig-param">model_meta_data: simulariumio.data_objects.model_meta_data.ModelMetaData = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/meta_data.html#MetaData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds metadata for simulation trajectories</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3])</em>) – A numpy ndarray containing the XYZ dimensions
-of the simulation bounding volume</p></li>
+<li><p><strong>box_size</strong> (<em>np.ndarray (shape = [3]) (optional)</em>) – A numpy ndarray containing the XYZ dimensions
+of the simulation bounding volume
+Default: np.array([100, 100, 100])</p></li>
 <li><p><strong>camera_defaults</strong> (<em>CameraData (optional)</em>) – camera’s initial settings
 which it also returns to when reset
 Default: CameraData()</p></li>
 <li><p><strong>scale_factor</strong> (<em>float (optional)</em>) – A multiplier for the scene, use if
 visualization is too large or small
 Default: 1.0</p></li>
+<li><p><strong>trajectory_title</strong> (<em>str (optional)</em>) – A title for this run of the model</p></li>
+<li><p><strong>model_meta_data</strong> (<em>ModelMetaData (optional)</em>) – Metadata for the model that produced this trajectory</p></li>
 </ul>
 </dd>
 </dl>
@@ -538,11 +541,108 @@ Default: 1.0</p></li>
 <dl class="method">
 <dt id="simulariumio.data_objects.meta_data.MetaData.from_buffer_data">
 <em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><em class="sig-param">buffer_data: Dict[str, Any]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/meta_data.html#MetaData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create MetaData from a simularium JSON dict containing buffers</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.meta_data.MetaData.model_meta_data">
+<code class="sig-name descname">model_meta_data</code><em class="property">: ModelMetaData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.model_meta_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="simulariumio.data_objects.meta_data.MetaData.scale_factor">
 <code class="sig-name descname">scale_factor</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.scale_factor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.meta_data.MetaData.trajectory_title">
+<code class="sig-name descname">trajectory_title</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.trajectory_title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulariumio.data_objects.model_meta_data">
+<span id="simulariumio-data-objects-model-meta-data-module"></span><h2>simulariumio.data_objects.model_meta_data module<a class="headerlink" href="#module-simulariumio.data_objects.model_meta_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.model_meta_data.</code><code class="sig-name descname">ModelMetaData</code><span class="sig-paren">(</span><em class="sig-param">title: str = ''</em>, <em class="sig-param">version: str = ''</em>, <em class="sig-param">authors: str = ''</em>, <em class="sig-param">description: str = ''</em>, <em class="sig-param">doi: str = ''</em>, <em class="sig-param">source_code_url: str = ''</em>, <em class="sig-param">source_code_license_url: str = ''</em>, <em class="sig-param">input_data_url: str = ''</em>, <em class="sig-param">raw_output_data_url: str = ''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/model_meta_data.html#ModelMetaData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object holds metadata for a model that generates simulation trajectories
+:Parameters: * <strong>title</strong> (<em>str (optional)</em>) – Display title for this model</p>
+<blockquote>
+<div><ul>
+<li><p><strong>version</strong> (<em>float (optional)</em>) – Version number of the model that produced this trajectory</p></li>
+<li><p><strong>authors</strong> (<em>str (optional)</em>) – Modelers name(s)</p></li>
+<li><p><strong>description</strong> (<em>str (optional)</em>) – Comments to display with the trajectories generated by this model</p></li>
+<li><p><strong>doi</strong> (<em>str (optional)</em>) – The DOI of the publication accompanying this model
+Note: if the URL for a DOI is provided,</p>
+<blockquote>
+<div><p>the ID from the URL will be used</p>
+</div></blockquote>
+</li>
+<li><p><strong>source_code_url</strong> (<em>str (optional)</em>) – If the code that generated this model is posted publicly,
+a link to the repository of source code</p></li>
+<li><p><strong>source_code_license_url</strong> (<em>str (optional)</em>) – A link to the license for the source code</p></li>
+<li><p><strong>input_data_url</strong> (<em>str (optional)</em>) – A link to any model configuration or parameter files posted publicly</p></li>
+<li><p><strong>raw_output_data_url</strong> (<em>str (optional)</em>) – A link to any raw outputs from the source code posted publicly</p></li>
+</ul>
+</div></blockquote>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.authors">
+<code class="sig-name descname">authors</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.authors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.description">
+<code class="sig-name descname">description</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.doi">
+<code class="sig-name descname">doi</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.doi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.from_buffer_data">
+<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><em class="sig-param">buffer_data: Dict[str, Any]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/model_meta_data.html#ModelMetaData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create ModelMetaData from a simularium JSON dict containing buffers</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.input_data_url">
+<code class="sig-name descname">input_data_url</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.input_data_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.is_default">
+<code class="sig-name descname">is_default</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/model_meta_data.html#ModelMetaData.is_default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.is_default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if this ModelMetaData is only holding default data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.raw_output_data_url">
+<code class="sig-name descname">raw_output_data_url</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.raw_output_data_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.source_code_license_url">
+<code class="sig-name descname">source_code_license_url</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.source_code_license_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.source_code_url">
+<code class="sig-name descname">source_code_url</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.source_code_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.title">
+<code class="sig-name descname">title</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.version">
+<code class="sig-name descname">version</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.version" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

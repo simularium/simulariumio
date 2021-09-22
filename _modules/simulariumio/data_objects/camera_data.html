@@ -164,55 +164,36 @@
 <div class="viewcode-block" id="CameraData.from_buffer_data"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.camera_data.CameraData.from_buffer_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_buffer_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">buffer_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">camera_default</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;cameraDefault&quot;</span> <span class="ow">in</span> <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">camera_default</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="nb">float</span><span class="p">(</span>
-                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
-                    <span class="p">),</span>
-                    <span class="nb">float</span><span class="p">(</span>
-                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
-                    <span class="p">),</span>
-                    <span class="nb">float</span><span class="p">(</span>
-                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
-                    <span class="p">),</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">camera_default</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]),</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">camera_default</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]),</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">camera_default</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;z&quot;</span><span class="p">]),</span>
                 <span class="p">]</span>
             <span class="p">),</span>
             <span class="n">look_at_position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="nb">float</span><span class="p">(</span>
-                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span>
-                            <span class="s2">&quot;lookAtPosition&quot;</span>
-                        <span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
-                    <span class="p">),</span>
-                    <span class="nb">float</span><span class="p">(</span>
-                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span>
-                            <span class="s2">&quot;lookAtPosition&quot;</span>
-                        <span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
-                    <span class="p">),</span>
-                    <span class="nb">float</span><span class="p">(</span>
-                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span>
-                            <span class="s2">&quot;lookAtPosition&quot;</span>
-                        <span class="p">][</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
-                    <span class="p">),</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">camera_default</span><span class="p">[</span><span class="s2">&quot;lookAtPosition&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]),</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">camera_default</span><span class="p">[</span><span class="s2">&quot;lookAtPosition&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]),</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">camera_default</span><span class="p">[</span><span class="s2">&quot;lookAtPosition&quot;</span><span class="p">][</span><span class="s2">&quot;z&quot;</span><span class="p">]),</span>
                 <span class="p">]</span>
             <span class="p">),</span>
             <span class="n">up_vector</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="nb">float</span><span class="p">(</span>
-                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;upVector&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
-                    <span class="p">),</span>
-                    <span class="nb">float</span><span class="p">(</span>
-                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;upVector&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
-                    <span class="p">),</span>
-                    <span class="nb">float</span><span class="p">(</span>
-                        <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;upVector&quot;</span><span class="p">][</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
-                    <span class="p">),</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">camera_default</span><span class="p">[</span><span class="s2">&quot;upVector&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]),</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">camera_default</span><span class="p">[</span><span class="s2">&quot;upVector&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]),</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">camera_default</span><span class="p">[</span><span class="s2">&quot;upVector&quot;</span><span class="p">][</span><span class="s2">&quot;z&quot;</span><span class="p">]),</span>
                 <span class="p">]</span>
             <span class="p">),</span>
-            <span class="n">fov_degrees</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span>
-                <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;cameraDefault&quot;</span><span class="p">][</span><span class="s2">&quot;fovDegrees&quot;</span><span class="p">]</span>
-            <span class="p">),</span>
+            <span class="n">fov_degrees</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">camera_default</span><span class="p">[</span><span class="s2">&quot;fovDegrees&quot;</span><span class="p">]),</span>
         <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>

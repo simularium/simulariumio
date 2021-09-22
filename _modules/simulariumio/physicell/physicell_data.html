@@ -119,19 +119,19 @@
 
 
 <div class="viewcode-block" id="PhysicellData"><a class="viewcode-back" href="../../../simulariumio.physicell.html#simulariumio.physicell.physicell_data.PhysicellData">[docs]</a><span class="k">class</span> <span class="nc">PhysicellData</span><span class="p">:</span>
-    <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
     <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span>
     <span class="n">path_to_output_dir</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
     <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span>
     <span class="n">phase_names</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
+    <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span>
     <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span><span class="p">,</span>
         <span class="n">timestep</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">path_to_output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">phase_names</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -144,14 +144,14 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        meta_data : MetaData</span>
-<span class="sd">            An object containing metadata for the trajectory</span>
-<span class="sd">            including box size, scale factor, and camera defaults</span>
 <span class="sd">        timestep : float</span>
 <span class="sd">            A float amount of time that passes each step</span>
 <span class="sd">        path_to_output_dir : string</span>
 <span class="sd">            A string path to the PhysiCell output directory</span>
 <span class="sd">            containing MultiCellDS XML and MATLAB files</span>
+<span class="sd">        meta_data : MetaData (optional)</span>
+<span class="sd">            An object containing metadata for the trajectory</span>
+<span class="sd">            including box size, scale factor, and camera defaults</span>
 <span class="sd">        display_data : Dict[int, DisplayData] (optional)</span>
 <span class="sd">            The cell type ID from PhysiCell data mapped</span>
 <span class="sd">            to DisplayData, including names and display info</span>
@@ -170,9 +170,9 @@
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">=</span> <span class="n">timestep</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_to_output_dir</span> <span class="o">=</span> <span class="n">path_to_output_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span> <span class="k">if</span> <span class="n">meta_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">MetaData</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">display_data</span> <span class="k">if</span> <span class="n">display_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phase_names</span> <span class="o">=</span> <span class="n">phase_names</span> <span class="k">if</span> <span class="n">phase_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span> <span class="k">if</span> <span class="n">time_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>

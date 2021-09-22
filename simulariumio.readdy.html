@@ -136,7 +136,7 @@ ReaDDy simulation trajectory outputs and plot data</p>
 <span id="simulariumio-readdy-readdy-data-module"></span><h2>simulariumio.readdy.readdy_data module<a class="headerlink" href="#module-simulariumio.readdy.readdy_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.readdy.readdy_data.ReaddyData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.readdy.readdy_data.</code><code class="sig-name descname">ReaddyData</code><span class="sig-paren">(</span><em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData</em>, <em class="sig-param">timestep: float</em>, <em class="sig-param">path_to_readdy_h5: str</em>, <em class="sig-param">display_data: Dict[str</em>, <em class="sig-param">simulariumio.data_objects.display_data.DisplayData] = None</em>, <em class="sig-param">ignore_types: List[str] = None</em>, <em class="sig-param">time_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">spatial_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/readdy/readdy_data.html#ReaddyData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.readdy.readdy_data.ReaddyData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.readdy.readdy_data.</code><code class="sig-name descname">ReaddyData</code><span class="sig-paren">(</span><em class="sig-param">timestep: float</em>, <em class="sig-param">path_to_readdy_h5: str</em>, <em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData = None</em>, <em class="sig-param">display_data: Dict[str</em>, <em class="sig-param">simulariumio.data_objects.display_data.DisplayData] = None</em>, <em class="sig-param">ignore_types: List[str] = None</em>, <em class="sig-param">time_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">spatial_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/readdy/readdy_data.html#ReaddyData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.readdy.readdy_data.ReaddyData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 from ReaDDy (<a class="reference external" href="https://readdy.github.io/">https://readdy.github.io/</a>)
@@ -144,11 +144,11 @@ and plot data</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
-<li><p><strong>meta_data</strong> (<em>MetaData</em>) – An object containing metadata for the trajectory
-including box size, scale factor, and camera defaults</p></li>
 <li><p><strong>timestep</strong> (<em>float</em>) – A float amount of time in seconds that passes each step
 Default: 0.0</p></li>
 <li><p><strong>path_to_readdy_h5</strong> (<em>str</em>) – A string path to the ReaDDy trajectory file (.h5)</p></li>
+<li><p><strong>meta_data</strong> (<em>MetaData (optional)</em>) – An object containing metadata for the trajectory
+including box size, scale factor, and camera defaults</p></li>
 <li><p><strong>display_data</strong> (<em>Dict[str, DisplayData] (optional)</em>) – The particle type name from ReaDDy data mapped
 to display names and rendering info for that type,
 Default: for names, use ReaDDy name,</p>

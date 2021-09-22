@@ -119,8 +119,8 @@
 
 
 <div class="viewcode-block" id="SmoldynData"><a class="viewcode-back" href="../../../simulariumio.smoldyn.html#simulariumio.smoldyn.smoldyn_data.SmoldynData">[docs]</a><span class="k">class</span> <span class="nc">SmoldynData</span><span class="p">:</span>
-    <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
     <span class="n">path_to_output_txt</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
     <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span>
     <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span>
     <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span>
@@ -128,8 +128,8 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span><span class="p">,</span>
         <span class="n">path_to_output_txt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -141,15 +141,15 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        meta_data : MetaData</span>
-<span class="sd">            An object containing metadata for the trajectory</span>
-<span class="sd">            including box size, scale factor, and camera defaults</span>
 <span class="sd">        path_to_output_txt : str</span>
 <span class="sd">            A string path to the output txt file</span>
 <span class="sd">            Generate by adding to your config.txt file:</span>
 <span class="sd">                `output_files output.txt</span>
 <span class="sd">                `cmd n 1 executiontime output.txt`</span>
 <span class="sd">                `cmd n 1 listmols output.txt`</span>
+<span class="sd">        meta_data : MetaData (optional)</span>
+<span class="sd">            An object containing metadata for the trajectory</span>
+<span class="sd">            including box size, scale factor, and camera defaults</span>
 <span class="sd">        display_data: Dict[str, DisplayData] (optional)</span>
 <span class="sd">            The particle type name from Smoldyn data mapped</span>
 <span class="sd">            to display names and rendering info for that type,</span>
@@ -167,8 +167,8 @@
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_to_output_txt</span> <span class="o">=</span> <span class="n">path_to_output_txt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span> <span class="k">if</span> <span class="n">meta_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">MetaData</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">display_data</span> <span class="k">if</span> <span class="n">display_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span> <span class="k">if</span> <span class="n">time_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spatial_units</span> <span class="o">=</span> <span class="p">(</span>
