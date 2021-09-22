@@ -3,8 +3,10 @@
 
 import pytest
 
+import numpy as np
+
 from simulariumio.mcell import McellConverter, McellData
-from simulariumio import DisplayData
+from simulariumio import DisplayData, MetaData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
@@ -22,6 +24,7 @@ from simulariumio.constants import (
                 "organelle_model_viz_output/Scene.data_model.00.json",
                 path_to_binary_files="simulariumio/tests/data/mcell/"
                 "organelle_model_viz_output",
+                meta_data=MetaData(box_size=np.array([50.0, 50.0, 50.0])),
                 display_data={
                     "a": DisplayData(
                         name="Kinesin",
@@ -50,7 +53,7 @@ from simulariumio.constants import (
                         "magnitude": 1.0,
                         "name": "µm",
                     },
-                    "size": {"x": 1.28, "y": 1.28, "z": 1.28},
+                    "size": {"x": 50.0, "y": 50.0, "z": 50.0},
                     "cameraDefault": {
                         "position": {
                             "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],

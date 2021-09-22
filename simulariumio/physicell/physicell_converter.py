@@ -10,7 +10,7 @@ import numpy as np
 from .dep.pyMCDS import pyMCDS
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData
+from ..data_objects import TrajectoryData, AgentData, UnitData
 from ..exceptions import MissingDataError
 from .physicell_data import PhysicellData
 
@@ -198,12 +198,9 @@ class PhysicellConverter(TrajectoryConverter):
                 else:
                     type_name += PhysicellConverter._get_default_phase_name(phase_id)
                 agent_data.display_data[type_name] = display_data
+        input_data.meta_data._set_box_size()
         return TrajectoryData(
-            meta_data=MetaData(
-                box_size=input_data.meta_data.scale_factor
-                * input_data.meta_data.box_size,
-                camera_defaults=input_data.meta_data.camera_defaults,
-            ),
+            meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=input_data.time_units,
             spatial_units=spatial_units,

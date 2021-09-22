@@ -10,7 +10,6 @@ from ..data_objects import (
     TrajectoryData,
     AgentData,
     UnitData,
-    MetaData,
     DimensionData,
 )
 from ..constants import VIZ_TYPE, DISPLAY_TYPE
@@ -237,8 +236,6 @@ class MedyanConverter(TrajectoryConverter):
         """
         print("Reading MEDYAN Data -------------")
         agent_data = MedyanConverter._get_trajectory_data(input_data)
-        time_units = UnitData("s")
-        spatial_units = UnitData("nm", 1.0 / input_data.meta_data.scale_factor)
         # get display data (geometry and color)
         for object_type in input_data.display_data:
             for tid in input_data.display_data[object_type]:
@@ -253,14 +250,11 @@ class MedyanConverter(TrajectoryConverter):
                         f"{display_data.display_type.value} was changed to FIBER"
                     )
                 agent_data.display_data[display_data.name] = display_data
+        input_data.meta_data._set_box_size()
         return TrajectoryData(
-            meta_data=MetaData(
-                box_size=input_data.meta_data.scale_factor
-                * input_data.meta_data.box_size,
-                camera_defaults=input_data.meta_data.camera_defaults,
-            ),
+            meta_data=input_data.meta_data,
             agent_data=agent_data,
-            time_units=time_units,
-            spatial_units=spatial_units,
+            time_units=UnitData("s"),
+            spatial_units=UnitData("nm", 1.0 / input_data.meta_data.scale_factor),
             plots=input_data.plots,
         )

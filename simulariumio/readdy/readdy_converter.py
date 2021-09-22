@@ -8,7 +8,7 @@ import numpy as np
 import readdy
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, MetaData, DimensionData
+from ..data_objects import TrajectoryData, AgentData, DimensionData
 from ..constants import VIZ_TYPE
 from .readdy_data import ReaddyData
 
@@ -116,12 +116,9 @@ class ReaddyConverter(TrajectoryConverter):
             display_data = input_data.display_data[tid]
             agent_data.display_data[display_data.name] = display_data
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
+        input_data.meta_data._set_box_size()
         return TrajectoryData(
-            meta_data=MetaData(
-                box_size=input_data.meta_data.scale_factor
-                * input_data.meta_data.box_size,
-                camera_defaults=input_data.meta_data.camera_defaults,
-            ),
+            meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=input_data.time_units,
             spatial_units=input_data.spatial_units,

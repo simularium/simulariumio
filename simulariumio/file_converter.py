@@ -7,7 +7,7 @@ from typing import Any, Dict
 
 from .trajectory_converter import TrajectoryConverter
 from .data_objects import TrajectoryData, UnitData
-from .constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
+from .constants import CURRENT_VERSION
 
 ###############################################################################
 
@@ -58,25 +58,6 @@ class FileConverter(TrajectoryConverter):
         data["trajectoryInfo"]["timeUnits"] = {
             "magnitude": time_units.magnitude,
             "name": time_units.name,
-        }
-        # default camera transform
-        data["trajectoryInfo"]["cameraDefault"] = {
-            "position": {
-                "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
-                "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
-                "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
-            },
-            "lookAtPosition": {
-                "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
-                "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
-                "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
-            },
-            "upVector": {
-                "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
-                "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
-                "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
-            },
-            "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
         }
         data["trajectoryInfo"]["version"] = 2
         return data

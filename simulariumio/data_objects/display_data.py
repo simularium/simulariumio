@@ -25,8 +25,8 @@ class DisplayData:
         name: str,
         radius: float = None,
         display_type: DISPLAY_TYPE = DISPLAY_TYPE.NONE,
-        url: str = None,
-        color: str = None,
+        url: str = "",
+        color: str = "",
     ):
         """
         This object contains info about how to display an agent
@@ -68,9 +68,7 @@ class DisplayData:
             )
         self.display_type = display_type
         self.url = url
-        if color is not None and (
-            (len(color) != 4 and len(color) != 7) or color[0] != "#"
-        ):
+        if color and ((len(color) != 4 and len(color) != 7) or color[0] != "#"):
             raise DataError(f"{color} should be provided as '#xxxxxx' or '#xxx'")
         self.color = color
 

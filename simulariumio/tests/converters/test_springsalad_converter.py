@@ -4,7 +4,7 @@
 import pytest
 
 from simulariumio.springsalad import SpringsaladConverter, SpringsaladData
-from simulariumio import DisplayData
+from simulariumio import DisplayData, MetaData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
@@ -22,6 +22,9 @@ from simulariumio.constants import (
                     "simulariumio/tests/data/springsalad/"
                     "Simulation0_SIM_VIEW_Run0.txt"
                 ),
+                meta_data=MetaData(
+                    scale_factor=0.1,
+                ),
                 display_data={
                     "GREEN": DisplayData(
                         name="A",
@@ -35,7 +38,6 @@ from simulariumio.constants import (
                         color="#0080ff",
                     ),
                 },
-                scale_factor=0.1,
             ),
             {
                 "trajectoryInfo": {

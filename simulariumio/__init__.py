@@ -21,6 +21,7 @@ from .data_objects import (  # noqa: F401
     AgentData,
     UnitData,
     MetaData,
+    ModelMetaData,
     CameraData,
     DimensionData,
     DisplayData,

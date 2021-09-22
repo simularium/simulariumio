@@ -12,7 +12,7 @@ import scipy.linalg as linalg
 from scipy.spatial.transform import Rotation
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, MetaData, UnitData, DimensionData
+from ..data_objects import TrajectoryData, AgentData, UnitData, DimensionData
 from .mcell_data import McellData
 
 ###############################################################################
@@ -221,7 +221,7 @@ class McellConverter(TrajectoryConverter):
                     n_mols = int(n_data / 3.0)
                     positions = array.array("f")
                     positions.fromfile(mol_file, n_data)
-                    positions = input_data.scale_factor * np.array(positions)
+                    positions = input_data.meta_data.scale_factor * np.array(positions)
                     positions = positions.reshape(n_mols, 3)
                     if is_surface_mol:
                         normals = array.array("f")
@@ -247,7 +247,7 @@ class McellConverter(TrajectoryConverter):
                         time_index, total_mols : total_mols + n_mols, :
                     ] = positions
                     result.radii[time_index, total_mols : total_mols + n_mols] = (
-                        input_data.scale_factor
+                        input_data.meta_data.scale_factor
                         * BLENDER_GEOMETRY_SCALE_FACTOR
                         * (
                             input_data.display_data[type_name].radius
@@ -336,13 +336,11 @@ class McellConverter(TrajectoryConverter):
         for type_name in input_data.display_data:
             display_data = input_data.display_data[type_name]
             agent_data.display_data[display_data.name] = display_data
+        input_data.meta_data._set_box_size(box_size)
         return TrajectoryData(
-            meta_data=MetaData(
-                box_size=input_data.scale_factor * box_size,
-                camera_defaults=input_data.camera_defaults,
-            ),
+            meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=time_units,
-            spatial_units=UnitData("µm", 1.0 / input_data.scale_factor),
+            spatial_units=UnitData("µm", 1.0 / input_data.meta_data.scale_factor),
             plots=input_data.plots,
         )

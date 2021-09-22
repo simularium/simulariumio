@@ -68,3 +68,6 @@ class CURRENT_VERSION:
     TRAJECTORY_INFO: int = 3
     SPATIAL_DATA: int = 1
     PLOT_DATA: int = 1
+
+
+DEFAULT_BOX_SIZE = 100.0 * np.ones(3)

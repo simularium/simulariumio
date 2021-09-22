@@ -52,6 +52,14 @@ simulariumio.data\_objects.meta\_data module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.data\_objects.model\_meta\_data module
+---------------------------------------------------
+
+.. automodule:: simulariumio.data_objects.model_meta_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.data\_objects.scatter\_plot\_data module
 -----------------------------------------------------
 

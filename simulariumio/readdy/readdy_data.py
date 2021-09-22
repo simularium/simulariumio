@@ -14,9 +14,9 @@ log = logging.getLogger(__name__)
 
 
 class ReaddyData:
-    meta_data: MetaData
     timestep: float
     path_to_readdy_h5: str
+    meta_data: MetaData
     display_data: Dict[str, DisplayData]
     ignore_types: List[str]
     time_units: UnitData
@@ -25,9 +25,9 @@ class ReaddyData:
 
     def __init__(
         self,
-        meta_data: MetaData,
         timestep: float,
         path_to_readdy_h5: str,
+        meta_data: MetaData = None,
         display_data: Dict[str, DisplayData] = None,
         ignore_types: List[str] = None,
         time_units: UnitData = None,
@@ -41,14 +41,14 @@ class ReaddyData:
 
         Parameters
         ----------
-        meta_data : MetaData
-            An object containing metadata for the trajectory
-            including box size, scale factor, and camera defaults
         timestep : float
             A float amount of time in seconds that passes each step
             Default: 0.0
         path_to_readdy_h5 : str
             A string path to the ReaDDy trajectory file (.h5)
+        meta_data : MetaData (optional)
+            An object containing metadata for the trajectory
+            including box size, scale factor, and camera defaults
         display_data : Dict[str, DisplayData] (optional)
             The particle type name from ReaDDy data mapped
             to display names and rendering info for that type,
@@ -68,11 +68,11 @@ class ReaddyData:
             An object containing plot data already
             in Simularium format
         """
-        self.meta_data = meta_data
         self.timestep = timestep
         self.path_to_readdy_h5 = path_to_readdy_h5
+        self.meta_data = meta_data if meta_data is not None else MetaData()
         self.display_data = display_data if display_data is not None else {}
-        self.ignore_types = ignore_types
+        self.ignore_types = ignore_types if ignore_types is not None else []
         self.time_units = time_units if time_units is not None else UnitData("s")
         self.spatial_units = spatial_units if time_units is not None else UnitData("m")
         self.plots = plots if plots is not None else []

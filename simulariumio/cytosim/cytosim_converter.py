@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData, MetaData, DimensionData
+from ..data_objects import TrajectoryData, AgentData, UnitData, DimensionData
 from ..constants import VIZ_TYPE, DISPLAY_TYPE
 from .cytosim_data import CytosimData
 from .cytosim_object_info import CytosimObjectInfo
@@ -270,12 +270,9 @@ class CytosimConverter(TrajectoryConverter):
                     )
                 agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
+        input_data.meta_data._set_box_size()
         return TrajectoryData(
-            meta_data=MetaData(
-                box_size=input_data.meta_data.scale_factor
-                * input_data.meta_data.box_size,
-                camera_defaults=input_data.meta_data.camera_defaults,
-            ),
+            meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=UnitData("s"),
             spatial_units=UnitData("µm", 1.0 / input_data.meta_data.scale_factor),
