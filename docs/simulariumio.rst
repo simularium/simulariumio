@@ -16,6 +16,7 @@ Subpackages
    simulariumio.readdy
    simulariumio.smoldyn
    simulariumio.springsalad
+   simulariumio.writers
 
 Submodules
 ----------

@@ -154,7 +154,6 @@ class TrajectoryConverter:
         """
         JsonWriter.save_plot_data(self._data.plots, output_path)
 
-    @staticmethod
     def save(self, output_path: str, binary: bool = True):
         """
         Save the current simularium data in .simularium JSON format
