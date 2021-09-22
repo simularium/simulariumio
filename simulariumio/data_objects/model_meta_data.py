@@ -83,7 +83,7 @@ class ModelMetaData:
             else None
         )
         if model_info is None:
-            return None
+            return cls()
         return cls(
             title=model_info["title"] if "title" in model_info else "",
             version=model_info["version"] if "version" in model_info else "",

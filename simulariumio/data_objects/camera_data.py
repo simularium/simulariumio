@@ -59,55 +59,36 @@ class CameraData:
     @classmethod
     def from_buffer_data(cls, buffer_data: Dict[str, Any]):
         """ """
+        camera_default = (
+            buffer_data["trajectoryInfo"]["cameraDefault"]
+            if "cameraDefault" in buffer_data["trajectoryInfo"]
+            else None
+        )
+        if camera_default is None:
+            return cls()
         return cls(
             position=np.array(
                 [
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["position"]["x"]
-                    ),
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["position"]["y"]
-                    ),
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["position"]["z"]
-                    ),
+                    float(camera_default["position"]["x"]),
+                    float(camera_default["position"]["y"]),
+                    float(camera_default["position"]["z"]),
                 ]
             ),
             look_at_position=np.array(
                 [
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"][
-                            "lookAtPosition"
-                        ]["x"]
-                    ),
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"][
-                            "lookAtPosition"
-                        ]["y"]
-                    ),
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"][
-                            "lookAtPosition"
-                        ]["z"]
-                    ),
+                    float(camera_default["lookAtPosition"]["x"]),
+                    float(camera_default["lookAtPosition"]["y"]),
+                    float(camera_default["lookAtPosition"]["z"]),
                 ]
             ),
             up_vector=np.array(
                 [
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["upVector"]["x"]
-                    ),
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["upVector"]["y"]
-                    ),
-                    float(
-                        buffer_data["trajectoryInfo"]["cameraDefault"]["upVector"]["z"]
-                    ),
+                    float(camera_default["upVector"]["x"]),
+                    float(camera_default["upVector"]["y"]),
+                    float(camera_default["upVector"]["z"]),
                 ]
             ),
-            fov_degrees=float(
-                buffer_data["trajectoryInfo"]["cameraDefault"]["fovDegrees"]
-            ),
+            fov_degrees=float(camera_default["fovDegrees"]),
         )
 
     def __deepcopy__(self, memo):
