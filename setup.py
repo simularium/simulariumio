@@ -8,6 +8,10 @@ from setuptools import find_packages, setup
 with open("README.md") as readme_file:
     readme = readme_file.read()
 
+mcell_requirements = [
+    "scipy>=1.5.2",
+]
+
 physicell_requirements = [
     "scipy>=1.5.2",
 ]
@@ -24,11 +28,14 @@ test_requirements = [
     "pytest>=5.4.3",
     "pytest-cov>=2.9.0",
     "pytest-raises>=0.11",
+    *mcell_requirements,
     *physicell_requirements,
 ]
 
 tutorial_requirements = [
     "jupyter",
+    *mcell_requirements,
+    *physicell_requirements,
 ]
 
 benchmark_requirements = [
@@ -65,10 +72,12 @@ extra_requirements = {
     "dev": dev_requirements,
     "benchmark": benchmark_requirements,
     "tutorial": tutorial_requirements,
+    "mcell": mcell_requirements,
     "physicell": physicell_requirements,
     "all": [
         *requirements,
         *dev_requirements,
+        *mcell_requirements,
         *physicell_requirements,
         *benchmark_requirements,
         *tutorial_requirements,
