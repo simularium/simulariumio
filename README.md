@@ -112,7 +112,7 @@ We're discussing the possibility of adding the ability to export Simularium file
 
 **Development Head:** `pip install git+ssh://git@github.com/allen-cell-animated/simulariumio.git`
 
-**Please note** that to run the Jupyter notebook examples you should also install Jupyter, either with `pip install jupyter`, or by installing SimulariumIO with tutorial dependencies: `pip install simulariumio[tutorial]`
+**Please note** that to run the Jupyter notebook examples you should also install Jupyter, either with `pip install jupyter`, or by installing SimulariumIO with the tutorial requirements: `pip install simulariumio[tutorial]`
 
 
 <br/>

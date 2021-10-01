@@ -27,6 +27,10 @@ test_requirements = [
     *physicell_requirements,
 ]
 
+tutorial_requirements = [
+    "jupyter",
+]
+
 benchmark_requirements = [
     "awscli>=1.20"
     "quilt3>=3.4",
@@ -59,13 +63,15 @@ extra_requirements = {
     "setup": setup_requirements,
     "test": test_requirements,
     "dev": dev_requirements,
-    "physicell": physicell_requirements,
     "benchmark": benchmark_requirements,
+    "tutorial": tutorial_requirements,
+    "physicell": physicell_requirements,
     "all": [
         *requirements,
         *dev_requirements,
         *physicell_requirements,
-        *benchmark_requirements
+        *benchmark_requirements,
+        *tutorial_requirements,
     ]
 }
 
