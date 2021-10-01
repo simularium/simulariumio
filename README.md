@@ -43,7 +43,8 @@ converter = TrajectoryConverter(
             DATA_FOR_OBJECTS_MOVING_OVER_TIME
         ),
     )
-).add_plot(
+)
+converter.add_plot(
     ScatterPlotData(
         title="Something measured",
         xaxis_title="Time (s) or something else",
@@ -67,7 +68,7 @@ Load your file in the Simularium Viewer at https://simularium.allencell.org/view
 <br/>
 
 # 3. Share by URL 
-Upload your file to a public Dropbox or Google Drive folder or an AWS S3 bucket, and use the URL https://simularium.allencell.org/viewer?trajUrl=\[link to your file\]
+Upload your file to a public Dropbox or Google Drive folder or an AWS S3 bucket, and use the URL https://simularium.allencell.org/viewer?trajUrl= [link to your file]
 
 <br/>
 
@@ -213,7 +214,7 @@ converter.save("output_file_name")
 
 ## Share URL to results
 1. Upload your Simularium file to one of the supported public cloud providers, including Dropbox, Google Drive, or Amazon S3, and get a publicly accessible link to the file.
-2. In a supported browser, navigate to https://simularium.allencell.org/viewer?trajUrl=\[link to your file\]. You can share this link with collaborators or post it on your website so that others can interactively view your results.
+2. In a supported browser, navigate to https://simularium.allencell.org/viewer?trajUrl= [link to your file]. You can share this link with collaborators or post it on your website so that others can interactively view your results.
 
 <br/>
 
