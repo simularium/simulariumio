@@ -5,17 +5,77 @@ This repository is part of the Simularium project ([simularium.allencell.org](ht
 - [simularium-viewer](https://github.com/allen-cell-animated/simularium-viewer) - NPM package to view Simularium trajectories in 3D
 - [simularium-website](https://github.com/allen-cell-animated/simularium-website) - Front end website for the Simularium project, includes the Simularium viewer
 
+<br/>
+
 ---
+---
+<br/>
 
 # SimulariumIO
-
 [![Build Status](https://github.com/allen-cell-animated/simulariumio/workflows/Build%20Master/badge.svg)](https://github.com/allen-cell-animated/simulariumio/actions)
 [![Documentation](https://github.com/allen-cell-animated/simulariumio/workflows/Documentation/badge.svg)](https://allen-cell-animated.github.io/simulariumio)
 [![Code Coverage](https://codecov.io/gh/allen-cell-animated/simulariumio/branch/master/graph/badge.svg)](https://codecov.io/gh/allen-cell-animated/simulariumio)
 
-Simulariumio converts simulation outputs to the format consumed by the [Simularium viewer](https://simularium.allencell.org/).
+---
+---
+
+<br/>
+
+
+## Convert simulation outputs so they can be visualized in the [Simularium Viewer](https://simularium.allencell.org/).
+
+<br/>
+
+# 1. Convert your data
+Save your data as a .simularium file (see Jupyter notebook [examples](examples/)):
+
+```python
+import numpy as np
+from simulariumio import TrajectoryConverter, TrajectoryData, MetaData, AgentData, ScatterPlotData
+
+converter = TrajectoryConverter(
+    TrajectoryData(
+        meta_data=MetaData(
+            box_size=BOX_SIZE_NUMPY_ARRAY,
+            trajectory_title="Model A with parameter set 1",
+        ),
+        agent_data=AgentData(
+            DATA_FOR_OBJECTS_MOVING_OVER_TIME
+        ),
+    )
+).add_plot(
+    ScatterPlotData(
+        title="Something measured",
+        xaxis_title="Time (s) or something else",
+        yaxis_title="Some measurement (units)",
+        xtrace=X_VALUES_NUMPY_ARRAY,
+        ytraces={
+            "Agent 1" : Y_VALUES_NUMPY_ARRAY,
+        },
+    )
+)
+converter.save("output_file_name")
+```
+
+<br/>
+
+# 2. Load in the [Simularium Viewer](https://simularium.allencell.org/viewer)
+Load your file in the Simularium Viewer at https://simularium.allencell.org/viewer to interactively rotate and play back your data:
+
+![Loading a file in the Simularium Viewer](/examples/img/drag_drop.gif)
+
+<br/>
+
+# 3. Share by URL 
+Upload your file to a public Dropbox or Google Drive folder or an AWS S3 bucket, and use the URL https://simularium.allencell.org/viewer?trajUrl=\[link to your file\]
+
+<br/>
 
 ---
+---
+
+<br/>
+
 
 ## Features
 * Converts 3D spatiotemporal trajectories to .simularium JSON format
@@ -30,19 +90,35 @@ Simulariumio converts simulation outputs to the format consumed by the [Simulari
 * Conversions for data from custom engines can be implemented using the TrajectoryConverter class
 * Also accepts metrics data for plots to display alongside spatial data
 
-We're working to improve performance for converting large trajectories, and also discussing with the authors of some packages the possibility of adding the ability to export Simularium files directly.
+We're discussing the possibility of adding the ability to export Simularium files directly with the authors of some packages.
 
-___
+<br/>
 
-## Visualize results
-1. In a supported browser (Firefox, Chrome, or Edge), navigate to https://simularium.allencell.org/viewer.
-2. Drag the file output from SimulariumIO from your file browser onto the window or use the file upload dialogue to choose your file
+---
 
-## Sharing links to results
-1. Upload your Simularium file to one of the supported public cloud providers, currently Dropbox, Google Drive, or Amazon S3, and get a publicly accessible link to the file.
-2. In a supported browser, navigate to https://simularium.allencell.org/viewer?trajUrl=[link to your file]. You can share this link with collaborators or post it on your website so that others can interactively view your results.
+<br/>
 
-___
+## Installation
+**Install Requires:** 
+
+* Requires Python 3.7 or 3.8
+
+* If ReaDDy trajectories will be converted, the ReaDDy python package must be installed:
+(add conda forge channel if it's not already: `conda config --add channels conda-forge`)
+`conda install -c readdy readdy`
+
+**Stable Release:** `pip install simulariumio`
+
+**Development Head:** `pip install git+ssh://git@github.com/allen-cell-animated/simulariumio.git`
+
+**Please note** that to run the Jupyter notebook examples you should also install Jupyter, either with `pip install jupyter`, or by installing SimulariumIO with tutorial dependencies: `pip install simulariumio[tutorial]`
+
+
+<br/>
+
+---
+
+<br/>
 
 ## Quick Start
 
@@ -58,25 +134,31 @@ See the Tutorial for the simulation engine you're using for details:
 
 An overview for data from ReaDDy:
 ```python
+import numpy as np
 from simulariumio.readdy import ReaddyConverter, ReaddyData
 
 # see ReaDDy Tutorial for parameter details
 input_data = ReaddyData(
-    box_size=BOX_SIZE,
+    meta_data=MetaData(
+        box_size=BOX_SIZE,
+    ),
     timestep=TIMESTEP,
     path_to_readdy_h5=PATH_TO_H5_FILE,
 )
-ReaddyConverter(input_data).write_JSON("output_file_name")
+ReaddyConverter(input_data).save("output_file_name")
 ```
 
 ### Convert spatial trajectory from a custom engine
 See the [Custom Data Tutorial](examples/Tutorial_custom.ipynb) for details. An overview:
 ```python
-from simulariumio import TrajectoryConverter, TrajectoryData, AgentData
+import numpy as np
+from simulariumio import TrajectoryConverter, TrajectoryData, MetaData, AgentData
 
 # see Custom Data Tutorial for parameter details
 input_data = TrajectoryData(
-    box_size=BOX_SIZE,
+    meta_data=MetaData(
+        box_size=BOX_SIZE,
+    ),
     agent_data=AgentData(
         times=TIMES,
         n_agents=N_AGENTS,
@@ -88,47 +170,65 @@ input_data = TrajectoryData(
         rotations=ROTATIONS,
     )
 )
-TrajectoryConverter(input_data).write_JSON("output_file_name")
+TrajectoryConverter(input_data).save("output_file_name")
 ```
 
 ### Add metrics data to plot
 See the [Plots Tutorial](examples/Tutorial_plots.ipynb) for details. An overview:
 ```python
+import numpy as np
 from simulariumio import ScatterPlotData
 
+converter = TrajectoryConverter(input_data) # see above to create 
 # see Plots Tutorial for parameter details
-example_scatter_plot = ScatterPlotData(
-    title=TITLE,
-    xaxis_title=X_TITLE,
-    yaxis_title=Y_TITLE,
-    xtrace=X_VALUES,
-    ytraces=Y_VALUES,
+converter.add_plot(
+    ScatterPlotData(
+        title="Something measured",
+        xaxis_title="Time (s) or something else",
+        yaxis_title="Some measurement (units)",
+        xtrace=X_VALUES,
+        ytraces={
+            "Agent 1" : Y_VALUES,
+        },
+    )
 )
-converter = TrajectoryConverter(input_data) # see above to create converter
-converter.add_plot(example_scatter_plot, "scatter")
-converter.write_JSON("output_file_name")
+converter.save("output_file_name")
 ```
-___
 
-## Installation
-**Install Requires:** 
+<br/>
 
-* Requires Python 3.7 or 3.8
+---
 
-* If ReaDDy trajectories will be converted, the ReaDDy python package must be installed:
-(add conda forge channel if it's not already: `conda config --add channels conda-forge`)
-`conda install -c readdy readdy`
+<br/>
 
-**Stable Release:** `pip install simulariumio`
+## Visualize results
+1. In a supported browser (Firefox, Chrome, or Edge), navigate to https://simularium.allencell.org/viewer.
+2. Drag the file output from SimulariumIO from your file browser onto the window or use the file upload dialogue to choose your file
 
-**Development Head:** `pip install git+https://github.com/allen-cell-animated/simulariumio.git`
+<br/>
 
-___
+---
+
+<br/>
+
+## Share URL to results
+1. Upload your Simularium file to one of the supported public cloud providers, including Dropbox, Google Drive, or Amazon S3, and get a publicly accessible link to the file.
+2. In a supported browser, navigate to https://simularium.allencell.org/viewer?trajUrl=\[link to your file\]. You can share this link with collaborators or post it on your website so that others can interactively view your results.
+
+<br/>
+
+---
+
+<br/>
 
 ## Documentation
 For full package documentation please visit [allen-cell-animated.github.io/simulariumio](https://allen-cell-animated.github.io/simulariumio).
 
-___
+<br/>
+
+---
+
+<br/>
 
 ## Development
 See [CONTRIBUTING.md](CONTRIBUTING.md) for information related to developing the code.
