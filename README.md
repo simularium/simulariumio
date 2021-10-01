@@ -55,7 +55,7 @@ converter.add_plot(
         },
     )
 )
-converter.save("output_file_name")
+converter.write_JSON("output_file_name")
 ```
 
 <br/>
@@ -180,7 +180,7 @@ input_data = TrajectoryData(
         rotations=ROTATIONS,
     )
 )
-TrajectoryConverter(input_data).save("output_file_name")
+TrajectoryConverter(input_data).write_JSON("output_file_name")
 ```
 
 ### Add metrics data to plot
@@ -202,7 +202,7 @@ converter.add_plot(
         },
     )
 )
-converter.save("output_file_name")
+converter.write_JSON("output_file_name")
 ```
 
 ### Render with meshes or PDB files
