@@ -206,7 +206,9 @@ converter.save("output_file_name")
 ```
 
 ### Render with meshes or PDB files
-If you'd like to render agents with arbitrary meshes instead of spheres, add a `DisplayData` for each agent type you'd like to be rendered with the mesh, and specify an OBJ mesh file. Alternately, you can provide a Protein Databank (PDB) file or PDB code to render atoms for a molecule.
+If you'd like to render agents with arbitrary meshes instead of spheres, add a `DisplayData` for each agent type you'd like to be rendered with the mesh, and specify an OBJ mesh file. Alternately, you can provide a Protein Databank (PDB) file or PDB code to render atoms for a molecule. 
+
+See the example notebook for the converter you are using to see how to add display data for that converter.
 ```python
 display_data={
     "A" : DisplayData(
