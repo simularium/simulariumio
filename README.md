@@ -93,14 +93,15 @@ Upload your file to a public Dropbox or Google Drive folder or an AWS S3 bucket,
 
 We're discussing the possibility of adding the ability to export Simularium files directly with the authors of some packages.
 
-Current rendering capabilities of the viewer include:
-* Surface topologies: users can provide mesh files or use default spheres
-* Protein Databank files: users can provide PDB files to render atoms in a molecule
-* Line rendering for fibers, filaments, or bonds
+Current rendering capabilities of the viewer:
+* Spheres: by default, each agent in a scene is represented as a single sphere
+* Mesh surfaces: represent each agent as a mesh files, e.g. coarse molecular surfaces
+* Multi-sphere: provide Protein Databank .pdb files or PDB IDs
+* Line representations for fibers, filaments, or bonds
 
 Rendering capabilities planned for future:
 * Volume rendering for RDME or PDE-based simulation results
-
+* Support for .cif files and coarse-grain sphereTree files for multi-sphere rendering
 
 <br/>
 
