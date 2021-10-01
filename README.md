@@ -93,6 +93,15 @@ Upload your file to a public Dropbox or Google Drive folder or an AWS S3 bucket,
 
 We're discussing the possibility of adding the ability to export Simularium files directly with the authors of some packages.
 
+Current rendering capabilities of the viewer include:
+* Surface topologies: users can provide mesh files or use default spheres
+* Protein Databank files: users can provide PDB files to render atoms in a molecule
+* Line rendering for fibers, filaments, or bonds
+
+Rendering capabilities planned for future:
+* Volume rendering for RDME or PDE-based simulation results
+
+
 <br/>
 
 ---
@@ -196,6 +205,25 @@ converter.add_plot(
 converter.save("output_file_name")
 ```
 
+### Render with meshes or PDB files
+If you'd like to render agents with arbitrary meshes instead of spheres, add a `DisplayData` for each agent type you'd like to be rendered with the mesh, and specify an OBJ mesh file. Alternately, you can provide a Protein Databank (PDB) file or PDB code to render atoms for a molecule.
+```python
+display_data={
+    "A" : DisplayData(
+        name="Molecule A",
+        display_type=DISPLAY_TYPE.PDB,
+        url="https://files.rcsb.org/download/3KIN.pdb",
+        color="#0080ff",
+    ),
+    "B" : DisplayData(
+        name="Molecule B",
+        display_type=DISPLAY_TYPE.OBJ,
+        url="molecule_b.obj",
+        color="#333333",
+    ),
+}
+```
+
 <br/>
 
 ---
@@ -204,7 +232,7 @@ converter.save("output_file_name")
 
 ## Visualize results
 1. In a supported browser (Firefox, Chrome, or Edge), navigate to https://simularium.allencell.org/viewer.
-2. Drag the file output from SimulariumIO from your file browser onto the window or use the file upload dialogue to choose your file
+2. Drag the file output from SimulariumIO from your file browser onto the window or choose Load model > From your device, and select your file from the file upload dialogue.
 
 <br/>
 
@@ -212,9 +240,11 @@ converter.save("output_file_name")
 
 <br/>
 
-## Share URL to results
+## Share link to results
 1. Upload your Simularium file to one of the supported public cloud providers, including Dropbox, Google Drive, or Amazon S3, and get a publicly accessible link to the file.
-2. In a supported browser, navigate to https://simularium.allencell.org/viewer?trajUrl= [link to your file]. You can share this link with collaborators or post it on your website so that others can interactively view your results.
+2. In a supported browser (Firefox, Chrome, or Edge), navigate to https://simularium.allencell.org.
+3. Choose Load model > From a URL. In the dialog, provide the URL to your .simularium file and choose Load. 
+4. Once the file is loaded, you can copy the page URL and share this link with collaborators or post it on your website so that others can interactively view your results.
 
 <br/>
 
