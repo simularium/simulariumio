@@ -58,6 +58,8 @@ converter.add_plot(
 converter.write_JSON("output_file_name")
 ```
 
+[See more details](#quick-start)
+
 <br/>
 
 # 2. Load in the [Simularium Viewer](https://simularium.allencell.org/viewer)
@@ -65,10 +67,14 @@ Load your file in the Simularium Viewer at https://simularium.allencell.org/view
 
 ![Loading a file in the Simularium Viewer](/examples/img/drag_drop.gif)
 
+[See more details](#visualize-results)
+
 <br/>
 
 # 3. Share by URL 
-Upload your file to a public Dropbox or Google Drive folder or an AWS S3 bucket, and use the URL https://simularium.allencell.org/viewer?trajUrl= [link to your file]
+Upload your file to a public Dropbox or Google Drive folder or an AWS S3 bucket, and use the URL https://simularium.allencell.org/viewer?trajUrl=LINK_TO_YOUR_FILE. For example, https://simularium.allencell.org/viewer?trajUrl=https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/endocytosis.simularium.
+
+[See more details](#share-link-to-results)
 
 <br/>
 
@@ -207,7 +213,7 @@ converter.write_JSON("output_file_name")
 ```
 
 ### Render with meshes or PDB files
-If you'd like to render agents with arbitrary meshes instead of spheres, add a `DisplayData` for each agent type you'd like to be rendered with the mesh, and specify an OBJ mesh file. Alternately, you can provide a Protein Databank (PDB) file or PDB code to render atoms for a molecule. 
+If you'd like to render agents as meshes instead of spheres, add a `DisplayData` for each agent type you'd like to be rendered with the mesh, and specify an OBJ mesh file. Alternately, you can provide a Protein Databank (PDB) file to render atoms for a molecule. 
 
 See the example notebook for the converter you are using to see how to add display data for that converter.
 ```python
