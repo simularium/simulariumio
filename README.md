@@ -95,7 +95,7 @@ We're discussing the possibility of adding the ability to export Simularium file
 
 Current rendering capabilities of the viewer:
 * Spheres: by default, each agent in a scene is represented as a single sphere
-* Mesh surfaces: represent each agent as a mesh files, e.g. coarse molecular surfaces
+* Mesh surfaces: represent each agent as a mesh (loaded from an .obj file), e.g. coarse molecular surfaces
 * Multi-sphere: provide Protein Databank .pdb files or PDB IDs
 * Line representations for fibers, filaments, or bonds
 
