@@ -19,7 +19,9 @@ jobs:
     - name: Install Conda Deps
       shell: bash -l {0}
       run: |
-        conda install readdy
+        conda install hdf5==1.12.1
+        conda install h5py==3.4.0
+        conda install readdy==v2.0.9
     - name: Install Dependencies
       shell: bash -l {0}
       run: |
