@@ -117,16 +117,74 @@
 <li><p><a class="reference external" href="https://github.com/allen-cell-animated/simularium-viewer">simularium-viewer</a> - NPM package to view Simularium trajectories in 3D</p></li>
 <li><p><a class="reference external" href="https://github.com/allen-cell-animated/simularium-website">simularium-website</a> - Front end website for the Simularium project, includes the Simularium viewer</p></li>
 </ul>
-</div>
-</div>
+<p><span class="raw-html-m2r"><br/></span></p>
 <hr class="docutils" />
+<hr class="docutils" />
+<p><span class="raw-html-m2r"><br/></span></p>
+</div>
+</div>
 <div class="section" id="id1">
 <h1>SimulariumIO<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
 <a class="reference external image-reference" href="https://github.com/allen-cell-animated/simulariumio/actions"><img alt="Build Status" src="https://github.com/allen-cell-animated/simulariumio/workflows/Build%20Master/badge.svg" /></a>
 <a class="reference external image-reference" href="https://allen-cell-animated.github.io/simulariumio"><img alt="Documentation" src="https://github.com/allen-cell-animated/simulariumio/workflows/Documentation/badge.svg" /></a>
 <a class="reference external image-reference" href="https://codecov.io/gh/allen-cell-animated/simulariumio"><img alt="Code Coverage" src="https://codecov.io/gh/allen-cell-animated/simulariumio/branch/master/graph/badge.svg" /></a>
-<p>Simulariumio converts simulation outputs to the format consumed by the <a class="reference external" href="https://simularium.allencell.org/">Simularium viewer</a>.</p>
 <hr class="docutils" />
+<hr class="docutils" />
+<p><span class="raw-html-m2r"><br/></span></p>
+<div class="section" id="convert-simulation-outputs-so-they-can-be-visualized-in-the-simularium-viewer">
+<h2>Convert simulation outputs so they can be visualized in the <a class="reference external" href="https://simularium.allencell.org/">Simularium Viewer</a>.<a class="headerlink" href="#convert-simulation-outputs-so-they-can-be-visualized-in-the-simularium-viewer" title="Permalink to this headline">¶</a></h2>
+<p><span class="raw-html-m2r"><br/></span></p>
+</div>
+</div>
+<div class="section" id="convert-your-data">
+<h1>1. Convert your data<a class="headerlink" href="#convert-your-data" title="Permalink to this headline">¶</a></h1>
+<p>Save your data as a .simularium file (see Jupyter notebook <a class="reference external" href="examples/">examples</a>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">simulariumio</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span><span class="p">,</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">ScatterPlotData</span>
+
+<span class="n">converter</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="p">(</span>
+    <span class="n">TrajectoryData</span><span class="p">(</span>
+        <span class="n">meta_data</span><span class="o">=</span><span class="n">MetaData</span><span class="p">(</span>
+            <span class="n">box_size</span><span class="o">=</span><span class="n">BOX_SIZE_NUMPY_ARRAY</span><span class="p">,</span>
+            <span class="n">trajectory_title</span><span class="o">=</span><span class="s2">&quot;Model A with parameter set 1&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">agent_data</span><span class="o">=</span><span class="n">AgentData</span><span class="p">(</span>
+            <span class="n">DATA_FOR_OBJECTS_MOVING_OVER_TIME</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">converter</span><span class="o">.</span><span class="n">add_plot</span><span class="p">(</span>
+    <span class="n">ScatterPlotData</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Something measured&quot;</span><span class="p">,</span>
+        <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Time (s) or something else&quot;</span><span class="p">,</span>
+        <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Some measurement (units)&quot;</span><span class="p">,</span>
+        <span class="n">xtrace</span><span class="o">=</span><span class="n">X_VALUES_NUMPY_ARRAY</span><span class="p">,</span>
+        <span class="n">ytraces</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;Agent 1&quot;</span> <span class="p">:</span> <span class="n">Y_VALUES_NUMPY_ARRAY</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">converter</span><span class="o">.</span><span class="n">write_JSON</span><span class="p">(</span><span class="s2">&quot;output_file_name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference external" href="#quick-start">See more details</a></p>
+<p><span class="raw-html-m2r"><br/></span></p>
+</div>
+<div class="section" id="load-in-the-simularium-viewer">
+<h1>2. Load in the <a class="reference external" href="https://simularium.allencell.org/viewer">Simularium Viewer</a><a class="headerlink" href="#load-in-the-simularium-viewer" title="Permalink to this headline">¶</a></h1>
+<p>Load your file in the Simularium Viewer at <a class="reference external" href="https://simularium.allencell.org/viewer">https://simularium.allencell.org/viewer</a> to interactively rotate and play back your data:</p>
+<a class="reference external image-reference" href="/examples/img/drag_drop.gif"><img alt="Loading a file in the Simularium Viewer" src="examples/img/drag_drop.gif" /></a>
+<p><a class="reference external" href="#visualize-results">See more details</a></p>
+<p><span class="raw-html-m2r"><br/></span></p>
+</div>
+<div class="section" id="share-by-url">
+<h1>3. Share by URL<a class="headerlink" href="#share-by-url" title="Permalink to this headline">¶</a></h1>
+<p>Upload your file to a public Dropbox or Google Drive folder or an AWS S3 bucket, and use the URL <a class="reference external" href="https://simularium.allencell.org/viewer?trajUrl=LINK_TO_YOUR_FILE">https://simularium.allencell.org/viewer?trajUrl=LINK_TO_YOUR_FILE</a>. For example, <a class="reference external" href="https://simularium.allencell.org/viewer?trajUrl=https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/endocytosis.simularium">https://simularium.allencell.org/viewer?trajUrl=https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/endocytosis.simularium</a>.</p>
+<p><a class="reference external" href="#share-link-to-results">See more details</a></p>
+<p><span class="raw-html-m2r"><br/></span></p>
+<hr class="docutils" />
+<hr class="docutils" />
+<p><span class="raw-html-m2r"><br/></span></p>
 <div class="section" id="features">
 <h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -145,24 +203,39 @@
 <li><p>Conversions for data from custom engines can be implemented using the TrajectoryConverter class</p></li>
 <li><p>Also accepts metrics data for plots to display alongside spatial data</p></li>
 </ul>
-<p>We’re working to improve performance for converting large trajectories, and also discussing with the authors of some packages the possibility of adding the ability to export Simularium files directly.</p>
-</div>
+<p>We’re discussing the possibility of adding the ability to export Simularium files directly with the authors of some packages.</p>
+<p>Current rendering capabilities of the viewer:</p>
+<ul class="simple">
+<li><p>Spheres: by default, each agent in a scene is represented as a single sphere</p></li>
+<li><p>Mesh surfaces: represent each agent as a mesh (loaded from an .obj file), e.g. coarse molecular surfaces</p></li>
+<li><p>Multi-sphere: provide Protein Databank .pdb files</p></li>
+<li><p>Line representations for fibers, filaments, or bonds</p></li>
+</ul>
+<p>Rendering capabilities planned for future:</p>
+<ul class="simple">
+<li><p>Volume rendering for RDME or PDE-based simulation results</p></li>
+<li><p>Support for .cif files and coarse-grain sphereTree files for multi-sphere rendering</p></li>
+</ul>
+<p><span class="raw-html-m2r"><br/></span></p>
 <hr class="docutils" />
-<div class="section" id="visualize-results">
-<h2>Visualize results<a class="headerlink" href="#visualize-results" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li><p>In a supported browser (Firefox, Chrome, or Edge), navigate to <a class="reference external" href="https://simularium.allencell.org/viewer">https://simularium.allencell.org/viewer</a>.</p></li>
-<li><p>Drag the file output from SimulariumIO from your file browser onto the window or use the file upload dialogue to choose your file</p></li>
-</ol>
+<p><span class="raw-html-m2r"><br/></span></p>
 </div>
-<div class="section" id="sharing-links-to-results">
-<h2>Sharing links to results<a class="headerlink" href="#sharing-links-to-results" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li><p>Upload your Simularium file to one of the supported public cloud providers, currently Dropbox, Google Drive, or Amazon S3, and get a publicly accessible link to the file.</p></li>
-<li><p>In a supported browser, navigate to <a class="reference external" href="https://simularium.allencell.org/viewer?trajUrl=[link">https://simularium.allencell.org/viewer?trajUrl=[link</a> to your file]. You can share this link with collaborators or post it on your website so that others can interactively view your results.</p></li>
-</ol>
-</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p><strong>Install Requires:</strong></p>
+<ul class="simple">
+<li><p>Requires Python 3.7 or 3.8</p></li>
+<li><p>If ReaDDy trajectories will be converted, the ReaDDy python package must be installed:
+(add conda forge channel if it’s not already: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">config</span> <span class="pre">--add</span> <span class="pre">channels</span> <span class="pre">conda-forge</span></code>)
+<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">readdy</span> <span class="pre">readdy</span></code></p></li>
+</ul>
+<p><strong>Stable Release:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">simulariumio</span></code></p>
+<p><strong>Development Head:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+ssh://git&#64;github.com/allen-cell-animated/simulariumio.git</span></code></p>
+<p><strong>Please note</strong> that to run the Jupyter notebook examples you should also install Jupyter, either with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jupyter</span></code>, or by installing SimulariumIO with the tutorial requirements: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">simulariumio[tutorial]</span></code></p>
+<p><span class="raw-html-m2r"><br/></span></p>
 <hr class="docutils" />
+<p><span class="raw-html-m2r"><br/></span></p>
+</div>
 <div class="section" id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="convert-spatial-trajectory-from-a-supported-engine">
@@ -178,26 +251,32 @@
 <li><p><a class="reference external" href="examples/Tutorial_springsalad.ipynb">SpringSaLaD Tutorial</a></p></li>
 </ul>
 <p>An overview for data from ReaDDy:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simulariumio.readdy</span> <span class="kn">import</span> <span class="n">ReaddyConverter</span><span class="p">,</span> <span class="n">ReaddyData</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">simulariumio.readdy</span> <span class="kn">import</span> <span class="n">ReaddyConverter</span><span class="p">,</span> <span class="n">ReaddyData</span>
 
 <span class="c1"># see ReaDDy Tutorial for parameter details</span>
 <span class="n">input_data</span> <span class="o">=</span> <span class="n">ReaddyData</span><span class="p">(</span>
-    <span class="n">box_size</span><span class="o">=</span><span class="n">BOX_SIZE</span><span class="p">,</span>
+    <span class="n">meta_data</span><span class="o">=</span><span class="n">MetaData</span><span class="p">(</span>
+        <span class="n">box_size</span><span class="o">=</span><span class="n">BOX_SIZE</span><span class="p">,</span>
+    <span class="p">),</span>
     <span class="n">timestep</span><span class="o">=</span><span class="n">TIMESTEP</span><span class="p">,</span>
     <span class="n">path_to_readdy_h5</span><span class="o">=</span><span class="n">PATH_TO_H5_FILE</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">ReaddyConverter</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span><span class="o">.</span><span class="n">write_JSON</span><span class="p">(</span><span class="s2">&quot;output_file_name&quot;</span><span class="p">)</span>
+<span class="n">ReaddyConverter</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;output_file_name&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="convert-spatial-trajectory-from-a-custom-engine">
 <h3>Convert spatial trajectory from a custom engine<a class="headerlink" href="#convert-spatial-trajectory-from-a-custom-engine" title="Permalink to this headline">¶</a></h3>
 <p>See the <a class="reference external" href="examples/Tutorial_custom.ipynb">Custom Data Tutorial</a> for details. An overview:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simulariumio</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span><span class="p">,</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">simulariumio</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span><span class="p">,</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">AgentData</span>
 
 <span class="c1"># see Custom Data Tutorial for parameter details</span>
 <span class="n">input_data</span> <span class="o">=</span> <span class="n">TrajectoryData</span><span class="p">(</span>
-    <span class="n">box_size</span><span class="o">=</span><span class="n">BOX_SIZE</span><span class="p">,</span>
+    <span class="n">meta_data</span><span class="o">=</span><span class="n">MetaData</span><span class="p">(</span>
+        <span class="n">box_size</span><span class="o">=</span><span class="n">BOX_SIZE</span><span class="p">,</span>
+    <span class="p">),</span>
     <span class="n">agent_data</span><span class="o">=</span><span class="n">AgentData</span><span class="p">(</span>
         <span class="n">times</span><span class="o">=</span><span class="n">TIMES</span><span class="p">,</span>
         <span class="n">n_agents</span><span class="o">=</span><span class="n">N_AGENTS</span><span class="p">,</span>
@@ -216,42 +295,89 @@
 <div class="section" id="add-metrics-data-to-plot">
 <h3>Add metrics data to plot<a class="headerlink" href="#add-metrics-data-to-plot" title="Permalink to this headline">¶</a></h3>
 <p>See the <a class="reference external" href="examples/Tutorial_plots.ipynb">Plots Tutorial</a> for details. An overview:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simulariumio</span> <span class="kn">import</span> <span class="n">ScatterPlotData</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">simulariumio</span> <span class="kn">import</span> <span class="n">ScatterPlotData</span>
 
+<span class="n">converter</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span> <span class="c1"># see above to create</span>
 <span class="c1"># see Plots Tutorial for parameter details</span>
-<span class="n">example_scatter_plot</span> <span class="o">=</span> <span class="n">ScatterPlotData</span><span class="p">(</span>
-    <span class="n">title</span><span class="o">=</span><span class="n">TITLE</span><span class="p">,</span>
-    <span class="n">xaxis_title</span><span class="o">=</span><span class="n">X_TITLE</span><span class="p">,</span>
-    <span class="n">yaxis_title</span><span class="o">=</span><span class="n">Y_TITLE</span><span class="p">,</span>
-    <span class="n">xtrace</span><span class="o">=</span><span class="n">X_VALUES</span><span class="p">,</span>
-    <span class="n">ytraces</span><span class="o">=</span><span class="n">Y_VALUES</span><span class="p">,</span>
+<span class="n">converter</span><span class="o">.</span><span class="n">add_plot</span><span class="p">(</span>
+    <span class="n">ScatterPlotData</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Something measured&quot;</span><span class="p">,</span>
+        <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Time (s) or something else&quot;</span><span class="p">,</span>
+        <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Some measurement (units)&quot;</span><span class="p">,</span>
+        <span class="n">xtrace</span><span class="o">=</span><span class="n">X_VALUES</span><span class="p">,</span>
+        <span class="n">ytraces</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;Agent 1&quot;</span> <span class="p">:</span> <span class="n">Y_VALUES</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
 <span class="p">)</span>
-<span class="n">converter</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span> <span class="c1"># see above to create converter</span>
-<span class="n">converter</span><span class="o">.</span><span class="n">add_plot</span><span class="p">(</span><span class="n">example_scatter_plot</span><span class="p">,</span> <span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
 <span class="n">converter</span><span class="o">.</span><span class="n">write_JSON</span><span class="p">(</span><span class="s2">&quot;output_file_name&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="section" id="render-with-meshes-or-pdb-files">
+<h3>Render with meshes or PDB files<a class="headerlink" href="#render-with-meshes-or-pdb-files" title="Permalink to this headline">¶</a></h3>
+<p>If you’d like to render agents as meshes instead of spheres, add a <code class="docutils literal notranslate"><span class="pre">DisplayData</span></code> for each agent type you’d like to be rendered with the mesh, and specify an OBJ mesh file. Alternately, you can provide a Protein Databank (PDB) file to render atoms for a molecule.</p>
+<p>See the example notebook for the converter you are using to see how to add display data for that converter.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">display_data</span><span class="o">=</span><span class="p">{</span>
+    <span class="s2">&quot;A&quot;</span> <span class="p">:</span> <span class="n">DisplayData</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Molecule A&quot;</span><span class="p">,</span>
+        <span class="n">display_type</span><span class="o">=</span><span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">PDB</span><span class="p">,</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://files.rcsb.org/download/3KIN.pdb&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#0080ff&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;B&quot;</span> <span class="p">:</span> <span class="n">DisplayData</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Molecule B&quot;</span><span class="p">,</span>
+        <span class="n">display_type</span><span class="o">=</span><span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">OBJ</span><span class="p">,</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">&quot;molecule_b.obj&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#333333&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
 </div>
+<p><span class="raw-html-m2r"><br/></span></p>
 <hr class="docutils" />
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p><strong>Install Requires:</strong></p>
+<p><span class="raw-html-m2r"><br/></span></p>
+</div>
+</div>
+<div class="section" id="visualize-results">
+<h2>Visualize results<a class="headerlink" href="#visualize-results" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>In a supported browser (Firefox, Chrome, or Edge), navigate to <a class="reference external" href="https://simularium.allencell.org/viewer">https://simularium.allencell.org/viewer</a>.</p></li>
+<li><p>Drag the file output from SimulariumIO from your file browser onto the window or choose Load model &gt; From your device, and select your file from the file upload dialogue.</p></li>
+</ol>
 <ul class="simple">
-<li><p>Requires Python 3.7 or 3.8</p></li>
-<li><p>If ReaDDy trajectories will be converted, the ReaDDy python package must be installed:
-(add conda forge channel if it’s not already: <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">config</span> <span class="pre">--add</span> <span class="pre">channels</span> <span class="pre">conda-forge</span></code>)
-<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">-c</span> <span class="pre">readdy</span> <span class="pre">readdy</span></code></p></li>
+<li><p>If your trajectory uses local geometry files, like .obj or .pdb files, load them at the same time as you load your .simularium file, either by dragging and dropping a collection of files, or by choosing multiple files in the upload dialogue.</p></li>
+<li><p>Currently the Viewer does not support loading folders of files, so make sure you are loading a collection of single files that does not include a folder. We’re working to improve this.</p></li>
 </ul>
-<p><strong>Stable Release:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">simulariumio</span></code></p>
-<p><strong>Development Head:</strong> <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/allen-cell-animated/simulariumio.git</span></code></p>
-</div>
+<p><span class="raw-html-m2r"><br/></span></p>
 <hr class="docutils" />
+<p><span class="raw-html-m2r"><br/></span></p>
+</div>
+<div class="section" id="share-link-to-results">
+<h2>Share link to results<a class="headerlink" href="#share-link-to-results" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Upload your Simularium file to one of the supported public cloud providers, including Dropbox, Google Drive, or Amazon S3, and get a publicly accessible link to the file.</p></li>
+<li><p>In a supported browser (Firefox, Chrome, or Edge), navigate to <a class="reference external" href="https://simularium.allencell.org">https://simularium.allencell.org</a>.</p></li>
+<li><p>Choose Load model &gt; From a URL. In the dialog, provide the URL to your .simularium file and choose Load.</p></li>
+</ol>
+<ul class="simple">
+<li><p>If your file uses geometry files, like .obj or .pdb files, make sure you’ve provided the full public URL to the files in <code class="docutils literal notranslate"><span class="pre">DisplayData</span></code>.</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>Once the file is loaded, you can copy the page URL and share this link with collaborators or post it on your website so that others can interactively view your results.</p></li>
+</ol>
+<p><span class="raw-html-m2r"><br/></span></p>
+<hr class="docutils" />
+<p><span class="raw-html-m2r"><br/></span></p>
+</div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <p>For full package documentation please visit <a class="reference external" href="https://allen-cell-animated.github.io/simulariumio">allen-cell-animated.github.io/simulariumio</a>.</p>
-</div>
+<p><span class="raw-html-m2r"><br/></span></p>
 <hr class="docutils" />
+<p><span class="raw-html-m2r"><br/></span></p>
+</div>
 <div class="section" id="development">
 <h2>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h2>
 <p>See <a class="reference external" href="CONTRIBUTING.md">CONTRIBUTING.md</a> for information related to developing the code.</p>
