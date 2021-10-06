@@ -242,6 +242,8 @@ display_data={
 ## Visualize results
 1. In a supported browser (Firefox, Chrome, or Edge), navigate to https://simularium.allencell.org/viewer.
 2. Drag the file output from SimulariumIO from your file browser onto the window or choose Load model > From your device, and select your file from the file upload dialogue.
+- If your trajectory uses local geometry files, like .obj or .pdb files, load them at the same time as you load your .simularium file, either by dragging and dropping a collection of files, or by choosing multiple files in the upload dialogue.
+- Currently the Viewer does not support loading folders of files, so make sure you are loading a collection of single files that does not include a folder. We're working to improve this.
 
 <br/>
 
@@ -253,6 +255,7 @@ display_data={
 1. Upload your Simularium file to one of the supported public cloud providers, including Dropbox, Google Drive, or Amazon S3, and get a publicly accessible link to the file.
 2. In a supported browser (Firefox, Chrome, or Edge), navigate to https://simularium.allencell.org.
 3. Choose Load model > From a URL. In the dialog, provide the URL to your .simularium file and choose Load. 
+- If your file uses geometry files, like .obj or .pdb files, make sure you've provided the full public URL to the files in `DisplayData`.
 4. Once the file is loaded, you can copy the page URL and share this link with collaborators or post it on your website so that others can interactively view your results.
 
 <br/>
