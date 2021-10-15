@@ -8,7 +8,7 @@ from simulariumio.smoldyn import (
     SmoldynConverter,
     SmoldynData,
 )
-from simulariumio import MetaData, UnitData, DisplayData
+from simulariumio import MetaData, UnitData, DisplayData, FileData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
@@ -26,7 +26,9 @@ from simulariumio.constants import (
                     box_size=np.array([2.0, 2.0, 0.1]),
                     scale_factor=100,
                 ),
-                path_to_output_txt="simulariumio/tests/data/smoldyn/example_2D.txt",
+                output_txt_file=FileData(
+                    file_path="simulariumio/tests/data/smoldyn/example_2D.txt"
+                ),
                 display_data={
                     "S(solution)": DisplayData(
                         name="S",
@@ -240,7 +242,9 @@ from simulariumio.constants import (
                 meta_data=MetaData(
                     box_size=np.array([100.0, 100.0, 100.0]),
                 ),
-                path_to_output_txt="simulariumio/tests/data/smoldyn/example_3D.txt",
+                output_txt_file=FileData(
+                    file_path="simulariumio/tests/data/smoldyn/example_3D.txt"
+                ),
                 display_data={
                     "green(solution)": DisplayData(
                         name="Green",

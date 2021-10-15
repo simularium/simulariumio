@@ -37,7 +37,7 @@ class SmoldynData:
         Parameters
         ----------
         output_txt_file: FileData
-            A FileData object containing the string path 
+            A FileData object containing the string path
             or string contents of the output txt file.
             Generate by adding to your config.txt file:
                 `output_files output.txt

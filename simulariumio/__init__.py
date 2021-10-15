@@ -25,6 +25,7 @@ from .data_objects import (  # noqa: F401
     CameraData,
     DimensionData,
     DisplayData,
+    FileData,
     ScatterPlotData,
     HistogramPlotData,
 )

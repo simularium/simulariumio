@@ -25,7 +25,7 @@ class FileConverter(TrajectoryConverter):
         Parameters
         ----------
         input_file: FileData
-            A FileData object containing a string path 
+            A FileData object containing a string path
             or string contents for the .simularium JSON file to load
         """
         print("Reading Simularium JSON -------------")

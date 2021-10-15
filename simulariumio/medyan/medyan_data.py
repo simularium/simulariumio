@@ -39,7 +39,7 @@ class MedyanData:
         Parameters
         ----------
         snapshot_file : FileData
-            A FileData object containing the string path 
+            A FileData object containing the string path
             or string contents of the MEDYAN snapshot.traj output file
         meta_data : MetaData (optional)
             An object containing metadata for the trajectory

@@ -3,9 +3,6 @@
 
 import logging
 
-from ..constants import DISPLAY_TYPE
-from ..exceptions import DataError
-
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -45,8 +42,8 @@ class FileData:
         """
         Return the data in the file.
 
-        If file_contents is not empty, return that. 
-        Otherwise try to open the file at file_path 
+        If file_contents is not empty, return that.
+        Otherwise try to open the file at file_path
         and return the data inside as a string.
         """
         if self.file_contents:

@@ -34,7 +34,7 @@ class SpringsaladData:
         Parameters
         ----------
         sim_view_txt_file: FileData
-            A FileData object containing a string path 
+            A FileData object containing a string path
             or string contents of the txt file named
             "[model name]_SIM_VIEW_[run name].txt"
         meta_data : MetaData (optional)

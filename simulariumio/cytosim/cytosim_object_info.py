@@ -32,7 +32,7 @@ class CytosimObjectInfo:
         Parameters
         ----------
         output_file : FileData
-            A FileData object containing a string path 
+            A FileData object containing a string path
             or string contents of fiber_points.txt file
         display_data : Dict[int, DisplayData] (optional)
             A dict mapping the type index from Cytosim data
