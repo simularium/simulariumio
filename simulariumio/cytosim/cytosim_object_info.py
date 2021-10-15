@@ -4,7 +4,7 @@
 import logging
 from typing import Dict, List
 
-from ..data_objects import DisplayData
+from ..data_objects import DisplayData, FileData
 
 ###############################################################################
 
@@ -14,13 +14,13 @@ log = logging.getLogger(__name__)
 
 
 class CytosimObjectInfo:
-    filepath: str
+    output_file: FileData
     display_data: Dict[int, DisplayData]
     position_indices: List[int]
 
     def __init__(
         self,
-        filepath: str,
+        output_file: FileData,
         display_data: Dict[int, DisplayData] = None,
         position_indices: List[int] = [2, 3, 4],
     ):
@@ -31,8 +31,9 @@ class CytosimObjectInfo:
 
         Parameters
         ----------
-        filepath : str
-            A string path to fiber_points.txt
+        output_file : FileData
+            A FileData object containing a string path 
+            or string contents of fiber_points.txt file
         display_data : Dict[int, DisplayData] (optional)
             A dict mapping the type index from Cytosim data
             to DisplayData, including names and display info
@@ -47,6 +48,6 @@ class CytosimObjectInfo:
             for position XYZ
             Default: [2, 3, 4]
         """
-        self.filepath = filepath
+        self.output_file = output_file
         self.display_data = display_data if display_data is not None else {}
         self.position_indices = position_indices

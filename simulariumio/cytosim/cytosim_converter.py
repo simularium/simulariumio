@@ -239,8 +239,7 @@ class CytosimConverter(TrajectoryConverter):
         # load the data from Cytosim output .txt files
         cytosim_data = {}
         for object_type in input_data.object_info:
-            with open(input_data.object_info[object_type].filepath, "r") as myfile:
-                cytosim_data[object_type] = myfile.read().split("\n")
+            cytosim_data[object_type] = input_data.object_info[object_type].output_file.get_data().split("\n")
         # parse
         dimensions = CytosimConverter._parse_dimensions(cytosim_data)
         agent_data = AgentData.from_dimensions(dimensions)

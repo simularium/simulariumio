@@ -4,7 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-from ..data_objects import MetaData, DisplayData
+from ..data_objects import MetaData, DisplayData, FileData
 
 ###############################################################################
 
@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 class MedyanData:
-    path_to_snapshot: str
+    snapshot_file: FileData
     meta_data: MetaData
     display_data: Dict[str, Dict[int, DisplayData]]
     agents_with_endpoints: List[str]
@@ -23,7 +23,7 @@ class MedyanData:
 
     def __init__(
         self,
-        path_to_snapshot: str,
+        snapshot_file: FileData,
         meta_data: MetaData = None,
         filament_display_data: Dict[int, DisplayData] = None,
         linker_display_data: Dict[int, DisplayData] = None,
@@ -38,8 +38,9 @@ class MedyanData:
 
         Parameters
         ----------
-        path_to_snapshot : string
-            A string path to the MEDYAN snapshot.traj output file
+        snapshot_file : FileData
+            A FileData object containing the string path 
+            or string contents of the MEDYAN snapshot.traj output file
         meta_data : MetaData (optional)
             An object containing metadata for the trajectory
             including box size, scale factor, and camera defaults
@@ -78,7 +79,7 @@ class MedyanData:
             An object containing plot data already
             in Simularium format
         """
-        self.path_to_snapshot = path_to_snapshot
+        self.snapshot_file = snapshot_file
         self.meta_data = meta_data if meta_data is not None else MetaData()
         self.display_data = {
             "filament": filament_display_data
