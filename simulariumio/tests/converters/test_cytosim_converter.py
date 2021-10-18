@@ -29,7 +29,7 @@ from simulariumio.constants import (
                 ),
                 object_info={
                     "fibers": CytosimObjectInfo(
-                        cytosim_output_file=FileData(
+                        cytosim_file=FileData(
                             file_path=(
                                 "simulariumio/tests/data/cytosim"
                                 "/3_fibers_3_frames/fiber_points.txt"
@@ -342,7 +342,7 @@ from simulariumio.constants import (
                 ),
                 object_info={
                     "fibers": CytosimObjectInfo(
-                        cytosim_output_file=FileData(
+                        cytosim_file=FileData(
                             file_path=(
                                 "simulariumio/tests/data/cytosim/aster_pull3D"
                                 "_couples_actin_solid_3_frames/fiber_points.txt"
@@ -357,7 +357,7 @@ from simulariumio.constants import (
                         },
                     ),
                     "solids": CytosimObjectInfo(
-                        cytosim_output_file=FileData(
+                        cytosim_file=FileData(
                             file_path=(
                                 "simulariumio/tests/data/cytosim/"
                                 "aster_pull3D_couples_actin_solid_3_frames/solids.txt"
@@ -369,7 +369,7 @@ from simulariumio.constants import (
                         },
                     ),
                     "singles": CytosimObjectInfo(
-                        cytosim_output_file=FileData(
+                        cytosim_file=FileData(
                             file_path=(
                                 "simulariumio/tests/data/cytosim/"
                                 "aster_pull3D_couples_actin_solid_3_frames/singles.txt"
@@ -387,7 +387,7 @@ from simulariumio.constants import (
                         },
                     ),
                     "couples": CytosimObjectInfo(
-                        cytosim_output_file=FileData(
+                        cytosim_file=FileData(
                             file_path=(
                                 "simulariumio/tests/data/cytosim/"
                                 "aster_pull3D_couples_actin_solid_3_frames/couples.txt"

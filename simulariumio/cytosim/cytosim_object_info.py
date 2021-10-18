@@ -14,13 +14,13 @@ log = logging.getLogger(__name__)
 
 
 class CytosimObjectInfo:
-    cytosim_output_file: FileData
+    cytosim_file: FileData
     display_data: Dict[int, DisplayData]
     position_indices: List[int]
 
     def __init__(
         self,
-        cytosim_output_file: FileData,
+        cytosim_file: FileData,
         display_data: Dict[int, DisplayData] = None,
         position_indices: List[int] = [2, 3, 4],
     ):
@@ -31,7 +31,7 @@ class CytosimObjectInfo:
 
         Parameters
         ----------
-        cytosim_output_file : FileData
+        cytosim_file : FileData
             A FileData object containing a string path
             or string contents of Cytosim output text file,
             e.g. fiber_points.txt
@@ -49,6 +49,6 @@ class CytosimObjectInfo:
             for position XYZ
             Default: [2, 3, 4]
         """
-        self.cytosim_output_file = cytosim_output_file
+        self.cytosim_file = cytosim_file
         self.display_data = display_data if display_data is not None else {}
         self.position_indices = position_indices

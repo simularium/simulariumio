@@ -240,9 +240,7 @@ class CytosimConverter(TrajectoryConverter):
         cytosim_data = {}
         for object_type in input_data.object_info:
             cytosim_data[object_type] = (
-                input_data.object_info[object_type]
-                .cytosim_output_file.get_data()
-                .split("\n")
+                input_data.object_info[object_type].cytosim_file.get_data().split("\n")
             )
         # parse
         dimensions = CytosimConverter._parse_dimensions(cytosim_data)
