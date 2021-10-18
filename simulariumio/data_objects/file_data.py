@@ -3,6 +3,8 @@
 
 import logging
 
+from ..exceptions import DataError
+
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -32,7 +34,7 @@ class FileData:
             Default: use file_path instead
         """
         if not file_path and not file_contents:
-            raise Exception(
+            raise DataError(
                 "Please provide either file_path or file_contents to create a FileData"
             )
         self.file_path = file_path
