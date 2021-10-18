@@ -121,7 +121,7 @@ class SmoldynConverter(TrajectoryConverter):
         """
         print("Reading Smoldyn Data -------------")
         # load the data from Smoldyn output .txt file
-        smoldyn_data = input_data.output_txt_file.get_data().split("\n")
+        smoldyn_data = input_data.smoldyn_output_file.get_data().split("\n")
         # parse
         agent_data = SmoldynConverter._parse_objects(smoldyn_data, input_data)
         # get display data (geometry and color)

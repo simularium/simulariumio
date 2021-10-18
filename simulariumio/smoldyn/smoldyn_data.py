@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 class SmoldynData:
-    output_txt_file: FileData
+    smoldyn_output_file: FileData
     meta_data: MetaData
     display_data: Dict[str, DisplayData]
     time_units: UnitData
@@ -23,7 +23,7 @@ class SmoldynData:
 
     def __init__(
         self,
-        output_txt_file: FileData,
+        smoldyn_output_file: FileData,
         meta_data: MetaData = None,
         display_data: Dict[str, DisplayData] = None,
         time_units: UnitData = None,
@@ -36,9 +36,9 @@ class SmoldynData:
 
         Parameters
         ----------
-        output_txt_file: FileData
+        smoldyn_output_file: FileData
             A FileData object containing the string path
-            or string contents of the output txt file.
+            or string contents of the Smoldyn output txt file.
             Generate by adding to your config.txt file:
                 `output_files output.txt
                 `cmd n 1 executiontime output.txt`
@@ -63,7 +63,7 @@ class SmoldynData:
             An object containing plot data already
             in Simularium format
         """
-        self.output_txt_file = output_txt_file
+        self.smoldyn_output_file = smoldyn_output_file
         self.meta_data = meta_data if meta_data is not None else MetaData()
         self.display_data = display_data if display_data is not None else {}
         self.time_units = time_units if time_units is not None else UnitData("s")
