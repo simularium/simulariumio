@@ -3,7 +3,7 @@
 
 import pytest
 
-from simulariumio import FileConverter, FileData
+from simulariumio import FileConverter, InputFileData
 from simulariumio.filters import MultiplyTimeFilter
 from simulariumio.tests.conftest import test_scatter_plot
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
@@ -300,7 +300,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
     ],
 )
 def test_multiply_time_filter(input_path, plot_data, _filter, expected_data):
-    converter = FileConverter(input_file=FileData(file_path=input_path))
+    converter = FileConverter(input_file=InputFileData(file_path=input_path))
     converter.add_plot(plot_data, "scatter")
     filtered_data = converter.filter_data([_filter])
     buffer_data = converter._read_trajectory_data(filtered_data)

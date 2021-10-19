@@ -113,7 +113,7 @@ class SpringsaladConverter(TrajectoryConverter):
         Return an object containing the data shaped for Simularium format
         """
         print("Reading SpringSaLaD Data -------------")
-        springsalad_data = input_data.sim_view_txt_file.get_data().split("\n")
+        springsalad_data = input_data.sim_view_txt_file.get_contents().split("\n")
         agent_data, box_size = SpringsaladConverter._parse_springsalad_data(
             springsalad_data, input_data
         )

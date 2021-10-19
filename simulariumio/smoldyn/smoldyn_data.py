@@ -4,7 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-from ..data_objects import MetaData, UnitData, DisplayData, FileData
+from ..data_objects import MetaData, UnitData, DisplayData, InputFileData
 
 ###############################################################################
 
@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 class SmoldynData:
-    smoldyn_file: FileData
+    smoldyn_file: InputFileData
     meta_data: MetaData
     display_data: Dict[str, DisplayData]
     time_units: UnitData
@@ -23,7 +23,7 @@ class SmoldynData:
 
     def __init__(
         self,
-        smoldyn_file: FileData,
+        smoldyn_file: InputFileData,
         meta_data: MetaData = None,
         display_data: Dict[str, DisplayData] = None,
         time_units: UnitData = None,
@@ -36,8 +36,8 @@ class SmoldynData:
 
         Parameters
         ----------
-        smoldyn_file: FileData
-            A FileData object containing the string path
+        smoldyn_file: InputFileData
+            A InputFileData object containing the string path
             or string contents of the Smoldyn output txt file.
             Generate by adding to your config.txt file:
                 `output_files output.txt

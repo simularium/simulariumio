@@ -4,7 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-from ..data_objects import MetaData, DisplayData, FileData
+from ..data_objects import MetaData, DisplayData, InputFileData
 
 ###############################################################################
 
@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 class MedyanData:
-    snapshot_file: FileData
+    snapshot_file: InputFileData
     meta_data: MetaData
     display_data: Dict[str, Dict[int, DisplayData]]
     agents_with_endpoints: List[str]
@@ -23,7 +23,7 @@ class MedyanData:
 
     def __init__(
         self,
-        snapshot_file: FileData,
+        snapshot_file: InputFileData,
         meta_data: MetaData = None,
         filament_display_data: Dict[int, DisplayData] = None,
         linker_display_data: Dict[int, DisplayData] = None,
@@ -38,8 +38,8 @@ class MedyanData:
 
         Parameters
         ----------
-        snapshot_file : FileData
-            A FileData object containing the string path
+        snapshot_file : InputFileData
+            A InputFileData object containing the string path
             or string contents of the MEDYAN snapshot.traj output file
         meta_data : MetaData (optional)
             An object containing metadata for the trajectory

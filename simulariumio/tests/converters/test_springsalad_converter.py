@@ -4,7 +4,7 @@
 import pytest
 
 from simulariumio.springsalad import SpringsaladConverter, SpringsaladData
-from simulariumio import DisplayData, MetaData, FileData
+from simulariumio import DisplayData, MetaData, InputFileData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
@@ -18,7 +18,7 @@ from simulariumio.constants import (
         # truncated data from tutorial example
         (
             SpringsaladData(
-                sim_view_txt_file=FileData(
+                sim_view_txt_file=InputFileData(
                     file_path=(
                         "simulariumio/tests/data/springsalad/"
                         "Simulation0_SIM_VIEW_Run0.txt"

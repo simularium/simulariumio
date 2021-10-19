@@ -4,7 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
-from ..data_objects import DisplayData, MetaData, FileData
+from ..data_objects import DisplayData, MetaData, InputFileData
 
 ###############################################################################
 
@@ -14,14 +14,14 @@ log = logging.getLogger(__name__)
 
 
 class SpringsaladData:
-    sim_view_txt_file: FileData
+    sim_view_txt_file: InputFileData
     meta_data: MetaData
     display_data: Dict[str, DisplayData]
     plots: List[Dict[str, Any]]
 
     def __init__(
         self,
-        sim_view_txt_file: FileData,
+        sim_view_txt_file: InputFileData,
         meta_data: MetaData = None,
         display_data: Dict[str, DisplayData] = None,
         plots: List[Dict[str, Any]] = None,
@@ -33,8 +33,8 @@ class SpringsaladData:
 
         Parameters
         ----------
-        sim_view_txt_file: FileData
-            A FileData object containing a string path
+        sim_view_txt_file: InputFileData
+            A InputFileData object containing a string path
             or string contents of the txt file named
             "[model name]_SIM_VIEW_[run name].txt"
         meta_data : MetaData (optional)

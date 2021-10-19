@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-class FileData:
+class InputFileData:
     file_path: str
     file_contents: str
 
@@ -22,7 +22,7 @@ class FileData:
         file_contents: str = "",
     ):
         """
-        This object contains info about a file of data
+        This object contains data about a file
 
         Parameters
         ----------
@@ -35,14 +35,15 @@ class FileData:
         """
         if not file_path and not file_contents:
             raise DataError(
-                "Please provide either file_path or file_contents to create a FileData"
+                "Please provide either file_path or file_contents "
+                "to create an InputFileData"
             )
         self.file_path = file_path
         self.file_contents = file_contents
 
-    def get_data(self):
+    def get_contents(self):
         """
-        Return the data in the file.
+        Return the contents of the file.
 
         If file_contents is not empty, return that.
         Otherwise try to open the file at file_path
