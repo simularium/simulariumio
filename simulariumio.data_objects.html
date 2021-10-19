@@ -504,6 +504,45 @@ each mapped to a numpy ndarray of values</p></li>
 </dd></dl>
 
 </div>
+<div class="section" id="module-simulariumio.data_objects.input_file_data">
+<span id="simulariumio-data-objects-input-file-data-module"></span><h2>simulariumio.data_objects.input_file_data module<a class="headerlink" href="#module-simulariumio.data_objects.input_file_data" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="simulariumio.data_objects.input_file_data.InputFileData">
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.input_file_data.</code><code class="sig-name descname">InputFileData</code><span class="sig-paren">(</span><em class="sig-param">file_path: str = ''</em>, <em class="sig-param">file_contents: str = ''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/input_file_data.html#InputFileData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.input_file_data.InputFileData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object contains data about a file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>str (optional)</em>) – A string path to the file
+Default: use file_contents instead</p></li>
+<li><p><strong>file_contents</strong> (<em>str (optional)</em>) – A string of data from an opened file
+Default: use file_path instead</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="simulariumio.data_objects.input_file_data.InputFileData.file_contents">
+<code class="sig-name descname">file_contents</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.input_file_data.InputFileData.file_contents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.data_objects.input_file_data.InputFileData.file_path">
+<code class="sig-name descname">file_path</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.input_file_data.InputFileData.file_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="simulariumio.data_objects.input_file_data.InputFileData.get_contents">
+<code class="sig-name descname">get_contents</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/input_file_data.html#InputFileData.get_contents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.input_file_data.InputFileData.get_contents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the contents of the file.</p>
+<p>If file_contents is not empty, return that.
+Otherwise try to open the file at file_path
+and return the data inside as a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-simulariumio.data_objects.meta_data">
 <span id="simulariumio-data-objects-meta-data-module"></span><h2>simulariumio.data_objects.meta_data module<a class="headerlink" href="#module-simulariumio.data_objects.meta_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">

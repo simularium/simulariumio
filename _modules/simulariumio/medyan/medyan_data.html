@@ -109,7 +109,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">DisplayData</span>
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">,</span> <span class="n">InputFileData</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -119,7 +119,7 @@
 
 
 <div class="viewcode-block" id="MedyanData"><a class="viewcode-back" href="../../../simulariumio.medyan.html#simulariumio.medyan.medyan_data.MedyanData">[docs]</a><span class="k">class</span> <span class="nc">MedyanData</span><span class="p">:</span>
-    <span class="n">path_to_snapshot</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">snapshot_file</span><span class="p">:</span> <span class="n">InputFileData</span>
     <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
     <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]]</span>
     <span class="n">agents_with_endpoints</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
@@ -128,7 +128,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">path_to_snapshot</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">snapshot_file</span><span class="p">:</span> <span class="n">InputFileData</span><span class="p">,</span>
         <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">filament_display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">linker_display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -143,8 +143,9 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        path_to_snapshot : string</span>
-<span class="sd">            A string path to the MEDYAN snapshot.traj output file</span>
+<span class="sd">        snapshot_file : InputFileData</span>
+<span class="sd">            A InputFileData object containing the string path</span>
+<span class="sd">            or string contents of the MEDYAN snapshot.traj output file</span>
 <span class="sd">        meta_data : MetaData (optional)</span>
 <span class="sd">            An object containing metadata for the trajectory</span>
 <span class="sd">            including box size, scale factor, and camera defaults</span>
@@ -183,7 +184,7 @@
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">path_to_snapshot</span> <span class="o">=</span> <span class="n">path_to_snapshot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">snapshot_file</span> <span class="o">=</span> <span class="n">snapshot_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span> <span class="k">if</span> <span class="n">meta_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">MetaData</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;filament&quot;</span><span class="p">:</span> <span class="n">filament_display_data</span>

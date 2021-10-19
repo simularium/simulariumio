@@ -111,7 +111,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
 
 <span class="kn">from</span> <span class="nn">.trajectory_converter</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span>
-<span class="kn">from</span> <span class="nn">.data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">UnitData</span>
+<span class="kn">from</span> <span class="nn">.data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">,</span> <span class="n">InputFileData</span>
 <span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">CURRENT_VERSION</span>
 
 <span class="c1">###############################################################################</span>
@@ -122,19 +122,19 @@
 
 
 <div class="viewcode-block" id="FileConverter"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.file_converter.FileConverter">[docs]</a><span class="k">class</span> <span class="nc">FileConverter</span><span class="p">(</span><span class="n">TrajectoryConverter</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="p">:</span> <span class="n">InputFileData</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object loads the data in .simularium JSON format</span>
-<span class="sd">        at the input path</span>
+<span class="sd">        at the input file</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        input_path: str</span>
-<span class="sd">            path to the .simularium JSON file to load</span>
+<span class="sd">        input_file: InputFileData</span>
+<span class="sd">            A InputFileData object containing a string path</span>
+<span class="sd">            or string contents for the .simularium JSON file to load</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading Simularium JSON -------------&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">simularium_file</span><span class="p">:</span>
-            <span class="n">buffer_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">simularium_file</span><span class="p">)</span>
+        <span class="n">buffer_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">get_contents</span><span class="p">())</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="nb">int</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;version&quot;</span><span class="p">])</span>
             <span class="o">&lt;</span> <span class="n">CURRENT_VERSION</span><span class="o">.</span><span class="n">TRAJECTORY_INFO</span>

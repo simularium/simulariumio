@@ -136,7 +136,7 @@ SpringSaLaD simulation trajectory outputs and plot data</p>
 <span id="simulariumio-springsalad-springsalad-data-module"></span><h2>simulariumio.springsalad.springsalad_data module<a class="headerlink" href="#module-simulariumio.springsalad.springsalad_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.springsalad.springsalad_data.SpringsaladData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.springsalad.springsalad_data.</code><code class="sig-name descname">SpringsaladData</code><span class="sig-paren">(</span><em class="sig-param">path_to_sim_view_txt: str</em>, <em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData = None</em>, <em class="sig-param">display_data: Dict[str</em>, <em class="sig-param">simulariumio.data_objects.display_data.DisplayData] = None</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/springsalad/springsalad_data.html#SpringsaladData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.springsalad.springsalad_data.</code><code class="sig-name descname">SpringsaladData</code><span class="sig-paren">(</span><em class="sig-param">sim_view_txt_file: simulariumio.data_objects.input_file_data.InputFileData</em>, <em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData = None</em>, <em class="sig-param">display_data: Dict[str</em>, <em class="sig-param">simulariumio.data_objects.display_data.DisplayData] = None</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/springsalad/springsalad_data.html#SpringsaladData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 from SpringSaLaD (<a class="reference external" href="https://vcell.org/ssalad">https://vcell.org/ssalad</a>)
@@ -144,7 +144,8 @@ and plot data</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
-<li><p><strong>path_to_sim_view_txt</strong> (<em>str</em>) – A string path to the txt file named
+<li><p><strong>sim_view_txt_file</strong> (<em>InputFileData</em>) – A InputFileData object containing a string path
+or string contents of the txt file named
 “[model name]_SIM_VIEW_[run name].txt”</p></li>
 <li><p><strong>meta_data</strong> (<em>MetaData (optional)</em>) – An object containing metadata for the trajectory
 including box size, scale factor, and camera defaults</p></li>
@@ -172,13 +173,13 @@ in Simularium format</p></li>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="simulariumio.springsalad.springsalad_data.SpringsaladData.path_to_sim_view_txt">
-<code class="sig-name descname">path_to_sim_view_txt</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData.path_to_sim_view_txt" title="Permalink to this definition">¶</a></dt>
+<dt id="simulariumio.springsalad.springsalad_data.SpringsaladData.plots">
+<code class="sig-name descname">plots</code><em class="property">: List[Dict[str, Any]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData.plots" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="simulariumio.springsalad.springsalad_data.SpringsaladData.plots">
-<code class="sig-name descname">plots</code><em class="property">: List[Dict[str, Any]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData.plots" title="Permalink to this definition">¶</a></dt>
+<dt id="simulariumio.springsalad.springsalad_data.SpringsaladData.sim_view_txt_file">
+<code class="sig-name descname">sim_view_txt_file</code><em class="property">: InputFileData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData.sim_view_txt_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

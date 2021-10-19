@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>simulariumio.cytosim.cytosim_object_info &mdash; Simularium Conversion 1.2.0 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>simulariumio.data_objects.input_file_data &mdash; Simularium Conversion 1.2.0 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -93,7 +93,7 @@
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
-      <li>simulariumio.cytosim.cytosim_object_info</li>
+      <li>simulariumio.data_objects.input_file_data</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -102,14 +102,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for simulariumio.cytosim.cytosim_object_info</h1><div class="highlight"><pre>
+  <h1>Source code for simulariumio.data_objects.input_file_data</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">DisplayData</span><span class="p">,</span> <span class="n">InputFileData</span>
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">DataError</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -118,45 +117,47 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="CytosimObjectInfo"><a class="viewcode-back" href="../../../simulariumio.cytosim.html#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo">[docs]</a><span class="k">class</span> <span class="nc">CytosimObjectInfo</span><span class="p">:</span>
-    <span class="n">cytosim_file</span><span class="p">:</span> <span class="n">InputFileData</span>
-    <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span>
-    <span class="n">position_indices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+<div class="viewcode-block" id="InputFileData"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.input_file_data.InputFileData">[docs]</a><span class="k">class</span> <span class="nc">InputFileData</span><span class="p">:</span>
+    <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">file_contents</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">cytosim_file</span><span class="p">:</span> <span class="n">InputFileData</span><span class="p">,</span>
-        <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">position_indices</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+        <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">file_contents</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This object contains info for reading Cytosim data</span>
-<span class="sd">        for one type of Cytosim object</span>
-<span class="sd">        (e.g. fibers, couples, singles, or solids)</span>
+<span class="sd">        This object contains data about a file</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        cytosim_file : InputFileData</span>
-<span class="sd">            A InputFileData object containing a string path</span>
-<span class="sd">            or string contents of Cytosim output text file,</span>
-<span class="sd">            e.g. fiber_points.txt</span>
-<span class="sd">        display_data : Dict[int, DisplayData] (optional)</span>
-<span class="sd">            A dict mapping the type index from Cytosim data</span>
-<span class="sd">            to DisplayData, including names and display info</span>
-<span class="sd">            to use for rendering this agent type in the Simularium Viewer</span>
-<span class="sd">            Default: for names, use &quot;[object type][type ID]&quot;. e.g. &quot;filament1&quot;,</span>
-<span class="sd">                for radius, use 1.0,</span>
-<span class="sd">                for rendering, use default representations and colors</span>
-<span class="sd">        position_indices : List[int] (optional)</span>
-<span class="sd">            the columns in Cytosim&#39;s reports are not</span>
-<span class="sd">            always consistent, use this to override them</span>
-<span class="sd">            if your output file has different column indices</span>
-<span class="sd">            for position XYZ</span>
-<span class="sd">            Default: [2, 3, 4]</span>
+<span class="sd">        file_path: str (optional)</span>
+<span class="sd">            A string path to the file</span>
+<span class="sd">            Default: use file_contents instead</span>
+<span class="sd">        file_contents: str (optional)</span>
+<span class="sd">            A string of data from an opened file</span>
+<span class="sd">            Default: use file_path instead</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cytosim_file</span> <span class="o">=</span> <span class="n">cytosim_file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">display_data</span> <span class="k">if</span> <span class="n">display_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">position_indices</span> <span class="o">=</span> <span class="n">position_indices</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file_path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_contents</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span>
+                <span class="s2">&quot;Please provide either file_path or file_contents &quot;</span>
+                <span class="s2">&quot;to create an InputFileData&quot;</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_path</span> <span class="o">=</span> <span class="n">file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_contents</span> <span class="o">=</span> <span class="n">file_contents</span>
+
+<div class="viewcode-block" id="InputFileData.get_contents"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.input_file_data.InputFileData.get_contents">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the contents of the file.</span>
+
+<span class="sd">        If file_contents is not empty, return that.</span>
+<span class="sd">        Otherwise try to open the file at file_path</span>
+<span class="sd">        and return the data inside as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_contents</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_contents</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">myfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>

@@ -344,8 +344,11 @@
         <span class="c1"># load the data from Cytosim output .txt files</span>
         <span class="n">cytosim_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">object_type</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">object_info</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">object_info</span><span class="p">[</span><span class="n">object_type</span><span class="p">]</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
-                <span class="n">cytosim_data</span><span class="p">[</span><span class="n">object_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">myfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">cytosim_data</span><span class="p">[</span><span class="n">object_type</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">input_data</span><span class="o">.</span><span class="n">object_info</span><span class="p">[</span><span class="n">object_type</span><span class="p">]</span>
+                <span class="o">.</span><span class="n">cytosim_file</span><span class="o">.</span><span class="n">get_contents</span><span class="p">()</span>
+                <span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="c1"># parse</span>
         <span class="n">dimensions</span> <span class="o">=</span> <span class="n">CytosimConverter</span><span class="o">.</span><span class="n">_parse_dimensions</span><span class="p">(</span><span class="n">cytosim_data</span><span class="p">)</span>
         <span class="n">agent_data</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">from_dimensions</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>

@@ -186,7 +186,7 @@ in Simularium format</p></li>
 <span id="simulariumio-cytosim-cytosim-object-info-module"></span><h2>simulariumio.cytosim.cytosim_object_info module<a class="headerlink" href="#module-simulariumio.cytosim.cytosim_object_info" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.cytosim.cytosim_object_info.</code><code class="sig-name descname">CytosimObjectInfo</code><span class="sig-paren">(</span><em class="sig-param">filepath: str, display_data: Dict[int, simulariumio.data_objects.display_data.DisplayData] = None, position_indices: List[int] = [2, 3, 4]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/cytosim/cytosim_object_info.html#CytosimObjectInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.cytosim.cytosim_object_info.</code><code class="sig-name descname">CytosimObjectInfo</code><span class="sig-paren">(</span><em class="sig-param">cytosim_file: simulariumio.data_objects.input_file_data.InputFileData, display_data: Dict[int, simulariumio.data_objects.display_data.DisplayData] = None, position_indices: List[int] = [2, 3, 4]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/cytosim/cytosim_object_info.html#CytosimObjectInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object contains info for reading Cytosim data
 for one type of Cytosim object
@@ -194,7 +194,9 @@ for one type of Cytosim object
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul>
-<li><p><strong>filepath</strong> (<em>str</em>) – A string path to fiber_points.txt</p></li>
+<li><p><strong>cytosim_file</strong> (<em>InputFileData</em>) – A InputFileData object containing a string path
+or string contents of Cytosim output text file,
+e.g. fiber_points.txt</p></li>
 <li><p><strong>display_data</strong> (<em>Dict[int, DisplayData] (optional)</em>) – A dict mapping the type index from Cytosim data
 to DisplayData, including names and display info
 to use for rendering this agent type in the Simularium Viewer
@@ -213,13 +215,13 @@ Default: [2, 3, 4]</p></li>
 </dd>
 </dl>
 <dl class="attribute">
-<dt id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.display_data">
-<code class="sig-name descname">display_data</code><em class="property">: Dict[int, DisplayData]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.display_data" title="Permalink to this definition">¶</a></dt>
+<dt id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.cytosim_file">
+<code class="sig-name descname">cytosim_file</code><em class="property">: InputFileData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.cytosim_file" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.filepath">
-<code class="sig-name descname">filepath</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.filepath" title="Permalink to this definition">¶</a></dt>
+<dt id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.display_data">
+<code class="sig-name descname">display_data</code><em class="property">: Dict[int, DisplayData]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.display_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">

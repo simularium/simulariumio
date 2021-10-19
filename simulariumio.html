@@ -128,6 +128,7 @@
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.dimension_data">simulariumio.data_objects.dimension_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.display_data">simulariumio.data_objects.display_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.histogram_plot_data">simulariumio.data_objects.histogram_plot_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.input_file_data">simulariumio.data_objects.input_file_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.meta_data">simulariumio.data_objects.meta_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.model_meta_data">simulariumio.data_objects.model_meta_data module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulariumio.data_objects.html#module-simulariumio.data_objects.scatter_plot_data">simulariumio.data_objects.scatter_plot_data module</a></li>
@@ -416,13 +417,14 @@ is not one of the supported types and cannot be parsed with simulariumio.</p>
 <span id="simulariumio-file-converter-module"></span><h2>simulariumio.file_converter module<a class="headerlink" href="#module-simulariumio.file_converter" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.file_converter.FileConverter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.file_converter.</code><code class="sig-name descname">FileConverter</code><span class="sig-paren">(</span><em class="sig-param">input_path: str</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/file_converter.html#FileConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.file_converter.FileConverter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.file_converter.</code><code class="sig-name descname">FileConverter</code><span class="sig-paren">(</span><em class="sig-param">input_file: simulariumio.data_objects.input_file_data.InputFileData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/file_converter.html#FileConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.file_converter.FileConverter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter" title="simulariumio.trajectory_converter.TrajectoryConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.trajectory_converter.TrajectoryConverter</span></code></a></p>
 <p>This object loads the data in .simularium JSON format
-at the input path</p>
+at the input file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_path</strong> (<em>str</em>) – path to the .simularium JSON file to load</p>
+<dd class="field-odd"><p><strong>input_file</strong> (<em>InputFileData</em>) – A InputFileData object containing a string path
+or string contents for the .simularium JSON file to load</p>
 </dd>
 </dl>
 <dl class="method">

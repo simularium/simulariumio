@@ -218,8 +218,7 @@
 <span class="sd">        Return an object containing the data shaped for Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading SpringSaLaD Data -------------&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">path_to_sim_view_txt</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
-            <span class="n">springsalad_data</span> <span class="o">=</span> <span class="n">myfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">springsalad_data</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">sim_view_txt_file</span><span class="o">.</span><span class="n">get_contents</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">agent_data</span><span class="p">,</span> <span class="n">box_size</span> <span class="o">=</span> <span class="n">SpringsaladConverter</span><span class="o">.</span><span class="n">_parse_springsalad_data</span><span class="p">(</span>
             <span class="n">springsalad_data</span><span class="p">,</span> <span class="n">input_data</span>
         <span class="p">)</span>
