@@ -119,8 +119,7 @@ class MedyanConverter(TrajectoryConverter):
         """
         Parse a MEDYAN snapshot.traj output file to get agents
         """
-        with open(input_data.path_to_snapshot, "r") as myfile:
-            lines = myfile.read().split("\n")
+        lines = input_data.snapshot_file.get_contents().split("\n")
         dimensions = MedyanConverter._parse_data_dimensions(lines, input_data)
         result = AgentData.from_dimensions(dimensions)
         time_index = -1

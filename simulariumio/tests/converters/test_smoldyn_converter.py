@@ -8,7 +8,7 @@ from simulariumio.smoldyn import (
     SmoldynConverter,
     SmoldynData,
 )
-from simulariumio import MetaData, UnitData, DisplayData
+from simulariumio import MetaData, UnitData, DisplayData, InputFileData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
@@ -26,7 +26,9 @@ from simulariumio.constants import (
                     box_size=np.array([2.0, 2.0, 0.1]),
                     scale_factor=100,
                 ),
-                path_to_output_txt="simulariumio/tests/data/smoldyn/example_2D.txt",
+                smoldyn_file=InputFileData(
+                    file_path="simulariumio/tests/data/smoldyn/example_2D.txt"
+                ),
                 display_data={
                     "S(solution)": DisplayData(
                         name="S",
@@ -240,7 +242,23 @@ from simulariumio.constants import (
                 meta_data=MetaData(
                     box_size=np.array([100.0, 100.0, 100.0]),
                 ),
-                path_to_output_txt="simulariumio/tests/data/smoldyn/example_3D.txt",
+                smoldyn_file=InputFileData(
+                    file_contents=(
+                        "0 0\n"
+                        "green(solution) 23.4545 49.2404 12.29 130\n"
+                        "green(solution) 83.9871 56.5501 33.9238 129\n"
+                        "red(solution) 20 30 20 100\n"
+                        "red(solution) 20 30 20 99\n"
+                        "0.01 0\n"
+                        "green(solution) 23.4969 49.2821 12.5752 130\n"
+                        "red(solution) 20.0684 30.3008 20.2782 100\n"
+                        "red(solution) 20.2498 29.916 19.949 99\n"
+                        "0.02 0\n"
+                        "green(solution) 23.5342 49.3372 12.6891 130\n"
+                        "red(solution) 20.5348 30.1101 19.7543 100\n"
+                        "\n"
+                    ),
+                ),
                 display_data={
                     "green(solution)": DisplayData(
                         name="Green",

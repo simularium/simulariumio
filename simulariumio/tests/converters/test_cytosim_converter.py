@@ -9,7 +9,7 @@ from simulariumio.cytosim import (
     CytosimData,
     CytosimObjectInfo,
 )
-from simulariumio import MetaData, DisplayData
+from simulariumio import MetaData, DisplayData, InputFileData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
@@ -29,8 +29,12 @@ from simulariumio.constants import (
                 ),
                 object_info={
                     "fibers": CytosimObjectInfo(
-                        filepath="simulariumio/tests/data/cytosim"
-                        "/3_fibers_3_frames/fiber_points.txt",
+                        cytosim_file=InputFileData(
+                            file_path=(
+                                "simulariumio/tests/data/cytosim"
+                                "/3_fibers_3_frames/fiber_points.txt"
+                            ),
+                        ),
                         display_data={
                             0: DisplayData(
                                 name="fiber",
@@ -338,8 +342,12 @@ from simulariumio.constants import (
                 ),
                 object_info={
                     "fibers": CytosimObjectInfo(
-                        filepath="simulariumio/tests/data/cytosim/"
-                        "aster_pull3D_couples_actin_solid_3_frames/fiber_points.txt",
+                        cytosim_file=InputFileData(
+                            file_path=(
+                                "simulariumio/tests/data/cytosim/aster_pull3D"
+                                "_couples_actin_solid_3_frames/fiber_points.txt"
+                            ),
+                        ),
                         display_data={
                             2: DisplayData(
                                 name="actin",
@@ -349,16 +357,24 @@ from simulariumio.constants import (
                         },
                     ),
                     "solids": CytosimObjectInfo(
-                        filepath="simulariumio/tests/data/cytosim/"
-                        "aster_pull3D_couples_actin_solid_3_frames/solids.txt",
+                        cytosim_file=InputFileData(
+                            file_path=(
+                                "simulariumio/tests/data/cytosim/"
+                                "aster_pull3D_couples_actin_solid_3_frames/solids.txt"
+                            ),
+                        ),
                         display_data={
                             1: DisplayData(name="aster"),
                             2: DisplayData(name="vesicle", radius=0.1),
                         },
                     ),
                     "singles": CytosimObjectInfo(
-                        filepath="simulariumio/tests/data/cytosim/"
-                        "aster_pull3D_couples_actin_solid_3_frames/singles.txt",
+                        cytosim_file=InputFileData(
+                            file_path=(
+                                "simulariumio/tests/data/cytosim/"
+                                "aster_pull3D_couples_actin_solid_3_frames/singles.txt"
+                            ),
+                        ),
                         display_data={
                             1: DisplayData(name="dynein", radius=0.01),
                             2: DisplayData(
@@ -371,8 +387,12 @@ from simulariumio.constants import (
                         },
                     ),
                     "couples": CytosimObjectInfo(
-                        filepath="simulariumio/tests/data/cytosim/"
-                        "aster_pull3D_couples_actin_solid_3_frames/couples.txt",
+                        cytosim_file=InputFileData(
+                            file_path=(
+                                "simulariumio/tests/data/cytosim/"
+                                "aster_pull3D_couples_actin_solid_3_frames/couples.txt"
+                            ),
+                        ),
                         display_data={
                             1: DisplayData(name="motor complex", radius=0.02)
                         },

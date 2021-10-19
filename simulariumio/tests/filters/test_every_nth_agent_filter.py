@@ -3,7 +3,7 @@
 
 import pytest
 
-from simulariumio import FileConverter
+from simulariumio import FileConverter, InputFileData
 from simulariumio.filters import EveryNthAgentFilter
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
@@ -12,8 +12,10 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
     "input_path, _filter, expected_data",
     [
         (
-            "simulariumio/tests/data/cytosim/aster_pull3D_couples_actin_solid_3_frames"
-            "/aster_pull3D_couples_actin_solid_3_frames.json",
+            (
+                "simulariumio/tests/data/cytosim/aster_pull3D_couples_actin"
+                "_solid_3_frames/aster_pull3D_couples_actin_solid_3_frames.json"
+            ),
             EveryNthAgentFilter(
                 n_per_type={
                     "microtubule": 3,
@@ -605,7 +607,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
     ],
 )
 def test_every_nth_agent_filter(input_path, _filter, expected_data):
-    converter = FileConverter(input_path)
+    converter = FileConverter(input_file=InputFileData(file_path=input_path))
     filtered_data = converter.filter_data([_filter])
     buffer_data = converter._read_trajectory_data(filtered_data)
     assert expected_data == buffer_data

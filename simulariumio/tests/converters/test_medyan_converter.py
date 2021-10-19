@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.medyan import MedyanConverter, MedyanData
-from simulariumio import MetaData, DisplayData
+from simulariumio import MetaData, DisplayData, InputFileData
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
 
@@ -18,7 +18,9 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                 meta_data=MetaData(
                     box_size=np.array([1000.0, 1000.0, 500.0]),
                 ),
-                path_to_snapshot="simulariumio/tests/data/medyan/snapshot.traj",
+                snapshot_file=InputFileData(
+                    file_path="simulariumio/tests/data/medyan/snapshot.traj"
+                ),
                 filament_display_data={
                     0: DisplayData(
                         name="Actin",
@@ -407,7 +409,9 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                 meta_data=MetaData(
                     box_size=np.array([1000.0, 1000.0, 500.0]),
                 ),
-                path_to_snapshot="simulariumio/tests/data/medyan/snapshot.traj",
+                snapshot_file=InputFileData(
+                    file_path="simulariumio/tests/data/medyan/snapshot.traj"
+                ),
                 filament_display_data={
                     0: DisplayData(
                         name="Actin",
