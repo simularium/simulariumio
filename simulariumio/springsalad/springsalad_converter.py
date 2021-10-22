@@ -18,9 +18,6 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 
-max_uid = 0
-
-
 class SpringsaladConverter(TrajectoryConverter):
     def __init__(self, input_data: SpringsaladData):
         """
@@ -36,16 +33,6 @@ class SpringsaladConverter(TrajectoryConverter):
             SpringSaLaD simulation trajectory outputs and plot data
         """
         self._data = self._read(input_data)
-
-    @staticmethod
-    def _get_next_uid() -> int:
-        """
-        Get the next number to use as a uid for a bond
-        (these could be repeated in the particle uids)
-        """
-        global max_uid
-        max_uid += 1
-        return max_uid
 
     @staticmethod
     def _parse_dimensions(
@@ -78,7 +65,6 @@ class SpringsaladConverter(TrajectoryConverter):
         """
         Parse SpringSaLaD SIM_VIEW txt file to get spatial data
         """
-        global max_uid
         dimensions = SpringsaladConverter._parse_dimensions(
             springsalad_data, input_data.draw_bonds
         )
@@ -86,6 +72,7 @@ class SpringsaladConverter(TrajectoryConverter):
         box_size = np.zeros(3)
         time_index = -1
         agent_index = 0
+        max_uid = 0
         scene_agent_positions = {}
         for line in springsalad_data:
             cols = line.split()
@@ -142,9 +129,8 @@ class SpringsaladConverter(TrajectoryConverter):
                     )
                 result.n_agents[time_index] += 1
                 result.viz_types[time_index][agent_index] = VIZ_TYPE.FIBER
-                result.unique_ids[time_index][
-                    agent_index
-                ] = SpringsaladConverter._get_next_uid()
+                result.unique_ids[time_index][agent_index] = max_uid
+                max_uid += 1
                 result.types[time_index].append("Link")
                 result.n_subpoints[time_index][agent_index] = 2.0
                 result.subpoints[time_index][agent_index][0] = scene_agent_positions[
