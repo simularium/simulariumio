@@ -14,13 +14,11 @@ jobs:
       uses: conda-incubator/setup-miniconda@v2
       with:
         auto-update-conda: true
-        python-version: 3.8
+        python-version: 3.9
         channels: conda-forge
     - name: Install Conda Deps
       shell: bash -l {0}
       run: |
-        conda install hdf5==1.12.1
-        conda install h5py==3.4.0
         conda install readdy==2.0.9
     - name: Install Dependencies
       shell: bash -l {0}
