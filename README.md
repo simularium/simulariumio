@@ -118,11 +118,11 @@ Rendering capabilities planned for future:
 ## Installation
 **Install Requires:** 
 
-* Requires Python 3.7 or 3.8
+* Requires Python 3.7, 3.8, or 3.9
 
 * If ReaDDy trajectories will be converted, the ReaDDy python package must be installed:
 (add conda forge channel if it's not already: `conda config --add channels conda-forge`)
-`conda install -c readdy readdy`
+`conda install readdy`
 
 **Stable Release:** `pip install simulariumio`
 
