@@ -95,6 +95,7 @@ setup(
         "Natural Language :: English",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
     description="Simularium Conversion helps convert simulation outputs to the format consumed by the Simularium viewer.",
     entry_points={
