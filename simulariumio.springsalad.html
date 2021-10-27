@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>simulariumio.springsalad package &mdash; Simularium Conversion 1.2.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>simulariumio.springsalad package &mdash; Simularium Conversion 1.3.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -28,7 +28,7 @@
             <a href="index.html" class="icon icon-home"> Simularium Conversion
           </a>
               <div class="version">
-                1.2.0
+                1.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -136,7 +136,7 @@ SpringSaLaD simulation trajectory outputs and plot data</p>
 <span id="simulariumio-springsalad-springsalad-data-module"></span><h2>simulariumio.springsalad.springsalad_data module<a class="headerlink" href="#module-simulariumio.springsalad.springsalad_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.springsalad.springsalad_data.SpringsaladData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.springsalad.springsalad_data.</code><code class="sig-name descname">SpringsaladData</code><span class="sig-paren">(</span><em class="sig-param">sim_view_txt_file: simulariumio.data_objects.input_file_data.InputFileData</em>, <em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData = None</em>, <em class="sig-param">display_data: Dict[str</em>, <em class="sig-param">simulariumio.data_objects.display_data.DisplayData] = None</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/springsalad/springsalad_data.html#SpringsaladData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.springsalad.springsalad_data.</code><code class="sig-name descname">SpringsaladData</code><a class="reference internal" href="_modules/simulariumio/springsalad/springsalad_data.html#SpringsaladData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 from SpringSaLaD (<a class="reference external" href="https://vcell.org/ssalad">https://vcell.org/ssalad</a>)
@@ -157,6 +157,8 @@ Default: for names, use names from sim view txt file,</p>
 for rendering, use default representations and colors</p>
 </div></blockquote>
 </li>
+<li><p><strong>draw_bonds</strong> (<em>bool (optional)</em>) – Draw lines connecting bonded particles?
+Default: True</p></li>
 <li><p><strong>plots</strong> (<em>List[Dict[str, Any]] (optional)</em>) – An object containing plot data already
 in Simularium format</p></li>
 </ul>
@@ -165,6 +167,11 @@ in Simularium format</p></li>
 <dl class="attribute">
 <dt id="simulariumio.springsalad.springsalad_data.SpringsaladData.display_data">
 <code class="sig-name descname">display_data</code><em class="property">: Dict[str, DisplayData]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData.display_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="simulariumio.springsalad.springsalad_data.SpringsaladData.draw_bonds">
+<code class="sig-name descname">draw_bonds</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.springsalad.springsalad_data.SpringsaladData.draw_bonds" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">

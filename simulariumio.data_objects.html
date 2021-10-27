@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>simulariumio.data_objects package &mdash; Simularium Conversion 1.2.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>simulariumio.data_objects package &mdash; Simularium Conversion 1.3.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -28,7 +28,7 @@
             <a href="index.html" class="icon icon-home"> Simularium Conversion
           </a>
               <div class="version">
-                1.2.0
+                1.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -117,7 +117,7 @@
 <span id="simulariumio-data-objects-agent-data-module"></span><h2>simulariumio.data_objects.agent_data module<a class="headerlink" href="#module-simulariumio.data_objects.agent_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.data_objects.agent_data.AgentData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.agent_data.</code><code class="sig-name descname">AgentData</code><span class="sig-paren">(</span><em class="sig-param">times: numpy.ndarray, n_agents: numpy.ndarray, viz_types: numpy.ndarray, unique_ids: numpy.ndarray, types: List[List[str]], positions: numpy.ndarray, radii: numpy.ndarray, rotations: Optional[numpy.ndarray] = None, n_subpoints: Optional[numpy.ndarray] = None, subpoints: Optional[numpy.ndarray] = None, display_data: Optional[Dict[str, simulariumio.data_objects.display_data.DisplayData]] = None, draw_fiber_points: bool = False, n_timesteps: int = -1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.agent_data.</code><code class="sig-name descname">AgentData</code><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object contains spatial simulation data</p>
 <dl class="field-list">
@@ -185,7 +185,7 @@ with the size of the numpy arrays increased by the buffer_size_inc</p>
 
 <dl class="method">
 <dt id="simulariumio.data_objects.agent_data.AgentData.from_buffer_data">
-<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><em class="sig-param">buffer_data: Dict[str, Any]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create AgentData from a simularium JSON dict containing buffers</p>
 </dd></dl>
 
@@ -218,20 +218,20 @@ by the given added_dimensions</p>
 
 <dl class="method">
 <dt id="simulariumio.data_objects.agent_data.AgentData.get_display_data">
-<em class="property">static </em><code class="sig-name descname">get_display_data</code><span class="sig-paren">(</span><em class="sig-param">type_mapping: Dict[str, Any]</em><span class="sig-paren">)</span> &#x2192; Dict[str, simulariumio.data_objects.display_data.DisplayData]<a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.get_display_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.get_display_data" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">get_display_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.get_display_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.get_display_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the display_data mapping using a type_mapping
 from a simularium JSON dict containing buffers</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="simulariumio.data_objects.agent_data.AgentData.get_type_ids_and_mapping">
-<code class="sig-name descname">get_type_ids_and_mapping</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Tuple[numpy.ndarray, Dict[str, Any]]<a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.get_type_ids_and_mapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.get_type_ids_and_mapping" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_type_ids_and_mapping</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.get_type_ids_and_mapping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.get_type_ids_and_mapping" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a type_ids array from the type_names list</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="simulariumio.data_objects.agent_data.AgentData.get_type_names">
-<em class="property">static </em><code class="sig-name descname">get_type_names</code><span class="sig-paren">(</span><em class="sig-param">type_ids: numpy.ndarray, type_mapping: Dict[str, Any]</em><span class="sig-paren">)</span> &#x2192; List[List[str]]<a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.get_type_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.get_type_names" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">get_type_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/agent_data.html#AgentData.get_type_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.agent_data.AgentData.get_type_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the type_names list from a type_ids array and a type_mapping</p>
 </dd></dl>
 
@@ -324,7 +324,7 @@ Default: 75.0</p></li>
 
 <dl class="method">
 <dt id="simulariumio.data_objects.camera_data.CameraData.from_buffer_data">
-<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><em class="sig-param">buffer_data: Dict[str, Any]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/camera_data.html#CameraData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/camera_data.html#CameraData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -468,7 +468,7 @@ Default: Use default colors from Simularium Viewer</p></li>
 <span id="simulariumio-data-objects-histogram-plot-data-module"></span><h2>simulariumio.data_objects.histogram_plot_data module<a class="headerlink" href="#module-simulariumio.data_objects.histogram_plot_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.data_objects.histogram_plot_data.HistogramPlotData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.histogram_plot_data.</code><code class="sig-name descname">HistogramPlotData</code><span class="sig-paren">(</span><em class="sig-param">title: str, xaxis_title: str, traces: Dict[str, numpy.ndarray]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/histogram_plot_data.html#HistogramPlotData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.histogram_plot_data.HistogramPlotData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.histogram_plot_data.</code><code class="sig-name descname">HistogramPlotData</code><a class="reference internal" href="_modules/simulariumio/data_objects/histogram_plot_data.html#HistogramPlotData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.histogram_plot_data.HistogramPlotData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object contains data for a scatterplot</p>
 <dl class="field-list simple">
@@ -579,7 +579,7 @@ Default: 1.0</p></li>
 
 <dl class="method">
 <dt id="simulariumio.data_objects.meta_data.MetaData.from_buffer_data">
-<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><em class="sig-param">buffer_data: Dict[str, Any]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/meta_data.html#MetaData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/meta_data.html#MetaData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create MetaData from a simularium JSON dict containing buffers</p>
 </dd></dl>
 
@@ -644,7 +644,7 @@ a link to the repository of source code</p></li>
 
 <dl class="method">
 <dt id="simulariumio.data_objects.model_meta_data.ModelMetaData.from_buffer_data">
-<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><em class="sig-param">buffer_data: Dict[str, Any]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/model_meta_data.html#ModelMetaData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/model_meta_data.html#ModelMetaData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create ModelMetaData from a simularium JSON dict containing buffers</p>
 </dd></dl>
 
@@ -691,7 +691,7 @@ a link to the repository of source code</p></li>
 <span id="simulariumio-data-objects-scatter-plot-data-module"></span><h2>simulariumio.data_objects.scatter_plot_data module<a class="headerlink" href="#module-simulariumio.data_objects.scatter_plot_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.data_objects.scatter_plot_data.ScatterPlotData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.scatter_plot_data.</code><code class="sig-name descname">ScatterPlotData</code><span class="sig-paren">(</span><em class="sig-param">title: str, xaxis_title: str, yaxis_title: str, xtrace: numpy.ndarray, ytraces: Dict[str, numpy.ndarray], render_mode: str = 'markers'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/scatter_plot_data.html#ScatterPlotData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.scatter_plot_data.ScatterPlotData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.scatter_plot_data.</code><code class="sig-name descname">ScatterPlotData</code><a class="reference internal" href="_modules/simulariumio/data_objects/scatter_plot_data.html#ScatterPlotData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.scatter_plot_data.ScatterPlotData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object contains data for a scatterplot</p>
 <dl class="field-list">
@@ -753,7 +753,7 @@ Options:</p>
 <span id="simulariumio-data-objects-trajectory-data-module"></span><h2>simulariumio.data_objects.trajectory_data module<a class="headerlink" href="#module-simulariumio.data_objects.trajectory_data" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="simulariumio.data_objects.trajectory_data.TrajectoryData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.trajectory_data.</code><code class="sig-name descname">TrajectoryData</code><span class="sig-paren">(</span><em class="sig-param">meta_data: simulariumio.data_objects.meta_data.MetaData</em>, <em class="sig-param">agent_data: simulariumio.data_objects.agent_data.AgentData</em>, <em class="sig-param">time_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">spatial_units: simulariumio.data_objects.unit_data.UnitData = None</em>, <em class="sig-param">plots: List[Dict[str</em>, <em class="sig-param">Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/trajectory_data.html#TrajectoryData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">simulariumio.data_objects.trajectory_data.</code><code class="sig-name descname">TrajectoryData</code><a class="reference internal" href="_modules/simulariumio/data_objects/trajectory_data.html#TrajectoryData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 and plot data</p>
@@ -787,7 +787,7 @@ generate new unique IDs and type IDs as needed</p>
 
 <dl class="method">
 <dt id="simulariumio.data_objects.trajectory_data.TrajectoryData.from_buffer_data">
-<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><em class="sig-param">buffer_data: Dict[str, Any]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/trajectory_data.html#TrajectoryData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_buffer_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/trajectory_data.html#TrajectoryData.from_buffer_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.trajectory_data.TrajectoryData.from_buffer_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create TrajectoryData from a simularium JSON dict containing buffers</p>
 </dd></dl>
 
