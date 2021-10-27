@@ -9,6 +9,7 @@ import numpy as np
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, UnitData, DimensionData
 from .springsalad_data import SpringsaladData
+from ..constants import VIZ_TYPE
 
 ###############################################################################
 
@@ -34,12 +35,14 @@ class SpringsaladConverter(TrajectoryConverter):
         self._data = self._read(input_data)
 
     @staticmethod
-    def _parse_dimensions(springsalad_data: List[str]) -> DimensionData:
+    def _parse_dimensions(
+        springsalad_data: List[str], draw_bonds: bool
+    ) -> DimensionData:
         """
         Parse SpringSaLaD SIM_VIEW txt file to get the number of timesteps
         and maximum agents per timestep
         """
-        result = DimensionData(0, 0)
+        result = DimensionData(0, 0, 2 if draw_bonds else 0)
         agents = 0
         for line in springsalad_data:
             if "CurrentTime" in line:  # beginning of a frame
@@ -48,6 +51,8 @@ class SpringsaladConverter(TrajectoryConverter):
                 agents = 0
                 result.total_steps += 1
             if "ID" in line:  # line has data for one agent
+                agents += 1
+            if draw_bonds and "Link" in line:  # line has data for a bond
                 agents += 1
         if agents > result.max_agents:
             result.max_agents = agents
@@ -60,11 +65,15 @@ class SpringsaladConverter(TrajectoryConverter):
         """
         Parse SpringSaLaD SIM_VIEW txt file to get spatial data
         """
-        dimensions = SpringsaladConverter._parse_dimensions(springsalad_data)
+        dimensions = SpringsaladConverter._parse_dimensions(
+            springsalad_data, input_data.draw_bonds
+        )
         result = AgentData.from_dimensions(dimensions)
         box_size = np.zeros(3)
         time_index = -1
         agent_index = 0
+        max_uid = 0
+        scene_agent_positions = {}
         for line in springsalad_data:
             cols = line.split()
             if "xsize" in line:
@@ -75,12 +84,14 @@ class SpringsaladConverter(TrajectoryConverter):
                 box_size[2] += 2 * float(cols[1])
             if "z_inside" in line:
                 box_size[2] += 2 * float(cols[1])
-            if "CurrentTime" in line:  # beginning of a scene
+            if "CurrentTime" in line:  # beginning of a scene (timepoint)
                 agent_index = 0
                 time_index += 1
                 result.times[time_index] = float(
                     line.split("CurrentTime")[1].split()[0]
                 )
+                scene_agent_positions = {}
+                max_uid = 0
             if "ID" in line:  # line has data for one agent in scene
                 result.n_agents[time_index] += 1
                 result.unique_ids[time_index][agent_index] = int(cols[1])
@@ -90,11 +101,11 @@ class SpringsaladConverter(TrajectoryConverter):
                     if raw_type_name in input_data.display_data
                     else raw_type_name
                 )
-                result.positions[time_index][
-                    agent_index
-                ] = input_data.meta_data.scale_factor * np.array(
+                position = input_data.meta_data.scale_factor * np.array(
                     [float(cols[4]), float(cols[5]), float(cols[6])]
                 )
+                scene_agent_positions[int(cols[1])] = position
+                result.positions[time_index][agent_index] = position
                 result.radii[time_index][
                     agent_index
                 ] = input_data.meta_data.scale_factor * (
@@ -103,6 +114,31 @@ class SpringsaladConverter(TrajectoryConverter):
                     and input_data.display_data[raw_type_name].radius is not None
                     else float(cols[2])
                 )
+                agent_index += 1
+            if input_data.draw_bonds and "Link" in line:  # line has data for a bond
+                particle1_id = int(cols[1])
+                particle2_id = int(cols[3])
+                if (
+                    particle1_id not in scene_agent_positions
+                    or particle2_id not in scene_agent_positions
+                ):
+                    raise Exception(
+                        "Could not find particle ID connected by Link "
+                        f"at timepoint {time_index} in SpringSaLaD data, "
+                        "try converting without drawing bonds"
+                    )
+                result.n_agents[time_index] += 1
+                result.viz_types[time_index][agent_index] = VIZ_TYPE.FIBER
+                result.unique_ids[time_index][agent_index] = max_uid
+                max_uid += 1
+                result.types[time_index].append("Link")
+                result.n_subpoints[time_index][agent_index] = 2.0
+                result.subpoints[time_index][agent_index][0] = scene_agent_positions[
+                    particle1_id
+                ]
+                result.subpoints[time_index][agent_index][1] = scene_agent_positions[
+                    particle2_id
+                ]
                 agent_index += 1
         result.n_timesteps = time_index + 1
         return result, box_size

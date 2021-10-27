@@ -36,18 +36,18 @@ simulariumio.data\_objects.display\_data module
    :undoc-members:
    :show-inheritance:
 
-simulariumio.data\_objects.file\_data module
---------------------------------------------
-
-.. automodule:: simulariumio.data_objects.file_data
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 simulariumio.data\_objects.histogram\_plot\_data module
 -------------------------------------------------------
 
 .. automodule:: simulariumio.data_objects.histogram_plot_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.data\_objects.input\_file\_data module
+---------------------------------------------------
+
+.. automodule:: simulariumio.data_objects.input_file_data
    :members:
    :undoc-members:
    :show-inheritance:
