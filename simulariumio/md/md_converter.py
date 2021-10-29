@@ -3,6 +3,7 @@
 
 import logging
 import copy
+from typing import Set
 
 import numpy as np
 import pandas as pd
@@ -88,36 +89,6 @@ class MdConverter(TrajectoryConverter):
         return 1.0
 
     @staticmethod
-    def _read_universe(
-        input_data: MdData,
-    ) -> AgentData:
-        """
-        Use a MD Universe to get AgentData
-        """
-        dimensions = MdConverter._read_universe_dimensions(input_data)
-        result = AgentData.from_dimensions(dimensions)
-        for frame in input_data.md_universe.trajectory[
-            :: input_data.nth_timestep_to_read
-        ]:
-            time_index = frame.frame
-            result.times[time_index] = input_data.md_universe.trajectory.time
-            atom_positions = input_data.md_universe.atoms.positions
-            result.n_agents[time_index] = atom_positions.shape[0]
-            result.unique_ids[time_index] = np.arange(atom_positions.shape[0])
-            result.types[time_index] = input_data.md_universe.atoms.names
-            result.positions[time_index] = (
-                input_data.meta_data.scale_factor * atom_positions
-            )
-            result.radii[time_index] = input_data.meta_data.scale_factor * np.array(
-                [
-                    MdConverter._get_radius(type_name, input_data)
-                    for type_name in result.types[time_index]
-                ]
-            )
-        result.n_timesteps = dimensions.total_steps
-        return result
-
-    @staticmethod
     def _get_element_hex_color(element_type: str, jmol_colors: pd.DataFrame) -> str:
         """
         Get the standard Jmol hex color for the atomic element type
@@ -126,7 +97,7 @@ class MdConverter(TrajectoryConverter):
         return "#" + str(element_df.Hex.values[0]) if not element_df.empty else ""
 
     @staticmethod
-    def _get_display_data(
+    def _get_display_data_for_type(
         raw_type_name: str, jmol_colors: pd.DataFrame, input_data: MdData
     ) -> DisplayData:
         """
@@ -150,6 +121,60 @@ class MdConverter(TrajectoryConverter):
         return display_data
 
     @staticmethod
+    def _get_display_data_mapping(
+        unique_raw_type_names: Set[str], input_data: MdData
+    ) -> DisplayData:
+        """
+        Get display names mapped to display data (geometry and color)
+        """
+        result = {}
+        jmol_colors = JMOL_COLORS()
+        for raw_type_name in unique_raw_type_names:
+            display_data = MdConverter._get_display_data_for_type(
+                raw_type_name, jmol_colors, input_data
+            )
+            result[display_data.name] = display_data
+        return result
+
+    @staticmethod
+    def _read_universe(
+        input_data: MdData,
+    ) -> AgentData:
+        """
+        Use a MD Universe to get AgentData
+        """
+        dimensions = MdConverter._read_universe_dimensions(input_data)
+        result = AgentData.from_dimensions(dimensions)
+        get_type_name_func = np.frompyfunc(MdConverter._get_type_name, 2, 1)
+        unique_raw_type_names = set([])
+        for frame in input_data.md_universe.trajectory[
+            :: input_data.nth_timestep_to_read
+        ]:
+            time_index = frame.frame
+            result.times[time_index] = input_data.md_universe.trajectory.time
+            atom_positions = input_data.md_universe.atoms.positions
+            result.n_agents[time_index] = atom_positions.shape[0]
+            result.unique_ids[time_index] = np.arange(atom_positions.shape[0])
+            unique_raw_type_names.update(list(input_data.md_universe.atoms.names))
+            result.types[time_index] = get_type_name_func(
+                input_data.md_universe.atoms.names, input_data
+            )
+            result.positions[time_index] = (
+                input_data.meta_data.scale_factor * atom_positions
+            )
+            result.radii[time_index] = input_data.meta_data.scale_factor * np.array(
+                [
+                    MdConverter._get_radius(type_name, input_data)
+                    for type_name in input_data.md_universe.atoms.names
+                ]
+            )
+        result.n_timesteps = dimensions.total_steps
+        result.display_data = MdConverter._get_display_data_mapping(
+            unique_raw_type_names, input_data
+        )
+        return result
+
+    @staticmethod
     def _read(input_data: MdData) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the MD data
@@ -157,16 +182,6 @@ class MdConverter(TrajectoryConverter):
         print("Reading MD Data -------------")
         # get data from the MD Universe
         agent_data = MdConverter._read_universe(input_data)
-        # get display data (geometry and color)
-        unique_types = np.unique(agent_data.types)
-        get_type_name_func = np.frompyfunc(MdConverter._get_type_name, 2, 1)
-        agent_data.types = get_type_name_func(agent_data.types, input_data)
-        jmol_colors = JMOL_COLORS()
-        for type_name in unique_types:
-            display_data = MdConverter._get_display_data(
-                type_name, jmol_colors, input_data
-            )
-            agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
         input_data.meta_data._set_box_size()
