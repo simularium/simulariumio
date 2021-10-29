@@ -47,10 +47,11 @@ class MdConverter(TrajectoryConverter):
         and maximum agents per timestep
         """
         result = DimensionData(
-            total_steps=len(input_data.md_universe.trajectory),
+            total_steps=0,
             max_agents=0,
         )
         for ts in input_data.md_universe.trajectory[:: input_data.nth_timestep_to_read]:
+            result.total_steps += 1
             n_agents = input_data.md_universe.atoms.positions.shape[0]
             if n_agents > result.max_agents:
                 result.max_agents = n_agents
@@ -147,10 +148,10 @@ class MdConverter(TrajectoryConverter):
         result = AgentData.from_dimensions(dimensions)
         get_type_name_func = np.frompyfunc(MdConverter._get_type_name, 2, 1)
         unique_raw_type_names = set([])
+        time_index = 0
         for frame in input_data.md_universe.trajectory[
             :: input_data.nth_timestep_to_read
         ]:
-            time_index = frame.frame
             result.times[time_index] = input_data.md_universe.trajectory.time
             atom_positions = input_data.md_universe.atoms.positions
             result.n_agents[time_index] = atom_positions.shape[0]
@@ -168,6 +169,7 @@ class MdConverter(TrajectoryConverter):
                     for type_name in input_data.md_universe.atoms.names
                 ]
             )
+            time_index += 1
         result.n_timesteps = dimensions.total_steps
         result.display_data = MdConverter._get_display_data_mapping(
             unique_raw_type_names, input_data

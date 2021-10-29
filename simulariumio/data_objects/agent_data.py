@@ -241,7 +241,7 @@ class AgentData:
         """
         bundle_data = buffer_data["spatialData"]["bundleData"]
         dimensions = AgentData._get_buffer_data_dimensions(buffer_data)
-        print(f"original dim = {dimensions.to_string()}")
+        print(f"original dim = {dimensions}")
         agent_data = AgentData.from_dimensions(dimensions)
         type_ids = np.zeros((dimensions.total_steps, dimensions.max_agents))
         for time_index in range(dimensions.total_steps):
@@ -436,7 +436,6 @@ class AgentData:
         """
         print(f"increase buffer {axis}")
         current_dimensions = self.get_dimensions()
-        # raise Exception(added_dimensions.to_string())
         new_dimensions = added_dimensions.add(current_dimensions, axis)
         current_types = copy.deepcopy(self.types)
         result = AgentData.from_dimensions(new_dimensions)
