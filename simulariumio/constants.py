@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from enum import Enum
+import os
 
 import numpy as np
+import pandas as pd
 
 from .data_objects.dimension_data import DimensionData
 
@@ -71,3 +73,13 @@ class CURRENT_VERSION:
 
 
 DEFAULT_BOX_SIZE = 100.0 * np.ones(3)
+
+JMOL_COLORS_CSV_PATH = "jmolcolors.csv"
+
+
+def JMOL_COLORS() -> pd.DataFrame:
+    """
+    Get a dataframe with Jmol colors for atomic element types
+    """
+    this_dir, _ = os.path.split(__file__)
+    return pd.read_csv(os.path.join(this_dir, JMOL_COLORS_CSV_PATH))

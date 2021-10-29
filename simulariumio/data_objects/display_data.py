@@ -80,9 +80,10 @@ class DisplayData:
             self.display_type == DISPLAY_TYPE.NONE and not self.url and not self.color
         )
 
-    def to_string(self):
+    def __str__(self):
         return (
-            f"{self.display_type.value}: url={self.url}, color={self.color} "
+            f"{self.name}: display_type={self.display_type.value}, "
+            f"url={self.url}, color={self.color} "
             f"is_default? {self.is_default()}"
         )
 
@@ -96,6 +97,8 @@ class DisplayData:
 
     def __copy__(self):
         result = type(self)(
+            name=self.name,
+            radius=self.radius,
             display_type=self.display_type,
             url=self.url,
             color=self.color,
