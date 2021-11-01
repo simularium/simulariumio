@@ -52,8 +52,18 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "microtubule"},
-                        "1": {"name": "motor complex"},
+                        "0": {
+                            "name": "microtubule",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "1": {
+                            "name": "motor complex",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                     },
                 },
                 "spatialData": {

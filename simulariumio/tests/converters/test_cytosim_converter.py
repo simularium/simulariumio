@@ -435,15 +435,29 @@ from simulariumio.constants import (
                     "typeMapping": {
                         "0": {
                             "name": "fiber1",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
                         },
                         "1": {
                             "name": "actin",
                             "geometry": {
+                                "displayType": "FIBER",
                                 "color": "#ffc100",
                             },
                         },
-                        "2": {"name": "aster"},
-                        "3": {"name": "vesicle"},
+                        "2": {
+                            "name": "aster",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "3": {
+                            "name": "vesicle",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                         "4": {
                             "name": "kinesin",
                             "geometry": {
@@ -452,8 +466,18 @@ from simulariumio.constants import (
                                 "color": "#0080ff",
                             },
                         },
-                        "5": {"name": "dynein"},
-                        "6": {"name": "motor complex"},
+                        "5": {
+                            "name": "dynein",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "6": {
+                            "name": "motor complex",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                     },
                 },
                 "spatialData": {

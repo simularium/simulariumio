@@ -91,10 +91,16 @@ from simulariumio.constants import (
                         "1": {
                             "name": "E",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#0080ff",
                             },
                         },
-                        "2": {"name": "ES"},
+                        "2": {
+                            "name": "ES",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                     },
                 },
                 "spatialData": {
@@ -304,10 +310,16 @@ from simulariumio.constants import (
                         "0": {
                             "name": "Green",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#dfdacd",
                             },
                         },
-                        "1": {"name": "red(solution)"},
+                        "1": {
+                            "name": "red(solution)",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                     },
                 },
                 "spatialData": {

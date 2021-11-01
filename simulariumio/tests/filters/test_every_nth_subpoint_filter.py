@@ -53,13 +53,48 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "microtubule"},
-                        "1": {"name": "actin"},
-                        "2": {"name": "aster"},
-                        "3": {"name": "vesicle"},
-                        "4": {"name": "kinesin"},
-                        "5": {"name": "dynein"},
-                        "6": {"name": "motor complex"},
+                        "0": {
+                            "name": "microtubule",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "1": {
+                            "name": "actin",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "2": {
+                            "name": "aster",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "3": {
+                            "name": "vesicle",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "4": {
+                            "name": "kinesin",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "5": {
+                            "name": "dynein",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "6": {
+                            "name": "motor complex",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                     },
                 },
                 "spatialData": {

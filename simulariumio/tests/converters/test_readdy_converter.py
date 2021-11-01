@@ -83,6 +83,7 @@ from simulariumio.constants import (
                         "0": {
                             "name": "C",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#0080ff",
                             },
                         },
