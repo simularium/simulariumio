@@ -14,6 +14,7 @@ from ..constants import (
     V1_SPATIAL_BUFFER_STRUCT,
     VIZ_TYPE,
     BUFFER_SIZE_INC,
+    DISPLAY_TYPE,
 )
 from .dimension_data import DimensionData
 from .display_data import DisplayData
@@ -178,22 +179,34 @@ class AgentData:
         last_tid = 0
         for time_index in range(total_steps):
             for agent_index in range(len(self.types[time_index])):
-                tn = self.types[time_index][agent_index]
-                if len(tn) == 0:
+                type_name = self.types[time_index][agent_index]
+                if len(type_name) == 0:
                     continue
-                if tn not in type_id_mapping:
+                if type_name not in type_id_mapping:
                     tid = last_tid
                     last_tid += 1
-                    type_id_mapping[tn] = tid
-                    type_name_mapping[str(tid)] = {"name": tn}
+                    type_id_mapping[type_name] = tid
+                    type_name_mapping[str(tid)] = {"name": type_name}
+                    has_subpoints = self.n_subpoints[time_index][agent_index] > 0
                     if (
-                        tn in self.display_data
-                        and not self.display_data[tn].is_default()
+                        type_name in self.display_data
+                        and not self.display_data[type_name].is_default()
                     ):
-                        type_name_mapping[str(tid)]["geometry"] = dict(
-                            self.display_data[tn]
+                        self.display_data[type_name].check_set_default_display_type(
+                            has_subpoints
                         )
-                type_ids[time_index][agent_index] = type_id_mapping[tn]
+                        type_name_mapping[str(tid)]["geometry"] = dict(
+                            self.display_data[type_name]
+                        )
+                    else:
+                        type_name_mapping[str(tid)]["geometry"] = {
+                            "displayType": (
+                                DISPLAY_TYPE.FIBER
+                                if has_subpoints
+                                else DISPLAY_TYPE.SPHERE
+                            ).name,
+                        }
+                type_ids[time_index][agent_index] = type_id_mapping[type_name]
         return type_ids, type_name_mapping
 
     @staticmethod
@@ -241,7 +254,7 @@ class AgentData:
         """
         bundle_data = buffer_data["spatialData"]["bundleData"]
         dimensions = AgentData._get_buffer_data_dimensions(buffer_data)
-        print(f"original dim = {dimensions.to_string()}")
+        print(f"original dim = {dimensions}")
         agent_data = AgentData.from_dimensions(dimensions)
         type_ids = np.zeros((dimensions.total_steps, dimensions.max_agents))
         for time_index in range(dimensions.total_steps):
@@ -436,7 +449,6 @@ class AgentData:
         """
         print(f"increase buffer {axis}")
         current_dimensions = self.get_dimensions()
-        # raise Exception(added_dimensions.to_string())
         new_dimensions = added_dimensions.add(current_dimensions, axis)
         current_types = copy.deepcopy(self.types)
         result = AgentData.from_dimensions(new_dimensions)
