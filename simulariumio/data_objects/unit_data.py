@@ -63,7 +63,7 @@ class UnitData:
         self._quantity *= multiplier
         self._update_units()
 
-    def to_string(self):
+    def __str__(self):
         """
         get a string for the units
         """

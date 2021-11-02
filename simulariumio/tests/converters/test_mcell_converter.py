@@ -73,10 +73,16 @@ from simulariumio.constants import (
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "b"},
+                        "0": {
+                            "name": "b",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                         "1": {
                             "name": "Transporter",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#ff1493",
                             },
                         },
@@ -223,8 +229,5 @@ from simulariumio.constants import (
 def test_mcell_converter(trajectory, expected_data):
     converter = McellConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
-    assert (
-        expected_data["trajectoryInfo"]["typeMapping"]
-        == buffer_data["trajectoryInfo"]["typeMapping"]
-    )
+    expected_data == buffer_data
     assert converter._check_agent_ids_are_unique_per_frame(buffer_data)

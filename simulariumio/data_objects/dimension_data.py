@@ -65,7 +65,7 @@ class DimensionData:
             max_subpoints=self.max_subpoints + added_dimensions.max_subpoints,
         )
 
-    def to_string(self):
+    def __str__(self):
         return (
             f"{self.total_steps} timesteps X {self.max_agents} agents "
             f"X {self.max_subpoints} subpoints"

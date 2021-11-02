@@ -80,15 +80,23 @@ class DisplayData:
             self.display_type == DISPLAY_TYPE.NONE and not self.url and not self.color
         )
 
-    def to_string(self):
+    def check_set_default_display_type(self, has_subpoints):
+        """
+        If the display type hasn't been specified, set it to a default
+        based on whether the agent has subpoints
+        """
+        if self.display_type != DISPLAY_TYPE.NONE:
+            return
+        self.display_type = DISPLAY_TYPE.FIBER if has_subpoints else DISPLAY_TYPE.SPHERE
+
+    def __str__(self):
         return (
             f"{self.display_type.value}: url={self.url}, color={self.color} "
             f"is_default? {self.is_default()}"
         )
 
     def __iter__(self):
-        if self.display_type != DISPLAY_TYPE.NONE:
-            yield "displayType", self.display_type.value
+        yield "displayType", self.display_type.value
         if self.url:
             yield "url", self.url
         if self.color:
