@@ -74,12 +74,14 @@ from simulariumio.constants import (
                         "0": {
                             "name": "A",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#dfdacd",
                             },
                         },
                         "1": {
                             "name": "Hydrogen",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#FFFFFF",
                             },
                         },
@@ -269,12 +271,14 @@ from simulariumio.constants import (
                         "0": {
                             "name": "A",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#dfdacd",
                             },
                         },
                         "1": {
                             "name": "Hydrogen",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#FFFFFF",
                             },
                         },
