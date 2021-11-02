@@ -63,10 +63,16 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "cell1#interphase"},
+                        "0": {
+                            "name": "cell1#interphase",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                         "1": {
                             "name": "Cancer cell#phase4",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#0080ff",
                             },
                         },

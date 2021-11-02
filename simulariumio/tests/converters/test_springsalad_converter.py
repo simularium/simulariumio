@@ -86,12 +86,28 @@ from simulariumio.constants import (
                         "1": {
                             "name": "B",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#0080ff",
                             },
                         },
-                        "2": {"name": "GRAY"},
-                        "3": {"name": "CYAN"},
-                        "4": {"name": "BLUE"},
+                        "2": {
+                            "name": "GRAY",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "3": {
+                            "name": "CYAN",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "4": {
+                            "name": "BLUE",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                     },
                 },
                 "spatialData": {
@@ -308,13 +324,34 @@ from simulariumio.constants import (
                         "1": {
                             "name": "B",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#0080ff",
                             },
                         },
-                        "2": {"name": "GRAY"},
-                        "3": {"name": "CYAN"},
-                        "4": {"name": "BLUE"},
-                        "5": {"name": "Link"},
+                        "2": {
+                            "name": "GRAY",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "3": {
+                            "name": "CYAN",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "4": {
+                            "name": "BLUE",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "5": {
+                            "name": "Link",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
                     },
                 },
                 "spatialData": {
