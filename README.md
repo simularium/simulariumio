@@ -94,6 +94,7 @@ Upload your file to a public Dropbox or Google Drive folder or an AWS S3 bucket,
     * ReaDDy (https://readdy.github.io/)
     * Smoldyn (http://www.smoldyn.org/)
     * SpringSaLaD (https://vcell.org/ssalad)
+    * Molecular dynamics trajectories via MDAnalysis (https://www.mdanalysis.org/)
 * Conversions for data from custom engines can be implemented using the TrajectoryConverter class
 * Also accepts metrics data for plots to display alongside spatial data
 
@@ -148,6 +149,7 @@ See the Tutorial for the simulation engine you're using for details:
 * [ReaDDy Tutorial](examples/Tutorial_readdy.ipynb)
 * [Smoldyn Tutorial](examples/Tutorial_smoldyn.ipynb)
 * [SpringSaLaD Tutorial](examples/Tutorial_springsalad.ipynb)
+* [Molecular Dynamics Tutorial](examples/Tutorial_md.ipynb)
 
 An overview for data from ReaDDy:
 ```python

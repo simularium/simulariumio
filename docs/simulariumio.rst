@@ -10,6 +10,7 @@ Subpackages
    simulariumio.data_objects
    simulariumio.filters
    simulariumio.mcell
+   simulariumio.md
    simulariumio.medyan
    simulariumio.physicell
    simulariumio.plot_readers
