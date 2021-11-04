@@ -375,7 +375,7 @@ from simulariumio.constants import (
         ),
     ],
 )
-def test_smoldyn_converter(trajectory, expected_data):
+def test_md_converter(trajectory, expected_data):
     converter = MdConverter(trajectory)
     buffer_data = converter._read_trajectory_data(converter._data)
     assert expected_data == buffer_data
