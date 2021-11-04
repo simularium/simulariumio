@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>simulariumio.springsalad.springsalad_data &mdash; Simularium Conversion 1.4.0 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>simulariumio.md.md_data &mdash; Simularium Conversion 1.4.0 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -93,7 +93,7 @@
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../index.html">Module code</a> &raquo;</li>
           <li><a href="../../simulariumio.html">simulariumio</a> &raquo;</li>
-      <li>simulariumio.springsalad.springsalad_data</li>
+      <li>simulariumio.md.md_data</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -102,14 +102,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for simulariumio.springsalad.springsalad_data</h1><div class="highlight"><pre>
+  <h1>Source code for simulariumio.md.md_data</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">DisplayData</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">InputFileData</span>
+<span class="kn">from</span> <span class="nn">MDAnalysis</span> <span class="kn">import</span> <span class="n">Universe</span>
+
+<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">,</span> <span class="n">DisplayData</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -118,52 +120,69 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="SpringsaladData"><a class="viewcode-back" href="../../../simulariumio.springsalad.html#simulariumio.springsalad.springsalad_data.SpringsaladData">[docs]</a><span class="k">class</span> <span class="nc">SpringsaladData</span><span class="p">:</span>
-    <span class="n">sim_view_txt_file</span><span class="p">:</span> <span class="n">InputFileData</span>
+<div class="viewcode-block" id="MdData"><a class="viewcode-back" href="../../../simulariumio.md.html#simulariumio.md.md_data.MdData">[docs]</a><span class="k">class</span> <span class="nc">MdData</span><span class="p">:</span>
+    <span class="n">md_universe</span><span class="p">:</span> <span class="n">Universe</span>
+    <span class="n">nth_timestep_to_read</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
     <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span>
-    <span class="n">draw_bonds</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span>
+    <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span>
     <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">sim_view_txt_file</span><span class="p">:</span> <span class="n">InputFileData</span><span class="p">,</span>
+        <span class="n">md_universe</span><span class="p">:</span> <span class="n">Universe</span><span class="p">,</span>
+        <span class="n">nth_timestep_to_read</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">draw_bonds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object holds simulation trajectory outputs</span>
-<span class="sd">        from SpringSaLaD (https://vcell.org/ssalad)</span>
-<span class="sd">        and plot data</span>
+<span class="sd">        from molecular dynamics models</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        sim_view_txt_file: InputFileData</span>
-<span class="sd">            A InputFileData object containing a string path</span>
-<span class="sd">            or string contents of the txt file named</span>
-<span class="sd">            &quot;[model name]_SIM_VIEW_[run name].txt&quot;</span>
+<span class="sd">        timestep : float</span>
+<span class="sd">            A float amount of time in seconds that passes each step</span>
+<span class="sd">        md_universe: Universe</span>
+<span class="sd">            A MDAnalysis Universe object containing MD trajectory data.</span>
+<span class="sd">            See MDAnalysis package documentation for how to create one</span>
+<span class="sd">            (https://docs.mdanalysis.org/stable/documentation_pages/core/universe.html)</span>
+<span class="sd">        nth_timestep_to_read: int (optional)</span>
+<span class="sd">            Visualize every Nth timestep</span>
+<span class="sd">            e.g. if 10, only every 10th timestep will be visualized</span>
+<span class="sd">            Default: 1</span>
 <span class="sd">        meta_data : MetaData (optional)</span>
 <span class="sd">            An object containing metadata for the trajectory</span>
 <span class="sd">            including box size, scale factor, and camera defaults</span>
 <span class="sd">        display_data: Dict[str, DisplayData] (optional)</span>
-<span class="sd">            The particle type name from SpringSaLaD data mapped</span>
-<span class="sd">            to display names and rendering info for that type,</span>
-<span class="sd">            Default: for names, use names from sim view txt file,</span>
-<span class="sd">                for radius, use value from SpringSaLaD,</span>
-<span class="sd">                for rendering, use default representations and colors</span>
-<span class="sd">        draw_bonds: bool (optional)</span>
-<span class="sd">            Draw lines connecting bonded particles?</span>
-<span class="sd">            Default: True</span>
+<span class="sd">            The element abbreviation mapped</span>
+<span class="sd">            to display name and rendering info for that type,</span>
+<span class="sd">            Default: for names, use element abbreviation,</span>
+<span class="sd">                for radius, use 1.0,</span>
+<span class="sd">                for rendering, use colors from Jmol and default representations</span>
+<span class="sd">        time_units: UnitData (optional)</span>
+<span class="sd">            multiplier and unit name for time values</span>
+<span class="sd">            Default: 1.0 second</span>
+<span class="sd">        spatial_units: UnitData (optional)</span>
+<span class="sd">            multiplier and unit name for spatial values</span>
+<span class="sd">            (including positions, radii, and box size)</span>
+<span class="sd">            Default: 1.0 meter</span>
 <span class="sd">        plots : List[Dict[str, Any]] (optional)</span>
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sim_view_txt_file</span> <span class="o">=</span> <span class="n">sim_view_txt_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">md_universe</span> <span class="o">=</span> <span class="n">md_universe</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nth_timestep_to_read</span> <span class="o">=</span> <span class="n">nth_timestep_to_read</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span> <span class="k">if</span> <span class="n">meta_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">MetaData</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">display_data</span> <span class="k">if</span> <span class="n">display_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">draw_bonds</span> <span class="o">=</span> <span class="n">draw_bonds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span> <span class="k">if</span> <span class="n">time_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spatial_units</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">spatial_units</span> <span class="k">if</span> <span class="n">spatial_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span> <span class="k">if</span> <span class="n">plots</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span></div>
 </pre></div>
 

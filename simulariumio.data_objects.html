@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>simulariumio.data_objects package &mdash; Simularium Conversion 1.3.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>simulariumio.data_objects package &mdash; Simularium Conversion 1.4.0 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -28,7 +28,7 @@
             <a href="index.html" class="icon icon-home"> Simularium Conversion
           </a>
               <div class="version">
-                1.3.0
+                1.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -379,11 +379,6 @@ Default: 0</p></li>
 <code class="sig-name descname">max_subpoints</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.dimension_data.DimensionData.max_subpoints" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="simulariumio.data_objects.dimension_data.DimensionData.to_string">
-<code class="sig-name descname">to_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/dimension_data.html#DimensionData.to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.dimension_data.DimensionData.to_string" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="attribute">
 <dt id="simulariumio.data_objects.dimension_data.DimensionData.total_steps">
 <code class="sig-name descname">total_steps</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.dimension_data.DimensionData.total_steps" title="Permalink to this definition">¶</a></dt>
@@ -425,6 +420,13 @@ Default: Use default colors from Simularium Viewer</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="method">
+<dt id="simulariumio.data_objects.display_data.DisplayData.check_set_default_display_type">
+<code class="sig-name descname">check_set_default_display_type</code><span class="sig-paren">(</span><em class="sig-param">has_subpoints</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/display_data.html#DisplayData.check_set_default_display_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.display_data.DisplayData.check_set_default_display_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the display type hasn’t been specified, set it to a default
+based on whether the agent has subpoints</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="simulariumio.data_objects.display_data.DisplayData.color">
 <code class="sig-name descname">color</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.display_data.DisplayData.color" title="Permalink to this definition">¶</a></dt>
@@ -449,11 +451,6 @@ Default: Use default colors from Simularium Viewer</p></li>
 <dl class="attribute">
 <dt id="simulariumio.data_objects.display_data.DisplayData.radius">
 <code class="sig-name descname">radius</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.display_data.DisplayData.radius" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="simulariumio.data_objects.display_data.DisplayData.to_string">
-<code class="sig-name descname">to_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/display_data.html#DisplayData.to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.display_data.DisplayData.to_string" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -846,12 +843,6 @@ Default: 1.0</p></li>
 <dt id="simulariumio.data_objects.unit_data.UnitData.name">
 <code class="sig-name descname">name</code><em class="property">: str</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.data_objects.unit_data.UnitData.name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="method">
-<dt id="simulariumio.data_objects.unit_data.UnitData.to_string">
-<code class="sig-name descname">to_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/unit_data.html#UnitData.to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.data_objects.unit_data.UnitData.to_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>get a string for the units</p>
-</dd></dl>
 
 </dd></dl>
 

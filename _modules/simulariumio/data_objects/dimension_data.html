@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>simulariumio.data_objects.dimension_data &mdash; Simularium Conversion 1.3.0 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <title>simulariumio.data_objects.dimension_data &mdash; Simularium Conversion 1.4.0 documentation</title><link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -26,7 +26,7 @@
             <a href="../../../index.html" class="icon icon-home"> Simularium Conversion
           </a>
               <div class="version">
-                1.3.0
+                1.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -170,11 +170,11 @@
             <span class="n">max_subpoints</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_subpoints</span> <span class="o">+</span> <span class="n">added_dimensions</span><span class="o">.</span><span class="n">max_subpoints</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="DimensionData.to_string"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData.to_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span><span class="si">}</span><span class="s2"> timesteps X </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_agents</span><span class="si">}</span><span class="s2"> agents &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;X </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_subpoints</span><span class="si">}</span><span class="s2"> subpoints&quot;</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DimensionData</span><span class="p">):</span>
