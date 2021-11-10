@@ -32,7 +32,9 @@ class ParticleRotationCalculator:
         result = np.copy(relative_position)
         for dim in range(3):
             if abs(relative_position[dim]) > box_size / 2.0:
-                result[dim] -= relative_position[dim] / abs(relative_position[dim]) * box_size
+                result[dim] -= (
+                    relative_position[dim] / abs(relative_position[dim]) * box_size
+                )
         return result
 
     @staticmethod
@@ -88,17 +90,19 @@ class ParticleRotationCalculator:
         """
         Get the current rotation offset from the zero orientation for a particle
         """
-        zero_rotation = ParticleRotationCalculator._get_rotation_from_neighbor_positions(
-            zero_orientation.neighbor1_relative_position, 
-            zero_orientation.neighbor2_relative_position, 
-            box_size,
+        zero_rotation = (
+            ParticleRotationCalculator._get_rotation_from_neighbor_positions(
+                zero_orientation.neighbor1_relative_position,
+                zero_orientation.neighbor2_relative_position,
+                box_size,
+            )
         )
-        current_rotation = ParticleRotationCalculator._get_rotation_from_neighbor_positions(
-            current_neighbor1_position, current_neighbor2_position, box_size
+        current_rotation = (
+            ParticleRotationCalculator._get_rotation_from_neighbor_positions(
+                current_neighbor1_position, current_neighbor2_position, box_size
+            )
         )
-        return np.matmul(
-            current_rotation, np.linalg.inv(zero_rotation)
-        )
+        return np.matmul(current_rotation, np.linalg.inv(zero_rotation))
 
     @staticmethod
     def _get_euler_angles(rotation_matrix: np.ndarray) -> np.ndarray:
@@ -106,7 +110,7 @@ class ParticleRotationCalculator:
         Get a set of euler angles representing a rotation matrix
         """
         rotation = Rotation.from_matrix(rotation_matrix)
-        return rotation.as_euler('xyz', degrees=True)
+        return rotation.as_euler("xyz", degrees=True)
 
     @staticmethod
     def calculate_rotation(
@@ -114,12 +118,12 @@ class ParticleRotationCalculator:
         particle_position: np.ndarray,
         neighbor_type_names: List[str],
         neighbor_positions: List[np.ndarray],
-        zero_orientations: List[OrientationData], 
+        zero_orientations: List[OrientationData],
         box_size: float,
     ) -> np.ndarray:
         """
         Calculate the difference in the particle's current orientation
-        compared to the zero orientation and get euler angles 
+        compared to the zero orientation and get euler angles
         representing the current rotation.
 
         Parameters
@@ -131,10 +135,10 @@ class ParticleRotationCalculator:
         neighbor_type_names: List[str]
             The type names of the neighbors of the particle
         neighbor_positions: List[np.ndarray]
-            The positions of the neighbors of the particle, 
+            The positions of the neighbors of the particle,
             in the same order as the type names
         zero_orientations: List[OrientationData]
-            A list of possible zero orientation definitions to be subtracted 
+            A list of possible zero orientation definitions to be subtracted
             from the current orientation to get current rotation
         box_size: float
             The size of one dimension of the reaction volume,
@@ -147,7 +151,11 @@ class ParticleRotationCalculator:
         for zero_orientation in zero_orientations:
             if zero_orientation.type_name not in particle_type_name:
                 continue
-            neighbor1_matches = [index for index, tn in enumerate(neighbor_type_names) if zero_orientation.neighbor1_type_name in tn]
+            neighbor1_matches = [
+                index
+                for index, tn in enumerate(neighbor_type_names)
+                if zero_orientation.neighbor1_type_name in tn
+            ]
             for index1 in neighbor1_matches:
                 for index2, tn2 in enumerate(neighbor_type_names):
                     if index2 == index1:
@@ -159,9 +167,12 @@ class ParticleRotationCalculator:
                         ParticleRotationCalculator._get_rotation_offset(
                             neighbor_positions[index1] - particle_position,
                             neighbor_positions[index2] - particle_position,
-                            zero_orientation, 
+                            zero_orientation,
                             box_size,
                         )
                     )
-        print(f"Failed to find orientation data matching {particle_type_name} with neighbors {neighbor_type_names}")
+        print(
+            f"Failed to find orientation data matching {particle_type_name} "
+            f"with neighbors {neighbor_type_names}"
+        )
         return np.zeros(3)

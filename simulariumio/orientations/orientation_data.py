@@ -3,6 +3,8 @@
 
 import logging
 
+import numpy as np
+
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -26,10 +28,10 @@ class OrientationData:
         neighbor2_relative_position: np.ndarray,
     ):
         """
-        This object stores relative neighbor particle positions needed 
+        This object stores relative neighbor particle positions needed
         to calculate a particle's orientation.
-        
-        Note: whether a particle's neighbor is first or second is arbitrary, 
+
+        Note: whether a particle's neighbor is first or second is arbitrary,
         as long as it is kept consistent for a given type
 
         Parameters

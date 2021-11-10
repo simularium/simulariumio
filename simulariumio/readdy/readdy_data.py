@@ -61,7 +61,7 @@ class ReaddyData:
         ignore_types : List[str] (optional)
             A list of string ReaDDy particle types to ignore
         zero_orientations: List[OrientationData] (optional)
-            A list of OrientationDatas defining the zero orientation 
+            A list of OrientationDatas defining the zero orientation
             for various particle types connected to various neighbor types
             Default: all rotations will be set to zero
         time_units: UnitData (optional)
