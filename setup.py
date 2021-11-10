@@ -21,6 +21,10 @@ md_requirements = [
     "MDAnalysisTests>=2.0.0",
 ]
 
+orientation_requirements = [
+    "scipy>=1.5.2",
+]
+
 setup_requirements = [
     "pytest-runner>=5.2",
 ]
@@ -36,6 +40,7 @@ test_requirements = [
     *mcell_requirements,
     *physicell_requirements,
     *md_requirements,
+    *orientation_requirements,
 ]
 
 tutorial_requirements = [
@@ -43,6 +48,7 @@ tutorial_requirements = [
     *mcell_requirements,
     *physicell_requirements,
     *md_requirements,
+    *orientation_requirements,
 ]
 
 benchmark_requirements = [
@@ -82,6 +88,7 @@ extra_requirements = {
     "mcell": mcell_requirements,
     "physicell": physicell_requirements,
     "md": md_requirements,
+    "orientation": orientation_requirements,
     "all": [
         *requirements,
         *dev_requirements,

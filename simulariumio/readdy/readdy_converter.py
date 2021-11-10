@@ -89,7 +89,7 @@ class ReaddyConverter(TrajectoryConverter):
                 neighbor_index = agent_index_for_particle_id[time_index][neighbor_id]
                 neighbor_type_names.append(traj.species_name(type_ids[time_index][neighbor_index]))
                 neighbor_positions.append(positions[time_index][neighbor_index])
-        return ParticleRotationCalculator.get_rotation(
+        return ParticleRotationCalculator.calculate_rotation(
             particle_type_name,
             particle_position,
             neighbor_type_names,
