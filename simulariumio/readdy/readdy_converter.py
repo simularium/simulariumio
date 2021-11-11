@@ -85,6 +85,8 @@ class ReaddyConverter(TrajectoryConverter):
                     neighbor_id = top.particles[e2]
                 elif particle_id == top.particles[e2]:
                     neighbor_id = top.particles[e1]
+                else:
+                    continue
                 neighbor_index = agent_index_for_particle_id[time_index][neighbor_id]
                 neighbor_type_names.append(
                     traj.species_name(type_ids[time_index][neighbor_index])
@@ -96,7 +98,7 @@ class ReaddyConverter(TrajectoryConverter):
             neighbor_type_names,
             neighbor_positions,
             input_data.zero_orientations,
-            input_data.box_size,
+            input_data.meta_data.box_size,
         )
 
     @staticmethod
@@ -160,7 +162,7 @@ class ReaddyConverter(TrajectoryConverter):
                     else 1.0
                 )
                 if calculate_rotations:
-                    result.rotation[time_index][
+                    result.rotations[time_index][
                         new_agent_index
                     ] = ReaddyConverter._calculate_rotation(
                         time_index,

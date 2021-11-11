@@ -23,7 +23,7 @@ class ParticleRotationCalculator:
 
     @staticmethod
     def _get_non_periodic_boundary_position(
-        relative_position: np.ndarray, box_size: float
+        relative_position: np.ndarray, box_size: np.ndarray
     ) -> np.ndarray:
         """
         If the magnitude of the relative position is greater than box_size,
@@ -31,9 +31,9 @@ class ParticleRotationCalculator:
         """
         result = np.copy(relative_position)
         for dim in range(3):
-            if abs(relative_position[dim]) > box_size / 2.0:
+            if abs(relative_position[dim]) > box_size[dim] / 2.0:
                 result[dim] -= (
-                    relative_position[dim] / abs(relative_position[dim]) * box_size
+                    relative_position[dim] / abs(relative_position[dim]) * box_size[dim]
                 )
         return result
 
@@ -58,7 +58,7 @@ class ParticleRotationCalculator:
     def _get_rotation_from_neighbor_positions(
         neighbor1_position: np.ndarray,
         neighbor2_position: np.ndarray,
-        box_size: float,
+        box_size: np.ndarray,
     ) -> np.ndarray:
         """
         Use the relative neighbor positions to calculate a rotation matrix
@@ -85,7 +85,7 @@ class ParticleRotationCalculator:
         current_neighbor1_position: np.ndarray,
         current_neighbor2_position: np.ndarray,
         zero_orientation: OrientationData,
-        box_size: float,
+        box_size: np.ndarray,
     ) -> np.ndarray:
         """
         Get the current rotation offset from the zero orientation for a particle
@@ -99,7 +99,9 @@ class ParticleRotationCalculator:
         )
         current_rotation = (
             ParticleRotationCalculator._get_rotation_from_neighbor_positions(
-                current_neighbor1_position, current_neighbor2_position, box_size
+                current_neighbor1_position,
+                current_neighbor2_position,
+                box_size,
             )
         )
         return np.matmul(current_rotation, np.linalg.inv(zero_rotation))
@@ -119,7 +121,7 @@ class ParticleRotationCalculator:
         neighbor_type_names: List[str],
         neighbor_positions: List[np.ndarray],
         zero_orientations: List[OrientationData],
-        box_size: float,
+        box_size: np.ndarray,
     ) -> np.ndarray:
         """
         Calculate the difference in the particle's current orientation
@@ -140,27 +142,26 @@ class ParticleRotationCalculator:
         zero_orientations: List[OrientationData]
             A list of possible zero orientation definitions to be subtracted
             from the current orientation to get current rotation
-        box_size: float
-            The size of one dimension of the reaction volume,
-            which is assumed to be a cube
+        box_size: np.ndarray (shape = [3])
+            The size of the reaction volume in X, Y, and Z
         """
         if len(neighbor_type_names) < 2:
             # TODO handle particles with less than 2 neighbors
             return np.zeros(3)
         # check through the zero orientations for a match
         for zero_orientation in zero_orientations:
-            if zero_orientation.type_name not in particle_type_name:
+            if not zero_orientation.type_name_matches(particle_type_name):
                 continue
             neighbor1_matches = [
                 index
                 for index, tn in enumerate(neighbor_type_names)
-                if zero_orientation.neighbor1_type_name in tn
+                if zero_orientation.neighbor1_type_name_matches(tn)
             ]
             for index1 in neighbor1_matches:
                 for index2, tn2 in enumerate(neighbor_type_names):
                     if index2 == index1:
                         continue
-                    if zero_orientation.neighbor2_type_name not in tn2:
+                    if not zero_orientation.neighbor2_type_name_matches(tn2):
                         continue
                     # use the first match to calculate rotation
                     return ParticleRotationCalculator._get_euler_angles(
