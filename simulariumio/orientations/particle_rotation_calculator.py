@@ -45,16 +45,6 @@ class ParticleRotationCalculator:
         return vector / np.linalg.norm(vector)
 
     @staticmethod
-    def _get_rotation_matrix(v1, v2) -> np.ndarray:
-        """
-        Cross the vectors and get a rotation matrix
-        """
-        v3 = np.cross(v2, v1)
-        return np.array(
-            [[v1[0], v2[0], v3[0]], [v1[1], v2[1], v3[1]], [v1[2], v2[2], v3[2]]]
-        )
-
-    @staticmethod
     def _get_rotation_from_neighbor_positions(
         neighbor1_position: np.ndarray,
         neighbor2_position: np.ndarray,
@@ -78,12 +68,19 @@ class ParticleRotationCalculator:
         v2 = ParticleRotationCalculator._normalize(
             v2 - (np.dot(v1, v2) / np.dot(v1, v1)) * v1
         )
-        return ParticleRotationCalculator._get_rotation_matrix(v1, v2)
+        # cross to get 3rd basis
+        v3 = np.cross(v2, v1)
+        # create matrix with basis
+        return np.array(
+            [[v1[0], v2[0], v3[0]], 
+             [v1[1], v2[1], v3[1]], 
+             [v1[2], v2[2], v3[2]]]
+        )
 
     @staticmethod
     def _get_rotation_offset(
-        current_neighbor1_position: np.ndarray,
-        current_neighbor2_position: np.ndarray,
+        current_relative_neighbor1_position: np.ndarray,
+        current_relative_neighbor2_position: np.ndarray,
         zero_orientation: OrientationData,
         box_size: np.ndarray,
     ) -> np.ndarray:
@@ -99,8 +96,8 @@ class ParticleRotationCalculator:
         )
         current_rotation = (
             ParticleRotationCalculator._get_rotation_from_neighbor_positions(
-                current_neighbor1_position,
-                current_neighbor2_position,
+                current_relative_neighbor1_position,
+                current_relative_neighbor2_position,
                 box_size,
             )
         )
@@ -112,7 +109,8 @@ class ParticleRotationCalculator:
         Get a set of euler angles representing a rotation matrix
         """
         rotation = Rotation.from_matrix(rotation_matrix)
-        return rotation.as_euler("xyz", degrees=True)
+        result = rotation.as_euler("xyz", degrees=False)
+        return np.array([result[0], result[2], -result[1]])
 
     @staticmethod
     def calculate_rotation(
