@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.7, 3.8, 3.9]
         os: [ubuntu-latest]
 
     steps:
@@ -25,11 +25,11 @@ jobs:
       with:
         auto-update-conda: true
         python-version: ${{ matrix.python-version }}
-        channels: readdy,conda-forge
+        channels: conda-forge
     - name: Install Conda Deps
       shell: bash -l {0}
       run: |
-        conda install readdy
+        conda install readdy==2.0.9
     - name: Install Dependencies
       shell: bash -l {0}
       run: |
@@ -51,12 +51,12 @@ jobs:
       uses: conda-incubator/setup-miniconda@v2
       with:
         auto-update-conda: true
-        python-version: 3.8
-        channels: readdy,conda-forge
+        python-version: ${{ matrix.python-version }}
+        channels: conda-forge
     - name: Install Conda Deps
       shell: bash -l {0}
       run: |
-        conda install readdy
+        conda install readdy==2.0.9
     - name: Install Dependencies
       shell: bash -l {0}
       run: |

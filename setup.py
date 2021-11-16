@@ -8,8 +8,17 @@ from setuptools import find_packages, setup
 with open("README.md") as readme_file:
     readme = readme_file.read()
 
+mcell_requirements = [
+    "scipy>=1.5.2",
+]
+
 physicell_requirements = [
     "scipy>=1.5.2",
+]
+
+md_requirements = [
+    "MDAnalysis>=2.0.0",
+    "MDAnalysisTests>=2.0.0",
 ]
 
 setup_requirements = [
@@ -24,7 +33,16 @@ test_requirements = [
     "pytest>=5.4.3",
     "pytest-cov>=2.9.0",
     "pytest-raises>=0.11",
+    *mcell_requirements,
     *physicell_requirements,
+    *md_requirements,
+]
+
+tutorial_requirements = [
+    "jupyter",
+    *mcell_requirements,
+    *physicell_requirements,
+    *md_requirements,
 ]
 
 benchmark_requirements = [
@@ -59,13 +77,16 @@ extra_requirements = {
     "setup": setup_requirements,
     "test": test_requirements,
     "dev": dev_requirements,
-    "physicell": physicell_requirements,
     "benchmark": benchmark_requirements,
+    "tutorial": tutorial_requirements,
+    "mcell": mcell_requirements,
+    "physicell": physicell_requirements,
+    "md": md_requirements,
     "all": [
         *requirements,
         *dev_requirements,
-        *physicell_requirements,
-        *benchmark_requirements
+        *benchmark_requirements,
+        *tutorial_requirements,
     ]
 }
 
@@ -80,6 +101,7 @@ setup(
         "Natural Language :: English",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
     description="Simularium Conversion helps convert simulation outputs to the format consumed by the Simularium viewer.",
     entry_points={
@@ -101,6 +123,6 @@ setup(
     url="https://github.com/allen-cell-animated/simulariumio",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
-    version="1.2.0",
+    version="1.4.0",
     zip_safe=False,
 )

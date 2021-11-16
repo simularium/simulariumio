@@ -6,7 +6,7 @@ import logging
 from typing import Any, Dict
 
 from .trajectory_converter import TrajectoryConverter
-from .data_objects import TrajectoryData, UnitData
+from .data_objects import TrajectoryData, UnitData, InputFileData
 from .constants import CURRENT_VERSION
 
 ###############################################################################
@@ -17,19 +17,19 @@ log = logging.getLogger(__name__)
 
 
 class FileConverter(TrajectoryConverter):
-    def __init__(self, input_path: str):
+    def __init__(self, input_file: InputFileData):
         """
         This object loads the data in .simularium JSON format
-        at the input path
+        at the input file
 
         Parameters
         ----------
-        input_path: str
-            path to the .simularium JSON file to load
+        input_file: InputFileData
+            A InputFileData object containing a string path
+            or string contents for the .simularium JSON file to load
         """
-        print(f"Reading Simularium JSON {input_path} -------------")
-        with open(input_path) as simularium_file:
-            buffer_data = json.load(simularium_file)
+        print("Reading Simularium JSON -------------")
+        buffer_data = json.loads(input_file.get_contents())
         if (
             int(buffer_data["trajectoryInfo"]["version"])
             < CURRENT_VERSION.TRAJECTORY_INFO

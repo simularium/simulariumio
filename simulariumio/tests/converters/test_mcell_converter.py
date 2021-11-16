@@ -73,10 +73,16 @@ from simulariumio.constants import (
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "b"},
+                        "0": {
+                            "name": "b",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                         "1": {
                             "name": "Transporter",
                             "geometry": {
+                                "displayType": "SPHERE",
                                 "color": "#ff1493",
                             },
                         },

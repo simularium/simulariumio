@@ -22,8 +22,18 @@ from simulariumio.constants import DISPLAY_TYPE
 
 def default_agents_type_mapping() -> Dict[str, Any]:
     return {
-        "0": {"name": "C"},
-        "1": {"name": "U"},
+        "0": {
+            "name": "C",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "1": {
+            "name": "U",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
         "2": {
             "name": "L",
             "geometry": {
@@ -39,7 +49,12 @@ def default_agents_type_mapping() -> Dict[str, Any]:
                 "color": "#000000",
             },
         },
-        "4": {"name": "O"},
+        "4": {
+            "name": "O",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
         "5": {
             "name": "Y",
             "geometry": {
@@ -50,6 +65,7 @@ def default_agents_type_mapping() -> Dict[str, Any]:
         "6": {
             "name": "W",
             "geometry": {
+                "displayType": "SPHERE",
                 "color": "#666",
             },
         },

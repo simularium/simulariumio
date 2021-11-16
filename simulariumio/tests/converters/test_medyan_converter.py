@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.medyan import MedyanConverter, MedyanData
-from simulariumio import MetaData, DisplayData, JsonWriter
+from simulariumio import MetaData, DisplayData, InputFileData, JsonWriter
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
 
@@ -18,7 +18,9 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                 meta_data=MetaData(
                     box_size=np.array([1000.0, 1000.0, 500.0]),
                 ),
-                path_to_snapshot="simulariumio/tests/data/medyan/snapshot.traj",
+                snapshot_file=InputFileData(
+                    file_path="simulariumio/tests/data/medyan/snapshot.traj"
+                ),
                 filament_display_data={
                     0: DisplayData(
                         name="Actin",
@@ -70,18 +72,35 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                         "0": {
                             "name": "Actin",
                             "geometry": {
+                                "displayType": "FIBER",
                                 "color": "#d71f5f",
                             },
                         },
-                        "1": {"name": "linker0"},
+                        "1": {
+                            "name": "linker0",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
                         "2": {
                             "name": "Xlink",
                             "geometry": {
+                                "displayType": "FIBER",
                                 "color": "#0080ff",
                             },
                         },
-                        "3": {"name": "linker2"},
-                        "4": {"name": "motor1"},
+                        "3": {
+                            "name": "linker2",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "4": {
+                            "name": "motor1",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
                     },
                 },
                 "spatialData": {
@@ -407,7 +426,9 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                 meta_data=MetaData(
                     box_size=np.array([1000.0, 1000.0, 500.0]),
                 ),
-                path_to_snapshot="simulariumio/tests/data/medyan/snapshot.traj",
+                snapshot_file=InputFileData(
+                    file_path="simulariumio/tests/data/medyan/snapshot.traj"
+                ),
                 filament_display_data={
                     0: DisplayData(
                         name="Actin",
@@ -464,22 +485,47 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                         "0": {
                             "name": "Actin",
                             "geometry": {
+                                "displayType": "FIBER",
                                 "color": "#ff1493",
                             },
                         },
                         "1": {
                             "name": "Xlink0",
                             "geometry": {
+                                "displayType": "FIBER",
                                 "color": "#0080ff",
                             },
                         },
-                        "2": {"name": "Xlink0 End"},
+                        "2": {
+                            "name": "Xlink0 End",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                         "3": {
                             "name": "Xlink1",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
                         },
-                        "4": {"name": "Xlink1 End"},
-                        "5": {"name": "linker2"},
-                        "6": {"name": "motor1"},
+                        "4": {
+                            "name": "Xlink1 End",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "5": {
+                            "name": "linker2",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "6": {
+                            "name": "motor1",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
                     },
                 },
                 "spatialData": {

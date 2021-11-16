@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from simulariumio import FileConverter, JsonWriter
+from simulariumio import FileConverter, InputFileData, JsonWriter
 from simulariumio.filters import TranslateFilter
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
@@ -52,8 +52,18 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "microtubule"},
-                        "1": {"name": "motor complex"},
+                        "0": {
+                            "name": "microtubule",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "1": {
+                            "name": "motor complex",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                     },
                 },
                 "spatialData": {
@@ -202,7 +212,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
     ],
 )
 def test_translate_filter(input_path, _filter, expected_data):
-    converter = FileConverter(input_path)
+    converter = FileConverter(input_file=InputFileData(file_path=input_path))
     filtered_data = converter.filter_data([_filter])
     buffer_data = JsonWriter.format_trajectory_data(filtered_data)
     assert expected_data == buffer_data

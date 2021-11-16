@@ -205,7 +205,7 @@ class McellConverter(TrajectoryConverter):
                     n_chars_type_name.fromfile(mol_file, 1)
                     type_name_array = array.array("B")
                     type_name_array.fromfile(mol_file, n_chars_type_name[0])
-                    type_name = type_name_array.tostring().decode()
+                    type_name = type_name_array.tobytes().decode()
                     display_type_name = (
                         input_data.display_data[type_name].name
                         if type_name in input_data.display_data

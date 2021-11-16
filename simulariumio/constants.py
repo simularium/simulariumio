@@ -3,8 +3,10 @@
 
 from enum import Enum
 from typing import List
+import os
 
 import numpy as np
+import pandas as pd
 
 from .data_objects.dimension_data import DimensionData
 
@@ -80,3 +82,12 @@ class BINARY_SETTINGS:
     EOF: str = "\u005CEOFTHEFRAMEENDSHERE"
     MAX_FRAMES: int = 10000
     MAX_BYTES: int = 500000000
+JMOL_COLORS_CSV_PATH = "jmolcolors.csv"
+
+
+def JMOL_COLORS() -> pd.DataFrame:
+    """
+    Get a dataframe with Jmol colors for atomic element types
+    """
+    this_dir, _ = os.path.split(__file__)
+    return pd.read_csv(os.path.join(this_dir, JMOL_COLORS_CSV_PATH))

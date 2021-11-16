@@ -3,7 +3,7 @@
 
 import pytest
 
-from simulariumio import FileConverter, JsonWriter
+from simulariumio import FileConverter, InputFileData, JsonWriter
 from simulariumio.filters import EveryNthSubpointFilter
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
@@ -53,13 +53,48 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                         "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
                     },
                     "typeMapping": {
-                        "0": {"name": "microtubule"},
-                        "1": {"name": "actin"},
-                        "2": {"name": "aster"},
-                        "3": {"name": "vesicle"},
-                        "4": {"name": "kinesin"},
-                        "5": {"name": "dynein"},
-                        "6": {"name": "motor complex"},
+                        "0": {
+                            "name": "microtubule",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "1": {
+                            "name": "actin",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "2": {
+                            "name": "aster",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "3": {
+                            "name": "vesicle",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "4": {
+                            "name": "kinesin",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "5": {
+                            "name": "dynein",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "6": {
+                            "name": "motor complex",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                     },
                 },
                 "spatialData": {
@@ -739,7 +774,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
     ],
 )
 def test_every_nth_subpoint_filter(input_path, _filter, expected_data):
-    converter = FileConverter(input_path)
+    converter = FileConverter(input_file=InputFileData(file_path=input_path))
     filtered_data = converter.filter_data([_filter])
     buffer_data = JsonWriter.format_trajectory_data(filtered_data)
     assert expected_data == buffer_data

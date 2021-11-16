@@ -10,7 +10,7 @@ from simulariumio.cytosim import (
     CytosimData,
     CytosimObjectInfo,
 )
-from simulariumio import MetaData, DisplayData
+from simulariumio import MetaData, DisplayData, InputFileData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
@@ -30,8 +30,12 @@ from simulariumio.constants import (
                 ),
                 object_info={
                     "fibers": CytosimObjectInfo(
-                        filepath="simulariumio/tests/data/cytosim"
-                        "/3_fibers_3_frames/fiber_points.txt",
+                        cytosim_file=InputFileData(
+                            file_path=(
+                                "simulariumio/tests/data/cytosim"
+                                "/3_fibers_3_frames/fiber_points.txt"
+                            ),
+                        ),
                         display_data={
                             0: DisplayData(
                                 name="fiber",
@@ -339,8 +343,12 @@ from simulariumio.constants import (
                 ),
                 object_info={
                     "fibers": CytosimObjectInfo(
-                        filepath="simulariumio/tests/data/cytosim/"
-                        "aster_pull3D_couples_actin_solid_3_frames/fiber_points.txt",
+                        cytosim_file=InputFileData(
+                            file_path=(
+                                "simulariumio/tests/data/cytosim/aster_pull3D"
+                                "_couples_actin_solid_3_frames/fiber_points.txt"
+                            ),
+                        ),
                         display_data={
                             2: DisplayData(
                                 name="actin",
@@ -350,16 +358,24 @@ from simulariumio.constants import (
                         },
                     ),
                     "solids": CytosimObjectInfo(
-                        filepath="simulariumio/tests/data/cytosim/"
-                        "aster_pull3D_couples_actin_solid_3_frames/solids.txt",
+                        cytosim_file=InputFileData(
+                            file_path=(
+                                "simulariumio/tests/data/cytosim/"
+                                "aster_pull3D_couples_actin_solid_3_frames/solids.txt"
+                            ),
+                        ),
                         display_data={
                             1: DisplayData(name="aster"),
                             2: DisplayData(name="vesicle", radius=0.1),
                         },
                     ),
                     "singles": CytosimObjectInfo(
-                        filepath="simulariumio/tests/data/cytosim/"
-                        "aster_pull3D_couples_actin_solid_3_frames/singles.txt",
+                        cytosim_file=InputFileData(
+                            file_path=(
+                                "simulariumio/tests/data/cytosim/"
+                                "aster_pull3D_couples_actin_solid_3_frames/singles.txt"
+                            ),
+                        ),
                         display_data={
                             1: DisplayData(name="dynein", radius=0.01),
                             2: DisplayData(
@@ -372,8 +388,12 @@ from simulariumio.constants import (
                         },
                     ),
                     "couples": CytosimObjectInfo(
-                        filepath="simulariumio/tests/data/cytosim/"
-                        "aster_pull3D_couples_actin_solid_3_frames/couples.txt",
+                        cytosim_file=InputFileData(
+                            file_path=(
+                                "simulariumio/tests/data/cytosim/"
+                                "aster_pull3D_couples_actin_solid_3_frames/couples.txt"
+                            ),
+                        ),
                         display_data={
                             1: DisplayData(name="motor complex", radius=0.02)
                         },
@@ -416,15 +436,29 @@ from simulariumio.constants import (
                     "typeMapping": {
                         "0": {
                             "name": "fiber1",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
                         },
                         "1": {
                             "name": "actin",
                             "geometry": {
+                                "displayType": "FIBER",
                                 "color": "#ffc100",
                             },
                         },
-                        "2": {"name": "aster"},
-                        "3": {"name": "vesicle"},
+                        "2": {
+                            "name": "aster",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "3": {
+                            "name": "vesicle",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                         "4": {
                             "name": "kinesin",
                             "geometry": {
@@ -433,8 +467,18 @@ from simulariumio.constants import (
                                 "color": "#0080ff",
                             },
                         },
-                        "5": {"name": "dynein"},
-                        "6": {"name": "motor complex"},
+                        "5": {
+                            "name": "dynein",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "6": {
+                            "name": "motor complex",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
                     },
                 },
                 "spatialData": {

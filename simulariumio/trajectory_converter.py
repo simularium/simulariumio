@@ -65,7 +65,7 @@ class TrajectoryConverter:
 
     def add_plot(
         self,
-        data: [ScatterPlotData or HistogramPlotData] = {},
+        data: [ScatterPlotData or HistogramPlotData],
         plot_type: str = "scatter",
     ):
         """
@@ -117,7 +117,7 @@ class TrajectoryConverter:
         self.add_plot(
             ScatterPlotData(
                 title=plot_title,
-                xaxis_title=f"Time ({self._data.time_units.to_string()})",
+                xaxis_title=f"Time ({self._data.time_units})",
                 yaxis_title=yaxis_title,
                 xtrace=self._data.agent_data.times,
                 ytraces=n_agents,
