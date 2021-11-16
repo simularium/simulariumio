@@ -82,6 +82,8 @@ class BINARY_SETTINGS:
     EOF: str = "\u005CEOFTHEFRAMEENDSHERE"
     MAX_FRAMES: int = 10000
     MAX_BYTES: int = 500000000
+
+
 JMOL_COLORS_CSV_PATH = "jmolcolors.csv"
 
 
