@@ -10,10 +10,13 @@ from simulariumio import (
     AgentData,
     UnitData,
     MetaData,
-    CameraData,
     BinaryWriter,
 )
-from simulariumio.constants import BINARY_SETTINGS
+from simulariumio.constants import (
+    BINARY_SETTINGS,
+    CURRENT_VERSION,
+    DEFAULT_CAMERA_SETTINGS,
+)
 
 
 # 2 default agents (radius 5-10) and 3 fiber agents
@@ -21,12 +24,6 @@ from simulariumio.constants import BINARY_SETTINGS
 input_data = TrajectoryData(
     meta_data=MetaData(
         box_size=np.array([1000.0, 1000.0, 1000.0]),
-        camera_defaults=CameraData(
-            position=np.array([0.0, 120.0, 0.0]),
-            look_at_position=np.array([10.0, 0.0, 0.0]),
-            up_vector=np.array([0.0, 0.0, 1.0]),
-            fov_degrees=60.0,
-        ),
     ),
     agent_data=AgentData(
         times=1.0 * np.array(list(range(3))),
@@ -191,11 +188,117 @@ input_data = TrajectoryData(
 
 
 @pytest.mark.parametrize(
-    "max_frames, max_bytes, expected_data, expected_format",
+    "max_frames, max_bytes, expected_traj_info, expected_spatial_data, expected_format",
     [
         (
             BINARY_SETTINGS.MAX_FRAMES,
             BINARY_SETTINGS.MAX_BYTES,
+            [
+                {
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
+                    "timeStepSize": 1.0,
+                    "totalSteps": 3,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "µm",
+                    },
+                    "size": {
+                        "x": 1000.0,
+                        "y": 1000.0,
+                        "z": 1000.0,
+                    },
+                    "cameraDefault": {
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+                    },
+                    "typeMapping": {
+                        "0": {
+                            "name": "H",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "1": {
+                            "name": "A",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "2": {
+                            "name": "C",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "3": {
+                            "name": "X",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "4": {
+                            "name": "J",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "5": {
+                            "name": "L",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "6": {
+                            "name": "D",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "7": {
+                            "name": "U",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "8": {
+                            "name": "E",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "9": {
+                            "name": "Q",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "10": {
+                            "name": "K",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                    },
+                },
+            ],
             [
                 [
                     BINARY_SETTINGS.HEADER
@@ -462,6 +565,216 @@ input_data = TrajectoryData(
         (
             2,
             1000000,
+            [
+                {
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
+                    "timeStepSize": 1.0,
+                    "totalSteps": 2,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "µm",
+                    },
+                    "size": {
+                        "x": 1000.0,
+                        "y": 1000.0,
+                        "z": 1000.0,
+                    },
+                    "cameraDefault": {
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+                    },
+                    "typeMapping": {
+                        "0": {
+                            "name": "H",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "1": {
+                            "name": "A",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "2": {
+                            "name": "C",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "3": {
+                            "name": "X",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "4": {
+                            "name": "J",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "5": {
+                            "name": "L",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "6": {
+                            "name": "D",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "7": {
+                            "name": "U",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "8": {
+                            "name": "E",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "9": {
+                            "name": "Q",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "10": {
+                            "name": "K",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                    },
+                },
+                {
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
+                    "timeStepSize": 0.0,
+                    "totalSteps": 1,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "µm",
+                    },
+                    "size": {
+                        "x": 1000.0,
+                        "y": 1000.0,
+                        "z": 1000.0,
+                    },
+                    "cameraDefault": {
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+                    },
+                    "typeMapping": {
+                        "0": {
+                            "name": "H",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "1": {
+                            "name": "A",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "2": {
+                            "name": "C",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "3": {
+                            "name": "X",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "4": {
+                            "name": "J",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "5": {
+                            "name": "L",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "6": {
+                            "name": "D",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "7": {
+                            "name": "U",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "8": {
+                            "name": "E",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "9": {
+                            "name": "Q",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "10": {
+                            "name": "K",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                    },
+                },
+            ],
             [
                 [
                     BINARY_SETTINGS.HEADER
@@ -735,6 +1048,216 @@ input_data = TrajectoryData(
             100,
             800,
             [
+                {
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
+                    "timeStepSize": 1.0,
+                    "totalSteps": 2,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "µm",
+                    },
+                    "size": {
+                        "x": 1000.0,
+                        "y": 1000.0,
+                        "z": 1000.0,
+                    },
+                    "cameraDefault": {
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+                    },
+                    "typeMapping": {
+                        "0": {
+                            "name": "H",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "1": {
+                            "name": "A",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "2": {
+                            "name": "C",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "3": {
+                            "name": "X",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "4": {
+                            "name": "J",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "5": {
+                            "name": "L",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "6": {
+                            "name": "D",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "7": {
+                            "name": "U",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "8": {
+                            "name": "E",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "9": {
+                            "name": "Q",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "10": {
+                            "name": "K",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                    },
+                },
+                {
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
+                    "timeStepSize": 0.0,
+                    "totalSteps": 1,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "µm",
+                    },
+                    "size": {
+                        "x": 1000.0,
+                        "y": 1000.0,
+                        "z": 1000.0,
+                    },
+                    "cameraDefault": {
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+                    },
+                    "typeMapping": {
+                        "0": {
+                            "name": "H",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "1": {
+                            "name": "A",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "2": {
+                            "name": "C",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "3": {
+                            "name": "X",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "4": {
+                            "name": "J",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "5": {
+                            "name": "L",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "6": {
+                            "name": "D",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "7": {
+                            "name": "U",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "8": {
+                            "name": "E",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "9": {
+                            "name": "Q",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "10": {
+                            "name": "K",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                    },
+                },
+            ],
+            [
                 [
                     BINARY_SETTINGS.HEADER
                     + "".join(str(i) for i in BINARY_SETTINGS.VERSION),
@@ -1005,16 +1528,21 @@ input_data = TrajectoryData(
         ),
     ],
 )
-def test_binary_writer(max_frames, max_bytes, expected_data, expected_format):
+def test_binary_writer(
+    max_frames, max_bytes, expected_traj_info, expected_spatial_data, expected_format
+):
     converter = TrajectoryConverter(input_data)
-    buffer_data, format_strings = BinaryWriter.format_trajectory_data(
+    trajectory_infos, buffer_data, format_strings = BinaryWriter.format_trajectory_data(
         converter._data, max_frames, max_bytes
     )
     for chunk_index in range(len(buffer_data)):
+        assert trajectory_infos[chunk_index] == expected_traj_info[chunk_index]
         for item_index in range(len(buffer_data[chunk_index])):
             item = buffer_data[chunk_index][item_index]
             if isinstance(item, float):
-                assert item == pytest.approx(expected_data[chunk_index][item_index])
+                assert item == pytest.approx(
+                    expected_spatial_data[chunk_index][item_index]
+                )
             else:
-                assert item == expected_data[chunk_index][item_index]
+                assert item == expected_spatial_data[chunk_index][item_index]
         assert format_strings[chunk_index] == expected_format[chunk_index]

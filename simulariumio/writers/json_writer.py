@@ -24,10 +24,6 @@ log = logging.getLogger(__name__)
 
 class JsonWriter(Writer):
     @staticmethod
-    def _format_timestep(number: float) -> float:
-        return float("%.4g" % number)
-
-    @staticmethod
     def _get_spatial_bundle_data_subpoints(
         agent_data: AgentData,
         type_ids: np.ndarray,
@@ -133,64 +129,9 @@ class JsonWriter(Writer):
             else len(trajectory_data.agent_data.times)
         )
         type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
-        traj_info = {
-            "version": CURRENT_VERSION.TRAJECTORY_INFO,
-            "timeUnits": {
-                "magnitude": trajectory_data.time_units.magnitude,
-                "name": trajectory_data.time_units.name,
-            },
-            "timeStepSize": JsonWriter._format_timestep(
-                float(
-                    trajectory_data.agent_data.times[1]
-                    - trajectory_data.agent_data.times[0]
-                )
-                if total_steps > 1
-                else 0.0
-            ),
-            "totalSteps": total_steps,
-            "spatialUnits": {
-                "magnitude": trajectory_data.spatial_units.magnitude,
-                "name": trajectory_data.spatial_units.name,
-            },
-            "size": {
-                "x": float(trajectory_data.meta_data.box_size[0]),
-                "y": float(trajectory_data.meta_data.box_size[1]),
-                "z": float(trajectory_data.meta_data.box_size[2]),
-            },
-            "cameraDefault": {
-                "position": {
-                    "x": float(trajectory_data.meta_data.camera_defaults.position[0]),
-                    "y": float(trajectory_data.meta_data.camera_defaults.position[1]),
-                    "z": float(trajectory_data.meta_data.camera_defaults.position[2]),
-                },
-                "lookAtPosition": {
-                    "x": float(
-                        trajectory_data.meta_data.camera_defaults.look_at_position[0]
-                    ),
-                    "y": float(
-                        trajectory_data.meta_data.camera_defaults.look_at_position[1]
-                    ),
-                    "z": float(
-                        trajectory_data.meta_data.camera_defaults.look_at_position[2]
-                    ),
-                },
-                "upVector": {
-                    "x": float(trajectory_data.meta_data.camera_defaults.up_vector[0]),
-                    "y": float(trajectory_data.meta_data.camera_defaults.up_vector[1]),
-                    "z": float(trajectory_data.meta_data.camera_defaults.up_vector[2]),
-                },
-                "fovDegrees": float(
-                    trajectory_data.meta_data.camera_defaults.fov_degrees
-                ),
-            },
-            "typeMapping": type_mapping,
-        }
-        # add any paper metadata
-        if trajectory_data.meta_data.trajectory_title:
-            traj_info["trajectoryTitle"] = trajectory_data.meta_data.trajectory_title
-        if not trajectory_data.meta_data.model_meta_data.is_default():
-            traj_info["modelInfo"] = dict(trajectory_data.meta_data.model_meta_data)
-        simularium_data["trajectoryInfo"] = traj_info
+        simularium_data["trajectoryInfo"] = Writer._get_trajectory_info(
+            trajectory_data, total_steps, type_mapping
+        )
         # spatial data
         spatialData = {
             "version": CURRENT_VERSION.SPATIAL_DATA,
@@ -249,7 +190,7 @@ class JsonWriter(Writer):
         with open(f"{output_path}_plot-data.json", "w+") as outfile:
             json.dump(
                 {
-                    "version": 1,
+                    "version": CURRENT_VERSION.PLOT_DATA,
                     "data": plot_data,
                 },
                 outfile,

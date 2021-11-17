@@ -13,7 +13,12 @@ from ..data_objects import (
     AgentData,
     DisplayData,
 )
-from ..constants import V1_SPATIAL_BUFFER_STRUCT, VIZ_TYPE, DISPLAY_TYPE
+from ..constants import (
+    V1_SPATIAL_BUFFER_STRUCT,
+    VIZ_TYPE,
+    DISPLAY_TYPE,
+    CURRENT_VERSION,
+)
 
 ###############################################################################
 
@@ -32,6 +37,76 @@ class Writer(ABC):
     @abstractmethod
     def save(self, trajectory_data: TrajectoryData) -> None:
         pass
+
+    @staticmethod
+    def _format_timestep(number: float) -> float:
+        return float("%.4g" % number)
+
+    @staticmethod
+    def _get_trajectory_info(
+        trajectory_data: TrajectoryData, total_steps: int, type_mapping: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Get the trajectoryInfo block for the trajectory
+        """
+        result = {
+            "version": CURRENT_VERSION.TRAJECTORY_INFO,
+            "timeUnits": {
+                "magnitude": trajectory_data.time_units.magnitude,
+                "name": trajectory_data.time_units.name,
+            },
+            "timeStepSize": Writer._format_timestep(
+                float(
+                    trajectory_data.agent_data.times[1]
+                    - trajectory_data.agent_data.times[0]
+                )
+                if total_steps > 1
+                else 0.0
+            ),
+            "totalSteps": total_steps,
+            "spatialUnits": {
+                "magnitude": trajectory_data.spatial_units.magnitude,
+                "name": trajectory_data.spatial_units.name,
+            },
+            "size": {
+                "x": float(trajectory_data.meta_data.box_size[0]),
+                "y": float(trajectory_data.meta_data.box_size[1]),
+                "z": float(trajectory_data.meta_data.box_size[2]),
+            },
+            "cameraDefault": {
+                "position": {
+                    "x": float(trajectory_data.meta_data.camera_defaults.position[0]),
+                    "y": float(trajectory_data.meta_data.camera_defaults.position[1]),
+                    "z": float(trajectory_data.meta_data.camera_defaults.position[2]),
+                },
+                "lookAtPosition": {
+                    "x": float(
+                        trajectory_data.meta_data.camera_defaults.look_at_position[0]
+                    ),
+                    "y": float(
+                        trajectory_data.meta_data.camera_defaults.look_at_position[1]
+                    ),
+                    "z": float(
+                        trajectory_data.meta_data.camera_defaults.look_at_position[2]
+                    ),
+                },
+                "upVector": {
+                    "x": float(trajectory_data.meta_data.camera_defaults.up_vector[0]),
+                    "y": float(trajectory_data.meta_data.camera_defaults.up_vector[1]),
+                    "z": float(trajectory_data.meta_data.camera_defaults.up_vector[2]),
+                },
+                "fovDegrees": float(
+                    trajectory_data.meta_data.camera_defaults.fov_degrees
+                ),
+            },
+            "typeMapping": type_mapping,
+        }
+        # add any paper metadata
+        if trajectory_data.meta_data.trajectory_title:
+            result["trajectoryTitle"] = trajectory_data.meta_data.trajectory_title
+        if not trajectory_data.meta_data.model_meta_data.is_default():
+            result["modelInfo"] = dict(trajectory_data.meta_data.model_meta_data)
+        return result
 
     @staticmethod
     def _get_frame_buffer_size(

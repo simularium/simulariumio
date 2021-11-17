@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Tuple, Any
+from typing import List, Tuple, Any, Dict
 import struct
+import json
 
 import numpy as np
 
@@ -11,7 +12,7 @@ from ..data_objects import (
     AgentData,
     TrajectoryData,
 )
-from ..constants import BINARY_SETTINGS
+from ..constants import BINARY_SETTINGS, CURRENT_VERSION
 from .writer import Writer
 from .binary_chunk import BinaryChunk
 
@@ -101,7 +102,7 @@ class BinaryWriter(Writer):
         trajectory_data: TrajectoryData,
         max_frames: int = BINARY_SETTINGS.MAX_FRAMES,
         max_bytes: int = BINARY_SETTINGS.MAX_BYTES,
-    ) -> Tuple[List[List[Any]], List[str]]:
+    ) -> Tuple[List[List[Any]], List[str], List[Dict[str, Any]]]:
         """
         Return the data shaped for Simularium binary
         Parameters
@@ -129,11 +130,17 @@ class BinaryWriter(Writer):
             str(i) for i in BINARY_SETTINGS.VERSION
         )
         header_format = f"{len(header)}s"
-        type_ids, _ = trajectory_data.agent_data.get_type_ids_and_mapping()
+        type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
+        trajectory_infos = []
         for chunk_index, chunk in enumerate(chunks):
             # header
             data_buffers[chunk_index].append(header)
             format_strings[chunk_index] += header_format
+            trajectory_infos.append(
+                Writer._get_trajectory_info(
+                    trajectory_data, chunk.n_frames, type_mapping
+                )
+            )
             # offset table
             data_buffers[chunk_index].append(chunk.n_frames)
             data_buffers[chunk_index] += chunk.frame_offsets
@@ -150,7 +157,7 @@ class BinaryWriter(Writer):
                 )
                 data_buffers[chunk_index] += frame_data
                 format_strings[chunk_index] += frame_format
-        return data_buffers, format_strings
+        return trajectory_infos, data_buffers, format_strings
 
     @staticmethod
     def save(trajectory_data: TrajectoryData, output_path: str) -> None:
@@ -164,17 +171,32 @@ class BinaryWriter(Writer):
         output_path: str
             where to save the file
         """
-        data_buffers, format_strings = BinaryWriter.format_trajectory_data(
-            trajectory_data
-        )
+        (
+            trajectory_infos,
+            data_buffers,
+            format_strings,
+        ) = BinaryWriter.format_trajectory_data(trajectory_data)
         print("Writing Binary -------------")
         for chunk_index in range(len(data_buffers)):
             if len(data_buffers) < 2:
                 output_name = f"{output_path}.simularium"
             else:
                 output_name = f"{output_path}_{chunk_index}.simularium"
+            # trajectory info
+            with open(output_name, "w+") as outfile:
+                json.dump(trajectory_infos[chunk_index], outfile)
+            # spatial data
             with open(output_name, "wb") as outfile:
                 outfile.write(
                     struct.pack(format_strings[chunk_index], data_buffers[chunk_index])
+                )
+            # plot data
+            with open(output_name, "w+") as outfile:
+                json.dump(
+                    {
+                        "version": CURRENT_VERSION.PLOT_DATA,
+                        "data": trajectory_data.plots,
+                    },
+                    outfile,
                 )
             print(f"saved to {output_name}")
