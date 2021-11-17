@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List
+from typing import List, Tuple, Any
+import struct
 
 import numpy as np
 
@@ -23,29 +24,13 @@ log = logging.getLogger(__name__)
 
 class BinaryWriter(Writer):
     @staticmethod
-    def _str_to_float_array(data: str) -> List[float]:
-        """
-        Return the string as a float array
-        """
-        return [float(ord(i)) for i in data]
-
-    @staticmethod
-    def _header_to_float_array() -> List[float]:
-        """
-        Return the header and version as a float array
-        """
-        return BinaryWriter._str_to_float_array(
-            BINARY_SETTINGS.HEADER + "".join(str(i) for i in BINARY_SETTINGS.VERSION)
-        )
-
-    @staticmethod
     def _format_trajectory_frame(
         global_time_index: int,
         chunk_time_index: int,
         agent_data: AgentData,
         type_ids: np.ndarray,
         buffer_size: int,
-    ) -> List[float]:
+    ) -> Tuple[List[Any], str]:
         """
         Return the frame of data as a bytes array
         """
@@ -54,12 +39,13 @@ class BinaryWriter(Writer):
         )
         return (
             [
-                float(chunk_time_index),
+                int(chunk_time_index),
                 float(agent_data.times[global_time_index]),
-                float(agent_data.n_agents[global_time_index]),
+                int(agent_data.n_agents[global_time_index]),
             ]
             + frame_buffer
-            + BinaryWriter._str_to_float_array(BINARY_SETTINGS.EOF)
+            + [BINARY_SETTINGS.EOF],
+            f"ifi{len(frame_buffer)}f{len(BINARY_SETTINGS.EOF)}s",
         )
 
     @staticmethod
@@ -115,7 +101,7 @@ class BinaryWriter(Writer):
         trajectory_data: TrajectoryData,
         max_frames: int = BINARY_SETTINGS.MAX_FRAMES,
         max_bytes: int = BINARY_SETTINGS.MAX_BYTES,
-    ) -> List[np.ndarray]:
+    ) -> Tuple[List[List[Any]], List[str]]:
         """
         Return the data shaped for Simularium binary
         Parameters
@@ -136,33 +122,35 @@ class BinaryWriter(Writer):
                 Writer._get_frame_buffer_size(frame_index, trajectory_data.agent_data)
             )
         chunks = BinaryWriter._get_chunks(frame_buffer_sizes, max_frames, max_bytes)
-        # get data
-        result = [np.zeros(chunk.n_values, dtype="<f4") for chunk in chunks]
-        header = BinaryWriter._header_to_float_array()
-        type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
+        # get data and format strings
+        data_buffers = [[] for chunk in chunks]
+        format_strings = [""] * len(chunks)
+        header = BINARY_SETTINGS.HEADER + "".join(
+            str(i) for i in BINARY_SETTINGS.VERSION
+        )
+        header_format = f"{len(header)}s"
+        type_ids, _ = trajectory_data.agent_data.get_type_ids_and_mapping()
         for chunk_index, chunk in enumerate(chunks):
-            result[chunk_index][: len(header)] = header[:]
-            result[chunk_index][len(header)] = chunk.n_frames
-            result[chunk_index][
-                len(header) + 1 : len(header) + 1 + chunk.n_frames
-            ] = chunk.frame_offsets[:]
+            # header
+            data_buffers[chunk_index].append(header)
+            format_strings[chunk_index] += header_format
+            # offset table
+            data_buffers[chunk_index].append(chunk.n_frames)
+            data_buffers[chunk_index] += chunk.frame_offsets
+            format_strings[chunk_index] += f"{1 + len(chunk.frame_offsets)}i"
+            # frame data
             for chunk_frame_index in range(chunk.n_frames):
                 global_frame_index = chunk.get_global_index(chunk_frame_index)
-                result[chunk_index][
-                    chunk.frame_offsets[chunk_frame_index] : chunk.frame_offsets[
-                        chunk_frame_index
-                    ]
-                    + frame_buffer_sizes[global_frame_index]
-                    + 3
-                    + len(BINARY_SETTINGS.EOF)
-                ] = BinaryWriter._format_trajectory_frame(
+                frame_data, frame_format = BinaryWriter._format_trajectory_frame(
                     global_frame_index,
                     chunk_frame_index,
                     trajectory_data.agent_data,
                     type_ids,
                     frame_buffer_sizes[global_frame_index],
                 )
-        return result
+                data_buffers[chunk_index] += frame_data
+                format_strings[chunk_index] += frame_format
+        return data_buffers, format_strings
 
     @staticmethod
     def save(trajectory_data: TrajectoryData, output_path: str) -> None:
@@ -176,12 +164,17 @@ class BinaryWriter(Writer):
         output_path: str
             where to save the file
         """
-        data_buffers = BinaryWriter.format_trajectory_data(trajectory_data)
+        data_buffers, format_strings = BinaryWriter.format_trajectory_data(
+            trajectory_data
+        )
         print("Writing Binary -------------")
-        for index, data_buffer in enumerate(data_buffers):
+        for chunk_index in range(len(data_buffers)):
             if len(data_buffers) < 2:
                 output_name = f"{output_path}.simularium"
             else:
-                output_name = f"{output_path}_{index}.simularium"
-            data_buffer.astype("<f4").tofile(output_name)
+                output_name = f"{output_path}_{chunk_index}.simularium"
+            with open(output_name, "wb") as outfile:
+                outfile.write(
+                    struct.pack(format_strings[chunk_index], data_buffers[chunk_index])
+                )
             print(f"saved to {output_name}")
