@@ -21,6 +21,10 @@ md_requirements = [
     "MDAnalysisTests>=2.0.0",
 ]
 
+cellpack_requirementss = [
+    "cellpack>=0.2.1",
+]
+
 setup_requirements = [
     "pytest-runner>=5.2",
 ]
