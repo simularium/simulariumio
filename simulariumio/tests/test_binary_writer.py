@@ -301,8 +301,11 @@ input_data = TrajectoryData(
             ],
             [
                 [
-                    BINARY_SETTINGS.HEADER
-                    + "".join(str(i) for i in BINARY_SETTINGS.VERSION),
+                    bytes(
+                        BINARY_SETTINGS.HEADER
+                        + "".join(str(i) for i in BINARY_SETTINGS.VERSION),
+                        "utf-8",
+                    ),
                     3,
                     20,
                     125,
@@ -392,7 +395,7 @@ input_data = TrajectoryData(
                     -234.5462914,
                     105.46507228,
                     17.16552317,
-                    BINARY_SETTINGS.EOF,
+                    bytes(BINARY_SETTINGS.EOF, "utf-8"),
                     1,
                     1.0,
                     5,
@@ -475,7 +478,7 @@ input_data = TrajectoryData(
                     0.0,
                     9.88033853,
                     0.0,
-                    BINARY_SETTINGS.EOF,
+                    bytes(BINARY_SETTINGS.EOF, "utf-8"),
                     2,
                     2.0,
                     5,
@@ -555,7 +558,7 @@ input_data = TrajectoryData(
                     -20.46326319,
                     179.43194042,
                     485.07810635,
-                    BINARY_SETTINGS.EOF,
+                    bytes(BINARY_SETTINGS.EOF, "utf-8"),
                 ]
             ],
             [
@@ -777,8 +780,11 @@ input_data = TrajectoryData(
             ],
             [
                 [
-                    BINARY_SETTINGS.HEADER
-                    + "".join(str(i) for i in BINARY_SETTINGS.VERSION),
+                    bytes(
+                        BINARY_SETTINGS.HEADER
+                        + "".join(str(i) for i in BINARY_SETTINGS.VERSION),
+                        "utf-8",
+                    ),
                     2,
                     19,
                     124,
@@ -867,7 +873,7 @@ input_data = TrajectoryData(
                     -234.5462914,
                     105.46507228,
                     17.16552317,
-                    BINARY_SETTINGS.EOF,
+                    bytes(BINARY_SETTINGS.EOF, "utf-8"),
                     1,
                     1.0,
                     5,
@@ -950,11 +956,14 @@ input_data = TrajectoryData(
                     0.0,
                     9.88033853,
                     0.0,
-                    BINARY_SETTINGS.EOF,
+                    bytes(BINARY_SETTINGS.EOF, "utf-8"),
                 ],
                 [
-                    BINARY_SETTINGS.HEADER
-                    + "".join(str(i) for i in BINARY_SETTINGS.VERSION),
+                    bytes(
+                        BINARY_SETTINGS.HEADER
+                        + "".join(str(i) for i in BINARY_SETTINGS.VERSION),
+                        "utf-8",
+                    ),
                     1,
                     18,
                     0,
@@ -1036,7 +1045,7 @@ input_data = TrajectoryData(
                     -20.46326319,
                     179.43194042,
                     485.07810635,
-                    BINARY_SETTINGS.EOF,
+                    bytes(BINARY_SETTINGS.EOF, "utf-8"),
                 ],
             ],
             [
@@ -1259,8 +1268,11 @@ input_data = TrajectoryData(
             ],
             [
                 [
-                    BINARY_SETTINGS.HEADER
-                    + "".join(str(i) for i in BINARY_SETTINGS.VERSION),
+                    bytes(
+                        BINARY_SETTINGS.HEADER
+                        + "".join(str(i) for i in BINARY_SETTINGS.VERSION),
+                        "utf-8",
+                    ),
                     2,
                     19,
                     124,
@@ -1349,7 +1361,7 @@ input_data = TrajectoryData(
                     -234.5462914,
                     105.46507228,
                     17.16552317,
-                    BINARY_SETTINGS.EOF,
+                    bytes(BINARY_SETTINGS.EOF, "utf-8"),
                     1,
                     1.0,
                     5,
@@ -1432,11 +1444,14 @@ input_data = TrajectoryData(
                     0.0,
                     9.88033853,
                     0.0,
-                    BINARY_SETTINGS.EOF,
+                    bytes(BINARY_SETTINGS.EOF, "utf-8"),
                 ],
                 [
-                    BINARY_SETTINGS.HEADER
-                    + "".join(str(i) for i in BINARY_SETTINGS.VERSION),
+                    bytes(
+                        BINARY_SETTINGS.HEADER
+                        + "".join(str(i) for i in BINARY_SETTINGS.VERSION),
+                        "utf-8",
+                    ),
                     1,
                     18,
                     0,
@@ -1518,7 +1533,7 @@ input_data = TrajectoryData(
                     -20.46326319,
                     179.43194042,
                     485.07810635,
-                    BINARY_SETTINGS.EOF,
+                    bytes(BINARY_SETTINGS.EOF, "utf-8"),
                 ],
             ],
             [
@@ -1532,17 +1547,24 @@ def test_binary_writer(
     max_frames, max_bytes, expected_traj_info, expected_spatial_data, expected_format
 ):
     converter = TrajectoryConverter(input_data)
-    trajectory_infos, buffer_data, format_strings = BinaryWriter.format_trajectory_data(
+    trajectory_infos, binary_data = BinaryWriter.format_trajectory_data(
         converter._data, max_frames, max_bytes
     )
-    for chunk_index in range(len(buffer_data)):
+    for chunk_index in range(len(binary_data)):
         assert trajectory_infos[chunk_index] == expected_traj_info[chunk_index]
-        for item_index in range(len(buffer_data[chunk_index])):
-            item = buffer_data[chunk_index][item_index]
-            if isinstance(item, float):
-                assert item == pytest.approx(
-                    expected_spatial_data[chunk_index][item_index]
+        format_string = "".join(
+            value.format_string for value in binary_data[chunk_index]
+        )
+        assert format_string == expected_format[chunk_index]
+        data_buffer = [
+            item
+            for value in binary_data[chunk_index]
+            for item in value.get_value_list()
+        ]
+        for index in range(len(data_buffer)):
+            if isinstance(data_buffer[index], float):
+                assert data_buffer[index] == pytest.approx(
+                    expected_spatial_data[chunk_index][index]
                 )
             else:
-                assert item == expected_spatial_data[chunk_index][item_index]
-        assert format_strings[chunk_index] == expected_format[chunk_index]
+                assert data_buffer[index] == expected_spatial_data[chunk_index][index]
