@@ -19,4 +19,4 @@
   - Total time (including write to file) was ~5 minutes
 - 50MB SpringSaLaD file
   - Conversion ran in ~10 seconds
-  - Total time including write to file was ~45 seconds
+  - Total time (including write to file) was ~45 seconds
