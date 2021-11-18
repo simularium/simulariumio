@@ -1557,9 +1557,9 @@ def test_binary_writer(
         )
         assert format_string == expected_format[chunk_index]
         data_buffer = [
-            item
-            for value in binary_data[chunk_index]
-            for item in value.get_value_list()
+            value
+            for binary_values in binary_data[chunk_index]
+            for value in binary_values.values
         ]
         for index in range(len(data_buffer)):
             if isinstance(data_buffer[index], float):

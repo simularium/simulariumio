@@ -15,7 +15,7 @@ from ..data_objects import (
 from ..constants import BINARY_SETTINGS, CURRENT_VERSION
 from .writer import Writer
 from .binary_chunk import BinaryChunk
-from .binary_value import BinaryValue
+from .binary_values import BinaryValues
 
 ###############################################################################
 
@@ -80,32 +80,32 @@ class BinaryWriter(Writer):
         agent_data: AgentData,
         type_ids: np.ndarray,
         buffer_size: int,
-    ) -> List[BinaryValue]:
+    ) -> List[BinaryValues]:
         """
-        Return the frame of data as a list of BinaryValues
+        Return the frame of data as a list of BinaryValuess
         """
         frame_buffer, _, _ = Writer._get_frame_buffer(
             global_time_index, agent_data, type_ids, buffer_size
         )
         return [
-            BinaryValue(
-                value=int(chunk_time_index),
+            BinaryValues(
+                values=[int(chunk_time_index)],
                 format_string="i",
             ),
-            BinaryValue(
-                value=float(agent_data.times[global_time_index]),
+            BinaryValues(
+                values=[float(agent_data.times[global_time_index])],
                 format_string="f",
             ),
-            BinaryValue(
-                value=int(agent_data.n_agents[global_time_index]),
+            BinaryValues(
+                values=[int(agent_data.n_agents[global_time_index])],
                 format_string="i",
             ),
-            BinaryValue(
-                value=frame_buffer,
+            BinaryValues(
+                values=frame_buffer,
                 format_string=f"{len(frame_buffer)}f",
             ),
-            BinaryValue(
-                value=BINARY_SETTINGS.EOF,
+            BinaryValues(
+                values=[bytes(BINARY_SETTINGS.EOF, "utf-8")],
                 format_string=f"{len(BINARY_SETTINGS.EOF)}s",
             ),
         ]
@@ -115,7 +115,7 @@ class BinaryWriter(Writer):
         trajectory_data: TrajectoryData,
         max_frames: int = BINARY_SETTINGS.MAX_FRAMES,
         max_bytes: int = BINARY_SETTINGS.MAX_BYTES,
-    ) -> Tuple[List[Dict[str, Any]], List[BinaryValue]]:
+    ) -> Tuple[List[Dict[str, Any]], List[BinaryValues]]:
         """
         Return the data shaped for Simularium binary
         Parameters
@@ -153,15 +153,15 @@ class BinaryWriter(Writer):
             )
             # header
             binary_data[chunk_index].append(
-                BinaryValue(
-                    value=header,
+                BinaryValues(
+                    values=[bytes(header, "utf-8")],
                     format_string=header_format,
                 )
             )
             # offset table
             binary_data[chunk_index].append(
-                BinaryValue(
-                    value=[chunk.n_frames] + chunk.frame_offsets,
+                BinaryValues(
+                    values=[chunk.n_frames] + chunk.frame_offsets,
                     format_string=f"{1 + len(chunk.frame_offsets)}i",
                 )
             )
@@ -208,9 +208,9 @@ class BinaryWriter(Writer):
                 value.format_string for value in binary_data[chunk_index]
             )
             data_buffer = [
-                item
-                for value in binary_data[chunk_index]
-                for item in value.get_value_list()
+                value
+                for binary_values in binary_data[chunk_index]
+                for value in binary_values.values
             ]
             with open(output_name, "ab") as outfile:
                 outfile.write(struct.pack(format_string, *data_buffer))
