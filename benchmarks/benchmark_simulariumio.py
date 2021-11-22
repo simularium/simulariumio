@@ -7,12 +7,11 @@ import time
 
 import numpy as np
 
-from simulariumio import MetaData
+from simulariumio import MetaData, InputFileData, DisplayData, DISPLAY_TYPE
 from simulariumio.cytosim import (
     CytosimConverter,
     CytosimData,
     CytosimObjectInfo,
-    CytosimAgentInfo,
 )
 from simulariumio.springsalad import (
     SpringsaladConverter,
@@ -35,11 +34,25 @@ def convert_d_c_cytosim(input_path):
         ),
         object_info={
             "fibers": CytosimObjectInfo(
-                filepath=f"{input_path}/fiber_points.txt",
-                agents={
-                    1: CytosimAgentInfo(name="actin", radius=0.02),
-                    2: CytosimAgentInfo(name="myosin", radius=0.02),
-                    3: CytosimAgentInfo(name="myosinB", radius=0.02),
+                cytosim_file=InputFileData(
+                    file_path=f"{input_path}/fiber_points.txt",
+                ),
+                display_data={
+                    1: DisplayData(
+                        name="actin",
+                        radius=0.02,
+                        display_type=DISPLAY_TYPE.FIBER,
+                    ),
+                    2: DisplayData(
+                        name="myosin",
+                        radius=0.02,
+                        display_type=DISPLAY_TYPE.FIBER,
+                    ),
+                    3: DisplayData(
+                        name="myosinB",
+                        radius=0.02,
+                        display_type=DISPLAY_TYPE.FIBER,
+                    ),
                 },
             ),
         },
@@ -49,14 +62,27 @@ def convert_d_c_cytosim(input_path):
 
 def convert_condensate_springsalad(input_path):
     data = SpringsaladData(
-        path_to_sim_view_txt=f"{input_path}/Above_Ksp_viewer.txt",
-        display_names={
-            "ORANGE": "A Linker",
-            "MAGENTA": "A Binding site",
-            "GREEN": "B Binding site",
-            "PINK": "B Linker",
+        sim_view_txt_file=InputFileData(
+            file_path=f"{input_path}/Above_Ksp_viewer.txt",
+        ),
+        display_data={
+            "ORANGE": DisplayData(
+                name="A Linker",
+                display_type=DISPLAY_TYPE.SPHERE,
+            ),
+            "MAGENTA": DisplayData(
+                name="A Binding site",
+                display_type=DISPLAY_TYPE.SPHERE,
+            ),
+            "GREEN": DisplayData(
+                name="B Binding site",
+                display_type=DISPLAY_TYPE.SPHERE,
+            ),
+            "PINK": DisplayData(
+                name="B Linker",
+                display_type=DISPLAY_TYPE.SPHERE,
+            ),
         },
-        plots=[],
     )
     return SpringsaladConverter(data)
 
