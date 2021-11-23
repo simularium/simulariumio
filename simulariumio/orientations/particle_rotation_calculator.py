@@ -64,12 +64,14 @@ class ParticleRotationCalculator:
                 neighbor2_position, box_size
             )
         )
+        # TODO check v1 and v2 not parallel
         # make orthogonal
         v2 = ParticleRotationCalculator._normalize(
             v2 - (np.dot(v1, v2) / np.dot(v1, v1)) * v1
         )
         # cross to get 3rd basis
         v3 = np.cross(v2, v1)
+        # v2 = np.cross(v1, v3) maybe cross again?
         # create matrix with basis
         return np.array(
             [[v1[0], v2[0], v3[0]], 
@@ -101,7 +103,7 @@ class ParticleRotationCalculator:
                 box_size,
             )
         )
-        return np.matmul(current_rotation, np.linalg.inv(zero_rotation))
+        return np.matmul(current_rotation, np.linalg.inv(zero_rotation)) # TODO try reverse order, invert
 
     @staticmethod
     def _get_euler_angles(rotation_matrix: np.ndarray) -> np.ndarray:
@@ -110,7 +112,7 @@ class ParticleRotationCalculator:
         """
         rotation = Rotation.from_matrix(rotation_matrix)
         result = rotation.as_euler("xyz", degrees=False)
-        return np.array([result[0], result[2], -result[1]])
+        return result
 
     @staticmethod
     def calculate_rotation(
