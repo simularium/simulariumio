@@ -18,6 +18,7 @@ from simulariumio import (
     ModelMetaData,
 )
 from simulariumio.constants import DISPLAY_TYPE
+from simulariumio.orientations import OrientationData
 
 
 def default_agents_type_mapping() -> Dict[str, Any]:
@@ -566,3 +567,73 @@ def mixed_agents() -> TrajectoryData:
         spatial_units=UnitData("um"),
         plots=["plot data goes here"],
     )
+
+
+actin_zero_orientations = [
+    OrientationData(
+        type_name_substrings=["actin", "2"],
+        neighbor1_type_name_substrings=["actin", "1"],
+        neighbor1_relative_position=(
+            np.array([19.126, 20.838, 27.757]) - np.array([21.847, 24.171, 27.148])
+        ),
+        neighbor2_type_name_substrings=["actin", "3"],
+        neighbor2_relative_position=(
+            np.array([24.738, 20.881, 26.671]) - np.array([21.847, 24.171, 27.148])
+        ),
+    ),
+    OrientationData(
+        type_name_substrings=["actin", "3"],
+        neighbor1_type_name_substrings=["actin", "2"],
+        neighbor1_relative_position=(
+            np.array([19.126, 20.838, 27.757]) - np.array([21.847, 24.171, 27.148])
+        ),
+        neighbor2_type_name_substrings=["actin", "1"],
+        neighbor2_relative_position=(
+            np.array([24.738, 20.881, 26.671]) - np.array([21.847, 24.171, 27.148])
+        ),
+    ),
+    OrientationData(
+        type_name_substrings=["actin", "1"],
+        neighbor1_type_name_substrings=["actin", "3"],
+        neighbor1_relative_position=(
+            np.array([19.126, 20.838, 27.757]) - np.array([21.847, 24.171, 27.148])
+        ),
+        neighbor2_type_name_substrings=["actin", "2"],
+        neighbor2_relative_position=(
+            np.array([24.738, 20.881, 26.671]) - np.array([21.847, 24.171, 27.148])
+        ),
+    ),
+    OrientationData(
+        type_name_substrings=["arp3"],
+        neighbor1_type_name_substrings=["arp2"],
+        neighbor1_relative_position=(
+            np.array([28.087, 30.872, 26.657]) - np.array([29.275, 27.535, 23.944])
+        ),
+        neighbor2_type_name_substrings=["actin"],
+        neighbor2_relative_position=(
+            np.array([30.382, 21.190, 25.725]) - np.array([29.275, 27.535, 23.944])
+        ),
+    ),
+    OrientationData(
+        type_name_substrings=["arp2#branched"],
+        neighbor1_type_name_substrings=["arp3"],
+        neighbor1_relative_position=(
+            np.array([29.275, 27.535, 23.944]) - np.array([28.087, 30.872, 26.657])
+        ),
+        neighbor2_type_name_substrings=["actin#branch"],
+        neighbor2_relative_position=(
+            np.array([29.821, 33.088, 23.356]) - np.array([28.087, 30.872, 26.657])
+        ),
+    ),
+    OrientationData(
+        type_name_substrings=["actin#branch"],
+        neighbor1_type_name_substrings=["arp2#branched"],
+        neighbor1_relative_position=(
+            np.array([28.087, 30.872, 26.657]) - np.array([29.821, 33.088, 23.356])
+        ),
+        neighbor2_type_name_substrings=["actin", "2"],
+        neighbor2_relative_position=(
+            np.array([30.476, 36.034, 26.528]) - np.array([29.821, 33.088, 23.356])
+        ),
+    ),
+]

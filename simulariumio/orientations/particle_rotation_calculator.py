@@ -3,6 +3,7 @@
 
 import logging
 from typing import List
+from sys import float_info
 
 import numpy as np
 from scipy.spatial.transform import Rotation
@@ -45,6 +46,36 @@ class ParticleRotationCalculator:
         return vector / np.linalg.norm(vector)
 
     @staticmethod
+    def _vectors_are_colinear(vector1: np.ndarray, vector2: np.ndarray) -> bool:
+        """
+        Check if two vectors are colinear to each other
+        """
+        return (
+            abs(
+                np.dot(
+                    ParticleRotationCalculator._normalize(vector1),
+                    ParticleRotationCalculator._normalize(vector2),
+                )
+            )
+            >= 1 - float_info.epsilon
+        )
+
+    @staticmethod
+    def _vectors_are_perpendicular(vector1: np.ndarray, vector2: np.ndarray) -> bool:
+        """
+        Check if two vectors are perpendicular to each other
+        """
+        return (
+            abs(
+                np.dot(
+                    ParticleRotationCalculator._normalize(vector1),
+                    ParticleRotationCalculator._normalize(vector2),
+                )
+            )
+            <= 1e-6
+        )
+
+    @staticmethod
     def _get_rotation_from_neighbor_positions(
         neighbor1_position: np.ndarray,
         neighbor2_position: np.ndarray,
@@ -64,19 +95,24 @@ class ParticleRotationCalculator:
                 neighbor2_position, box_size
             )
         )
-        # TODO check v1 and v2 not parallel
+        if ParticleRotationCalculator._vectors_are_colinear(v1, v2):
+            # TODO handle parallel neighbor positions
+            return np.identity(3)
         # make orthogonal
         v2 = ParticleRotationCalculator._normalize(
             v2 - (np.dot(v1, v2) / np.dot(v1, v1)) * v1
         )
+        if not ParticleRotationCalculator._vectors_are_perpendicular(v1, v2):
+            raise Exception(
+                "Neighbor vectors are not perpendicular after normalization:"
+                f"\n{v1}\n{v2}"
+            )
         # cross to get 3rd basis
         v3 = np.cross(v2, v1)
-        # v2 = np.cross(v1, v3) maybe cross again?
+        # v2 = np.cross(v1, v3) TODO maybe cross again?
         # create matrix with basis
         return np.array(
-            [[v1[0], v2[0], v3[0]], 
-             [v1[1], v2[1], v3[1]], 
-             [v1[2], v2[2], v3[2]]]
+            [[v1[0], v2[0], v3[0]], [v1[1], v2[1], v3[1]], [v1[2], v2[2], v3[2]]]
         )
 
     @staticmethod
@@ -103,7 +139,9 @@ class ParticleRotationCalculator:
                 box_size,
             )
         )
-        return np.matmul(current_rotation, np.linalg.inv(zero_rotation)) # TODO try reverse order, invert
+        return np.matmul(
+            current_rotation, np.linalg.inv(zero_rotation)
+        )  # TODO try reverse order, invert
 
     @staticmethod
     def _get_euler_angles(rotation_matrix: np.ndarray) -> np.ndarray:
