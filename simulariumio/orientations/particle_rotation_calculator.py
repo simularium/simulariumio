@@ -62,21 +62,6 @@ class ParticleRotationCalculator:
         )
 
     @staticmethod
-    def _vectors_are_perpendicular(vector1: np.ndarray, vector2: np.ndarray) -> bool:
-        """
-        Check if two vectors are perpendicular to each other
-        """
-        return (
-            abs(
-                np.dot(
-                    ParticleRotationCalculator._normalize(vector1),
-                    ParticleRotationCalculator._normalize(vector2),
-                )
-            )
-            <= 1e-6
-        )
-
-    @staticmethod
     def _get_rotation_from_neighbor_positions(
         neighbor1_position: np.ndarray,
         neighbor2_position: np.ndarray,
