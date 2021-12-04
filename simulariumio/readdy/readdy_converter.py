@@ -63,13 +63,13 @@ class ReaddyConverter(TrajectoryConverter):
         agent_index: int,
         traj: Any,
         positions: np.ndarray,
-        rotations: np.ndarray,
-        rotations_calculated: np.ndarray,
         type_ids: np.ndarray,
         ids: np.ndarray,
         topology_records: Any,
         agent_index_for_particle_id: List[Dict[int, int]],
         input_data: ReaddyData,
+        rotations: np.ndarray,
+        rotations_calculated: np.ndarray,
     ) -> np.ndarray:
         """
         Calculate the rotation for a particle given its neighbors' positions
@@ -97,7 +97,9 @@ class ReaddyConverter(TrajectoryConverter):
                 neighbor_positions.append(positions[time_index][neighbor_index])
                 if rotations is not None:
                     neighbor_rotations.append(
-                        rotations[time_index][neighbor_index] if rotations_calculated[time_index][neighbor_index] else None
+                        rotations[time_index][neighbor_index]
+                        if rotations_calculated[time_index][neighbor_index]
+                        else None
                     )
         return ParticleRotationCalculator.calculate_rotation(
             particle_type_name,
@@ -107,7 +109,7 @@ class ReaddyConverter(TrajectoryConverter):
             neighbor_rotations if rotations is not None else None,
             input_data.zero_orientations,
             input_data.meta_data.box_size,
-        )   
+        )
 
     @staticmethod
     def _get_agent_data(
@@ -176,13 +178,13 @@ class ReaddyConverter(TrajectoryConverter):
                         agent_index,
                         traj,
                         positions,
-                        rotations=None,
-                        rotations_calculated=None,
                         type_ids,
                         ids,
                         topology_records,
                         agent_index_for_particle_id,
                         input_data,
+                        rotations=None,
+                        rotations_calculated=None,
                     )
                     if rotation is not None:
                         rotations_calculated[time_index][new_agent_index] = True
@@ -195,19 +197,21 @@ class ReaddyConverter(TrajectoryConverter):
                     if rotations_calculated[time_index][agent_index]:
                         # this rotation was already set
                         continue
-                    result.rotations[time_index][agent_index] = ReaddyConverter._calculate_rotation(
+                    rotation = ReaddyConverter._calculate_rotation(
                         time_index,
                         agent_index,
                         traj,
                         positions,
-                        result.rotations,
-                        rotations_calculated,
                         type_ids,
                         ids,
                         topology_records,
                         agent_index_for_particle_id,
                         input_data,
+                        result.rotations,
+                        rotations_calculated,
                     )
+                    if rotation is not None:
+                        result.rotations[time_index][agent_index] = rotation
         return result
 
     @staticmethod

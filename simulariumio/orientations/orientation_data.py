@@ -6,6 +6,8 @@ from typing import List
 
 import numpy as np
 
+from .neighbor_data import NeighborData
+
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -15,18 +17,12 @@ log = logging.getLogger(__name__)
 
 class OrientationData:
     type_name_substrings: List[str]
-    neighbor1_type_name_substrings: List[str]
-    neighbor1_relative_position: np.ndarray
-    neighbor2_type_name_substrings: List[str]
-    neighbor2_relative_position: np.ndarray
+    neighbor_data: List[NeighborData]
 
     def __init__(
         self,
         type_name_substrings: List[str],
-        neighbor1_type_name_substrings: List[str],
-        neighbor1_relative_position: np.ndarray,
-        neighbor2_type_name_substrings: List[str],
-        neighbor2_relative_position: np.ndarray,
+        neighbor_data: List[NeighborData],
     ):
         """
         This object stores relative neighbor particle positions needed
@@ -40,25 +36,15 @@ class OrientationData:
         type_name_substrings : List[str]
             The substrings that must be found
             in the type name of the particle being oriented
-        neighbor1_type_name_substrings : List[str]
-            The substrings that must be found
-            in the type name of the first neighbor of the particle being oriented
-        neighbor1_relative_position : np.ndarray (shape = [3])
-            The global position of the first neighbor
-        neighbor2_type_name_substrings : List[str]
-            The substrings that must be found
-            in the type name of the second neighbor of the particle being oriented
-        neighbor2_relative_position : np.ndarray (shape = [3])
-            The global position of the second neighbor
+        neighbor_data: List[NeighborData]
+            Type and position information for a neighbor
+            of the particle being oriented
         """
         self.type_name_substrings = type_name_substrings
-        self.neighbor1_type_name_substrings = neighbor1_type_name_substrings
-        self.neighbor1_relative_position = neighbor1_relative_position
-        self.neighbor2_type_name_substrings = neighbor2_type_name_substrings
-        self.neighbor2_relative_position = neighbor2_relative_position
+        self.neighbor_data = neighbor_data
 
     @staticmethod
-    def type_name_contains_substrings(substrings: List[str], type_name: str) -> bool:
+    def _type_name_contains_substrings(substrings: List[str], type_name: str) -> bool:
         """
         Does the type_name contain all the substrings?
         """
@@ -70,23 +56,49 @@ class OrientationData:
     def type_name_matches(self, type_name: str) -> bool:
         """
         Does the type_name contain all the type_name_substrings?
+
+        Parameters
+        ----------
+        type_name: str
+            Type name of the particle instance to match
         """
-        return OrientationData.type_name_contains_substrings(
+        return OrientationData._type_name_contains_substrings(
             self.type_name_substrings, type_name
         )
 
-    def neighbor1_type_name_matches(self, type_name: str) -> bool:
+    def neighbor_type_name_matches(self, neighbor_number: int, type_name: str) -> bool:
         """
-        Does the type_name contain all the neighbor1_type_name_substrings?
+        Does the type_name contain all the neighbor's type_name_substrings?
+
+        Parameters
+        ----------
+        neighbor_number : int
+            Which neighbor to check, 0 or 1?
+        type_name: str
+            Type name of the particle instance to match
         """
-        return OrientationData.type_name_contains_substrings(
-            self.neighbor1_type_name_substrings, type_name
+        return OrientationData._type_name_contains_substrings(
+            self.neighbor_data[neighbor_number].type_name_substrings, type_name
         )
 
-    def neighbor2_type_name_matches(self, type_name: str) -> bool:
+    def get_neighbor_position(self, neighbor_number: int) -> np.ndarray:
         """
-        Does the type_name contain all the neighbor2_type_name_substrings?
+        Get the neighbor's relative_position
+
+        Parameters
+        ----------
+        neighbor_number : int
+            Which neighbor to check, 0 or 1?
         """
-        return OrientationData.type_name_contains_substrings(
-            self.neighbor2_type_name_substrings, type_name
-        )
+        return self.neighbor_data[neighbor_number].relative_position
+
+    def get_neighbors_neighbor_position(self, neighbor_number: int) -> np.ndarray:
+        """
+        Get the neighbor's neighbor_relative_position
+
+        Parameters
+        ----------
+        neighbor_number : int
+            Which neighbor to check, 0 or 1?
+        """
+        return self.neighbor_data[neighbor_number].neighbor_relative_position
