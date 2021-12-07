@@ -21,7 +21,7 @@ md_requirements = [
     "MDAnalysisTests>=2.0.0",
 ]
 
-cellpack_requirementss = [
+cellpack_requirements = [
     "cellpack>=0.2.1",
 ]
 
