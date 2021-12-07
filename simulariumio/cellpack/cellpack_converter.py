@@ -5,7 +5,14 @@ import logging
 from typing import List
 
 import numpy as np
+from scipy.io.arff.arffread import MetaData
+from simulariumio.constants import DISPLAY_TYPE
+from simulariumio.data_objects.camera_data import CameraData
 from wheel import metadata
+from scipy.spatial.transform import Rotation as R
+import json
+
+from simulariumio.data_objects.display_data import DisplayData
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData
@@ -36,45 +43,254 @@ class CellpackConverter(TrajectoryConverter):
         self._data = self._read(input_data)
 
     @staticmethod
-    def _get_bounding_box(self, recipe_data):
+    def _get_box_center(recipe_data, scale_factor):
+        options = recipe_data["options"]
+        bb = options["boundingBox"]
+        x_pos = (bb[1][0] - bb[0][0])/ 2 + bb[0][0]
+        y_pos = (bb[1][1] - bb[0][1])/2 + bb[0][1]
+        z_pos = (bb[1][2] - bb[0][2])/2 + bb[0][2]
+        return [
+            x_pos * scale_factor,
+            y_pos * scale_factor,
+            z_pos * scale_factor,
+        ]
+
+    @staticmethod
+    def _get_boxsize(recipe_data, scale_factor):
         options = recipe_data["options"]
         bb = options["boundingBox"]
         x_size = bb[1][0] - bb[0][0]
         y_size = bb[1][1] - bb[0][1]
         z_size = bb[1][2] - bb[0][2]
         return [
-            x_size * self.scale_factor,
-            y_size * self.scale_factor,
-            z_size * self.scale_factor,
-    ]
+            x_size * scale_factor,
+            y_size * scale_factor,
+            z_size * scale_factor,
+        ]
 
-    def _loop_through_compartment(self, results_data_in, time_step_index, recipe_data):
-        if "cytoplasme" in results_data_in:
-            if len(results_data_in["cytoplasme"]["ingredients"]) != 0:
-                self.loop_through_ingredients(
-                    results_data_in["cytoplasme"]["ingredients"],
-                    recipe_data["cytoplasme"]["ingredients"],
-                    time_step_index,
-                )
-        if "compartments" in results_data_in:
-            for compartment in results_data_in["compartments"]:
-                current_compartment = results_data_in["compartments"][compartment]
-                if "surface" in current_compartment:
-                    self.loop_through_ingredients(
-                        current_compartment["surface"]["ingredients"],
-                        recipe_data["compartments"][compartment]["surface"][
-                            "ingredients"
-                        ],
+    @staticmethod
+    def get_euler_from_matrix(data_in):
+        rotation_matrix = [data_in[0][0:3], data_in[1][0:3], data_in[2][0:3]]
+        return R.from_matrix(rotation_matrix).as_euler("XYZ", degrees=False)
+
+    @staticmethod
+    def get_euler_from_quat(data_in):
+        return R.from_quat(data_in).as_euler("XYZ", degrees=False)
+
+    @staticmethod
+    def is_matrix(data_in):
+        if isinstance(data_in[0], list):
+            return True
+        else:
+            return False
+    
+    @staticmethod
+    def get_euler(data_in):
+        if CellpackConverter.is_matrix(data_in):
+            return CellpackConverter.get_euler_from_matrix(data_in)
+        else:
+            return CellpackConverter.get_euler_from_quat(data_in)
+
+    @staticmethod
+    def _unpack_curve(
+        data, time_step_index, ingredient_name, index, agent_id, result, scale_factor, box_center
+    ):
+        curve = "curve" + str(index)
+        result.positions[time_step_index][agent_id] = [0, 0, 0]
+        result.rotations[time_step_index][agent_id] = [0, 0, 0]
+        result.viz_types[time_step_index][agent_id] = 1001
+        result.n_agents[time_step_index] += 1
+        result.types[time_step_index].append(ingredient_name)
+        result.unique_ids[time_step_index][agent_id] = agent_id
+        r = (
+            data["encapsulatingRadius"] * scale_factor
+            if ("encapsulatingRadius" in data)
+            else 1
+        )
+        print(agent_id)
+        result.radii[time_step_index][agent_id] = r
+        result.n_subpoints[time_step_index][agent_id] = len(data[curve])
+        scaled_control_points = np.array(data[curve]) * scale_factor - np.array(box_center)
+        for i in range(len(scaled_control_points)):
+            result.subpoints[time_step_index][agent_id][i] = scaled_control_points[i]
+
+    @staticmethod
+    def _unpack_positions(
+        data,
+        time_step_index,
+        ingredient_name,
+        index,
+        agent_id,
+        result,
+        scale_factor,
+        box_center,
+        comp_id=0,
+    ):
+        position = data["results"][index][0]
+        offset = None
+        offset = np.array([0, 0, 0])
+        # TODO : deal with membrane ingredient transformation
+        # if "source" in data:
+        #     offset = np.array(data["source"]["transform"]["offset"])
+        # else:
+        #     offset = np.array([0, 0, 0])
+        if comp_id <= 0:
+            offset = offset * -1
+        result.positions[time_step_index][agent_id] = [
+            (position[0] + offset[0] - box_center[0]) * scale_factor,
+            (position[1] + offset[1] - box_center[1]) * scale_factor,
+            (position[2] + offset[2] - box_center[2]) * scale_factor,
+        ]
+
+        rotation = CellpackConverter.get_euler(data["results"][index][1])
+        result.rotations[time_step_index][agent_id] = rotation
+        result.viz_types[time_step_index][agent_id] = 1000
+        result.n_agents[time_step_index] += 1
+        print(result.types, agent_id)
+        result.types[time_step_index].append(ingredient_name)
+        result.unique_ids[time_step_index][agent_id] = agent_id
+        if "radii" in data:
+            result.radii[time_step_index][agent_id] = (
+                data["radii"][0]["radii"][0] * scale_factor
+            )
+
+        elif "encapsulatingRadius" in data:
+            result.radii[time_step_index][agent_id] = (
+                data["encapsulatingRadius"] * scale_factor
+            )
+
+        else:
+            result.radii[time_step_index][agent_id] = 1
+
+        result.n_subpoints[time_step_index][agent_id] = 0
+
+    @staticmethod
+    def _parse_dimensions(
+        all_ingredients,
+        total_steps = 1
+    ) -> DimensionData:
+        """
+        Parse cellPack results file to get the total number of agents and 
+        the max curve length
+        """
+        result = DimensionData(0, 0)
+        for ingredient in all_ingredients:
+            ingredient_results_data = ingredient["results"]
+            result.max_agents += len(ingredient_results_data["results"])
+            if "nbCurve" in ingredient_results_data:
+                result.max_agents += ingredient_results_data["nbCurve"]
+
+                for i in range(ingredient_results_data["nbCurve"]):
+                    curve = "curve" + str(i)
+                    if len(ingredient_results_data[curve]) > result.max_subpoints:
+                        result.max_subpoints = len(ingredient_results_data[curve])
+        result.total_steps = total_steps
+        print(result.max_agents)
+        return result
+
+    def _get_ingredient_display_data(geo_type, ingredient_data):
+        if geo_type == "OBJ" and "meshFile" in ingredient_data:
+            meshType = (
+                ingredient_data["meshType"]
+                if ("meshType" in ingredient_data)
+                else "file"
+            )
+            if meshType == "file":
+                file_path = os.path.basename(ingredient_data["meshFile"])
+                file_name, _ = os.path.splitext(file_path)
+                return {
+                    "display_type": DISPLAY_TYPE.OBJ,
+                    "url": f"https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/geometries/{file_name}.obj",
+                }
+            elif meshType == "raw":
+                # need to build a mesh from the vertices, faces, indexes dictionary
+                log.info(meshType, ingredient_data["meshFile"].keys())
+                return {"display_type": DISPLAY_TYPE.SPHERE, "url": ""}
+        elif geo_type == "PDB":
+            pdb_file_name = ""
+            if "source" in ingredient_data:
+                pdb_file_name = ingredient_data["source"]["pdb"]
+            elif "pdb" in ingredient_data:
+                pdb_file_name = ingredient_data["pdb"]
+            if ".pdb" in pdb_file_name:
+                url = f"https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/other/{pdb_file_name}"
+            else:
+                url = pdb_file_name
+            return {
+                "display_type": DISPLAY_TYPE.PDB,
+                "url": url,
+            }
+        else:
+            display_type = (
+                DISPLAY_TYPE.FIBER
+                if ingredient_data["Type"] == "Grow"
+                else DISPLAY_TYPE.SPHERE
+            )
+            return {"display_type": display_type, "url": ""}
+
+    @staticmethod
+    def _process_ingredients(
+        all_ingredients,
+        time_step_index,
+        scale_factor,
+        box_center,
+        geo_type,
+    ):
+        dimensions = CellpackConverter._parse_dimensions(
+            all_ingredients
+        )
+        spatial_data = AgentData.from_dimensions(dimensions)
+        display_data = {}
+        agent_id_counter = 0
+        for ingredient in all_ingredients:
+            ingredient_data = ingredient["recipe_data"]
+            ingredient_key = ingredient_data["name"]
+            ingredient_results_data = ingredient["results"]
+            agent_display_data = CellpackConverter._get_ingredient_display_data(
+                geo_type, ingredient_data
+            )
+            display_data[ingredient_key] = DisplayData(
+                name=ingredient_key,
+                display_type=agent_display_data["display_type"],
+                url=agent_display_data["url"],
+            )
+            if len(ingredient_results_data["results"]) > 0:
+                for j in range(len(ingredient_results_data["results"])):
+                    CellpackConverter._unpack_positions(
+                        ingredient_results_data,
                         time_step_index,
+                        ingredient_key,
+                        j,
+                        agent_id_counter,
+                        spatial_data,
+                        scale_factor,
+                        box_center
                     )
-                if "interior" in current_compartment:
-                    self.loop_through_ingredients(
-                        current_compartment["interior"]["ingredients"],
-                        recipe_data["compartments"][compartment]["interior"][
-                            "ingredients"
-                        ],
+                    agent_id_counter += 1
+            elif ingredient_results_data["nbCurve"] > 0:
+                for i in range(ingredient_results_data["nbCurve"]):
+                    CellpackConverter._unpack_curve(
+                        ingredient_results_data,
                         time_step_index,
+                        ingredient_key,
+                        i,
+                        agent_id_counter,
+                        spatial_data,
+                        scale_factor, 
+                        box_center
                     )
+                    agent_id_counter += 1
+        spatial_data.display_data = display_data
+        return spatial_data
+
+    @staticmethod
+    def _update_meta_data(meta_data: MetaData, box_size) -> MetaData:
+        camera_z_position = box_size[2] if box_size[2] > 10 else 100.0
+        meta_data.camera_defaults=CameraData(
+            position=np.array([10.0, 0.0, camera_z_position]),
+            look_at_position=np.array([10.0, 0.0, 0.0]),
+            fov_degrees=60.0,
+        )
 
     @staticmethod
     def _read(input_data: CellpackData) -> TrajectoryData:
@@ -83,20 +299,26 @@ class CellpackConverter(TrajectoryConverter):
         """
         print("Reading Cellpack Data -------------")
         # load the data from Cellpack output .txt file
-        recipe_data = RecipeLoader(input_data.recipe_file_path).read()
-        results_data = input_data.results_file.get_contents()
+        time_step_index = 0
+        input_data.meta_data.scale_factor *= 0.1
+        recipe_loader = RecipeLoader(input_data.recipe_file_path)
+        recipe_data = recipe_loader.recipe_data
+        results_data = json.loads(input_data.results_file.get_contents())
+        all_ingredients = recipe_loader.get_all_ingredients(results_data)
 
+        box_center = CellpackConverter._get_box_center(recipe_data, input_data.meta_data.scale_factor)
+
+        agent_data = CellpackConverter._process_ingredients(
+                all_ingredients, time_step_index, input_data.meta_data.scale_factor, box_center, input_data.geometry_type)
+            
         # parse
-        box_size = CellpackConverter._get_bounding_box(recipe_data)
-        input_data.meta_data._set_box_size(box_size)
-        input_data.metadata.scale_factor *= 0.1
+        box_size = CellpackConverter._get_boxsize(recipe_data, input_data.meta_data.scale_factor)
+        print(box_size)
+        input_data.meta_data._set_box_size(np.array(box_size))
+        CellpackConverter._update_meta_data(input_data.meta_data, box_size)  # camera pos
 
-        metadata = make_my_meta(input_data.meta_data) # camera pos
-        agent_data = make_agent_data
-
-        display_data = make_display_data(input_data.display_data)
         # # create TrajectoryData
-        input_data.spatial_units.multiply(1.0 / input_data.metadata.scale_factor)
+        input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
         return TrajectoryData(
             meta_data=input_data.meta_data,
             agent_data=agent_data,

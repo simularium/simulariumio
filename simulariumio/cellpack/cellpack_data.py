@@ -5,6 +5,7 @@ import logging
 from typing import Any, Dict, List
 
 from ..data_objects import MetaData, UnitData, DisplayData, InputFileData
+from ..constants import DISPLAY_TYPE
 
 ###############################################################################
 
