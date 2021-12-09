@@ -58,21 +58,44 @@ class ReaddyConverter(TrajectoryConverter):
         return (traj, n_agents, positions, type_ids, ids, topology_records)
 
     @staticmethod
+    def _get_edges_for_frame(
+        time_index: int,
+        topology_records: Any,
+    ) -> Dict[int, List[int]]:
+        """
+        Get all the neighbors of each particle
+        in each topology at the given time_index
+        """
+        if topology_records is None:
+            return None
+        result = {}
+        for top in topology_records[time_index]:
+            for e1, e2 in top.edges:
+                if e1 > e2:
+                    continue
+                particle_id = int(top.particles[e1])
+                if particle_id not in result:
+                    result[particle_id] = []
+                result[particle_id].append(int(top.particles[e2]))
+        return result
+
+    @staticmethod
     def _calculate_rotation(
         time_index: int,
         agent_index: int,
+        edges: Dict[int, List[int]],
         traj: Any,
         positions: np.ndarray,
         type_ids: np.ndarray,
         ids: np.ndarray,
-        topology_records: Any,
         agent_index_for_particle_id: List[Dict[int, int]],
         input_data: ReaddyData,
         rotations: np.ndarray,
         rotations_calculated: np.ndarray,
     ) -> np.ndarray:
         """
-        Calculate the rotation for a particle given its neighbors' positions
+        Calculate the rotation for a particle given
+        its neighbors' positions and rotations
         """
         particle_id = ids[time_index][agent_index]
         particle_type_name = traj.species_name(type_ids[time_index][agent_index])
@@ -80,27 +103,18 @@ class ReaddyConverter(TrajectoryConverter):
         neighbor_type_names = []
         neighbor_positions = []
         neighbor_rotations = []
-        for top in topology_records[time_index]:
-            for e1, e2 in top.edges:
-                if e1 > e2:
-                    continue
-                if particle_id == top.particles[e1]:
-                    neighbor_id = top.particles[e2]
-                elif particle_id == top.particles[e2]:
-                    neighbor_id = top.particles[e1]
-                else:
-                    continue
-                neighbor_index = agent_index_for_particle_id[time_index][neighbor_id]
-                neighbor_type_names.append(
-                    traj.species_name(type_ids[time_index][neighbor_index])
+        for neighbor_id in edges[particle_id]:
+            neighbor_index = agent_index_for_particle_id[time_index][neighbor_id]
+            neighbor_type_names.append(
+                traj.species_name(type_ids[time_index][neighbor_index])
+            )
+            neighbor_positions.append(positions[time_index][neighbor_index])
+            if rotations is not None:
+                neighbor_rotations.append(
+                    rotations[time_index][neighbor_index]
+                    if rotations_calculated[time_index][neighbor_index]
+                    else None
                 )
-                neighbor_positions.append(positions[time_index][neighbor_index])
-                if rotations is not None:
-                    neighbor_rotations.append(
-                        rotations[time_index][neighbor_index]
-                        if rotations_calculated[time_index][neighbor_index]
-                        else None
-                    )
         return ParticleRotationCalculator.calculate_rotation(
             particle_type_name,
             particle_position,
@@ -147,6 +161,7 @@ class ReaddyConverter(TrajectoryConverter):
                 for agent_index, particle_id in enumerate(ids[time_index]):
                     agent_index_for_particle_id[time_index][particle_id] = agent_index
         for time_index in range(data_dimensions.total_steps):
+            edges = ReaddyConverter._get_edges_for_frame(time_index, topology_records)
             new_agent_index = 0
             for agent_index in range(int(n_agents[time_index])):
                 raw_type_name = traj.species_name(type_ids[time_index][agent_index])
@@ -176,11 +191,11 @@ class ReaddyConverter(TrajectoryConverter):
                     rotation = ReaddyConverter._calculate_rotation(
                         time_index,
                         agent_index,
+                        edges,
                         traj,
                         positions,
                         type_ids,
                         ids,
-                        topology_records,
                         agent_index_for_particle_id,
                         input_data,
                         rotations=None,
@@ -200,11 +215,11 @@ class ReaddyConverter(TrajectoryConverter):
                     rotation = ReaddyConverter._calculate_rotation(
                         time_index,
                         agent_index,
+                        edges,
                         traj,
                         positions,
                         type_ids,
                         ids,
-                        topology_records,
                         agent_index_for_particle_id,
                         input_data,
                         result.rotations,

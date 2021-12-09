@@ -41,7 +41,23 @@ class OrientationData:
             of the particle being oriented
         """
         self.type_name_substrings = type_name_substrings
+        if len(neighbor_data) > 2:
+            print(
+                f"OrientationData received {len(neighbor_data)} NeighborDatas, "
+                "only the first 2 will be used"
+            )
         self.neighbor_data = neighbor_data
+        self._calculate_neighbor_relative_rotations()
+
+    def _calculate_neighbor_relative_rotations(self):
+        """
+        Calculate relative rotation matrix for each neighbor
+        from the main particle's rotation matrix
+        if the neighbor's neighbor's position is given
+        """
+        for index, neighbor_data in enumerate(self.neighbor_data):
+            other_index = 1 - index
+            neighbor_data._calculate_relative_rotation(self.neighbor_data[other_index])
 
     @staticmethod
     def _type_name_contains_substrings(substrings: List[str], type_name: str) -> bool:
@@ -55,7 +71,7 @@ class OrientationData:
 
     def type_name_matches(self, type_name: str) -> bool:
         """
-        Does the type_name contain all the type_name_substrings?
+        Does the type_name contain all the type name substrings?
 
         Parameters
         ----------
@@ -66,39 +82,58 @@ class OrientationData:
             self.type_name_substrings, type_name
         )
 
-    def neighbor_type_name_matches(self, neighbor_number: int, type_name: str) -> bool:
+    def neighbor_type_name_matches(self, neighbor_index: int, type_name: str) -> bool:
         """
-        Does the type_name contain all the neighbor's type_name_substrings?
+        Does the type_name contain all the neighbor's type name substrings?
 
         Parameters
         ----------
-        neighbor_number : int
+        neighbor_index : int
             Which neighbor to check, 0 or 1?
         type_name: str
             Type name of the particle instance to match
         """
+        if len(self.neighbor_data) < neighbor_index + 1:
+            return False
         return OrientationData._type_name_contains_substrings(
-            self.neighbor_data[neighbor_number].type_name_substrings, type_name
+            self.neighbor_data[neighbor_index].type_name_substrings, type_name
         )
 
-    def get_neighbor_position(self, neighbor_number: int) -> np.ndarray:
+    def get_neighbor_position(self, neighbor_index: int) -> np.ndarray:
         """
-        Get the neighbor's relative_position
+        Get the neighbor's relative position
 
         Parameters
         ----------
-        neighbor_number : int
+        neighbor_index : int
             Which neighbor to check, 0 or 1?
         """
-        return self.neighbor_data[neighbor_number].relative_position
+        if len(self.neighbor_data) < neighbor_index + 1:
+            return False
+        return self.neighbor_data[neighbor_index].relative_position
 
-    def get_neighbors_neighbor_position(self, neighbor_number: int) -> np.ndarray:
+    def get_neighbors_neighbor_position(self, neighbor_index: int) -> np.ndarray:
         """
-        Get the neighbor's neighbor_relative_position
+        Get the neighbor's neighbor relative position
 
         Parameters
         ----------
-        neighbor_number : int
+        neighbor_index : int
             Which neighbor to check, 0 or 1?
         """
-        return self.neighbor_data[neighbor_number].neighbor_relative_position
+        if len(self.neighbor_data) < neighbor_index + 1:
+            return False
+        return self.neighbor_data[neighbor_index].neighbor_relative_position
+
+    def get_neighbor_relative_rotation(self, neighbor_index: int) -> np.ndarray:
+        """
+        Get the neighbor's neighbor relative rotation
+
+        Parameters
+        ----------
+        neighbor_index : int
+            Which neighbor to check, 0 or 1?
+        """
+        if len(self.neighbor_data) < neighbor_index + 1:
+            return False
+        return self.neighbor_data[neighbor_index].relative_rotation
