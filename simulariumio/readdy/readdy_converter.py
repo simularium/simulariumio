@@ -80,7 +80,7 @@ class ReaddyConverter(TrajectoryConverter):
         return result
 
     @staticmethod
-    def _calculate_rotation(
+    def _calculate_rotation_matrix(
         time_index: int,
         agent_index: int,
         edges: Dict[int, List[int]],
@@ -115,7 +115,7 @@ class ReaddyConverter(TrajectoryConverter):
                     if rotations_calculated[time_index][neighbor_index]
                     else None
                 )
-        return ParticleRotationCalculator.calculate_rotation(
+        return ParticleRotationCalculator.calculate_rotation_matrix(
             particle_type_name,
             particle_position,
             neighbor_type_names,
@@ -141,9 +141,10 @@ class ReaddyConverter(TrajectoryConverter):
             ids,
             topology_records,
         ) = ReaddyConverter._get_raw_trajectory_data(input_data)
+        max_agents = int(np.amax(n_agents))
         data_dimensions = DimensionData(
             total_steps=n_agents.shape[0],
-            max_agents=int(np.amax(n_agents)),
+            max_agents=max_agents,
         )
         result = AgentData.from_dimensions(data_dimensions)
         result.times = input_data.timestep * np.arange(data_dimensions.total_steps)
@@ -153,6 +154,7 @@ class ReaddyConverter(TrajectoryConverter):
         calculate_rotations = (
             input_data.zero_orientations is not None and topology_records is not None
         )
+        rotation_matrices = np.zeros((data_dimensions.total_steps, max_agents, 3, 3))
         rotations_calculated = np.zeros_like(result.rotations, dtype=bool)
         if calculate_rotations:
             agent_index_for_particle_id = []
@@ -188,7 +190,7 @@ class ReaddyConverter(TrajectoryConverter):
                     else 1.0
                 )
                 if calculate_rotations:
-                    rotation = ReaddyConverter._calculate_rotation(
+                    rotation_matrix = ReaddyConverter._calculate_rotation_matrix(
                         time_index,
                         agent_index,
                         edges,
@@ -201,9 +203,9 @@ class ReaddyConverter(TrajectoryConverter):
                         rotations=None,
                         rotations_calculated=None,
                     )
-                    if rotation is not None:
+                    if rotation_matrix is not None:
+                        rotation_matrices[time_index][new_agent_index] = rotation_matrix
                         rotations_calculated[time_index][new_agent_index] = True
-                        result.rotations[time_index][new_agent_index] = rotation
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index
             if calculate_rotations:
@@ -212,7 +214,7 @@ class ReaddyConverter(TrajectoryConverter):
                     if rotations_calculated[time_index][agent_index]:
                         # this rotation was already set
                         continue
-                    rotation = ReaddyConverter._calculate_rotation(
+                    rotation_matrix = ReaddyConverter._calculate_rotation_matrix(
                         time_index,
                         agent_index,
                         edges,
@@ -222,11 +224,14 @@ class ReaddyConverter(TrajectoryConverter):
                         ids,
                         agent_index_for_particle_id,
                         input_data,
-                        result.rotations,
+                        rotation_matrices,
                         rotations_calculated,
                     )
-                    if rotation is not None:
-                        result.rotations[time_index][agent_index] = rotation
+                    if rotation_matrix is not None:
+                        rotation_matrices[time_index][agent_index] = rotation_matrix
+        if calculate_rotations:
+            # convert all the rotation matrices to euler angles
+            result.rotations = ParticleRotationCalculator.get_euler_angles_for_rotation_matrices(rotation_matrices, n_agents, result.rotations)
         return result
 
     @staticmethod

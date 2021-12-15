@@ -46,10 +46,10 @@ class OrientationData:
                 f"OrientationData received {len(neighbor_data)} NeighborDatas, "
                 "only the first 2 will be used"
             )
-        self.neighbor_data = neighbor_data
-        self._calculate_neighbor_relative_rotations()
+        self.neighbor_data = neighbor_data[:min(len(neighbor_data), 2)]
+        self._calculate_neighbor_relative_rotation_matrices()
 
-    def _calculate_neighbor_relative_rotations(self):
+    def _calculate_neighbor_relative_rotation_matrices(self):
         """
         Calculate relative rotation matrix for each neighbor
         from the main particle's rotation matrix
@@ -57,7 +57,7 @@ class OrientationData:
         """
         for index, neighbor_data in enumerate(self.neighbor_data):
             other_index = 1 - index
-            neighbor_data._calculate_relative_rotation(self.neighbor_data[other_index])
+            neighbor_data._calculate_relative_rotation_matrix(self.neighbor_data[other_index])
 
     @staticmethod
     def _type_name_contains_substrings(substrings: List[str], type_name: str) -> bool:
@@ -125,9 +125,9 @@ class OrientationData:
             return False
         return self.neighbor_data[neighbor_index].neighbor_relative_position
 
-    def get_neighbor_relative_rotation(self, neighbor_index: int) -> np.ndarray:
+    def get_neighbor_relative_rotation_matrix(self, neighbor_index: int) -> np.ndarray:
         """
-        Get the neighbor's neighbor relative rotation
+        Get the neighbor's relative rotation matrix
 
         Parameters
         ----------
@@ -136,4 +136,4 @@ class OrientationData:
         """
         if len(self.neighbor_data) < neighbor_index + 1:
             return False
-        return self.neighbor_data[neighbor_index].relative_rotation
+        return self.neighbor_data[neighbor_index].relative_rotation_matrix

@@ -16,7 +16,7 @@ from simulariumio.tests.conftest import actin_zero_orientations
 
 @pytest.mark.parametrize(
     "particle_type_name, particle_position, neighbor_type_names, "
-    "neighbor_positions, neighbor_rotations, "
+    "neighbor_positions, neighbor_rotation_matrices, "
     "zero_orientations, box_size, expected_rotation_degrees",
     [
         # (
@@ -96,7 +96,13 @@ from simulariumio.tests.conftest import actin_zero_orientations
             np.array([0, 0, 0]),
             ["D"],
             [np.array([1.4, 1.4, 0])],
-            [np.array([0, 0, -45])],
+            [
+                np.array([
+                    [ 0.70710678, 0.70710678, 0.], 
+                    [-0.70710678, 0.70710678, 0.],
+                    [ 0., 0., 1.]
+                ]),
+            ],
             [
                 OrientationData(
                     type_name_substrings=["C"],
@@ -104,14 +110,10 @@ from simulariumio.tests.conftest import actin_zero_orientations
                         NeighborData(
                             type_name_substrings=["B"],
                             relative_position=np.array([-1, 0, 0]),
-                            neighbor_type_name_substrings=["A"],
-                            neighbor_relative_position=np.array([-1, -1, 0]),
                         ),
                         NeighborData(
                             type_name_substrings=["D"],
                             relative_position=np.array([0, 1, 0]),
-                            neighbor_type_name_substrings=["E"],
-                            neighbor_relative_position=np.array([1, 1, 0]),
                         ),
                     ],
                 ),
@@ -127,8 +129,6 @@ from simulariumio.tests.conftest import actin_zero_orientations
                         NeighborData(
                             type_name_substrings=["E"],
                             relative_position=np.array([1, 0, 0]),
-                            neighbor_type_name_substrings=["F"],
-                            neighbor_relative_position=np.array([1, 1, 0]),
                         ),
                     ],
                 ),
@@ -243,25 +243,25 @@ def test_rotation_calculator(
     particle_position,
     neighbor_type_names,
     neighbor_positions,
-    neighbor_rotations,
+    neighbor_rotation_matrices,
     zero_orientations,
     box_size,
     expected_rotation_degrees,
 ):
-    rotation = ParticleRotationCalculator.calculate_rotation(
+    rotation_matrix = ParticleRotationCalculator.calculate_rotation_matrix(
         particle_type_name,
         particle_position,
         neighbor_type_names,
         neighbor_positions,
-        neighbor_rotations,
+        neighbor_rotation_matrices,
         zero_orientations,
         box_size,
     )
-    if rotation is None:
+    if rotation_matrix is None:
         assert expected_rotation_degrees is None
     else:
         assert expected_rotation_degrees is not None
-        rotation = np.rad2deg(rotation)
+        rotation = np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(rotation_matrix))
         np.testing.assert_almost_equal(rotation, expected_rotation_degrees)
 
 

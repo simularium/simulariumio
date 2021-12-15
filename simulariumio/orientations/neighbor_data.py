@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 class NeighborData:
     type_name_substrings: List[str]
     relative_position: np.ndarray
-    relative_rotation: np.ndarray
+    relative_rotation_matrix: np.ndarray
     neighbor_type_name_substrings: List[str]
     neighbor_relative_position: np.ndarray
 
@@ -27,7 +27,7 @@ class NeighborData:
         self,
         type_name_substrings: List[str],
         relative_position: np.ndarray,
-        relative_rotation: np.ndarray = None,
+        relative_rotation_matrix: np.ndarray = None,
         neighbor_type_name_substrings: List[str] = None,
         neighbor_relative_position: np.ndarray = None,
     ):
@@ -40,11 +40,11 @@ class NeighborData:
         type_name_substrings: List[str]
             The substrings that must be found in the type name
             of this neighbor of the particle being oriented
-        relative_position: np.ndarray
+        relative_position: np.ndarray (shape=3)
             The relative position
             of this neighbor of the particle being oriented
             in the space of the particle being oriented
-        relative_rotation: np.ndarray (optional)
+        relative_rotation_matrix: np.ndarray (shape=(3,3)) (optional)
             The relative rotation of this neighbor
             relative to the main particle
             Default: Calculate this from the neighbor_relative_positions
@@ -53,7 +53,7 @@ class NeighborData:
             of the neighbor of this neighbor of the particle being oriented
             Default: Don't calculate dependent particle orientations
                 (e.g. particles with one neighbor at the end of a complex)
-        neighbor_relative_position: np.ndarray (optional)
+        neighbor_relative_position: np.ndarray (shape=3) (optional)
             The relative position of the neighbor
             of this neighbor of the particle being oriented
             in the space of the particle being oriented
@@ -62,11 +62,11 @@ class NeighborData:
         """
         self.type_name_substrings = type_name_substrings
         self.relative_position = relative_position
-        self.relative_rotation = relative_rotation
+        self.relative_rotation_matrix = relative_rotation_matrix
         self.neighbor_type_name_substrings = neighbor_type_name_substrings
         self.neighbor_relative_position = neighbor_relative_position
 
-    def _calculate_relative_rotation(self, other_neighbor_data: NeighborData):
+    def _calculate_relative_rotation_matrix(self, other_neighbor_data: NeighborData):
         """
         Calculate relative rotation matrix for this neighbor
         from the main particle's rotation matrix
@@ -74,20 +74,20 @@ class NeighborData:
         """
         if (
             self.neighbor_relative_position is None
-            or self.relative_rotation is not None
+            or self.relative_rotation_matrix is not None
         ):
             return
         # self = C, other = E
-        particle_rotation = RotationUtility.get_rotation_from_neighbor_positions(
-            other_neighbor_data.relative_position,
+        particle_rotation_matrix = RotationUtility.get_rotation_matrix_from_neighbor_positions(
             self.relative_position,
-        ) # E x C
-        neighbor_rotation = RotationUtility.get_rotation_from_neighbor_positions(
-            -1 * self.relative_position,
+            other_neighbor_data.relative_position,
+        ) # E - D - C
+        neighbor_rotation_matrix = RotationUtility.get_rotation_matrix_from_neighbor_positions(
             self.neighbor_relative_position,
-        ) # D
-        if particle_rotation is None or neighbor_rotation is None:
+            -1 * self.relative_position,
+        ) # D - C - B
+        if particle_rotation_matrix is None or neighbor_rotation_matrix is None:
             return
-        self.relative_rotation = np.matmul(
-            neighbor_rotation, np.linalg.inv(particle_rotation)
+        self.relative_rotation_matrix = np.matmul(
+            neighbor_rotation_matrix, np.linalg.inv(particle_rotation_matrix)
         )

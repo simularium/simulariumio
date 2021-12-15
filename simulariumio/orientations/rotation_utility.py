@@ -27,8 +27,8 @@ class RotationUtility:
         """
         rotate a vector around axis by angle (radians)
         """
-        rotation = expm(np.cross(np.eye(3), RotationUtility.normalize(axis) * angle))
-        return np.dot(rotation, np.copy(vector))
+        rotation_matrix = expm(np.cross(np.eye(3), RotationUtility.normalize(axis) * angle))
+        return np.dot(rotation_matrix, np.copy(vector))
 
     @staticmethod
     def get_random_perpendicular_vector(vector: np.ndarray) -> np.ndarray:
@@ -101,7 +101,7 @@ class RotationUtility:
         )
 
     @staticmethod
-    def get_rotation_from_bases(vector1: np.ndarray, vector2: np.ndarray) -> np.ndarray:
+    def get_rotation_matrix_from_bases(vector1: np.ndarray, vector2: np.ndarray) -> np.ndarray:
         """
         Create a rotation matrix given two basis vectors.
 
@@ -124,7 +124,7 @@ class RotationUtility:
         )
 
     @staticmethod
-    def get_rotation_from_neighbor_positions(
+    def get_rotation_matrix_from_neighbor_positions(
         neighbor1_position: np.ndarray,
         neighbor2_position: np.ndarray,
         box_size: np.ndarray = np.array(3 * [np.inf]),
@@ -158,10 +158,10 @@ class RotationUtility:
             return None
         # make orthogonal
         v2 = RotationUtility.normalize(v2 - (np.dot(v1, v2) / np.dot(v1, v1)) * v1)
-        return RotationUtility.get_rotation_from_bases(v1, v2)
+        return RotationUtility.get_rotation_matrix_from_bases(v1, v2)
 
     @staticmethod
-    def get_euler_angles(rotation_matrix: np.ndarray) -> np.ndarray:
+    def get_euler_angles_for_rotation_matrix(rotation_matrix: np.ndarray) -> np.ndarray:
         """
         Get a set of euler angles in radians representing a rotation matrix.
 
@@ -172,12 +172,10 @@ class RotationUtility:
         """
         if rotation_matrix is None:
             return None
-        rotation = Rotation.from_matrix(rotation_matrix)
-        result = rotation.as_euler("XYZ", degrees=False)
-        return result
+        return Rotation.from_matrix(rotation_matrix).as_euler("XYZ", degrees=False)
 
     @staticmethod
-    def get_rotation_from_euler_angles(euler_angles: np.ndarray) -> np.ndarray:
+    def get_rotation_matrix_from_euler_angles(euler_angles: np.ndarray) -> np.ndarray:
         """
         Get a rotation matrix represented by a set of euler angles in radians.
 
