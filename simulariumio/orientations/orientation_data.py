@@ -46,7 +46,7 @@ class OrientationData:
                 f"OrientationData received {len(neighbor_data)} NeighborDatas, "
                 "only the first 2 will be used"
             )
-        self.neighbor_data = neighbor_data[:min(len(neighbor_data), 2)]
+        self.neighbor_data = neighbor_data[: min(len(neighbor_data), 2)]
         self._calculate_neighbor_relative_rotation_matrices()
 
     def _calculate_neighbor_relative_rotation_matrices(self):
@@ -57,7 +57,9 @@ class OrientationData:
         """
         for index, neighbor_data in enumerate(self.neighbor_data):
             other_index = 1 - index
-            neighbor_data._calculate_relative_rotation_matrix(self.neighbor_data[other_index])
+            neighbor_data._calculate_relative_rotation_matrix(
+                self.neighbor_data[other_index]
+            )
 
     @staticmethod
     def _type_name_contains_substrings(substrings: List[str], type_name: str) -> bool:

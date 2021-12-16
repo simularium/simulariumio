@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Tuple
 from sys import float_info
 
 import numpy as np
@@ -27,7 +26,9 @@ class RotationUtility:
         """
         rotate a vector around axis by angle (radians)
         """
-        rotation_matrix = expm(np.cross(np.eye(3), RotationUtility.normalize(axis) * angle))
+        rotation_matrix = expm(
+            np.cross(np.eye(3), RotationUtility.normalize(axis) * angle)
+        )
         return np.dot(rotation_matrix, np.copy(vector))
 
     @staticmethod
@@ -101,7 +102,9 @@ class RotationUtility:
         )
 
     @staticmethod
-    def get_rotation_matrix_from_bases(vector1: np.ndarray, vector2: np.ndarray) -> np.ndarray:
+    def get_rotation_matrix_from_bases(
+        vector1: np.ndarray, vector2: np.ndarray
+    ) -> np.ndarray:
         """
         Create a rotation matrix given two basis vectors.
 

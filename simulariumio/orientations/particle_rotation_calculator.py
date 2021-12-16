@@ -3,7 +3,6 @@
 
 import logging
 from typing import List, Tuple
-from sys import float_info
 
 import numpy as np
 
@@ -23,12 +22,13 @@ class ParticleRotationCalculator:
     """
 
     @staticmethod
-    def _get_rotation_matrix_from_neighbor_transform(
+    def _get_rotation_matrix_with_1_neighbor(
         particle_type_name: str,
         particle_position: np.ndarray,
         neighbor_type_name: str,
         neighbor_position: np.ndarray,
         neighbor_rotation_matrix: np.ndarray,
+        zero_orientation: OrientationData,
         zero_orientations: List[OrientationData],
         box_size: np.ndarray = np.array(3 * [np.inf]),
     ) -> np.ndarray:
@@ -41,7 +41,7 @@ class ParticleRotationCalculator:
             # neighbor rotation matrix is set,
             # so try to use relative rotation matrix
             (
-                neighbor_zero_orientation, # D
+                neighbor_zero_orientation,
                 n1_i,
                 n2_i,
             ) = ParticleRotationCalculator._get_matching_zero_rotation_matrix(
@@ -53,57 +53,38 @@ class ParticleRotationCalculator:
             if neighbor_zero_orientation is None:
                 return None
             neighbor_index = 1 if n1_i is None else 0
-            # raise Exception(neighbor_index)
             relative_rotation_matrix = (
-                neighbor_zero_orientation.get_neighbor_relative_rotation_matrix(neighbor_index)
+                neighbor_zero_orientation.get_neighbor_relative_rotation_matrix(
+                    neighbor_index
+                )
             )
-            return np.matmul(neighbor_rotation_matrix, relative_rotation_matrix)
+            return np.matmul(
+                neighbor_rotation_matrix, np.linalg.inv(relative_rotation_matrix)
+            )
         else:
             # neighbor's rotation matrix is not set,
             # so calculate a random rotation matrix around the neighbor axis
+            zero_rotation_matrix = (
+                RotationUtility.get_rotation_matrix_from_neighbor_positions(
+                    zero_orientation.get_neighbor_position(0),
+                    zero_orientation.get_neighbor_position(1),
+                    box_size,
+                )
+            )
             v1 = RotationUtility.normalize(
                 RotationUtility.get_non_periodic_boundary_position(
                     neighbor_position - particle_position, box_size
                 )
             )
             v2 = RotationUtility.get_random_perpendicular_vector(v1)
-            return RotationUtility.get_rotation_matrix_from_bases(v1, v2)
-
-    @staticmethod
-    def _get_rotation_matrix_with_1_neighbor(
-        particle_type_name: str,
-        particle_position: np.ndarray,
-        neighbor_type_name: str,
-        neighbor_position: np.ndarray,
-        neighbor_rotation_matrix: np.ndarray,
-        zero_orientation: OrientationData,
-        zero_orientations: List[OrientationData],
-        box_size: np.ndarray,
-    ) -> np.ndarray:
-        """
-        Get the current rotation matrix offset from the zero orientation
-        for a particle with 1 neighbor
-        """
-        # raise Exception(zero_orientation.type_name_substrings)
-        zero_rotation_matrix = RotationUtility.get_rotation_matrix_from_neighbor_positions(
-            zero_orientation.get_neighbor_position(0),
-            zero_orientation.get_neighbor_position(1),
-            box_size,
-        )
-        current_rotation_matrix = (
-            ParticleRotationCalculator._get_rotation_matrix_from_neighbor_transform(
-                particle_type_name,
-                particle_position,
-                neighbor_type_name,
-                neighbor_position,
-                neighbor_rotation_matrix,
-                zero_orientations,
-                box_size,
+            current_rotation_matrix = RotationUtility.get_rotation_matrix_from_bases(
+                v1, v2
             )
-        )
-        if zero_rotation_matrix is None or current_rotation_matrix is None:
-            return None
-        return np.matmul(current_rotation_matrix, np.linalg.inv(zero_rotation_matrix))
+            if zero_rotation_matrix is None or current_rotation_matrix is None:
+                return None
+            return np.matmul(
+                current_rotation_matrix, np.linalg.inv(zero_rotation_matrix)
+            )
 
     @staticmethod
     def _get_rotation_matrix_with_2_neighbors(
@@ -116,21 +97,21 @@ class ParticleRotationCalculator:
         Get the current rotation matrix offset from the zero orientation
         for a particle with 2 neighbors
         """
-        zero_rotation_matrix = RotationUtility.get_rotation_matrix_from_neighbor_positions(
-            zero_orientation.get_neighbor_position(0),
-            zero_orientation.get_neighbor_position(1),
-            box_size,
+        zero_rotation_matrix = (
+            RotationUtility.get_rotation_matrix_from_neighbor_positions(
+                zero_orientation.get_neighbor_position(0),
+                zero_orientation.get_neighbor_position(1),
+                box_size,
+            )
         )
-        current_rotation_matrix = RotationUtility.get_rotation_matrix_from_neighbor_positions(
-            relative_neighbor1_position,
-            relative_neighbor2_position,
-            box_size,
+        current_rotation_matrix = (
+            RotationUtility.get_rotation_matrix_from_neighbor_positions(
+                relative_neighbor1_position,
+                relative_neighbor2_position,
+                box_size,
+            )
         )
         if zero_rotation_matrix is None or current_rotation_matrix is None:
-            # if zero_rotation is None:
-            #     raise Exception("zero_rotation is None")
-            # if current_rotation is None:
-            #     raise Exception("current_rotation is None")
             return None
         return np.matmul(current_rotation_matrix, np.linalg.inv(zero_rotation_matrix))
 
@@ -227,10 +208,9 @@ class ParticleRotationCalculator:
             from the current orientation to get current rotation
         box_size: np.ndarray (shape = [3])
             The size of the reaction volume in X, Y, and Z
-        """    
+        """
         if len(neighbor_type_names) < 1:
             # TODO handle particles with no neighbors
-            # raise Exception("no neighbors")
             return None
         # find the zero rotation definition matching the particle type names
         (
@@ -244,22 +224,22 @@ class ParticleRotationCalculator:
             neighbor_rotation_matrices is not None,
         )
         if zero_orientation is None:
-            # raise Exception("didn't find matching zero orientation")
             return None
         if neighbor1_index is not None and neighbor2_index is not None:
             # try to get the rotation using the two neighbors' positions
-            rotation_matrix = ParticleRotationCalculator._get_rotation_matrix_with_2_neighbors(
-                neighbor_positions[neighbor1_index] - particle_position,
-                neighbor_positions[neighbor2_index] - particle_position,
-                zero_orientation,
-                box_size,
+            rotation_matrix = (
+                ParticleRotationCalculator._get_rotation_matrix_with_2_neighbors(
+                    neighbor_positions[neighbor1_index] - particle_position,
+                    neighbor_positions[neighbor2_index] - particle_position,
+                    zero_orientation,
+                    box_size,
+                )
             )
             if rotation_matrix is not None:
                 return rotation_matrix
         # particle only has one neighbor or failed to get rotation with two neighbors
         if neighbor_rotation_matrices is None:
             # particles with one neighbor are dependent on neighbor rotations
-            # raise Exception("one neighbor")
             return None
         neighbor_index = neighbor2_index if neighbor1_index is None else neighbor1_index
         return ParticleRotationCalculator._get_rotation_matrix_with_1_neighbor(
@@ -287,5 +267,9 @@ class ParticleRotationCalculator:
         """
         for time_index in range(n_agents.shape[0]):
             for agent_index in range(int(n_agents[time_index])):
-                result[time_index][new_agent_index] = RotationUtility.get_euler_angles_for_rotation_matrix(rotation_matrices[time_index][agent_index])
+                result[time_index][
+                    agent_index
+                ] = RotationUtility.get_euler_angles_for_rotation_matrix(
+                    rotation_matrices[time_index][agent_index]
+                )
         return result

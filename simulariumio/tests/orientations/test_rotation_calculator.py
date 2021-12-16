@@ -11,7 +11,8 @@ from simulariumio.orientations import (
     NeighborData,
     RotationUtility,
 )
-from simulariumio.tests.conftest import actin_zero_orientations
+
+# from simulariumio.tests.conftest import actin_zero_orientations
 
 
 @pytest.mark.parametrize(
@@ -19,89 +20,91 @@ from simulariumio.tests.conftest import actin_zero_orientations
     "neighbor_positions, neighbor_rotation_matrices, "
     "zero_orientations, box_size, expected_rotation_degrees",
     [
-        # (
-        #     "C",
-        #     np.array([0, 0, 0]),
-        #     ["F", "B", "D"],
-        #     [np.array([0, 0, 1]), np.array([-1.4, 1.4, 0]), np.array([1.4, 1.4, 0])],
-        #     None,
-        #     [
-        #         OrientationData(
-        #             type_name_substrings=["C"],
-        #             neighbor_data=[
-        #                 NeighborData(
-        #                     type_name_substrings=["B"],
-        #                     relative_position=np.array([-1, 0, 0]),
-        #                 ),
-        #                 NeighborData(
-        #                     type_name_substrings=["D"],
-        #                     relative_position=np.array([0, 1, 0]),
-        #                 ),
-        #             ],
-        #         ),
-        #     ],
-        #     np.array(3 * [np.inf]),
-        #     np.array([0, 0, -45]),
-        # ),
-        # (
-        #     "C",
-        #     np.array([0, 0, 0]),
-        #     ["F", "B", "D"],
-        #     [np.array([0, 0, 1]), np.array([-1, 0, 0]), np.array([0, 1, 0])],
-        #     None,
-        #     [
-        #         OrientationData(
-        #             type_name_substrings=["C"],
-        #             neighbor_data=[
-        #                 NeighborData(
-        #                     type_name_substrings=["B"],
-        #                     relative_position=np.array([-1.4, 1.4, 0]),
-        #                 ),
-        #                 NeighborData(
-        #                     type_name_substrings=["D"],
-        #                     relative_position=np.array([1.4, 1.4, 0]),
-        #                 ),
-        #             ],
-        #         ),
-        #     ],
-        #     np.array(3 * [np.inf]),
-        #     np.array([0, 0, 45]),
-        # ),
-        # (
-        #     "D",
-        #     np.array([1.4, 1.4, 0]),
-        #     ["C", "E"],
-        #     [np.array([0, 0, 0]), np.array([2.8, 0, 0])],
-        #     None,
-        #     [
-        #         OrientationData(
-        #             type_name_substrings=["D"],
-        #             neighbor_data=[
-        #                 NeighborData(
-        #                     type_name_substrings=["C"],
-        #                     relative_position=np.array([0, -1, 0]),
-        #                 ),
-        #                 NeighborData(
-        #                     type_name_substrings=["E"],
-        #                     relative_position=np.array([1, 0, 0]),
-        #                 ),
-        #             ],
-        #         ),
-        #     ],
-        #     np.array(3 * [np.inf]),
-        #     np.array([0, 0, -45]),
-        # ),
+        (
+            "C",
+            np.array([0, 0, 0]),
+            ["F", "B", "D"],
+            [np.array([0, 0, 1]), np.array([-1.4, 1.4, 0]), np.array([1.4, 1.4, 0])],
+            None,
+            [
+                OrientationData(
+                    type_name_substrings=["C"],
+                    neighbor_data=[
+                        NeighborData(
+                            type_name_substrings=["B"],
+                            relative_position=np.array([-1, 0, 0]),
+                        ),
+                        NeighborData(
+                            type_name_substrings=["D"],
+                            relative_position=np.array([0, 1, 0]),
+                        ),
+                    ],
+                ),
+            ],
+            np.array(3 * [np.inf]),
+            np.array([0, 0, -45]),
+        ),
+        (
+            "C",
+            np.array([0, 0, 0]),
+            ["F", "B", "D"],
+            [np.array([0, 0, 1]), np.array([-1, 0, 0]), np.array([0, 1, 0])],
+            None,
+            [
+                OrientationData(
+                    type_name_substrings=["C"],
+                    neighbor_data=[
+                        NeighborData(
+                            type_name_substrings=["B"],
+                            relative_position=np.array([-1.4, 1.4, 0]),
+                        ),
+                        NeighborData(
+                            type_name_substrings=["D"],
+                            relative_position=np.array([1.4, 1.4, 0]),
+                        ),
+                    ],
+                ),
+            ],
+            np.array(3 * [np.inf]),
+            np.array([0, 0, 45]),
+        ),
+        (
+            "D",
+            np.array([1.4, 1.4, 0]),
+            ["C", "E"],
+            [np.array([0, 0, 0]), np.array([2.8, 0, 0])],
+            None,
+            [
+                OrientationData(
+                    type_name_substrings=["D"],
+                    neighbor_data=[
+                        NeighborData(
+                            type_name_substrings=["C"],
+                            relative_position=np.array([0, -1, 0]),
+                        ),
+                        NeighborData(
+                            type_name_substrings=["E"],
+                            relative_position=np.array([1, 0, 0]),
+                        ),
+                    ],
+                ),
+            ],
+            np.array(3 * [np.inf]),
+            np.array([0, 0, -45]),
+        ),
         (
             "C",
             np.array([0, 0, 0]),
             ["D"],
             [np.array([1.4, 1.4, 0])],
             [
-                np.array([
-                    [ 0.70710678, 0.70710678, 0.], 
-                    [-0.70710678, 0.70710678, 0.],
-                    [ 0., 0., 1.]
-                ]),
+                np.array(
+                    [
+                        [0.70710678, 0.70710678, 0.0],
+                        [-0.70710678, 0.70710678, 0.0],
+                        [0.0, 0.0, 1.0],
+                    ]
+                ),
             ],
             [
                 OrientationData(
@@ -134,7 +137,7 @@ from simulariumio.tests.conftest import actin_zero_orientations
                 ),
             ],
             np.array(3 * [np.inf]),
-            np.array([0, 0, -45]),
+            np.array([180.0, 0, -45]),
         ),
         # (
         #     "actin#ATP_2",
@@ -261,44 +264,46 @@ def test_rotation_calculator(
         assert expected_rotation_degrees is None
     else:
         assert expected_rotation_degrees is not None
-        rotation = np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(rotation_matrix))
+        rotation = np.rad2deg(
+            RotationUtility.get_euler_angles_for_rotation_matrix(rotation_matrix)
+        )
         np.testing.assert_almost_equal(rotation, expected_rotation_degrees)
 
 
-# @pytest.mark.parametrize(
-#     "vector1, vector2, expected",
-#     [
-#         (
-#             np.array([1.0, 0.0, 0.0]),
-#             np.array([1.0, 0.0, 0.0]),
-#             True,
-#         ),
-#         (
-#             np.array([30.476, 36.034, 26.528]),
-#             np.array([304.76, 360.34, 265.28]),
-#             True,
-#         ),
-#         (
-#             np.array([0.0, 1.0, 0.0]),
-#             np.array([1.0, 0.0, 0.0]),
-#             False,
-#         ),
-#         (
-#             np.array([1.0, 0.0, 0.0]),
-#             np.array([-1.0, 0.0, 0.0]),
-#             True,
-#         ),
-#         (
-#             np.array([-0.3013853, 0.5702147, -0.7642134]),
-#             np.array([0.3013853, -0.5702147, 0.7642134]),
-#             True,
-#         ),
-#         (
-#             np.array([-0.3013853, 0.5702147, -0.7642134]),
-#             np.array([5.46372266, 7.60125865, 3.51690213]),
-#             False,
-#         ),
-#     ],
-# )
-# def test_vectors_colinear(vector1, vector2, expected):
-#     assert RotationUtility._vectors_are_colinear(vector1, vector2) == expected
+@pytest.mark.parametrize(
+    "vector1, vector2, expected",
+    [
+        (
+            np.array([1.0, 0.0, 0.0]),
+            np.array([1.0, 0.0, 0.0]),
+            True,
+        ),
+        (
+            np.array([30.476, 36.034, 26.528]),
+            np.array([304.76, 360.34, 265.28]),
+            True,
+        ),
+        (
+            np.array([0.0, 1.0, 0.0]),
+            np.array([1.0, 0.0, 0.0]),
+            False,
+        ),
+        (
+            np.array([1.0, 0.0, 0.0]),
+            np.array([-1.0, 0.0, 0.0]),
+            True,
+        ),
+        (
+            np.array([-0.3013853, 0.5702147, -0.7642134]),
+            np.array([0.3013853, -0.5702147, 0.7642134]),
+            True,
+        ),
+        (
+            np.array([-0.3013853, 0.5702147, -0.7642134]),
+            np.array([5.46372266, 7.60125865, 3.51690213]),
+            False,
+        ),
+    ],
+)
+def test_vectors_colinear(vector1, vector2, expected):
+    assert RotationUtility._vectors_are_colinear(vector1, vector2) == expected

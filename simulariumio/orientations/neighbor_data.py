@@ -54,9 +54,9 @@ class NeighborData:
             Default: Don't calculate dependent particle orientations
                 (e.g. particles with one neighbor at the end of a complex)
         neighbor_relative_position: np.ndarray (shape=3) (optional)
-            The relative position of the neighbor
-            of this neighbor of the particle being oriented
-            in the space of the particle being oriented
+            The relative position of the neighbor B
+            of this neighbor D of the particle being oriented C
+            in the space of the particle being oriented C
             Default: Don't calculate dependent particle orientations
                 (e.g. particles with one neighbor at the end of a complex)
         """
@@ -77,15 +77,18 @@ class NeighborData:
             or self.relative_rotation_matrix is not None
         ):
             return
-        # self = C, other = E
-        particle_rotation_matrix = RotationUtility.get_rotation_matrix_from_neighbor_positions(
-            self.relative_position,
-            other_neighbor_data.relative_position,
-        ) # E - D - C
-        neighbor_rotation_matrix = RotationUtility.get_rotation_matrix_from_neighbor_positions(
-            self.neighbor_relative_position,
-            -1 * self.relative_position,
-        ) # D - C - B
+        particle_rotation_matrix = (
+            RotationUtility.get_rotation_matrix_from_neighbor_positions(
+                self.relative_position,
+                other_neighbor_data.relative_position,
+            )
+        )
+        neighbor_rotation_matrix = (
+            RotationUtility.get_rotation_matrix_from_neighbor_positions(
+                -1 * self.relative_position + self.neighbor_relative_position,
+                -1 * self.relative_position,
+            )
+        )
         if particle_rotation_matrix is None or neighbor_rotation_matrix is None:
             return
         self.relative_rotation_matrix = np.matmul(

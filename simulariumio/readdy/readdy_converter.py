@@ -231,7 +231,11 @@ class ReaddyConverter(TrajectoryConverter):
                         rotation_matrices[time_index][agent_index] = rotation_matrix
         if calculate_rotations:
             # convert all the rotation matrices to euler angles
-            result.rotations = ParticleRotationCalculator.get_euler_angles_for_rotation_matrices(rotation_matrices, n_agents, result.rotations)
+            result.rotations = (
+                ParticleRotationCalculator.get_euler_angles_for_rotation_matrices(
+                    rotation_matrices, n_agents, result.rotations
+                )
+            )
         return result
 
     @staticmethod
