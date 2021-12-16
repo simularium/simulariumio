@@ -114,19 +114,6 @@ class OrientationData:
             return False
         return self.neighbor_data[neighbor_index].relative_position
 
-    def get_neighbors_neighbor_position(self, neighbor_index: int) -> np.ndarray:
-        """
-        Get the neighbor's neighbor relative position
-
-        Parameters
-        ----------
-        neighbor_index : int
-            Which neighbor to check, 0 or 1?
-        """
-        if len(self.neighbor_data) < neighbor_index + 1:
-            return False
-        return self.neighbor_data[neighbor_index].neighbor_relative_position
-
     def get_neighbor_relative_rotation_matrix(self, neighbor_index: int) -> np.ndarray:
         """
         Get the neighbor's relative rotation matrix
