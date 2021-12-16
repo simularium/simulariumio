@@ -94,3 +94,9 @@ class NeighborData:
         self.relative_rotation_matrix = np.matmul(
             neighbor_rotation_matrix, np.linalg.inv(particle_rotation_matrix)
         )
+
+    def __str__(self):
+        """
+        Get a string representation of this object
+        """
+        return f"neighbor = {self.type_name_substrings}, neighbor neighbor = {self.neighbor_type_name_substrings}"

@@ -126,3 +126,11 @@ class OrientationData:
         if len(self.neighbor_data) < neighbor_index + 1:
             return False
         return self.neighbor_data[neighbor_index].relative_rotation_matrix
+
+    def __str__(self):
+        """
+        Get a string representation of this object
+        """
+        neighbor1 = str(self.neighbor_data[0]) if len(self.neighbor_data) > 0 else "None"
+        neighbor2 = str(self.neighbor_data[1]) if len(self.neighbor_data) > 1 else "None"
+        return f"{self.type_name_substrings} :\n{neighbor1}\n{neighbor2}"

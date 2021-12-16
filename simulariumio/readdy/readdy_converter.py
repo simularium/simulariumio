@@ -71,12 +71,16 @@ class ReaddyConverter(TrajectoryConverter):
         result = {}
         for top in topology_records[time_index]:
             for e1, e2 in top.edges:
-                if e1 > e2:
-                    continue
                 particle_id = int(top.particles[e1])
+                neighbor_id = int(top.particles[e2])
                 if particle_id not in result:
                     result[particle_id] = []
-                result[particle_id].append(int(top.particles[e2]))
+                if neighbor_id not in result:
+                    result[neighbor_id] = []
+                if neighbor_id not in result[particle_id]:
+                    result[particle_id].append(neighbor_id)
+                if particle_id not in result[neighbor_id]:
+                    result[neighbor_id].append(particle_id)
         return result
 
     @staticmethod
@@ -155,7 +159,7 @@ class ReaddyConverter(TrajectoryConverter):
             input_data.zero_orientations is not None and topology_records is not None
         )
         rotation_matrices = np.zeros((data_dimensions.total_steps, max_agents, 3, 3))
-        rotations_calculated = np.zeros_like(result.rotations, dtype=bool)
+        rotations_calculated = np.zeros_like(result.viz_types, dtype=bool)
         if calculate_rotations:
             agent_index_for_particle_id = []
             for time_index in range(len(topology_records)):

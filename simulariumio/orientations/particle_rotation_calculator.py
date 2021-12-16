@@ -124,6 +124,10 @@ class ParticleRotationCalculator:
         for the particle and neighbors of the given types
         """
         # check through the zero orientations for a match
+        if len(neighbor_type_names) == 1 and not calculate_dependent_rotations:
+            # if there's only one neighbor and we don't have independent rotations
+            # we can't calculate the dependent rotation yet
+            return None, None, None 
         for zero_orientation in zero_orientations:
             if not zero_orientation.type_name_matches(particle_type_name):
                 # this zero orientation is not for this type of particle
@@ -133,10 +137,9 @@ class ParticleRotationCalculator:
                 index
                 for index, tn in enumerate(neighbor_type_names)
                 if zero_orientation.neighbor_type_name_matches(0, tn)
-            ]
-            if len(neighbor_type_names) == 1 and calculate_dependent_rotations:
-                # if there's only one neighbor and
-                # we've already calculated independent rotations
+            ]   
+            if len(neighbor_type_names) == 1:
+                # if there's only one neighbor
                 if len(neighbor1_matches) > 0:
                     # use the first match
                     return zero_orientation, neighbor1_matches[0], None
