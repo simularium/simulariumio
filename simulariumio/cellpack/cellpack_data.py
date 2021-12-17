@@ -46,16 +46,16 @@ class CellpackData:
             or string contents of the Cellpack results output txt file.
         recipe_file_path: str
             A containing the string path
-            or of a Cellpack recipe that was used to 
-            produce the results_file. The recipe name must match in both 
+            or of a Cellpack recipe that was used to
+            produce the results_file. The recipe name must match in both
             files for the converter to run.
         meta_data: MetaData (optional)
             An object containing metadata for the trajectory
             including box size, scale factor, and camera defaults
         display_data: Dict[str, DisplayData] (optional)
-            A dictionary containing any per agent/ingredient display overrides, 
+            A dictionary containing any per agent/ingredient display overrides,
             Ie, if the ingredients are all going to be displayed as PDBs, except
-            for 
+            for
         geometry_type: DISPLAY_TYPE
             The display type to use for the ingredients
         time_units: UnitData (optional)

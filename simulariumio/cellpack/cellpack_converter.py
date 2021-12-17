@@ -45,9 +45,9 @@ class CellpackConverter(TrajectoryConverter):
     def _get_box_center(recipe_data):
         options = recipe_data["options"]
         bb = options["boundingBox"]
-        x_pos = (bb[1][0] - bb[0][0])/2 + bb[0][0]
-        y_pos = (bb[1][1] - bb[0][1])/2 + bb[0][1]
-        z_pos = (bb[1][2] - bb[0][2])/2 + bb[0][2]
+        x_pos = (bb[1][0] - bb[0][0]) / 2 + bb[0][0]
+        y_pos = (bb[1][1] - bb[0][1]) / 2 + bb[0][1]
+        z_pos = (bb[1][2] - bb[0][2]) / 2 + bb[0][2]
         return [
             x_pos,
             y_pos,
@@ -82,7 +82,7 @@ class CellpackConverter(TrajectoryConverter):
             return True
         else:
             return False
-    
+
     @staticmethod
     def get_euler(data_in):
         if CellpackConverter.is_matrix(data_in):
@@ -92,7 +92,14 @@ class CellpackConverter(TrajectoryConverter):
 
     @staticmethod
     def _unpack_curve(
-        data, time_step_index, ingredient_name, index, agent_id, result, scale_factor, box_center
+        data,
+        time_step_index,
+        ingredient_name,
+        index,
+        agent_id,
+        result,
+        scale_factor,
+        box_center,
     ):
         curve = "curve" + str(index)
         result.positions[time_step_index][agent_id] = [0, 0, 0]
@@ -108,7 +115,9 @@ class CellpackConverter(TrajectoryConverter):
         )
         result.radii[time_step_index][agent_id] = r
         result.n_subpoints[time_step_index][agent_id] = len(data[curve])
-        scaled_control_points = np.array(data[curve]) * scale_factor - np.array(box_center)
+        scaled_control_points = np.array(data[curve]) * scale_factor - np.array(
+            box_center
+        )
         for i in range(len(scaled_control_points)):
             result.subpoints[time_step_index][agent_id][i] = scaled_control_points[i]
 
@@ -130,9 +139,9 @@ class CellpackConverter(TrajectoryConverter):
         if comp_id <= 0:
             offset = offset * -1
         result.positions[time_step_index][agent_id] = [
-            (position[0] + offset[0] - box_center[0]) * scale_factor ,
+            (position[0] + offset[0] - box_center[0]) * scale_factor,
             (position[1] + offset[1] - box_center[1]) * scale_factor,
-            (position[2] + offset[2] - box_center[2]) * scale_factor ,
+            (position[2] + offset[2] - box_center[2]) * scale_factor,
         ]
         rotation = CellpackConverter.get_euler(data["results"][index][1])
         result.rotations[time_step_index][agent_id] = rotation
@@ -156,12 +165,9 @@ class CellpackConverter(TrajectoryConverter):
         result.n_subpoints[time_step_index][agent_id] = 0
 
     @staticmethod
-    def _parse_dimensions(
-        all_ingredients,
-        total_steps = 1
-    ) -> DimensionData:
+    def _parse_dimensions(all_ingredients, total_steps=1) -> DimensionData:
         """
-        Parse cellPack results file to get the total number of agents and 
+        Parse cellPack results file to get the total number of agents and
         the max curve length
         """
         result = DimensionData(0, 0)
@@ -190,7 +196,7 @@ class CellpackConverter(TrajectoryConverter):
                 file_name, _ = os.path.splitext(file_path)
                 return {
                     "display_type": DISPLAY_TYPE.OBJ,
-                    "url": f"https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/geometries/{file_name}.obj",
+                    "url": f"https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/geometries/{file_name}.obj",  # noqa: E501
                 }
             elif meshType == "raw":
                 # need to build a mesh from the vertices, faces, indexes dictionary
@@ -203,7 +209,7 @@ class CellpackConverter(TrajectoryConverter):
             elif "pdb" in ingredient_data:
                 pdb_file_name = ingredient_data["pdb"]
             if ".pdb" in pdb_file_name:
-                url = f"https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/other/{pdb_file_name}"
+                url = f"https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/other/{pdb_file_name}"  # noqa: E501
             else:
                 url = pdb_file_name
             return {
@@ -221,14 +227,12 @@ class CellpackConverter(TrajectoryConverter):
     @staticmethod
     def _process_ingredients(
         all_ingredients,
-        time_step_index,
-        scale_factor,
-        box_center,
-        geo_type,
-    ):
-        dimensions = CellpackConverter._parse_dimensions(
-            all_ingredients
-        )
+        time_step_index: int,
+        scale_factor: float,
+        box_center: np.array,
+        geo_type: DISPLAY_TYPE,
+    ) -> AgentData:
+        dimensions = CellpackConverter._parse_dimensions(all_ingredients)
         spatial_data = AgentData.from_dimensions(dimensions)
         display_data = {}
         agent_id_counter = 0
@@ -254,7 +258,7 @@ class CellpackConverter(TrajectoryConverter):
                         agent_id_counter,
                         spatial_data,
                         scale_factor,
-                        box_center
+                        box_center,
                     )
                     agent_id_counter += 1
             elif ingredient_results_data["nbCurve"] > 0:
@@ -266,8 +270,8 @@ class CellpackConverter(TrajectoryConverter):
                         i,
                         agent_id_counter,
                         spatial_data,
-                        scale_factor, 
-                        box_center
+                        scale_factor,
+                        box_center,
                     )
                     agent_id_counter += 1
         spatial_data.display_data = display_data
@@ -276,7 +280,7 @@ class CellpackConverter(TrajectoryConverter):
     @staticmethod
     def _update_meta_data(meta_data: MetaData, box_size) -> MetaData:
         camera_z_position = box_size[2] if box_size[2] > 10 else 100.0
-        meta_data.camera_defaults=CameraData(
+        meta_data.camera_defaults = CameraData(
             position=np.array([10.0, 0.0, camera_z_position]),
             look_at_position=np.array([10.0, 0.0, 0.0]),
             fov_degrees=60.0,
@@ -299,14 +303,19 @@ class CellpackConverter(TrajectoryConverter):
         results_data = json.loads(input_data.results_file.get_contents())
         all_ingredients = recipe_loader.get_all_ingredients(results_data)
 
-
         box_center = CellpackConverter._get_box_center(recipe_data)
         agent_data = CellpackConverter._process_ingredients(
-                all_ingredients, time_step_index, input_data.meta_data.scale_factor, box_center, input_data.geometry_type)
+            all_ingredients,
+            time_step_index,
+            input_data.meta_data.scale_factor,
+            box_center,
+            input_data.geometry_type,
+        )
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))
         input_data.meta_data._set_box_size(box_size)
-        CellpackConverter._update_meta_data(input_data.meta_data, box_size)  # camera pos
+        # set camera position based on bounding box
+        CellpackConverter._update_meta_data(input_data.meta_data, box_size)
 
         # # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
