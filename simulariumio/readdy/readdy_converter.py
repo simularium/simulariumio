@@ -184,7 +184,7 @@ class ReaddyConverter(TrajectoryConverter):
                     else 1.0
                 )
                 if calculate_rotations:
-                    rotation_calculators[
+                    rotation_calculators[time_index][
                         particle_id
                     ] = ReaddyConverter._create_particle_rotation_calculator(
                         time_index,
