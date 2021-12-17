@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List
+import os
 
 import numpy as np
 from scipy.io.arff.arffread import MetaData
 from simulariumio.constants import DISPLAY_TYPE
 from simulariumio.data_objects.camera_data import CameraData
-from wheel import metadata
 from scipy.spatial.transform import Rotation as R
 import json
 
@@ -180,7 +179,7 @@ class CellpackConverter(TrajectoryConverter):
         return result
 
     def _get_ingredient_display_data(geo_type, ingredient_data):
-        if geo_type == "OBJ" and "meshFile" in ingredient_data:
+        if geo_type == DISPLAY_TYPE.OBJ and "meshFile" in ingredient_data:
             meshType = (
                 ingredient_data["meshType"]
                 if ("meshType" in ingredient_data)
@@ -197,7 +196,7 @@ class CellpackConverter(TrajectoryConverter):
                 # need to build a mesh from the vertices, faces, indexes dictionary
                 log.info(meshType, ingredient_data["meshFile"].keys())
                 return {"display_type": DISPLAY_TYPE.SPHERE, "url": ""}
-        elif geo_type == "PDB":
+        elif geo_type == DISPLAY_TYPE.PDB:
             pdb_file_name = ""
             if "source" in ingredient_data:
                 pdb_file_name = ingredient_data["source"]["pdb"]
@@ -233,6 +232,7 @@ class CellpackConverter(TrajectoryConverter):
         spatial_data = AgentData.from_dimensions(dimensions)
         display_data = {}
         agent_id_counter = 0
+        print("GEO TYPE", geo_type)
         for ingredient in all_ingredients:
             ingredient_data = ingredient["recipe_data"]
             ingredient_key = ingredient_data["name"]
@@ -245,6 +245,7 @@ class CellpackConverter(TrajectoryConverter):
                 display_type=agent_display_data["display_type"],
                 url=agent_display_data["url"],
             )
+            print(display_data[ingredient_key])
             if len(ingredient_results_data["results"]) > 0:
                 for j in range(len(ingredient_results_data["results"])):
                     CellpackConverter._unpack_positions(
@@ -304,7 +305,7 @@ class CellpackConverter(TrajectoryConverter):
         box_center = CellpackConverter._get_box_center(recipe_data)
         agent_data = CellpackConverter._process_ingredients(
                 all_ingredients, time_step_index, input_data.meta_data.scale_factor, box_center, input_data.geometry_type)
-            
+        print(agent_data)
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))
         input_data.meta_data._set_box_size(box_size)
