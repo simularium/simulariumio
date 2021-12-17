@@ -43,29 +43,29 @@ class CellpackConverter(TrajectoryConverter):
         self._data = self._read(input_data)
 
     @staticmethod
-    def _get_box_center(recipe_data, scale_factor):
+    def _get_box_center(recipe_data):
         options = recipe_data["options"]
         bb = options["boundingBox"]
-        x_pos = (bb[1][0] - bb[0][0])/ 2 + bb[0][0]
+        x_pos = (bb[1][0] - bb[0][0])/2 + bb[0][0]
         y_pos = (bb[1][1] - bb[0][1])/2 + bb[0][1]
         z_pos = (bb[1][2] - bb[0][2])/2 + bb[0][2]
         return [
-            x_pos * scale_factor,
-            y_pos * scale_factor,
-            z_pos * scale_factor,
+            x_pos,
+            y_pos,
+            z_pos,
         ]
 
     @staticmethod
-    def _get_boxsize(recipe_data, scale_factor):
+    def _get_boxsize(recipe_data):
         options = recipe_data["options"]
         bb = options["boundingBox"]
         x_size = bb[1][0] - bb[0][0]
         y_size = bb[1][1] - bb[0][1]
         z_size = bb[1][2] - bb[0][2]
         return [
-            x_size * scale_factor,
-            y_size * scale_factor,
-            z_size * scale_factor,
+            x_size,
+            y_size,
+            z_size,
         ]
 
     @staticmethod
@@ -107,7 +107,6 @@ class CellpackConverter(TrajectoryConverter):
             if ("encapsulatingRadius" in data)
             else 1
         )
-        print(agent_id)
         result.radii[time_step_index][agent_id] = r
         result.n_subpoints[time_step_index][agent_id] = len(data[curve])
         scaled_control_points = np.array(data[curve]) * scale_factor - np.array(box_center)
@@ -117,9 +116,9 @@ class CellpackConverter(TrajectoryConverter):
     @staticmethod
     def _unpack_positions(
         data,
-        time_step_index,
-        ingredient_name,
-        index,
+        time_step_index: int,
+        ingredient_name: str,
+        index: int,
         agent_id,
         result,
         scale_factor,
@@ -127,26 +126,19 @@ class CellpackConverter(TrajectoryConverter):
         comp_id=0,
     ):
         position = data["results"][index][0]
-        offset = None
         offset = np.array([0, 0, 0])
-        # TODO : deal with membrane ingredient transformation
-        # if "source" in data:
-        #     offset = np.array(data["source"]["transform"]["offset"])
-        # else:
-        #     offset = np.array([0, 0, 0])
+        # TODO: use offset from data
         if comp_id <= 0:
             offset = offset * -1
         result.positions[time_step_index][agent_id] = [
-            (position[0] + offset[0] - box_center[0]) * scale_factor,
+            (position[0] + offset[0] - box_center[0]) * scale_factor ,
             (position[1] + offset[1] - box_center[1]) * scale_factor,
-            (position[2] + offset[2] - box_center[2]) * scale_factor,
+            (position[2] + offset[2] - box_center[2]) * scale_factor ,
         ]
-
         rotation = CellpackConverter.get_euler(data["results"][index][1])
         result.rotations[time_step_index][agent_id] = rotation
         result.viz_types[time_step_index][agent_id] = 1000
         result.n_agents[time_step_index] += 1
-        print(result.types, agent_id)
         result.types[time_step_index].append(ingredient_name)
         result.unique_ids[time_step_index][agent_id] = agent_id
         if "radii" in data:
@@ -185,7 +177,6 @@ class CellpackConverter(TrajectoryConverter):
                     if len(ingredient_results_data[curve]) > result.max_subpoints:
                         result.max_subpoints = len(ingredient_results_data[curve])
         result.total_steps = total_steps
-        print(result.max_agents)
         return result
 
     def _get_ingredient_display_data(geo_type, ingredient_data):
@@ -298,23 +289,25 @@ class CellpackConverter(TrajectoryConverter):
         Return a TrajectoryData object containing the Cellpack data
         """
         print("Reading Cellpack Data -------------")
-        # load the data from Cellpack output .txt file
+        # currently only converts one model, ie one time step
         time_step_index = 0
+        # default scale for simularium => cellpack
         input_data.meta_data.scale_factor *= 0.1
+
+        # load the data from Cellpack output JSON file
         recipe_loader = RecipeLoader(input_data.recipe_file_path)
         recipe_data = recipe_loader.recipe_data
         results_data = json.loads(input_data.results_file.get_contents())
         all_ingredients = recipe_loader.get_all_ingredients(results_data)
 
-        box_center = CellpackConverter._get_box_center(recipe_data, input_data.meta_data.scale_factor)
 
+        box_center = CellpackConverter._get_box_center(recipe_data)
         agent_data = CellpackConverter._process_ingredients(
                 all_ingredients, time_step_index, input_data.meta_data.scale_factor, box_center, input_data.geometry_type)
             
         # parse
-        box_size = CellpackConverter._get_boxsize(recipe_data, input_data.meta_data.scale_factor)
-        print(box_size)
-        input_data.meta_data._set_box_size(np.array(box_size))
+        box_size = np.array(CellpackConverter._get_boxsize(recipe_data))
+        input_data.meta_data._set_box_size(box_size)
         CellpackConverter._update_meta_data(input_data.meta_data, box_size)  # camera pos
 
         # # create TrajectoryData
