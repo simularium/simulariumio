@@ -84,7 +84,7 @@ class ReaddyConverter(TrajectoryConverter):
         return result
 
     @staticmethod
-    def _calculate_rotation_matrix(
+    def _create_particle_rotation_calculator(
         time_index: int,
         agent_index: int,
         edges: Dict[int, List[int]],
@@ -94,9 +94,7 @@ class ReaddyConverter(TrajectoryConverter):
         ids: np.ndarray,
         agent_index_for_particle_id: List[Dict[int, int]],
         input_data: ReaddyData,
-        rotations: np.ndarray,
-        rotations_calculated: np.ndarray,
-    ) -> np.ndarray:
+    ) -> ParticleRotationCalculator:
         """
         Calculate the rotation for a particle given
         its neighbors' positions and rotations
@@ -106,25 +104,18 @@ class ReaddyConverter(TrajectoryConverter):
         particle_position = positions[time_index][agent_index]
         neighbor_type_names = []
         neighbor_positions = []
-        neighbor_rotations = []
         for neighbor_id in edges[particle_id]:
             neighbor_index = agent_index_for_particle_id[time_index][neighbor_id]
             neighbor_type_names.append(
                 traj.species_name(type_ids[time_index][neighbor_index])
             )
             neighbor_positions.append(positions[time_index][neighbor_index])
-            if rotations is not None:
-                neighbor_rotations.append(
-                    rotations[time_index][neighbor_index]
-                    if rotations_calculated[time_index][neighbor_index]
-                    else None
-                )
-        return ParticleRotationCalculator.calculate_rotation_matrix(
+        return ParticleRotationCalculator(
             particle_type_name,
             particle_position,
+            edges[particle_id],
             neighbor_type_names,
             neighbor_positions,
-            neighbor_rotations if rotations is not None else None,
             input_data.zero_orientations,
             input_data.meta_data.box_size,
         )
@@ -155,11 +146,10 @@ class ReaddyConverter(TrajectoryConverter):
         result.viz_types = VIZ_TYPE.DEFAULT * np.ones(
             shape=(data_dimensions.total_steps, data_dimensions.max_agents)
         )
+        rotation_calculators = []
         calculate_rotations = (
             input_data.zero_orientations is not None and topology_records is not None
         )
-        rotation_matrices = np.zeros((data_dimensions.total_steps, max_agents, 3, 3))
-        rotations_calculated = np.zeros_like(result.viz_types, dtype=bool)
         if calculate_rotations:
             agent_index_for_particle_id = []
             for time_index in range(len(topology_records)):
@@ -169,6 +159,7 @@ class ReaddyConverter(TrajectoryConverter):
         for time_index in range(data_dimensions.total_steps):
             edges = ReaddyConverter._get_edges_for_frame(time_index, topology_records)
             new_agent_index = 0
+            rotation_calculators.append({})
             for agent_index in range(int(n_agents[time_index])):
                 raw_type_name = traj.species_name(type_ids[time_index][agent_index])
                 if raw_type_name in input_data.ignore_types:
@@ -178,9 +169,8 @@ class ReaddyConverter(TrajectoryConverter):
                     if raw_type_name in input_data.display_data
                     else None
                 )
-                result.unique_ids[time_index][new_agent_index] = ids[time_index][
-                    agent_index
-                ]
+                particle_id = ids[time_index][agent_index]
+                result.unique_ids[time_index][new_agent_index] = particle_id
                 result.types[time_index].append(
                     display_data.name if display_data is not None else raw_type_name
                 )
@@ -194,7 +184,9 @@ class ReaddyConverter(TrajectoryConverter):
                     else 1.0
                 )
                 if calculate_rotations:
-                    rotation_matrix = ReaddyConverter._calculate_rotation_matrix(
+                    rotation_calculators[
+                        particle_id
+                    ] = ReaddyConverter._create_particle_rotation_calculator(
                         time_index,
                         agent_index,
                         edges,
@@ -204,42 +196,23 @@ class ReaddyConverter(TrajectoryConverter):
                         ids,
                         agent_index_for_particle_id,
                         input_data,
-                        rotations=None,
-                        rotations_calculated=None,
                     )
-                    if rotation_matrix is not None:
-                        rotation_matrices[time_index][new_agent_index] = rotation_matrix
-                        rotations_calculated[time_index][new_agent_index] = True
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index
             if calculate_rotations:
                 # calculate rotations that depend on neighbors' rotations
-                for agent_index in range(int(n_agents[time_index])):
-                    if rotations_calculated[time_index][agent_index]:
-                        # this rotation was already set
-                        continue
-                    rotation_matrix = ReaddyConverter._calculate_rotation_matrix(
-                        time_index,
-                        agent_index,
-                        edges,
-                        traj,
-                        positions,
-                        type_ids,
-                        ids,
-                        agent_index_for_particle_id,
-                        input_data,
-                        rotation_matrices,
-                        rotations_calculated,
-                    )
-                    if rotation_matrix is not None:
-                        rotation_matrices[time_index][agent_index] = rotation_matrix
+                for particle_id in rotation_calculators[time_index]:
+                    rotation_calculators[time_index][
+                        particle_id
+                    ].calculate_dependent_rotation(rotation_calculators[time_index])
         if calculate_rotations:
             # convert all the rotation matrices to euler angles
-            result.rotations = (
-                ParticleRotationCalculator.get_euler_angles_for_rotation_matrices(
-                    rotation_matrices, n_agents, result.rotations
-                )
-            )
+            for time_index in range(data_dimensions.total_steps):
+                for particle_id in rotation_calculators[time_index]:
+                    agent_index = agent_index_for_particle_id[time_index][particle_id]
+                    result.rotations[time_index][agent_index] = rotation_calculators[
+                        time_index
+                    ][particle_id].get_euler_angles()
         return result
 
     @staticmethod

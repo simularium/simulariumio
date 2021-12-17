@@ -99,4 +99,7 @@ class NeighborData:
         """
         Get a string representation of this object
         """
-        return f"neighbor = {self.type_name_substrings}, neighbor neighbor = {self.neighbor_type_name_substrings}"
+        return (
+            f"neighbor = {self.type_name_substrings}, "
+            f"neighbor neighbor = {self.neighbor_type_name_substrings}"
+        )
