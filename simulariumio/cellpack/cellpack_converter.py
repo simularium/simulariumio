@@ -84,7 +84,7 @@ class CellpackConverter(TrajectoryConverter):
             return False
 
     @staticmethod
-    def get_euler(data_in):
+    def get_euler(data_in) -> np.array:
         if CellpackConverter.is_matrix(data_in):
             return CellpackConverter.get_euler_from_matrix(data_in)
         else:
@@ -93,13 +93,13 @@ class CellpackConverter(TrajectoryConverter):
     @staticmethod
     def _unpack_curve(
         data,
-        time_step_index,
-        ingredient_name,
-        index,
-        agent_id,
-        result,
-        scale_factor,
-        box_center,
+        time_step_index: int,
+        ingredient_name: str,
+        index: int,
+        agent_id: int,
+        result: AgentData,
+        scale_factor: float,
+        box_center: np.array,
     ):
         curve = "curve" + str(index)
         result.positions[time_step_index][agent_id] = [0, 0, 0]
@@ -128,9 +128,9 @@ class CellpackConverter(TrajectoryConverter):
         ingredient_name: str,
         index: int,
         agent_id,
-        result,
-        scale_factor,
-        box_center,
+        result: AgentData,
+        scale_factor: float,
+        box_center: np.array,
         comp_id=0,
     ):
         position = data["results"][index][0]
@@ -278,7 +278,7 @@ class CellpackConverter(TrajectoryConverter):
         return spatial_data
 
     @staticmethod
-    def _update_meta_data(meta_data: MetaData, box_size) -> MetaData:
+    def _update_meta_data(meta_data: MetaData, box_size: np.array) -> MetaData:
         camera_z_position = box_size[2] if box_size[2] > 10 else 100.0
         meta_data.camera_defaults = CameraData(
             position=np.array([10.0, 0.0, camera_z_position]),
