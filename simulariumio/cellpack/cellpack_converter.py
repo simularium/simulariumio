@@ -232,7 +232,6 @@ class CellpackConverter(TrajectoryConverter):
         spatial_data = AgentData.from_dimensions(dimensions)
         display_data = {}
         agent_id_counter = 0
-        print("GEO TYPE", geo_type)
         for ingredient in all_ingredients:
             ingredient_data = ingredient["recipe_data"]
             ingredient_key = ingredient_data["name"]
@@ -245,7 +244,6 @@ class CellpackConverter(TrajectoryConverter):
                 display_type=agent_display_data["display_type"],
                 url=agent_display_data["url"],
             )
-            print(display_data[ingredient_key])
             if len(ingredient_results_data["results"]) > 0:
                 for j in range(len(ingredient_results_data["results"])):
                     CellpackConverter._unpack_positions(
@@ -305,7 +303,6 @@ class CellpackConverter(TrajectoryConverter):
         box_center = CellpackConverter._get_box_center(recipe_data)
         agent_data = CellpackConverter._process_ingredients(
                 all_ingredients, time_step_index, input_data.meta_data.scale_factor, box_center, input_data.geometry_type)
-        print(agent_data)
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))
         input_data.meta_data._set_box_size(box_size)
