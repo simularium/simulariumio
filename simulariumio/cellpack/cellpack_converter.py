@@ -5,7 +5,6 @@ import logging
 import os
 
 import numpy as np
-from scipy.io.arff.arffread import MetaData
 from simulariumio.constants import DISPLAY_TYPE
 from simulariumio.data_objects.camera_data import CameraData
 from scipy.spatial.transform import Rotation as R
@@ -15,6 +14,7 @@ from simulariumio.data_objects.display_data import DisplayData
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData
+from ..data_objects import MetaData
 from .cellpack_data import CellpackData
 from cellpack.autopack.iotools_simple import RecipeLoader
 
