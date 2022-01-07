@@ -291,7 +291,9 @@ class CellpackConverter(TrajectoryConverter):
         print("Reading Cellpack Data -------------")
         # currently only converts one model, ie one time step
         time_step_index = 0
-        # default scale for simularium => cellpack
+        # default scale for cellpack => simularium
+        # user is supposed to send in the cellPACK scale factor
+        # if they send one in at all.
         input_data.meta_data.scale_factor *= 0.1
 
         # load the data from Cellpack output JSON file
