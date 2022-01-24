@@ -17,112 +17,16 @@ from simulariumio.orientations import (
 
 @pytest.mark.parametrize(
     "particle_type_name, particle_position, neighbor_ids, "
-    "neighbor_type_names, neighbor_positions, "
+    "neighbor_type_names, neighbor_positions, particle_rot_calculators, "
     "zero_orientations, box_size, expected_rotation_degrees",
     [
-        (
-            "C",
-            np.array([0, 0, 0]),
-            [5, 1, 3],
-            ["F", "B", "D"],
-            [np.array([0, 0, 1]), np.array([-1.4, 1.4, 0]), np.array([1.4, 1.4, 0])],
-            [
-                OrientationData(
-                    type_name_substrings=["C"],
-                    neighbor_data=[
-                        NeighborData(
-                            type_name_substrings=["B"],
-                            relative_position=np.array([-1, 0, 0]),
-                        ),
-                        NeighborData(
-                            type_name_substrings=["D"],
-                            relative_position=np.array([0, 1, 0]),
-                        ),
-                    ],
-                ),
-            ],
-            np.array(3 * [np.inf]),
-            np.array([0, 0, -45]),
-        ),
-        (
-            "C",
-            np.array([0, 0, 0]),
-            [5, 1, 3],
-            ["F", "B", "D"],
-            [np.array([0, 0, 1]), np.array([-1, 0, 0]), np.array([0, 1, 0])],
-            [
-                OrientationData(
-                    type_name_substrings=["C"],
-                    neighbor_data=[
-                        NeighborData(
-                            type_name_substrings=["B"],
-                            relative_position=np.array([-1.4, 1.4, 0]),
-                        ),
-                        NeighborData(
-                            type_name_substrings=["D"],
-                            relative_position=np.array([1.4, 1.4, 0]),
-                        ),
-                    ],
-                ),
-            ],
-            np.array(3 * [np.inf]),
-            np.array([0, 0, 45]),
-        ),
-        (
-            "D",
-            np.array([1.4, 1.4, 0]),
-            [2, 4],
-            ["C", "E"],
-            [np.array([0, 0, 0]), np.array([2.8, 0, 0])],
-            [
-                OrientationData(
-                    type_name_substrings=["D"],
-                    neighbor_data=[
-                        NeighborData(
-                            type_name_substrings=["C"],
-                            relative_position=np.array([0, -1, 0]),
-                        ),
-                        NeighborData(
-                            type_name_substrings=["E"],
-                            relative_position=np.array([1, 0, 0]),
-                        ),
-                    ],
-                ),
-            ],
-            np.array(3 * [np.inf]),
-            np.array([0, 0, -45]),
-        ),
         # (
         #     "C",
         #     np.array([0, 0, 0]),
-        #     [3],
-        #     ["D"],
-        #     [np.array([1.4, 1.4, 0])],
-        #     {
-        #         3: ParticleRotationCalculator(
-        #             "D",
-        #             np.array([1.4, 1.4, 0]),
-        #             [2, 4],
-        #             ["C", "E"],
-        #             [np.array([0, 0, 0]), np.array([2.8, 0, 0])],
-        #             [
-        #                 OrientationData(
-        #                     type_name_substrings=["D"],
-        #                     neighbor_data=[
-        #                         NeighborData(
-        #                             type_name_substrings=["C"],
-        #                             relative_position=np.array([0, -1, 0]),
-        #                         ),
-        #                         NeighborData(
-        #                             type_name_substrings=["E"],
-        #                             relative_position=np.array([1, 0, 0]),
-        #                         ),
-        #                     ],
-        #                 ),
-        #             ],
-        #             np.array(3 * [np.inf]),
-        #         )
-        #     },
+        #     [5, 1, 3],
+        #     ["F", "B", "D"],
+        #     [np.array([0, 0, 1]), np.array([-1.4, 1.4, 0]), np.array([1.4, 1.4, 0])],
+        #     None,
         #     [
         #         OrientationData(
         #             type_name_substrings=["C"],
@@ -137,14 +41,49 @@ from simulariumio.orientations import (
         #                 ),
         #             ],
         #         ),
+        #     ],
+        #     np.array(3 * [np.inf]),
+        #     np.array([0, 0, -45]),
+        # ),
+        # (
+        #     "C",
+        #     np.array([0, 0, 0]),
+        #     [5, 1, 3],
+        #     ["F", "B", "D"],
+        #     [np.array([0, 0, 1]), np.array([-1, 0, 0]), np.array([0, 1, 0])],
+        #     None,
+        #     [
+        #         OrientationData(
+        #             type_name_substrings=["C"],
+        #             neighbor_data=[
+        #                 NeighborData(
+        #                     type_name_substrings=["B"],
+        #                     relative_position=np.array([-1.4, 1.4, 0]),
+        #                 ),
+        #                 NeighborData(
+        #                     type_name_substrings=["D"],
+        #                     relative_position=np.array([1.4, 1.4, 0]),
+        #                 ),
+        #             ],
+        #         ),
+        #     ],
+        #     np.array(3 * [np.inf]),
+        #     np.array([0, 0, 45]),
+        # ),
+        # (
+        #     "D",
+        #     np.array([1.4, 1.4, 0]),
+        #     [2, 4],
+        #     ["C", "E"],
+        #     [np.array([0, 0, 0]), np.array([2.8, 0, 0])],
+        #     None,
+        #     [
         #         OrientationData(
         #             type_name_substrings=["D"],
         #             neighbor_data=[
         #                 NeighborData(
         #                     type_name_substrings=["C"],
         #                     relative_position=np.array([0, -1, 0]),
-        #                     neighbor_type_name_substrings=["B"],
-        #                     neighbor_relative_position=np.array([-1, -1, 0]),
         #                 ),
         #                 NeighborData(
         #                     type_name_substrings=["E"],
@@ -154,8 +93,87 @@ from simulariumio.orientations import (
         #         ),
         #     ],
         #     np.array(3 * [np.inf]),
-        #     np.array([180.0, 0, -45]),
+        #     np.array([0, 0, -45]),
         # ),
+        (
+            "C",
+            np.array([0, 0, 0]),
+            [3],
+            ["D"],
+            [np.array([1.4, 1.4, 0])],
+            {
+                3: ParticleRotationCalculator(
+                    "D",
+                    np.array([1.4, 1.4, 0]),
+                    [2, 4],
+                    ["C", "E"],
+                    [np.array([0, 0, 0]), np.array([2.8, 0, 0])],
+                    [
+                        OrientationData(
+                            type_name_substrings=["C"],
+                            neighbor_data=[
+                                NeighborData(
+                                    type_name_substrings=["B"],
+                                    relative_position=np.array([-1, 0, 0]),
+                                ),
+                                NeighborData(
+                                    type_name_substrings=["D"],
+                                    relative_position=np.array([0, 1, 0]),
+                                ),
+                            ],
+                        ),
+                        OrientationData(
+                            type_name_substrings=["D"],
+                            neighbor_data=[
+                                NeighborData(
+                                    type_name_substrings=["C"],
+                                    relative_position=np.array([0, -1, 0]),
+                                    neighbor_type_name_substrings=["B"],
+                                    neighbor_relative_position=np.array([-1, -1, 0]),
+                                ),
+                                NeighborData(
+                                    type_name_substrings=["E"],
+                                    relative_position=np.array([1, 0, 0]),
+                                ),
+                            ],
+                        ),
+                    ],
+                    np.array(3 * [np.inf]),
+                )
+            },
+            [
+                OrientationData(
+                    type_name_substrings=["C"],
+                    neighbor_data=[
+                        NeighborData(
+                            type_name_substrings=["B"],
+                            relative_position=np.array([-1, 0, 0]),
+                        ),
+                        NeighborData(
+                            type_name_substrings=["D"],
+                            relative_position=np.array([0, 1, 0]),
+                        ),
+                    ],
+                ),
+                OrientationData(
+                    type_name_substrings=["D"],
+                    neighbor_data=[
+                        NeighborData(
+                            type_name_substrings=["C"],
+                            relative_position=np.array([0, -1, 0]),
+                            neighbor_type_name_substrings=["B"],
+                            neighbor_relative_position=np.array([-1, -1, 0]),
+                        ),
+                        NeighborData(
+                            type_name_substrings=["E"],
+                            relative_position=np.array([1, 0, 0]),
+                        ),
+                    ],
+                ),
+            ],
+            np.array(3 * [np.inf]),
+            np.array([0, 0, -45]),
+        ),
         # (
         #     "actin#ATP_2",
         #     np.array([21.847, 24.171, 27.148]),
@@ -264,6 +282,7 @@ def test_rotation_calculator(
     neighbor_ids,
     neighbor_type_names,
     neighbor_positions,
+    particle_rot_calculators,
     zero_orientations,
     box_size,
     expected_rotation_degrees,
@@ -277,6 +296,8 @@ def test_rotation_calculator(
         zero_orientations,
         box_size,
     )
+    if particle_rot_calculators is not None:
+        rotation_calculator.calculate_dependent_rotation(particle_rot_calculators)
     euler_angles = rotation_calculator.get_euler_angles()
     if euler_angles is None:
         assert expected_rotation_degrees is None

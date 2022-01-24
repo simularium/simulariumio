@@ -104,12 +104,18 @@ class ReaddyConverter(TrajectoryConverter):
         particle_position = positions[time_index][agent_index]
         neighbor_type_names = []
         neighbor_positions = []
-        for neighbor_id in edges[particle_id]:
-            neighbor_index = agent_index_for_particle_id[time_index][neighbor_id]
-            neighbor_type_names.append(
-                traj.species_name(type_ids[time_index][neighbor_index])
-            )
-            neighbor_positions.append(positions[time_index][neighbor_index])
+        try:
+            for neighbor_id in edges[particle_id]:
+                neighbor_index = agent_index_for_particle_id[time_index][neighbor_id]
+                neighbor_type_names.append(
+                    traj.species_name(type_ids[time_index][neighbor_index])
+                )
+                neighbor_positions.append(positions[time_index][neighbor_index])
+        except:
+            print(time_index)
+            print(particle_id)
+            print(ids[time_index])
+            raise Exception(edges)
         return ParticleRotationCalculator(
             particle_type_name,
             particle_position,

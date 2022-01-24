@@ -81,6 +81,9 @@ class ParticleRotationCalculator:
             if self._match_orientation_data_with_two_neighbors():
                 self._calculate_zero_rot_matrix()
                 self._calculate_current_rot_matrix_with_two_neighbors()
+        elif len(self.neighbor_ids) == 0:
+            # calculate a random rotation
+            self.current_rot_matrix = RotationUtility.get_random_rotation_matrix()
 
     def _match_orientation_data_with_two_neighbors(self) -> bool:
         """
@@ -153,7 +156,7 @@ class ParticleRotationCalculator:
         )
         if neighbor_zero_orientation is None:
             # failed to find orientation data for neighbor using this particle
-            return None
+            return
         relative_rotation_matrix = (
             neighbor_zero_orientation.get_neighbor_relative_rotation_matrix(
                 1 if index1 < 0 else 0
@@ -161,6 +164,7 @@ class ParticleRotationCalculator:
         )
         self.current_rot_matrix = np.matmul(
             neighbor_current_rot_matrix, np.linalg.inv(relative_rotation_matrix)
+            # relative_rotation_matrix, neighbor_current_rot_matrix
         )
 
     def _calculate_current_rot_matrix_randomly_from_neighbor(self):
@@ -210,7 +214,7 @@ class ParticleRotationCalculator:
                 if len(neighbor2_matches) > 0:
                     # use the first match
                     return orientation, -1, neighbor2_matches[0]
-        return None, -1
+        return None, -1, -1
 
     def calculate_dependent_rotation(
         self, other_rotation_data: Dict[int, ParticleRotationCalculator]
@@ -257,15 +261,16 @@ class ParticleRotationCalculator:
             # so calculate a random rotation matrix around the neighbor axis
             self._calculate_current_rot_matrix_randomly_from_neighbor()
 
-    def _get_offset_rot_matrix(self):
+    def _get_offset_rot_matrix(self) -> np.ndarray:
         """
         Get the current rotation matrix offset from the zero orientation
         """
+        # return self.current_rot_matrix
         if self.zero_rot_matrix is None or self.current_rot_matrix is None:
-            return
+            return None
         return np.matmul(self.current_rot_matrix, np.linalg.inv(self.zero_rot_matrix))
 
-    def get_euler_angles(self):
+    def get_euler_angles(self) -> np.ndarray:
         """
         Calculate euler angles that represent the current rotation
         """

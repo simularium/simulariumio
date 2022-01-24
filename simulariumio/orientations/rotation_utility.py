@@ -100,6 +100,7 @@ class RotationUtility:
             )
             >= 1 - float_info.epsilon
         )
+        
 
     @staticmethod
     def get_rotation_matrix_from_bases(
@@ -125,6 +126,17 @@ class RotationUtility:
                 [vector1[2], vector2[2], vector3[2]],
             ]
         )
+
+    @staticmethod
+    def get_random_rotation_matrix():
+        """
+        Calculate a random rotation matrix
+        """
+        # get 2 random perpendicular vectors as bases
+        v1 = np.random.random(3)
+        v2 = RotationUtility.get_random_perpendicular_vector(v1)
+        # create matrix with basis
+        return RotationUtility.get_rotation_matrix_from_bases(v1, v2)
 
     @staticmethod
     def get_rotation_matrix_from_neighbor_positions(

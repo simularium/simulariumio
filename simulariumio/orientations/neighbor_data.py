@@ -72,21 +72,22 @@ class NeighborData:
         from the main particle's rotation matrix
         if the neighbor's neighbor's position is given
         """
+        # C relative to D
         if (
             self.neighbor_relative_position is None
             or self.relative_rotation_matrix is not None
         ):
             return
-        particle_rotation_matrix = (
+        particle_rotation_matrix = ( # D
             RotationUtility.get_rotation_matrix_from_neighbor_positions(
-                self.relative_position,
-                other_neighbor_data.relative_position,
+                self.relative_position,                # D -> C
+                other_neighbor_data.relative_position, # D -> E
             )
         )
-        neighbor_rotation_matrix = (
+        neighbor_rotation_matrix = ( # C
             RotationUtility.get_rotation_matrix_from_neighbor_positions(
-                -1 * self.relative_position + self.neighbor_relative_position,
-                -1 * self.relative_position,
+                -1 * self.relative_position + self.neighbor_relative_position, # C -> B
+                -1 * self.relative_position,                                   # C -> D
             )
         )
         if particle_rotation_matrix is None or neighbor_rotation_matrix is None:
