@@ -68,7 +68,17 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
 {
     // trajectory info
     "trajectoryInfo" : {
-        "version" : 2,
+        "version" : 3,
+        // model metadata
+        "trajectoryTitle" : "Fast diffusion",
+        "modelInfo" : {
+            "title" : "SARS-CoV-2 Dynamics in Human Lung Epithelium"
+            "version" : 4.1
+            "authors" : "Michael Getz et al"
+            "description" : "A PhysiCell model of SARS-CoV-2 dynamics in human lung epithelium."
+            "doi" : "10.1101/2020.04.02.019075"
+            "sourceCodeUrl" : "https://github.com/pc4covid19/pc4covid19"
+        },
         // time units
         "timeUnits": {
             "magnitude": 1.0,
@@ -111,17 +121,23 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
         "typeMapping": {
             "0" : {
                 "name" : "agent1",
-                "pdb" : "agent1.pdb",  // optional
-                "mesh" : "agent1.obj"  // optional
+                "geometry" : {
+                    "displayType" : "FIBER",
+                },
             },
             "1" : {
                 "name" : "agent1#bound",
-                "pdb" : "agent1.pdb",  // optional
-                "mesh" : "agent1.obj"  // optional
+                "geometry" : {
+                    "displayType" : "PDB",
+                    "url" : "agent1.pdb",  // optional
+                    "color" : "#4796bd",   // optional
+                },
             },
             "2" : {
                 "name" : "agent2",
-                "mesh" : "agent2.obj"  // optional
+                "geometry" : {
+                    "displayType" : "SPHERE",
+                },
             },
             ...
         }
