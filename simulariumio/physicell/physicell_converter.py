@@ -101,7 +101,9 @@ class PhysicellConverter(TrajectoryConverter):
         ids = {}
         last_id = 0
         type_mapping = {}
-        physicell_data = PhysicellConverter._load_data(input_data.path_to_output_dir, input_data.nth_timestep_to_read)
+        physicell_data = PhysicellConverter._load_data(
+            input_data.path_to_output_dir, input_data.nth_timestep_to_read
+        )
         # get data dimensions
         total_steps = len(physicell_data)
         max_agents = 0
@@ -122,7 +124,11 @@ class PhysicellConverter(TrajectoryConverter):
                 max_agents=max_agents,
             )
         )
-        result.times = input_data.nth_timestep_to_read * input_data.timestep * np.arange(total_steps)
+        result.times = (
+            input_data.nth_timestep_to_read
+            * input_data.timestep
+            * np.arange(total_steps)
+        )
         # get data
         for time_index in range(total_steps):
             n_agents = int(len(discrete_cells[time_index]["position_x"]))
