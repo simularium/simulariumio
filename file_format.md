@@ -72,7 +72,7 @@ Both JSON and binary contain the following data structured like:
 
 For JSON files, the data structure specified above is simply saved as JSON. For example:
 
-```json
+```javascript
 {
     // trajectory info
     "trajectoryInfo" : {
@@ -248,7 +248,7 @@ For JSON files, the data structure specified above is simply saved as JSON. For 
 
 For binary files, the data structure specified above is saved in blocks with additional info to help with reading the file. The trajectory info and plot data blocks are still saved as JSON within the binary file.
 
-```json
+```
 // binary header
 "SIMULARIUMBIN" (binary identifier, 13 bytes)
 Binary version (3 bytes, e.g. "100" for 1.0.0)
