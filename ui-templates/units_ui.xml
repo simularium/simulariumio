@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<units>
+    <name type="text" required="true"></name>
+    <magnitude type="number" required="false"></magnitude>
+</units>

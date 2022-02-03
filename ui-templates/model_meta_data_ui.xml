@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modelMetaData>
+    <title type="text" required="false"></title>
+    <version type="text" required="false"></version>
+    <authors type="text" required="false"></authors>
+    <description type="text" required="false"></description>
+    <doi type="text" required="false"></doi>
+    <sourceCodeURL type="url" required="false"></sourceCodeURL>
+    <sourceCodeLicenseURL type="url" required="false"></sourceCodeLicenseURL>
+    <inputDataURL type="url" required="false"></inputDataURL>
+    <rawOutputDataURL type="url" required="false"></rawOutputDataURL>
+</modelMetaData>

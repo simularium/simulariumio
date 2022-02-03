@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metaData>
+    <box_size type="coordinatesXYZ" required="false"></box_size>
+    <cameraData type="cameraData" required="false"></cameraData>
+    <scale_factor type="number" required="false"></scale_factor>
+    <trajectory_title type="text" required="false"></trajectory_title>
+    <modelMetaData type="modelMetaData" required="false"></modelMetaData>
+</metaData>

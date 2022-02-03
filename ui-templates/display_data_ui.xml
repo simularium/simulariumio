@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<displayData>
+    <name type="text" required="true"></name>
+    <radius type="number" required="false"></radius>
+    <display_type type="displayType" required="false"></display_type>
+    <url type="url" required="false"></url>
+    <color type="color" required="false"></color>
+</displayData>

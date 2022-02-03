@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smoldynData>
+    <metaData type="metaData" required="false"></metaData>
+    <displayData type="mapping" required="false">
+        <key type="text"></key>
+        <value type="displayData"></value>
+    </displayData>
+    <timeUnits type="units" required="false"></timeUnits>
+    <spatialUnits type="units" required="false"></spatialUnits>
+</smoldynData>
