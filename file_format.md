@@ -246,48 +246,49 @@ For JSON files, the data structure specified above is simply saved as JSON. For 
 
 ## Binary Files
 
-For binary files, the data structure specified above is saved in blocks with additional info to help with reading the file. The trajectory info and plot data blocks are still saved as JSON within the binary file.
+For binary files, the data structure specified above is saved in blocks with additional info to help with reading the file. Some of the blocks can be saved as JSON within the binary file. Currently JSON is the only format for trajectory info and plot data blocks.
 
 ```
 // binary header
-"SIMULARIUMBIN" (binary identifier, 13 bytes)
-Binary version (3 bytes, e.g. "100" for 1.0.0)
+"SIMULARIUMBINARY" (binary identifier, 16 bytes)
+Header length (4 byte int)
+Binary version (4 byte int)
+Number of blocks (4 byte int)
+Block offsets (Number of blocks * 4 byte int)
 
-Trajectory info block offset (4 byte int)
-Spatial data block offset (4 byte int)
-Plot data block offset (4 byte int)
+// for each block
+Block type (4 byte int)
 
-// trajectory info
-Trajectory info block in JSON
+    // type = 0 : spatial data block in JSON (see above)
 
-// spatial data
-Spatial data version (4 byte int)
-Number of frames (4 byte int)
-Frame offsets (Number of frames * 4 byte int)
+    // type = 1 : trajectory info block in JSON (see above)
 
-    // for each timestep
-    Frame number (4 byte int)
-    Time stamp (4 byte float)
-    Number of agents (4 byte int)
+    // type = 2 : plot data block in JSON (see above)
 
-        // for each agent at this timestep
-        Visualization type (4 byte float)
-        Agent instance ID (4 byte float)
-        Agent type ID (4 byte float)
-        Position X (4 byte float)
-        Position Y (4 byte float)
-        Position Z (4 byte float)
-        Rotation X (4 byte float)
-        Rotation Y (4 byte float)
-        Rotation Z (4 byte float)
-        Radius (4 byte float)
-        Number of subpoints (4 byte float)
-        Subpoints (4 byte floats, if included)
+    // type = 3 : spatial data block in binary
+    Spatial data version (4 byte int)
+    Number of frames (4 byte int)
+    Frame offsets (Number of frames * 4 byte int)
 
-    "\EOFTHEFRAMEENDSHERE" (end of frame signal, 20 bytes)
+        // for each timestep
+        Frame number (4 byte int)
+        Time stamp (4 byte float)
+        Number of agents (4 byte int)
 
-// plot data
-Plot data block in JSON
+            // for each agent at this timestep
+            Visualization type (4 byte float)
+            Agent instance ID (4 byte float)
+            Agent type ID (4 byte float)
+            Position X (4 byte float)
+            Position Y (4 byte float)
+            Position Z (4 byte float)
+            Rotation X (4 byte float)
+            Rotation Y (4 byte float)
+            Rotation Z (4 byte float)
+            Radius (4 byte float)
+            Number of subpoints (4 byte float)
+            Subpoints (4 byte floats, optional)
 
-0-padding (4 bytes)
+        "\EOFTHEFRAMEENDSHERE" (end of frame signal, 20 bytes)
+
 ```
