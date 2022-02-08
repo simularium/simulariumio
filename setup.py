@@ -47,7 +47,7 @@ tutorial_requirements = [
 
 benchmark_requirements = [
     "awscli>=1.20"
-    "quilt3>=3.4",
+    "quilt3",
 ]
 
 dev_requirements = [
@@ -123,6 +123,6 @@ setup(
     url="https://github.com/allen-cell-animated/simulariumio",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
-    version="1.4.0",
+    version="1.4.1",
     zip_safe=False,
 )
