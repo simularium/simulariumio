@@ -70,7 +70,7 @@ Both JSON and binary contain the following data structured like:
 
 ## JSON Files
 
-For JSON files, the data structure specified above is simply saved as JSON. For example:
+For JSON files, the data structure specified above is simply saved as JSON, with utf-8 encoding. For example:
 
 ```javascript
 {
@@ -246,7 +246,9 @@ For JSON files, the data structure specified above is simply saved as JSON. For 
 
 ## Binary Files
 
-For binary files, the data structure specified above is saved in blocks with additional info to help with reading the file. Some of the blocks can be saved as JSON within the binary file. Currently JSON is the only format for trajectory info and plot data blocks.
+For binary files, the data structure specified above is saved in blocks with additional info to help with reading the file. Some of the blocks can be saved as JSON within the binary file, but they must be utf-8 encoded. Currently JSON is the only format for trajectory info and plot data blocks.
+
+Binary files must be smaller than 4GB, if the data is larger than this, it can be broken into multiple files, but data for each timestep should stay together in one file and not be split between multiple files.
 
 ```
 // binary header
@@ -255,9 +257,12 @@ Header length (4 byte int)
 Binary version (4 byte int)
 Number of blocks (4 byte int)
 Block offsets (Number of blocks * 4 byte int)
+Block types (Number of blocks * 4 byte int)
+Block lengths (Number of blocks * 4 byte int)
 
 // for each block
 Block type (4 byte int)
+Block length (4 byte int)
 
     // type = 0 : spatial data block in JSON (see above)
 
@@ -288,7 +293,5 @@ Block type (4 byte int)
             Radius (4 byte float)
             Number of subpoints (4 byte float)
             Subpoints (4 byte floats, optional)
-
-        "\EOFTHEFRAMEENDSHERE" (end of frame signal, 20 bytes)
 
 ```
