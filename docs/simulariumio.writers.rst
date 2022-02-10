@@ -12,6 +12,14 @@ simulariumio.writers.binary\_chunk module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.writers.binary\_values module
+------------------------------------------
+
+.. automodule:: simulariumio.writers.binary_values
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.writers.binary\_writer module
 ------------------------------------------
 
