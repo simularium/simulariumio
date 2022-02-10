@@ -69,11 +69,6 @@ class DisplayData:
                     f"In {name}'s DisplayData, {display_type} is not a display type, "
                     'try "SPHERE" or see DISPLAY_TYPE documentation for other options.'
                 )
-            if not isinstance(display_type, DISPLAY_TYPE):
-                raise DataError(
-                    f"In {name}'s DisplayData, display_type is {type(display_type)}"
-                    " instead of DISPLAY_TYPE"
-                )
         self.display_type = display_type
         self.url = url
         if color and ((len(color) != 4 and len(color) != 7) or color[0] != "#"):
