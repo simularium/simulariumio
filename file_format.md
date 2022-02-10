@@ -3,6 +3,17 @@
 JSON files accepted by the simularium-viewer contain the following data in JSON format:
 * **trajectory info**
   * version - 2.0
+  * trajectoryTitle (optional) - a name for this run of the model
+  * modelInfo (optional) - metadata about the model that produced this trajectory
+    * title - display title for this model
+    * authors - modelers name(s) in one string
+    * version - version of the model that produced this trajectory
+    * description - comments to display with the trajectory
+    * doi - the DOI of the publication accompanying this model
+    * sourceCodeUrl - if the code that generated this model is posted publicly, a link to the repository of source code
+    * sourceCodeLicenseUrl - a link to the license for the source code
+    * inputDataUrl - a link to any model configuration or parameter files posted publicly
+    * rawOutputDataUrl - a link to any raw outputs from the source code posted publicly
   * timeUnits - unit info for temporal data (e.g. timeStepSize)
     * magnitude - multiplier for time values (in case they are not given in whole units)
     * name - unit name for time values (we support this list https://github.com/hgrecco/pint/blob/master/pint/default_en.txt)
@@ -22,9 +33,13 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
       * ex: "actin#barbed_ATP_1" is parsed as agent type "actin" in states "barbed", "ATP", and "1"
       * ex: "actA" is parsed as agent type "actA" with no state information
       * if no name is provided, the agent type ID, an integer number, is used for display
-    * pdb (optional) - the filename of the PDB file to render for this agent. If this field isn’t provided or if the file isn’t found, the renderer will fall back to mesh rendering
-    * mesh (optional) - the filename of the OBJ mesh file to render for this agent. If this field isn’t provided or if the file isn’t found, the renderer will fall back to a sphere
-    * PDB and mesh data is currently only used for streaming trajectories, but this will be updated soon
+    * geometry - rendering information for each agent type (note: only the first 100,000 geometry files will be loaded)
+      * displayType - “SPHERE”, “CUBE”, “GIZMO”, “FIBER”, “PDB”, or “OBJ”
+        * Default to “SPHERE” or “FIBER” depending on existence of subpoints
+        * for PDB, can provide either ID or full URL
+      * url (optional)- local path or web URL, web URLs are required for streaming or loading the trajectory by URL
+      * color (optional) - hex value 
+
 * **spatial data** - spatial data was designed to be sent in bundles from the simularium-engine in order to eventually support live simulation rendering. Therefore, each block of spatial data has metadata: msgType, bundleStart, and bundleSize.
   * version - 1.0
   * msgType - always 1
