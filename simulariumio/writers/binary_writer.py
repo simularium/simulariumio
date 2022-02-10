@@ -316,6 +316,25 @@ class BinaryWriter(Writer):
         )
 
     @staticmethod
+    def _save_to_file(
+        data: List[Any],
+        file_name: str,
+        binary_format: str = "",
+        append: bool = True,
+        is_binary: bool = True,
+    ) -> Tuple[List[float], str]:
+        """
+        Return the buffer of data at index and its format string
+        """
+        with open(
+            file_name, ("a" if append else "w") + ("b" if is_binary else "")
+        ) as outfile:
+            if is_binary:
+                outfile.write(struct.pack(binary_format, *data))
+            else:
+                json.dump(data, outfile)
+
+    @staticmethod
     def save(trajectory_data: TrajectoryData, output_path: str) -> None:
         """
         Save the simularium data in .simularium binary format
@@ -348,15 +367,25 @@ class BinaryWriter(Writer):
             header_buffer, header_format = BinaryWriter._get_data_buffer_with_format(
                 chunk_index, binary_headers
             )
-            with open(output_name, "wb") as outfile:
-                outfile.write(struct.pack(header_format, *header_buffer))
+            BinaryWriter._save_to_file(
+                header_buffer,
+                output_name,
+                header_format,
+                append=False,
+                is_binary=True,
+            )
             # trajectory info
-            with open(output_name, "ab") as outfile:
-                outfile.write(
-                    struct.pack(block_header_format, *traj_info_header_buffer)
-                )
-            with open(output_name, "a") as outfile:
-                json.dump(trajectory_infos[chunk_index], outfile)
+            BinaryWriter._save_to_file(
+                traj_info_header_buffer,
+                output_name,
+                block_header_format,
+                is_binary=True,
+            )
+            BinaryWriter._save_to_file(
+                trajectory_infos[chunk_index],
+                output_name,
+                is_binary=False,
+            )
             # spatial data
             (
                 spatial_data_buffer,
@@ -364,19 +393,25 @@ class BinaryWriter(Writer):
             ) = BinaryWriter._get_data_buffer_with_format(
                 chunk_index, binary_spatial_data
             )
-            with open(output_name, "ab") as outfile:
-                outfile.write(struct.pack(spatial_format, *spatial_data_buffer))
+            BinaryWriter._save_to_file(
+                spatial_data_buffer,
+                output_name,
+                spatial_format,
+                is_binary=True,
+            )
             # plot data
-            with open(output_name, "ab") as outfile:
-                outfile.write(
-                    struct.pack(block_header_format, *plot_data_header_buffer)
-                )
-            with open(output_name, "a") as outfile:
-                json.dump(
-                    {
-                        "version": CURRENT_VERSION.PLOT_DATA,
-                        "data": trajectory_data.plots,
-                    },
-                    outfile,
-                )
+            BinaryWriter._save_to_file(
+                plot_data_header_buffer,
+                output_name,
+                block_header_format,
+                is_binary=True,
+            )
+            BinaryWriter._save_to_file(
+                {
+                    "version": CURRENT_VERSION.PLOT_DATA,
+                    "data": trajectory_data.plots,
+                },
+                output_name,
+                is_binary=False,
+            )
             print(f"saved to {output_name}")
