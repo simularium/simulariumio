@@ -120,7 +120,7 @@ class BinaryWriter(Writer):
         ]
         return BinaryValues(
             values=(
-                [BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY, spatial_data_length]
+                [BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value, spatial_data_length]
                 + [CURRENT_VERSION.SPATIAL_DATA, chunk.n_frames]
                 + chunk.frame_offsets
             ),
@@ -353,8 +353,14 @@ class BinaryWriter(Writer):
             traj_info_length,
             plot_data_length,
         ) = BinaryWriter.format_trajectory_data(trajectory_data)
-        traj_info_header_buffer = [BINARY_BLOCK_TYPE.TRAJ_INFO_JSON, traj_info_length]
-        plot_data_header_buffer = [BINARY_BLOCK_TYPE.PLOT_DATA_JSON, plot_data_length]
+        traj_info_header_buffer = [
+            BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
+            traj_info_length,
+        ]
+        plot_data_header_buffer = [
+            BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
+            plot_data_length,
+        ]
         block_header_format = f"{BINARY_SETTINGS.BLOCK_HEADER_LENGTH}i"
         print("Writing Binary -------------")
         for chunk_index in range(len(binary_spatial_data)):

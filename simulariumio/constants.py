@@ -121,9 +121,9 @@ class BINARY_SETTINGS:
         used for packing binary data.
         """
         return [
-            BINARY_BLOCK_TYPE.TRAJ_INFO_JSON,
-            BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY,
-            BINARY_BLOCK_TYPE.PLOT_DATA_JSON,
+            BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
+            BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
+            BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
         ]
 
 

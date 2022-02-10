@@ -233,9 +233,9 @@ def assert_binary_values_equal(
                     28,  # block 0 offset
                     1072,  # block 1 offset
                     1325,  # block 2 offset
-                    BINARY_BLOCK_TYPE.TRAJ_INFO_JSON,
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY,
-                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON,
+                    BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
+                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
+                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     1044,  # block 0 length
                     253,  # block 1 length
                     49,  # block 2 length
@@ -352,7 +352,7 @@ def assert_binary_values_equal(
             ],
             [
                 [
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY,
+                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
                     253,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     3,  # number of frames
@@ -622,9 +622,9 @@ def assert_binary_values_equal(
                     28,  # block 0 offset
                     1072,  # block 1 offset
                     1245,  # block 2 offset
-                    BINARY_BLOCK_TYPE.TRAJ_INFO_JSON,
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY,
-                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON,
+                    BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
+                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
+                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     1044,  # block 0 length
                     173,  # block 1 length
                     49,  # block 2 length
@@ -637,9 +637,9 @@ def assert_binary_values_equal(
                     28,  # block 0 offset
                     1072,  # block 1 offset
                     1156,  # block 2 offset
-                    BINARY_BLOCK_TYPE.TRAJ_INFO_JSON,
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY,
-                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON,
+                    BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
+                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
+                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     1044,  # block 0 length
                     84,  # block 1 length
                     49,  # block 2 length
@@ -861,7 +861,7 @@ def assert_binary_values_equal(
             ],
             [
                 [
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY,
+                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
                     173,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     2,  # number of frames
@@ -1036,7 +1036,7 @@ def assert_binary_values_equal(
                     0.0,
                 ],
                 [
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY,
+                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
                     84,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     1,  # number of frames
