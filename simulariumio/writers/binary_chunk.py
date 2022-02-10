@@ -20,24 +20,44 @@ class BinaryChunk:
 
     def __init__(
         self,
-        _n_frames: int,
-        _n_bytes: int,
-        _n_values: int,
-        _first_frame_index: int = 0,
-        _frame_offsets: List[int] = None,
+        n_frames: int,
+        n_bytes: int,
+        n_values: int,
+        first_frame_index: int = 0,
+        frame_offsets: List[int] = None,
     ):
         """
         Object to store size info for a binary file
+
+        Parameters
+        ----------
+        n_frames: int
+            How many timesteps of data in this chunk?
+        n_bytes: int
+            How many bytes saved in this chunk?
+        n_values: int
+            How many values saved in this chunk?
+        first_frame_index: int (optional)
+            Which time index does this chunk start at?
+                Default: 0
+        frame_offsets: List[int]
+            A list of the local indices at which the frames in this chunk start
+                Default: [], update later
         """
-        self.n_frames = _n_frames
-        self.n_bytes = _n_bytes
-        self.n_values = _n_values
-        self.first_frame_index = _first_frame_index
-        self.frame_offsets = [] if _frame_offsets is None else _frame_offsets
+        self.n_frames = n_frames
+        self.n_bytes = n_bytes
+        self.n_values = n_values
+        self.first_frame_index = first_frame_index
+        self.frame_offsets = [] if frame_offsets is None else frame_offsets
 
     def get_global_index(self, local_index: int) -> int:
         """
         Get the index in the entire trajectory for the index within this chunk
+
+        Parameters
+        ----------
+        local_index: int
+            The index of the frame within this chunk
         """
         return self.first_frame_index + local_index
 
