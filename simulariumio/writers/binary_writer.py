@@ -12,7 +12,7 @@ from ..data_objects import (
     AgentData,
     TrajectoryData,
 )
-from ..constants import BINARY_SETTINGS, CURRENT_VERSION
+from ..constants import BINARY_SETTINGS, BINARY_BLOCK_TYPE, CURRENT_VERSION
 from .writer import Writer
 from .binary_chunk import BinaryChunk
 from .binary_values import BinaryValues
@@ -27,31 +27,35 @@ log = logging.getLogger(__name__)
 class BinaryWriter(Writer):
     @staticmethod
     def _get_chunks(
-        frame_buffer_sizes: List[int], max_frames: int, max_bytes: int
+        frame_buffer_sizes: List[int],
+        max_bytes: int,
     ) -> List[BinaryChunk]:
         """
         Get number of frames, number of bytes, and number of values
         for each file that will be written,
         multiple files if needed to satisfy file size limits
         """
-        n_constant_values = (
-            len(BINARY_SETTINGS.HEADER) + len(BINARY_SETTINGS.VERSION) + 1
+        n_constant_int_values = (
+            BINARY_SETTINGS.N_HEADER_INT_VALUES()
+            + BINARY_SETTINGS.BLOCK_HEADER_LENGTH * BINARY_SETTINGS.N_BLOCKS
         )
-        n_constant_bytes = n_constant_values + 3
+        n_constant_values = len(BINARY_SETTINGS.HEADER) + n_constant_int_values
+        n_constant_bytes = (
+            len(BINARY_SETTINGS.HEADER)
+            + BINARY_SETTINGS.BYTES_PER_VALUE * n_constant_int_values
+        )
         chunks = [BinaryChunk(0, n_constant_bytes, n_constant_values)]
         current_chunk = 0
         for frame_index, buffer_size in enumerate(frame_buffer_sizes):
-            frame_bytes = 4 * (4 + buffer_size) + len(BINARY_SETTINGS.EOF)
-            frame_values = 4 + buffer_size + len(BINARY_SETTINGS.EOF)
+            frame_values = BINARY_SETTINGS.FRAME_HEADER_LENGTH + buffer_size
+            frame_bytes = BINARY_SETTINGS.BYTES_PER_VALUE * frame_values
             if frame_bytes > max_bytes:
                 raise Exception(
                     f"Frame {frame_index} is too large for a simularium file "
                     f"({frame_bytes} bytes), try filtering out some data."
                 )
-            if (
-                chunks[current_chunk].n_frames >= max_frames
-                or chunks[current_chunk].n_bytes + frame_bytes > max_bytes
-            ):
+            new_bytes = chunks[current_chunk].n_bytes - n_constant_bytes + frame_bytes
+            if new_bytes > max_bytes:
                 current_chunk += 1
                 chunks.append(
                     BinaryChunk(0, n_constant_bytes, n_constant_values, frame_index)
@@ -59,19 +63,69 @@ class BinaryWriter(Writer):
             chunks[current_chunk].n_frames += 1
             chunks[current_chunk].n_bytes += frame_bytes
             chunks[current_chunk].n_values += frame_values
-        n_first_frame_offset = (
-            len(BINARY_SETTINGS.HEADER) + len(BINARY_SETTINGS.VERSION) + 1
-        )
         for chunk in chunks:
-            data_index = n_first_frame_offset + chunk.n_frames
+            data_index = 0
             for frame_index in range(chunk.n_frames):
                 chunk.frame_offsets.append(data_index)
                 data_index += (
-                    3
+                    BINARY_SETTINGS.FRAME_HEADER_LENGTH
                     + frame_buffer_sizes[chunk.get_global_index(frame_index)]
-                    + len(BINARY_SETTINGS.EOF)
                 )
         return chunks
+
+    @staticmethod
+    def _get_binary_header(
+        chunk: BinaryChunk,
+        header_length: int,
+        traj_info_length: int,
+        spatial_data_length: int,
+        plot_data_length: int,
+    ) -> BinaryValues:
+        """
+        Return the binary header values and format
+        """
+        header_format = (
+            f"{len(BINARY_SETTINGS.HEADER)}s{BINARY_SETTINGS.N_HEADER_INT_VALUES()}i"
+        )
+        block_offsets = [
+            0,
+            traj_info_length,
+            traj_info_length + spatial_data_length,
+        ]
+        block_offsets = [header_length + offset for offset in block_offsets]
+        return BinaryValues(
+            values=(
+                [bytes(BINARY_SETTINGS.HEADER, "utf-8")]
+                + [header_length, BINARY_SETTINGS.VERSION, BINARY_SETTINGS.N_BLOCKS]
+                + block_offsets
+                + BINARY_SETTINGS.DEFAULT_BLOCK_TYPES()
+                + [traj_info_length, spatial_data_length, plot_data_length]
+            ),
+            format_string=header_format,
+        )
+
+    @staticmethod
+    def _get_binary_spatial_data_header(
+        chunk: BinaryChunk,
+        constant_first_frame_offset: int,
+        spatial_header_constant_size: int,
+        spatial_data_length: int,
+    ) -> BinaryValues:
+        """
+        Return spatial data header values and format
+        """
+        first_frame_offset = constant_first_frame_offset + chunk.n_frames
+        chunk.frame_offsets = [
+            offset + first_frame_offset for offset in chunk.frame_offsets
+        ]
+        return BinaryValues(
+            values=(
+                [BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY, spatial_data_length]
+                + [CURRENT_VERSION.SPATIAL_DATA, chunk.n_frames]
+                + chunk.frame_offsets
+            ),
+            format_string=f"{spatial_header_constant_size + len(chunk.frame_offsets)}i",
+        )
 
     @staticmethod
     def _format_trajectory_frame(
@@ -82,7 +136,7 @@ class BinaryWriter(Writer):
         buffer_size: int,
     ) -> List[BinaryValues]:
         """
-        Return the frame of data as a list of BinaryValuess
+        Return the frame of data as a list of BinaryValues
         """
         frame_buffer, _, _ = Writer._get_frame_buffer(
             global_time_index, agent_data, type_ids, buffer_size
@@ -104,18 +158,46 @@ class BinaryWriter(Writer):
                 values=frame_buffer,
                 format_string=f"{len(frame_buffer)}f",
             ),
-            BinaryValues(
-                values=[bytes(BINARY_SETTINGS.EOF, "utf-8")],
-                format_string=f"{len(BINARY_SETTINGS.EOF)}s",
-            ),
         ]
+
+    @staticmethod
+    def _get_binary_spatial_data(
+        chunk: BinaryChunk,
+        constant_first_frame_offset: int,
+        spatial_header_constant_size: int,
+        spatial_data_length: int,
+        trajectory_data: TrajectoryData,
+        type_ids: np.ndarray,
+        frame_buffer_sizes: List[int],
+    ) -> List[BinaryValues]:
+        """
+        Return spatial data block values and format
+        """
+        result = [
+            BinaryWriter._get_binary_spatial_data_header(
+                chunk,
+                constant_first_frame_offset,
+                spatial_header_constant_size,
+                spatial_data_length,
+            )
+        ]
+        for chunk_frame_index in range(chunk.n_frames):
+            global_frame_index = chunk.get_global_index(chunk_frame_index)
+            frame_data = BinaryWriter._format_trajectory_frame(
+                global_frame_index,
+                chunk_frame_index,
+                trajectory_data.agent_data,
+                type_ids,
+                frame_buffer_sizes[global_frame_index],
+            )
+            result += frame_data
+        return result
 
     @staticmethod
     def format_trajectory_data(
         trajectory_data: TrajectoryData,
-        max_frames: int = BINARY_SETTINGS.MAX_FRAMES,
         max_bytes: int = BINARY_SETTINGS.MAX_BYTES,
-    ) -> Tuple[List[Dict[str, Any]], List[BinaryValues]]:
+    ) -> Tuple[List[BinaryValues], List[Dict[str, Any]], List[BinaryValues], int, int]:
         """
         Return the data shaped for Simularium binary
         Parameters
@@ -135,48 +217,103 @@ class BinaryWriter(Writer):
             frame_buffer_sizes.append(
                 Writer._get_frame_buffer_size(frame_index, trajectory_data.agent_data)
             )
-        chunks = BinaryWriter._get_chunks(frame_buffer_sizes, max_frames, max_bytes)
-        # format data
-        header = BINARY_SETTINGS.HEADER + "".join(
-            str(i) for i in BINARY_SETTINGS.VERSION
-        )
-        header_format = f"{len(header)}s"
+        # get a trajectory info to determine size
         type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
+        traj_info = Writer._get_trajectory_info(
+            trajectory_data, total_steps, type_mapping
+        )
+        traj_info_length = BINARY_SETTINGS.BLOCK_HEADER_LENGTH + len(
+            json.dumps(traj_info)
+        )
+        # get plot data to determine size
+        plot_data_length = BINARY_SETTINGS.BLOCK_HEADER_LENGTH + len(
+            json.dumps(
+                {
+                    "version": CURRENT_VERSION.PLOT_DATA,
+                    "data": trajectory_data.plots,
+                },
+            )
+        )
+        # determine how to chunk the data so the file sizes don't exceed max_bytes
+        max_spatial_bytes = max_bytes - traj_info_length - plot_data_length
+        chunks = BinaryWriter._get_chunks(frame_buffer_sizes, max_spatial_bytes)
+        # format data
+        header_length = (
+            len(BINARY_SETTINGS.HEADER) + BINARY_SETTINGS.N_HEADER_INT_VALUES()
+        )
+        constant_first_frame_offset = (
+            header_length
+            + traj_info_length
+            + BINARY_SETTINGS.BLOCK_HEADER_LENGTH
+            + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_CONSTANT_LENGTH
+        )
+        spatial_header_constant_size = (
+            BINARY_SETTINGS.BLOCK_HEADER_LENGTH
+            + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_CONSTANT_LENGTH
+        )
+        n_constant_values = (
+            header_length
+            + BINARY_SETTINGS.BLOCK_HEADER_LENGTH * BINARY_SETTINGS.N_BLOCKS
+        )
+        binary_headers = [[] for chunk in chunks]
         trajectory_infos = []
-        binary_data = [[] for chunk in chunks]
+        binary_spatial_data = [[] for chunk in chunks]
         for chunk_index, chunk in enumerate(chunks):
+            # binary header
+            spatial_data_length = (
+                spatial_header_constant_size
+                + chunk.n_frames
+                + chunk.n_values
+                - n_constant_values
+            )
+            binary_headers[chunk_index].append(
+                BinaryWriter._get_binary_header(
+                    chunk,
+                    header_length,
+                    traj_info_length,
+                    spatial_data_length,
+                    plot_data_length,
+                )
+            )
             # trajectory info
             trajectory_infos.append(
                 Writer._get_trajectory_info(
                     trajectory_data, chunk.n_frames, type_mapping
                 )
             )
-            # header
-            binary_data[chunk_index].append(
-                BinaryValues(
-                    values=[bytes(header, "utf-8")],
-                    format_string=header_format,
-                )
+            # spatial data
+            binary_spatial_data[chunk_index] += BinaryWriter._get_binary_spatial_data(
+                chunk,
+                constant_first_frame_offset,
+                spatial_header_constant_size,
+                spatial_data_length,
+                trajectory_data,
+                type_ids,
+                frame_buffer_sizes,
             )
-            # offset table
-            binary_data[chunk_index].append(
-                BinaryValues(
-                    values=[chunk.n_frames] + chunk.frame_offsets,
-                    format_string=f"{1 + len(chunk.frame_offsets)}i",
-                )
-            )
-            # frame data
-            for chunk_frame_index in range(chunk.n_frames):
-                global_frame_index = chunk.get_global_index(chunk_frame_index)
-                frame_data = BinaryWriter._format_trajectory_frame(
-                    global_frame_index,
-                    chunk_frame_index,
-                    trajectory_data.agent_data,
-                    type_ids,
-                    frame_buffer_sizes[global_frame_index],
-                )
-                binary_data[chunk_index] += frame_data
-        return trajectory_infos, binary_data
+        return (
+            binary_headers,
+            trajectory_infos,
+            binary_spatial_data,
+            traj_info_length,
+            plot_data_length,
+        )
+
+    @staticmethod
+    def _get_data_buffer_with_format(
+        index: int, binary_data: List[BinaryValues]
+    ) -> Tuple[List[float], str]:
+        """
+        Return the buffer of data at index and its format string
+        """
+        return (
+            [
+                value
+                for binary_values in binary_data[index]
+                for value in binary_values.values
+            ],
+            "".join(value.format_string for value in binary_data[index]),
+        )
 
     @staticmethod
     def save(trajectory_data: TrajectoryData, output_path: str) -> None:
@@ -191,30 +328,49 @@ class BinaryWriter(Writer):
             where to save the file
         """
         (
+            binary_headers,
             trajectory_infos,
-            binary_data,
+            binary_spatial_data,
+            traj_info_length,
+            plot_data_length,
         ) = BinaryWriter.format_trajectory_data(trajectory_data)
+        traj_info_header_buffer = [BINARY_BLOCK_TYPE.TRAJ_INFO_JSON, traj_info_length]
+        plot_data_header_buffer = [BINARY_BLOCK_TYPE.PLOT_DATA_JSON, plot_data_length]
+        block_header_format = f"{BINARY_SETTINGS.BLOCK_HEADER_LENGTH}i"
         print("Writing Binary -------------")
-        for chunk_index in range(len(binary_data)):
-            if len(binary_data) < 2:
+        for chunk_index in range(len(binary_spatial_data)):
+            # determine filename(s)
+            if len(binary_headers) < 2:
                 output_name = f"{output_path}.simularium"
             else:
                 output_name = f"{output_path}_{chunk_index}.simularium"
+            # binary header
+            header_buffer, header_format = BinaryWriter._get_data_buffer_with_format(
+                chunk_index, binary_headers
+            )
+            with open(output_name, "wb") as outfile:
+                outfile.write(struct.pack(header_format, *header_buffer))
             # trajectory info
-            with open(output_name, "w") as outfile:
+            with open(output_name, "ab") as outfile:
+                outfile.write(
+                    struct.pack(block_header_format, *traj_info_header_buffer)
+                )
+            with open(output_name, "a") as outfile:
                 json.dump(trajectory_infos[chunk_index], outfile)
             # spatial data
-            format_string = "".join(
-                value.format_string for value in binary_data[chunk_index]
+            (
+                spatial_data_buffer,
+                spatial_format,
+            ) = BinaryWriter._get_data_buffer_with_format(
+                chunk_index, binary_spatial_data
             )
-            data_buffer = [
-                value
-                for binary_values in binary_data[chunk_index]
-                for value in binary_values.values
-            ]
             with open(output_name, "ab") as outfile:
-                outfile.write(struct.pack(format_string, *data_buffer))
+                outfile.write(struct.pack(spatial_format, *spatial_data_buffer))
             # plot data
+            with open(output_name, "ab") as outfile:
+                outfile.write(
+                    struct.pack(block_header_format, *plot_data_header_buffer)
+                )
             with open(output_name, "a") as outfile:
                 json.dump(
                     {

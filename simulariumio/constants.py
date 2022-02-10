@@ -76,12 +76,55 @@ class CURRENT_VERSION:
 DEFAULT_BOX_SIZE = 100.0 * np.ones(3)
 
 
+class BINARY_BLOCK_TYPE(Enum):
+    """
+    The types of data saved in a block
+    """
+
+    SPATIAL_DATA_JSON = 0
+    TRAJ_INFO_JSON = 1
+    PLOT_DATA_JSON = 2
+    SPATIAL_DATA_BINARY = 3
+    # TRAJ_INFO_BINARY = 4  # coming soon
+    # PLOT_DATA_BINARY = 5  # coming soon
+
+
 class BINARY_SETTINGS:
-    HEADER: str = "SIMULARIUMBIN"
-    VERSION: List[int] = [1, 0, 0]
-    EOF: str = "\u005CEOFTHEFRAMEENDSHERE"
-    MAX_FRAMES: int = 10000
-    MAX_BYTES: int = 500000000
+    HEADER: str = "SIMULARIUMBINARY"
+    VERSION: int = 2
+    MAX_BYTES: int = 4000000000  # 4GB is max for one file
+    HEADER_CONSTANT_INT_LENGTH: int = (
+        3  # header length, binary version, number of blocks
+    )
+    N_BLOCKS: int = 3  # all files have traj info, spatial data, and plot data
+    HEADER_VALUES_PER_BLOCK: int = 3  # block offsets, types, lengths
+    BLOCK_HEADER_LENGTH: int = 2  # block type, block length
+    SPATIAL_BLOCK_HEADER_CONSTANT_LENGTH: int = (
+        2  # spatial data version, number of frames
+    )
+    FRAME_HEADER_LENGTH: int = 3  # frame number, time stamp, number of agents
+    BYTES_PER_VALUE: int = 4
+
+    def N_HEADER_INT_VALUES() -> int:
+        """
+        Get the number of int values stored in the header of binary files,
+        used for packing binary data.
+        """
+        return (
+            BINARY_SETTINGS.HEADER_CONSTANT_INT_LENGTH
+            + BINARY_SETTINGS.N_BLOCKS * BINARY_SETTINGS.HEADER_VALUES_PER_BLOCK
+        )
+
+    def DEFAULT_BLOCK_TYPES() -> List[int]:
+        """
+        Get the number of int values stored in the header of binary files,
+        used for packing binary data.
+        """
+        return [
+            BINARY_BLOCK_TYPE.TRAJ_INFO_JSON,
+            BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY,
+            BINARY_BLOCK_TYPE.PLOT_DATA_JSON,
+        ]
 
 
 JMOL_COLORS_CSV_PATH = "jmolcolors.csv"
