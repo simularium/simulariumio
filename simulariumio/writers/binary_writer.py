@@ -93,13 +93,23 @@ class BinaryWriter(Writer):
             traj_info_length + spatial_data_length,
         ]
         block_offsets = [header_length + offset for offset in block_offsets]
+        block_types = BINARY_SETTINGS.DEFAULT_BLOCK_TYPES()
+        block_lengths = [traj_info_length, spatial_data_length, plot_data_length]
         return BinaryValues(
             values=(
                 [bytes(BINARY_SETTINGS.HEADER, "utf-8")]
                 + [header_length, BINARY_SETTINGS.VERSION, BINARY_SETTINGS.N_BLOCKS]
-                + block_offsets
-                + BINARY_SETTINGS.DEFAULT_BLOCK_TYPES()
-                + [traj_info_length, spatial_data_length, plot_data_length]
+                + [
+                    block_offsets[0],
+                    block_types[0],
+                    block_lengths[0],
+                    block_offsets[1],
+                    block_types[1],
+                    block_lengths[1],
+                    block_offsets[2],
+                    block_types[2],
+                    block_lengths[2],
+                ]
             ),
             format_string=header_format,
         )

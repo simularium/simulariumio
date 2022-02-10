@@ -231,13 +231,13 @@ def assert_binary_values_equal(
                     BINARY_SETTINGS.VERSION,
                     BINARY_SETTINGS.N_BLOCKS,
                     28,  # block 0 offset
-                    1072,  # block 1 offset
-                    1325,  # block 2 offset
                     BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     1044,  # block 0 length
+                    1072,  # block 1 offset
+                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
                     253,  # block 1 length
+                    1325,  # block 2 offset
+                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     49,  # block 2 length
                 ]
             ],
@@ -620,13 +620,13 @@ def assert_binary_values_equal(
                     BINARY_SETTINGS.VERSION,
                     BINARY_SETTINGS.N_BLOCKS,
                     28,  # block 0 offset
-                    1072,  # block 1 offset
-                    1245,  # block 2 offset
                     BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     1044,  # block 0 length
+                    1072,  # block 1 offset
+                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
                     173,  # block 1 length
+                    1245,  # block 2 offset
+                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     49,  # block 2 length
                 ],
                 [
@@ -635,13 +635,13 @@ def assert_binary_values_equal(
                     BINARY_SETTINGS.VERSION,
                     BINARY_SETTINGS.N_BLOCKS,
                     28,  # block 0 offset
-                    1072,  # block 1 offset
-                    1156,  # block 2 offset
                     BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     1044,  # block 0 length
+                    1072,  # block 1 offset
+                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
                     84,  # block 1 length
+                    1156,  # block 2 offset
+                    BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     49,  # block 2 length
                 ],
             ],

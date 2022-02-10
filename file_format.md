@@ -252,17 +252,15 @@ Binary files must be smaller than 4GB, if the data is larger than this, it can b
 
 ```
 // binary header
-"SIMULARIUMBINARY" (binary identifier, 16 bytes)
-Header length (4 byte int)
-Binary version (4 byte int)
-Number of blocks (4 byte int)
-Block offsets (Number of blocks * 4 byte int)
-Block types (Number of blocks * 4 byte int)
-Block lengths (Number of blocks * 4 byte int)
+"SIMULARIUMBINARY" (binary identifier, 16-bytes)
+Header length (4-byte int)
+Binary version (4-byte int)
+Number of blocks (4-byte int)
+Block offset, type, and length (Number of blocks * 3 4-byte ints)
 
 // for each block
-Block type (4 byte int)
-Block length (4 byte int)
+Block type (4-byte int)
+Block length (4-byte int)
 
     // type = 0 : spatial data block in JSON (see above)
 
@@ -271,27 +269,27 @@ Block length (4 byte int)
     // type = 2 : plot data block in JSON (see above)
 
     // type = 3 : spatial data block in binary
-    Spatial data version (4 byte int)
-    Number of frames (4 byte int)
-    Frame offsets (Number of frames * 4 byte int)
+    Spatial data version (4-byte int)
+    Number of frames (4-byte int)
+    Frame offsets (Number of frames * 4-byte int)
 
         // for each timestep
-        Frame number (4 byte int)
-        Time stamp (4 byte float)
-        Number of agents (4 byte int)
+        Frame number (4-byte int)
+        Time stamp (4-byte float)
+        Number of agents (4-byte int)
 
             // for each agent at this timestep
-            Visualization type (4 byte float)
-            Agent instance ID (4 byte float)
-            Agent type ID (4 byte float)
-            Position X (4 byte float)
-            Position Y (4 byte float)
-            Position Z (4 byte float)
-            Rotation X (4 byte float)
-            Rotation Y (4 byte float)
-            Rotation Z (4 byte float)
-            Radius (4 byte float)
-            Number of subpoints (4 byte float)
-            Subpoints (4 byte floats, optional)
+            Visualization type (4-byte float)
+            Agent instance ID (4-byte float)
+            Agent type ID (4-byte float)
+            Position X (4-byte float)
+            Position Y (4-byte float)
+            Position Z (4-byte float)
+            Rotation X (4-byte float)
+            Rotation Y (4-byte float)
+            Rotation Z (4-byte float)
+            Radius (4-byte float)
+            Number of subpoints (4-byte float)
+            Subpoints (4-byte floats, optional)
 
 ```
