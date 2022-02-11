@@ -16,7 +16,6 @@ Each custom data type has:
   * some types also have additional parameter information
 
 ### Main types
-Each main data type contains parameters of different types.
 * `smoldyn_data` - information for populating a `SmoldynData` to visualize a trajectory from Smoldyn
 * (more coming soon)
 
