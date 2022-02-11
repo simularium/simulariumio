@@ -1,0 +1,26 @@
+{
+    "coordinates_xyz": {
+        "python::module": "numpy",
+        "python::object": "array",
+        "parameters": {
+            "0": {
+                "name": "X",
+                "data_type": "number",
+                "description": "X dimension",
+                "required": true
+            },
+            "1": {
+                "name": "Y",
+                "data_type": "number",
+                "description": "Y dimension",
+                "required": true
+            },
+            "2": {
+                "name": "Z",
+                "data_type": "number",
+                "description": "Z dimension",
+                "required": true
+            }
+        }
+    }
+}

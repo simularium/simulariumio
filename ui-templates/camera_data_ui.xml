@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<cameraData>
-    <position type="coordinatesXYZ" required="false"></position>
-    <lookAtPosition type="coordinatesXYZ" required="false"></lookAtPosition>
-    <upVector type="coordinatesXYZ" required="false"></upVector>
-    <fovDegrees type="number" required="false"></fovDegrees>
-</cameraData>

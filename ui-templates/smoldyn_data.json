@@ -1,0 +1,36 @@
+{
+    "smoldyn_data": {
+        "python::module": "simulariumio.smoldyn",
+        "python::object": "SmoldynData",
+        "parameters": {
+            "meta_data": {
+                "name": "Metadata",
+                "data_type": "meta_data",
+                "description": "metadata for this trajectory",
+                "required": false
+            },
+            "display_data": {
+                "name": "Display data",
+                "data_type": "mapping",
+                "description": "display information for each particle type from Smoldyn",
+                "required": false,
+                "key_name": "Smoldyn particle name",
+                "key_data_type": "text", 
+                "value_name": "Display data",
+                "value_data_type": "display_data"
+            },
+            "time_units": {
+                "name": "Time units",
+                "data_type": "unit_data",
+                "description": "units for time values",
+                "required": false
+            },
+            "spatial_units": {
+                "name": "Spatial units",
+                "data_type": "unit_data",
+                "description": "units for 3D coordinates",
+                "required": false
+            }
+        }
+    }
+}

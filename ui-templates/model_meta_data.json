@@ -1,0 +1,62 @@
+{
+    "model_meta_data": {
+        "python::module": "simulariumio",
+        "python::object": "ModelMetaData",
+        "parameters": {
+            "title": {
+                "name": "Title",
+                "data_type": "text",
+                "description": "title",
+                "required": false
+            },
+            "version": {
+                "name": "Version",
+                "data_type": "text",
+                "description": "version",
+                "required": false
+            },
+            "authors": {
+                "name": "Authors",
+                "data_type": "text",
+                "description": "author(s)",
+                "required": false
+            },
+            "description": {
+                "name": "Trajectory title",
+                "data_type": "text",
+                "description": "description",
+                "required": false
+            },
+            "doi": {
+                "name": "DOI",
+                "data_type": "text",
+                "description": "doi for the publication using this model, either ID or url",
+                "required": false
+            },
+            "source_code_url": {
+                "name": "Source code URL",
+                "data_type": "url",
+                "description": "link to the repository of source code",
+                "required": false
+            },
+            "source_code_license_url": {
+                "name": "Source code license URL",
+                "data_type": "url",
+                "description": "link to the license for the source code",
+                "required": false
+            },
+            "input_data_url": {
+                "name": "Input data URL",
+                "data_type": "url",
+                "description": "link to model configuration or parameter files",
+                "required": false
+            },
+            "raw_output_data_url": {
+                "name": "Raw output data URL",
+                "data_type": "url",
+                "description": "link to raw outputs from the source code",
+                "required": false
+            }
+        }
+    }
+}

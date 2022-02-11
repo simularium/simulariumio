@@ -1,0 +1,46 @@
+{
+    "display_data": {
+        "python::module": "simulariumio",
+        "python::object": "DisplayData",
+        "parameters": {
+            "name": {
+                "name": "Name",
+                "data_type": "text",
+                "description": "display name",
+                "required": true
+            },
+            "radius": {
+                "name": "Radius",
+                "data_type": "number",
+                "description": "scale of geometry or thickness of fiber",
+                "required": false
+            },
+            "display_type": {
+                "name": "Display type",
+                "data_type": "enum",
+                "description": "type of geometry",
+                "required": false,
+                "python::module": "simulariumio",
+                "python::object": "DISPLAY_TYPE",
+                "options": [
+                    "SPHERE",
+                    "PDB",
+                    "OBJ",
+                    "FIBER"
+                ]
+            },
+            "url": {
+                "name": "Geometry URL",
+                "data_type": "url",
+                "description": "link to geometry file if display type is PDB or OBJ",
+                "required": false
+            },
+            "color": {
+                "name": "Color",
+                "data_type": "color",
+                "description": "color",
+                "required": false
+            }
+        }
+    }
+}

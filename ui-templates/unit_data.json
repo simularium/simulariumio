@@ -1,0 +1,20 @@
+{
+    "unit_data": {
+        "python::module": "simulariumio",
+        "python::object": "UnitData",
+        "parameters": {
+            "name": {
+                "name": "Name",
+                "data_type": "text",
+                "description": "unit name (we support this list https://github.com/hgrecco/pint/blob/master/pint/default_en.txt)",
+                "required": true
+            },
+            "magnitude": {
+                "name": "Magnitude",
+                "data_type": "number",
+                "description": "multiplier in case values are not in whole units",
+                "required": false
+            }
+        }
+    }
+}
