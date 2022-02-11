@@ -37,9 +37,9 @@ Each custom data type has:
 * `mapping`
   * requires additional parameter information:
     * `key_name` - the name to display next to the UI Input element for the key
-    * `key_data_type` - name of the data type tp collect for the key
+    * `key_data_type` - name of the data type to collect for the key
     * `value_name` - the name to display next to the UI Input element for the value
-    * `value_data_type` - name of the data type tp collect for the value
+    * `value_data_type` - name of the data type to collect for the value
 * `display_data`
 * `enum`
   * requires additional parameter information:
