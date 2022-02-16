@@ -26,6 +26,8 @@ Each custom data type has:
 * `url`
 * `color`
 
+* `list_item`
+
 
 ### Custom types
 

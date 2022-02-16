@@ -11,13 +11,17 @@
             },
             "display_data": {
                 "name": "Display data",
-                "data_type": "mapping",
+                "data_type": "list",
                 "description": "display information for each particle type from Smoldyn",
                 "required": false,
-                "key_name": "Smoldyn particle name",
-                "key_data_type": "text", 
-                "value_name": "Display data",
-                "value_data_type": "display_data"
+                "length": 1,
+                "extendible": true,
+                "list_item": {
+                    "key_name": "Smoldyn particle name",
+                    "key_data_type": "text", 
+                    "value_name": "Display data",
+                    "value_data_type": "display_data"
+                }
             },
             "time_units": {
                 "name": "Time units",
