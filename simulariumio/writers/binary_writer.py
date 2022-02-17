@@ -85,7 +85,7 @@ class BinaryWriter(Writer):
         Return the binary header values and format
         """
         header_format = (
-            f"{len(BINARY_SETTINGS.HEADER)}s{BINARY_SETTINGS.N_HEADER_INT_VALUES()}i"
+            f"{len(BINARY_SETTINGS.HEADER)}s<{BINARY_SETTINGS.N_HEADER_INT_VALUES()}i"
         )
         block_offsets = [
             0,
@@ -128,13 +128,14 @@ class BinaryWriter(Writer):
         chunk.frame_offsets = [
             offset + first_frame_offset for offset in chunk.frame_offsets
         ]
+        n_values = spatial_header_constant_size + len(chunk.frame_offsets)
         return BinaryValues(
             values=(
                 [BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value, spatial_data_length]
                 + [CURRENT_VERSION.SPATIAL_DATA, chunk.n_frames]
                 + chunk.frame_offsets
             ),
-            format_string=f"{spatial_header_constant_size + len(chunk.frame_offsets)}i",
+            format_string=f"<{n_values}i",
         )
 
     @staticmethod
@@ -154,19 +155,19 @@ class BinaryWriter(Writer):
         return [
             BinaryValues(
                 values=[int(chunk_time_index)],
-                format_string="i",
+                format_string="<i",
             ),
             BinaryValues(
                 values=[float(agent_data.times[global_time_index])],
-                format_string="f",
+                format_string="<f",
             ),
             BinaryValues(
                 values=[int(agent_data.n_agents[global_time_index])],
-                format_string="i",
+                format_string="<i",
             ),
             BinaryValues(
                 values=frame_buffer,
-                format_string=f"{len(frame_buffer)}f",
+                format_string=f"<{len(frame_buffer)}f",
             ),
         ]
 
