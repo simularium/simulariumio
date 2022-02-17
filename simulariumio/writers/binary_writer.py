@@ -80,7 +80,7 @@ class BinaryWriter(Writer):
         Return the binary header values and format
         """
         header_format = (
-            f"{len(BINARY_SETTINGS.HEADER)}s<{BINARY_SETTINGS.HEADER_N_INT_VALUES()}i"
+            f"<{len(BINARY_SETTINGS.HEADER)}s{BINARY_SETTINGS.HEADER_N_INT_VALUES()}i"
         )
         block_types = BINARY_SETTINGS.DEFAULT_BLOCK_TYPES()
         block_n_bytes = [traj_info_n_bytes, spatial_data_n_bytes, plot_data_n_bytes]
@@ -158,11 +158,11 @@ class BinaryWriter(Writer):
                     float(agent_data.times[global_time_index]),
                     int(agent_data.n_agents[global_time_index]),
                 ],
-                format_string="<i<f<i",
+                format_string="ifi",
             ),
             BinaryValues(
                 values=frame_buffer,
-                format_string=f"<{len(frame_buffer)}f",
+                format_string=f"{len(frame_buffer)}f",
             ),
         ]
 
@@ -318,9 +318,8 @@ class BinaryWriter(Writer):
         """
         Return the buffer of data at index and its format string
         """
-        with open(
-            file_name, ("a" if append else "w") + ("b" if is_binary else "")
-        ) as outfile:
+        mode = ("a" if append else "w") + ("b" if is_binary else "")
+        with open(file_name, mode) as outfile:
             if is_binary:
                 outfile.write(struct.pack(binary_format, *data))
             else:

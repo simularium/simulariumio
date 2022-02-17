@@ -242,7 +242,7 @@ def assert_binary_values_equal(
                 ]
             ],
             [
-                "16s<12i",
+                "<16s12i",
             ],
             [
                 {
@@ -611,7 +611,7 @@ def assert_binary_values_equal(
                 ]
             ],
             [
-                "<10i<i<f<i<82f<i<f<i<79f<i<f<i<76f",
+                "<10iifi82fifi79fifi76f",
             ],
         ),
         (
@@ -649,8 +649,8 @@ def assert_binary_values_equal(
                 ],
             ],
             [
-                "16s<12i",
-                "16s<12i",
+                "<16s12i",
+                "<16s12i",
             ],
             [
                 {
@@ -1129,8 +1129,8 @@ def assert_binary_values_equal(
                 ],
             ],
             [
-                "<8i<i<f<i<82f<i<f<i<79f",
-                "<6i<i<f<i<76f",
+                "<8iifi82fifi79f",
+                "<6iifi76f",
             ],
         ),
     ],
