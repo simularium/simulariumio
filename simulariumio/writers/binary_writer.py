@@ -38,9 +38,10 @@ class BinaryWriter(Writer):
         """
         chunks = [BinaryChunk()]
         current_chunk = 0
+        current_frames_bytes = 0
         for frame_index, buffer_size in enumerate(frame_buffer_n_values):
-            spatial_header_n_values = (
-                spatial_header_constant_n_values + chunks[current_chunk].n_frames + 1
+            spatial_header_n_values = spatial_header_constant_n_values + 2 * (
+                chunks[current_chunk].n_frames + 1
             )
             spatial_header_n_bytes = (
                 BINARY_SETTINGS.BYTES_PER_VALUE * spatial_header_n_values
@@ -52,26 +53,18 @@ class BinaryWriter(Writer):
                     f"Frame {frame_index} is too large for a simularium file "
                     f"({frame_n_bytes} bytes), try filtering out some data."
                 )
-            new_bytes = (
-                spatial_header_n_bytes + chunks[current_chunk].n_bytes + frame_n_bytes
-            )
+            new_bytes = spatial_header_n_bytes + current_frames_bytes + frame_n_bytes
             if new_bytes > max_spatial_bytes:
                 current_chunk += 1
                 chunks.append(BinaryChunk(frame_index))
             chunks[current_chunk].n_frames += 1
-            chunks[current_chunk].n_bytes += frame_n_bytes
             chunks[current_chunk].n_values += frame_n_values
+            chunks[current_chunk].frame_n_values.append(frame_n_values)
+            current_frames_bytes += frame_n_bytes
         for chunk in chunks:
-            data_index = 0
-            for frame_index in range(chunk.n_frames):
-                chunk.frame_offsets.append(data_index)
-                data_index += (
-                    BINARY_SETTINGS.FRAME_HEADER_N_VALUES
-                    + frame_buffer_n_values[chunk.get_global_index(frame_index)]
-                )
             chunk.n_bytes = BINARY_SETTINGS.BYTES_PER_VALUE * (
                 spatial_header_constant_n_values
-                + chunk.n_frames  # frame offsets
+                + 2 * chunk.n_frames  # frame offsets and lengths
                 + chunk.n_values
             )
         return chunks
@@ -124,21 +117,24 @@ class BinaryWriter(Writer):
         """
         Return spatial data header values and format
         """
-        spatial_data_header_n_bytes = BINARY_SETTINGS.BYTES_PER_VALUE * (
-            spatial_header_constant_n_values + chunk.n_frames  # frame offsets
-        )
-        chunk.frame_offsets = [
-            spatial_data_header_n_bytes + BINARY_SETTINGS.BYTES_PER_VALUE * offset
-            for offset in chunk.frame_offsets
-        ]
-        n_values = spatial_header_constant_n_values + len(chunk.frame_offsets)
+        n_header_values = (
+            spatial_header_constant_n_values + 2 * chunk.n_frames
+        )  # frame offsets and lengths
+        spatial_data_header_n_bytes = BINARY_SETTINGS.BYTES_PER_VALUE * n_header_values
+        frame_offsets_and_lengths = []
+        current_offset = spatial_data_header_n_bytes
+        for frame_index, frame_n_values in enumerate(chunk.frame_n_values):
+            frame_n_bytes = BINARY_SETTINGS.BYTES_PER_VALUE * frame_n_values
+            frame_offsets_and_lengths.append(current_offset)
+            frame_offsets_and_lengths.append(frame_n_bytes)
+            current_offset += frame_n_bytes
         return BinaryValues(
             values=(
                 [BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value, spatial_data_n_bytes]
                 + [CURRENT_VERSION.SPATIAL_DATA, chunk.n_frames]
-                + chunk.frame_offsets
+                + frame_offsets_and_lengths
             ),
-            format_string=f"<{n_values}i",
+            format_string=f"<{n_header_values}i",
         )
 
     @staticmethod

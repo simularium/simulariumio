@@ -223,7 +223,7 @@ def assert_binary_values_equal(
     "expected_spatial_data, expected_spatial_format",
     [
         (
-            2181,
+            2193,
             [
                 [
                     bytes(BINARY_SETTINGS.HEADER, "utf-8"),
@@ -235,8 +235,8 @@ def assert_binary_values_equal(
                     1050,  # block 0 length
                     1114,  # block 1 offset
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    1012,  # block 1 length
-                    2126,  # block 2 offset
+                    1024,  # block 1 length
+                    2138,  # block 2 offset
                     BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     55,  # block 2 length
                 ]
@@ -353,12 +353,15 @@ def assert_binary_values_equal(
             [
                 [  # 1114 bytes
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    1012,  # block length
+                    1024,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     3,  # number of frames
-                    28,  # frame 0 offset
-                    368,  # frame 1 offset
-                    696,  # frame 2 offset
+                    40,  # frame 0 offset
+                    340,  # frame 0 length
+                    380,  # frame 1 offset
+                    328,  # frame 1 length
+                    708,  # frame 2 offset
+                    316,  # frame 2 length
                     0,  # start of frame 0
                     0.0,
                     5,
@@ -608,11 +611,11 @@ def assert_binary_values_equal(
                 ]
             ],
             [
-                "<7i<i<f<i<82f<i<f<i<79f<i<f<i<76f",
+                "<10i<i<f<i<82f<i<f<i<79f<i<f<i<76f",
             ],
         ),
         (
-            2180,
+            2192,
             [
                 [
                     bytes(BINARY_SETTINGS.HEADER, "utf-8"),
@@ -624,8 +627,8 @@ def assert_binary_values_equal(
                     1050,  # block 0 length
                     1114,  # block 1 offset
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    692,  # block 1 length
-                    1806,  # block 2 offset
+                    700,  # block 1 length
+                    1814,  # block 2 offset
                     BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     55,  # block 2 length
                 ],
@@ -639,8 +642,8 @@ def assert_binary_values_equal(
                     1050,  # block 0 length
                     1114,  # block 1 offset
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    336,  # block 1 length
-                    1450,  # block 2 offset
+                    340,  # block 1 length
+                    1454,  # block 2 offset
                     BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
                     55,  # block 2 length
                 ],
@@ -862,11 +865,13 @@ def assert_binary_values_equal(
             [
                 [
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    692,  # block length
+                    700,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     2,  # number of frames
-                    24,  # frame 0 offset
-                    364,  # frame 1 offset
+                    32,  # frame 0 offset
+                    340,  # frame 0 length
+                    372,  # frame 1 offset
+                    328,  # frame 1 length
                     0,  # start of frame 0
                     0.0,
                     5,
@@ -1037,10 +1042,11 @@ def assert_binary_values_equal(
                 ],
                 [
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    336,  # block length
+                    340,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     1,  # number of frames
-                    20,  # frame 0 offset
+                    24,  # frame 0 offset
+                    316,  # frame 0 length
                     0,  # start of frame 2
                     2.0,
                     5,
@@ -1123,8 +1129,8 @@ def assert_binary_values_equal(
                 ],
             ],
             [
-                "<6i<i<f<i<82f<i<f<i<79f",
-                "<5i<i<f<i<76f",
+                "<8i<i<f<i<82f<i<f<i<79f",
+                "<6i<i<f<i<76f",
             ],
         ),
     ],

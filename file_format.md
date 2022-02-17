@@ -271,7 +271,7 @@ Block length (4-byte int)
     // type = 3 : spatial data block in binary
     Spatial data version (4-byte int)
     Number of frames (4-byte int)
-    Frame offsets (Number of frames * 4-byte int)
+    Frame offset and length (Number of frames * 2 4-byte int)
 
         // for each timestep
         Frame number (4-byte int)
