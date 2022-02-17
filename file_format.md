@@ -260,7 +260,7 @@ Block offset, type, and length (Number of blocks * 3 4-byte ints)
 
 // for each block
 Block type (4-byte int)
-Block length (4-byte int)
+Block length (4-byte int) (includes block header)
 
     // type = 0 : spatial data block in JSON (see above)
 
