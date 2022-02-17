@@ -93,26 +93,24 @@ class BINARY_SETTINGS:
     HEADER: str = "SIMULARIUMBINARY"
     VERSION: int = 2
     MAX_BYTES: int = 4000000000  # 4GB is max for one file
-    HEADER_CONSTANT_INT_LENGTH: int = (
-        3  # header length, binary version, number of blocks
-    )
+    HEADER_CONSTANT_N_VALUES: int = 3  # header length, binary version, number of blocks
     N_BLOCKS: int = 3  # all files have traj info, spatial data, and plot data
-    HEADER_VALUES_PER_BLOCK: int = 3  # block offsets, types, lengths
-    BLOCK_HEADER_LENGTH: int = 2  # block type, block length
-    SPATIAL_BLOCK_HEADER_CONSTANT_LENGTH: int = (
+    HEADER_N_VALUES_PER_BLOCK: int = 3  # block offsets, types, lengths
+    BLOCK_HEADER_N_VALUES: int = 2  # block type, block length
+    SPATIAL_BLOCK_HEADER_CONSTANT_N_VALUES: int = (
         2  # spatial data version, number of frames
     )
-    FRAME_HEADER_LENGTH: int = 3  # frame number, time stamp, number of agents
+    FRAME_HEADER_N_VALUES: int = 3  # frame number, time stamp, number of agents
     BYTES_PER_VALUE: int = 4
 
-    def N_HEADER_INT_VALUES() -> int:
+    def HEADER_N_INT_VALUES() -> int:
         """
         Get the number of int values stored in the header of binary files,
         used for packing binary data.
         """
         return (
-            BINARY_SETTINGS.HEADER_CONSTANT_INT_LENGTH
-            + BINARY_SETTINGS.N_BLOCKS * BINARY_SETTINGS.HEADER_VALUES_PER_BLOCK
+            BINARY_SETTINGS.HEADER_CONSTANT_N_VALUES
+            + BINARY_SETTINGS.N_BLOCKS * BINARY_SETTINGS.HEADER_N_VALUES_PER_BLOCK
         )
 
     def DEFAULT_BLOCK_TYPES() -> List[int]:

@@ -223,22 +223,22 @@ def assert_binary_values_equal(
     "expected_spatial_data, expected_spatial_format",
     [
         (
-            2077,
+            2181,
             [
                 [
                     bytes(BINARY_SETTINGS.HEADER, "utf-8"),
-                    28,  # header length
+                    64,  # header length
                     BINARY_SETTINGS.VERSION,
                     BINARY_SETTINGS.N_BLOCKS,
-                    28,  # block 0 offset
+                    64,  # block 0 offset
                     BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
-                    1044,  # block 0 length
-                    1072,  # block 1 offset
+                    1050,  # block 0 length
+                    1114,  # block 1 offset
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    253,  # block 1 length
-                    1325,  # block 2 offset
+                    1012,  # block 1 length
+                    2126,  # block 2 offset
                     BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
-                    49,  # block 2 length
+                    55,  # block 2 length
                 ]
             ],
             [
@@ -351,15 +351,15 @@ def assert_binary_values_equal(
                 },
             ],
             [
-                [
+                [  # 1114 bytes
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    253,  # block length
+                    1012,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     3,  # number of frames
-                    1079,  # frame 0 offset
-                    1164,  # frame 1 offset
-                    1246,  # frame 2 offset
-                    0,  # index = 1079
+                    28,  # frame 0 offset
+                    368,  # frame 1 offset
+                    696,  # frame 2 offset
+                    0,  # start of frame 0
                     0.0,
                     5,
                     1000.0,
@@ -444,7 +444,7 @@ def assert_binary_values_equal(
                     -234.5462914,
                     105.46507228,
                     17.16552317,
-                    1,  # index = 1164
+                    1,  # start of frame 1
                     1.0,
                     5,
                     1001.0,
@@ -526,7 +526,7 @@ def assert_binary_values_equal(
                     0.0,
                     9.88033853,
                     0.0,
-                    2,  # index = 1246
+                    2,  # start of frame 2
                     2.0,
                     5,
                     1000.0,
@@ -612,37 +612,37 @@ def assert_binary_values_equal(
             ],
         ),
         (
-            2076,
+            2180,
             [
                 [
                     bytes(BINARY_SETTINGS.HEADER, "utf-8"),
-                    28,  # header length
+                    64,  # header length
                     BINARY_SETTINGS.VERSION,
                     BINARY_SETTINGS.N_BLOCKS,
-                    28,  # block 0 offset
+                    64,  # block 0 offset
                     BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
-                    1044,  # block 0 length
-                    1072,  # block 1 offset
+                    1050,  # block 0 length
+                    1114,  # block 1 offset
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    173,  # block 1 length
-                    1245,  # block 2 offset
+                    692,  # block 1 length
+                    1806,  # block 2 offset
                     BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
-                    49,  # block 2 length
+                    55,  # block 2 length
                 ],
                 [
                     bytes(BINARY_SETTINGS.HEADER, "utf-8"),
-                    28,  # header length
+                    64,  # header length
                     BINARY_SETTINGS.VERSION,
                     BINARY_SETTINGS.N_BLOCKS,
-                    28,  # block 0 offset
+                    64,  # block 0 offset
                     BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
-                    1044,  # block 0 length
-                    1072,  # block 1 offset
+                    1050,  # block 0 length
+                    1114,  # block 1 offset
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    84,  # block 1 length
-                    1156,  # block 2 offset
+                    336,  # block 1 length
+                    1450,  # block 2 offset
                     BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
-                    49,  # block 2 length
+                    55,  # block 2 length
                 ],
             ],
             [
@@ -862,12 +862,12 @@ def assert_binary_values_equal(
             [
                 [
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    173,  # block length
+                    692,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     2,  # number of frames
-                    1078,  # frame 0 offset
-                    1163,  # frame 1 offset
-                    0,  # index = 1078
+                    24,  # frame 0 offset
+                    364,  # frame 1 offset
+                    0,  # start of frame 0
                     0.0,
                     5,
                     1000.0,
@@ -952,7 +952,7 @@ def assert_binary_values_equal(
                     -234.5462914,
                     105.46507228,
                     17.16552317,
-                    1,  # index = 1164
+                    1,  # start of frame 1
                     1.0,
                     5,
                     1001.0,
@@ -1037,11 +1037,11 @@ def assert_binary_values_equal(
                 ],
                 [
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    84,  # block length
+                    336,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     1,  # number of frames
-                    1077,  # frame 0 offset
-                    0,  # index = 1077
+                    20,  # frame 0 offset
+                    0,  # start of frame 2
                     2.0,
                     5,
                     1000.0,
@@ -1142,8 +1142,8 @@ def test_binary_writer(
         binary_headers,
         trajectory_infos,
         binary_spatial_data,
-        traj_info_size,
-        plot_data_size,
+        traj_info_length,
+        plot_data_length,
     ) = BinaryWriter.format_trajectory_data(converter._data, max_bytes)
     for chunk_index in range(len(binary_headers)):
         # header

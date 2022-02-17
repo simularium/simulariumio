@@ -20,10 +20,10 @@ class BinaryChunk:
 
     def __init__(
         self,
-        n_frames: int,
-        n_bytes: int,
-        n_values: int,
         first_frame_index: int = 0,
+        n_frames: int = 0,
+        n_bytes: int = 0,
+        n_values: int = 0,
         frame_offsets: List[int] = None,
     ):
         """
@@ -31,18 +31,21 @@ class BinaryChunk:
 
         Parameters
         ----------
-        n_frames: int
-            How many timesteps of data in this chunk?
-        n_bytes: int
-            How many bytes saved in this chunk?
-        n_values: int
-            How many values saved in this chunk?
         first_frame_index: int (optional)
             Which time index does this chunk start at?
                 Default: 0
+        n_frames: int
+            How many timesteps of data in this chunk?
+                Default: 0, set later
+        n_bytes: int
+            How many bytes saved in this chunk?
+                Default: 0, set later
+        n_values: int
+            How many values saved in this chunk?
+                Default: 0, set later
         frame_offsets: List[int]
             A list of the local indices at which the frames in this chunk start
-                Default: [], update later
+                Default: [], set later
         """
         self.n_frames = n_frames
         self.n_bytes = n_bytes
