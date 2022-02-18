@@ -323,12 +323,13 @@ class BinaryWriter(Writer):
         """
         Return the length of a block in bytes
         """
-        # pad to 4 byte boundary with zeros
+        # get the actual bytes to be written
         if isinstance(data_to_write, str):
             databytes = data_to_write.encode("utf-8")
         else: 
             databytes = data_to_write
 
+        # compute length with padding to 4 byte boundary
         orig_len = len(databytes)
         padding = BinaryWriter._padding(orig_len)
 
@@ -346,12 +347,13 @@ class BinaryWriter(Writer):
         Return number of bytes written
         """
 
-        # pad to 4 byte boundary with zeros
+        # get the actual bytes to be written
         if isinstance(data_to_write, str):
             databytes = data_to_write.encode("utf-8")
         else: 
             databytes = data_to_write
 
+        # pad to 4 byte boundary with zeros
         orig_len = len(databytes)
         padding = BinaryWriter._padding(orig_len)
         padformat = ''
