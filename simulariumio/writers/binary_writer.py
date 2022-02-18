@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Tuple, Any, Dict
+from typing import List, Tuple, Any, Dict, Union
 import struct
 import json
 
@@ -306,6 +306,72 @@ class BinaryWriter(Writer):
             ],
             "".join(value.format_string for value in binary_data[index]),
         )
+
+    @staticmethod
+    def _padding(n_bytes: int) -> int:
+        """
+        Return the number of bytes to pad, given the desired number.
+        """
+        remainder = n_bytes % BINARY_SETTINGS.BLOCK_OFFSET_BYTE_ALIGNMENT 
+        if remainder > 0:
+            return BINARY_SETTINGS.BLOCK_OFFSET_BYTE_ALIGNMENT - remainder
+        else:
+            return 0
+
+    @staticmethod
+    def _calculate_block_length(data_to_write: Union[str, bytes]) -> int:
+        """
+        Return the length of a block in bytes
+        """
+        # pad to 4 byte boundary with zeros
+        if isinstance(data_to_write, str):
+            databytes = data_to_write.encode("utf-8")
+        else: 
+            databytes = data_to_write
+
+        orig_len = len(databytes)
+        padding = BinaryWriter._padding(orig_len)
+
+        return orig_len + padding + 4 + 4
+
+    @staticmethod
+    def _write_block(
+        file_name: str,
+        block_type: int,
+        data_to_write: Union[str, bytes],
+        append: bool = True,
+    ) -> int:
+        """
+        Write a binary block to a file
+        Return number of bytes written
+        """
+
+        # pad to 4 byte boundary with zeros
+        if isinstance(data_to_write, str):
+            databytes = data_to_write.encode("utf-8")
+        else: 
+            databytes = data_to_write
+
+        orig_len = len(databytes)
+        padding = BinaryWriter._padding(orig_len)
+        padformat = ''
+        if padding > 0:
+            padformat = f"{padding}x"
+        databytes = struct.pack(f"{orig_len}s{padformat}", databytes)
+
+        if len(databytes) % 4 != 0:
+            raise ValueError("Binary data must be a multiple of 4 bytes")
+
+        mode = ("a" if append else "w") + "b"
+        with open(file_name, mode) as outfile:
+            # write block type
+            outfile.write(struct.pack("<i", block_type))
+            # write block size
+            outfile.write(struct.pack("<i", len(databytes) + 4 + 4))
+            # write block data
+            outfile.write(databytes)
+
+        return len(databytes) + 4 + 4
 
     @staticmethod
     def _save_to_file(

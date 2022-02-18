@@ -102,6 +102,7 @@ class BINARY_SETTINGS:
     )
     FRAME_HEADER_N_VALUES: int = 3  # frame number, time stamp, number of agents
     BYTES_PER_VALUE: int = 4
+    BLOCK_OFFSET_BYTE_ALIGNMENT: int = 4
 
     def HEADER_N_INT_VALUES() -> int:
         """
