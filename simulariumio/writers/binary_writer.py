@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Tuple, Any, Dict, Union
+from typing import List, Tuple, Any, Dict
 import struct
 import json
 
@@ -25,6 +25,17 @@ log = logging.getLogger(__name__)
 
 
 class BinaryWriter(Writer):
+    @staticmethod
+    def _padding(n_bytes: int) -> int:
+        """
+        Return the number of bytes to pad, given the desired number.
+        """
+        remainder = n_bytes % BINARY_SETTINGS.BLOCK_OFFSET_BYTE_ALIGNMENT
+        if remainder > 0:
+            return BINARY_SETTINGS.BLOCK_OFFSET_BYTE_ALIGNMENT - remainder
+        else:
+            return 0
+
     @staticmethod
     def _get_chunks(
         frame_buffer_n_values: List[int],
@@ -55,8 +66,9 @@ class BinaryWriter(Writer):
                 )
             new_bytes = spatial_header_n_bytes + current_frames_bytes + frame_n_bytes
             if new_bytes > max_spatial_bytes:
-                current_chunk += 1
                 chunks.append(BinaryChunk(frame_index))
+                current_chunk += 1
+                current_frames_bytes = 0
             chunks[current_chunk].n_frames += 1
             chunks[current_chunk].n_values += frame_n_values
             chunks[current_chunk].frame_n_values.append(frame_n_values)
@@ -80,7 +92,7 @@ class BinaryWriter(Writer):
         Return the binary header values and format
         """
         header_format = (
-            f"<{len(BINARY_SETTINGS.HEADER)}s{BINARY_SETTINGS.HEADER_N_INT_VALUES()}i"
+            f"<{len(BINARY_SETTINGS.HEADER)}s{BINARY_SETTINGS.HEADER_N_INT_VALUES()}I"
         )
         block_types = BINARY_SETTINGS.DEFAULT_BLOCK_TYPES()
         block_n_bytes = [traj_info_n_bytes, spatial_data_n_bytes, plot_data_n_bytes]
@@ -134,7 +146,7 @@ class BinaryWriter(Writer):
                 + [CURRENT_VERSION.SPATIAL_DATA, chunk.n_frames]
                 + frame_offsets_and_lengths
             ),
-            format_string=f"<{n_header_values}i",
+            format_string=f"<{n_header_values}I",
         )
 
     @staticmethod
@@ -158,7 +170,7 @@ class BinaryWriter(Writer):
                     float(agent_data.times[global_time_index]),
                     int(agent_data.n_agents[global_time_index]),
                 ],
-                format_string="ifi",
+                format_string="IfI",
             ),
             BinaryValues(
                 values=frame_buffer,
@@ -201,7 +213,9 @@ class BinaryWriter(Writer):
     def format_trajectory_data(
         trajectory_data: TrajectoryData,
         max_bytes: int = BINARY_SETTINGS.MAX_BYTES,
-    ) -> Tuple[List[BinaryValues], List[Dict[str, Any]], List[BinaryValues], int, int]:
+    ) -> Tuple[
+        List[BinaryValues], List[Dict[str, Any]], List[List[BinaryValues]], int, int
+    ]:
         """
         Return the data shaped for Simularium binary
         Parameters
@@ -230,6 +244,7 @@ class BinaryWriter(Writer):
             BINARY_SETTINGS.BLOCK_HEADER_N_VALUES * BINARY_SETTINGS.BYTES_PER_VALUE
         )
         traj_info_n_bytes = n_block_header_bytes + len(json.dumps(traj_info))
+        traj_info_n_bytes += BinaryWriter._padding(traj_info_n_bytes)
         # get plot data to determine size
         plot_data_n_bytes = n_block_header_bytes + len(
             json.dumps(
@@ -239,11 +254,12 @@ class BinaryWriter(Writer):
                 },
             )
         )
+        plot_data_n_bytes += BinaryWriter._padding(plot_data_n_bytes)
         # determine how to chunk the data so the file sizes don't exceed max_bytes
         header_n_bytes = (
             len(BINARY_SETTINGS.HEADER)
             + BINARY_SETTINGS.BYTES_PER_VALUE * BINARY_SETTINGS.HEADER_N_INT_VALUES()
-        )
+        )  # = 64 as long as there are 3 blocks, doesn't need padding
         max_spatial_bytes = (
             max_bytes - header_n_bytes - traj_info_n_bytes - plot_data_n_bytes
         )
@@ -306,74 +322,6 @@ class BinaryWriter(Writer):
             ],
             "".join(value.format_string for value in binary_data[index]),
         )
-
-    @staticmethod
-    def _padding(n_bytes: int) -> int:
-        """
-        Return the number of bytes to pad, given the desired number.
-        """
-        remainder = n_bytes % BINARY_SETTINGS.BLOCK_OFFSET_BYTE_ALIGNMENT 
-        if remainder > 0:
-            return BINARY_SETTINGS.BLOCK_OFFSET_BYTE_ALIGNMENT - remainder
-        else:
-            return 0
-
-    @staticmethod
-    def _calculate_block_length(data_to_write: Union[str, bytes]) -> int:
-        """
-        Return the length of a block in bytes
-        """
-        # get the actual bytes to be written
-        if isinstance(data_to_write, str):
-            databytes = data_to_write.encode("utf-8")
-        else: 
-            databytes = data_to_write
-
-        # compute length with padding to 4 byte boundary
-        orig_len = len(databytes)
-        padding = BinaryWriter._padding(orig_len)
-
-        return orig_len + padding + 4 + 4
-
-    @staticmethod
-    def _write_block(
-        file_name: str,
-        block_type: int,
-        data_to_write: Union[str, bytes],
-        append: bool = True,
-    ) -> int:
-        """
-        Write a binary block to a file
-        Return number of bytes written
-        """
-
-        # get the actual bytes to be written
-        if isinstance(data_to_write, str):
-            databytes = data_to_write.encode("utf-8")
-        else: 
-            databytes = data_to_write
-
-        # pad to 4 byte boundary with zeros
-        orig_len = len(databytes)
-        padding = BinaryWriter._padding(orig_len)
-        padformat = ''
-        if padding > 0:
-            padformat = f"{padding}x"
-        databytes = struct.pack(f"{orig_len}s{padformat}", databytes)
-
-        if len(databytes) % 4 != 0:
-            raise ValueError("Binary data must be a multiple of 4 bytes")
-
-        mode = ("a" if append else "w") + "b"
-        with open(file_name, mode) as outfile:
-            # write block type
-            outfile.write(struct.pack("<i", block_type))
-            # write block size
-            outfile.write(struct.pack("<i", len(databytes) + 4 + 4))
-            # write block data
-            outfile.write(databytes)
-
-        return len(databytes) + 4 + 4
 
     @staticmethod
     def _save_to_file(

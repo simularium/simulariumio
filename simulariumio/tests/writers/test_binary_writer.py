@@ -223,7 +223,7 @@ def assert_binary_values_equal(
     "expected_spatial_data, expected_spatial_format",
     [
         (
-            2193,
+            2196,
             [
                 [
                     bytes(BINARY_SETTINGS.HEADER, "utf-8"),
@@ -232,17 +232,17 @@ def assert_binary_values_equal(
                     BINARY_SETTINGS.N_BLOCKS,
                     64,  # block 0 offset
                     BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
-                    1050,  # block 0 length
-                    1114,  # block 1 offset
+                    1052,  # block 0 length
+                    1116,  # block 1 offset
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
                     1024,  # block 1 length
-                    2138,  # block 2 offset
+                    2140,  # block 2 offset
                     BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
-                    55,  # block 2 length
+                    56,  # block 2 length
                 ]
             ],
             [
-                "<16s12i",
+                "<16s12I",
             ],
             [
                 {
@@ -351,7 +351,7 @@ def assert_binary_values_equal(
                 },
             ],
             [
-                [  # 1114 bytes
+                [
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
                     1024,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
@@ -611,11 +611,11 @@ def assert_binary_values_equal(
                 ]
             ],
             [
-                "<10iifi82fifi79fifi76f",
+                "<10IIfI82fIfI79fIfI76f",
             ],
         ),
         (
-            2192,
+            2195,
             [
                 [
                     bytes(BINARY_SETTINGS.HEADER, "utf-8"),
@@ -624,13 +624,13 @@ def assert_binary_values_equal(
                     BINARY_SETTINGS.N_BLOCKS,
                     64,  # block 0 offset
                     BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
-                    1050,  # block 0 length
-                    1114,  # block 1 offset
+                    1052,  # block 0 length
+                    1116,  # block 1 offset
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
                     700,  # block 1 length
-                    1814,  # block 2 offset
+                    1816,  # block 2 offset
                     BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
-                    55,  # block 2 length
+                    56,  # block 2 length
                 ],
                 [
                     bytes(BINARY_SETTINGS.HEADER, "utf-8"),
@@ -639,18 +639,18 @@ def assert_binary_values_equal(
                     BINARY_SETTINGS.N_BLOCKS,
                     64,  # block 0 offset
                     BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
-                    1050,  # block 0 length
-                    1114,  # block 1 offset
+                    1052,  # block 0 length
+                    1116,  # block 1 offset
                     BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
                     340,  # block 1 length
-                    1454,  # block 2 offset
+                    1456,  # block 2 offset
                     BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
-                    55,  # block 2 length
+                    56,  # block 2 length
                 ],
             ],
             [
-                "<16s12i",
-                "<16s12i",
+                "<16s12I",
+                "<16s12I",
             ],
             [
                 {
@@ -1129,8 +1129,8 @@ def assert_binary_values_equal(
                 ],
             ],
             [
-                "<8iifi82fifi79f",
-                "<6iifi76f",
+                "<8IIfI82fIfI79f",
+                "<6IIfI76f",
             ],
         ),
     ],
