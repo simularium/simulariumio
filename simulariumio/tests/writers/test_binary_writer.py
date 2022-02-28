@@ -352,8 +352,6 @@ def assert_binary_values_equal(
             ],
             [
                 [
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    1024,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     3,  # number of frames
                     40,  # frame 0 offset
@@ -611,7 +609,7 @@ def assert_binary_values_equal(
                 ]
             ],
             [
-                "<10IIfI82fIfI79fIfI76f",
+                "<8IIfI82fIfI79fIfI76f",
             ],
         ),
         (
@@ -864,8 +862,6 @@ def assert_binary_values_equal(
             ],
             [
                 [
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    700,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     2,  # number of frames
                     32,  # frame 0 offset
@@ -1041,8 +1037,6 @@ def assert_binary_values_equal(
                     0.0,
                 ],
                 [
-                    BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-                    340,  # block length
                     CURRENT_VERSION.SPATIAL_DATA,
                     1,  # number of frames
                     24,  # frame 0 offset
@@ -1129,8 +1123,8 @@ def assert_binary_values_equal(
                 ],
             ],
             [
-                "<8IIfI82fIfI79f",
-                "<6IIfI76f",
+                "<6IIfI82fIfI79f",
+                "<4IIfI76f",
             ],
         ),
     ],
@@ -1148,8 +1142,6 @@ def test_binary_writer(
         binary_headers,
         trajectory_infos,
         binary_spatial_data,
-        traj_info_length,
-        plot_data_length,
     ) = BinaryWriter.format_trajectory_data(converter._data, max_bytes)
     for chunk_index in range(len(binary_headers)):
         # header
