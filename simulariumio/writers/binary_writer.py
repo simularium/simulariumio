@@ -41,7 +41,7 @@ class BinaryWriter(Writer):
         """
         Get the number of values in the bundle data buffer for each frame
         """
-        total_steps = trajectory_data.total_steps()
+        total_steps = trajectory_data.agent_data.total_steps()
         result = []
         for frame_index in range(total_steps):
             result.append(
@@ -69,7 +69,7 @@ class BinaryWriter(Writer):
         Get length of trajectory info in JSON
         (n_bytes = n_values)
         """
-        total_steps = trajectory_data.total_steps()
+        total_steps = trajectory_data.agent_data.total_steps()
         traj_info = Writer._get_trajectory_info(
             trajectory_data, total_steps, type_mapping
         )

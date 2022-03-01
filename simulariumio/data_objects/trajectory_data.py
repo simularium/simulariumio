@@ -82,17 +82,6 @@ class TrajectoryData:
             plots=buffer_data["plotData"]["data"],
         )
 
-    def total_steps(self) -> int:
-        """
-        Get number of frames
-        Use n_timesteps to limit agent_data.times if it has been provided
-        """
-        return (
-            self.agent_data.n_timesteps
-            if self.agent_data.n_timesteps >= 0
-            else len(self.agent_data.times)
-        )
-
     def append_agents(self, new_agents: AgentData):
         """
         Concatenate the new AgentData with the current data,
