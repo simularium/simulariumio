@@ -17,6 +17,7 @@ class PhysicellData:
     timestep: float
     path_to_output_dir: str
     meta_data: MetaData
+    nth_timestep_to_read: int
     display_data: Dict[int, DisplayData]
     phase_names: Dict[int, Dict[int, str]]
     time_units: UnitData
@@ -27,6 +28,7 @@ class PhysicellData:
         timestep: float,
         path_to_output_dir: str,
         meta_data: MetaData = None,
+        nth_timestep_to_read: int = 1,
         display_data: Dict[int, DisplayData] = None,
         phase_names: Dict[int, Dict[int, str]] = None,
         time_units: UnitData = None,
@@ -47,6 +49,10 @@ class PhysicellData:
         meta_data : MetaData (optional)
             An object containing metadata for the trajectory
             including box size, scale factor, and camera defaults
+        nth_timestep_to_read: int (optional)
+            Visualize every Nth timestep
+            e.g. if 10, only every 10th timestep will be visualized
+            Default: 1
         display_data : Dict[int, DisplayData] (optional)
             The cell type ID from PhysiCell data mapped
             to DisplayData, including names and display info
@@ -68,6 +74,7 @@ class PhysicellData:
         self.timestep = timestep
         self.path_to_output_dir = path_to_output_dir
         self.meta_data = meta_data if meta_data is not None else MetaData()
+        self.nth_timestep_to_read = nth_timestep_to_read
         self.display_data = display_data if display_data is not None else {}
         self.phase_names = phase_names if phase_names is not None else {}
         self.time_units = time_units if time_units is not None else UnitData("s")

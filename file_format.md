@@ -7,6 +7,17 @@
 Both JSON and binary contain the following data structured like:
 * **trajectory info**
   * version - 2.0
+  * trajectoryTitle (optional) - a name for this run of the model
+  * modelInfo (optional) - metadata about the model that produced this trajectory
+    * title - display title for this model
+    * authors - modelers name(s) in one string
+    * version - version of the model that produced this trajectory
+    * description - comments to display with the trajectory
+    * doi - the DOI of the publication accompanying this model
+    * sourceCodeUrl - if the code that generated this model is posted publicly, a link to the repository of source code
+    * sourceCodeLicenseUrl - a link to the license for the source code
+    * inputDataUrl - a link to any model configuration or parameter files posted publicly
+    * rawOutputDataUrl - a link to any raw outputs from the source code posted publicly
   * timeUnits - unit info for temporal data (e.g. timeStepSize)
     * magnitude - multiplier for time values (in case they are not given in whole units)
     * name - unit name for time values (we support this list https://github.com/hgrecco/pint/blob/master/pint/default_en.txt)
@@ -26,9 +37,13 @@ Both JSON and binary contain the following data structured like:
       * ex: "actin#barbed_ATP_1" is parsed as agent type "actin" in states "barbed", "ATP", and "1"
       * ex: "actA" is parsed as agent type "actA" with no state information
       * if no name is provided, the agent type ID, an integer number, is used for display
-    * pdb (optional) - the filename of the PDB file to render for this agent. If this field isn’t provided or if the file isn’t found, the renderer will fall back to mesh rendering
-    * mesh (optional) - the filename of the OBJ mesh file to render for this agent. If this field isn’t provided or if the file isn’t found, the renderer will fall back to a sphere
-    * PDB and mesh data is currently only used for streaming trajectories, but this will be updated soon
+    * geometry - rendering information for each agent type (note: only the first 100,000 geometry files will be loaded)
+      * displayType - “SPHERE”, “CUBE”, “GIZMO”, “FIBER”, “PDB”, or “OBJ”
+        * Default to “SPHERE” or “FIBER” depending on existence of subpoints
+        * for PDB, can provide either ID or full URL
+      * url (optional)- local path or web URL, web URLs are required for streaming or loading the trajectory by URL
+      * color (optional) - hex value 
+
 * **spatial data** - spatial data was designed to be sent in bundles from the simularium-engine in order to eventually support live simulation rendering. Therefore, each block of spatial data has metadata: msgType, bundleStart, and bundleSize.
   * version - 1.0
   * msgType - always 1
@@ -76,7 +91,17 @@ For JSON files, the data structure specified above is simply saved as JSON, with
 {
     // trajectory info
     "trajectoryInfo" : {
-        "version" : 2,
+        "version" : 3,
+        // model metadata
+        "trajectoryTitle" : "Fast diffusion",
+        "modelInfo" : {
+            "title" : "SARS-CoV-2 Dynamics in Human Lung Epithelium"
+            "version" : 4.1
+            "authors" : "Michael Getz et al"
+            "description" : "A PhysiCell model of SARS-CoV-2 dynamics in human lung epithelium."
+            "doi" : "10.1101/2020.04.02.019075"
+            "sourceCodeUrl" : "https://github.com/pc4covid19/pc4covid19"
+        },
         // time units
         "timeUnits": {
             "magnitude": 1.0,
@@ -119,17 +144,23 @@ For JSON files, the data structure specified above is simply saved as JSON, with
         "typeMapping": {
             "0" : {
                 "name" : "agent1",
-                "pdb" : "agent1.pdb",  // optional
-                "mesh" : "agent1.obj"  // optional
+                "geometry" : {
+                    "displayType" : "FIBER",
+                },
             },
             "1" : {
                 "name" : "agent1#bound",
-                "pdb" : "agent1.pdb",  // optional
-                "mesh" : "agent1.obj"  // optional
+                "geometry" : {
+                    "displayType" : "PDB",
+                    "url" : "agent1.pdb",  // optional
+                    "color" : "#4796bd",   // optional
+                },
             },
             "2" : {
                 "name" : "agent2",
-                "mesh" : "agent2.obj"  // optional
+                "geometry" : {
+                    "displayType" : "SPHERE",
+                },
             },
             ...
         }
