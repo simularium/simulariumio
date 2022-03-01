@@ -426,9 +426,7 @@ class BinaryWriter(Writer):
             (
                 spatial_data_buffer,
                 spatial_format,
-            ) = BinaryWriter._data_buffer_with_format(
-                chunk_index, binary_spatial_data
-            )
+            ) = BinaryWriter._data_buffer_with_format(chunk_index, binary_spatial_data)
             BinaryWriter._write_block(
                 spatial_data_buffer,
                 BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
