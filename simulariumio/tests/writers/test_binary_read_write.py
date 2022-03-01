@@ -16,12 +16,12 @@ from simulariumio.tests.conftest import binary_test_data, assert_buffers_equal
     "input_path, expected_data",
     [
         (
-            "simulariumio/tests/data/binary/binary_test.simularium",
+            "simulariumio/tests/data/binary/binary_test.binary",
             binary_test_data,
         ),
     ],
 )
-def test_every_nth_agent_filter(
+def test_binary_parsing(
     input_path,
     expected_data,
 ):
