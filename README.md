@@ -131,6 +131,8 @@ Rendering capabilities planned for future:
 
 **Please note** that to run the Jupyter notebook examples you should also install Jupyter, either with `pip install jupyter`, or by installing SimulariumIO with the tutorial requirements: `pip install simulariumio[tutorial]`
 
+**Install time** depends on the speed of the connection and whether optional dependencies are included, but generally takes 30 seconds to a few minutes (see [benchmarks](benchmarks/README.md) for more details).
+
 
 <br/>
 
@@ -234,6 +236,8 @@ display_data={
     ),
 }
 ```
+
+**Conversion time** depends on hardware, the size of the input data, and which converter is used, but generally takes between less than a minute and five minutes (see [benchmarks](benchmarks/README.md) for more details).
 
 <br/>
 
