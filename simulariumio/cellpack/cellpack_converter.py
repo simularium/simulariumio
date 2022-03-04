@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import math
 import os
 import numpy as np
 import json
@@ -12,7 +13,7 @@ from ..data_objects.camera_data import CameraData
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData
 from ..data_objects import MetaData, DisplayData
-from .cellpack_data import CellpackData
+from .cellpack_data import HAND_TYPE, CellpackData
 from cellpack.autopack.iotools_simple import RecipeLoader
 
 ###############################################################################
@@ -65,13 +66,21 @@ class CellpackConverter(TrajectoryConverter):
         ]
 
     @staticmethod
-    def get_euler_from_matrix(data_in):
+    def get_euler_from_matrix(data_in, handedness):
         rotation_matrix = [data_in[0][0:3], data_in[1][0:3], data_in[2][0:3]]
-        return R.from_matrix(rotation_matrix).as_euler("XYZ", degrees=False)
+        if handedness == HAND_TYPE.LEFT:
+            euler = R.from_matrix(rotation_matrix).as_euler("ZYX", degrees=False)
+            return [euler[0], euler[1], -euler[2]]
+        else:
+            return R.from_matrix(rotation_matrix).as_euler("XYZ", degrees=False)
 
     @staticmethod
-    def get_euler_from_quat(data_in):
-        return R.from_quat(data_in).as_euler("XYZ", degrees=False)
+    def get_euler_from_quat(data_in, handedness):
+        if handedness == HAND_TYPE.LEFT:
+            euler = R.from_quat(data_in).as_euler("ZYX", degrees=False)
+            return [euler[0], euler[1], -euler[2]]
+        else: 
+            return R.from_quat(data_in).as_euler("XYZ", degrees=False)
 
     @staticmethod
     def is_matrix(data_in):
@@ -81,11 +90,11 @@ class CellpackConverter(TrajectoryConverter):
             return False
 
     @staticmethod
-    def get_euler(data_in) -> np.array:
+    def get_euler(data_in, handedness) -> np.array:
         if CellpackConverter.is_matrix(data_in):
-            return CellpackConverter.get_euler_from_matrix(data_in)
+            return CellpackConverter.get_euler_from_matrix(data_in, handedness)
         else:
-            return CellpackConverter.get_euler_from_quat(data_in)
+            return CellpackConverter.get_euler_from_quat(data_in, handedness)
 
     @staticmethod
     def _unpack_curve(
@@ -128,7 +137,8 @@ class CellpackConverter(TrajectoryConverter):
         result: AgentData,
         scale_factor: float,
         box_center: np.array,
-        comp_id=0,
+        handedness: HAND_TYPE,
+        comp_id=0
     ):
         position = data["results"][index][0]
         offset = np.array([0, 0, 0])
@@ -140,7 +150,7 @@ class CellpackConverter(TrajectoryConverter):
             (position[1] + offset[1] - box_center[1]) * scale_factor,
             (position[2] + offset[2] - box_center[2]) * scale_factor,
         ]
-        rotation = CellpackConverter.get_euler(data["results"][index][1])
+        rotation = CellpackConverter.get_euler(data["results"][index][1], handedness)
         result.rotations[time_step_index][agent_id] = rotation
         result.viz_types[time_step_index][agent_id] = 1000
         result.n_agents[time_step_index] += 1
@@ -181,7 +191,7 @@ class CellpackConverter(TrajectoryConverter):
         result.total_steps = total_steps
         return result
 
-    def _get_ingredient_display_data(geo_type, ingredient_data):
+    def _get_ingredient_display_data(geo_type, ingredient_data, geometry_url):
         if geo_type == DISPLAY_TYPE.OBJ and "meshFile" in ingredient_data:
             meshType = (
                 ingredient_data["meshType"]
@@ -193,7 +203,7 @@ class CellpackConverter(TrajectoryConverter):
                 file_name, _ = os.path.splitext(file_path)
                 return {
                     "display_type": DISPLAY_TYPE.OBJ,
-                    "url": f"https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/geometries/{file_name}.obj",  # noqa: E501
+                    "url": f"{geometry_url}{file_name}.obj",  # noqa: E501
                 }
             elif meshType == "raw":
                 # need to build a mesh from the vertices, faces, indexes dictionary
@@ -228,6 +238,8 @@ class CellpackConverter(TrajectoryConverter):
         scale_factor: float,
         box_center: np.array,
         geo_type: DISPLAY_TYPE,
+        handedness: HAND_TYPE,
+        geometry_url: str
     ) -> AgentData:
         dimensions = CellpackConverter._parse_dimensions(all_ingredients)
         spatial_data = AgentData.from_dimensions(dimensions)
@@ -238,7 +250,7 @@ class CellpackConverter(TrajectoryConverter):
             ingredient_key = ingredient_data["name"]
             ingredient_results_data = ingredient["results"]
             agent_display_data = CellpackConverter._get_ingredient_display_data(
-                geo_type, ingredient_data
+                geo_type, ingredient_data, geometry_url
             )
             display_data[ingredient_key] = DisplayData(
                 name=ingredient_key,
@@ -256,6 +268,7 @@ class CellpackConverter(TrajectoryConverter):
                         spatial_data,
                         scale_factor,
                         box_center,
+                        handedness
                     )
                     agent_id_counter += 1
             elif ingredient_results_data["nbCurve"] > 0:
@@ -309,6 +322,8 @@ class CellpackConverter(TrajectoryConverter):
             input_data.meta_data.scale_factor,
             box_center,
             input_data.geometry_type,
+            input_data.handedness,
+            input_data.geometry_url
         )
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))

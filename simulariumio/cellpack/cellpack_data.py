@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from enum import Enum
 import logging
 from typing import Any, Dict, List
 
@@ -13,6 +14,9 @@ log = logging.getLogger(__name__)
 
 ###############################################################################
 
+class HAND_TYPE(Enum):
+    RIGHT = "RIGHT"
+    LEFT = "LEFT"
 
 class CellpackData:
     results_file: InputFileData
@@ -23,7 +27,8 @@ class CellpackData:
     time_units: UnitData
     spatial_units: UnitData
     plots: List[Dict[str, Any]]
-
+    handedness: HAND_TYPE
+    geometry_url: str
     def __init__(
         self,
         results_file: InputFileData,
@@ -34,6 +39,8 @@ class CellpackData:
         time_units: UnitData = None,
         spatial_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
+        handedness: HAND_TYPE = HAND_TYPE.RIGHT,
+        geometry_url: str = "https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/geometries/"
     ):
         """
         This object holds simulation trajectory outputs
@@ -82,3 +89,5 @@ class CellpackData:
             spatial_units if spatial_units is not None else UnitData("m")
         )
         self.plots = plots if plots is not None else []
+        self.handedness = handedness
+        self.geometry_url = geometry_url
