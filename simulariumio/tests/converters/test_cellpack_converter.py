@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-import numpy as np
 
 from simulariumio.cellpack import (
     CellpackConverter,
@@ -27,11 +26,11 @@ from simulariumio.constants import (
                     file_path="simulariumio/tests/data/cellpack/example_2D_results.json"
                 ),
                 geometry_type=DISPLAY_TYPE.OBJ,
-                recipe_file_path="simulariumio/tests/data/cellpack/example_2D_recipe.json",
+                recipe_file_path="simulariumio/tests/data/cellpack/example_2D_recipe.json",  # noqa: E501
                 time_units=UnitData("ns"),  # nanoseconds
                 spatial_units=UnitData("nm"),  # nanometers
                 handedness=HAND_TYPE.LEFT,
-                geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/",
+                geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/",  # noqa: E501
             ),
             {
                 "trajectoryInfo": {
@@ -56,7 +55,7 @@ from simulariumio.constants import (
                             "name": "IngredientC_1_1",
                             "geometry": {
                                 "displayType": "OBJ",
-                                "url": "https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/IngredientC_1_2.obj",
+                                "url": "https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/IngredientC_1_2.obj",  # noqa: E501
                             },
                         },
                         "1": {
@@ -67,7 +66,7 @@ from simulariumio.constants import (
                             "name": "Bacteria_Rad25_1_3",
                             "geometry": {
                                 "displayType": "OBJ",
-                                "url": "https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/Bacteria_Rad25_1_4.obj",
+                                "url": "https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/Bacteria_Rad25_1_4.obj",  # noqa: E501
                             },
                         },
                     },

@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import math
 import os
 import numpy as np
 import json
@@ -79,7 +78,7 @@ class CellpackConverter(TrajectoryConverter):
         if handedness == HAND_TYPE.LEFT:
             euler = R.from_quat(data_in).as_euler("ZYX", degrees=False)
             return [euler[0], euler[1], -euler[2]]
-        else: 
+        else:
             return R.from_quat(data_in).as_euler("XYZ", degrees=False)
 
     @staticmethod
@@ -121,9 +120,9 @@ class CellpackConverter(TrajectoryConverter):
         )
         result.radii[time_step_index][agent_id] = r
         result.n_subpoints[time_step_index][agent_id] = len(data[curve])
-        scaled_control_points = (np.array(data[curve]) - np.array(
-            box_center
-        )) * scale_factor 
+        scaled_control_points = (
+            np.array(data[curve]) - np.array(box_center)
+        ) * scale_factor
         for i in range(len(scaled_control_points)):
             result.subpoints[time_step_index][agent_id][i] = scaled_control_points[i]
 
@@ -138,7 +137,7 @@ class CellpackConverter(TrajectoryConverter):
         scale_factor: float,
         box_center: np.array,
         handedness: HAND_TYPE,
-        comp_id=0
+        comp_id=0,
     ):
         position = data["results"][index][0]
         offset = np.array([0, 0, 0])
@@ -239,7 +238,7 @@ class CellpackConverter(TrajectoryConverter):
         box_center: np.array,
         geo_type: DISPLAY_TYPE,
         handedness: HAND_TYPE,
-        geometry_url: str
+        geometry_url: str,
     ) -> AgentData:
         dimensions = CellpackConverter._parse_dimensions(all_ingredients)
         spatial_data = AgentData.from_dimensions(dimensions)
@@ -268,7 +267,7 @@ class CellpackConverter(TrajectoryConverter):
                         spatial_data,
                         scale_factor,
                         box_center,
-                        handedness
+                        handedness,
                     )
                     agent_id_counter += 1
             elif ingredient_results_data["nbCurve"] > 0:
@@ -323,7 +322,7 @@ class CellpackConverter(TrajectoryConverter):
             box_center,
             input_data.geometry_type,
             input_data.handedness,
-            input_data.geometry_url
+            input_data.geometry_url,
         )
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))

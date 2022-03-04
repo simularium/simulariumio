@@ -14,9 +14,11 @@ log = logging.getLogger(__name__)
 
 ###############################################################################
 
+
 class HAND_TYPE(Enum):
     RIGHT = "RIGHT"
     LEFT = "LEFT"
+
 
 class CellpackData:
     results_file: InputFileData
@@ -29,6 +31,7 @@ class CellpackData:
     plots: List[Dict[str, Any]]
     handedness: HAND_TYPE
     geometry_url: str
+
     def __init__(
         self,
         results_file: InputFileData,
@@ -40,7 +43,7 @@ class CellpackData:
         spatial_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
         handedness: HAND_TYPE = HAND_TYPE.RIGHT,
-        geometry_url: str = "https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/geometries/"
+        geometry_url: str = "https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/geometries/",  # noqa: E501
     ):
         """
         This object holds simulation trajectory outputs
@@ -59,9 +62,9 @@ class CellpackData:
         meta_data: MetaData (optional)
             An object containing metadata for the trajectory
             including box size, scale factor, and camera defaults
-            NOTE: When passing in a scale_factor use the number relative to a normal 
-            cellPACK recipe, it will be scaled an additional 10% because of the conversion from 
-            cellPACK to Simuarlarium.
+            NOTE: When passing in a scale_factor use the number relative to a normal
+            cellPACK recipe, it will be scaled an additional 10% because of the 
+            conversion from cellPACK to Simuarlarium.
         display_data: Dict[str, DisplayData] (optional)
             A dictionary containing any per agent/ingredient display overrides,
             Ie, if the ingredients are all going to be displayed as PDBs, except

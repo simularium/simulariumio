@@ -65,6 +65,7 @@ class DISPLAY_TYPE(Enum):
     # CUBE = "CUBE"  # coming soon
     # GIZMO = "GIZMO"  # coming soon
 
+
 class CURRENT_VERSION:
     TRAJECTORY_INFO: int = 3
     SPATIAL_DATA: int = 1
