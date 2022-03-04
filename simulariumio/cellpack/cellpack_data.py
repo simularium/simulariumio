@@ -63,7 +63,7 @@ class CellpackData:
             An object containing metadata for the trajectory
             including box size, scale factor, and camera defaults
             NOTE: When passing in a scale_factor use the number relative to a normal
-            cellPACK recipe, it will be scaled an additional 10% because of the 
+            cellPACK recipe, it will be scaled an additional 10% because of the
             conversion from cellPACK to Simuarlarium.
         display_data: Dict[str, DisplayData] (optional)
             A dictionary containing any per agent/ingredient display overrides,
