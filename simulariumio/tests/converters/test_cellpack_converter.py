@@ -9,7 +9,7 @@ from simulariumio.cellpack import (
     HAND_TYPE,
     CellpackData,
 )
-from simulariumio import InputFileData
+from simulariumio import InputFileData, UnitData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
@@ -26,7 +26,10 @@ from simulariumio.constants import (
                 results_file=InputFileData(
                     file_path="simulariumio/tests/data/cellpack/example_2D_results.json"
                 ),
+                geometry_type=DISPLAY_TYPE.OBJ,
                 recipe_file_path="simulariumio/tests/data/cellpack/example_2D_recipe.json",
+                time_units=UnitData("ns"),  # nanoseconds
+                spatial_units=UnitData("nm"),  # nanometers
                 handedness=HAND_TYPE.LEFT,
                 geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/",
             ),
@@ -46,31 +49,33 @@ from simulariumio.constants import (
                             "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
                             "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
                         },
-                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+                        "fovDegrees": 60.0,
                     },
                     "typeMapping": {
                         "0": {
                             "name": "IngredientC_1_1",
                             "geometry": {
-                                "displayType": DISPLAY_TYPE.OBJ,
+                                "displayType": "OBJ",
                                 "url": "https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/IngredientC_1_2.obj",
                             },
                         },
                         "1": {
                             "name": "snake",
-                            "geometry": {"displayType": DISPLAY_TYPE.FIBER},
+                            "geometry": {
+                                "displayType": "FIBER"
+                            },
                         },
                         "2": {
                             "name": "Bacteria_Rad25_1_3",
                             "geometry": {
-                                "displayType": DISPLAY_TYPE.OBJ,
+                                "displayType": "OBJ",
                                 "url": "https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/Bacteria_Rad25_1_4.obj",
                             },
                         },
                     },
                 },
                 "spatialData": {
-                    "version": 1,
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
                     "msgType": 1,
                     "bundleStart": 0,
                     "bundleSize": 1,
@@ -563,7 +568,7 @@ from simulariumio.constants import (
                         }
                     ],
                 },
-                "plotData": {"version": 1, "data": []},
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
     ],
