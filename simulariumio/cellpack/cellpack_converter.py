@@ -121,9 +121,9 @@ class CellpackConverter(TrajectoryConverter):
         )
         result.radii[time_step_index][agent_id] = r
         result.n_subpoints[time_step_index][agent_id] = len(data[curve])
-        scaled_control_points = np.array(data[curve]) * scale_factor - np.array(
+        scaled_control_points = (np.array(data[curve]) - np.array(
             box_center
-        )
+        )) * scale_factor 
         for i in range(len(scaled_control_points)):
             result.subpoints[time_step_index][agent_id][i] = scaled_control_points[i]
 
