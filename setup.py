@@ -37,6 +37,7 @@ test_requirements = [
     "pytest>=5.4.3",
     "pytest-cov>=2.9.0",
     "pytest-raises>=0.11",
+    *cellpack_requirements,
     *mcell_requirements,
     *physicell_requirements,
     *md_requirements,
