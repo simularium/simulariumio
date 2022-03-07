@@ -21,7 +21,7 @@ jobs:
     - name: Install Conda Deps
       shell: bash -l {0}
       run: |
-        conda install readdy==2.0.9
+        conda install readdy==2.0.11
     - name: Install Dependencies
       shell: bash -l {0}
       run: |
