@@ -21,6 +21,10 @@ md_requirements = [
     "MDAnalysisTests>=2.0.0",
 ]
 
+cellpack_requirements = [
+    "cellpack>=0.2.3",
+]
+
 setup_requirements = [
     "pytest-runner>=5.2",
 ]
@@ -33,6 +37,7 @@ test_requirements = [
     "pytest>=5.4.3",
     "pytest-cov>=2.9.0",
     "pytest-raises>=0.11",
+    *cellpack_requirements,
     *mcell_requirements,
     *physicell_requirements,
     *md_requirements,
@@ -68,7 +73,7 @@ dev_requirements = [
 ]
 
 requirements = [
-    "numpy>=1.16",
+    "numpy>==1.16",
     "pandas>=1.1.2",
     "pint>=0.17",
 ]
