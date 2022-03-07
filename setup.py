@@ -73,7 +73,7 @@ dev_requirements = [
 ]
 
 requirements = [
-    "numpy>==1.19",
+    "numpy>==1.21",
     "pandas>=1.1.2",
     "pint>=0.17",
 ]
