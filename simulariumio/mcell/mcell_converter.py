@@ -82,9 +82,9 @@ class McellConverter(TrajectoryConverter):
         v3 = np.cross(v2, v1)
         return np.array(
             [
-                np.array([v2[0], v1[0], v3[0]]), 
-                np.array([v2[1], v1[1], v3[1]]), 
-                np.array([v2[2], v1[2], v3[2]])
+                np.array([v2[0], v1[0], v3[0]]),
+                np.array([v2[1], v1[1], v3[1]]),
+                np.array([v2[2], v1[2], v3[2]]),
             ]
         )
 
