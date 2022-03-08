@@ -12,17 +12,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup MiniConda
-      uses: conda-incubator/setup-miniconda@v2
-      with:
-        auto-update-conda: true
-        python-version: ${{ matrix.python-version }}
-        channels: conda-forge
-    - name: Install Conda Deps
-      shell: bash -l {0}
-      run: |
-        conda install readdy==2.0.9
-        conda install numpy
+    - name: Setup and Install Conda Deps
+      uses: ./.github/workflows/install-conda-deps.yml
+      with: 
+        python-version: ${{matrix.python-version}}
     - name: Install Dependencies
       shell: bash -l {0}
       run: |
@@ -40,16 +33,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup MiniConda
-      uses: conda-incubator/setup-miniconda@v2
-      with:
-        auto-update-conda: true
-        python-version: ${{ matrix.python-version }}
-        channels: conda-forge
-    - name: Install Conda Deps
-      shell: bash -l {0}
-      run: |
-        conda install readdy==2.0.9
+    - name: Setup and Install Conda Deps
+      uses: ./.github/workflows/install-conda-deps.yml
+      with: 
+        python-version: ${{matrix.python-version}}
     - name: Install Dependencies
       shell: bash -l {0}
       run: |

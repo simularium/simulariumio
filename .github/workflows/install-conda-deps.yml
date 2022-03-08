@@ -1,0 +1,27 @@
+name: Install Conda Deps
+
+on:
+  workflow_call:
+      inputs:
+      python-version:
+        required: false
+        type: list
+        default: [3.7, 3.8, 3.9]
+
+
+jobs:
+  install:
+    name: Install Conda Deps
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup MiniConda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        python-version: ${{ input.python-version }}
+        channels: conda-forge 
+    - name: Install Conda Deps
+      shell: bash -l {0}
+      run: |
+        conda install readdy==2.0.9
+        conda install numpy
