@@ -11,6 +11,7 @@ on:
 
 jobs:
   install:
+    - uses: actions/checkout@v1
     name: Install Conda Deps
     runs-on: ubuntu-latest
     steps:
