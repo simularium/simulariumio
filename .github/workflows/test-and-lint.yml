@@ -22,6 +22,7 @@ jobs:
       shell: bash -l {0}
       run: |
         conda install readdy==2.0.9
+        conda install numpy
     - name: Install Dependencies
       shell: bash -l {0}
       run: |
