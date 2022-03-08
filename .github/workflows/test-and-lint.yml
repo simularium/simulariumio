@@ -3,8 +3,13 @@ name: Test and Lint
 on: pull_request
 
 jobs:
+  install: 
+      uses: ./.github/workflows/install-conda-deps.yml
+      with: 
+        python-version: ${{matrix.python-version}}
   test:
     runs-on: ${{ matrix.os }}
+    needs: install
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
@@ -12,10 +17,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup and Install Conda Deps
-      uses: ./.github/workflows/install-conda-deps.yml
-      with: 
-        python-version: ${{matrix.python-version}}
+
     - name: Install Dependencies
       shell: bash -l {0}
       run: |
