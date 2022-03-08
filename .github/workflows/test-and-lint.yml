@@ -4,6 +4,10 @@ on: pull_request
 
 jobs:
   install: 
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+        os: [ubuntu-latest]
       uses: ./.github/workflows/install-conda-deps.yml
       with: 
         python-version: ${{matrix.python-version}}
