@@ -11,7 +11,6 @@ from simulariumio.cellpack import (
 from simulariumio import InputFileData, UnitData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
-    CURRENT_VERSION,
     DISPLAY_TYPE,
 )
 
