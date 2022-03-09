@@ -81,7 +81,7 @@ def test_camera_setting(camera_settings, expected_camera_settings):
     [(results["trajectoryInfo"]["size"], {"x": 100.0, "y": 100.0, "z": 0.1})],
 )
 def test_box_size(box_size, expected_box_size):
-    # input data box was 1000, 1000, 10
+    # input data box was 1000, 1000, 1
     assert box_size == expected_box_size
 
 
