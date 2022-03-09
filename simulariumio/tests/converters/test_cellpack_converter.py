@@ -3,11 +3,7 @@
 
 import pytest
 
-from simulariumio.cellpack import (
-    CellpackConverter,
-    HAND_TYPE,
-    CellpackData
-)
+from simulariumio.cellpack import CellpackConverter, HAND_TYPE, CellpackData
 from simulariumio import InputFileData, UnitData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
@@ -204,9 +200,8 @@ def test_get_rotation(quat, matrix):
 
     assert round(from_quat_right[0], 2) == round(from_matrix_right[0], 2)
     assert round(from_quat_right[1], 2) == round(from_matrix_right[1], 2)
-    assert round(from_quat_right[2], 2) == round(from_matrix_right[2], 2) 
+    assert round(from_quat_right[2], 2) == round(from_matrix_right[2], 2)
 
     assert round(from_quat_left[0], 2) == round(from_matrix_left[0], 2)
     assert round(from_quat_left[1], 2) == round(from_matrix_left[1], 2)
     assert round(from_quat_left[2], 2) == round(from_matrix_left[2], 2)
-
