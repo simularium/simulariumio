@@ -190,6 +190,7 @@ class CellpackConverter(TrajectoryConverter):
         result.total_steps = total_steps
         return result
 
+    @staticmethod
     def _get_ingredient_display_data(geo_type, ingredient_data, geometry_url):
         if geo_type == DISPLAY_TYPE.OBJ and "meshFile" in ingredient_data:
             meshType = (
@@ -292,7 +293,6 @@ class CellpackConverter(TrajectoryConverter):
         meta_data.camera_defaults = CameraData(
             position=np.array([10.0, 0.0, camera_z_position]),
             look_at_position=np.array([10.0, 0.0, 0.0]),
-            fov_degrees=60.0,
         )
 
     @staticmethod
