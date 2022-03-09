@@ -3,14 +3,8 @@ name: Test and Lint
 on: pull_request
 
 jobs:
-  install-conda-deps: 
-    uses: ./.github/workflows/install-conda-deps.yml
-    with:
-      python-version: "3.9"
-      runs-on: "ubuntu-latest"
   test:
     runs-on: ${{ matrix.os }}
-    needs: install-conda-deps
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
@@ -18,8 +12,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-
-    - name: Install Dependencies
+    - name: Install Conda Deps
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        python-version: ${{ matrix.python-version }}
+        activate-environment: anaconda-client-env
+        environment-file: ../../environment.yml
+    - name: Install Pip Dependencies
       shell: bash -l {0}
       run: |
         python -m pip install --upgrade pip
@@ -33,13 +33,19 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    need: install-conda-deps
+
     steps:
     - uses: actions/checkout@v1
-    - name: Setup and Install Conda Deps
-      uses: ./.github/workflows/install-conda-deps.yml
-      with: 
-        python-version: ${{matrix.python-version}}
+    - name: Setup MiniConda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        python-version: ${{ matrix.python-version }}
+        channels: conda-forge
+    - name: Install Conda Deps
+      shell: bash -l {0}
+      run: |
+        conda install readdy==2.0.9
     - name: Install Dependencies
       shell: bash -l {0}
       run: |
