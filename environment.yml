@@ -1,0 +1,6 @@
+name: anaconda-client-env
+channels:
+  - conda-forge
+dependencies:
+  - readdy==2.0.9
+  - numpy>=1.20

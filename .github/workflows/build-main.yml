@@ -20,16 +20,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup MiniConda
+    - name: Install Conda Deps
       uses: conda-incubator/setup-miniconda@v2
       with:
         auto-update-conda: true
         python-version: ${{ matrix.python-version }}
-        channels: conda-forge
-    - name: Install Conda Deps
-      shell: bash -l {0}
-      run: |
-        conda install readdy==2.0.9
+        activate-environment: anaconda-client-env
+        environment-file: ./environment.yml
     - name: Install Dependencies
       shell: bash -l {0}
       run: |
