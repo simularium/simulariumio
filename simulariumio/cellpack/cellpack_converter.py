@@ -258,7 +258,11 @@ class CellpackConverter(TrajectoryConverter):
                 url=agent_display_data["url"],
             )
             if "coordsystem" in ingredient_data:
-                handedness = (HAND_TYPE.LEFT if ingredient_data["coordsystem"] == "left" else HAND_TYPE.RIGHT)
+                handedness = (
+                    HAND_TYPE.LEFT
+                    if ingredient_data["coordsystem"] == "left"
+                    else HAND_TYPE.RIGHT
+                )
             if len(ingredient_results_data["results"]) > 0:
                 for j in range(len(ingredient_results_data["results"])):
                     CellpackConverter._unpack_positions(

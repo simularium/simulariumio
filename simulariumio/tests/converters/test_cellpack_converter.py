@@ -103,7 +103,7 @@ def test_camera_setting(box_size, expected_box_size):
                 4.95,  # 50 shifted by 0.5 and scaled down by 0.1
                 1.5707963267948966,
                 0.0,
-                -1.5707963267948966,  # test data is coming in left handed, so should be negative Z
+                -1.5707963267948966,  # test data is left handed, so should be negative Z
                 10.0,
                 0.0,
             ],
