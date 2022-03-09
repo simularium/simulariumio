@@ -52,6 +52,36 @@ def test_typeMapping(typeMapping, expected_typeMapping):
 
 
 @pytest.mark.parametrize(
+    "camera_settings, expected_camera_settings",
+    [
+        (
+            results["trajectoryInfo"]["cameraDefault"],
+            {
+                "position": {
+                    "x": 10.0,
+                    "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                    "z": 100.0,
+                },
+                "lookAtPosition": {
+                    "x": 10.0,
+                    "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                    "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                },
+                "upVector": {
+                    "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                    "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                    "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                },
+                "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+            },
+        )
+    ],
+)
+def test_camera_setting(camera_settings, expected_camera_settings):
+    assert camera_settings == expected_camera_settings
+
+
+@pytest.mark.parametrize(
     "bundleData, expected_bundleData_data",
     [
         (
@@ -132,8 +162,11 @@ def test_get_ingredient_display_data(example_PDB, example_OBJ, example_FIBER):
         DISPLAY_TYPE.FIBER, example_FIBER, "url/"
     )
     pdb_display_data = {"display_type": DISPLAY_TYPE.PDB, "url": "1ysx"}
-    obj_display_data = {"display_type": DISPLAY_TYPE.OBJ, "url": "url/Bacteria_Rad25_1_4.obj"}
-    fiber_display_data = {"display_type": DISPLAY_TYPE.FIBER, "url": "" }
+    obj_display_data = {
+        "display_type": DISPLAY_TYPE.OBJ,
+        "url": "url/Bacteria_Rad25_1_4.obj",
+    }
+    fiber_display_data = {"display_type": DISPLAY_TYPE.FIBER, "url": ""}
 
     assert result_pdb == pdb_display_data
     assert result_obj == obj_display_data
