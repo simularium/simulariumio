@@ -93,9 +93,9 @@ def test_camera_setting(camera_settings, expected_camera_settings):
                 25.0,  # 750 shifted by the bounding box and scaled down by 0.1
                 25.0,
                 4.95,  # 50 shifted by 0.5 and scaled down by 0.1
-                1.1496245959205158,
-                0.17371416926080796,
-                1.4795316553717273,
+                1.5707963267948966,
+                0.0,
+                -1.5707963267948966, # test data is coming in left handed, so should be negative Z
                 10.0,
                 0.0,
             ],
