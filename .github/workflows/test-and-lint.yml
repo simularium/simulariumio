@@ -3,14 +3,14 @@ name: Test and Lint
 on: pull_request
 
 jobs:
-  install: 
+  install-conda-deps: 
     uses: ./.github/workflows/install-conda-deps.yml
     with:
       python-version: "3.9"
       runs-on: "ubuntu-latest"
   test:
     runs-on: ${{ matrix.os }}
-    needs: install
+    needs: install-conda-deps
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
@@ -33,7 +33,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-
+    need: install-conda-deps
     steps:
     - uses: actions/checkout@v1
     - name: Setup and Install Conda Deps
