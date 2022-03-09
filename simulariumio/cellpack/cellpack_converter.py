@@ -65,7 +65,7 @@ class CellpackConverter(TrajectoryConverter):
         ]
 
     @staticmethod
-    def get_euler_from_matrix(data_in, handedness):
+    def _get_euler_from_matrix(data_in, handedness):
         rotation_matrix = [data_in[0][0:3], data_in[1][0:3], data_in[2][0:3]]
         if handedness == HAND_TYPE.LEFT:
             euler = R.from_matrix(rotation_matrix).as_euler("ZYX", degrees=False)
@@ -74,7 +74,7 @@ class CellpackConverter(TrajectoryConverter):
             return R.from_matrix(rotation_matrix).as_euler("XYZ", degrees=False)
 
     @staticmethod
-    def get_euler_from_quat(data_in, handedness):
+    def _get_euler_from_quat(data_in, handedness):
         if handedness == HAND_TYPE.LEFT:
             euler = R.from_quat(data_in).as_euler("ZYX", degrees=False)
             return [euler[0], euler[1], -euler[2]]
@@ -82,18 +82,18 @@ class CellpackConverter(TrajectoryConverter):
             return R.from_quat(data_in).as_euler("XYZ", degrees=False)
 
     @staticmethod
-    def is_matrix(data_in):
+    def _is_matrix(data_in):
         if isinstance(data_in[0], list):
             return True
         else:
             return False
 
     @staticmethod
-    def get_euler(data_in, handedness) -> np.array:
-        if CellpackConverter.is_matrix(data_in):
-            return CellpackConverter.get_euler_from_matrix(data_in, handedness)
+    def _get_euler(data_in, handedness) -> np.array:
+        if CellpackConverter._is_matrix(data_in):
+            return CellpackConverter._get_euler_from_matrix(data_in, handedness)
         else:
-            return CellpackConverter.get_euler_from_quat(data_in, handedness)
+            return CellpackConverter._get_euler_from_quat(data_in, handedness)
 
     @staticmethod
     def _unpack_curve(
@@ -149,7 +149,7 @@ class CellpackConverter(TrajectoryConverter):
             (position[1] + offset[1] - box_center[1]) * scale_factor,
             (position[2] + offset[2] - box_center[2]) * scale_factor,
         ]
-        rotation = CellpackConverter.get_euler(data["results"][index][1], handedness)
+        rotation = CellpackConverter._get_euler(data["results"][index][1], handedness)
         result.rotations[time_step_index][agent_id] = rotation
         result.viz_types[time_step_index][agent_id] = 1000
         result.n_agents[time_step_index] += 1

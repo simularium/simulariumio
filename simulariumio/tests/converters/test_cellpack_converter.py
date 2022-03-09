@@ -6,7 +6,7 @@ import pytest
 from simulariumio.cellpack import (
     CellpackConverter,
     HAND_TYPE,
-    CellpackData,
+    CellpackData
 )
 from simulariumio import InputFileData, UnitData
 from simulariumio.constants import (
@@ -84,7 +84,7 @@ def test_camera_setting(camera_settings, expected_camera_settings):
     "box_size, expected_box_size",
     [(results["trajectoryInfo"]["size"], {"x": 100.0, "y": 100.0, "z": 0.1})],
 )
-def test_camera_setting(box_size, expected_box_size):
+def test_box_size(box_size, expected_box_size):
     # input data box was 1000, 1000, 10
     assert box_size == expected_box_size
 
@@ -102,8 +102,8 @@ def test_camera_setting(box_size, expected_box_size):
                 25.0,
                 4.95,  # 50 shifted by 0.5 and scaled down by 0.1
                 1.5707963267948966,
-                0.0,
-                -1.5707963267948966,  # test data is left handed, so should be negative Z
+                0.6435011087932847,
+                -1.5707963267948966,  # test data is left handed, negative Z
                 10.0,
                 0.0,
             ],
@@ -179,3 +179,34 @@ def test_get_ingredient_display_data(example_PDB, example_OBJ, example_FIBER):
     assert result_pdb == pdb_display_data
     assert result_obj == obj_display_data
     assert result_fiber == fiber_display_data
+
+
+@pytest.mark.parametrize(
+    "quat, matrix",
+    [
+        (
+            [0.1464466, 0.3535534, 0.3535534, 0.8535534],
+            [
+                [0.5000000, -0.5000000, 0.7071068, 0],
+                [0.7071068, 0.7071068, 0.0000000, 0],
+                [-0.5000000, 0.5000000, 0.7071068, 0],
+                [0, 0, 0, 1],
+            ],
+        )
+    ],
+)
+def test_get_rotation(quat, matrix):
+    # both represent euler angles of [0, 45deg, 45deg]
+    from_quat_left = CellpackConverter._get_euler(quat, HAND_TYPE.LEFT)
+    from_quat_right = CellpackConverter._get_euler(quat, HAND_TYPE.RIGHT)
+    from_matrix_left = CellpackConverter._get_euler(matrix, HAND_TYPE.LEFT)
+    from_matrix_right = CellpackConverter._get_euler(matrix, HAND_TYPE.RIGHT)
+
+    assert round(from_quat_right[0], 2) == round(from_matrix_right[0], 2)
+    assert round(from_quat_right[1], 2) == round(from_matrix_right[1], 2)
+    assert round(from_quat_right[2], 2) == round(from_matrix_right[2], 2) 
+
+    assert round(from_quat_left[0], 2) == round(from_matrix_left[0], 2)
+    assert round(from_quat_left[1], 2) == round(from_matrix_left[1], 2)
+    assert round(from_quat_left[2], 2) == round(from_matrix_left[2], 2)
+
