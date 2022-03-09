@@ -32,7 +32,7 @@ results = converter._read_trajectory_data(converter._data)
 
 
 @pytest.mark.parametrize(
-    "typeMapping, expected_data",
+    "typeMapping, expected_typeMapping",
     [
         (
             results["trajectoryInfo"]["typeMapping"],
@@ -47,5 +47,30 @@ results = converter._read_trajectory_data(converter._data)
         )
     ],
 )
-def test_cellpack_converter(typeMapping, expected_data):
-    assert expected_data == typeMapping
+def test_typeMapping(typeMapping, expected_typeMapping):
+    assert expected_typeMapping == typeMapping
+
+
+@pytest.mark.parametrize(
+    "bundleData, expected_bundleData_data",
+    [
+        (
+            results["spatialData"]["bundleData"][0],
+            [
+                1000.0, # default type
+                0.0, # id
+                0.0, # number of subpoints
+                25.0, # 750 shifted by the bounding box and scaled down by 0.1
+                25.0,
+                4.95, # 50 shifted by 0.5 and scaled down by 0.1
+                1.1496245959205158,
+                0.17371416926080796,
+                1.4795316553717273,
+                10.0,
+                0.0,
+            ],
+        )
+    ],
+)
+def test_bundleData(bundleData, expected_bundleData_data):
+    assert expected_bundleData_data == bundleData["data"]

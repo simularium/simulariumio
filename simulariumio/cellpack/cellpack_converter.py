@@ -42,9 +42,9 @@ class CellpackConverter(TrajectoryConverter):
     def _get_box_center(recipe_data):
         options = recipe_data["options"]
         bb = options["boundingBox"]
-        x_pos = (bb[1][0] - bb[0][0]) / 2 + bb[0][0]
-        y_pos = (bb[1][1] - bb[0][1]) / 2 + bb[0][1]
-        z_pos = (bb[1][2] - bb[0][2]) / 2 + bb[0][2]
+        x_pos = (bb[1][0] - bb[0][0]) / 2.0 + bb[0][0]
+        y_pos = (bb[1][1] - bb[0][1]) / 2.0 + bb[0][1]
+        z_pos = (bb[1][2] - bb[0][2]) / 2.0 + bb[0][2]
         return [
             x_pos,
             y_pos,
