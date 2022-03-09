@@ -3,4 +3,4 @@ channels:
   - conda-forge
 dependencies:
   - readdy==2.0.9
-  - numpy
+  - numpy>=1.20
