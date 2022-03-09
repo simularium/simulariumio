@@ -82,6 +82,15 @@ def test_camera_setting(camera_settings, expected_camera_settings):
 
 
 @pytest.mark.parametrize(
+    "box_size, expected_box_size",
+    [(results["trajectoryInfo"]["size"], {"x": 100.0, "y": 100.0, "z": 0.1})],
+)
+def test_camera_setting(box_size, expected_box_size):
+    # input data box was 1000, 1000, 10
+    assert box_size == expected_box_size
+
+
+@pytest.mark.parametrize(
     "bundleData, expected_bundleData_data",
     [
         (
@@ -95,7 +104,7 @@ def test_camera_setting(camera_settings, expected_camera_settings):
                 4.95,  # 50 shifted by 0.5 and scaled down by 0.1
                 1.5707963267948966,
                 0.0,
-                -1.5707963267948966, # test data is coming in left handed, so should be negative Z
+                -1.5707963267948966,  # test data is coming in left handed, so should be negative Z
                 10.0,
                 0.0,
             ],
