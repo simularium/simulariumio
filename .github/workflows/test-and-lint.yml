@@ -33,7 +33,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    need: install-conda-deps
+    needs: install-conda-deps
     steps:
     - uses: actions/checkout@v1
     - name: Setup and Install Conda Deps
