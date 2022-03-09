@@ -1,0 +1,46 @@
+{
+    "recipe": {
+        "name": "one_sphere",
+        "version": "1.0",
+        "setupfile": "/Users/meganriel-mehan/Dropbox/cellPack/one_sphere/jitter/results_seed_0.json"
+    },
+    "cytoplasme": {
+        "ingredients": {
+            "Sphere_radius_100": {
+                "compNum": 0,
+                "positions": [
+                    {
+                        "coords": [
+                            0,
+                            0,
+                            0
+                        ]
+                    }
+                ],
+                "radii": [
+                    {
+                        "radii": [
+                            100
+                        ]
+                    }
+                ],
+                "results": [
+                    [
+                        [
+                            542.0571580830845,
+                            725.8916750292964,
+                            50.0
+                        ],
+                        [
+                            0.44914089577298244,
+                            -0.3113421757457012,
+                            0.5984838064685093,
+                            0.5857948777013503
+                        ]
+                    ]
+                ],
+                "name": "Sphere_radius_100"
+            }
+        }
+    }
+}
