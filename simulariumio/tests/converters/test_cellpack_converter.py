@@ -97,8 +97,8 @@ def test_box_size(box_size, expected_box_size):
                 25.0,  # x: 750 shifted by the bounding box and scaled down by 0.1
                 25.0,  # y
                 4.95,  # z: 50 shifted by 0.5 and scaled down by 0.1
-                1.5707963267948966, # xrot
-                0.6435011087932847, # yrot
+                1.5707963267948966,  # xrot
+                0.6435011087932847,  # yrot
                 -1.5707963267948966,  # test data is left handed, negative Z
                 10.0,  # cr
                 0.0,  # number of subpoints
