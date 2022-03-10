@@ -93,15 +93,15 @@ def test_box_size(box_size, expected_box_size):
             [
                 1000.0,  # default type
                 0.0,  # id
-                0.0,  # number of subpoints
-                25.0,  # 750 shifted by the bounding box and scaled down by 0.1
-                25.0,
-                4.95,  # 50 shifted by 0.5 and scaled down by 0.1
-                1.5707963267948966,
-                0.6435011087932847,
+                0.0,  # type
+                25.0,  # x: 750 shifted by the bounding box and scaled down by 0.1
+                25.0,  # y
+                4.95,  # z: 50 shifted by 0.5 and scaled down by 0.1
+                1.5707963267948966, # xrot
+                0.6435011087932847, # yrot
                 -1.5707963267948966,  # test data is left handed, negative Z
-                10.0,
-                0.0,
+                10.0,  # cr
+                0.0,  # number of subpoints
             ],
         )
     ],
