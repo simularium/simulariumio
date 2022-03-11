@@ -34,7 +34,7 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
       * ex: "actA" is parsed as agent type "actA" with no state information
       * if no name is provided, the agent type ID, an integer number, is used for display
     * geometry - rendering information for each agent type (note: only the first 100,000 geometry files will be loaded)
-      * displayType - “SPHERE”, “CUBE”, “GIZMO”, “FIBER”, “PDB”, or “OBJ”
+      * displayType - “SPHERE”, “FIBER”, “PDB”, or “OBJ”
         * Default to “SPHERE” or “FIBER” depending on existence of subpoints
         * for PDB, can provide either ID or full URL
       * url (optional)- local path or web URL, web URLs are required for streaming or loading the trajectory by URL
