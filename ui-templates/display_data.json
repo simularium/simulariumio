@@ -6,20 +6,26 @@
             "name": {
                 "name": "Name",
                 "data_type": "text",
-                "description": "display name",
+                "validation": "",
+                "help": "",
+                "description": "Provide display name",
                 "required": true
             },
             "radius": {
                 "name": "Radius",
                 "data_type": "number",
-                "description": "scale of geometry or thickness of fiber",
-                "required": false
+                "validation": "",
+                "help": "",
+                "description": "Provide the scale for geometry or thickness of fiber",
+                "required": false,
+                "has_default": false
             },
             "display_type": {
                 "name": "Display type",
                 "data_type": "enum",
                 "description": "type of geometry",
                 "required": false,
+                "has_default": false,
                 "python::module": "simulariumio",
                 "python::object": "DISPLAY_TYPE",
                 "options": [
@@ -32,14 +38,20 @@
             "url": {
                 "name": "Geometry URL",
                 "data_type": "url",
+                "validation": "",
+                "help": "",
                 "description": "link to geometry file if display type is PDB or OBJ",
-                "required": false
+                "required": false,
+                "has_default": false
             },
             "color": {
                 "name": "Color",
                 "data_type": "color",
+                "validation": "",
+                "help": "",
                 "description": "color",
-                "required": false
+                "required": false,
+                "has_default": false
             }
         }
     }

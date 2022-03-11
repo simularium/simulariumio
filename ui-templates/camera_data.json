@@ -7,25 +7,31 @@
                 "name": "Position",
                 "data_type": "coordinates_xyz",
                 "description": "position of the camera",
-                "required": false
+                "required": false,
+                "has_default": false
             },
             "look_at_position": {
                 "name": "Look at position",
                 "data_type": "coordinates_xyz",
                 "description": "target position to look at",
-                "required": false
+                "required": false,
+                "has_default": false
             },
             "up_vector": {
                 "name": "Up vector",
                 "data_type": "coordinates_xyz",
                 "description": "up direction",
-                "required": false
+                "required": false,
+                "has_default": false
             },
             "fov_degrees": {
                 "name": "FOV (degrees)",
                 "data_type": "number",
+                "validation": "",
+                "help": "",
                 "description": "field of view in degrees",
-                "required": false
+                "required": false,
+                "has_default": false
             }
         }
     }

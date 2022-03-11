@@ -6,34 +6,46 @@
             "meta_data": {
                 "name": "Metadata",
                 "data_type": "meta_data",
-                "description": "metadata for this trajectory",
-                "required": false
+                "description": "Provide metadata for this trajectory",
+                "required": false,
+                "has_default": false
             },
             "display_data": {
                 "name": "Display data",
-                "data_type": "list",
-                "description": "display information for each particle type from Smoldyn",
+                "data_type": "dict",
+                "description": "Provide display information for each particle type from Smoldyn",
                 "required": false,
+                "has_default": false,
                 "length": 1,
                 "extendible": true,
-                "list_item": {
-                    "key_name": "Smoldyn particle name",
-                    "key_data_type": "text", 
-                    "value_name": "Display data",
-                    "value_data_type": "display_data"
+                "key_item": {
+                    "name": "Particle name",
+                    "data_type": "text",
+                    "validation": "\\w{1,60}",
+                    "help": "Please enter text",
+                    "description": "Provide the name of the particle in Smoldyn",
+                    "required": true
+                },
+                "value_item": {
+                    "name": "Particle display data",
+                    "data_type": "display_data",
+                    "description": "Provide information about how to display this particle",
+                    "required": true
                 }
             },
             "time_units": {
                 "name": "Time units",
                 "data_type": "unit_data",
-                "description": "units for time values",
-                "required": false
+                "description": "Provide units for time values",
+                "required": false,
+                "has_default": false
             },
             "spatial_units": {
                 "name": "Spatial units",
                 "data_type": "unit_data",
-                "description": "units for 3D coordinates",
-                "required": false
+                "description": "Provide units for 3D coordinates",
+                "required": false,
+                "has_default": false
             }
         }
     }

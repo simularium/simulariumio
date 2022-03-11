@@ -8,11 +8,15 @@ Different types of data need to be collected. Some of the data types are "base" 
 Each custom data type has:
 * `python::module` - Python module
 * `python::object` - Python class for the object to populate
-* `parameters` - a mapping of names of members of the Python class to information about how to set them. For each:
+* `parameters` - a dict of names of members of the Python class mapped to information about how to set them. For each:
   * `name` - the name to display next to the UI Input element
   * `data_type` - the data type to collect, either a base or custom data type
-  * `description` - a description of this field to help the user
+  * `validation` - a regex to check the data against
+  * `help` - additional information to help the user if the value doesn't match validation
+  * `description` - instructions for the user about how to fill this field
   * `required` - is this field required in order to submit?
+  * `has_default` - if this field isn't provided, is there a default value to use? (otherwise omit it) (only if required=false)
+  * `default` - default value to use for this field (only if required=false and has_default=true)
   * some types also have additional parameter information
 
 ### Main types
@@ -26,9 +30,6 @@ Each custom data type has:
 * `url`
 * `color`
 
-* `list_item`
-
-
 ### Custom types
 
 * `meta_data`
@@ -36,12 +37,12 @@ Each custom data type has:
   * parameters are indices of items in a list to be provided as a single argument to `numpy.array()`
 * `camera_data`
 * `model_meta_data`
-* `mapping`
+* `dict` - collect an extensible list of information and use it to create a dict
   * requires additional parameter information:
-    * `key_name` - the name to display next to the UI Input element for the key
-    * `key_data_type` - name of the data type to collect for the key
-    * `value_name` - the name to display next to the UI Input element for the value
-    * `value_data_type` - name of the data type to collect for the value
+    * `length` - number of items to start with
+    * `extendible`- can the user add more items?
+    * `key_item` - requires the same fields as `parameters` items
+    * `value_item` - requires the same fields as `parameters` items
 * `display_data`
 * `enum`
   * requires additional parameter information:

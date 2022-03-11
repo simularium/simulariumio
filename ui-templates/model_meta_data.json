@@ -6,56 +6,83 @@
             "title": {
                 "name": "Title",
                 "data_type": "text",
-                "description": "title",
-                "required": false
+                "validation": "",
+                "help": "",
+                "description": "Provide the title of the model",
+                "required": false,
+                "has_default": false
             },
             "version": {
                 "name": "Version",
                 "data_type": "text",
-                "description": "version",
-                "required": false
+                "validation": "",
+                "help": "",
+                "description": "Provide the model version",
+                "required": false,
+                "has_default": false
             },
             "authors": {
                 "name": "Authors",
                 "data_type": "text",
-                "description": "author(s)",
-                "required": false
+                "validation": "",
+                "help": "",
+                "description": "Provide the model author(s)",
+                "required": false,
+                "has_default": false
             },
             "description": {
                 "name": "Trajectory title",
                 "data_type": "text",
-                "description": "description",
-                "required": false
+                "validation": "",
+                "help": "",
+                "description": "Provide a description of the model",
+                "required": false,
+                "has_default": false
             },
             "doi": {
                 "name": "DOI",
                 "data_type": "text",
-                "description": "doi for the publication using this model, either ID or url",
-                "required": false
+                "validation": "",
+                "help": "",
+                "description": "Provide the doi for a publication using this model, either as ID or URL",
+                "required": false,
+                "has_default": false
             },
             "source_code_url": {
                 "name": "Source code URL",
                 "data_type": "url",
-                "description": "link to the repository of source code",
-                "required": false
+                "validation": "",
+                "help": "",
+                "description": "Provide a link to the repository of source code",
+                "required": false,
+                "has_default": false
             },
             "source_code_license_url": {
                 "name": "Source code license URL",
                 "data_type": "url",
-                "description": "link to the license for the source code",
-                "required": false
+                "validation": "",
+                "help": "",
+                "description": "Provide a link to the license for the source code",
+                "required": false,
+                "has_default": false
             },
             "input_data_url": {
                 "name": "Input data URL",
                 "data_type": "url",
-                "description": "link to model configuration or parameter files",
-                "required": false
+                "validation": "",
+                "help": "",
+                "description": "Provide a link to model configuration or parameter files",
+                "required": false,
+                "has_default": false
             },
             "raw_output_data_url": {
                 "name": "Raw output data URL",
                 "data_type": "url",
-                "description": "link to raw outputs from the source code",
-                "required": false
+                "validation": "",
+                "help": "",
+                "description": "Provide a link to raw outputs from the source code",
+                "required": false,
+                "has_default": false
             }
         }
     }

@@ -6,19 +6,25 @@
             "0": {
                 "name": "X",
                 "data_type": "number",
-                "description": "X dimension",
+                "validation": "",
+                "help": "",
+                "description": "Provide the X dimension",
                 "required": true
             },
             "1": {
                 "name": "Y",
                 "data_type": "number",
-                "description": "Y dimension",
+                "validation": "",
+                "help": "",
+                "description": "Provide the Y dimension",
                 "required": true
             },
             "2": {
                 "name": "Z",
                 "data_type": "number",
-                "description": "Z dimension",
+                "validation": "",
+                "help": "",
+                "description": "Provide the Z dimension",
                 "required": true
             }
         }
