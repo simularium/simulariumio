@@ -8,6 +8,7 @@ from simulariumio import InputFileData, UnitData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     DISPLAY_TYPE,
+    VIZ_TYPE,
 )
 
 
@@ -91,7 +92,7 @@ def test_box_size(box_size, expected_box_size):
         (
             results["spatialData"]["bundleData"][0],
             [
-                1000.0,  # default type
+                VIZ_TYPE.DEFAULT,
                 0.0,  # id
                 0.0,  # type
                 25.0,  # x: 750 shifted by the bounding box and scaled down by 0.1

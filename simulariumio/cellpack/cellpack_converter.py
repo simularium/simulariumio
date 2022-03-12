@@ -7,7 +7,7 @@ import numpy as np
 import json
 from scipy.spatial.transform import Rotation as R
 
-from ..constants import DISPLAY_TYPE
+from ..constants import DISPLAY_TYPE, VIZ_TYPE
 from ..data_objects.camera_data import CameraData
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData
@@ -20,6 +20,12 @@ from cellpack.autopack.iotools_simple import RecipeLoader
 log = logging.getLogger(__name__)
 
 ###############################################################################
+
+
+DEFAULT_CELLPACK_URL = (
+    "https://raw.githubusercontent.com/mesoscope/cellPACK_data"
+    "/master/cellPACK_database_1.1.0/"
+)
 
 
 class CellpackConverter(TrajectoryConverter):
@@ -109,15 +115,13 @@ class CellpackConverter(TrajectoryConverter):
         curve = "curve" + str(index)
         result.positions[time_step_index][agent_id] = [0, 0, 0]
         result.rotations[time_step_index][agent_id] = [0, 0, 0]
-        result.viz_types[time_step_index][agent_id] = 1001
+        result.viz_types[time_step_index][agent_id] = VIZ_TYPE.FIBER
         result.n_agents[time_step_index] += 1
         result.types[time_step_index].append(ingredient_name)
         result.unique_ids[time_step_index][agent_id] = agent_id
         r = (
-            data["encapsulatingRadius"] * scale_factor
-            if ("encapsulatingRadius" in data)
-            else 1
-        )
+            data["encapsulatingRadius"] if ("encapsulatingRadius" in data) else 1
+        ) * scale_factor
         result.radii[time_step_index][agent_id] = r
         result.n_subpoints[time_step_index][agent_id] = len(data[curve])
         scaled_control_points = (
@@ -151,7 +155,7 @@ class CellpackConverter(TrajectoryConverter):
         ]
         rotation = CellpackConverter._get_euler(data["results"][index][1], handedness)
         result.rotations[time_step_index][agent_id] = rotation
-        result.viz_types[time_step_index][agent_id] = 1000
+        result.viz_types[time_step_index][agent_id] = VIZ_TYPE.DEFAULT
         result.n_agents[time_step_index] += 1
         result.types[time_step_index].append(ingredient_name)
         result.unique_ids[time_step_index][agent_id] = agent_id
@@ -166,7 +170,7 @@ class CellpackConverter(TrajectoryConverter):
             )
 
         else:
-            result.radii[time_step_index][agent_id] = 1
+            result.radii[time_step_index][agent_id] = scale_factor
 
         result.n_subpoints[time_step_index][agent_id] = 0
 
@@ -201,9 +205,11 @@ class CellpackConverter(TrajectoryConverter):
             if meshType == "file":
                 file_path = os.path.basename(ingredient_data["meshFile"])
                 file_name, _ = os.path.splitext(file_path)
+                if geometry_url is None:
+                    geometry_url = f"{DEFAULT_CELLPACK_URL}geometries/"
                 return {
                     "display_type": DISPLAY_TYPE.OBJ,
-                    "url": f"{geometry_url}{file_name}.obj",  # noqa: E501
+                    "url": f"{geometry_url}{file_name}.obj",
                 }
             elif meshType == "raw":
                 # need to build a mesh from the vertices, faces, indexes dictionary
@@ -216,7 +222,7 @@ class CellpackConverter(TrajectoryConverter):
             elif "pdb" in ingredient_data:
                 pdb_file_name = ingredient_data["pdb"]
             if ".pdb" in pdb_file_name:
-                url = f"https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/other/{pdb_file_name}"  # noqa: E501
+                url = f"{DEFAULT_CELLPACK_URL}/other/{pdb_file_name}"
             else:
                 url = pdb_file_name
             return {
