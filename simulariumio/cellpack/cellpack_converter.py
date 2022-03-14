@@ -120,8 +120,10 @@ class CellpackConverter(TrajectoryConverter):
         result.types[time_step_index].append(ingredient_name)
         result.unique_ids[time_step_index][agent_id] = agent_id
         r = (
-            data["encapsulatingRadius"] * scale_factor if ("encapsulatingRadius" in data) else 1
-        ) 
+            data["encapsulatingRadius"] * scale_factor
+            if ("encapsulatingRadius" in data)
+            else 1
+        )
         result.radii[time_step_index][agent_id] = r
         result.n_subpoints[time_step_index][agent_id] = len(data[curve])
         scaled_control_points = (
@@ -196,13 +198,15 @@ class CellpackConverter(TrajectoryConverter):
 
     @staticmethod
     def _get_ingredient_display_data(geo_type, ingredient_data, geometry_url):
-        color=""
-        display_type=DISPLAY_TYPE.SPHERE
-        url=""
+        color = ""
+        display_type = DISPLAY_TYPE.SPHERE
+        url = ""
 
         if "color" in ingredient_data:
-            color='#%02x%02x%02x' % tuple( [ int(x * 255) for x in ingredient_data["color"] ] )
-        
+            color = "#%02x%02x%02x" % tuple(
+                [int(x * 255) for x in ingredient_data["color"]]
+            )
+
         if geo_type == DISPLAY_TYPE.OBJ and "meshFile" in ingredient_data:
             meshType = (
                 ingredient_data["meshType"]
@@ -215,9 +219,9 @@ class CellpackConverter(TrajectoryConverter):
                 if geometry_url is None:
                     url = f"{DEFAULT_CELLPACK_URL}geometries/"
                 else:
-                    url=f"{geometry_url}{file_name}.obj"  # noqa: E501
-                display_type=DISPLAY_TYPE.OBJ
-                
+                    url = f"{geometry_url}{file_name}.obj"  # noqa: E501
+                display_type = DISPLAY_TYPE.OBJ
+
             elif meshType == "raw":
                 # need to build a mesh from the vertices, faces, indexes dictionary
                 log.info(meshType, ingredient_data["meshFile"].keys())
@@ -231,22 +235,18 @@ class CellpackConverter(TrajectoryConverter):
                 url = f"{DEFAULT_CELLPACK_URL}other/{pdb_file_name}"
             else:
                 url = pdb_file_name
-            
-            display_type=DISPLAY_TYPE.PDB
-            url=url
-            
+
+            display_type = DISPLAY_TYPE.PDB
+            url = url
+
         else:
             display_type = (
                 DISPLAY_TYPE.FIBER
                 if ingredient_data["Type"] == "Grow"
                 else DISPLAY_TYPE.SPHERE
             )
-            url=""
-        return {
-            "display_type": display_type,
-            "color": color,
-            "url": url
-        }
+            url = ""
+        return {"display_type": display_type, "color": color, "url": url}
 
     @staticmethod
     def _process_ingredients(
@@ -275,7 +275,7 @@ class CellpackConverter(TrajectoryConverter):
                     name=ingredient_key,
                     display_type=agent_display_data["display_type"],
                     url=agent_display_data["url"],
-                    color=agent_display_data["color"]
+                    color=agent_display_data["color"],
                 )
             else:
                 new_name = display_data[ingredient_key].name

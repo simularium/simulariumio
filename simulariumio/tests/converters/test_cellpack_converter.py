@@ -47,6 +47,7 @@ results = converter._read_trajectory_data(converter._data)
 def test_typeMapping(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
 
+
 data_with_display_data = CellpackData(
     results_file=InputFileData(
         file_path="simulariumio/tests/data/cellpack/mock_results.json"
@@ -57,13 +58,10 @@ data_with_display_data = CellpackData(
     spatial_units=UnitData("nm"),  # nanometers
     geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/",  # noqa: E501
     display_data={
-                "Sphere_radius_100":  DisplayData(
-                    name="New_name",
-                    display_type=DISPLAY_TYPE.PDB,
-                    url="pdbid",
-                    color="#ff4741"
-                ),
-            },
+        "Sphere_radius_100": DisplayData(
+            name="New_name", display_type=DISPLAY_TYPE.PDB, url="pdbid", color="#ff4741"
+        ),
+    },
 )
 
 converter_display_data = CellpackConverter(data_with_display_data)
@@ -80,7 +78,7 @@ results_display_data = converter._read_trajectory_data(converter_display_data._d
                     "geometry": {
                         "displayType": "PDB",
                         "color": "#ff4741",
-                        "url": "pdbid"
+                        "url": "pdbid",
                     },
                     "name": "New_name",
                 },
@@ -90,7 +88,6 @@ results_display_data = converter._read_trajectory_data(converter_display_data._d
 )
 def test_typeMapping_with_input_display_data(typeMapping_dd, expected_typeMapping_dd):
     assert typeMapping_dd == expected_typeMapping_dd
-
 
 
 @pytest.mark.parametrize(
@@ -212,12 +209,17 @@ def test_get_ingredient_display_data(example_PDB, example_OBJ, example_FIBER):
     result_fiber = CellpackConverter._get_ingredient_display_data(
         DISPLAY_TYPE.FIBER, example_FIBER, "url/"
     )
-    pdb_display_data = {"color": "","display_type": DISPLAY_TYPE.PDB, "url": "1ysx"}
-    obj_display_data = {"color": "#c73434",
+    pdb_display_data = {"color": "", "display_type": DISPLAY_TYPE.PDB, "url": "1ysx"}
+    obj_display_data = {
+        "color": "#c73434",
         "display_type": DISPLAY_TYPE.OBJ,
         "url": "url/Bacteria_Rad25_1_4.obj",
     }
-    fiber_display_data = {"color": "#ff7e50","display_type": DISPLAY_TYPE.FIBER, "url": ""}
+    fiber_display_data = {
+        "color": "#ff7e50",
+        "display_type": DISPLAY_TYPE.FIBER,
+        "url": "",
+    }
 
     assert result_pdb == pdb_display_data
     assert result_obj == obj_display_data
