@@ -192,6 +192,13 @@ class CellpackConverter(TrajectoryConverter):
 
     @staticmethod
     def _get_ingredient_display_data(geo_type, ingredient_data, geometry_url):
+        color=""
+        display_type=DISPLAY_TYPE.SPHERE
+        url=""
+
+        if "color" in ingredient_data:
+            color='#%02x%02x%02x' % tuple( [ int(x * 255) for x in ingredient_data["color"] ] )
+        
         if geo_type == DISPLAY_TYPE.OBJ and "meshFile" in ingredient_data:
             meshType = (
                 ingredient_data["meshType"]
@@ -201,14 +208,13 @@ class CellpackConverter(TrajectoryConverter):
             if meshType == "file":
                 file_path = os.path.basename(ingredient_data["meshFile"])
                 file_name, _ = os.path.splitext(file_path)
-                return {
-                    "display_type": DISPLAY_TYPE.OBJ,
-                    "url": f"{geometry_url}{file_name}.obj",  # noqa: E501
-                }
+                
+                display_type=DISPLAY_TYPE.OBJ
+                url=f"{geometry_url}{file_name}.obj"  # noqa: E501
+                
             elif meshType == "raw":
                 # need to build a mesh from the vertices, faces, indexes dictionary
                 log.info(meshType, ingredient_data["meshFile"].keys())
-                return {"display_type": DISPLAY_TYPE.SPHERE, "url": ""}
         elif geo_type == DISPLAY_TYPE.PDB:
             pdb_file_name = ""
             if "source" in ingredient_data:
@@ -219,17 +225,22 @@ class CellpackConverter(TrajectoryConverter):
                 url = f"https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/other/{pdb_file_name}"  # noqa: E501
             else:
                 url = pdb_file_name
-            return {
-                "display_type": DISPLAY_TYPE.PDB,
-                "url": url,
-            }
+            
+            display_type=DISPLAY_TYPE.PDB
+            url=url
+            
         else:
             display_type = (
                 DISPLAY_TYPE.FIBER
                 if ingredient_data["Type"] == "Grow"
                 else DISPLAY_TYPE.SPHERE
             )
-            return {"display_type": display_type, "url": ""}
+            url=""
+        return {
+            "display_type": display_type,
+            "color": color,
+            "url": url
+        }
 
     @staticmethod
     def _process_ingredients(
@@ -250,15 +261,20 @@ class CellpackConverter(TrajectoryConverter):
             ingredient_data = ingredient["recipe_data"]
             ingredient_key = ingredient_data["name"]
             ingredient_results_data = ingredient["results"]
-            agent_display_data = CellpackConverter._get_ingredient_display_data(
-                geo_type, ingredient_data, geometry_url
-            )
             if ingredient_key not in display_data:
+                agent_display_data = CellpackConverter._get_ingredient_display_data(
+                    geo_type, ingredient_data, geometry_url
+                )
                 display_data[ingredient_key] = DisplayData(
                     name=ingredient_key,
                     display_type=agent_display_data["display_type"],
                     url=agent_display_data["url"],
+                    color=agent_display_data["color"]
                 )
+            else:
+                new_name = display_data[ingredient_key].name
+                display_data[new_name] = display_data[ingredient_key]
+                ingredient_key = new_name
             if "coordsystem" in ingredient_data:
                 handedness = (
                     HAND_TYPE.LEFT
