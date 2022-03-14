@@ -240,10 +240,11 @@ class CellpackConverter(TrajectoryConverter):
         geo_type: DISPLAY_TYPE,
         handedness: HAND_TYPE,
         geometry_url: str,
+        display_data,
     ) -> AgentData:
         dimensions = CellpackConverter._parse_dimensions(all_ingredients)
         spatial_data = AgentData.from_dimensions(dimensions)
-        display_data = {}
+        display_data = {} if display_data is None else display_data
         agent_id_counter = 0
         for ingredient in all_ingredients:
             ingredient_data = ingredient["recipe_data"]
@@ -252,11 +253,12 @@ class CellpackConverter(TrajectoryConverter):
             agent_display_data = CellpackConverter._get_ingredient_display_data(
                 geo_type, ingredient_data, geometry_url
             )
-            display_data[ingredient_key] = DisplayData(
-                name=ingredient_key,
-                display_type=agent_display_data["display_type"],
-                url=agent_display_data["url"],
-            )
+            if ingredient_key not in display_data:
+                display_data[ingredient_key] = DisplayData(
+                    name=ingredient_key,
+                    display_type=agent_display_data["display_type"],
+                    url=agent_display_data["url"],
+                )
             if "coordsystem" in ingredient_data:
                 handedness = (
                     HAND_TYPE.LEFT
@@ -329,6 +331,7 @@ class CellpackConverter(TrajectoryConverter):
             input_data.geometry_type,
             input_data.handedness,
             input_data.geometry_url,
+            input_data.display_data,
         )
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))
