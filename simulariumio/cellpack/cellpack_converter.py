@@ -222,7 +222,7 @@ class CellpackConverter(TrajectoryConverter):
             elif "pdb" in ingredient_data:
                 pdb_file_name = ingredient_data["pdb"]
             if ".pdb" in pdb_file_name:
-                url = f"{DEFAULT_CELLPACK_URL}/other/{pdb_file_name}"
+                url = f"{DEFAULT_CELLPACK_URL}other/{pdb_file_name}"
             else:
                 url = pdb_file_name
             return {
