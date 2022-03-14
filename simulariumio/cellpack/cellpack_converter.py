@@ -120,8 +120,8 @@ class CellpackConverter(TrajectoryConverter):
         result.types[time_step_index].append(ingredient_name)
         result.unique_ids[time_step_index][agent_id] = agent_id
         r = (
-            data["encapsulatingRadius"] if ("encapsulatingRadius" in data) else 1
-        ) * scale_factor
+            data["encapsulatingRadius"] * scale_factor if ("encapsulatingRadius" in data) else 1
+        ) 
         result.radii[time_step_index][agent_id] = r
         result.n_subpoints[time_step_index][agent_id] = len(data[curve])
         scaled_control_points = (
@@ -170,7 +170,7 @@ class CellpackConverter(TrajectoryConverter):
             )
 
         else:
-            result.radii[time_step_index][agent_id] = scale_factor
+            result.radii[time_step_index][agent_id] = 1
 
         result.n_subpoints[time_step_index][agent_id] = 0
 
