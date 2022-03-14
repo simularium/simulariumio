@@ -43,7 +43,7 @@ class CellpackData:
         spatial_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
         handedness: HAND_TYPE = HAND_TYPE.RIGHT,
-        geometry_url: str = "https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/geometries/",  # noqa: E501
+        geometry_url: str = None,
     ):
         """
         This object holds simulation trajectory outputs
@@ -55,8 +55,8 @@ class CellpackData:
             A InputFileData object containing the string path
             or string contents of the Cellpack results output txt file.
         recipe_file_path: str
-            A containing the string path
-            or of a Cellpack recipe that was used to
+            A InputFileData object containing the string path
+            or string contents of a Cellpack recipe that was used to
             produce the results_file. The recipe name must match in both
             files for the converter to run.
         meta_data: MetaData (optional)
@@ -64,11 +64,11 @@ class CellpackData:
             including box size, scale factor, and camera defaults
             NOTE: When passing in a scale_factor use the number relative to a normal
             cellPACK recipe, it will be scaled an additional 10% because of the
-            conversion from cellPACK to Simuarlarium.
+            conversion from cellPACK to Simularium.
         display_data: Dict[str, DisplayData] (optional)
             A dictionary containing any per agent/ingredient display overrides,
             Ie, if the ingredients are all going to be displayed as PDBs, except
-            for
+            for some.
         geometry_type: DISPLAY_TYPE
             The display type to use for the ingredients
         time_units: UnitData (optional)
@@ -81,6 +81,12 @@ class CellpackData:
         plots: List[Dict[str, Any]] (optional)
             An object containing plot data already
             in Simularium format
+        handedness: HAND_TYPE (optional)
+            The handedness of the data's coordinate system
+            Default: HAND_TYPE.RIGHT
+        geometry_url: str (optional)
+            The base URL for all geometry files
+            Default: https://raw.githubusercontent.com/mesoscope/cellPACK_data/master/cellPACK_database_1.1.0/geometries/  # noqa: E501
         """
         self.results_file = results_file
         self.recipe_file_path = recipe_file_path
