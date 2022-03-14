@@ -27,6 +27,7 @@ DEFAULT_CELLPACK_URL = (
     "/master/cellPACK_database_1.1.0/"
 )
 
+DEFAULT_RADIUS = 10
 
 class CellpackConverter(TrajectoryConverter):
     def __init__(self, input_data: CellpackData):
@@ -120,10 +121,10 @@ class CellpackConverter(TrajectoryConverter):
         result.types[time_step_index].append(ingredient_name)
         result.unique_ids[time_step_index][agent_id] = agent_id
         r = (
-            data["encapsulatingRadius"] * scale_factor
+            data["encapsulatingRadius"] 
             if ("encapsulatingRadius" in data)
-            else 1
-        )
+            else DEFAULT_RADIUS
+        ) * scale_factor
         result.radii[time_step_index][agent_id] = r
         result.n_subpoints[time_step_index][agent_id] = len(data[curve])
         scaled_control_points = (
@@ -172,7 +173,7 @@ class CellpackConverter(TrajectoryConverter):
             )
 
         else:
-            result.radii[time_step_index][agent_id] = 1
+            result.radii[time_step_index][agent_id] = DEFAULT_RADIUS * scale_factor
 
         result.n_subpoints[time_step_index][agent_id] = 0
 
