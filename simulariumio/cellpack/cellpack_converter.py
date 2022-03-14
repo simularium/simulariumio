@@ -267,7 +267,6 @@ class CellpackConverter(TrajectoryConverter):
             ingredient_data = ingredient["recipe_data"]
             ingredient_key = ingredient_data["name"]
             ingredient_results_data = ingredient["results"]
-            print( ingredient_data)
             if ingredient_key not in display_data:
                 agent_display_data = CellpackConverter._get_ingredient_display_data(
                     geo_type, ingredient_data, geometry_url
