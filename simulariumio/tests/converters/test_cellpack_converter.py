@@ -4,7 +4,7 @@
 import pytest
 
 from simulariumio.cellpack import CellpackConverter, HAND_TYPE, CellpackData
-from simulariumio import InputFileData, UnitData
+from simulariumio import InputFileData, UnitData, DisplayData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     DISPLAY_TYPE,
@@ -36,6 +36,7 @@ results = converter._read_trajectory_data(converter._data)
                 "0": {
                     "name": "Sphere_radius_100",
                     "geometry": {
+                        "color": "#7e7e7e",
                         "displayType": "SPHERE",
                     },
                 },
@@ -45,6 +46,51 @@ results = converter._read_trajectory_data(converter._data)
 )
 def test_typeMapping(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
+
+data_with_display_data = CellpackData(
+    results_file=InputFileData(
+        file_path="simulariumio/tests/data/cellpack/mock_results.json"
+    ),
+    geometry_type=DISPLAY_TYPE.SPHERE,
+    recipe_file_path="simulariumio/tests/data/cellpack/mock_recipe.json",  # noqa: E501
+    time_units=UnitData("ns"),  # nanoseconds
+    spatial_units=UnitData("nm"),  # nanometers
+    geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/",  # noqa: E501
+    display_data={
+                "Sphere_radius_100":  DisplayData(
+                    name="New_name",
+                    display_type=DISPLAY_TYPE.PDB,
+                    url="pdbid",
+                    color="#ff4741"
+                ),
+            },
+)
+
+converter_display_data = CellpackConverter(data_with_display_data)
+results_display_data = converter._read_trajectory_data(converter_display_data._data)
+
+
+@pytest.mark.parametrize(
+    "typeMapping_dd, expected_typeMapping_dd",
+    [
+        (
+            results_display_data["trajectoryInfo"]["typeMapping"],
+            {
+                "0": {
+                    "geometry": {
+                        "displayType": "PDB",
+                        "color": "#ff4741",
+                        "url": "pdbid"
+                    },
+                    "name": "New_name",
+                },
+            },
+        )
+    ],
+)
+def test_typeMapping_with_input_display_data(typeMapping_dd, expected_typeMapping_dd):
+    assert typeMapping_dd == expected_typeMapping_dd
+
 
 
 @pytest.mark.parametrize(
@@ -166,12 +212,12 @@ def test_get_ingredient_display_data(example_PDB, example_OBJ, example_FIBER):
     result_fiber = CellpackConverter._get_ingredient_display_data(
         DISPLAY_TYPE.FIBER, example_FIBER, "url/"
     )
-    pdb_display_data = {"display_type": DISPLAY_TYPE.PDB, "url": "1ysx"}
-    obj_display_data = {
+    pdb_display_data = {"color": "","display_type": DISPLAY_TYPE.PDB, "url": "1ysx"}
+    obj_display_data = {"color": "#c73434",
         "display_type": DISPLAY_TYPE.OBJ,
         "url": "url/Bacteria_Rad25_1_4.obj",
     }
-    fiber_display_data = {"display_type": DISPLAY_TYPE.FIBER, "url": ""}
+    fiber_display_data = {"color": "#ff7e50","display_type": DISPLAY_TYPE.FIBER, "url": ""}
 
     assert result_pdb == pdb_display_data
     assert result_obj == obj_display_data
