@@ -147,7 +147,7 @@ class CellpackConverter(TrajectoryConverter):
     ):
         position = data["results"][index][0]
         offset = np.array([0, 0, 0])
-        # TODO: use offset from data
+        # TODO: use comp id to compute the offset for surface agents
         if comp_id <= 0:
             offset = offset * -1
         result.positions[time_step_index][agent_id] = [
@@ -267,6 +267,7 @@ class CellpackConverter(TrajectoryConverter):
             ingredient_data = ingredient["recipe_data"]
             ingredient_key = ingredient_data["name"]
             ingredient_results_data = ingredient["results"]
+            print( ingredient_data)
             if ingredient_key not in display_data:
                 agent_display_data = CellpackConverter._get_ingredient_display_data(
                     geo_type, ingredient_data, geometry_url
