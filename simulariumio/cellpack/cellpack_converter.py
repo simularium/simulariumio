@@ -27,7 +27,9 @@ DEFAULT_CELLPACK_URL = (
     "/master/cellPACK_database_1.1.0/"
 )
 
+# NOTE: Default scale is 0.1, so the actual default r will be 1.0
 DEFAULT_RADIUS = 10
+
 
 class CellpackConverter(TrajectoryConverter):
     def __init__(self, input_data: CellpackData):
@@ -121,7 +123,7 @@ class CellpackConverter(TrajectoryConverter):
         result.types[time_step_index].append(ingredient_name)
         result.unique_ids[time_step_index][agent_id] = agent_id
         r = (
-            data["encapsulatingRadius"] 
+            data["encapsulatingRadius"]
             if ("encapsulatingRadius" in data)
             else DEFAULT_RADIUS
         ) * scale_factor
