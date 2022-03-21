@@ -237,6 +237,7 @@ class AgentData:
             if "geometry" not in type_info:
                 continue
             result[type_info["name"]] = DisplayData(
+                name=type_info["name"],
                 display_type=type_info["geometry"]["displayType"],
                 url=type_info["geometry"]["url"]
                 if "url" in type_info["geometry"]
