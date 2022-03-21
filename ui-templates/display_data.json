@@ -6,16 +6,16 @@
             "name": {
                 "name": "Name",
                 "data_type": "text",
-                "validation": "",
-                "help": "",
-                "description": "Provide display name",
+                "validation": "^[a-zA-Z0-9 #]*$",
+                "help": "Please use only uppercase and lowercase letters, digits, and #",
+                "description": "Provide display name (separate type and state with '#')",
                 "required": true
             },
             "radius": {
                 "name": "Radius",
                 "data_type": "number",
-                "validation": "",
-                "help": "",
+                "validation": "^\\\\d*\\\\.?\\\\d+$",
+                "help": "Please use only digits and decimals with no commas",
                 "description": "Provide the scale for geometry or thickness of fiber",
                 "required": false,
                 "has_default": false
@@ -38,8 +38,8 @@
             "url": {
                 "name": "Geometry URL",
                 "data_type": "url",
-                "validation": "",
-                "help": "",
+                "validation": "((([A-Za-z]{3,9}:(?:\\\\/\\\\/)?)(?:[\\\\-;:&=\\\\+\\\\$,\\\\w]+@)?[A-Za-z0-9\\\\.\\\\-]+|(?:www\\\\.|[\\\\-;:&=\\\\+\\\\$,\\\\w]+@)[A-Za-z0-9\\\\.\\\\-]+)((?:\\\\/[\\\\+~%\\\\/\\\\.\\\\w\\\\-_]*)?\\\\??(?:[\\\\-\\\\+=&;%@\\\\.\\\\w_]*)#?(?:[\\\\.\\\\!\\\\/\\\\\\w]*))?)",
+                "help": "Please provide a valid URL",
                 "description": "link to geometry file if display type is PDB or OBJ",
                 "required": false,
                 "has_default": false
@@ -47,8 +47,8 @@
             "color": {
                 "name": "Color",
                 "data_type": "color",
-                "validation": "",
-                "help": "",
+                "validation": "\\\\B#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})\\\\b",
+                "help": "Please provide a hexadecimal value starting with '#'",
                 "description": "color",
                 "required": false,
                 "has_default": false

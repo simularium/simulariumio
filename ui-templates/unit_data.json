@@ -6,16 +6,16 @@
             "name": {
                 "name": "Name",
                 "data_type": "text",
-                "validation": "",
-                "help": "",
+                "validation": "^[a-zA-Z0-9 ]*$",
+                "help": "Please use only uppercase and lowercase letters and digits",
                 "description": "Provide the unit name (we support this list https://github.com/hgrecco/pint/blob/master/pint/default_en.txt)",
                 "required": true
             },
             "magnitude": {
                 "name": "Magnitude",
                 "data_type": "number",
-                "validation": "",
-                "help": "",
+                "validation": "^\\\\d*\\\\.?\\\\d+$",
+                "help": "Please use only digits and decimals with no commas",
                 "description": "Provide a multiplier in case values are not in whole units",
                 "required": false,
                 "has_default": false

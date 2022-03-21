@@ -27,8 +27,8 @@
             "fov_degrees": {
                 "name": "FOV (degrees)",
                 "data_type": "number",
-                "validation": "",
-                "help": "",
+                "validation": "^\\\\d*\\\\.?\\\\d+$",
+                "help": "Please use only digits and decimals with no commas",
                 "description": "field of view in degrees",
                 "required": false,
                 "has_default": false

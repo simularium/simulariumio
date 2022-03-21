@@ -6,8 +6,8 @@
             "title": {
                 "name": "Title",
                 "data_type": "text",
-                "validation": "",
-                "help": "",
+                "validation": "^[a-zA-Z0-9 ]*$",
+                "help": "Please use only uppercase and lowercase letters and digits",
                 "description": "Provide the title of the model",
                 "required": false,
                 "has_default": false
@@ -15,8 +15,8 @@
             "version": {
                 "name": "Version",
                 "data_type": "text",
-                "validation": "",
-                "help": "",
+                "validation": "^[a-zA-Z0-9 ]*$",
+                "help": "Please use only uppercase and lowercase letters and digits",
                 "description": "Provide the model version",
                 "required": false,
                 "has_default": false
@@ -24,17 +24,17 @@
             "authors": {
                 "name": "Authors",
                 "data_type": "text",
-                "validation": "",
-                "help": "",
+                "validation": "^[a-zA-Z, ]*$",
+                "help": "Please use only uppercase and lowercase letters and commas",
                 "description": "Provide the model author(s)",
                 "required": false,
                 "has_default": false
             },
             "description": {
-                "name": "Trajectory title",
+                "name": "Description",
                 "data_type": "text",
-                "validation": "",
-                "help": "",
+                "validation": "(?s).*",
+                "help": "Please provide text",
                 "description": "Provide a description of the model",
                 "required": false,
                 "has_default": false
@@ -42,17 +42,17 @@
             "doi": {
                 "name": "DOI",
                 "data_type": "text",
-                "validation": "",
-                "help": "",
-                "description": "Provide the doi for a publication using this model, either as ID or URL",
+                "validation": "((?<![\\\\w\\\\d])https:\\\\/\\\\/doi\\\\.org\\\\/)?10\\\\.(\\\\d+\\\\.*)+[\\\\/](([^\\\\s\\\\.])+\\\\.*)+\\\\b",
+                "help": "Please use the URL https://doi.org/[DOI] or just provide the DOI code",
+                "description": "Provide the doi for a publication using this model",
                 "required": false,
                 "has_default": false
             },
             "source_code_url": {
                 "name": "Source code URL",
                 "data_type": "url",
-                "validation": "",
-                "help": "",
+                "validation": "((([A-Za-z]{3,9}:(?:\\\\/\\\\/)?)(?:[\\\\-;:&=\\\\+\\\\$,\\\\w]+@)?[A-Za-z0-9\\\\.\\\\-]+|(?:www\\\\.|[\\\\-;:&=\\\\+\\\\$,\\\\w]+@)[A-Za-z0-9\\\\.\\\\-]+)((?:\\\\/[\\\\+~%\\\\/\\\\.\\\\w\\\\-_]*)?\\\\??(?:[\\\\-\\\\+=&;%@\\\\.\\\\w_]*)#?(?:[\\\\.\\\\!\\\\/\\\\\\w]*))?)",
+                "help": "Please provide a valid URL",
                 "description": "Provide a link to the repository of source code",
                 "required": false,
                 "has_default": false
@@ -60,8 +60,8 @@
             "source_code_license_url": {
                 "name": "Source code license URL",
                 "data_type": "url",
-                "validation": "",
-                "help": "",
+                "validation": "((([A-Za-z]{3,9}:(?:\\\\/\\\\/)?)(?:[\\\\-;:&=\\\\+\\\\$,\\\\w]+@)?[A-Za-z0-9\\\\.\\\\-]+|(?:www\\\\.|[\\\\-;:&=\\\\+\\\\$,\\\\w]+@)[A-Za-z0-9\\\\.\\\\-]+)((?:\\\\/[\\\\+~%\\\\/\\\\.\\\\w\\\\-_]*)?\\\\??(?:[\\\\-\\\\+=&;%@\\\\.\\\\w_]*)#?(?:[\\\\.\\\\!\\\\/\\\\\\w]*))?)",
+                "help": "Please provide a valid URL",
                 "description": "Provide a link to the license for the source code",
                 "required": false,
                 "has_default": false
@@ -69,8 +69,8 @@
             "input_data_url": {
                 "name": "Input data URL",
                 "data_type": "url",
-                "validation": "",
-                "help": "",
+                "validation": "((([A-Za-z]{3,9}:(?:\\\\/\\\\/)?)(?:[\\\\-;:&=\\\\+\\\\$,\\\\w]+@)?[A-Za-z0-9\\\\.\\\\-]+|(?:www\\\\.|[\\\\-;:&=\\\\+\\\\$,\\\\w]+@)[A-Za-z0-9\\\\.\\\\-]+)((?:\\\\/[\\\\+~%\\\\/\\\\.\\\\w\\\\-_]*)?\\\\??(?:[\\\\-\\\\+=&;%@\\\\.\\\\w_]*)#?(?:[\\\\.\\\\!\\\\/\\\\\\w]*))?)",
+                "help": "Please provide a valid URL",
                 "description": "Provide a link to model configuration or parameter files",
                 "required": false,
                 "has_default": false
@@ -78,8 +78,8 @@
             "raw_output_data_url": {
                 "name": "Raw output data URL",
                 "data_type": "url",
-                "validation": "",
-                "help": "",
+                "validation": "((([A-Za-z]{3,9}:(?:\\\\/\\\\/)?)(?:[\\\\-;:&=\\\\+\\\\$,\\\\w]+@)?[A-Za-z0-9\\\\.\\\\-]+|(?:www\\\\.|[\\\\-;:&=\\\\+\\\\$,\\\\w]+@)[A-Za-z0-9\\\\.\\\\-]+)((?:\\\\/[\\\\+~%\\\\/\\\\.\\\\w\\\\-_]*)?\\\\??(?:[\\\\-\\\\+=&;%@\\\\.\\\\w_]*)#?(?:[\\\\.\\\\!\\\\/\\\\\\w]*))?)",
+                "help": "Please provide a valid URL",
                 "description": "Provide a link to raw outputs from the source code",
                 "required": false,
                 "has_default": false

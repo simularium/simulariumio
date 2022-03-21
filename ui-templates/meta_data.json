@@ -20,8 +20,8 @@
             "scale_factor": {
                 "name": "Scale factor",
                 "data_type": "number",
-                "validation": "",
-                "help": "",
+                "validation": "^\\\\d*\\\\.?\\\\d+$",
+                "help": "Please use only digits and decimals with no commas",
                 "description": "Provide a multiplier for 3D coordinates if the visualization is too large or too small",
                 "required": false,
                 "has_default": false
@@ -29,8 +29,8 @@
             "trajectory_title": {
                 "name": "Trajectory title",
                 "data_type": "text",
-                "validation": "",
-                "help": "",
+                "validation": "^[a-zA-Z0-9 ]*$",
+                "help": "Please use only uppercase and lowercase letters and digits",
                 "description": "Provide a title for this trajectory, possibly describing parameters",
                 "required": false,
                 "has_default": false

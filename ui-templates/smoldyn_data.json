@@ -21,8 +21,8 @@
                 "key_item": {
                     "name": "Particle name",
                     "data_type": "text",
-                    "validation": "\\w{1,60}",
-                    "help": "Please enter text",
+                    "validation": "^[a-zA-Z0-9 ]*$",
+                    "help": "Please use only uppercase and lowercase letters and digits",
                     "description": "Provide the name of the particle in Smoldyn",
                     "required": true
                 },

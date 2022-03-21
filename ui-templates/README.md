@@ -11,8 +11,8 @@ Each custom data type has:
 * `parameters` - a dict of names of members of the Python class mapped to information about how to set them. For each:
   * `name` - the name to display next to the UI Input element
   * `data_type` - the data type to collect, either a base or custom data type
-  * `validation` - a regex to check the data against
-  * `help` - additional information to help the user if the value doesn't match validation
+  * `validation` - a regex pattern to validate the data against
+  * `help` - additional information to help the user if the value doesn't pass validation
   * `description` - instructions for the user about how to fill this field
   * `required` - is this field required in order to submit?
   * `has_default` - if this field isn't provided, is there a default value to use? (otherwise omit it) (only if required=false)
