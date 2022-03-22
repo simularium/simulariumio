@@ -11,12 +11,11 @@ Each custom data type has:
 * `parameters` - a dict of names of members of the Python class mapped to information about how to set them. For each:
   * `name` - the name to display next to the UI Input element
   * `data_type` - the data type to collect, either a base or custom data type
-  * `validation` - a regex pattern to validate the data against
-  * `help` - additional information to help the user if the value doesn't pass validation
   * `description` - instructions for the user about how to fill this field
   * `required` - is this field required in order to submit?
-  * `has_default` - if this field isn't provided, is there a default value to use? (otherwise omit it) (only if required=false)
-  * `default` - default value to use for this field (only if required=false and has_default=true)
+  * `default` - default value to use for this field (only for user information)
+  * `validation` - a regex pattern to validate the data against (optional)
+  * `help` - additional information to help the user if the value doesn't pass validation (optional)
   * some types also have additional parameter information
 
 ### Main types
@@ -37,7 +36,7 @@ Each custom data type has:
   * parameters are indices of items in a list to be provided as a single argument to `numpy.array()`
 * `camera_data`
 * `model_meta_data`
-* `dict` - collect an extensible list of information and use it to create a dict
+* `collection` - collect an extensible list of information and use it to create a dict
   * requires additional parameter information:
     * `length` - number of items to start with
     * `extendible`- can the user add more items?

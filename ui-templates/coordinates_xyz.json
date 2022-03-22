@@ -6,24 +6,18 @@
             "0": {
                 "name": "X",
                 "data_type": "number",
-                "validation": "^\\\\d*\\\\.?\\\\d+$",
-                "help": "Please use only digits and decimals with no commas",
                 "description": "Provide the X dimension",
                 "required": true
             },
             "1": {
                 "name": "Y",
                 "data_type": "number",
-                "validation": "^\\\\d*\\\\.?\\\\d+$",
-                "help": "Please use only digits and decimals with no commas",
                 "description": "Provide the Y dimension",
                 "required": true
             },
             "2": {
                 "name": "Z",
                 "data_type": "number",
-                "validation": "^\\\\d*\\\\.?\\\\d+$",
-                "help": "Please use only digits and decimals with no commas",
                 "description": "Provide the Z dimension",
                 "required": true
             }

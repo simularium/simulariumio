@@ -8,30 +8,28 @@
                 "data_type": "coordinates_xyz",
                 "description": "position of the camera",
                 "required": false,
-                "has_default": false
+                "default": "[0, 0, 120]"
             },
             "look_at_position": {
                 "name": "Look at position",
                 "data_type": "coordinates_xyz",
                 "description": "target position to look at",
                 "required": false,
-                "has_default": false
+                "default": "[0, 0, 0]"
             },
             "up_vector": {
                 "name": "Up vector",
                 "data_type": "coordinates_xyz",
                 "description": "up direction",
                 "required": false,
-                "has_default": false
+                "default": "[0, 1, 0]"
             },
             "fov_degrees": {
                 "name": "FOV (degrees)",
                 "data_type": "number",
-                "validation": "^\\\\d*\\\\.?\\\\d+$",
-                "help": "Please use only digits and decimals with no commas",
                 "description": "field of view in degrees",
                 "required": false,
-                "has_default": false
+                "default": "75"
             }
         }
     }
