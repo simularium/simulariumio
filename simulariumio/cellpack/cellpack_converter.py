@@ -205,12 +205,12 @@ class CellpackConverter(TrajectoryConverter):
         display_type = DISPLAY_TYPE.SPHERE
         url = ""
 
-        if "color" in ingredient_data:
+        if "color" in ingredient_data and ingredient_data["color"] is not None:
             color = "#%02x%02x%02x" % tuple(
                 [int(x * 255) for x in ingredient_data["color"]]
             )
 
-        if geo_type == DISPLAY_TYPE.OBJ and "meshFile" in ingredient_data:
+        if geo_type == DISPLAY_TYPE.OBJ and "meshFile" in ingredient_data and ingredient_data["meshFile"] is not None:
             meshType = (
                 ingredient_data["meshType"]
                 if ("meshType" in ingredient_data)
@@ -230,9 +230,9 @@ class CellpackConverter(TrajectoryConverter):
                 log.info(meshType, ingredient_data["meshFile"].keys())
         elif geo_type == DISPLAY_TYPE.PDB:
             pdb_file_name = ""
-            if "source" in ingredient_data:
+            if "source" in ingredient_data and ingredient_data["source"] is not None:
                 pdb_file_name = ingredient_data["source"]["pdb"]
-            elif "pdb" in ingredient_data:
+            elif "pdb" in ingredient_data and ingredient_data["pdb"] is not None:
                 pdb_file_name = ingredient_data["pdb"]
             if ".pdb" in pdb_file_name:
                 url = f"{DEFAULT_CELLPACK_URL}other/{pdb_file_name}"
