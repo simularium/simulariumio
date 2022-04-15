@@ -1,6 +1,10 @@
-# .simularium JSON Format
+# .simularium File Format
 
-JSON files accepted by the simularium-viewer contain the following data in JSON format:
+.simularium format, which contains spatiotemporal trajectory data and can be loaded by the Simularium Viewer (https://simularium.allencell.org/viewer), can be saved as JSON or binary. 
+
+## Data Structure
+
+Both JSON and binary contain the following data structured like:
 * **trajectory info**
   * version - 2.0
   * trajectoryTitle (optional) - a name for this run of the model
@@ -52,10 +56,11 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
       * visualization type
         * 1000 = default, rendered with PDB or mesh
         * 1001 = fiber, rendered as a line
+      * agent instance ID - integer number ID for this agent instance
       * agent type ID - integer number ID for the agent’s type. This is used to look up its display data (name and geometry)
       * position X, Y, Z - agent’s 3D position
       * rotation X, Y, Z - euler angles for agent’s orientation
-      * radius - the radius the agent occupies, used for drawing a sphere
+      * radius - the radius the agent occupies, used for drawing a sphere or for scaling other geometry representations
       * subpoints - the number of proceeding values that are extra data belonging to this agent, followed by a list of numerical data
         * for default type (1000), this is not used
           * ex: subpoints = 0
@@ -78,7 +83,10 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
       * y - only for a scatterplot, a list of y-values, one for each x-value
       * mode - only for a scatterplot, draw the data points as either "lines" or "markers", if not provided default to markers
 
-## Example Data
+## JSON Files
+
+For JSON files, the data structure specified above is simply saved as JSON, with utf-8 encoding. For example:
+
 ```javascript
 {
     // trajectory info
@@ -265,4 +273,54 @@ JSON files accepted by the simularium-viewer contain the following data in JSON 
         ]
     }
 }
+```
+
+## Binary Files
+
+For binary files, the data structure specified above is saved in blocks with additional info to help with reading the file. Some of the blocks can be saved as JSON within the binary file, but they must be utf-8 encoded. Currently JSON is the only format for trajectory info and plot data blocks.
+
+Binary files must be smaller than 4GB, if the data is larger than this, it can be broken into multiple files, but data for each timestep should stay together in one file and not be split between multiple files.
+
+```
+// binary header
+"SIMULARIUMBINARY" (binary identifier, 16-bytes)
+Header length (4-byte int)
+Binary version (4-byte int)
+Number of blocks (4-byte int)
+Block offset, type, and length (Number of blocks * 3 4-byte ints)
+
+// for each block
+Block type (4-byte int)
+Block length (4-byte int) (includes block header)
+
+    // type = 0 : spatial data block in JSON (see above)
+
+    // type = 1 : trajectory info block in JSON (see above)
+
+    // type = 2 : plot data block in JSON (see above)
+
+    // type = 3 : spatial data block in binary
+    Spatial data version (4-byte int)
+    Number of frames (4-byte int)
+    Frame offset and length (Number of frames * 2 4-byte int)
+
+        // for each timestep
+        Frame number (4-byte int)
+        Time stamp (4-byte float)
+        Number of agents (4-byte int)
+
+            // for each agent at this timestep
+            Visualization type (4-byte float)
+            Agent instance ID (4-byte float)
+            Agent type ID (4-byte float)
+            Position X (4-byte float)
+            Position Y (4-byte float)
+            Position Z (4-byte float)
+            Rotation X (4-byte float)
+            Rotation Y (4-byte float)
+            Rotation Z (4-byte float)
+            Radius (4-byte float)
+            Number of subpoints (4-byte float)
+            Subpoints (4-byte floats, optional)
+
 ```

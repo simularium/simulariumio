@@ -8,7 +8,7 @@ from simulariumio.smoldyn import (
     SmoldynConverter,
     SmoldynData,
 )
-from simulariumio import MetaData, UnitData, DisplayData, InputFileData
+from simulariumio import MetaData, UnitData, DisplayData, InputFileData, JsonWriter
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
@@ -454,6 +454,6 @@ from simulariumio.constants import (
 )
 def test_smoldyn_converter(trajectory, expected_data):
     converter = SmoldynConverter(trajectory)
-    buffer_data = converter._read_trajectory_data(converter._data)
+    buffer_data = JsonWriter.format_trajectory_data(converter._data)
     assert expected_data == buffer_data
-    assert converter._check_agent_ids_are_unique_per_frame(buffer_data)
+    assert JsonWriter._check_agent_ids_are_unique_per_frame(buffer_data)

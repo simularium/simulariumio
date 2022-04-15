@@ -3,7 +3,7 @@
 
 import pytest
 
-from simulariumio import TrajectoryConverter
+from simulariumio import TrajectoryConverter, JsonWriter
 from simulariumio.filters import AddAgentsFilter
 from simulariumio.tests.conftest import (
     three_default_agents,
@@ -284,6 +284,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 def test_add_agents_filter(trajectory, _filter, expected_data):
     converter = TrajectoryConverter(trajectory)
     filtered_data = converter.filter_data([_filter])
-    buffer_data = converter._read_trajectory_data(filtered_data)
+    buffer_data = JsonWriter.format_trajectory_data(filtered_data)
     assert expected_data == buffer_data
-    assert converter._check_agent_ids_are_unique_per_frame(buffer_data)
+    assert JsonWriter._check_agent_ids_are_unique_per_frame(buffer_data)

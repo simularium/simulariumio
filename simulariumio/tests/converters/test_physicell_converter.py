@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.physicell import PhysicellConverter, PhysicellData
-from simulariumio import MetaData, DisplayData
+from simulariumio import MetaData, DisplayData, JsonWriter
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
 
@@ -379,6 +379,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 )
 def test_physicell_converter(trajectory, expected_data):
     converter = PhysicellConverter(trajectory)
-    buffer_data = converter._read_trajectory_data(converter._data)
+    buffer_data = JsonWriter.format_trajectory_data(converter._data)
     assert expected_data == buffer_data
-    assert converter._check_agent_ids_are_unique_per_frame(buffer_data)
+    assert JsonWriter._check_agent_ids_are_unique_per_frame(buffer_data)
