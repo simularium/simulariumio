@@ -7,9 +7,15 @@ from typing import List, Tuple
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData, DimensionData
+from ..data_objects import (
+    TrajectoryData,
+    AgentData,
+    UnitData,
+    DimensionData,
+    DisplayData,
+)
 from .springsalad_data import SpringsaladData
-from ..constants import VIZ_TYPE
+from ..constants import VIZ_TYPE, DISPLAY_TYPE
 
 ###############################################################################
 
@@ -96,11 +102,15 @@ class SpringsaladConverter(TrajectoryConverter):
                 result.n_agents[time_index] += 1
                 result.unique_ids[time_index][agent_index] = int(cols[1])
                 raw_type_name = cols[3]
-                result.types[time_index].append(
-                    input_data.display_data[raw_type_name].name
-                    if raw_type_name in input_data.display_data
-                    else raw_type_name
-                )
+                if raw_type_name not in input_data.display_data:
+                    display_type_name = raw_type_name
+                    input_data.display_data[display_type_name] = DisplayData(
+                        name=display_type_name,
+                        display_type=DISPLAY_TYPE.SPHERE,
+                    )
+                else:
+                    display_type_name = input_data.display_data[raw_type_name].name
+                result.types[time_index].append(display_type_name)
                 position = input_data.meta_data.scale_factor * np.array(
                     [float(cols[4]), float(cols[5]), float(cols[6])]
                 )
@@ -157,6 +167,11 @@ class SpringsaladConverter(TrajectoryConverter):
         for tid in input_data.display_data:
             display_data = input_data.display_data[tid]
             agent_data.display_data[display_data.name] = display_data
+        if input_data.draw_bonds:
+            agent_data.display_data["Link"] = DisplayData(
+                name="Link",
+                display_type=DISPLAY_TYPE.FIBER,
+            )
         input_data.meta_data._set_box_size(box_size)
         return TrajectoryData(
             meta_data=input_data.meta_data,

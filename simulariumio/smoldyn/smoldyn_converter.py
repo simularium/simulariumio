@@ -7,7 +7,8 @@ from typing import List
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, DimensionData
+from ..data_objects import TrajectoryData, AgentData, DimensionData, DisplayData
+from ..constants import DISPLAY_TYPE
 from .smoldyn_data import SmoldynData
 
 ###############################################################################
@@ -91,6 +92,10 @@ class SmoldynConverter(TrajectoryConverter):
                     type_name = input_data.display_data[raw_type_name].name
                 else:
                     type_name = raw_type_name
+                    input_data.display_data[raw_type_name] = DisplayData(
+                        name=raw_type_name,
+                        display_type=DISPLAY_TYPE.SPHERE,
+                    )
                 result.types[time_index].append(type_name)
                 result.positions[time_index][
                     agent_index

@@ -10,8 +10,9 @@ import numpy as np
 from .dep.pyMCDS import pyMCDS
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData
+from ..data_objects import TrajectoryData, AgentData, UnitData, DisplayData
 from ..exceptions import MissingDataError
+from ..constants import DISPLAY_TYPE
 from .physicell_data import PhysicellData
 
 ###############################################################################
@@ -147,6 +148,11 @@ class PhysicellConverter(TrajectoryConverter):
                     last_id=last_id,
                     type_mapping=type_mapping,
                 )
+                if type_mapping[tid] not in input_data.display_data:
+                    result.display_data[type_mapping[tid]] = DisplayData(
+                        name=type_mapping[tid],
+                        display_type=DISPLAY_TYPE.SPHERE,
+                    )
                 result.types[time_index].append(type_mapping[tid])
                 result.positions[time_index][
                     agent_index

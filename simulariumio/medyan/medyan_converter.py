@@ -11,6 +11,7 @@ from ..data_objects import (
     AgentData,
     UnitData,
     DimensionData,
+    DisplayData,
 )
 from ..constants import VIZ_TYPE, DISPLAY_TYPE
 from .medyan_data import MedyanData
@@ -61,11 +62,15 @@ class MedyanConverter(TrajectoryConverter):
         and return the type name to display for this agent type
         """
         raw_tid = int(line.split()[2])
-        return (
-            input_data.display_data[object_type][raw_tid].name
-            if raw_tid in input_data.display_data[object_type]
-            else object_type + str(raw_tid)
-        )
+        if raw_tid not in input_data.display_data[object_type]:
+            display_name = object_type + str(raw_tid)
+            input_data.display_data[object_type][raw_tid] = DisplayData(
+                name=display_name,
+                display_type=DISPLAY_TYPE.FIBER,
+            )
+            return display_name
+        else:
+            return input_data.display_data[object_type][raw_tid].name
 
     @staticmethod
     def _parse_data_dimensions(
@@ -201,9 +206,13 @@ class MedyanConverter(TrajectoryConverter):
                         result.unique_ids[time_index][agent_index + i + 1] = (
                             uids[object_type][raw_uid] + i + 1
                         )
-                        result.types[time_index].append(
-                            result.types[time_index][agent_index] + " End"
-                        )
+                        end_type = result.types[time_index][agent_index] + " End"
+                        result.types[time_index].append(end_type)
+                        if end_type not in result.display_data:
+                            result.display_data[end_type] = DisplayData(
+                                name=end_type,
+                                display_type=DISPLAY_TYPE.SPHERE,
+                            )
                         result.radii[time_index][agent_index + i + 1] = (
                             2 * input_data.meta_data.scale_factor * radius
                         )

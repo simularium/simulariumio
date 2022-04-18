@@ -7,7 +7,13 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData, DimensionData
+from ..data_objects import (
+    TrajectoryData,
+    AgentData,
+    UnitData,
+    DimensionData,
+    DisplayData,
+)
 from ..constants import VIZ_TYPE, DISPLAY_TYPE
 from .cytosim_data import CytosimData
 from .cytosim_object_info import CytosimObjectInfo
@@ -129,11 +135,17 @@ class CytosimConverter(TrajectoryConverter):
             used_unique_IDs.append(uid)
         result.unique_ids[time_index][agent_index] = uids[raw_uid]
         # type name
-        result.types[time_index].append(
-            object_info.display_data[raw_tid].name
-            if raw_tid in object_info.display_data
-            else object_type[:-1] + str(raw_tid)
-        )
+        if raw_tid not in object_info.display_data:
+            type_name = object_type[:-1] + str(raw_tid)
+            object_info.display_data[raw_tid] = DisplayData(
+                name=type_name,
+                display_type=DISPLAY_TYPE.FIBER
+                if "fiber" in object_type
+                else DISPLAY_TYPE.SPHERE,
+            )
+        else:
+            type_name = object_info.display_data[raw_tid].name
+        result.types[time_index].append(type_name)
         # radius
         result.radii[time_index][agent_index] = scale_factor * (
             float(object_info.display_data[raw_tid].radius)

@@ -12,7 +12,14 @@ import scipy.linalg as linalg
 from scipy.spatial.transform import Rotation
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData, DimensionData
+from ..data_objects import (
+    TrajectoryData,
+    AgentData,
+    UnitData,
+    DimensionData,
+    DisplayData,
+)
+from ..constants import DISPLAY_TYPE
 from .mcell_data import McellData
 
 ###############################################################################
@@ -210,11 +217,14 @@ class McellConverter(TrajectoryConverter):
                     type_name_array = array.array("B")
                     type_name_array.fromfile(mol_file, n_chars_type_name[0])
                     type_name = type_name_array.tobytes().decode()
-                    display_type_name = (
-                        input_data.display_data[type_name].name
-                        if type_name in input_data.display_data
-                        else type_name
-                    )
+                    if type_name not in input_data.display_data:
+                        display_type_name = type_name
+                        input_data.display_data[type_name] = DisplayData(
+                            name=type_name,
+                            display_type=DISPLAY_TYPE.SPHERE,
+                        )
+                    else:
+                        display_type_name = input_data.display_data[type_name].name
                     # get positions and rotations
                     is_surface_mol = array.array("B")
                     is_surface_mol.fromfile(mol_file, 1)
