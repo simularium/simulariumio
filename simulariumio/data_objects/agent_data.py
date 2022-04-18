@@ -213,15 +213,21 @@ class AgentData:
         return result
 
     @staticmethod
-    def get_display_data(type_mapping: Dict[str, Any]) -> Dict[str, DisplayData]:
+    def get_display_data(
+        type_mapping: Dict[str, Any], display_data: Dict[int, DisplayData] = None
+    ) -> Dict[str, DisplayData]:
         """
         Generate the display_data mapping using a type_mapping
         from a simularium JSON dict containing buffers
         """
+        if display_data is None:
+            display_data = {}
         result = {}
         for type_id in type_mapping:
             type_info = type_mapping[type_id]
             if "geometry" not in type_info:
+                if int(type_id) in display_data:
+                    result[type_info["name"]] = display_data[int(type_id)]
                 continue
             result[type_info["name"]] = DisplayData(
                 name=type_info["name"],
@@ -236,7 +242,9 @@ class AgentData:
         return result
 
     @classmethod
-    def from_buffer_data(cls, buffer_data: Dict[str, Any]):
+    def from_buffer_data(
+        cls, buffer_data: Dict[str, Any], display_data: Dict[int, DisplayData] = None
+    ):
         """
         Create AgentData from a simularium JSON dict containing buffers
         """
@@ -303,7 +311,7 @@ class AgentData:
             type_ids, buffer_data["trajectoryInfo"]["typeMapping"]
         )
         display_data = AgentData.get_display_data(
-            buffer_data["trajectoryInfo"]["typeMapping"]
+            buffer_data["trajectoryInfo"]["typeMapping"], display_data
         )
         return cls(
             times=agent_data.times,

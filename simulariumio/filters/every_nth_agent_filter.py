@@ -49,6 +49,7 @@ class EveryNthAgentFilter(Filter):
         result = AgentData.from_dimensions(start_dimensions)
         result.times = data.agent_data.times
         result.draw_fiber_points = data.agent_data.draw_fiber_points
+        result.display_data = data.agent_data.display_data
         for time_index in range(start_dimensions.total_steps):
             new_agent_index = 0
             n_found = {}

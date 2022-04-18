@@ -85,6 +85,10 @@ class EveryNthTimestepFilter(Filter):
                     : np.shape(data.agent_data.subpoints[time_index][agent_index])[0]
                 ] = data.agent_data.subpoints[time_index][agent_index]
             new_time_index += 1
+        unique_types = set([tn for frame in result.types for tn in frame])
+        for type_name in unique_types:
+            if type_name in data.agent_data.display_data:
+                result.display_data[type_name] = data.agent_data.display_data[type_name]
         data.agent_data = result
         print(
             f"filtered dims = {new_dimensions.total_steps} timesteps X "
