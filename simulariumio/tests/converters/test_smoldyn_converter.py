@@ -39,11 +39,13 @@ from simulariumio.constants import (
                     ),
                     "E(front)": DisplayData(
                         name="E",
+                        display_type=DISPLAY_TYPE.SPHERE,
                         radius=0.1,
                         color="#0080ff",
                     ),
                     "ES(front)": DisplayData(
                         name="ES",
+                        display_type=DISPLAY_TYPE.SPHERE,
                     ),
                 },
             ),
@@ -268,6 +270,7 @@ from simulariumio.constants import (
                 display_data={
                     "green(solution)": DisplayData(
                         name="Green",
+                        display_type=DISPLAY_TYPE.SPHERE,
                         radius=2.0,
                         color="#dfdacd",
                     ),

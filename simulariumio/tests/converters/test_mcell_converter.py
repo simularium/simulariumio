@@ -35,6 +35,7 @@ from simulariumio.constants import (
                     ),
                     "t2": DisplayData(
                         name="Transporter",
+                        display_type=DISPLAY_TYPE.SPHERE,
                         color="#ff1493",
                     ),
                 },

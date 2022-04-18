@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.physicell import PhysicellConverter, PhysicellData
-from simulariumio import MetaData, DisplayData, JsonWriter
+from simulariumio import MetaData, DisplayData, JsonWriter, DISPLAY_TYPE
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
 
@@ -24,6 +24,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                 display_data={
                     0: DisplayData(
                         name="Cancer cell",
+                        display_type=DISPLAY_TYPE.SPHERE,
                         radius=30.0,
                         color="#0080ff",
                     ),
@@ -219,6 +220,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                 display_data={
                     0: DisplayData(
                         name="Cancer cell",
+                        display_type=DISPLAY_TYPE.SPHERE,
                         radius=30.0,
                         color="#0080ff",
                     ),

@@ -40,7 +40,7 @@ from simulariumio.constants import (
                             0: DisplayData(
                                 name="fiber",
                                 radius=0.001,
-                                display_type=DISPLAY_TYPE.SPHERE,
+                                display_type=DISPLAY_TYPE.FIBER,
                                 color="#d71f5f",
                             )
                         },
@@ -352,6 +352,7 @@ from simulariumio.constants import (
                         display_data={
                             2: DisplayData(
                                 name="actin",
+                                display_type=DISPLAY_TYPE.FIBER,
                                 radius=0.01,
                                 color="#ffc100",
                             ),
@@ -365,8 +366,15 @@ from simulariumio.constants import (
                             ),
                         ),
                         display_data={
-                            1: DisplayData(name="aster"),
-                            2: DisplayData(name="vesicle", radius=0.1),
+                            1: DisplayData(
+                                name="aster",
+                                display_type=DISPLAY_TYPE.SPHERE,
+                            ),
+                            2: DisplayData(
+                                name="vesicle",
+                                display_type=DISPLAY_TYPE.SPHERE,
+                                radius=0.1,
+                            ),
                         },
                     ),
                     "singles": CytosimObjectInfo(
@@ -377,7 +385,11 @@ from simulariumio.constants import (
                             ),
                         ),
                         display_data={
-                            1: DisplayData(name="dynein", radius=0.01),
+                            1: DisplayData(
+                                name="dynein",
+                                display_type=DISPLAY_TYPE.SPHERE,
+                                radius=0.01,
+                            ),
                             2: DisplayData(
                                 name="kinesin",
                                 radius=0.01,
@@ -395,7 +407,11 @@ from simulariumio.constants import (
                             ),
                         ),
                         display_data={
-                            1: DisplayData(name="motor complex", radius=0.02)
+                            1: DisplayData(
+                                name="motor complex",
+                                display_type=DISPLAY_TYPE.SPHERE,
+                                radius=0.02,
+                            )
                         },
                         position_indices=[3, 4, 5],
                     ),
