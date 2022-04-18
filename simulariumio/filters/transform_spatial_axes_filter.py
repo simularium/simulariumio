@@ -73,39 +73,29 @@ class TransformSpatialAxesFilter(Filter):
         # get dimensions
         start_dimensions = data.agent_data.get_dimensions()
         max_subpoints = int(np.amax(data.agent_data.n_subpoints))
-        if max_subpoints > 0:
-            subpoints = np.zeros(
-                (
-                    start_dimensions.total_steps,
-                    start_dimensions.max_agents,
-                    max_subpoints,
-                    3,
-                )
-            )
-        positions = np.zeros(
-            (start_dimensions.total_steps, start_dimensions.max_agents, 3)
-        )
         # get filtered data
         for time_index in range(start_dimensions.total_steps):
             for agent_index in range(int(data.agent_data.n_agents[time_index])):
-                positions[time_index][agent_index] = self._transform_coordinate(
+                data.agent_data.positions[time_index][
+                    agent_index
+                ] = self._transform_coordinate(
                     data.agent_data.positions[time_index][agent_index]
                 )
-                if (
-                    max_subpoints > 0
-                    and data.agent_data.n_subpoints[time_index][agent_index] > 0
-                ):
-                    for subpoint_index in range(
-                        int(data.agent_data.n_subpoints[time_index][agent_index])
-                    ):
-                        subpoints[time_index][agent_index][
-                            subpoint_index
-                        ] = self._transform_coordinate(
-                            data.agent_data.subpoints[time_index][agent_index][
-                                subpoint_index
-                            ]
-                        )
-        data.agent_data.positions = positions
-        if max_subpoints > 0:
-            data.agent_data.subpoints = subpoints
+                # subpoints
+                if max_subpoints < 1:
+                    continue
+                sp_items = self.get_items_from_subpoints(
+                    data.agent_data, time_index, agent_index
+                )
+                if sp_items is None:
+                    continue
+                n_sp = int(data.agent_data.n_subpoints[time_index][agent_index])
+                n_items = sp_items.shape[0]
+                for item_index in range(n_items):
+                    sp_items[item_index][:3] = self._transform_coordinate(
+                        sp_items[item_index][:3]
+                    )
+                data.agent_data.subpoints[time_index][agent_index][
+                    :n_sp
+                ] = sp_items.reshape(n_sp)
         return data

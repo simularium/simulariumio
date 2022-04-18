@@ -5,7 +5,6 @@ from __future__ import annotations
 import copy
 import logging
 from typing import List, Tuple, Dict, Any
-import math
 
 import numpy as np
 import pandas as pd
@@ -14,8 +13,8 @@ from ..constants import (
     V1_SPATIAL_BUFFER_STRUCT,
     VIZ_TYPE,
     BUFFER_SIZE_INC,
-    DISPLAY_TYPE,
 )
+from ..exceptions import DataError
 from .dimension_data import DimensionData
 from .display_data import DisplayData
 
@@ -100,7 +99,7 @@ class AgentData:
         (shape = [timesteps, agents, subpoints]) (optional)
             A numpy ndarray containing a list of subpoint data
             for each agent at each timestep. These values are
-            currently only used for fiber agents
+            currently used for fiber and metaball agents
             Default: None
         display_data: Dict[str,DisplayData] (optional)
             A dictionary mapping agent type name to DisplayData
@@ -187,25 +186,13 @@ class AgentData:
                     last_tid += 1
                     type_id_mapping[type_name] = tid
                     type_name_mapping[str(tid)] = {"name": type_name}
-                    has_subpoints = self.n_subpoints[time_index][agent_index] > 0
-                    if (
-                        type_name in self.display_data
-                        and not self.display_data[type_name].is_default()
-                    ):
-                        self.display_data[type_name].check_set_default_display_type(
-                            has_subpoints
+                    if type_name not in self.display_data:
+                        raise DataError(
+                            f"Please provide DisplayData for agent type {type_name}"
                         )
-                        type_name_mapping[str(tid)]["geometry"] = dict(
-                            self.display_data[type_name]
-                        )
-                    else:
-                        type_name_mapping[str(tid)]["geometry"] = {
-                            "displayType": (
-                                DISPLAY_TYPE.FIBER
-                                if has_subpoints
-                                else DISPLAY_TYPE.SPHERE
-                            ).name,
-                        }
+                    type_name_mapping[str(tid)]["geometry"] = dict(
+                        self.display_data[type_name]
+                    )
                 type_ids[time_index][agent_index] = type_id_mapping[type_name]
         return type_ids, type_name_mapping
 

@@ -51,13 +51,11 @@ class TranslateFilter(Filter):
         print("Filtering: translation -------------")
         # get dimensions
         total_steps = data.agent_data.times.size
-        max_agents = int(np.amax(data.agent_data.n_agents))
         max_subpoints = int(np.amax(data.agent_data.n_subpoints))
         # get filtered data
-        positions = np.zeros((total_steps, max_agents, 3))
-        subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
         for time_index in range(total_steps):
             for agent_index in range(int(data.agent_data.n_agents[time_index])):
+                # get translation for this agent
                 if (
                     data.agent_data.types[time_index][agent_index]
                     in self.translation_per_type
@@ -67,24 +65,24 @@ class TranslateFilter(Filter):
                     ]
                 else:
                     translation = self.default_translation
-                n_subpoints = int(data.agent_data.n_subpoints[time_index][agent_index])
-                if n_subpoints > 0:
-                    for subpoint_index in range(
-                        int(data.agent_data.n_subpoints[time_index][agent_index])
-                    ):
-                        for dim in range(3):
-                            subpoints[time_index][agent_index][subpoint_index][dim] = (
-                                data.agent_data.subpoints[time_index][agent_index][
-                                    subpoint_index
-                                ][dim]
-                                + translation[dim]
-                            )
-                else:
-                    for dim in range(3):
-                        positions[time_index][agent_index][dim] = (
-                            data.agent_data.positions[time_index][agent_index][dim]
-                            + translation[dim]
-                        )
-        data.agent_data.positions = positions
-        data.agent_data.subpoints = subpoints
+                # apply translation
+                subpoints = max_subpoints > 0
+                if subpoints:
+                    sp_items = self.get_items_from_subpoints(
+                        data.agent_data, time_index, agent_index
+                    )
+                    if sp_items is None:
+                        subpoints = False
+                    else:
+                        # translate subpoints
+                        n_items = sp_items.shape[0]
+                        for item_index in range(n_items):
+                            sp_items[item_index][:3] += translation
+                        n_sp = int(data.agent_data.n_subpoints[time_index][agent_index])
+                        data.agent_data.subpoints[time_index][agent_index][
+                            :n_sp
+                        ] = sp_items.reshape(n_sp)
+                if not subpoints:
+                    # translate agent position
+                    data.agent_data.positions[time_index][agent_index] += translation
         return data

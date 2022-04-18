@@ -13,7 +13,6 @@ from ..data_objects import (
 )
 from ..constants import V1_SPATIAL_BUFFER_STRUCT, CURRENT_VERSION
 from .writer import Writer
-from ..exceptions import DataError
 
 ###############################################################################
 
@@ -118,9 +117,6 @@ class JsonWriter(Writer):
             the data to format
         """
         print("Converting Trajectory Data to JSON -------------")
-        inconsistent_type = Writer._check_types_match_subpoints(trajectory_data)
-        if inconsistent_type:
-            raise DataError(inconsistent_type)
         simularium_data = {}
         # trajectory info
         total_steps = (

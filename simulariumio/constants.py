@@ -63,8 +63,21 @@ class DISPLAY_TYPE(Enum):
     PDB = "PDB"
     OBJ = "OBJ"
     FIBER = "FIBER"
+    METABALLS = "METABALLS"
     # CUBE = "CUBE"  # coming soon
     # GIZMO = "GIZMO"  # coming soon
+
+
+def SUBPOINTS_FOR_DISPLAY_TYPE(display_type: DISPLAY_TYPE) -> int:
+    """
+    How many subpoints per item saved in subpoints?
+    given the display type of the agent
+    """
+    if display_type == DISPLAY_TYPE.FIBER:
+        return 3
+    if display_type == DISPLAY_TYPE.METABALLS:
+        return 4
+    return 1
 
 
 class CURRENT_VERSION:

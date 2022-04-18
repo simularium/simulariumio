@@ -11,7 +11,6 @@ import numpy as np
 from ..data_objects import (
     TrajectoryData,
     AgentData,
-    DisplayData,
 )
 from ..constants import (
     V1_SPATIAL_BUFFER_STRUCT,
@@ -176,25 +175,24 @@ class Writer(ABC):
                 time_index, agent_index
             ]
             n_subpoints = int(agent_data.n_subpoints[time_index][agent_index])
+            result[i + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX] = n_subpoints
             if n_subpoints > 0:
-                # add subpoints to fiber agent
-                subpoints = [3 * n_subpoints]
-                for p in range(n_subpoints):
-                    for d in range(3):
-                        subpoints.append(
-                            agent_data.subpoints[time_index][agent_index][p][d]
-                        )
+                # add subpoints
+                sp_start_index = i + V1_SPATIAL_BUFFER_STRUCT.SP_INDEX
                 result[
-                    i
-                    + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX : i
-                    + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
-                    + 1
-                    + 3 * n_subpoints
-                ] = subpoints
-                i += (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1) + 3 * n_subpoints
+                    sp_start_index : sp_start_index + n_subpoints
+                ] = agent_data.subpoints[time_index][agent_index][:n_subpoints]
+                i += (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1) + n_subpoints
                 # optionally draw spheres at points
                 if agent_data.draw_fiber_points:
-                    for p in range(n_subpoints):
+                    type_name = agent_data.types[time_index][agent_index]
+                    if type_name not in agent_data.display_data:
+                        continue
+                    display_type = agent_data.display_data[type_name].display_type
+                    if display_type != DISPLAY_TYPE.FIBER:
+                        continue
+                    n_fiber_points = math.floor(n_subpoints / 3.0)
+                    for p in range(n_fiber_points):
                         # every other fiber point
                         if p % 2 != 0:
                             continue
@@ -217,12 +215,15 @@ class Writer(ABC):
                         result[i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX] = type_ids[
                             time_index, agent_index
                         ]
+                        first_subpoint_index = 3 * p
                         result[
                             i
                             + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX : i
                             + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX
                             + 3
-                        ] = agent_data.subpoints[time_index][agent_index][p]
+                        ] = agent_data.subpoints[time_index][agent_index][
+                            first_subpoint_index : first_subpoint_index + 3
+                        ]
                         result[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX] = 0.5
                         i += V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
             else:
@@ -264,56 +265,3 @@ class Writer(ABC):
                 agent_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX - 1
                 get_n_subpoints = True
         return True
-
-    @staticmethod
-    def _check_type_matches_subpoints(
-        type_name: str,
-        n_subpoints: int,
-        viz_type: float,
-        display_data: DisplayData,
-        debug_name: str = "",
-    ) -> str:
-        """
-        If the agent has subpoints, check that it
-        also has a display_type of "FIBER" and viz type of "FIBER", and vice versa.
-        return a message saying what is inconsistent
-        """
-        has_subpoints = n_subpoints > 0
-        msg = (
-            f"Agent {debug_name}: Type {type_name} "
-            + ("has" if has_subpoints else "does not have")
-            + " subpoints and "
-        )
-        if has_subpoints != (viz_type == VIZ_TYPE.FIBER):
-            return msg + f"viz type is {viz_type}"
-        if type_name in display_data:
-            display_type = display_data[type_name].display_type
-            if display_type is not DISPLAY_TYPE.NONE and has_subpoints != (
-                display_type == DISPLAY_TYPE.FIBER
-            ):
-                return msg + f"display type is {display_type}"
-        return ""
-
-    @staticmethod
-    def _check_types_match_subpoints(trajectory_data: TrajectoryData) -> str:
-        """
-        For each frame, check that agents that have subpoints
-        also have a display_type of "FIBER" and viz type of "FIBER", and vice versa.
-        return a message with the type name of the first agent that is inconsistent
-        """
-        n_subpoints = trajectory_data.agent_data.n_subpoints
-        display_data = trajectory_data.agent_data.display_data
-        for time_index in range(n_subpoints.shape[0]):
-            for agent_index in range(
-                int(trajectory_data.agent_data.n_agents[time_index])
-            ):
-                inconsistent_type = Writer._check_type_matches_subpoints(
-                    trajectory_data.agent_data.types[time_index][agent_index],
-                    n_subpoints[time_index][agent_index],
-                    trajectory_data.agent_data.viz_types[time_index][agent_index],
-                    display_data,
-                    f"at index Time = {time_index}, Agent = {agent_index}",
-                )
-                if inconsistent_type:
-                    return inconsistent_type
-        return ""
