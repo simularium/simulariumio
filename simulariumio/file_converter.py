@@ -7,7 +7,7 @@ import logging
 from typing import Any, Dict, Tuple
 
 from .trajectory_converter import TrajectoryConverter
-from .data_objects import TrajectoryData, UnitData, InputFileData
+from .data_objects import TrajectoryData, UnitData, InputFileData, DisplayData
 from .constants import CURRENT_VERSION, BINARY_SETTINGS
 from .exceptions import DataError
 
@@ -19,7 +19,9 @@ log = logging.getLogger(__name__)
 
 
 class FileConverter(TrajectoryConverter):
-    def __init__(self, input_file: InputFileData):
+    def __init__(
+        self, input_file: InputFileData, display_data: Dict[int, DisplayData] = None
+    ):
         """
         This object loads data from the input file in .simularium format.
 
@@ -28,6 +30,8 @@ class FileConverter(TrajectoryConverter):
         input_file: InputFileData
             A InputFileData object containing .simularium data to load
         """
+        if display_data is None:
+            display_data = {}
         try:
             print("Reading Simularium JSON -------------")
             buffer_data = json.loads(input_file.get_contents())
@@ -39,7 +43,7 @@ class FileConverter(TrajectoryConverter):
             < CURRENT_VERSION.TRAJECTORY_INFO
         ):
             buffer_data = FileConverter.update_trajectory_info_version(buffer_data)
-        self._data = TrajectoryData.from_buffer_data(buffer_data)
+        self._data = TrajectoryData.from_buffer_data(buffer_data, display_data)
 
     @staticmethod
     def _read_binary_file(input_file: InputFileData) -> Dict[str, Any]:
