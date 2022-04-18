@@ -97,8 +97,8 @@ class AgentData:
             subpoints are provided
             Default: None
         subpoints : np.ndarray
-        (shape = [timesteps, agents, subpoints, 3]) (optional)
-            A numpy ndarray containing a list of subpoint position data
+        (shape = [timesteps, agents, subpoints]) (optional)
+            A numpy ndarray containing a list of subpoint data
             for each agent at each timestep. These values are
             currently only used for fiber agents
             Default: None
@@ -126,7 +126,7 @@ class AgentData:
         self.n_subpoints = (
             n_subpoints if n_subpoints is not None else np.zeros_like(radii)
         )
-        self.subpoints = subpoints if subpoints is not None else np.zeros((3, 3, 0, 3))
+        self.subpoints = subpoints if subpoints is not None else np.zeros((3, 3, 0))
         self.display_data = display_data if display_data is not None else {}
         self.draw_fiber_points = draw_fiber_points
         self.n_timesteps = n_timesteps
@@ -148,9 +148,9 @@ class AgentData:
                 agents += 1
                 buffer_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                 # get the number of subpoints
-                subpoints = math.floor(buffer[buffer_index] / 3.0)
+                subpoints = buffer[buffer_index]
                 if subpoints > result.max_subpoints:
-                    result.max_subpoints = subpoints
+                    result.max_subpoints = int(subpoints)
                 buffer_index += int(
                     buffer[buffer_index]
                     + (
@@ -297,18 +297,12 @@ class AgentData:
                     agent_index += 1
                     continue
                 agent_data.n_subpoints[time_index][agent_index] = int(
-                    frame_data[buffer_index] / 3.0
+                    frame_data[buffer_index]
                 )
-                subpoint_index = 0
-                dim = 0
                 for i in range(int(frame_data[buffer_index])):
-                    agent_data.subpoints[time_index][agent_index][subpoint_index][
-                        dim
-                    ] = frame_data[buffer_index + 1 + i]
-                    dim += 1
-                    if dim > 2:
-                        dim = 0
-                        subpoint_index += 1
+                    agent_data.subpoints[time_index][agent_index][i] = frame_data[
+                        buffer_index + 1 + i
+                    ]
                 buffer_index += int(
                     frame_data[buffer_index]
                     + (
@@ -424,7 +418,6 @@ class AgentData:
                     dimensions.total_steps,
                     dimensions.max_agents,
                     dimensions.max_subpoints,
-                    3,
                 )
             ),
         )

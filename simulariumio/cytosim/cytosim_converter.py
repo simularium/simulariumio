@@ -77,7 +77,7 @@ class CytosimConverter(TrajectoryConverter):
                     agents += 1
                 continue
             if is_fiber:
-                subpoints += 1
+                subpoints += 3
             else:
                 agents += 1
         if agents > result.max_agents:
@@ -198,12 +198,11 @@ class CytosimConverter(TrajectoryConverter):
                 continue
             elif is_fiber:
                 # each fiber point
-                subpoint_index = int(
-                    result.n_subpoints[time_index][int(result.n_agents[time_index] - 1)]
-                )
+                agent_index = int(result.n_agents[time_index] - 1)
+                subpoint_index = int(result.n_subpoints[time_index][agent_index])
                 # position
-                result.subpoints[time_index][int(result.n_agents[time_index] - 1)][
-                    subpoint_index
+                result.subpoints[time_index][agent_index][
+                    subpoint_index : subpoint_index + 3
                 ] = scale_factor * np.array(
                     [
                         float(columns[1].strip("+,")),
@@ -211,9 +210,7 @@ class CytosimConverter(TrajectoryConverter):
                         float(columns[3].strip("+,")),
                     ]
                 )
-                result.n_subpoints[time_index][
-                    int(result.n_agents[time_index] - 1)
-                ] += 1
+                result.n_subpoints[time_index][agent_index] += 3
             else:
                 # each non-fiber object
                 (result, uids, used_unique_IDs,) = CytosimConverter._parse_object(

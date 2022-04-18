@@ -48,7 +48,7 @@ class SpringsaladConverter(TrajectoryConverter):
         Parse SpringSaLaD SIM_VIEW txt file to get the number of timesteps
         and maximum agents per timestep
         """
-        result = DimensionData(0, 0, 2 if draw_bonds else 0)
+        result = DimensionData(0, 0, 6 if draw_bonds else 0)
         agents = 0
         for line in springsalad_data:
             if "CurrentTime" in line:  # beginning of a frame
@@ -142,11 +142,11 @@ class SpringsaladConverter(TrajectoryConverter):
                 result.unique_ids[time_index][agent_index] = max_uid
                 max_uid += 1
                 result.types[time_index].append("Link")
-                result.n_subpoints[time_index][agent_index] = 2.0
-                result.subpoints[time_index][agent_index][0] = scene_agent_positions[
+                result.n_subpoints[time_index][agent_index] = 6.0
+                result.subpoints[time_index][agent_index][0:3] = scene_agent_positions[
                     particle1_id
                 ]
-                result.subpoints[time_index][agent_index][1] = scene_agent_positions[
+                result.subpoints[time_index][agent_index][3:6] = scene_agent_positions[
                     particle2_id
                 ]
                 agent_index += 1

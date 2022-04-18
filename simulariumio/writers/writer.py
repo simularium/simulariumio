@@ -121,11 +121,11 @@ class Writer(ABC):
         for agent_index in range(n_agents):
             n_subpoints = int(agent_data.n_subpoints[time_index][agent_index])
             if n_subpoints > 0:
-                buffer_size += 3 * n_subpoints
+                buffer_size += n_subpoints
                 if agent_data.draw_fiber_points:
                     buffer_size += (
                         V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
-                    ) * max(math.ceil(n_subpoints / 2.0), 1)
+                    ) * max(math.ceil(n_subpoints / 6.0), 1)
         return buffer_size
 
     @staticmethod

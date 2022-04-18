@@ -49,8 +49,8 @@ class EveryNthSubpointFilter(Filter):
         max_agents = int(np.amax(data.agent_data.n_agents))
         max_subpoints = int(np.amax(data.agent_data.n_subpoints))
         # get filtered data
-        n_subpoints = np.zeros((total_steps, max_agents))
-        subpoints = np.zeros((total_steps, max_agents, max_subpoints, 3))
+        new_n_subpoints = np.zeros((total_steps, max_agents))
+        new_subpoints = np.zeros((total_steps, max_agents, max_subpoints))
         for time_index in range(total_steps):
             for agent_index in range(int(data.agent_data.n_agents[time_index])):
                 new_subpoint_index = 0

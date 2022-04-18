@@ -108,13 +108,13 @@ class MedyanConverter(TrajectoryConverter):
                 if "FILAMENT" in line:
                     # start of filament
                     cols = line.split()
-                    subpoints = int(cols[3])
+                    subpoints = 3 * int(cols[3])
                     if result.max_subpoints < subpoints:
                         result.max_subpoints = subpoints
                 else:
                     # start of linker or motor
-                    if result.max_subpoints < 2:
-                        result.max_subpoints = 2
+                    if result.max_subpoints < 6:
+                        result.max_subpoints = 6
         if agents > result.max_agents:
             result.max_agents = agents
         return result
@@ -194,9 +194,9 @@ class MedyanConverter(TrajectoryConverter):
                     input_data.meta_data.scale_factor * radius
                 )
                 if object_type == "filament":
-                    result.n_subpoints[time_index][agent_index] = int(cols[3])
+                    result.n_subpoints[time_index][agent_index] = 3 * int(cols[3])
                 else:
-                    result.n_subpoints[time_index][agent_index] = 2
+                    result.n_subpoints[time_index][agent_index] = 6
                 # draw endpoints?
                 if draw_endpoints:
                     for i in range(2):
@@ -220,14 +220,14 @@ class MedyanConverter(TrajectoryConverter):
             elif parsing_object:
                 # object coordinates
                 for i in range(len(cols)):
-                    subpoint_index = math.floor(i / 3)
-                    d = i % 3
-                    result.subpoints[time_index][agent_index][subpoint_index][
-                        d
+                    result.subpoints[time_index][agent_index][
+                        i
                     ] = input_data.meta_data.scale_factor * float(cols[i])
                     if draw_endpoints:
-                        result.positions[time_index][agent_index + subpoint_index + 1][
-                            d
+                        endpoint_index = math.floor(i / 3.0)
+                        dim_index = i % 3
+                        result.positions[time_index][agent_index + endpoint_index + 1][
+                            dim_index
                         ] = input_data.meta_data.scale_factor * float(cols[i])
                 parsing_object = False
                 agent_index += 1
