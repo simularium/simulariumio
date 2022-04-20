@@ -66,14 +66,14 @@ class JsonWriter(Writer):
         buffer_struct = V1_SPATIAL_BUFFER_STRUCT
         for i in range(max_n_agents):
             ix_positions[3 * i : 3 * i + 3] = np.arange(
-                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.POSX_INDEX,
-                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.POSX_INDEX + 3,
+                i * (buffer_struct.VALUES_PER_AGENT) + buffer_struct.POSX_INDEX,
+                i * (buffer_struct.VALUES_PER_AGENT) + buffer_struct.POSX_INDEX + 3,
             )
             ix_rotations[3 * i : 3 * i + 3] = np.arange(
-                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.ROTX_INDEX,
-                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.ROTX_INDEX + 3,
+                i * (buffer_struct.VALUES_PER_AGENT) + buffer_struct.ROTX_INDEX,
+                i * (buffer_struct.VALUES_PER_AGENT) + buffer_struct.ROTX_INDEX + 3,
             )
-        frame_buf = np.zeros((buffer_struct.VALUES_PER_AGENT - 1) * max_n_agents)
+        frame_buf = np.zeros((buffer_struct.VALUES_PER_AGENT) * max_n_agents)
         total_steps = (
             agent_data.n_timesteps
             if agent_data.n_timesteps >= 0
@@ -84,15 +84,15 @@ class JsonWriter(Writer):
             frame_data["frameNumber"] = time_index
             frame_data["time"] = float(agent_data.times[time_index])
             n_agents = int(agent_data.n_agents[time_index])
-            local_buf = frame_buf[: (buffer_struct.VALUES_PER_AGENT - 1) * n_agents]
+            local_buf = frame_buf[: (buffer_struct.VALUES_PER_AGENT) * n_agents]
             local_buf[
-                buffer_struct.VIZ_TYPE_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
+                buffer_struct.VIZ_TYPE_INDEX :: buffer_struct.VALUES_PER_AGENT
             ] = agent_data.viz_types[time_index, :n_agents]
             local_buf[
-                buffer_struct.UID_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
+                buffer_struct.UID_INDEX :: buffer_struct.VALUES_PER_AGENT
             ] = agent_data.unique_ids[time_index, :n_agents]
             local_buf[
-                buffer_struct.TID_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
+                buffer_struct.TID_INDEX :: buffer_struct.VALUES_PER_AGENT
             ] = type_ids[time_index, :n_agents]
             local_buf[ix_positions[: 3 * n_agents]] = agent_data.positions[
                 time_index, :n_agents
@@ -101,7 +101,7 @@ class JsonWriter(Writer):
                 time_index, :n_agents
             ].flatten()
             local_buf[
-                buffer_struct.R_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
+                buffer_struct.R_INDEX :: buffer_struct.VALUES_PER_AGENT
             ] = agent_data.radii[time_index, :n_agents]
             frame_data["data"] = local_buf.tolist()
             bundle_data.append(frame_data)

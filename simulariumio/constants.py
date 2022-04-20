@@ -24,7 +24,7 @@ class V1_SPATIAL_BUFFER_STRUCT:
     R_INDEX: int = 9  # radius
     NSP_INDEX: int = 10  # num subpoints
     SP_INDEX: int = 11  # subpoints
-    VALUES_PER_AGENT: int = 12
+    VALUES_PER_AGENT: int = 11
 
 
 class VIZ_TYPE:

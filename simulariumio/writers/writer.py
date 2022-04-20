@@ -116,14 +116,14 @@ class Writer(ABC):
         Get the required size for a buffer to hold the given frame of AgentData
         """
         n_agents = int(agent_data.n_agents[time_index])
-        buffer_size = (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1) * n_agents
+        buffer_size = (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT) * n_agents
         for agent_index in range(n_agents):
             n_subpoints = int(agent_data.n_subpoints[time_index][agent_index])
             if n_subpoints > 0:
                 buffer_size += n_subpoints
                 if agent_data.draw_fiber_points:
                     buffer_size += (
-                        V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
+                        V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
                     ) * max(math.ceil(n_subpoints / 6.0), 1)
         return buffer_size
 
@@ -182,7 +182,7 @@ class Writer(ABC):
                 result[
                     sp_start_index : sp_start_index + n_subpoints
                 ] = agent_data.subpoints[time_index][agent_index][:n_subpoints]
-                i += (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1) + n_subpoints
+                i += (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT) + n_subpoints
                 # optionally draw spheres at points
                 if agent_data.draw_fiber_points:
                     type_name = agent_data.types[time_index][agent_index]
@@ -225,9 +225,9 @@ class Writer(ABC):
                             first_subpoint_index : first_subpoint_index + 3
                         ]
                         result[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX] = 0.5
-                        i += V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
+                        i += V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
             else:
-                i += V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT - 1
+                i += V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
         return result.tolist(), uids, used_unique_IDs
 
     @staticmethod
@@ -248,7 +248,7 @@ class Writer(ABC):
                     agent_index += int(
                         data[agent_index]
                         + (
-                            V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
+                            V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT + 1
                             - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                         )
                     )
