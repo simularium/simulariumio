@@ -122,9 +122,9 @@ class Writer(ABC):
             if n_subpoints > 0:
                 buffer_size += n_subpoints
                 if agent_data.draw_fiber_points:
-                    buffer_size += (
-                        V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
-                    ) * max(math.ceil(n_subpoints / 6.0), 1)
+                    buffer_size += (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT) * max(
+                        math.ceil(n_subpoints / 6.0), 1
+                    )
         return buffer_size
 
     @staticmethod
@@ -248,7 +248,8 @@ class Writer(ABC):
                     agent_index += int(
                         data[agent_index]
                         + (
-                            V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT + 1
+                            V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
+                            + 1
                             - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                         )
                     )

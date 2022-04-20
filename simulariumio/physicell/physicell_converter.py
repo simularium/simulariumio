@@ -245,20 +245,34 @@ class PhysicellConverter(TrajectoryConverter):
                 result.n_subpoints[time_index][agent_index] = (
                     values_per_metaball * n_metaballs
                 )
+                # position
+                metaball_positions = []
+                for metaball_index in range(n_metaballs):
+                    cell_index = subcells[time_index][owner_id][metaball_index]
+                    metaball_positions.append(
+                        input_data.meta_data.scale_factor
+                        * np.array(
+                            [
+                                discrete_cells[time_index]["position_x"][cell_index],
+                                discrete_cells[time_index]["position_y"][cell_index],
+                                discrete_cells[time_index]["position_z"][cell_index],
+                            ]
+                        )
+                    )
+                center = np.mean(np.array(metaball_positions), axis=0)
+                result.positions[time_index][agent_index] = center
+                # subpoints
                 for metaball_index in range(n_metaballs):
                     cell_index = subcells[time_index][owner_id][metaball_index]
                     sp_index = values_per_metaball * metaball_index
                     result.subpoints[time_index][agent_index][
-                        sp_index : sp_index + values_per_metaball
-                    ] = input_data.meta_data.scale_factor * np.array(
-                        [
-                            discrete_cells[time_index]["position_x"][cell_index],
-                            discrete_cells[time_index]["position_y"][cell_index],
-                            discrete_cells[time_index]["position_z"][cell_index],
-                            PhysicellConverter._radius_for_volume(
-                                discrete_cells[time_index]["total_volume"][cell_index]
-                            ),
-                        ]
+                        sp_index : sp_index + 3
+                    ] = (metaball_positions[metaball_index] - center)
+                    result.subpoints[time_index][agent_index][sp_index + 3] = (
+                        input_data.meta_data.scale_factor
+                        * PhysicellConverter._radius_for_volume(
+                            discrete_cells[time_index]["total_volume"][cell_index]
+                        )
                     )
                 agent_index += 1
             result.n_agents[time_index] = agent_index
