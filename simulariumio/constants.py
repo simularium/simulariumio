@@ -62,7 +62,7 @@ class DISPLAY_TYPE(Enum):
     PDB = "PDB"
     OBJ = "OBJ"
     FIBER = "FIBER"
-    # CUBE = "CUBE"  # coming soon
+    CUBE = "CUBE"
     # GIZMO = "GIZMO"  # coming soon
 
 

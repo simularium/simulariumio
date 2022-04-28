@@ -69,6 +69,13 @@ def default_agents_type_mapping() -> Dict[str, Any]:
                 "color": "#666",
             },
         },
+        "7": {
+            "name": "X",
+            "geometry": {
+                "displayType": "CUBE",
+                "color": "#666",
+            },
+        },
     }
 
 
