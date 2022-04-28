@@ -114,6 +114,7 @@ class CellpackConverter(TrajectoryConverter):
         result: AgentData,
         scale_factor: float,
         box_center: np.array,
+        radius: int,
     ):
         curve = "curve" + str(index)
         result.positions[time_step_index][agent_id] = [0, 0, 0]
@@ -122,12 +123,7 @@ class CellpackConverter(TrajectoryConverter):
         result.n_agents[time_step_index] += 1
         result.types[time_step_index].append(ingredient_name)
         result.unique_ids[time_step_index][agent_id] = agent_id
-        r = (
-            data["encapsulatingRadius"]
-            if ("encapsulatingRadius" in data)
-            else DEFAULT_RADIUS
-        ) * scale_factor
-        result.radii[time_step_index][agent_id] = r
+        result.radii[time_step_index][agent_id] = radius * scale_factor
         result.n_subpoints[time_step_index][agent_id] = len(data[curve])
         scaled_control_points = (
             np.array(data[curve]) - np.array(box_center)
@@ -146,6 +142,7 @@ class CellpackConverter(TrajectoryConverter):
         scale_factor: float,
         box_center: np.array,
         handedness: HAND_TYPE,
+        radius: int,
         comp_id=0,
     ):
         position = data["results"][index][0]
@@ -164,19 +161,7 @@ class CellpackConverter(TrajectoryConverter):
         result.n_agents[time_step_index] += 1
         result.types[time_step_index].append(ingredient_name)
         result.unique_ids[time_step_index][agent_id] = agent_id
-        if "radii" in data:
-            result.radii[time_step_index][agent_id] = (
-                data["radii"][0]["radii"][0] * scale_factor
-            )
-
-        elif "encapsulatingRadius" in data:
-            result.radii[time_step_index][agent_id] = (
-                data["encapsulatingRadius"] * scale_factor
-            )
-
-        else:
-            result.radii[time_step_index][agent_id] = DEFAULT_RADIUS * scale_factor
-
+        result.radii[time_step_index][agent_id] = radius * scale_factor
         result.n_subpoints[time_step_index][agent_id] = 0
 
     @staticmethod
@@ -210,7 +195,11 @@ class CellpackConverter(TrajectoryConverter):
                 [int(x * 255) for x in ingredient_data["color"]]
             )
 
-        if geo_type == DISPLAY_TYPE.OBJ and "meshFile" in ingredient_data and ingredient_data["meshFile"] is not None:
+        if (
+            geo_type == DISPLAY_TYPE.OBJ
+            and "meshFile" in ingredient_data
+            and ingredient_data["meshFile"] is not None
+        ):
             meshType = (
                 ingredient_data["meshType"]
                 if ("meshType" in ingredient_data)
@@ -252,6 +241,17 @@ class CellpackConverter(TrajectoryConverter):
         return {"display_type": display_type, "color": color, "url": url}
 
     @staticmethod
+    def _get_radius(ingredient_data):
+        if "encapsulatingRadius" in ingredient_data:
+            return ingredient_data["encapsulatingRadius"]
+
+        elif "radii" in ingredient_data:
+            return ingredient_data["radii"][0]["radii"][0]
+
+        else:
+            return DEFAULT_RADIUS
+
+    @staticmethod
     def _process_ingredients(
         all_ingredients,
         time_step_index: int,
@@ -290,6 +290,8 @@ class CellpackConverter(TrajectoryConverter):
                     if ingredient_data["coordsystem"] == "left"
                     else HAND_TYPE.RIGHT
                 )
+            radius = CellpackConverter._get_radius(ingredient_data)
+
             if len(ingredient_results_data["results"]) > 0:
                 for j in range(len(ingredient_results_data["results"])):
                     CellpackConverter._unpack_positions(
@@ -302,6 +304,7 @@ class CellpackConverter(TrajectoryConverter):
                         scale_factor,
                         box_center,
                         handedness,
+                        radius,
                     )
                     agent_id_counter += 1
             elif ingredient_results_data["nbCurve"] > 0:
@@ -315,6 +318,7 @@ class CellpackConverter(TrajectoryConverter):
                         spatial_data,
                         scale_factor,
                         box_center,
+                        radius,
                     )
                     agent_id_counter += 1
         spatial_data.display_data = display_data
