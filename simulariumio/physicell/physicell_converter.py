@@ -13,7 +13,7 @@ from .dep.pyMCDS import pyMCDS
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, UnitData, DisplayData
 from ..exceptions import MissingDataError, DataError
-from ..constants import DISPLAY_TYPE, SUBPOINTS_FOR_DISPLAY_TYPE
+from ..constants import DISPLAY_TYPE, SUBPOINTS_FOR_DISPLAY_TYPE, DEFAULT_COLORS
 from .physicell_data import PhysicellData
 
 ###############################################################################
@@ -136,6 +136,14 @@ class PhysicellConverter(TrajectoryConverter):
         )
 
     @staticmethod
+    def _display_owner_number(owner_id: int, input_data: PhysicellData) -> bool:
+        result = owner_id
+        max_owners = input_data.max_owner_cells
+        while result - max_owners > 0:
+            result -= max_owners
+        return result
+
+    @staticmethod
     def _get_trajectory_data(
         input_data: PhysicellData,
     ) -> Tuple[AgentData, UnitData, Dict[int, Dict[int, int]]]:
@@ -229,17 +237,27 @@ class PhysicellConverter(TrajectoryConverter):
                 max_subpoints,
             )
         )
+        owner_cell_color_indices = {}
+        next_color_index = 0
         for time_index in range(dimensions.total_steps):
             agent_index = n_def_agents[time_index]
             for owner_id in subcells[time_index]:
+                if owner_id not in owner_cell_color_indices:
+                    owner_cell_color_indices[owner_id] = next_color_index
+                    next_color_index += 1
+                    if next_color_index >= len(DEFAULT_COLORS):
+                        next_color_index = 0
                 result.unique_ids[time_index][agent_index] = owner_id
-                owner_number = owner_id - input_data.max_owner_cells
+                owner_number = PhysicellConverter._display_owner_number(
+                    owner_id, input_data
+                )
                 type_name = f"{input_data.owner_cell_display_name}#{owner_number}"
                 result.types[time_index].append(type_name)
                 type_ids[owner_id] = {}
                 input_data.display_data[owner_id] = DisplayData(
                     name=type_name,
                     display_type=DISPLAY_TYPE.METABALLS,
+                    color=DEFAULT_COLORS[owner_cell_color_indices[owner_id]],
                 )
                 n_metaballs = len(subcells[time_index][owner_id])
                 result.n_subpoints[time_index][agent_index] = (
