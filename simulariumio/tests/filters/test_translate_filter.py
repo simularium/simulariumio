@@ -16,8 +16,8 @@ from simulariumio.constants import (
 @pytest.mark.parametrize(
     "input_path, display_data, _filter, expected_data",
     [
+        # translate agents
         (
-            # translate agents
             "simulariumio/tests/data/cytosim/aster_pull3D_couples_actin_solid_3_frames"
             "/aster_pull3D_couples_actin_solid_3_frames_small.json",
             {

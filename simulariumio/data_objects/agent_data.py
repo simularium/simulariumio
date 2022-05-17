@@ -13,6 +13,7 @@ from ..constants import (
     V1_SPATIAL_BUFFER_STRUCT,
     VIZ_TYPE,
     BUFFER_SIZE_INC,
+    DISPLAY_TYPE,
 )
 from ..exceptions import DataError
 from .dimension_data import DimensionData
@@ -521,6 +522,16 @@ class AgentData:
                     axis,
                 )
         return result
+
+    def display_type_for_agent(self, time_index: int, agent_index: int) -> DISPLAY_TYPE:
+        """
+        Get the DISPLAY_TYPE for the agent
+        at the given time and agent indices
+        """
+        type_name = self.types[time_index][agent_index]
+        if type_name not in self.display_data:
+            raise DataError(f"{type_name} has no DisplayData, cannot get display_type")
+        return self.display_data[type_name].display_type
 
     def __deepcopy__(self, memo):
         result = type(self)(
