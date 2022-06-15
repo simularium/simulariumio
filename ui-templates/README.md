@@ -13,9 +13,8 @@ Each custom data type has:
   * `data_type` - the data type to collect, either a base or custom data type
   * `description` - instructions for the user about how to fill this field
   * `required` - is this field required in order to submit?
-  * `default` - default value to use for this field (only for user information)
   * `validation` - a regex pattern to validate the data against (optional)
-  * `help` - additional information to help the user if the value doesn't pass validation (optional)
+  * `help` - additional information to help the user, including what default value will be used (optional)
   * some types also have additional parameter information
 
 ### Main types

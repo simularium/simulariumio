@@ -8,35 +8,35 @@
                 "data_type": "coordinates_xyz",
                 "description": "Provide the size of the bounding box in XYZ",
                 "required": false,
-                "default": "[100, 100, 100]"
+                "help": "If not provided, defaults to [100, 100, 100]"
             },
             "camera_defaults": {
                 "name": "Camera defaults",
                 "data_type": "camera_data",
                 "description": "Provide the default view of the 3D scene",
                 "required": false,
-                "default": "Use camera position = [0, 0, 120], look at position = [0, 0, 0], up vector = [0, 1, 0] and field of view = 75 degrees"
+                "help": "If not provided, defaults to camera position = [0, 0, 120], look at position = [0, 0, 0], up vector = [0, 1, 0] and field of view = 75 degrees"
             },
             "scale_factor": {
                 "name": "Scale factor",
                 "data_type": "number",
                 "description": "Provide a multiplier for 3D coordinates if the visualization is too large or too small",
                 "required": false,
-                "default": "1.0"
+                "help": "If not provided, defaults to 1.0"
             },
             "trajectory_title": {
                 "name": "Trajectory title",
                 "data_type": "text",
                 "description": "Provide a title for this trajectory, possibly describing parameters",
                 "required": false,
-                "default": "None"
+                "help": "If not provided, defaults to none"
             },
             "model_meta_data": {
                 "name": "Model metadata",
                 "data_type": "model_meta_data",
                 "description": "provide metadata for the model that was used to calculate this trajectory",
                 "required": false,
-                "default": "Don't include metadata about the model"
+                "help": "If not provided, don't include metadata about the model"
             }
         }
     }

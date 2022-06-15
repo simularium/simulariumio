@@ -8,14 +8,14 @@
                 "data_type": "meta_data",
                 "description": "Provide metadata for this trajectory",
                 "required": false,
-                "default": "Use box size = [100, 100, 100], default camera view, scale = 1.0, and no metadata about the trajectory or model"
+                "help": "If not provided, defaults to box size = [100, 100, 100], scale = 1.0, and no metadata about the trajectory or model"
             },
             "display_data": {
                 "name": "Display data",
                 "data_type": "collection",
                 "description": "Provide display information for each particle type from Smoldyn",
                 "required": false,
-                "default": "Get display name from Smoldyn and draw agent as a sphere with radius = 1.0 and default colors",
+                "help": "If not provided, defaults to display name from Smoldyn, and draws agent as a sphere with radius = 1.0 and default colors",
                 "length": 1,
                 "extendible": true,
                 "key_item": {
@@ -36,14 +36,14 @@
                 "data_type": "unit_data",
                 "description": "Provide units for time values",
                 "required": false,
-                "default": "seconds"
+                "help": "If not provided, defaults to seconds"
             },
             "spatial_units": {
                 "name": "Spatial units",
                 "data_type": "unit_data",
                 "description": "Provide units for 3D coordinates",
                 "required": false,
-                "default": "meters"
+                "help": "If not provided, defaults to meters"
             }
         }
     }
