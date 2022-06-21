@@ -140,6 +140,9 @@ cython_debug/
 .DS_Store
 *.simularium
 
+# vscode
+settings.json
+
 # Ignore benchmark data
 benchmarks/resources/
 benchmarks/upload_manifest.jsonl
