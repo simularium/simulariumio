@@ -57,7 +57,7 @@ class BinaryWriter(Writer):
         """
         return (
             len(BINARY_SETTINGS.HEADER)
-            + BINARY_SETTINGS.BYTES_PER_VALUE * BINARY_SETTINGS.HEADER_N_INT_VALUES()
+            + BINARY_SETTINGS.BYTES_PER_VALUE * BINARY_SETTINGS.HEADER_N_INT_VALUES
         )
 
     @staticmethod
@@ -167,9 +167,9 @@ class BinaryWriter(Writer):
         """
         header_n_bytes = BinaryWriter._header_n_bytes()
         header_format = (
-            f"<{len(BINARY_SETTINGS.HEADER)}s{BINARY_SETTINGS.HEADER_N_INT_VALUES()}I"
+            f"<{len(BINARY_SETTINGS.HEADER)}s{BINARY_SETTINGS.HEADER_N_INT_VALUES}I"
         )
-        block_types = BINARY_SETTINGS.DEFAULT_BLOCK_TYPES()
+        block_types = BINARY_SETTINGS.DEFAULT_BLOCK_TYPES
         block_n_bytes = [traj_info_n_bytes, spatial_data_n_bytes, plot_data_n_bytes]
         block_offsets = [
             header_n_bytes,

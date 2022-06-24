@@ -104,26 +104,17 @@ class BINARY_SETTINGS:
     BYTES_PER_VALUE: int = 4
     BLOCK_OFFSET_BYTE_ALIGNMENT: int = 4
 
-    def HEADER_N_INT_VALUES() -> int:
-        """
-        Get the number of int values stored in the header of binary files,
-        used for packing binary data.
-        """
-        return (
-            BINARY_SETTINGS.HEADER_CONSTANT_N_VALUES
-            + BINARY_SETTINGS.N_BLOCKS * BINARY_SETTINGS.HEADER_N_VALUES_PER_BLOCK
-        )
+    # The number of int values stored in the header of binary files
+    HEADER_N_INT_VALUES: int = (
+        HEADER_CONSTANT_N_VALUES + N_BLOCKS * HEADER_N_VALUES_PER_BLOCK
+    )
 
-    def DEFAULT_BLOCK_TYPES() -> List[int]:
-        """
-        Get the number of int values stored in the header of binary files,
-        used for packing binary data.
-        """
-        return [
-            BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
-            BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
-            BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
-        ]
+    # Currently every binary file is written with these 3 blocks
+    DEFAULT_BLOCK_TYPES: List[int] = [
+        BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value,
+        BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value,
+        BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value,
+    ]
 
 
 JMOL_COLORS_CSV_PATH = "jmolcolors.csv"
