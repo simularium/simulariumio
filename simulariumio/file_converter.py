@@ -28,12 +28,12 @@ class FileConverter(TrajectoryConverter):
         input_file: InputFileData
             A InputFileData object containing .simularium data to load
         """
-        try:
-            print("Reading Simularium JSON -------------")
-            buffer_data = json.loads(input_file.get_contents())
-        except UnicodeDecodeError:
+        if input_file._is_binary_file():
             print("Reading Simularium binary -------------")
             buffer_data = FileConverter._load_binary(input_file)
+        else:
+            print("Reading Simularium JSON -------------")
+            buffer_data = json.loads(input_file.get_contents())
         if (
             int(buffer_data["trajectoryInfo"]["version"])
             < CURRENT_VERSION.TRAJECTORY_INFO

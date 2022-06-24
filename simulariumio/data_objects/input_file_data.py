@@ -4,6 +4,7 @@
 import logging
 
 from ..exceptions import DataError
+from ..constants import BINARY_SETTINGS
 
 ###############################################################################
 
@@ -53,3 +54,13 @@ class InputFileData:
             return self.file_contents
         with open(self.file_path, "r") as myfile:
             return myfile.read()
+
+    def _is_binary_file(self):
+        """
+        Is this file binary? (or JSON?)
+        """
+        with open(self.file_path, "rb") as open_file:
+            header = open_file.read(16).decode("utf-8")
+            if header == BINARY_SETTINGS.HEADER:
+                return True
+        return False
