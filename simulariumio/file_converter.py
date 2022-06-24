@@ -42,7 +42,7 @@ class FileConverter(TrajectoryConverter):
         self._data = TrajectoryData.from_buffer_data(buffer_data)
 
     @staticmethod
-    def _read_binary_file(input_file: InputFileData) -> Dict[str, Any]:
+    def _binary_data_from_file(input_file: InputFileData) -> Dict[str, Any]:
         """
         Read a .simularium binary file and return multiple views of the data
         """
@@ -195,7 +195,7 @@ class FileConverter(TrajectoryConverter):
         Load data from the input file in .simularium binary format and update it.
         """
         result = {}
-        data = FileConverter._read_binary_file(input_file)
+        data = FileConverter._binary_data_from_file(input_file)
         binary_header = FileConverter._binary_header(data)
         # parse blocks
         for block_index in range(binary_header["n_blocks"]):
