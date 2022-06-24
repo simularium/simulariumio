@@ -429,9 +429,9 @@ class AgentData:
             ),
         )
 
-    def total_steps(self) -> int:
+    def total_timesteps(self) -> int:
         """
-        Get number of frames
+        Get number of timesteps
         Use n_timesteps to limit times if it has been provided
         """
         return self.n_timesteps if self.n_timesteps >= 0 else len(self.times)
@@ -441,7 +441,7 @@ class AgentData:
         Get the dimensions of this object's numpy arrays
         """
         return DimensionData(
-            total_steps=self.total_steps(),
+            total_steps=self.total_timesteps(),
             max_agents=self.viz_types.shape[1],
             max_subpoints=self.subpoints.shape[2]
             if len(self.subpoints.shape) > 2
