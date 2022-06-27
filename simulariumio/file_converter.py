@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import json
-import struct
 import logging
-from typing import Any, Dict, Tuple
+from typing import Any, Dict
 
 from .trajectory_converter import TrajectoryConverter
 from .data_objects import TrajectoryData, UnitData, InputFileData, DisplayData
-from .constants import CURRENT_VERSION, BINARY_SETTINGS
-from .exceptions import DataError
+from .constants import CURRENT_VERSION
+from .readers import SimulariumBinaryReader
 
 ###############################################################################
 
@@ -32,199 +31,18 @@ class FileConverter(TrajectoryConverter):
         """
         if display_data is None:
             display_data = {}
-        try:
+        if input_file._is_binary_file():
+            print("Reading Simularium binary -------------")
+            buffer_data = SimulariumBinaryReader.load_binary(input_file)
+        else:
             print("Reading Simularium JSON -------------")
             buffer_data = json.loads(input_file.get_contents())
-        except UnicodeDecodeError:
-            print("Reading Simularium binary -------------")
-            buffer_data = FileConverter._load_binary(input_file)
         if (
             int(buffer_data["trajectoryInfo"]["version"])
             < CURRENT_VERSION.TRAJECTORY_INFO
         ):
             buffer_data = FileConverter.update_trajectory_info_version(buffer_data)
         self._data = TrajectoryData.from_buffer_data(buffer_data, display_data)
-
-    @staticmethod
-    def _read_binary_file(input_file: InputFileData) -> Dict[str, Any]:
-        """
-        Read a .simularium binary file and return multiple views of the data
-        """
-        result = {}
-        with open(input_file.file_path, "rb") as open_binary_file:
-            result["byte_view"] = open_binary_file.read()
-            result["n_values"] = int(
-                len(result["byte_view"]) / BINARY_SETTINGS.BYTES_PER_VALUE
-            )
-            result["int_view"] = struct.unpack(
-                f'<{result["n_values"]}i', result["byte_view"]
-            )
-            result["float_view"] = struct.unpack(
-                f'<{result["n_values"]}f', result["byte_view"]
-            )
-        return result
-
-    @staticmethod
-    def _binary_header(binary_data: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Parse header of data from a .simularium binary file
-        """
-        pos = len(BINARY_SETTINGS.HEADER)
-        binary_id = binary_data["byte_view"][:pos].decode("utf-8")
-        if binary_id != BINARY_SETTINGS.HEADER:
-            raise DataError("Binary file is not in .simularium format")
-        pos = int(pos / BINARY_SETTINGS.BYTES_PER_VALUE)
-        header_length = binary_data["int_view"][pos]
-        header_n_values = int(
-            (header_length - len(BINARY_SETTINGS.HEADER))
-            / BINARY_SETTINGS.BYTES_PER_VALUE
-        )
-        header_values = list(binary_data["int_view"][pos : pos + header_n_values])
-        binary_version = header_values[1]
-        if binary_version != BINARY_SETTINGS.VERSION:
-            raise DataError(
-                "Binary file parsing only implemented for "
-                f"version > 1 up to current version {BINARY_SETTINGS.VERSION}, "
-                f"found {binary_version}"
-            )
-        return {
-            "n_blocks": header_values[2],
-            "block_offsets": header_values[3::3],
-            "block_types": header_values[4::3],
-            "block_lengths": header_values[5::3],
-        }
-
-    @staticmethod
-    def _binary_block_header(
-        block_index: int,
-        binary_header: Dict[str, Any],
-        binary_data: Dict[str, Any],
-    ) -> Tuple[int, int]:
-        """
-        Parse block header of data from a .simularium binary file
-        """
-        block_offset = int(
-            binary_header["block_offsets"][block_index]
-            / BINARY_SETTINGS.BYTES_PER_VALUE
-        )
-        block_type = binary_data["int_view"][block_offset]
-        if block_type != binary_header["block_types"][block_index]:
-            raise DataError(
-                "Block type is not consistent for block "
-                f"#{block_index} : {block_type} != "
-                + binary_header["block_types"][block_index]
-            )
-        block_length = binary_data["int_view"][block_offset + 1]
-        if block_length != binary_header["block_lengths"][block_index]:
-            raise DataError(
-                "Block length is not consistent for block "
-                f"#{block_index} : {block_length} != "
-                + binary_header["block_lengths"][block_index]
-            )
-        return block_type, block_length
-
-    @staticmethod
-    def _binary_block_json(
-        block_index: int,
-        binary_header: Dict[str, Any],
-        binary_data: Dict[str, Any],
-    ) -> Dict[str, Any]:
-        """
-        Parse JSON block from a .simularium binary file
-        """
-        block_offset = binary_header["block_offsets"][block_index]
-        block_length = binary_header["block_lengths"][block_index]
-        block_header_n_bytes = (
-            BINARY_SETTINGS.BLOCK_HEADER_N_VALUES * BINARY_SETTINGS.BYTES_PER_VALUE
-        )
-        block_offset += block_header_n_bytes
-        block_length -= block_header_n_bytes
-        traj_info_bytes = binary_data["byte_view"][
-            block_offset : block_offset + block_length
-        ]
-        return json.loads(traj_info_bytes.decode("utf-8").strip("\x00"))
-
-    @staticmethod
-    def _binary_block_spatial_data(
-        block_index: int,
-        binary_header: Dict[str, Any],
-        binary_data: Dict[str, Any],
-    ) -> Dict[str, Any]:
-        """
-        Parse spatial data binary block from a .simularium binary file
-        """
-        block_offset = (
-            int(
-                binary_header["block_offsets"][block_index]
-                / BINARY_SETTINGS.BYTES_PER_VALUE
-            )
-            + BINARY_SETTINGS.BLOCK_HEADER_N_VALUES
-        )
-        spatial_data_version = binary_data["int_view"][block_offset]
-        n_frames = binary_data["int_view"][block_offset + 1]
-        current_frame_offset = block_offset + 2 + 2 * n_frames
-        frame_info = binary_data["int_view"][block_offset + 2 : current_frame_offset]
-        frame_lengths = frame_info[1::2]
-        result = {
-            "version": spatial_data_version,
-            "msgType": 1,
-            "bundleStart": 0,
-            "bundleSize": n_frames,
-            "bundleData": [],
-        }
-        for index in range(n_frames):
-            frame_index = binary_data["int_view"][current_frame_offset]
-            if index == 0:
-                result["bundleStart"] = frame_index
-            frame_n_values = int(frame_lengths[index] / BINARY_SETTINGS.BYTES_PER_VALUE)
-            result["bundleData"].append(
-                {
-                    "frameNumber": frame_index,
-                    "time": binary_data["float_view"][current_frame_offset + 1],
-                    "data": list(
-                        binary_data["float_view"][
-                            current_frame_offset
-                            + 3 : current_frame_offset
-                            + frame_n_values
-                        ]
-                    ),
-                }
-            )
-            current_frame_offset += frame_n_values
-        return result
-
-    @staticmethod
-    def _load_binary(input_file: InputFileData) -> Dict[str, Any]:
-        """
-        Load data from the input file in .simularium binary format and update it.
-        """
-        result = {}
-        data = FileConverter._read_binary_file(input_file)
-        binary_header = FileConverter._binary_header(data)
-        # parse blocks
-        for block_index in range(binary_header["n_blocks"]):
-            block_type, block_length = FileConverter._binary_block_header(
-                block_index, binary_header, data
-            )
-            if block_type == 0:
-                result["spatialData"] = FileConverter._binary_block_json(
-                    block_index, binary_header, data
-                )
-            elif block_type == 1:
-                result["trajectoryInfo"] = FileConverter._binary_block_json(
-                    block_index, binary_header, data
-                )
-            elif block_type == 2:
-                result["plotData"] = FileConverter._binary_block_json(
-                    block_index, binary_header, data
-                )
-            elif block_type == 3:
-                result["spatialData"] = FileConverter._binary_block_spatial_data(
-                    block_index, binary_header, data
-                )
-            else:
-                raise DataError(f"Block type {block_type} is not a BINARY_BLOCK_TYPE")
-        return result
 
     @staticmethod
     def _update_trajectory_info_v1_to_v2(data: Dict[str, Any]) -> Dict[str, Any]:

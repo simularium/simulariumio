@@ -41,7 +41,7 @@ class BinaryWriter(Writer):
         """
         Get the number of values in the bundle data buffer for each frame
         """
-        total_steps = trajectory_data.agent_data.total_steps()
+        total_steps = trajectory_data.agent_data.total_timesteps()
         result = []
         for frame_index in range(total_steps):
             result.append(
@@ -53,11 +53,10 @@ class BinaryWriter(Writer):
     def _header_n_bytes() -> int:
         """
         Get length of binary header in bytes
-        return 64 as long as there are 3 blocks, so doesn't need padding
         """
         return (
-            len(BINARY_SETTINGS.HEADER)
-            + BINARY_SETTINGS.BYTES_PER_VALUE * BINARY_SETTINGS.HEADER_N_INT_VALUES()
+            len(BINARY_SETTINGS.FILE_IDENTIFIER)
+            + BINARY_SETTINGS.BYTES_PER_VALUE * BINARY_SETTINGS.HEADER_N_INT_VALUES
         )
 
     @staticmethod
@@ -69,7 +68,7 @@ class BinaryWriter(Writer):
         Get length of trajectory info in JSON
         (n_bytes = n_values)
         """
-        total_steps = trajectory_data.agent_data.total_steps()
+        total_steps = trajectory_data.agent_data.total_timesteps()
         traj_info = Writer._get_trajectory_info(
             trajectory_data, total_steps, type_mapping
         )
@@ -167,9 +166,10 @@ class BinaryWriter(Writer):
         """
         header_n_bytes = BinaryWriter._header_n_bytes()
         header_format = (
-            f"<{len(BINARY_SETTINGS.HEADER)}s{BINARY_SETTINGS.HEADER_N_INT_VALUES()}I"
+            f"<{len(BINARY_SETTINGS.FILE_IDENTIFIER)}s"
+            f"{BINARY_SETTINGS.HEADER_N_INT_VALUES}I"
         )
-        block_types = BINARY_SETTINGS.DEFAULT_BLOCK_TYPES()
+        block_types = BINARY_SETTINGS.DEFAULT_BLOCK_TYPES
         block_n_bytes = [traj_info_n_bytes, spatial_data_n_bytes, plot_data_n_bytes]
         block_offsets = [
             header_n_bytes,
@@ -178,7 +178,7 @@ class BinaryWriter(Writer):
         ]
         return BinaryValues(
             values=(
-                [bytes(BINARY_SETTINGS.HEADER, "utf-8")]
+                [bytes(BINARY_SETTINGS.FILE_IDENTIFIER, "utf-8")]
                 + [header_n_bytes, BINARY_SETTINGS.VERSION, BINARY_SETTINGS.N_BLOCKS]
                 + [
                     block_offsets[0],
@@ -198,7 +198,6 @@ class BinaryWriter(Writer):
     @staticmethod
     def _spatial_data_header(
         chunk: BinaryChunk,
-        spatial_data_n_bytes: int,
     ) -> BinaryValues:
         """
         Return spatial data header values and format
@@ -212,7 +211,7 @@ class BinaryWriter(Writer):
             spatial_data_header_n_bytes
             + BINARY_SETTINGS.BYTES_PER_VALUE * BINARY_SETTINGS.BLOCK_HEADER_N_VALUES
         )
-        for frame_index, frame_n_values in enumerate(chunk.frame_n_values):
+        for frame_n_values in chunk.frame_n_values:
             frame_n_bytes = BINARY_SETTINGS.BYTES_PER_VALUE * frame_n_values
             frame_offsets_and_lengths.append(current_offset)
             frame_offsets_and_lengths.append(frame_n_bytes)
@@ -264,12 +263,7 @@ class BinaryWriter(Writer):
         """
         Return spatial data block values and format
         """
-        result = [
-            BinaryWriter._spatial_data_header(
-                chunk,
-                chunk.n_bytes,
-            )
-        ]
+        result = [BinaryWriter._spatial_data_header(chunk)]
         for chunk_frame_index in range(chunk.n_frames):
             global_frame_index = chunk.get_global_index(chunk_frame_index)
             frame_data = BinaryWriter._formatted_frame(
