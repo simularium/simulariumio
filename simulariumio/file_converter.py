@@ -60,14 +60,14 @@ class FileConverter(TrajectoryConverter):
         return result
 
     @staticmethod
-    def _parse_binary_header(binary_data: BinaryFileData) -> BinaryBlockInfo:
+    def _parse_binary_header(data_as_bytes: bytes) -> BinaryBlockInfo:
         """
         Parse header of data from a .simularium binary file
         """
         id_length = len(BINARY_SETTINGS.FILE_IDENTIFIER)
         pos = id_length + 3 * BINARY_SETTINGS.BYTES_PER_VALUE
         _, _, binary_version, n_blocks = struct.unpack(
-            f"{id_length}sIII", binary_data.byte_view[:pos]
+            f"{id_length}sIII", data_as_bytes[:pos]
         )
         if binary_version != BINARY_SETTINGS.VERSION:
             raise DataError(
@@ -78,7 +78,7 @@ class FileConverter(TrajectoryConverter):
         block_info_length = 3 * BINARY_SETTINGS.BYTES_PER_VALUE * n_blocks
         block_info = struct.unpack(
             n_blocks * "III",
-            binary_data.byte_view[pos : pos + block_info_length],
+            data_as_bytes[pos : pos + block_info_length],
         )
         return BinaryBlockInfo(
             n_blocks=n_blocks,
@@ -91,7 +91,7 @@ class FileConverter(TrajectoryConverter):
     def _binary_block_type(
         block_index: int,
         block_info: BinaryBlockInfo,
-        binary_data: BinaryFileData,
+        data_as_ints: np.ndarray,
     ) -> int:
         """
         Parse block header of data from a .simularium binary file
@@ -99,19 +99,21 @@ class FileConverter(TrajectoryConverter):
         block_offset = int(
             block_info.block_offsets[block_index] / BINARY_SETTINGS.BYTES_PER_VALUE
         )
-        block_type = binary_data.int_view[block_offset]
+        block_type = data_as_ints[block_offset]
         if block_type != block_info.block_types[block_index]:
             raise DataError(
                 "Block type is not consistent for block "
-                f"#{block_index} : {block_type} != "
+                f"#{block_index} : {block_type} from block != "
                 + block_info.block_types[block_index]
+                + " from header"
             )
-        block_length = binary_data.int_view[block_offset + 1]
+        block_length = data_as_ints[block_offset + 1]
         if block_length != block_info.block_lengths[block_index]:
             raise DataError(
                 "Block length is not consistent for block "
-                f"#{block_index} : {block_length} != "
+                f"#{block_index} : {block_length} from block != "
                 + block_info.block_lengths[block_index]
+                + " from header"
             )
         return block_type
 
@@ -119,7 +121,7 @@ class FileConverter(TrajectoryConverter):
     def _binary_block_json(
         block_index: int,
         block_info: BinaryBlockInfo,
-        binary_data: BinaryFileData,
+        data_as_bytes: bytes,
     ) -> Dict[str, Any]:
         """
         Parse JSON block from a .simularium binary file
@@ -131,16 +133,15 @@ class FileConverter(TrajectoryConverter):
         )
         block_offset += block_header_n_bytes
         block_length -= block_header_n_bytes
-        traj_info_bytes = binary_data.byte_view[
-            block_offset : block_offset + block_length
-        ]
+        traj_info_bytes = data_as_bytes[block_offset : block_offset + block_length]
         return json.loads(traj_info_bytes.decode("utf-8").strip("\x00"))
 
     @staticmethod
     def _binary_block_spatial_data(
         block_index: int,
         block_info: BinaryBlockInfo,
-        binary_data: BinaryFileData,
+        data_as_ints: np.ndarray,
+        data_as_floats: np.ndarray,
     ) -> Dict[str, Any]:
         """
         Parse spatial data binary block from a .simularium binary file
@@ -149,10 +150,10 @@ class FileConverter(TrajectoryConverter):
             int(block_info.block_offsets[block_index] / BINARY_SETTINGS.BYTES_PER_VALUE)
             + BINARY_SETTINGS.BLOCK_HEADER_N_VALUES
         )
-        spatial_data_version = binary_data.int_view[block_offset]
-        n_frames = binary_data.int_view[block_offset + 1]
+        spatial_data_version = data_as_ints[block_offset]
+        n_frames = data_as_ints[block_offset + 1]
         current_frame_offset = block_offset + 2 + 2 * n_frames
-        frame_info = binary_data.int_view[block_offset + 2 : current_frame_offset]
+        frame_info = data_as_ints[block_offset + 2 : current_frame_offset]
         frame_lengths = frame_info[1::2]
         result = {
             "version": spatial_data_version,
@@ -162,16 +163,16 @@ class FileConverter(TrajectoryConverter):
             "bundleData": [],
         }
         for index in range(n_frames):
-            frame_index = binary_data.int_view[current_frame_offset]
+            frame_index = data_as_ints[current_frame_offset]
             if index == 0:
                 result["bundleStart"] = frame_index
             frame_n_values = int(frame_lengths[index] / BINARY_SETTINGS.BYTES_PER_VALUE)
             result["bundleData"].append(
                 {
                     "frameNumber": frame_index,
-                    "time": binary_data.float_view[current_frame_offset + 1],
+                    "time": data_as_floats[current_frame_offset + 1],
                     "data": list(
-                        binary_data.float_view[
+                        data_as_floats[
                             current_frame_offset
                             + 3 : current_frame_offset
                             + frame_n_values
@@ -189,30 +190,46 @@ class FileConverter(TrajectoryConverter):
         """
         result = {}
         binary_data = FileConverter._binary_data_from_file(input_file)
-        block_info = FileConverter._parse_binary_header(binary_data)
+        block_info = FileConverter._parse_binary_header(binary_data.byte_view)
         # parse blocks
+        found_blocks = []
         for block_index in range(block_info.n_blocks):
-            block_type = FileConverter._binary_block_type(
-                block_index, block_info, binary_data
+            block_type_id = FileConverter._binary_block_type(
+                block_index, block_info, binary_data.int_view
             )
-            if block_type == 0:
-                result["spatialData"] = FileConverter._binary_block_json(
-                    block_index, block_info, binary_data
+            if block_type_id == 0:
+                block_type = "spatialData"
+                data_type = "JSON"
+            elif block_type_id == 1:
+                block_type = "trajectoryInfo"
+                data_type = "JSON"
+            elif block_type_id == 2:
+                block_type = "plotData"
+                data_type = "JSON"
+            if block_type_id == 3:
+                block_type = "spatialData"
+                data_type = "binary"
+            if block_type in found_blocks:
+                print(
+                    f"WARNING: More than one {block_type} block found, "
+                    "only using last one"
                 )
-            elif block_type == 1:
-                result["trajectoryInfo"] = FileConverter._binary_block_json(
-                    block_index, block_info, binary_data
+            if data_type == "JSON":
+                result[block_type] = FileConverter._binary_block_json(
+                    block_index, block_info, binary_data.byte_view
                 )
-            elif block_type == 2:
-                result["plotData"] = FileConverter._binary_block_json(
-                    block_index, block_info, binary_data
-                )
-            elif block_type == 3:
+            elif block_type == "spatialData":
                 result["spatialData"] = FileConverter._binary_block_spatial_data(
-                    block_index, block_info, binary_data
+                    block_index,
+                    block_info,
+                    binary_data.int_view,
+                    binary_data.float_view,
                 )
             else:
-                raise DataError(f"Block type {block_type} is not a BINARY_BLOCK_TYPE")
+                raise DataError(
+                    f"Binary {block_type} block reading is not yet supported"
+                )
+            found_blocks.append(block_type)
         return result
 
     @staticmethod
