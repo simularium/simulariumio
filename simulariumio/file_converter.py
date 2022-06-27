@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import json
-import struct
 import logging
-from typing import Any, Dict, Tuple
+from typing import Any, Dict
+import numpy as np
 
 from .trajectory_converter import TrajectoryConverter
 from .data_objects import TrajectoryData, UnitData, InputFileData
@@ -16,6 +16,12 @@ from .exceptions import DataError
 log = logging.getLogger(__name__)
 
 ###############################################################################
+
+
+class BinaryFileData:
+    byte_view: bytes
+    int_view: np.ndarray
+    float_view: np.ndarray
 
 
 class FileConverter(TrajectoryConverter):
@@ -42,40 +48,37 @@ class FileConverter(TrajectoryConverter):
         self._data = TrajectoryData.from_buffer_data(buffer_data)
 
     @staticmethod
-    def _binary_data_from_file(input_file: InputFileData) -> Dict[str, Any]:
+    def _binary_data_from_file(input_file: InputFileData) -> BinaryFileData:
         """
         Read a .simularium binary file and return multiple views of the data
         """
-        result = {}
+        result = BinaryFileData()
         with open(input_file.file_path, "rb") as open_binary_file:
-            result["byte_view"] = open_binary_file.read()
-            result["n_values"] = int(
-                len(result["byte_view"]) / BINARY_SETTINGS.BYTES_PER_VALUE
+            result.byte_view = open_binary_file.read()
+            result.int_view = np.frombuffer(
+                result.byte_view, dtype=np.dtype("i").newbyteorder("<")
             )
-            result["int_view"] = struct.unpack(
-                f'<{result["n_values"]}i', result["byte_view"]
-            )
-            result["float_view"] = struct.unpack(
-                f'<{result["n_values"]}f', result["byte_view"]
+            result.float_view = np.frombuffer(
+                result.byte_view, dtype=np.dtype("f").newbyteorder("<")
             )
         return result
 
     @staticmethod
-    def _binary_header(binary_data: Dict[str, Any]) -> Dict[str, Any]:
+    def _parse_binary_header(binary_data: BinaryFileData) -> Dict[str, Any]:
         """
         Parse header of data from a .simularium binary file
         """
         pos = len(BINARY_SETTINGS.HEADER)
-        binary_id = binary_data["byte_view"][:pos].decode("utf-8")
+        binary_id = binary_data.byte_view[:pos].decode("utf-8")
         if binary_id != BINARY_SETTINGS.HEADER:
             raise DataError("Binary file is not in .simularium format")
         pos = int(pos / BINARY_SETTINGS.BYTES_PER_VALUE)
-        header_length = binary_data["int_view"][pos]
+        header_length = binary_data.int_view[pos]
         header_n_values = int(
             (header_length - len(BINARY_SETTINGS.HEADER))
             / BINARY_SETTINGS.BYTES_PER_VALUE
         )
-        header_values = list(binary_data["int_view"][pos : pos + header_n_values])
+        header_values = list(binary_data.int_view[pos : pos + header_n_values])
         binary_version = header_values[1]
         if binary_version != BINARY_SETTINGS.VERSION:
             raise DataError(
@@ -91,11 +94,11 @@ class FileConverter(TrajectoryConverter):
         }
 
     @staticmethod
-    def _binary_block_header(
+    def _binary_block_type(
         block_index: int,
         binary_header: Dict[str, Any],
-        binary_data: Dict[str, Any],
-    ) -> Tuple[int, int]:
+        binary_data: BinaryFileData,
+    ) -> int:
         """
         Parse block header of data from a .simularium binary file
         """
@@ -103,27 +106,27 @@ class FileConverter(TrajectoryConverter):
             binary_header["block_offsets"][block_index]
             / BINARY_SETTINGS.BYTES_PER_VALUE
         )
-        block_type = binary_data["int_view"][block_offset]
+        block_type = binary_data.int_view[block_offset]
         if block_type != binary_header["block_types"][block_index]:
             raise DataError(
                 "Block type is not consistent for block "
                 f"#{block_index} : {block_type} != "
                 + binary_header["block_types"][block_index]
             )
-        block_length = binary_data["int_view"][block_offset + 1]
+        block_length = binary_data.int_view[block_offset + 1]
         if block_length != binary_header["block_lengths"][block_index]:
             raise DataError(
                 "Block length is not consistent for block "
                 f"#{block_index} : {block_length} != "
                 + binary_header["block_lengths"][block_index]
             )
-        return block_type, block_length
+        return block_type
 
     @staticmethod
     def _binary_block_json(
         block_index: int,
         binary_header: Dict[str, Any],
-        binary_data: Dict[str, Any],
+        binary_data: BinaryFileData,
     ) -> Dict[str, Any]:
         """
         Parse JSON block from a .simularium binary file
@@ -135,7 +138,7 @@ class FileConverter(TrajectoryConverter):
         )
         block_offset += block_header_n_bytes
         block_length -= block_header_n_bytes
-        traj_info_bytes = binary_data["byte_view"][
+        traj_info_bytes = binary_data.byte_view[
             block_offset : block_offset + block_length
         ]
         return json.loads(traj_info_bytes.decode("utf-8").strip("\x00"))
@@ -144,7 +147,7 @@ class FileConverter(TrajectoryConverter):
     def _binary_block_spatial_data(
         block_index: int,
         binary_header: Dict[str, Any],
-        binary_data: Dict[str, Any],
+        binary_data: BinaryFileData,
     ) -> Dict[str, Any]:
         """
         Parse spatial data binary block from a .simularium binary file
@@ -156,10 +159,10 @@ class FileConverter(TrajectoryConverter):
             )
             + BINARY_SETTINGS.BLOCK_HEADER_N_VALUES
         )
-        spatial_data_version = binary_data["int_view"][block_offset]
-        n_frames = binary_data["int_view"][block_offset + 1]
+        spatial_data_version = binary_data.int_view[block_offset]
+        n_frames = binary_data.int_view[block_offset + 1]
         current_frame_offset = block_offset + 2 + 2 * n_frames
-        frame_info = binary_data["int_view"][block_offset + 2 : current_frame_offset]
+        frame_info = binary_data.int_view[block_offset + 2 : current_frame_offset]
         frame_lengths = frame_info[1::2]
         result = {
             "version": spatial_data_version,
@@ -169,16 +172,16 @@ class FileConverter(TrajectoryConverter):
             "bundleData": [],
         }
         for index in range(n_frames):
-            frame_index = binary_data["int_view"][current_frame_offset]
+            frame_index = binary_data.int_view[current_frame_offset]
             if index == 0:
                 result["bundleStart"] = frame_index
             frame_n_values = int(frame_lengths[index] / BINARY_SETTINGS.BYTES_PER_VALUE)
             result["bundleData"].append(
                 {
                     "frameNumber": frame_index,
-                    "time": binary_data["float_view"][current_frame_offset + 1],
+                    "time": binary_data.float_view[current_frame_offset + 1],
                     "data": list(
-                        binary_data["float_view"][
+                        binary_data.float_view[
                             current_frame_offset
                             + 3 : current_frame_offset
                             + frame_n_values
@@ -196,10 +199,10 @@ class FileConverter(TrajectoryConverter):
         """
         result = {}
         data = FileConverter._binary_data_from_file(input_file)
-        binary_header = FileConverter._binary_header(data)
+        binary_header = FileConverter._parse_binary_header(data)
         # parse blocks
         for block_index in range(binary_header["n_blocks"]):
-            block_type, block_length = FileConverter._binary_block_header(
+            block_type = FileConverter._binary_block_type(
                 block_index, binary_header, data
             )
             if block_type == 0:

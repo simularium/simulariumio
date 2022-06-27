@@ -198,7 +198,6 @@ class BinaryWriter(Writer):
     @staticmethod
     def _spatial_data_header(
         chunk: BinaryChunk,
-        spatial_data_n_bytes: int,
     ) -> BinaryValues:
         """
         Return spatial data header values and format
@@ -212,7 +211,7 @@ class BinaryWriter(Writer):
             spatial_data_header_n_bytes
             + BINARY_SETTINGS.BYTES_PER_VALUE * BINARY_SETTINGS.BLOCK_HEADER_N_VALUES
         )
-        for frame_index, frame_n_values in enumerate(chunk.frame_n_values):
+        for frame_n_values in chunk.frame_n_values:
             frame_n_bytes = BINARY_SETTINGS.BYTES_PER_VALUE * frame_n_values
             frame_offsets_and_lengths.append(current_offset)
             frame_offsets_and_lengths.append(frame_n_bytes)
@@ -264,12 +263,7 @@ class BinaryWriter(Writer):
         """
         Return spatial data block values and format
         """
-        result = [
-            BinaryWriter._spatial_data_header(
-                chunk,
-                chunk.n_bytes,
-            )
-        ]
+        result = [BinaryWriter._spatial_data_header(chunk)]
         for chunk_frame_index in range(chunk.n_frames):
             global_frame_index = chunk.get_global_index(chunk_frame_index)
             frame_data = BinaryWriter._formatted_frame(
