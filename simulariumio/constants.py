@@ -90,7 +90,7 @@ class BINARY_BLOCK_TYPE(Enum):
 
 
 class BINARY_SETTINGS:
-    HEADER: str = "SIMULARIUMBINARY"
+    FILE_IDENTIFIER: str = "SIMULARIUMBINARY"
     VERSION: int = 2
     MAX_BYTES: int = 4000000000  # 4GB is max for one file
     HEADER_CONSTANT_N_VALUES: int = 3  # header length, binary version, number of blocks

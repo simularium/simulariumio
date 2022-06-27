@@ -54,7 +54,7 @@ def assert_binary_values_equal(
             2196,
             [
                 [
-                    bytes(BINARY_SETTINGS.HEADER, "utf-8"),
+                    bytes(BINARY_SETTINGS.FILE_IDENTIFIER, "utf-8"),
                     64,  # header length
                     BINARY_SETTINGS.VERSION,
                     BINARY_SETTINGS.N_BLOCKS,
@@ -444,7 +444,7 @@ def assert_binary_values_equal(
             2195,
             [
                 [
-                    bytes(BINARY_SETTINGS.HEADER, "utf-8"),
+                    bytes(BINARY_SETTINGS.FILE_IDENTIFIER, "utf-8"),
                     64,  # header length
                     BINARY_SETTINGS.VERSION,
                     BINARY_SETTINGS.N_BLOCKS,
@@ -459,7 +459,7 @@ def assert_binary_values_equal(
                     56,  # block 2 length
                 ],
                 [
-                    bytes(BINARY_SETTINGS.HEADER, "utf-8"),
+                    bytes(BINARY_SETTINGS.FILE_IDENTIFIER, "utf-8"),
                     64,  # header length
                     BINARY_SETTINGS.VERSION,
                     BINARY_SETTINGS.N_BLOCKS,

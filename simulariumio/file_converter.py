@@ -56,7 +56,7 @@ class FileConverter(TrajectoryConverter):
         with open(input_file.file_path, "rb") as open_binary_file:
             result.byte_view = open_binary_file.read()
             result.int_view = np.frombuffer(
-                result.byte_view, dtype=np.dtype("i").newbyteorder("<")
+                result.byte_view, dtype=np.dtype("I").newbyteorder("<")
             )
             result.float_view = np.frombuffer(
                 result.byte_view, dtype=np.dtype("f").newbyteorder("<")
@@ -68,14 +68,12 @@ class FileConverter(TrajectoryConverter):
         """
         Parse header of data from a .simularium binary file
         """
-        pos = len(BINARY_SETTINGS.HEADER)
-        binary_id = binary_data.byte_view[:pos].decode("utf-8")
-        if binary_id != BINARY_SETTINGS.HEADER:
-            raise DataError("Binary file is not in .simularium format")
-        pos = int(pos / BINARY_SETTINGS.BYTES_PER_VALUE)
+        pos = int(
+            len(BINARY_SETTINGS.FILE_IDENTIFIER) / BINARY_SETTINGS.BYTES_PER_VALUE
+        )
         header_length = binary_data.int_view[pos]
         header_n_values = int(
-            (header_length - len(BINARY_SETTINGS.HEADER))
+            (header_length - len(BINARY_SETTINGS.FILE_IDENTIFIER))
             / BINARY_SETTINGS.BYTES_PER_VALUE
         )
         header_values = list(binary_data.int_view[pos : pos + header_n_values])

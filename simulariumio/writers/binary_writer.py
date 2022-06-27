@@ -56,7 +56,7 @@ class BinaryWriter(Writer):
         return 64 as long as there are 3 blocks, so doesn't need padding
         """
         return (
-            len(BINARY_SETTINGS.HEADER)
+            len(BINARY_SETTINGS.FILE_IDENTIFIER)
             + BINARY_SETTINGS.BYTES_PER_VALUE * BINARY_SETTINGS.HEADER_N_INT_VALUES
         )
 
@@ -167,7 +167,8 @@ class BinaryWriter(Writer):
         """
         header_n_bytes = BinaryWriter._header_n_bytes()
         header_format = (
-            f"<{len(BINARY_SETTINGS.HEADER)}s{BINARY_SETTINGS.HEADER_N_INT_VALUES}I"
+            f"<{len(BINARY_SETTINGS.FILE_IDENTIFIER)}s"
+            f"{BINARY_SETTINGS.HEADER_N_INT_VALUES}I"
         )
         block_types = BINARY_SETTINGS.DEFAULT_BLOCK_TYPES
         block_n_bytes = [traj_info_n_bytes, spatial_data_n_bytes, plot_data_n_bytes]
@@ -178,7 +179,7 @@ class BinaryWriter(Writer):
         ]
         return BinaryValues(
             values=(
-                [bytes(BINARY_SETTINGS.HEADER, "utf-8")]
+                [bytes(BINARY_SETTINGS.FILE_IDENTIFIER, "utf-8")]
                 + [header_n_bytes, BINARY_SETTINGS.VERSION, BINARY_SETTINGS.N_BLOCKS]
                 + [
                     block_offsets[0],

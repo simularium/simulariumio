@@ -61,6 +61,6 @@ class InputFileData:
         """
         with open(self.file_path, "rb") as open_file:
             header = open_file.read(16).decode("utf-8")
-            if header == BINARY_SETTINGS.HEADER:
+            if header == BINARY_SETTINGS.FILE_IDENTIFIER:
                 return True
         return False
