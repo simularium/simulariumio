@@ -19,7 +19,7 @@ from simulariumio import InputFileData
         (
             (
                 "simulariumio/tests/data/binary/"
-                "50filaments_motor_linker_binary.simularium"
+                "50filaments_motor_linker_binary.binary"
             ),
             True,
         ),
