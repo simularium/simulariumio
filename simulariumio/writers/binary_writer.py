@@ -53,7 +53,6 @@ class BinaryWriter(Writer):
     def _header_n_bytes() -> int:
         """
         Get length of binary header in bytes
-        return 64 as long as there are 3 blocks, so doesn't need padding
         """
         return (
             len(BINARY_SETTINGS.FILE_IDENTIFIER)
