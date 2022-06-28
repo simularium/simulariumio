@@ -86,28 +86,28 @@ from simulariumio.tests.conftest import assert_buffers_equal
                         "1": {
                             "name": "Stem cell#8",
                             "geometry": {
-                                "displayType": "METABALLS",
+                                "displayType": "SPHERE_GROUP",
                                 "color": DEFAULT_COLORS[0],
                             },
                         },
                         "2": {
                             "name": "Stem cell#14",
                             "geometry": {
-                                "displayType": "METABALLS",
+                                "displayType": "SPHERE_GROUP",
                                 "color": DEFAULT_COLORS[1],
                             },
                         },
                         "3": {
                             "name": "Stem cell#25",
                             "geometry": {
-                                "displayType": "METABALLS",
+                                "displayType": "SPHERE_GROUP",
                                 "color": DEFAULT_COLORS[2],
                             },
                         },
                         "4": {
                             "name": "Stem cell#2",
                             "geometry": {
-                                "displayType": "METABALLS",
+                                "displayType": "SPHERE_GROUP",
                                 "color": DEFAULT_COLORS[3],
                             },
                         },

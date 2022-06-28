@@ -63,7 +63,7 @@ class DISPLAY_TYPE(Enum):
     PDB = "PDB"
     OBJ = "OBJ"
     FIBER = "FIBER"
-    METABALLS = "METABALLS"
+    SPHERE_GROUP = "SPHERE_GROUP"
     # CUBE = "CUBE"  # coming soon
     # GIZMO = "GIZMO"  # coming soon
 
@@ -75,7 +75,7 @@ def SUBPOINTS_FOR_DISPLAY_TYPE(display_type: DISPLAY_TYPE) -> int:
     """
     if display_type == DISPLAY_TYPE.FIBER:
         return 3
-    if display_type == DISPLAY_TYPE.METABALLS:
+    if display_type == DISPLAY_TYPE.SPHERE_GROUP:
         return 4
     return 1
 

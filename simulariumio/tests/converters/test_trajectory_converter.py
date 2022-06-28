@@ -1034,13 +1034,13 @@ from simulariumio.constants import (
                         "0": {
                             "name": "A",
                             "geometry": {
-                                "displayType": "METABALLS",
+                                "displayType": "SPHERE_GROUP",
                             },
                         },
                         "1": {
                             "name": "B",
                             "geometry": {
-                                "displayType": "METABALLS",
+                                "displayType": "SPHERE_GROUP",
                             },
                         },
                     },

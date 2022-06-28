@@ -922,11 +922,11 @@ def metaball_agents() -> TrajectoryData:
             display_data={
                 "A": DisplayData(
                     name="A",
-                    display_type=DISPLAY_TYPE.METABALLS,
+                    display_type=DISPLAY_TYPE.SPHERE_GROUP,
                 ),
                 "B": DisplayData(
                     name="B",
-                    display_type=DISPLAY_TYPE.METABALLS,
+                    display_type=DISPLAY_TYPE.SPHERE_GROUP,
                 ),
             },
         ),

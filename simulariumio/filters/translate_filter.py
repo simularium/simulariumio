@@ -71,7 +71,7 @@ class TranslateFilter(Filter):
                     time_index, agent_index
                 )
                 translate_subpoints = (
-                    max_subpoints > 0 and display_type != DISPLAY_TYPE.METABALLS
+                    max_subpoints > 0 and display_type != DISPLAY_TYPE.SPHERE_GROUP
                 )
                 if translate_subpoints:
                     sp_items = self.get_items_from_subpoints(

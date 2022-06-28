@@ -165,7 +165,7 @@ class PhysicellConverter(TrajectoryConverter):
         )
         # get data
         max_subpoints = 0
-        values_per_metaball = SUBPOINTS_FOR_DISPLAY_TYPE(DISPLAY_TYPE.METABALLS)
+        values_per_metaball = SUBPOINTS_FOR_DISPLAY_TYPE(DISPLAY_TYPE.SPHERE_GROUP)
         n_def_agents = []
         subcells = []
         for time_index in range(dimensions.total_steps):
@@ -256,7 +256,7 @@ class PhysicellConverter(TrajectoryConverter):
                 type_ids[owner_id] = {}
                 input_data.display_data[owner_id] = DisplayData(
                     name=type_name,
-                    display_type=DISPLAY_TYPE.METABALLS,
+                    display_type=DISPLAY_TYPE.SPHERE_GROUP,
                     color=DEFAULT_COLORS[owner_cell_color_indices[owner_id]],
                 )
                 n_metaballs = len(subcells[time_index][owner_id])

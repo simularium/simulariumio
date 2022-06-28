@@ -38,7 +38,7 @@ class DisplayData:
             Default: use names from simulator data if possible
         display_type: DISPLAY_TYPE
             the type of geometry to display
-            Options: SPHERE, FIBER, PDB, OBJ, or METABALLS
+            Options: SPHERE, FIBER, PDB, OBJ, or SPHERE_GROUP
         radius : float (optional)
             A float radius for rendering this agent.
             For fibers, this is the thickness of the line
