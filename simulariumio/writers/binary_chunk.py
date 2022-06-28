@@ -23,7 +23,7 @@ class BinaryChunk:
         first_frame_index: int = 0,
     ):
         """
-        Object to store size info for a binary file
+        Object to store size info for a binary file.  BinaryChunk is used to determine how many files to save and how to chunk up the data, if the data is larger than the max file size.
 
         Parameters
         ----------
