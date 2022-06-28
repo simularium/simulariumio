@@ -100,6 +100,7 @@ class BINARY_SETTINGS:
     SPATIAL_BLOCK_HEADER_CONSTANT_N_VALUES: int = (
         2  # spatial data version, number of frames
     )
+    SPATIAL_BLOCK_HEADER_N_VALUES_PER_FRAME: int = 2  # frame offsets and lengths
     FRAME_HEADER_N_VALUES: int = 3  # frame number, time stamp, number of agents
     BYTES_PER_VALUE: int = 4
     BLOCK_OFFSET_BYTE_ALIGNMENT: int = 4

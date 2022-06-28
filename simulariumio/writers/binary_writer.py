@@ -125,7 +125,8 @@ class BinaryWriter(Writer):
             spatial_header_n_values = (
                 BINARY_SETTINGS.BLOCK_HEADER_N_VALUES
                 + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_CONSTANT_N_VALUES
-                + 2 * (file_chunks[current_chunk].n_frames + 1)
+                + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_N_VALUES_PER_FRAME
+                * (file_chunks[current_chunk].n_frames + 1)
             )
             spatial_header_n_bytes = (
                 BINARY_SETTINGS.BYTES_PER_VALUE * spatial_header_n_values
@@ -181,15 +182,9 @@ class BinaryWriter(Writer):
                 [bytes(BINARY_SETTINGS.FILE_IDENTIFIER, "utf-8")]
                 + [header_n_bytes, BINARY_SETTINGS.VERSION, BINARY_SETTINGS.N_BLOCKS]
                 + [
-                    block_offsets[0],
-                    block_types[0],
-                    block_n_bytes[0],
-                    block_offsets[1],
-                    block_types[1],
-                    block_n_bytes[1],
-                    block_offsets[2],
-                    block_types[2],
-                    block_n_bytes[2],
+                    val
+                    for tup in zip(block_offsets, block_types, block_n_bytes)
+                    for val in tup
                 ]
             ),
             format_string=header_format,
