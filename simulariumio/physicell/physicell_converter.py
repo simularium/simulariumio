@@ -165,7 +165,7 @@ class PhysicellConverter(TrajectoryConverter):
         )
         # get data
         max_subpoints = 0
-        values_per_metaball = SUBPOINTS_FOR_DISPLAY_TYPE(DISPLAY_TYPE.SPHERE_GROUP)
+        values_per_subcell = SUBPOINTS_FOR_DISPLAY_TYPE(DISPLAY_TYPE.SPHERE_GROUP)
         n_def_agents = []
         subcells = []
         for time_index in range(dimensions.total_steps):
@@ -175,7 +175,7 @@ class PhysicellConverter(TrajectoryConverter):
             for cell_index in range(n_cells):
                 cell_type_id = int(discrete_cells[time_index]["cell_type"][cell_index])
                 if PhysicellConverter._cell_is_subcell(cell_type_id, input_data):
-                    # this is a subcell metaball
+                    # this is a subcell
                     if cell_type_id not in subcells[time_index]:
                         subcells[time_index][cell_type_id] = []
                     subcells[time_index][cell_type_id].append(cell_index)
@@ -226,10 +226,10 @@ class PhysicellConverter(TrajectoryConverter):
                 n_def_agents[time_index] += 1
             # update max_subpoints
             for owner_id in subcells[time_index]:
-                n_metaballs = len(subcells[time_index][owner_id])
-                if n_metaballs * values_per_metaball > max_subpoints:
-                    max_subpoints = n_metaballs * values_per_metaball
-        # create metaball agents
+                n_subcells = len(subcells[time_index][owner_id])
+                if n_subcells * values_per_subcell > max_subpoints:
+                    max_subpoints = n_subcells * values_per_subcell
+        # create sphere group agents for owner cells and subcells
         result.subpoints = np.zeros(
             (
                 dimensions.total_steps,
@@ -259,15 +259,15 @@ class PhysicellConverter(TrajectoryConverter):
                     display_type=DISPLAY_TYPE.SPHERE_GROUP,
                     color=DEFAULT_COLORS[owner_cell_color_indices[owner_id]],
                 )
-                n_metaballs = len(subcells[time_index][owner_id])
+                n_subcells = len(subcells[time_index][owner_id])
                 result.n_subpoints[time_index][agent_index] = (
-                    values_per_metaball * n_metaballs
+                    values_per_subcell * n_subcells
                 )
                 # position
-                metaball_positions = []
-                for metaball_index in range(n_metaballs):
-                    cell_index = subcells[time_index][owner_id][metaball_index]
-                    metaball_positions.append(
+                subcell_positions = []
+                for subcell_index in range(n_subcells):
+                    cell_index = subcells[time_index][owner_id][subcell_index]
+                    subcell_positions.append(
                         input_data.meta_data.scale_factor
                         * np.array(
                             [
@@ -277,15 +277,15 @@ class PhysicellConverter(TrajectoryConverter):
                             ]
                         )
                     )
-                center = np.mean(np.array(metaball_positions), axis=0)
+                center = np.mean(np.array(subcell_positions), axis=0)
                 result.positions[time_index][agent_index] = center
                 # subpoints
-                for metaball_index in range(n_metaballs):
-                    cell_index = subcells[time_index][owner_id][metaball_index]
-                    sp_index = values_per_metaball * metaball_index
+                for subcell_index in range(n_subcells):
+                    cell_index = subcells[time_index][owner_id][subcell_index]
+                    sp_index = values_per_subcell * subcell_index
                     result.subpoints[time_index][agent_index][
                         sp_index : sp_index + 3
-                    ] = (metaball_positions[metaball_index] - center)
+                    ] = (subcell_positions[subcell_index] - center)
                     result.subpoints[time_index][agent_index][sp_index + 3] = (
                         input_data.meta_data.scale_factor
                         * PhysicellConverter._radius_for_volume(

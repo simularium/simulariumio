@@ -100,7 +100,7 @@ class AgentData:
         (shape = [timesteps, agents, subpoints]) (optional)
             A numpy ndarray containing a list of subpoint data
             for each agent at each timestep. These values are
-            currently used for fiber and metaball agents
+            currently used for fiber and sphere group agents
             Default: None
         display_data: Dict[str,DisplayData] (optional)
             A dictionary mapping agent type name to DisplayData

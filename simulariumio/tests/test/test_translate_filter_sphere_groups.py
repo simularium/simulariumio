@@ -19,7 +19,7 @@ from simulariumio.tests.conftest import assert_buffers_equal
 @pytest.mark.parametrize(
     "trajectory, _filter, expected_data",
     [
-        # metaballs
+        # sphere groups for owner cells and subcells
         (
             PhysicellData(
                 meta_data=MetaData(

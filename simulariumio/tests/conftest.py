@@ -807,7 +807,7 @@ def mixed_agents() -> TrajectoryData:
     )
 
 
-def metaball_agents() -> TrajectoryData:
+def sphere_group_agents() -> TrajectoryData:
     return TrajectoryData(
         meta_data=MetaData(
             box_size=np.array([100.0, 100.0, 100.0]),

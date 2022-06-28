@@ -8,7 +8,7 @@ from simulariumio.tests.conftest import (
     three_default_agents,
     mixed_agents,
     fiber_agents,
-    metaball_agents,
+    sphere_group_agents,
     default_agents_type_mapping,
 )
 from simulariumio.constants import (
@@ -995,9 +995,9 @@ from simulariumio.constants import (
                 },
             },
         ),
-        # 2 metaball agents with 3 metaballs each for 3 frames
+        # 2 sphere group agents with 3 spheres each for 3 frames
         (
-            metaball_agents(),
+            sphere_group_agents(),
             {
                 "trajectoryInfo": {
                     "version": CURRENT_VERSION.TRAJECTORY_INFO,

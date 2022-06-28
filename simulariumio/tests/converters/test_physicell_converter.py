@@ -382,7 +382,7 @@ from simulariumio.tests.conftest import assert_buffers_equal
             {},
             marks=pytest.mark.raises(exception=AttributeError),
         ),
-        # metaballs
+        # sphere groups for owner cells and subcells
         (
             PhysicellData(
                 meta_data=MetaData(

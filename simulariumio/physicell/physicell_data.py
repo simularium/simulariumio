@@ -71,11 +71,11 @@ class PhysicellData:
         max_owner_cells : int (optional)
             MAX_OWNER_CELLS constant from PhysiCell OwnerCell module.
             Every cell with ID >= this will be displayed
-            as part of a collection of subcell metaballs
+            as part of a group of subcell spheres
             Default: all cells will be rendered as individual spheres
         owner_cell_display_name : str (optional)
             Display name for cells that are rendered
-            as colletions of metaballs
+            as groups of spheres
             Default: "cell"
         time_units: UnitData (optional)
             multiplier and unit name for time values
