@@ -4,7 +4,7 @@
 import pytest
 
 from simulariumio.cellpack import CellpackConverter, HAND_TYPE, CellpackData
-from simulariumio import InputFileData, UnitData, DisplayData
+from simulariumio import InputFileData, UnitData, DisplayData, JsonWriter
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     DISPLAY_TYPE,
@@ -24,7 +24,7 @@ data = CellpackData(
 )
 
 converter = CellpackConverter(data)
-results = converter._read_trajectory_data(converter._data)
+results = JsonWriter.format_trajectory_data(converter._data)
 
 
 @pytest.mark.parametrize(
@@ -65,7 +65,7 @@ data_with_display_data = CellpackData(
 )
 
 converter_display_data = CellpackConverter(data_with_display_data)
-results_display_data = converter._read_trajectory_data(converter_display_data._data)
+results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
 
 
 @pytest.mark.parametrize(
