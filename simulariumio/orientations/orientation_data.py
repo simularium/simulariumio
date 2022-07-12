@@ -111,7 +111,7 @@ class OrientationData:
             Which neighbor to check, 0 or 1?
         """
         if len(self.neighbor_data) < neighbor_index + 1:
-            return False
+            return None
         return self.neighbor_data[neighbor_index].relative_position
 
     def get_neighbor_relative_rotation_matrix(self, neighbor_index: int) -> np.ndarray:
@@ -124,7 +124,7 @@ class OrientationData:
             Which neighbor to check, 0 or 1?
         """
         if len(self.neighbor_data) < neighbor_index + 1:
-            return False
+            return None
         return self.neighbor_data[neighbor_index].relative_rotation_matrix
 
     def __str__(self):

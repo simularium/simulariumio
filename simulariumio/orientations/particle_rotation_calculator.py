@@ -140,7 +140,7 @@ class ParticleRotationCalculator:
         )
 
     def _calculate_current_rot_matrix_with_neighbor_rot(
-        self, neighbor_current_rot_matrix: np.ndarray
+        self, neighbor_rot_calculator: ParticleRotationCalculator
     ):
         """
         Use the neighbor's rotation matrix and the rotation offset
@@ -150,7 +150,7 @@ class ParticleRotationCalculator:
         (
             neighbor_zero_orientation,
             index1,
-            index2,
+            _,
         ) = self._match_orientation_data_with_one_neighbor(
             neighbor_type_name, [self.type_name]
         )
@@ -162,10 +162,33 @@ class ParticleRotationCalculator:
                 1 if index1 < 0 else 0
             )
         )
-        self.current_rot_matrix = np.matmul(
-            neighbor_current_rot_matrix, np.linalg.inv(relative_rotation_matrix)
-            # relative_rotation_matrix, neighbor_current_rot_matrix
-        )
+        
+        # neighbor's current [180.   0.   0.]
+        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(neighbor_rot_calculator.current_rot_matrix)))  
+        
+        # - neighbor's zero  [180.   0.   0.]
+        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(neighbor_rot_calculator.zero_rot_matrix)))  
+        
+        # = neighbor's offset [  0.           0.         -29.60445075]
+        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(neighbor_rot_calculator._get_offset_rot_matrix())))  
+        
+        # relative rotation [180.   0. -90.]
+        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(relative_rotation_matrix)))  
+    
+        if relative_rotation_matrix is not None:
+            self.current_rot_matrix = np.matmul(
+                neighbor_rot_calculator._get_offset_rot_matrix(), relative_rotation_matrix
+            )
+    
+        # zero [ 180.    0. -180.]
+        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(self.zero_rot_matrix)))  
+        
+        # current [180.           0.         -60.39554925]
+        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(self.current_rot_matrix)))  
+        
+        # x = np.matmul(self.current_rot_matrix, np.linalg.inv(self.zero_rot_matrix))
+        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(x)))  # [180.   0.   0.]
+    
 
     def _calculate_current_rot_matrix_randomly_from_neighbor(self):
         """
@@ -246,20 +269,19 @@ class ParticleRotationCalculator:
         self._calculate_zero_rot_matrix()
         # get the neighbor's current rotation matrix
         neighbor_id = self.neighbor_ids[self.neighbor_index]
-        neighbor_current_rot_matrix = other_rotation_data[
-            neighbor_id
-        ].current_rot_matrix
-        if neighbor_current_rot_matrix is not None:
+        neighbor_rot_calculator = other_rotation_data[neighbor_id]
+        if neighbor_rot_calculator.current_rot_matrix is not None:
             # neighbor rotation matrix is set,
             # so try to use relative rotation matrix
             self._calculate_current_rot_matrix_with_neighbor_rot(
-                neighbor_current_rot_matrix
+                neighbor_rot_calculator
             )
         if self.current_rot_matrix is None:
             # neighbor's rotation matrix is not set,
             # or failed to calculate rotation from it,
             # so calculate a random rotation matrix around the neighbor axis
-            self._calculate_current_rot_matrix_randomly_from_neighbor()
+            return None
+            # self._calculate_current_rot_matrix_randomly_from_neighbor()
 
     def _get_offset_rot_matrix(self) -> np.ndarray:
         """

@@ -69,18 +69,22 @@ class ReaddyConverter(TrajectoryConverter):
         if topology_records is None:
             return None
         result = {}
-        for top in topology_records[time_index]:
-            for e1, e2 in top.edges:
-                particle_id = int(top.particles[e1])
-                neighbor_id = int(top.particles[e2])
-                if particle_id not in result:
-                    result[particle_id] = []
-                if neighbor_id not in result:
-                    result[neighbor_id] = []
-                if neighbor_id not in result[particle_id]:
-                    result[particle_id].append(neighbor_id)
-                if particle_id not in result[neighbor_id]:
-                    result[neighbor_id].append(particle_id)
+        try:
+            for top in topology_records[time_index]:
+                for e1, e2 in top.edges:
+                    particle_id = int(top.particles[e1])
+                    neighbor_id = int(top.particles[e2])
+                    if particle_id not in result:
+                        result[particle_id] = []
+                    if neighbor_id not in result:
+                        result[neighbor_id] = []
+                    if neighbor_id not in result[particle_id]:
+                        result[particle_id].append(neighbor_id)
+                    if particle_id not in result[neighbor_id]:
+                        result[neighbor_id].append(particle_id)
+        except:
+            x = len(topology_records)
+            raise Exception(f"{time_index}\n\n{x}")
         return result
 
     @staticmethod
@@ -102,24 +106,19 @@ class ReaddyConverter(TrajectoryConverter):
         particle_id = ids[time_index][agent_index]
         particle_type_name = traj.species_name(type_ids[time_index][agent_index])
         particle_position = positions[time_index][agent_index]
+        neighbor_ids = edges[particle_id] if particle_id in edges else []
         neighbor_type_names = []
         neighbor_positions = []
-        try:
-            for neighbor_id in edges[particle_id]:
-                neighbor_index = agent_index_for_particle_id[time_index][neighbor_id]
-                neighbor_type_names.append(
-                    traj.species_name(type_ids[time_index][neighbor_index])
-                )
-                neighbor_positions.append(positions[time_index][neighbor_index])
-        except:
-            print(time_index)
-            print(particle_id)
-            print(ids[time_index])
-            raise Exception(edges)
+        for neighbor_id in neighbor_ids:
+            neighbor_index = agent_index_for_particle_id[time_index][neighbor_id]
+            neighbor_type_names.append(
+                traj.species_name(type_ids[time_index][neighbor_index])
+            )
+            neighbor_positions.append(positions[time_index][neighbor_index])
         return ParticleRotationCalculator(
             particle_type_name,
             particle_position,
-            edges[particle_id],
+            neighbor_ids,
             neighbor_type_names,
             neighbor_positions,
             input_data.zero_orientations,
