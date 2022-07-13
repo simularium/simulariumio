@@ -249,8 +249,7 @@ class Writer(ABC):
                         data[agent_index]
                         + (
                             V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
-                            + 1
-                            - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
+                            + 1 - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                         )
                     )
                     get_n_subpoints = False

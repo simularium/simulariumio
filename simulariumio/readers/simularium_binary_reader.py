@@ -8,7 +8,7 @@ from typing import Any, Dict
 import numpy as np
 
 from ..data_objects import InputFileData
-from ..constants import BINARY_SETTINGS
+from ..constants import BINARY_SETTINGS, BINARY_BLOCK_TYPE
 from ..exceptions import DataError
 from .binary_info import BinaryFileData, BinaryBlockInfo
 
@@ -42,7 +42,10 @@ class SimulariumBinaryReader:
         Parse header of data from a .simularium binary file
         """
         id_length = len(BINARY_SETTINGS.FILE_IDENTIFIER)
-        pos = id_length + 3 * BINARY_SETTINGS.BYTES_PER_VALUE
+        pos = (
+            id_length
+            + BINARY_SETTINGS.HEADER_CONSTANT_N_VALUES * BINARY_SETTINGS.BYTES_PER_VALUE
+        )
         _, _, binary_version, n_blocks = struct.unpack(
             f"{id_length}sIII", data_as_bytes[:pos]
         )
@@ -52,7 +55,11 @@ class SimulariumBinaryReader:
                 f"version > 1 up to current version {BINARY_SETTINGS.VERSION}, "
                 f"found {binary_version}"
             )
-        block_info_length = 3 * BINARY_SETTINGS.BYTES_PER_VALUE * n_blocks
+        block_info_length = (
+            BINARY_SETTINGS.HEADER_N_VALUES_PER_BLOCK
+            * BINARY_SETTINGS.BYTES_PER_VALUE
+            * n_blocks
+        )
         block_info = struct.unpack(
             n_blocks * "III",
             data_as_bytes[pos : pos + block_info_length],
@@ -174,18 +181,21 @@ class SimulariumBinaryReader:
             block_type_id = SimulariumBinaryReader._binary_block_type(
                 block_index, block_info, binary_data.int_view
             )
-            if block_type_id == 0:
+            if block_type_id == BINARY_BLOCK_TYPE.SPATIAL_DATA_JSON.value:
                 block_type = "spatialData"
                 data_type = "JSON"
-            elif block_type_id == 1:
+            elif block_type_id == BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value:
                 block_type = "trajectoryInfo"
                 data_type = "JSON"
-            elif block_type_id == 2:
+            elif block_type_id == BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value:
                 block_type = "plotData"
                 data_type = "JSON"
-            if block_type_id == 3:
+            elif block_type_id == BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value:
                 block_type = "spatialData"
                 data_type = "binary"
+            else:
+                print(f"Binary block type ID = {block_type_id} is not supported")
+                continue
             if block_type in found_blocks:
                 print(
                     f"WARNING: More than one {block_type} block found, "
@@ -196,9 +206,7 @@ class SimulariumBinaryReader:
                     block_index, block_info, binary_data.byte_view
                 )
             elif block_type == "spatialData":
-                result[
-                    "spatialData"
-                ] = SimulariumBinaryReader._binary_block_spatial_data(
+                result[block_type] = SimulariumBinaryReader._binary_block_spatial_data(
                     block_index,
                     block_info,
                     binary_data.int_view,
