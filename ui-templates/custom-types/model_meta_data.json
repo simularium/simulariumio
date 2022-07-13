@@ -8,6 +8,7 @@
                 "data_type": "text",
                 "description": "Provide the title of the model",
                 "required": false,
+                "default": "",
                 "help": "If not provided, defaults to none"
             },
             "version": {
@@ -15,6 +16,7 @@
                 "data_type": "text",
                 "description": "Provide the model version",
                 "required": false,
+                "default": "",
                 "help": "If not provided, defaults to none"
             },
             "authors": {
@@ -22,6 +24,7 @@
                 "data_type": "text",
                 "description": "Provide the model author(s)",
                 "required": false,
+                "default": "",
                 "help": "If not provided, defaults to none"
             },
             "description": {
@@ -29,6 +32,7 @@
                 "data_type": "text",
                 "description": "Provide a description of the model",
                 "required": false,
+                "default": "",
                 "help": "If not provided, defaults to none"
             },
             "doi": {
@@ -36,7 +40,8 @@
                 "data_type": "text",
                 "description": "Provide the doi for a publication using this model",
                 "required": false,
-                "validation": "\\\\b10\\\\.(\\\\d+\\\\.*)+[\\\\/](([^\\\\s\\\\.])+\\\\.*)+\\\\b",
+                "default": "",
+                "match": "\\\\b10\\\\.(\\\\d+\\\\.*)+[\\\\/](([^\\\\s\\\\.])+\\\\.*)+\\\\b",
                 "help": "Please provide the DOI code without a URL prefix. If not provided, defaults to none"
             },
             "source_code_url": {
@@ -44,6 +49,7 @@
                 "data_type": "url",
                 "description": "Provide a link to the repository of source code",
                 "required": false,
+                "default": "",
                 "help": "If not provided, defaults to none"
             },
             "source_code_license_url": {
@@ -51,6 +57,7 @@
                 "data_type": "url",
                 "description": "Provide a link to the license for the source code",
                 "required": false,
+                "default": "",
                 "help": "If not provided, defaults to none"
             },
             "input_data_url": {
@@ -58,6 +65,7 @@
                 "data_type": "url",
                 "description": "Provide a link to model configuration or parameter files",
                 "required": false,
+                "default": "",
                 "help": "If not provided, defaults to none"
             },
             "raw_output_data_url": {
@@ -65,6 +73,7 @@
                 "data_type": "url",
                 "description": "Provide a link to raw outputs from the source code",
                 "required": false,
+                "default": "",
                 "help": "If not provided, defaults to none"
             }
         }

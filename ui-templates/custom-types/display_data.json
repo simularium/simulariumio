@@ -14,21 +14,22 @@
                 "data_type": "number",
                 "description": "Provide the scale for geometry or thickness of fiber",
                 "required": false,
-                "help": "If not provided, defaults to 1.0"
+                "help": "If not provided, uses value from the simulation engine or defaults to 1.0"
             },
             "display_type": {
                 "name": "Display type",
                 "data_type": "enum",
                 "description": "type of geometry",
-                "required": false,
-                "help": "If not provided, defaults to Sphere or Fiber depending on the existence of subpoints",
+                "required": true,
                 "python::module": "simulariumio",
                 "python::object": "DISPLAY_TYPE",
                 "options": [
+                    "NONE",
                     "SPHERE",
                     "PDB",
                     "OBJ",
-                    "FIBER"
+                    "FIBER",
+                    "SPHERE_GROUP"
                 ]
             },
             "url": {
@@ -36,6 +37,7 @@
                 "data_type": "url",
                 "description": "link to geometry file if display type is PDB or OBJ",
                 "required": false,
+                "default": "",
                 "help": "If not provided, defaults to none"
             },
             "color": {
@@ -43,6 +45,7 @@
                 "data_type": "color",
                 "description": "color",
                 "required": false,
+                "default": "",
                 "help": "If not provided, uses default colors"
             }
         }

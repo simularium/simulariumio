@@ -14,6 +14,7 @@
                 "data_type": "number",
                 "description": "Provide a multiplier in case values are not in whole units",
                 "required": false,
+                "default": 1.0,
                 "help": "If not provided, defaults to 1.0"
             }
         }

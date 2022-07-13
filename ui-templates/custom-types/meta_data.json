@@ -22,6 +22,7 @@
                 "data_type": "number",
                 "description": "Provide a multiplier for 3D coordinates if the visualization is too large or too small",
                 "required": false,
+                "default": 1.0,
                 "help": "If not provided, defaults to 1.0"
             },
             "trajectory_title": {
@@ -29,7 +30,8 @@
                 "data_type": "text",
                 "description": "Provide a title for this trajectory, possibly describing parameters",
                 "required": false,
-                "help": "If not provided, defaults to none"
+                "default": "",
+                "help": "If not provided, defaults to have no title"
             },
             "model_meta_data": {
                 "name": "Model metadata",
