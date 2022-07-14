@@ -38,7 +38,7 @@ Both JSON and binary contain the following data structured like:
       * ex: "actA" is parsed as agent type "actA" with no state information
       * if no name is provided, the agent type ID, an integer number, is used for display
     * geometry - rendering information for each agent type (note: only the first 100,000 geometry files will be loaded)
-      * displayType - “SPHERE”, “FIBER”, “PDB”, “OBJ”, or "METABALLS"
+      * displayType - “SPHERE”, “FIBER”, “PDB”, “OBJ”, or "SPHERE_GROUP"
         * Default to “SPHERE”
         * for PDB, can provide either ID or full URL
       * url (optional)- local path or web URL, web URLs are required for streaming or loading the trajectory by URL
