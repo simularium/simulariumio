@@ -46,7 +46,7 @@ class MedyanConverter(TrajectoryConverter):
         and determine whether to also draw the endpoints as spheres
         """
         if object_type == "motor" or object_type == "linker":
-            type_name = MedyanConverter._get_output_type_name(
+            type_name = MedyanConverter._get_display_type_name(
                 line, object_type, input_data
             )
             if type_name in input_data.agents_with_endpoints:
@@ -54,7 +54,7 @@ class MedyanConverter(TrajectoryConverter):
         return False
 
     @staticmethod
-    def _get_output_type_name(
+    def _get_display_type_name(
         line: str, object_type: str, input_data: MedyanData
     ) -> bool:
         """
@@ -181,7 +181,9 @@ class MedyanConverter(TrajectoryConverter):
                     last_tid += 1
                 # type name
                 result.types[time_index].append(
-                    MedyanConverter._get_output_type_name(line, object_type, input_data)
+                    MedyanConverter._get_display_type_name(
+                        line, object_type, input_data
+                    )
                 )
                 # radius
                 radius = (

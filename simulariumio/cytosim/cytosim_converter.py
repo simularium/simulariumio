@@ -102,6 +102,25 @@ class CytosimConverter(TrajectoryConverter):
         return result
 
     @staticmethod
+    def _get_display_type_name_from_raw(raw_tid, object_type, display_data):
+        """
+        Get the display type_name given the type ID from Cytosim
+        and the Cytosim object type
+        If there is no DisplayData for this type, add it
+        """
+        if raw_tid not in display_data:
+            type_name = object_type[:-1] + str(raw_tid)
+            display_data[raw_tid] = DisplayData(
+                name=type_name,
+                display_type=DISPLAY_TYPE.FIBER
+                if "fiber" in object_type
+                else DISPLAY_TYPE.SPHERE,
+            )
+        else:
+            type_name = display_data[raw_tid].name
+        return type_name
+
+    @staticmethod
     def _parse_object(
         object_type: str,
         data_columns: List[str],
@@ -135,17 +154,11 @@ class CytosimConverter(TrajectoryConverter):
             used_unique_IDs.append(uid)
         result.unique_ids[time_index][agent_index] = uids[raw_uid]
         # type name
-        if raw_tid not in object_info.display_data:
-            type_name = object_type[:-1] + str(raw_tid)
-            object_info.display_data[raw_tid] = DisplayData(
-                name=type_name,
-                display_type=DISPLAY_TYPE.FIBER
-                if "fiber" in object_type
-                else DISPLAY_TYPE.SPHERE,
+        result.types[time_index].append(
+            CytosimConverter._get_display_type_name_from_raw(
+                raw_tid, object_type, object_info.display_data
             )
-        else:
-            type_name = object_info.display_data[raw_tid].name
-        result.types[time_index].append(type_name)
+        )
         # radius
         result.radii[time_index][agent_index] = scale_factor * (
             float(object_info.display_data[raw_tid].radius)

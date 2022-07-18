@@ -8,8 +8,8 @@ import numpy as np
 import readdy
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, DimensionData
-from ..constants import VIZ_TYPE
+from ..data_objects import TrajectoryData, AgentData, DimensionData, DisplayData
+from ..constants import DISPLAY_TYPE, VIZ_TYPE
 from .readdy_data import ReaddyData
 
 ###############################################################################
@@ -74,31 +74,27 @@ class ReaddyConverter(TrajectoryConverter):
         for time_index in range(data_dimensions.total_steps):
             new_agent_index = 0
             for agent_index in range(int(n_agents[time_index])):
-                if (
-                    traj.species_name(type_ids[time_index][agent_index])
-                    in input_data.ignore_types
-                ):
+                tid = type_ids[time_index][agent_index]
+                if traj.species_name(tid) in input_data.ignore_types:
                     continue
-                raw_type_name = traj.species_name(type_ids[time_index][agent_index])
+                raw_type_name = traj.species_name(tid)
                 display_data = (
                     input_data.display_data[raw_type_name]
                     if raw_type_name in input_data.display_data
-                    else None
+                    else DisplayData(
+                        name=raw_type_name, display_type=DISPLAY_TYPE.SPHERE
+                    )
                 )
                 result.unique_ids[time_index][new_agent_index] = ids[time_index][
                     agent_index
                 ]
-                result.types[time_index].append(
-                    display_data.name if display_data is not None else raw_type_name
-                )
+                result.types[time_index].append(display_data.name)
                 result.positions[time_index][new_agent_index] = (
                     input_data.meta_data.scale_factor
                     * positions[time_index][agent_index]
                 )
                 result.radii[time_index][new_agent_index] = (
-                    display_data.radius
-                    if display_data is not None and display_data.radius is not None
-                    else 1.0
+                    display_data.radius if display_data.radius is not None else 1.0
                 )
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index

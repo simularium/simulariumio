@@ -17,9 +17,7 @@ from ..data_objects import (
     AgentData,
     UnitData,
     DimensionData,
-    DisplayData,
 )
-from ..constants import DISPLAY_TYPE
 from .mcell_data import McellData
 
 ###############################################################################
@@ -216,15 +214,12 @@ class McellConverter(TrajectoryConverter):
                     n_chars_type_name.fromfile(mol_file, 1)
                     type_name_array = array.array("B")
                     type_name_array.fromfile(mol_file, n_chars_type_name[0])
-                    type_name = type_name_array.tobytes().decode()
-                    if type_name not in input_data.display_data:
-                        display_type_name = type_name
-                        input_data.display_data[type_name] = DisplayData(
-                            name=type_name,
-                            display_type=DISPLAY_TYPE.SPHERE,
+                    raw_type_name = type_name_array.tobytes().decode()
+                    display_type_name = (
+                        TrajectoryConverter._get_display_type_name_from_raw(
+                            raw_type_name, input_data.display_data
                         )
-                    else:
-                        display_type_name = input_data.display_data[type_name].name
+                    )
                     # get positions and rotations
                     is_surface_mol = array.array("B")
                     is_surface_mol.fromfile(mol_file, 1)
@@ -264,10 +259,11 @@ class McellConverter(TrajectoryConverter):
                         input_data.meta_data.scale_factor
                         * BLENDER_GEOMETRY_SCALE_FACTOR
                         * (
-                            input_data.display_data[type_name].radius
-                            if type_name in input_data.display_data
-                            and input_data.display_data[type_name].radius is not None
-                            else molecule_info[type_name]["display"]["scale"]
+                            input_data.display_data[raw_type_name].radius
+                            if raw_type_name in input_data.display_data
+                            and input_data.display_data[raw_type_name].radius
+                            is not None
+                            else molecule_info[raw_type_name]["display"]["scale"]
                         )
                         * np.ones(n_mols)
                     )

@@ -102,15 +102,11 @@ class SpringsaladConverter(TrajectoryConverter):
                 result.n_agents[time_index] += 1
                 result.unique_ids[time_index][agent_index] = int(cols[1])
                 raw_type_name = cols[3]
-                if raw_type_name not in input_data.display_data:
-                    display_type_name = raw_type_name
-                    input_data.display_data[display_type_name] = DisplayData(
-                        name=display_type_name,
-                        display_type=DISPLAY_TYPE.SPHERE,
+                result.types[time_index].append(
+                    TrajectoryConverter._get_display_type_name_from_raw(
+                        raw_type_name, input_data.display_data
                     )
-                else:
-                    display_type_name = input_data.display_data[raw_type_name].name
-                result.types[time_index].append(display_type_name)
+                )
                 position = input_data.meta_data.scale_factor * np.array(
                     [float(cols[4]), float(cols[5]), float(cols[6])]
                 )

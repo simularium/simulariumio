@@ -7,8 +7,7 @@ from typing import List
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, DimensionData, DisplayData
-from ..constants import DISPLAY_TYPE
+from ..data_objects import TrajectoryData, AgentData, DimensionData
 from .smoldyn_data import SmoldynData
 
 ###############################################################################
@@ -88,15 +87,11 @@ class SmoldynConverter(TrajectoryConverter):
                     cols[4] if is_3D else cols[3]
                 )
                 raw_type_name = str(cols[0])
-                if raw_type_name in input_data.display_data:
-                    type_name = input_data.display_data[raw_type_name].name
-                else:
-                    type_name = raw_type_name
-                    input_data.display_data[raw_type_name] = DisplayData(
-                        name=raw_type_name,
-                        display_type=DISPLAY_TYPE.SPHERE,
+                result.types[time_index].append(
+                    TrajectoryConverter._get_display_type_name_from_raw(
+                        raw_type_name, input_data.display_data
                     )
-                result.types[time_index].append(type_name)
+                )
                 result.positions[time_index][
                     agent_index
                 ] = input_data.meta_data.scale_factor * np.array(
