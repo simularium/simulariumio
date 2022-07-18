@@ -19,7 +19,7 @@
             },
             "scale_factor": {
                 "name": "Scale factor",
-                "data_type": "number",
+                "data_type": "float",
                 "description": "Provide a multiplier for 3D coordinates if the visualization is too large or too small",
                 "required": false,
                 "default": 1.0,

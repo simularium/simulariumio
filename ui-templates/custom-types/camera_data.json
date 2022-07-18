@@ -41,7 +41,7 @@
             },
             "fov_degrees": {
                 "name": "FOV (degrees)",
-                "data_type": "number",
+                "data_type": "float",
                 "description": "field of view in degrees",
                 "required": false,
                 "default": 75.0,

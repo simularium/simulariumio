@@ -24,7 +24,7 @@ Each custom data type has:
 
 ### Base types
 
-* `number`
+* `float`
 * `text`
 * `url`
 * `color`
@@ -48,4 +48,5 @@ Each custom data type has:
     * `python::module` - Python module for the enum
     * `python::object` - Python name of the enum
     * `options` - enum values that a user can choose
-* `unit_data`
+* `time_unit_data`
+* `space_unit_data`

@@ -3,6 +3,12 @@
         "python::module": "simulariumio.smoldyn",
         "python::object": "SmoldynData",
         "parameters": {
+            "file_contents": {
+                "name": "File",
+                "data_type": "file",
+                "description": "A Smoldyn file",
+                "required": true
+            },
             "meta_data": {
                 "name": "Metadata",
                 "data_type": "meta_data",
@@ -33,14 +39,14 @@
             },
             "time_units": {
                 "name": "Time units",
-                "data_type": "unit_data",
+                "data_type": "time_unit_data",
                 "description": "Provide units for time values",
                 "required": false,
                 "help": "If not provided, defaults to seconds"
             },
             "spatial_units": {
                 "name": "Spatial units",
-                "data_type": "unit_data",
+                "data_type": "space_unit_data",
                 "description": "Provide units for 3D coordinates",
                 "required": false,
                 "help": "If not provided, defaults to meters"

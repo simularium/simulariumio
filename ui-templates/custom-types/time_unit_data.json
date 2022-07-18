@@ -1,0 +1,59 @@
+{
+    "time_unit_data": {
+        "python::module": "simulariumio",
+        "python::object": "UnitData",
+        "parameters": {
+            "name": {
+                "name": "Name",
+                "data_type": "enum",
+                "description": "time unit name",
+                "required": true,
+                "options": [
+                    "second",
+                    "decisecond",
+                    "centisecond",
+                    "millisecond",
+                    "microsecond",
+                    "nanosecond",
+                    "picosecond",
+                    "femtosecond",
+                    "attosecond",
+                    "zeptosecond",
+                    "yoctosecond",
+                    "decasecond",
+                    "hectosecond",
+                    "kilosecond",
+                    "megasecond",
+                    "gigasecond",
+                    "terasecond",
+                    "petasecond",
+                    "exasecond",
+                    "zettasecond",
+                    "yottasecond",
+                    "minute",
+                    "hour",
+                    "day",
+                    "week",
+                    "fortnight",
+                    "month",
+                    "year",
+                    "century",
+                    "millennium",
+                    "eon",
+                    "shake",
+                    "svedberg",
+                    "atomic_unit_of_time",
+                    "planck_time"
+                ]
+            },
+            "magnitude": {
+                "name": "Magnitude",
+                "data_type": "float",
+                "description": "Provide a multiplier in case values are not in whole units",
+                "required": false,
+                "default": 1.0,
+                "help": "If not provided, defaults to 1.0"
+            }
+        }
+    }
+}
