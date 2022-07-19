@@ -3,7 +3,7 @@
 
 import json
 import logging
-from typing import List
+from typing import List, Dict
 import copy
 
 import numpy as np
@@ -56,7 +56,9 @@ class TrajectoryConverter:
         self._data = input_data
 
     @staticmethod
-    def _get_display_type_name_from_raw(raw_type_name, display_data):
+    def _get_display_type_name_from_raw(
+        raw_type_name: str, display_data: Dict[str, DisplayData]
+    ) -> str:
         """
         Get the display type_name from the display data
         given the raw type name from the engine.
