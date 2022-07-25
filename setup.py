@@ -127,7 +127,7 @@ setup(
     test_suite="simulariumio/tests",
     tests_require=test_requirements,
     extras_require=extra_requirements,
-    url="https://github.com/allen-cell-animated/simulariumio",
+    url="https://github.com/simularium/simulariumio",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
     version="1.6.2",

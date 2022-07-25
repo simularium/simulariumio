@@ -1,9 +1,9 @@
 ## Simularium repositories
 This repository is part of the Simularium project ([simularium.allencell.org](https://simularium.allencell.org)), which includes repositories:
-- [simulariumIO](https://github.com/allen-cell-animated/simulariumio) - Python package that converts simulation outputs to the format consumed by the Simularium viewer website
-- [simularium-engine](https://github.com/allen-cell-animated/simularium-engine) - C++ backend application that interfaces with biological simulation engines and serves simulation data to the front end website
-- [simularium-viewer](https://github.com/allen-cell-animated/simularium-viewer) - NPM package to view Simularium trajectories in 3D
-- [simularium-website](https://github.com/allen-cell-animated/simularium-website) - Front end website for the Simularium project, includes the Simularium viewer
+- [simulariumIO](https://github.com/simularium/simulariumio) - Python package that converts simulation outputs to the format consumed by the Simularium viewer website
+- [simularium-engine](https://github.com/simularium/simularium-engine) - C++ backend application that interfaces with biological simulation engines and serves simulation data to the front end website
+- [simularium-viewer](https://github.com/simularium/simularium-viewer) - NPM package to view Simularium trajectories in 3D
+- [simularium-website](https://github.com/simularium/simularium-website) - Front end website for the Simularium project, includes the Simularium viewer
 
 <br/>
 
@@ -12,9 +12,9 @@ This repository is part of the Simularium project ([simularium.allencell.org](ht
 <br/>
 
 # SimulariumIO
-[![Build Status](https://github.com/allen-cell-animated/simulariumio/workflows/Build%20Master/badge.svg)](https://github.com/allen-cell-animated/simulariumio/actions)
-[![Documentation](https://github.com/allen-cell-animated/simulariumio/workflows/Documentation/badge.svg)](https://allen-cell-animated.github.io/simulariumio)
-[![Code Coverage](https://codecov.io/gh/allen-cell-animated/simulariumio/branch/master/graph/badge.svg)](https://codecov.io/gh/allen-cell-animated/simulariumio)
+[![Build Status](https://github.com/simularium/simulariumio/workflows/Build%20Master/badge.svg)](https://github.com/simularium/simulariumio/actions)
+[![Documentation](https://github.com/simularium/simulariumio/workflows/Documentation/badge.svg)](https://simularium.github.io/simulariumio)
+[![Code Coverage](https://codecov.io/gh/simularium/simulariumio/branch/master/graph/badge.svg)](https://codecov.io/gh/simularium/simulariumio)
 
 ---
 ---
@@ -127,7 +127,7 @@ Rendering capabilities planned for future:
 
 **Stable Release:** `pip install simulariumio`
 
-**Development Head:** `pip install git+ssh://git@github.com/allen-cell-animated/simulariumio.git`
+**Development Head:** `pip install git+ssh://git@github.com/simularium/simulariumio.git`
 
 **Please note** that to run the Jupyter notebook examples you should also install Jupyter, either with `pip install jupyter`, or by installing SimulariumIO with the tutorial requirements: `pip install simulariumio[tutorial]`
 
@@ -271,7 +271,7 @@ display_data={
 <br/>
 
 ## Documentation
-For full package documentation please visit [allen-cell-animated.github.io/simulariumio](https://allen-cell-animated.github.io/simulariumio).
+For full package documentation please visit [simularium.github.io/simulariumio](https://simularium.github.io/simulariumio).
 
 <br/>
 
