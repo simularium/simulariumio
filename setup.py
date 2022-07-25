@@ -63,6 +63,7 @@ dev_requirements = [
     "coverage>=5.1",
     "ipython>=7.15.0",
     "m2r>=0.2.1",
+    "MarkupSafe==2.0.1",
     "jinja2<3",
     "pytest-runner>=5.2",
     "Sphinx>=2.0.0b1,<3",
