@@ -1,3 +1,17 @@
+# NOTE: this module will likely replace the pyMCDS.py module once it is tested further
+#
+# This module provides an optional 3rd argument: a boolean flag to indicate that 
+#    continuum (microenv) data should be read. The flag is True by default (microenv data will be read).
+#    If your model has generated large output files and you only want to extract cell information, you could
+#    set this flag to False.
+#
+#  Example usage:
+#  from pyMCDS_optional_meshes import pyMCDS
+#  mcds = pyMCDS('output00000000.xml')
+#  mcds = pyMCDS('output00000000.xml', '.')   # optional 2nd arg indicating data directory
+#  mcds = pyMCDS('output00000000.xml', '.', False)   # skip over microenv data
+#
+
 import xml.etree.ElementTree as ET
 import numpy as np
 import pandas as pd
@@ -7,10 +21,9 @@ import warnings
 from pathlib import Path
 
 """
-Source: https://github.com/PhysiCell-Tools/python-loader/blob/
-c6b40c0d1042a757c638b9da1ff1b602caad721a/pyMCDS.py
+Source: https://github.com/PhysiCell-Tools/vis3D/blob/
+c25a5da486d7b9ba52407b1460c2a5244eb243dc/Simularium/pyMCDS_optional_meshes.py
 """
-
 
 class pyMCDS:
     """
@@ -18,7 +31,6 @@ class pyMCDS:
     output from a single time step of a PhysiCell Model. This class assumes that
     all output files are stored in the same directory. Data is loaded by reading
     the .xml file for a particular timestep.
-
     Parameters
     ----------
     xml_name: str
@@ -26,16 +38,14 @@ class pyMCDS:
     output_path: str, optional
         String containing the path (relative or absolute) to the directory
         where PhysiCell output files are stored (default= ".")
-
     Attributes
     ----------
     data : dict
         Hierarchical container for all of the data retrieved by parsing the xml
         file and the files referenced therein.
     """
-
-    def __init__(self, xml_file, parse_continuum_variables, output_path="."):
-        self.data = self._read_xml(xml_file, parse_continuum_variables, output_path)
+    def __init__(self, xml_file, parse_continuum_variables=True, output_path="."):
+        self.data = self._read_xml(xml_file, output_path, parse_continuum_variables)
 
     # METADATA RELATED FUNCTIONS
 
@@ -48,13 +58,11 @@ class pyMCDS:
         """
         Return a meshgrid of the computational domain. Can return either full
         3D or a 2D plane for contour plots.
-
         Parameters
         ----------
         flat : bool
             If flat is set to true, we return only the x and y meshgrid.
             Otherwise we return x, y, and z
-
         Returns
         -------
         splitting : list length=2 if flat=True, else length=3
@@ -79,7 +87,6 @@ class pyMCDS:
         """
         This function returns the x, y meshgrid as two numpy arrays. It is
         identical to get_mesh with the option flat=True
-
         Returns
         -------
         splitting : list length=2
@@ -102,7 +109,6 @@ class pyMCDS:
         """
         Returns the space in between voxel centers for the mesh in terms of the
         mesh's spatial units. Assumes that voxel centers fall on integer values.
-
         Returns
         -------
         dx : float
@@ -131,11 +137,9 @@ class pyMCDS:
         """
         Internal function to get the meshgrid indices for the center of a voxel
         that contains the given position.
-
         Note that pyMCDS stores meshgrids as 'cartesian'
         (indexing='xy' in np.meshgrid) which means that we will have
         to use these indices as [j, i, k] on the actual meshgrid objects
-
         Parameters
         ----------
         x : float
@@ -144,7 +148,6 @@ class pyMCDS:
             y-coordinate for the position
         z : float
             z-coordinate for the position
-
         Returns
         -------
         ijk : list length=3
@@ -203,7 +206,6 @@ class pyMCDS:
     def get_substrate_names(self):
         """
         Returns list of chemical species in microenvironment
-
         Returns
         -------
         species_list : array (str), shape=[n_species,]
@@ -220,12 +222,10 @@ class pyMCDS:
         Returns the concentration array for the specified chemical species
         in the microenvironment. Can return either the whole 3D picture, or
         a 2D plane of concentrations.
-
         Parameters
         ----------
         species_name : str
             Name of the chemical species for which to get concentrations
-
         z_slice : float
             z-axis position to use as plane for 2D output. This value must match
             a plane of voxel centers in the z-axis.
@@ -255,7 +255,6 @@ class pyMCDS:
         """
         Return concentrations of each chemical species inside a particular voxel
         that contains the point described in the arguments.
-
         Parameters
         ----------
         x : float
@@ -264,7 +263,6 @@ class pyMCDS:
             y_position for the point of interest
         z : float
             z_position for the point of interest
-
         Returns
         -------
         concs : array, shape=[n_substrates,]
@@ -284,7 +282,6 @@ class pyMCDS:
     def get_cell_df(self):
         """
         Builds DataFrame from data['discrete_cells']
-
         Returns
         -------
         cells_df : pd.Dataframe, shape=[n_cells, n_variables]
@@ -297,7 +294,6 @@ class pyMCDS:
         """
         Returns the names of all of the cell variables tracked in ['discrete cells']
         dictionary
-
         Returns
         -------
         var_list : list, shape=[n_variables]
@@ -312,7 +308,6 @@ class pyMCDS:
         """
         Returns a dataframe for cells in the same voxel as the position given by
         x, y, and z.
-
         Parameters
         ----------
         x : float
@@ -321,7 +316,6 @@ class pyMCDS:
             y_position for the point of interest
         z : float
             z_position for the point of interest
-
         Returns
         -------
         vox_df : pd.DataFrame, shape=[n_cell_in_voxel, n_variables]
@@ -347,7 +341,7 @@ class pyMCDS:
         vox_df = cell_df[inside_voxel]
         return vox_df
 
-    def _read_xml(self, xml_file, parse_continuum_variables, output_path="."):
+    def _read_xml(self, xml_file, output_path=".", parse_continuum_variables=True):
         """
         Does the actual work of initializing MultiCellDS by parsing the xml
         """
@@ -403,24 +397,24 @@ class pyMCDS:
         MCDS["mesh"]["z_coordinates"] = zz
 
         # Voxel data must be loaded from .mat file
-        # voxel_file = mesh_node.find('voxels').find('filename').text
-        # voxel_path = output_path / voxel_file
-        # try:
-        #     initial_mesh = sio.loadmat(voxel_path)['mesh']
-        # except:
-        #     raise FileNotFoundError(
-        #         "No such file or directory:\n'{}' referenced in '{}'".format(
-        #         voxel_path, xml_file)
-        #     )
-        #     sys.exit(1)
-        #
-        # print('Reading {}'.format(voxel_path))
-        #
+        voxel_file = mesh_node.find('voxels').find('filename').text
+        voxel_path = output_path / voxel_file
+        try:
+            initial_mesh = sio.loadmat(voxel_path)['mesh']
+        except:
+            raise FileNotFoundError(
+                "No such file or directory:\n'{}' referenced in '{}'".format(
+                voxel_path, xml_file)
+            )
+            sys.exit(1)
+        
+        print('Reading {}'.format(voxel_path))
+        
         # # center of voxel specified by first three rows [ x, y, z ]
         # # volume specified by fourth row
-        # MCDS['mesh']['voxels'] = {}
-        # MCDS['mesh']['voxels']['centers'] = initial_mesh[:3, :]
-        # MCDS['mesh']['voxels']['volumes'] = initial_mesh[3, :]
+        MCDS['mesh']['voxels'] = {}
+        MCDS['mesh']['voxels']['centers'] = initial_mesh[:3, :]
+        MCDS['mesh']['voxels']['volumes'] = initial_mesh[3, :]
 
         if parse_continuum_variables:
             # Continuum_variables, unlike in the matlab version the individual chemical
@@ -518,16 +512,40 @@ class pyMCDS:
         data_labels = []
         # iterate over 'label's which are children of 'labels' these will be used to
         # label data arrays
-        for label in cell_node.find("labels").findall("label"):
+        n = 0 
+        for label in cell_node.find('labels').findall('label'):
             # I don't like spaces in my dictionary keys
-            fixed_label = label.text.replace(" ", "_")
-            if int(label.get("size")) > 1:
+            fixed_label = label.text.replace(' ', '_')
+            nlabels = int(label.get('size'))
+            if nlabels > 1: 
                 # tags to differentiate repeated labels (usually space related)
-                dir_label = ["_x", "_y", "_z"]
-                for i in range(int(label.get("size"))):
+                # print("n=",n)
+                spatial_type = False; 
+                if( fixed_label == 'position' ):
+                    spatial_type = True; 
+                elif( fixed_label == 'orientation' ):
+                    spatial_type = True; 
+                elif( fixed_label == 'velocity' ):
+                    spatial_type = True; 
+                elif( fixed_label == 'migration_bias_direction' ):
+                    spatial_type = True; 
+                elif( fixed_label == 'motility_vector' ):
+                    spatial_type = True; 
+
+                if( nlabels == 3 and spatial_type == True ):
+                    dir_label = ['_x', '_y', '_z']
+                else:
+                    dir_label = []; 
+                    for nn in range(100):
+                        dir_label.append( '_%u' % nn )
+                # print( dir_label )
+                for i in range(int(label.get('size'))):
+                    # print( fixed_label + dir_label[i] )
                     data_labels.append(fixed_label + dir_label[i])
             else:
                 data_labels.append(fixed_label)
+            # print(fixed_label)
+            n += 1
 
         # load the file
         cell_file = cell_node.find("filename").text

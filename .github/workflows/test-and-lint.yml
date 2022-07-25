@@ -50,5 +50,5 @@ jobs:
     - name: Lint with flake8
       shell: bash -l {0}
       run: |
-        flake8 simulariumio --count --verbose --show-source --statistics
-        black --check --exclude vendor simulariumio
+        flake8 simulariumio --count --verbose --show-source --statistics --exclude=*/dep
+        black --check --exclude=".*\/dep\/.*|vendor" simulariumio
