@@ -69,22 +69,18 @@ class ReaddyConverter(TrajectoryConverter):
         if topology_records is None:
             return None
         result = {}
-        try:
-            for top in topology_records[time_index]:
-                for e1, e2 in top.edges:
-                    particle_id = int(top.particles[e1])
-                    neighbor_id = int(top.particles[e2])
-                    if particle_id not in result:
-                        result[particle_id] = []
-                    if neighbor_id not in result:
-                        result[neighbor_id] = []
-                    if neighbor_id not in result[particle_id]:
-                        result[particle_id].append(neighbor_id)
-                    if particle_id not in result[neighbor_id]:
-                        result[neighbor_id].append(particle_id)
-        except:
-            x = len(topology_records)
-            raise Exception(f"{time_index}\n\n{x}")
+        for top in topology_records[time_index]:
+            for e1, e2 in top.edges:
+                particle_id = int(top.particles[e1])
+                neighbor_id = int(top.particles[e2])
+                if particle_id not in result:
+                    result[particle_id] = []
+                if neighbor_id not in result:
+                    result[neighbor_id] = []
+                if neighbor_id not in result[particle_id]:
+                    result[particle_id].append(neighbor_id)
+                if particle_id not in result[neighbor_id]:
+                    result[neighbor_id].append(particle_id)
         return result
 
     @staticmethod
