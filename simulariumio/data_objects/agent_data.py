@@ -237,6 +237,7 @@ class AgentData:
             if "geometry" not in type_info:
                 continue
             result[type_info["name"]] = DisplayData(
+                name=type_info["name"],
                 display_type=type_info["geometry"]["displayType"],
                 url=type_info["geometry"]["url"]
                 if "url" in type_info["geometry"]
@@ -428,12 +429,19 @@ class AgentData:
             ),
         )
 
+    def total_timesteps(self) -> int:
+        """
+        Get number of timesteps
+        Use n_timesteps to limit times if it has been provided
+        """
+        return self.n_timesteps if self.n_timesteps >= 0 else len(self.times)
+
     def get_dimensions(self) -> DimensionData:
         """
         Get the dimensions of this object's numpy arrays
         """
         return DimensionData(
-            total_steps=self.times.shape[0],
+            total_steps=self.total_timesteps(),
             max_agents=self.viz_types.shape[1],
             max_subpoints=self.subpoints.shape[2]
             if len(self.subpoints.shape) > 2

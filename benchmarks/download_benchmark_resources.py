@@ -32,7 +32,7 @@ class Args(argparse.Namespace):
             description=(
                 "Download files used for testing this project. This will download "
                 "all the required test resources and place them in the "
-                "`tests/resources` directory."
+                "`benchmarks/resources` directory."
             ),
         )
 

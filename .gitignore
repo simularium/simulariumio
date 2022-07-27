@@ -139,6 +139,7 @@ cython_debug/
 
 .DS_Store
 *.simularium
+.vscode
 
 # Ignore benchmark data
 benchmarks/resources/

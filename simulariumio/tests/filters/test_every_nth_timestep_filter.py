@@ -3,7 +3,7 @@
 
 import pytest
 
-from simulariumio import FileConverter, InputFileData
+from simulariumio import FileConverter, InputFileData, JsonWriter
 from simulariumio.filters import EveryNthTimestepFilter
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
@@ -608,6 +608,6 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 def test_every_nth_timestep_filter(input_path, _filter, expected_data):
     converter = FileConverter(input_file=InputFileData(file_path=input_path))
     filtered_data = converter.filter_data([_filter])
-    buffer_data = converter._read_trajectory_data(filtered_data)
+    buffer_data = JsonWriter.format_trajectory_data(filtered_data)
     assert expected_data == buffer_data
-    assert converter._check_agent_ids_are_unique_per_frame(buffer_data)
+    assert JsonWriter._check_agent_ids_are_unique_per_frame(buffer_data)

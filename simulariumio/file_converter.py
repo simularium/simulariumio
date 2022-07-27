@@ -8,6 +8,7 @@ from typing import Any, Dict
 from .trajectory_converter import TrajectoryConverter
 from .data_objects import TrajectoryData, UnitData, InputFileData
 from .constants import CURRENT_VERSION
+from .readers import SimulariumBinaryReader
 
 ###############################################################################
 
@@ -19,22 +20,24 @@ log = logging.getLogger(__name__)
 class FileConverter(TrajectoryConverter):
     def __init__(self, input_file: InputFileData):
         """
-        This object loads the data in .simularium JSON format
-        at the input file
+        This object loads data from the input file in .simularium format.
 
         Parameters
         ----------
         input_file: InputFileData
-            A InputFileData object containing a string path
-            or string contents for the .simularium JSON file to load
+            A InputFileData object containing .simularium data to load
         """
-        print("Reading Simularium JSON -------------")
-        buffer_data = json.loads(input_file.get_contents())
+        if input_file._is_binary_file():
+            print("Reading Simularium binary -------------")
+            buffer_data = SimulariumBinaryReader.load_binary(input_file)
+        else:
+            print("Reading Simularium JSON -------------")
+            buffer_data = json.loads(input_file.get_contents())
         if (
             int(buffer_data["trajectoryInfo"]["version"])
             < CURRENT_VERSION.TRAJECTORY_INFO
         ):
-            buffer_data = self.update_trajectory_info_version(buffer_data)
+            buffer_data = FileConverter.update_trajectory_info_version(buffer_data)
         self._data = TrajectoryData.from_buffer_data(buffer_data)
 
     @staticmethod

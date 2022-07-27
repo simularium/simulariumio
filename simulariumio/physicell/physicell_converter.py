@@ -38,7 +38,7 @@ class PhysicellConverter(TrajectoryConverter):
         self._data = self._read(input_data)
 
     @staticmethod
-    def _load_data(path_to_output_dir) -> np.ndarray:
+    def _load_data(path_to_output_dir: str, nth_timestep_to_read: int) -> np.ndarray:
         """
         Load simulation data from PhysiCell MultiCellDS XML files
         """
@@ -46,7 +46,8 @@ class PhysicellConverter(TrajectoryConverter):
         file_mapping = {}
         for f in files:
             index = int(f.name[f.name.index("output") + 6 :].split(".")[0])
-            file_mapping[index] = f
+            if index % nth_timestep_to_read == 0:
+                file_mapping[index] = f
         data = []
         for t, xml_file in sorted(file_mapping.items()):
             data.append(pyMCDS(xml_file.name, False, path_to_output_dir))
@@ -100,7 +101,9 @@ class PhysicellConverter(TrajectoryConverter):
         ids = {}
         last_id = 0
         type_mapping = {}
-        physicell_data = PhysicellConverter._load_data(input_data.path_to_output_dir)
+        physicell_data = PhysicellConverter._load_data(
+            input_data.path_to_output_dir, input_data.nth_timestep_to_read
+        )
         # get data dimensions
         total_steps = len(physicell_data)
         max_agents = 0
@@ -121,7 +124,11 @@ class PhysicellConverter(TrajectoryConverter):
                 max_agents=max_agents,
             )
         )
-        result.times = input_data.timestep * np.arange(total_steps)
+        result.times = (
+            input_data.nth_timestep_to_read
+            * input_data.timestep
+            * np.arange(total_steps)
+        )
         # get data
         for time_index in range(total_steps):
             n_agents = int(len(discrete_cells[time_index]["position_x"]))
