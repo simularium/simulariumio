@@ -100,7 +100,6 @@ class RotationUtility:
             )
             >= 1 - float_info.epsilon
         )
-        
 
     @staticmethod
     def get_rotation_matrix_from_bases(

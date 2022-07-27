@@ -162,33 +162,14 @@ class ParticleRotationCalculator:
                 1 if index1 < 0 else 0
             )
         )
-        
-        # neighbor's current [180.   0.   0.]
-        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(neighbor_rot_calculator.current_rot_matrix)))  
-        
-        # - neighbor's zero  [180.   0.   0.]
-        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(neighbor_rot_calculator.zero_rot_matrix)))  
-        
-        # = neighbor's offset [  0.           0.         -29.60445075]
-        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(neighbor_rot_calculator._get_offset_rot_matrix())))  
-        
-        # relative rotation [180.   0. -90.]
-        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(relative_rotation_matrix)))  
-    
         if relative_rotation_matrix is not None:
             self.current_rot_matrix = np.matmul(
-                neighbor_rot_calculator._get_offset_rot_matrix(), relative_rotation_matrix
+                np.matmul(
+                    neighbor_rot_calculator._get_offset_rot_matrix(),
+                    relative_rotation_matrix,
+                ),
+                self.zero_rot_matrix,
             )
-    
-        # zero [ 180.    0. -180.]
-        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(self.zero_rot_matrix)))  
-        
-        # current [180.           0.         -60.39554925]
-        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(self.current_rot_matrix)))  
-        
-        # x = np.matmul(self.current_rot_matrix, np.linalg.inv(self.zero_rot_matrix))
-        # raise Exception(np.rad2deg(RotationUtility.get_euler_angles_for_rotation_matrix(x)))  # [180.   0.   0.]
-    
 
     def _calculate_current_rot_matrix_randomly_from_neighbor(self):
         """

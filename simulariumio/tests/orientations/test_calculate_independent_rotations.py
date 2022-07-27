@@ -9,7 +9,6 @@ from simulariumio.orientations import (
     ParticleRotationCalculator,
     OrientationData,
     NeighborData,
-    RotationUtility,
 )
 
 from simulariumio.tests.conftest import (
@@ -28,9 +27,9 @@ from simulariumio.tests.conftest import (
                 neighbor_ids=[5, 1, 3],
                 neighbor_type_names=["F", "B", "D"],
                 neighbor_positions=[
-                    np.array([0, 0, 1]), 
-                    np.array([-1.4, 1.4, 0]), 
-                    np.array([1.4, 1.4, 0])
+                    np.array([0, 0, 1]),
+                    np.array([-1.4, 1.4, 0]),
+                    np.array([1.4, 1.4, 0]),
                 ],
                 zero_orientations=test_zero_orientations,
                 box_size=np.array(3 * [np.inf]),
@@ -44,8 +43,8 @@ from simulariumio.tests.conftest import (
                 neighbor_ids=[5, 1, 3],
                 neighbor_type_names=["F", "B", "D"],
                 neighbor_positions=[
-                    np.array([0, 0, 1]), 
-                    np.array([-1, 0, 0]), 
+                    np.array([0, 0, 1]),
+                    np.array([-1, 0, 0]),
                     np.array([0, 1, 0]),
                 ],
                 zero_orientations=[
@@ -73,14 +72,26 @@ from simulariumio.tests.conftest import (
                 position=np.array([1.4, 1.4, 0]),
                 neighbor_ids=[2, 4],
                 neighbor_type_names=["C", "E"],
-                neighbor_positions=[
-                    np.array([0, 0, 0]), 
-                    np.array([2.8, 0, 0])
-                ],
+                neighbor_positions=[np.array([0, 0, 0]), np.array([2.8, 0, 0])],
                 zero_orientations=test_zero_orientations,
                 box_size=np.array(3 * [np.inf]),
             ),
             np.array([0, 0, -45]),
+        ),
+        (
+            ParticleRotationCalculator(
+                type_name="D",
+                position=np.array([0.5, 0.88, 0]),
+                neighbor_ids=[2, 4],
+                neighbor_type_names=["C", "E"],
+                neighbor_positions=[
+                    np.array([0, 0, 0]),
+                    np.array([1.38, 0.38, 0]),
+                ],
+                zero_orientations=test_zero_orientations,
+                box_size=np.array(3 * [np.inf]),
+            ),
+            np.array([0, 0, -29.6044507]),
         ),
         # (
         #     "actin#ATP_2",

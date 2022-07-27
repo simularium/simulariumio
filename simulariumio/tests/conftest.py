@@ -768,6 +768,7 @@ def assert_buffers_equal(
         )
     assert test_buffer["plotData"] == expected_buffer["plotData"]
 
+
 test_zero_orientations = [
     OrientationData(
         type_name_substrings=["C"],
@@ -805,15 +806,19 @@ actin_zero_orientations = [
         neighbor_data=[
             NeighborData(
                 type_name_substrings=["actin", "1"],
-                relative_position=np.array([19.126, 20.838, 27.757])
-                - np.array([21.847, 24.171, 27.148]),
+                relative_position=(
+                    np.array([19.126, 20.838, 27.757])
+                    - np.array([21.847, 24.171, 27.148])
+                ),
                 neighbor_type_name_substrings=["actin", "3"],
                 neighbor_relative_position=np.array([16.236, 23.926, 26.754]),
             ),
             NeighborData(
                 type_name_substrings=["actin", "3"],
-                relative_position=np.array([24.738, 20.881, 26.671])
-                - np.array([21.847, 24.171, 27.148]),
+                relative_position=(
+                    np.array([24.738, 20.881, 26.671])
+                    - np.array([21.847, 24.171, 27.148])
+                ),
                 neighbor_type_name_substrings=["actin", "1"],
                 neighbor_relative_position=np.array([27.609, 24.061, 27.598]),
             ),
@@ -824,15 +829,19 @@ actin_zero_orientations = [
         neighbor_data=[
             NeighborData(
                 type_name_substrings=["actin", "2"],
-                relative_position=np.array([19.126, 20.838, 27.757])
-                - np.array([21.847, 24.171, 27.148]),
+                relative_position=(
+                    np.array([19.126, 20.838, 27.757])
+                    - np.array([21.847, 24.171, 27.148])
+                ),
                 neighbor_type_name_substrings=["actin", "1"],
                 neighbor_relative_position=np.array([16.236, 23.926, 26.754]),
             ),
             NeighborData(
                 type_name_substrings=["actin", "1"],
-                relative_position=np.array([24.738, 20.881, 26.671])
-                - np.array([21.847, 24.171, 27.148]),
+                relative_position=(
+                    np.array([24.738, 20.881, 26.671])
+                    - np.array([21.847, 24.171, 27.148])
+                ),
                 neighbor_type_name_substrings=["actin", "2"],
                 neighbor_relative_position=np.array([27.609, 24.061, 27.598]),
             ),
@@ -843,15 +852,19 @@ actin_zero_orientations = [
         neighbor_data=[
             NeighborData(
                 type_name_substrings=["actin", "3"],
-                relative_position=np.array([19.126, 20.838, 27.757])
-                - np.array([21.847, 24.171, 27.148]),
+                relative_position=(
+                    np.array([19.126, 20.838, 27.757])
+                    - np.array([21.847, 24.171, 27.148])
+                ),
                 neighbor_type_name_substrings=["actin", "2"],
                 neighbor_relative_position=np.array([16.236, 23.926, 26.754]),
             ),
             NeighborData(
                 type_name_substrings=["actin", "2"],
-                relative_position=np.array([24.738, 20.881, 26.671])
-                - np.array([21.847, 24.171, 27.148]),
+                relative_position=(
+                    np.array([24.738, 20.881, 26.671])
+                    - np.array([21.847, 24.171, 27.148])
+                ),
                 neighbor_type_name_substrings=["actin", "3"],
                 neighbor_relative_position=np.array([27.609, 24.061, 27.598]),
             ),
@@ -862,13 +875,17 @@ actin_zero_orientations = [
         neighbor_data=[
             NeighborData(
                 type_name_substrings=["arp2"],
-                relative_position=np.array([28.087, 30.872, 26.657])
-                - np.array([29.275, 27.535, 23.944]),
+                relative_position=(
+                    np.array([28.087, 30.872, 26.657])
+                    - np.array([29.275, 27.535, 23.944])
+                ),
             ),
             NeighborData(
                 type_name_substrings=["actin"],
-                relative_position=np.array([30.382, 21.190, 25.725])
-                - np.array([29.275, 27.535, 23.944]),
+                relative_position=(
+                    np.array([30.382, 21.190, 25.725])
+                    - np.array([29.275, 27.535, 23.944])
+                ),
             ),
         ],
     ),
@@ -877,13 +894,17 @@ actin_zero_orientations = [
         neighbor_data=[
             NeighborData(
                 type_name_substrings=["arp3"],
-                relative_position=np.array([29.275, 27.535, 23.944])
-                - np.array([28.087, 30.872, 26.657]),
+                relative_position=(
+                    np.array([29.275, 27.535, 23.944])
+                    - np.array([28.087, 30.872, 26.657])
+                ),
             ),
             NeighborData(
                 type_name_substrings=["actin#branch"],
-                relative_position=np.array([29.821, 33.088, 23.356])
-                - np.array([28.087, 30.872, 26.657]),
+                relative_position=(
+                    np.array([29.821, 33.088, 23.356])
+                    - np.array([28.087, 30.872, 26.657])
+                ),
             ),
         ],
     ),
@@ -892,13 +913,17 @@ actin_zero_orientations = [
         neighbor_data=[
             NeighborData(
                 type_name_substrings=["arp2#branched"],
-                relative_position=np.array([28.087, 30.872, 26.657])
-                - np.array([29.821, 33.088, 23.356]),
+                relative_position=(
+                    np.array([28.087, 30.872, 26.657])
+                    - np.array([29.821, 33.088, 23.356])
+                ),
             ),
             NeighborData(
                 type_name_substrings=["actin", "2"],
-                relative_position=np.array([30.476, 36.034, 26.528])
-                - np.array([29.821, 33.088, 23.356]),
+                relative_position=(
+                    np.array([30.476, 36.034, 26.528])
+                    - np.array([29.821, 33.088, 23.356])
+                ),
             ),
         ],
     ),
