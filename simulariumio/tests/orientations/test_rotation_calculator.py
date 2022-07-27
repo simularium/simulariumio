@@ -25,16 +25,19 @@ from simulariumio.tests.conftest import test_zero_orientations
             np.array([0, 0, 0]),         # particle_position
             [3],                         # neighbor_ids
             ["D"],                       # neighbor_type_names
-            [np.array([0.5, 0.88, 0])],   # neighbor_positions
+            [np.array([0.5, 0.88, 0])],  # neighbor_positions
             {                            # particle_rot_calculators
                 3: ParticleRotationCalculator(
-                    "D",                                           # type_name
-                    np.array([0.5, 0.88, 0]),                       # position
-                    [2, 4],                                        # neighbor_ids
-                    ["C", "E"],                                    # neighbor_type_names
-                    [np.array([0, 0, 0]), np.array([1.38, 0.38, 0])],  # neighbor_positions
-                    test_zero_orientations,                        # zero_orientations
-                    np.array(3 * [np.inf]),                        # box_size
+                    "D",                        # type_name
+                    np.array([0.5, 0.88, 0]),   # position
+                    [2, 4],                     # neighbor_ids
+                    ["C", "E"],                 # neighbor_type_names
+                    [                           # neighbor_positions
+                        np.array([0, 0, 0]), 
+                        np.array([1.38, 0.38, 0])
+                    ],
+                    test_zero_orientations,     # zero_orientations
+                    np.array(3 * [np.inf]),     # box_size
                 )
             },
             test_zero_orientations,       # zero_orientations
