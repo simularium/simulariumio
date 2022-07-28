@@ -46,6 +46,8 @@ class OrientationData:
                 f"OrientationData received {len(neighbor_data)} NeighborDatas, "
                 "only the first 2 will be used"
             )
+        if len(neighbor_data) < 2:
+            raise Exception("OrientationData requires data for 2 neighbors")
         self.neighbor_data = neighbor_data[: min(len(neighbor_data), 2)]
         self._calculate_neighbor_relative_rotation_matrices()
 

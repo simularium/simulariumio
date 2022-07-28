@@ -244,10 +244,13 @@ class ParticleRotationCalculator:
             self.type_name, self.neighbor_type_names
         )
         if self.zero_orientation is None:
-            # failed to find orientation data for one neighbor
+            print(
+                f"Rotation calculation failed for {self.type_name}: "
+                f"couldn't find matching neighbor in {self.neighbor_type_names}"
+            )
             return
-        self.neighbor_index = index2 if index1 < 0 else index1
         self._calculate_zero_rot_matrix()
+        self.neighbor_index = index2 if index1 < 0 else index1
         # get the neighbor's current rotation matrix
         neighbor_id = self.neighbor_ids[self.neighbor_index]
         neighbor_rot_calculator = other_rotation_data[neighbor_id]
@@ -257,12 +260,16 @@ class ParticleRotationCalculator:
             self._calculate_current_rot_matrix_with_neighbor_rot(
                 neighbor_rot_calculator
             )
-        if self.current_rot_matrix is None:
+            if self.current_rot_matrix is None:
+                neighbor_type_name = self.neighbor_type_names[self.neighbor_index]
+                print(
+                    f"Rotation calculation failed for {self.type_name}: "
+                    f"neighbor {neighbor_type_name} couldn't find match"
+                )
+        else:
             # neighbor's rotation matrix is not set,
-            # or failed to calculate rotation from it,
             # so calculate a random rotation matrix around the neighbor axis
-            return None
-            # self._calculate_current_rot_matrix_randomly_from_neighbor()
+            self._calculate_current_rot_matrix_randomly_from_neighbor()
 
     def _get_offset_rot_matrix(self) -> np.ndarray:
         """

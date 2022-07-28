@@ -207,6 +207,7 @@ class ReaddyConverter(TrajectoryConverter):
                         particle_id
                     ].calculate_dependent_rotation(rotation_calculators[time_index])
         if calculate_rotations:
+            print("Calculating rotations....")
             # convert all the rotation matrices to euler angles
             for time_index in range(data_dimensions.total_steps):
                 for particle_id in rotation_calculators[time_index]:
@@ -214,6 +215,9 @@ class ReaddyConverter(TrajectoryConverter):
                     result.rotations[time_index][agent_index] = rotation_calculators[
                         time_index
                     ][particle_id].get_euler_angles()
+                    type_name = result.types[time_index][agent_index]
+                    if "arp2" in type_name:
+                        print(f"  {type_name} : {result.rotations[time_index][agent_index]}\n")
         return result
 
     @staticmethod
