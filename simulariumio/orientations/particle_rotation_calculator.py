@@ -160,7 +160,7 @@ class ParticleRotationCalculator:
                 f"Rotation calculation failed for {self.type_name}: "
                 f"neighbor {neighbor_type_name} couldn't find match"
             )
-            self.current_rot_matrix = np.identity
+            self.current_rot_matrix = np.identity(3)
             return
         relative_rotation_matrix = (
             neighbor_zero_orientation.get_neighbor_relative_rotation_matrix(
@@ -184,7 +184,7 @@ class ParticleRotationCalculator:
                 "is missing neighbor_type_name_substrings and "
                 f"neighbor_relative_position for neighbor {x}"
             )
-            self.current_rot_matrix = np.identity
+            self.current_rot_matrix = np.identity(3)
 
     def _calculate_current_rot_matrix_randomly_from_neighbor(self):
         """
@@ -263,7 +263,7 @@ class ParticleRotationCalculator:
                 f"Rotation calculation failed for {self.type_name}: "
                 f"couldn't find matching neighbor in {self.neighbor_type_names}"
             )
-            self.current_rot_matrix = np.identity
+            self.current_rot_matrix = np.identity(3)
             return
         self._calculate_zero_rot_matrix()
         self.neighbor_index = index2 if index1 < 0 else index1
