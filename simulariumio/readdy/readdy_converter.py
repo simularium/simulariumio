@@ -11,7 +11,7 @@ from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData
 from ..constants import VIZ_TYPE
 from .readdy_data import ReaddyData
-from ..orientations import ParticleRotationCalculator
+from ..orientations import ParticleRotationCalculator, RotationUtility
 
 ###############################################################################
 
@@ -216,8 +216,8 @@ class ReaddyConverter(TrajectoryConverter):
                         time_index
                     ][particle_id].get_euler_angles()
                     type_name = result.types[time_index][agent_index]
-                    if "arp2" in type_name:
-                        print(f"  {type_name} : {result.rotations[time_index][agent_index]}\n")
+                    if RotationUtility.vector_is_invalid(result.rotations[time_index][agent_index]):
+                        print(f"  {type_name} has invalid rotation")
         return result
 
     @staticmethod

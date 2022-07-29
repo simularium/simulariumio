@@ -3,6 +3,7 @@
 
 import logging
 from sys import float_info
+import math
 
 import numpy as np
 from scipy.linalg import expm
@@ -199,3 +200,10 @@ class RotationUtility:
             A numpy array of the euler angles
         """
         return Rotation.from_euler("XYZ", euler_angles, degrees=False).as_matrix()
+    
+    @staticmethod
+    def vector_is_invalid(v: np.ndarray) -> bool:
+        """
+        check if any of a 3D vector's components are NaN
+        """
+        return math.isnan(v[0]) or math.isnan(v[1]) or math.isnan(v[2])
