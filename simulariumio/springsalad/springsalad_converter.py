@@ -15,7 +15,7 @@ from ..data_objects import (
     DisplayData,
 )
 from .springsalad_data import SpringsaladData
-from ..constants import VIZ_TYPE, DISPLAY_TYPE
+from ..constants import VIZ_TYPE, DISPLAY_TYPE, VALUES_PER_3D_POINT
 
 ###############################################################################
 
@@ -48,7 +48,7 @@ class SpringsaladConverter(TrajectoryConverter):
         Parse SpringSaLaD SIM_VIEW txt file to get the number of timesteps
         and maximum agents per timestep
         """
-        result = DimensionData(0, 0, 6 if draw_bonds else 0)
+        result = DimensionData(0, 0, 2 * VALUES_PER_3D_POINT if draw_bonds else 0)
         agents = 0
         for line in springsalad_data:
             if "CurrentTime" in line:  # beginning of a frame
@@ -75,7 +75,7 @@ class SpringsaladConverter(TrajectoryConverter):
             springsalad_data, input_data.draw_bonds
         )
         result = AgentData.from_dimensions(dimensions)
-        box_size = np.zeros(3)
+        box_size = np.zeros(VALUES_PER_3D_POINT)
         time_index = -1
         agent_index = 0
         max_uid = 0
@@ -138,13 +138,13 @@ class SpringsaladConverter(TrajectoryConverter):
                 result.unique_ids[time_index][agent_index] = max_uid
                 max_uid += 1
                 result.types[time_index].append("Link")
-                result.n_subpoints[time_index][agent_index] = 6.0
-                result.subpoints[time_index][agent_index][0:3] = scene_agent_positions[
-                    particle1_id
-                ]
-                result.subpoints[time_index][agent_index][3:6] = scene_agent_positions[
-                    particle2_id
-                ]
+                result.n_subpoints[time_index][agent_index] = 2 * VALUES_PER_3D_POINT
+                result.subpoints[time_index][agent_index][
+                    0:VALUES_PER_3D_POINT
+                ] = scene_agent_positions[particle1_id]
+                result.subpoints[time_index][agent_index][
+                    VALUES_PER_3D_POINT : 2 * VALUES_PER_3D_POINT
+                ] = scene_agent_positions[particle2_id]
                 agent_index += 1
         result.n_timesteps = time_index + 1
         return result, box_size

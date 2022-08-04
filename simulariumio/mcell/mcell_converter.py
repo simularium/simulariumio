@@ -19,6 +19,7 @@ from ..data_objects import (
     DimensionData,
 )
 from .mcell_data import McellData
+from ..constants import VALUES_PER_3D_POINT
 
 ###############################################################################
 
@@ -59,7 +60,9 @@ class McellConverter(TrajectoryConverter):
         rotate a vector around axis by angle (radians)
         """
         rotation = linalg.expm(
-            np.cross(np.eye(3), McellConverter._normalize(axis) * angle)
+            np.cross(
+                np.eye(VALUES_PER_3D_POINT), McellConverter._normalize(axis) * angle
+            )
         )
         return np.dot(rotation, np.copy(v))
 
@@ -161,7 +164,7 @@ class McellConverter(TrajectoryConverter):
                     data.fromfile(mol_file, n_data)
                     if is_surface_mol:
                         data.fromfile(mol_file, n_data)
-                    total_mols += int(n_data / 3.0)
+                    total_mols += int(n_data / float(VALUES_PER_3D_POINT))
                 except EOFError:
                     mol_file.close()
                     break
@@ -231,18 +234,18 @@ class McellConverter(TrajectoryConverter):
                     positions = array.array("f")
                     positions.fromfile(mol_file, n_data)
                     positions = input_data.meta_data.scale_factor * np.array(positions)
-                    positions = positions.reshape(n_mols, 3)
+                    positions = positions.reshape(n_mols, VALUES_PER_3D_POINT)
                     if is_surface_mol:
                         normals = array.array("f")
                         normals.fromfile(mol_file, n_data)
                         normals = np.array(normals)
-                        normals = normals.reshape(n_mols, 3)
+                        normals = normals.reshape(n_mols, VALUES_PER_3D_POINT)
                         rotations = (
                             McellConverter._get_rotation_euler_angles_for_normals(
                                 normals, input_data.surface_mol_rotation_angle
                             )
                         )
-                        rotations = rotations.reshape(3 * n_mols)
+                        rotations = rotations.reshape(VALUES_PER_3D_POINT * n_mols)
                     else:
                         rotations = np.zeros_like(positions)
                     # save to AgentData

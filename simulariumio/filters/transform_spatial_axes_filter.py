@@ -9,6 +9,7 @@ import numpy as np
 from .filter import Filter
 from ..data_objects import TrajectoryData
 from ..exceptions import DataError
+from ..constants import VALUES_PER_3D_POINT
 
 ###############################################################################
 
@@ -36,8 +37,8 @@ class TransformSpatialAxesFilter(Filter):
             e.g. ["+X", "-Z", "+Y"] for [+X, +Y, +Z] -> [+X, -Z, +Y]
             e.g. ["-Z", "-Y", "+X"] for [+X, +Y, +Z] -> [-Z, -Y, +X]
         """
-        if len(axes_mapping) != 3:
-            raise DataError("axes_mapping must have length 3")
+        if len(axes_mapping) != VALUES_PER_3D_POINT:
+            raise DataError(f"axes_mapping must have length {VALUES_PER_3D_POINT}")
         for d in range(len(axes_mapping)):
             axes_mapping[d] = axes_mapping[d].lower()
         self.axes_mapping = axes_mapping
@@ -92,8 +93,10 @@ class TransformSpatialAxesFilter(Filter):
                 n_sp = int(data.agent_data.n_subpoints[time_index][agent_index])
                 n_items = sp_items.shape[0]
                 for item_index in range(n_items):
-                    sp_items[item_index][:3] = self._transform_coordinate(
-                        sp_items[item_index][:3]
+                    sp_items[item_index][
+                        :VALUES_PER_3D_POINT
+                    ] = self._transform_coordinate(
+                        sp_items[item_index][:VALUES_PER_3D_POINT]
                     )
                 data.agent_data.subpoints[time_index][agent_index][
                     :n_sp

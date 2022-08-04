@@ -7,6 +7,7 @@ import numpy as np
 
 from simulariumio.tests.conftest import full_default_buffer
 from simulariumio import AgentData, DimensionData
+from simulariumio.constants import VALUES_PER_3D_POINT
 
 
 @pytest.mark.parametrize(
@@ -346,7 +347,7 @@ def test_buffer_contents(axis, expected_data):
         else DimensionData(
             total_steps=0,
             max_agents=0,
-            max_subpoints=3,
+            max_subpoints=VALUES_PER_3D_POINT,
         )
     )
     agent_data = agent_data.get_copy_with_increased_buffer_size(

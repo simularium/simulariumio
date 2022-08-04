@@ -57,10 +57,12 @@ class InputFileData:
 
     def _is_binary_file(self):
         """
-        Is this file binary? (or JSON?)
+        Is this file binary? (or JSON?)VALUES_PER_3D_POINT
         """
         with open(self.file_path, "rb") as open_file:
-            header = open_file.read(16).decode("utf-8")
+            header = open_file.read(len(BINARY_SETTINGS.FILE_IDENTIFIER)).decode(
+                "utf-8"
+            )
             if header == BINARY_SETTINGS.FILE_IDENTIFIER:
                 return True
         return False

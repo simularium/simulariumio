@@ -23,8 +23,8 @@ class V1_SPATIAL_BUFFER_STRUCT:
     ROTZ_INDEX: int = 8
     R_INDEX: int = 9  # radius
     NSP_INDEX: int = 10  # num subpoints
-    SP_INDEX: int = 11  # subpoints
-    VALUES_PER_AGENT: int = 11
+    SP_INDEX: int = 11  # index of first subpoint, only valid if num subpoints > 0
+    MIN_VALUES_PER_AGENT: int = 11
 
 
 class VIZ_TYPE:
@@ -68,16 +68,23 @@ class DISPLAY_TYPE(Enum):
     # GIZMO = "GIZMO"  # coming soon
 
 
-def SUBPOINTS_FOR_DISPLAY_TYPE(display_type: DISPLAY_TYPE) -> int:
+VALUES_PER_3D_POINT: int = 3
+
+
+def SUBPOINT_VALUES_PER_ITEM(display_type: DISPLAY_TYPE) -> int:
     """
-    How many subpoints per item saved in subpoints?
+    How many values per item saved in subpoints?
     given the display type of the agent
     """
     if display_type == DISPLAY_TYPE.FIBER:
-        return 3
+        # fibers store xyz position
+        # for each control point in subpoints
+        return VALUES_PER_3D_POINT
     if display_type == DISPLAY_TYPE.SPHERE_GROUP:
-        return 4
-    return 1
+        # sphere groups store xyz position and radius
+        # for each sphere in subpoints
+        return VALUES_PER_3D_POINT + 1
+    return 1  # other types don't use subpoints
 
 
 class CURRENT_VERSION:

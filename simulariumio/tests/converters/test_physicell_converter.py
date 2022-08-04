@@ -25,7 +25,7 @@ from simulariumio.tests.conftest import assert_buffers_equal
                     scale_factor=0.01,
                 ),
                 timestep=360.0,
-                path_to_output_dir="simulariumio/tests/data/physicell/output/",
+                path_to_output_dir="simulariumio/tests/data/physicell/default_output/",
                 display_data={
                     0: DisplayData(
                         name="Cancer cell",
@@ -216,7 +216,7 @@ from simulariumio.tests.conftest import assert_buffers_equal
         (
             PhysicellData(
                 timestep=360.0,
-                path_to_output_dir="simulariumio/tests/data/physicell/output/",
+                path_to_output_dir="simulariumio/tests/data/physicell/default_output/",
                 meta_data=MetaData(
                     box_size=np.array([1000.0, 1000.0, 100.0]),
                     scale_factor=0.01,

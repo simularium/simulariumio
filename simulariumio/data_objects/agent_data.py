@@ -14,6 +14,8 @@ from ..constants import (
     VIZ_TYPE,
     BUFFER_SIZE_INC,
     DISPLAY_TYPE,
+    VALUES_PER_3D_POINT,
+    SUBPOINT_VALUES_PER_ITEM,
 )
 from ..exceptions import DataError
 from .dimension_data import DimensionData
@@ -126,7 +128,7 @@ class AgentData:
         self.n_subpoints = (
             n_subpoints if n_subpoints is not None else np.zeros_like(radii)
         )
-        self.subpoints = subpoints if subpoints is not None else np.zeros((3, 3, 0))
+        self.subpoints = subpoints if subpoints is not None else np.zeros_like(n_agents)
         self.display_data = display_data if display_data is not None else {}
         self.draw_fiber_points = draw_fiber_points
         self.n_timesteps = n_timesteps
@@ -154,7 +156,7 @@ class AgentData:
                 buffer_index += int(
                     buffer[buffer_index]
                     + (
-                        V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
+                        V1_SPATIAL_BUFFER_STRUCT.MIN_VALUES_PER_AGENT
                         - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                     )
                 )
@@ -404,9 +406,13 @@ class AgentData:
             * np.ones((dimensions.total_steps, dimensions.max_agents)),
             unique_ids=np.zeros((dimensions.total_steps, dimensions.max_agents)),
             types=[[] for t in range(dimensions.total_steps)],
-            positions=np.zeros((dimensions.total_steps, dimensions.max_agents, 3)),
+            positions=np.zeros(
+                (dimensions.total_steps, dimensions.max_agents, VALUES_PER_3D_POINT)
+            ),
             radii=np.ones((dimensions.total_steps, dimensions.max_agents)),
-            rotations=np.zeros((dimensions.total_steps, dimensions.max_agents, 3)),
+            rotations=np.zeros(
+                (dimensions.total_steps, dimensions.max_agents, VALUES_PER_3D_POINT)
+            ),
             n_subpoints=np.zeros((dimensions.total_steps, dimensions.max_agents)),
             subpoints=np.zeros(
                 (
@@ -472,7 +478,7 @@ class AgentData:
         result.n_subpoints[
             0 : current_dimensions.total_steps, 0 : current_dimensions.max_agents
         ] = self.n_subpoints[:]
-        if self.subpoints.shape[2] > 0:
+        if len(self.subpoints.shape) > 2:
             result.subpoints[
                 0 : current_dimensions.total_steps,
                 0 : current_dimensions.max_agents,
@@ -532,6 +538,25 @@ class AgentData:
         if type_name not in self.display_data:
             raise DataError(f"{type_name} has no DisplayData, cannot get display_type")
         return self.display_data[type_name].display_type
+
+    def _check_subpoints_match_display_type(self):
+        """
+        Check that the number of subpoints is divisible
+        by the values per item for the agent's display type
+        """
+        for time_index in range(self.times.shape[0]):
+            for agent_index in range(int(self.n_agents[time_index])):
+                display_type = self.display_type_for_agent(time_index, agent_index)
+                values_per_item = SUBPOINT_VALUES_PER_ITEM(display_type)
+                n_subpoints = self.n_subpoints[time_index][agent_index]
+                if n_subpoints % values_per_item != 0:
+                    type_name = self.types[time_index][agent_index]
+                    raise Exception(
+                        f"T = {time_index} : {type_name} at index = "
+                        f"{agent_index} has n_subpoints = {n_subpoints} "
+                        f"but is display_type = {display_type}, which requires "
+                        f"subpoints in multiples of {values_per_item}"
+                    )
 
     def __deepcopy__(self, memo):
         result = type(self)(

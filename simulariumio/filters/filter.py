@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 
 from ..data_objects import TrajectoryData, AgentData
-from ..constants import SUBPOINTS_FOR_DISPLAY_TYPE
+from ..constants import SUBPOINT_VALUES_PER_ITEM
 
 ###############################################################################
 
@@ -32,7 +32,7 @@ class Filter(ABC):
         if n_sp < 1:
             return None
         display_type = agent_data.display_type_for_agent(time_index, agent_index)
-        values_per_item = SUBPOINTS_FOR_DISPLAY_TYPE(display_type)
+        values_per_item = SUBPOINT_VALUES_PER_ITEM(display_type)
         n_items = round(n_sp / values_per_item)
         items = agent_data.subpoints[time_index][agent_index][:n_sp]
         items = items.reshape(n_items, values_per_item)

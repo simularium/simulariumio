@@ -13,7 +13,12 @@ from .dep.pyMCDS import pyMCDS
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, UnitData, DisplayData
 from ..exceptions import MissingDataError, DataError
-from ..constants import DISPLAY_TYPE, SUBPOINTS_FOR_DISPLAY_TYPE, DEFAULT_COLORS
+from ..constants import (
+    DISPLAY_TYPE,
+    SUBPOINT_VALUES_PER_ITEM,
+    DEFAULT_COLORS,
+    VALUES_PER_3D_POINT,
+)
 from .physicell_data import PhysicellData
 
 ###############################################################################
@@ -165,7 +170,7 @@ class PhysicellConverter(TrajectoryConverter):
         )
         # get data
         max_subpoints = 0
-        values_per_subcell = SUBPOINTS_FOR_DISPLAY_TYPE(DISPLAY_TYPE.SPHERE_GROUP)
+        values_per_subcell = SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.SPHERE_GROUP)
         n_def_agents = []
         subcells = []
         for time_index in range(dimensions.total_steps):
@@ -284,9 +289,11 @@ class PhysicellConverter(TrajectoryConverter):
                     cell_index = subcells[time_index][owner_id][subcell_index]
                     sp_index = values_per_subcell * subcell_index
                     result.subpoints[time_index][agent_index][
-                        sp_index : sp_index + 3
+                        sp_index : sp_index + VALUES_PER_3D_POINT
                     ] = (subcell_positions[subcell_index] - center)
-                    result.subpoints[time_index][agent_index][sp_index + 3] = (
+                    result.subpoints[time_index][agent_index][
+                        sp_index + VALUES_PER_3D_POINT
+                    ] = (
                         input_data.meta_data.scale_factor
                         * PhysicellConverter._radius_for_volume(
                             discrete_cells[time_index]["total_volume"][cell_index]

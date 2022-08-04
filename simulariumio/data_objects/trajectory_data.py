@@ -108,7 +108,8 @@ class TrajectoryData:
         result.radii[:, start_i:end_i] = new_agents.radii[:]
         result.rotations[:, start_i:end_i] = new_agents.rotations[:]
         result.n_subpoints[:, start_i:end_i] = new_agents.n_subpoints[:]
-        result.subpoints[:, start_i:end_i] = new_agents.subpoints[:]
+        if len(new_agents.subpoints.shape) > 2:
+            result.subpoints[:, start_i:end_i] = new_agents.subpoints[:]
         # generate new unique IDs and type IDs so they don't overlap
         used_uids = list(np.unique(self.agent_data.unique_ids))
         new_uids = {}

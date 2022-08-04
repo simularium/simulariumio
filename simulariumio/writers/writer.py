@@ -17,6 +17,7 @@ from ..constants import (
     VIZ_TYPE,
     DISPLAY_TYPE,
     CURRENT_VERSION,
+    VALUES_PER_3D_POINT,
 )
 
 ###############################################################################
@@ -116,15 +117,15 @@ class Writer(ABC):
         Get the required size for a buffer to hold the given frame of AgentData
         """
         n_agents = int(agent_data.n_agents[time_index])
-        buffer_size = (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT) * n_agents
+        buffer_size = (V1_SPATIAL_BUFFER_STRUCT.MIN_VALUES_PER_AGENT) * n_agents
         for agent_index in range(n_agents):
             n_subpoints = int(agent_data.n_subpoints[time_index][agent_index])
             if n_subpoints > 0:
                 buffer_size += n_subpoints
                 if agent_data.draw_fiber_points:
-                    buffer_size += (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT) * max(
-                        math.ceil(n_subpoints / 6.0), 1
-                    )
+                    buffer_size += (
+                        V1_SPATIAL_BUFFER_STRUCT.MIN_VALUES_PER_AGENT
+                    ) * max(math.ceil(n_subpoints / 6.0), 1)
         return buffer_size
 
     @staticmethod
@@ -163,13 +164,13 @@ class Writer(ABC):
                 i
                 + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX : i
                 + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX
-                + 3
+                + VALUES_PER_3D_POINT
             ] = agent_data.positions[time_index, agent_index]
             result[
                 i
                 + V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX : i
                 + V1_SPATIAL_BUFFER_STRUCT.ROTX_INDEX
-                + 3
+                + VALUES_PER_3D_POINT
             ] = agent_data.rotations[time_index, agent_index]
             result[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX] = agent_data.radii[
                 time_index, agent_index
@@ -182,7 +183,7 @@ class Writer(ABC):
                 result[
                     sp_start_index : sp_start_index + n_subpoints
                 ] = agent_data.subpoints[time_index][agent_index][:n_subpoints]
-                i += (V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT) + n_subpoints
+                i += (V1_SPATIAL_BUFFER_STRUCT.MIN_VALUES_PER_AGENT) + n_subpoints
                 # optionally draw spheres at points
                 if agent_data.draw_fiber_points:
                     type_name = agent_data.types[time_index][agent_index]
@@ -191,7 +192,9 @@ class Writer(ABC):
                     display_type = agent_data.display_data[type_name].display_type
                     if display_type != DISPLAY_TYPE.FIBER:
                         continue
-                    n_fiber_points = math.floor(n_subpoints / 3.0)
+                    n_fiber_points = math.floor(
+                        n_subpoints / float(VALUES_PER_3D_POINT)
+                    )
                     for p in range(n_fiber_points):
                         # every other fiber point
                         if p % 2 != 0:
@@ -215,19 +218,20 @@ class Writer(ABC):
                         result[i + V1_SPATIAL_BUFFER_STRUCT.TID_INDEX] = type_ids[
                             time_index, agent_index
                         ]
-                        first_subpoint_index = 3 * p
+                        first_subpoint_index = VALUES_PER_3D_POINT * p
                         result[
                             i
                             + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX : i
                             + V1_SPATIAL_BUFFER_STRUCT.POSX_INDEX
-                            + 3
+                            + VALUES_PER_3D_POINT
                         ] = agent_data.subpoints[time_index][agent_index][
-                            first_subpoint_index : first_subpoint_index + 3
+                            first_subpoint_index : first_subpoint_index
+                            + VALUES_PER_3D_POINT
                         ]
                         result[i + V1_SPATIAL_BUFFER_STRUCT.R_INDEX] = 0.5
-                        i += V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
+                        i += V1_SPATIAL_BUFFER_STRUCT.MIN_VALUES_PER_AGENT
             else:
-                i += V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
+                i += V1_SPATIAL_BUFFER_STRUCT.MIN_VALUES_PER_AGENT
         return result.tolist(), uids, used_unique_IDs
 
     @staticmethod
@@ -248,7 +252,7 @@ class Writer(ABC):
                     agent_index += int(
                         data[agent_index]
                         + (
-                            V1_SPATIAL_BUFFER_STRUCT.VALUES_PER_AGENT
+                            V1_SPATIAL_BUFFER_STRUCT.MIN_VALUES_PER_AGENT
                             + 1
                             - V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX
                         )

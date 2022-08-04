@@ -8,7 +8,7 @@ import numpy as np
 
 from .filter import Filter
 from ..data_objects import TrajectoryData
-from ..constants import DISPLAY_TYPE
+from ..constants import DISPLAY_TYPE, VALUES_PER_3D_POINT
 
 ###############################################################################
 
@@ -24,7 +24,7 @@ class TranslateFilter(Filter):
     def __init__(
         self,
         translation_per_type: Dict[str, np.ndarray] = None,
-        default_translation: np.ndarray = np.zeros(3),
+        default_translation: np.ndarray = np.zeros(VALUES_PER_3D_POINT),
     ):
         """
         This object contains parameters for translating 3D positions
@@ -83,7 +83,7 @@ class TranslateFilter(Filter):
                         # translate subpoints for fibers
                         n_items = sp_items.shape[0]
                         for item_index in range(n_items):
-                            sp_items[item_index][:3] += translation
+                            sp_items[item_index][:VALUES_PER_3D_POINT] += translation
                         n_sp = int(data.agent_data.n_subpoints[time_index][agent_index])
                         data.agent_data.subpoints[time_index][agent_index][
                             :n_sp

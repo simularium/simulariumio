@@ -17,7 +17,7 @@ from simulariumio import (
     CameraData,
     ModelMetaData,
 )
-from simulariumio.constants import DISPLAY_TYPE
+from simulariumio.constants import DISPLAY_TYPE, VALUES_PER_3D_POINT
 
 
 def default_agents_type_mapping() -> Dict[str, Any]:
@@ -236,10 +236,13 @@ def empty_buffer(total_steps: int, n_agents: int, n_subpoints: int) -> AgentData
         ),  # default viz type = 1000
         unique_ids=np.array(total_steps * [list(range(n_agents))]),
         types=type_names,
-        positions=np.ones((total_steps, n_agents, 3)) * box_size - box_size * 0.5,
+        positions=np.ones((total_steps, n_agents, VALUES_PER_3D_POINT)) * box_size
+        - box_size * 0.5,
         radii=np.ones((total_steps, n_agents)),
-        rotations=np.ones((total_steps, n_agents, 3)) * 360,
-        n_subpoints=3 * n_subpoints * np.ones((total_steps, n_agents)),
+        rotations=np.ones((total_steps, n_agents, VALUES_PER_3D_POINT)) * 360,
+        n_subpoints=VALUES_PER_3D_POINT
+        * n_subpoints
+        * np.ones((total_steps, n_agents)),
         subpoints=np.ones((total_steps, n_agents, n_subpoints)),
     )
 
@@ -247,7 +250,7 @@ def empty_buffer(total_steps: int, n_agents: int, n_subpoints: int) -> AgentData
 def full_default_buffer() -> AgentData:
     total_steps = 3
     max_agents = 4
-    max_subpoints = 6
+    max_subpoints = 2 * VALUES_PER_3D_POINT
     return AgentData(
         times=0.1 * np.arange(total_steps),
         n_agents=np.array([2, 4, 0]),
@@ -257,11 +260,17 @@ def full_default_buffer() -> AgentData:
         ),
         types=np.array(total_steps * [int(0.5 * max_agents) * ["A", "B"]]).tolist(),
         positions=0.1
-        * np.arange(total_steps * max_agents * 3).reshape((total_steps, max_agents, 3)),
+        * np.arange(total_steps * max_agents * VALUES_PER_3D_POINT).reshape(
+            (total_steps, max_agents, VALUES_PER_3D_POINT)
+        ),
         radii=np.array(total_steps * [int(0.5 * max_agents) * [1.0, 3.0]]),
         rotations=10.0
-        * np.arange(total_steps * max_agents * 3).reshape((total_steps, max_agents, 3)),
-        n_subpoints=np.array(total_steps * [int(0.5 * max_agents) * [6, 0]]),
+        * np.arange(total_steps * max_agents * VALUES_PER_3D_POINT).reshape(
+            (total_steps, max_agents, VALUES_PER_3D_POINT)
+        ),
+        n_subpoints=np.array(
+            total_steps * [int(0.5 * max_agents) * [2 * VALUES_PER_3D_POINT, 0]]
+        ),
         subpoints=0.1
         * np.arange(total_steps * max_agents * max_subpoints).reshape(
             (total_steps, max_agents, max_subpoints)
