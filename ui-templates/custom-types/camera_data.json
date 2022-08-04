@@ -1,0 +1,52 @@
+{
+    "camera_data": {
+        "python::module": "simulariumio",
+        "python::object": "CameraData",
+        "parameters": {
+            "position": {
+                "name": "Position",
+                "data_type": "coordinates_xyz",
+                "description": "position of the camera",
+                "required": false,
+                "default": {
+                    "0": 0.0,
+                    "1": 0.0,
+                    "2": 120.0
+                },
+                "help": "If not provided, defaults to [0, 0, 120]"
+            },
+            "look_at_position": {
+                "name": "Look at position",
+                "data_type": "coordinates_xyz",
+                "description": "target position to look at",
+                "required": false,
+                "default": {
+                    "0": 0.0,
+                    "1": 0.0,
+                    "2": 0.0
+                },
+                "help": "If not provided, defaults to [0, 0, 0]"
+            },
+            "up_vector": {
+                "name": "Up vector",
+                "data_type": "coordinates_xyz",
+                "description": "up direction",
+                "required": false,
+                "default": {
+                    "0": 0.0,
+                    "1": 1.0,
+                    "2": 0.0
+                },
+                "help": "If not provided, defaults to [0, 1, 0]"
+            },
+            "fov_degrees": {
+                "name": "FOV (degrees)",
+                "data_type": "float",
+                "description": "field of view in degrees",
+                "required": false,
+                "default": 75.0,
+                "help": "If not provided, defaults to 75"
+            }
+        }
+    }
+}
