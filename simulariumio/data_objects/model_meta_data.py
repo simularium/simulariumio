@@ -40,7 +40,7 @@ class ModelMetaData:
         ----------
         title : str (optional)
             Display title for this model
-        version : float (optional)
+        version : str (optional)
             Version number of the model that produced this trajectory
         authors : str (optional)
             Modelers name(s)

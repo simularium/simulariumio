@@ -1,0 +1,53 @@
+{
+    "space_unit_data": {
+        "python::module": "simulariumio",
+        "python::object": "UnitData",
+        "parameters": {
+            "name": {
+                "name": "Name",
+                "data_type": "enum",
+                "description": "spatial unit name",
+                "required": true,
+                "options": [
+                    "meter",
+                    "decimeter",
+                    "centimeter",
+                    "millimeter",
+                    "micron",
+                    "ångström",
+                    "nanometer",
+                    "picometer",
+                    "femtometer",
+                    "attometer",
+                    "zeptometer",
+                    "yoctometer",
+                    "decameter",
+                    "hectometer",
+                    "kilometer",
+                    "megameter",
+                    "gigameter",
+                    "terameter",
+                    "petameter",
+                    "exameter",
+                    "zettameter",
+                    "yottameter",
+                    "lightyear",
+                    "astronomical_unit",
+                    "parsec",
+                    "nautical_mile",
+                    "bohr_radius",
+                    "angstrom_star",
+                    "planck_length"
+                ]
+            },
+            "magnitude": {
+                "name": "Magnitude",
+                "data_type": "float",
+                "description": "Provide a multiplier in case values are not in whole units",
+                "required": false,
+                "default": 1.0,
+                "help": "If not provided, defaults to 1.0"
+            }
+        }
+    }
+}
