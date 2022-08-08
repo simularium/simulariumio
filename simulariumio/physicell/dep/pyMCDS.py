@@ -1,6 +1,6 @@
 # NOTE: this module will likely replace the pyMCDS.py module once it is tested further
 #
-# This module provides an optional 3rd argument: a boolean flag to indicate that
+# This module provides an optional 3rd argument: a boolean flag to indicate that 
 #    continuum (microenv) data should be read. The flag is True by default (microenv data will be read).
 #    If your model has generated large output files and you only want to extract cell information, you could
 #    set this flag to False.
@@ -25,7 +25,6 @@ Source: https://github.com/PhysiCell-Tools/vis3D/blob/
 c25a5da486d7b9ba52407b1460c2a5244eb243dc/Simularium/pyMCDS_optional_meshes.py
 """
 
-
 class pyMCDS:
     """
     This class contains a dictionary of dictionaries that contains all of the
@@ -45,7 +44,6 @@ class pyMCDS:
         Hierarchical container for all of the data retrieved by parsing the xml
         file and the files referenced therein.
     """
-
     def __init__(self, xml_file, parse_continuum_variables=True, output_path="."):
         self.data = self._read_xml(xml_file, output_path, parse_continuum_variables)
 
@@ -399,25 +397,24 @@ class pyMCDS:
         MCDS["mesh"]["z_coordinates"] = zz
 
         # Voxel data must be loaded from .mat file
-        voxel_file = mesh_node.find("voxels").find("filename").text
+        voxel_file = mesh_node.find('voxels').find('filename').text
         voxel_path = output_path / voxel_file
         try:
-            initial_mesh = sio.loadmat(voxel_path)["mesh"]
+            initial_mesh = sio.loadmat(voxel_path)['mesh']
         except:
             raise FileNotFoundError(
                 "No such file or directory:\n'{}' referenced in '{}'".format(
-                    voxel_path, xml_file
-                )
+                voxel_path, xml_file)
             )
             sys.exit(1)
-
-        print("Reading {}".format(voxel_path))
-
+        
+        print('Reading {}'.format(voxel_path))
+        
         # # center of voxel specified by first three rows [ x, y, z ]
         # # volume specified by fourth row
-        MCDS["mesh"]["voxels"] = {}
-        MCDS["mesh"]["voxels"]["centers"] = initial_mesh[:3, :]
-        MCDS["mesh"]["voxels"]["volumes"] = initial_mesh[3, :]
+        MCDS['mesh']['voxels'] = {}
+        MCDS['mesh']['voxels']['centers'] = initial_mesh[:3, :]
+        MCDS['mesh']['voxels']['volumes'] = initial_mesh[3, :]
 
         if parse_continuum_variables:
             # Continuum_variables, unlike in the matlab version the individual chemical
@@ -515,34 +512,34 @@ class pyMCDS:
         data_labels = []
         # iterate over 'label's which are children of 'labels' these will be used to
         # label data arrays
-        n = 0
-        for label in cell_node.find("labels").findall("label"):
+        n = 0 
+        for label in cell_node.find('labels').findall('label'):
             # I don't like spaces in my dictionary keys
-            fixed_label = label.text.replace(" ", "_")
-            nlabels = int(label.get("size"))
-            if nlabels > 1:
+            fixed_label = label.text.replace(' ', '_')
+            nlabels = int(label.get('size'))
+            if nlabels > 1: 
                 # tags to differentiate repeated labels (usually space related)
                 # print("n=",n)
-                spatial_type = False
-                if fixed_label == "position":
-                    spatial_type = True
-                elif fixed_label == "orientation":
-                    spatial_type = True
-                elif fixed_label == "velocity":
-                    spatial_type = True
-                elif fixed_label == "migration_bias_direction":
-                    spatial_type = True
-                elif fixed_label == "motility_vector":
-                    spatial_type = True
+                spatial_type = False; 
+                if( fixed_label == 'position' ):
+                    spatial_type = True; 
+                elif( fixed_label == 'orientation' ):
+                    spatial_type = True; 
+                elif( fixed_label == 'velocity' ):
+                    spatial_type = True; 
+                elif( fixed_label == 'migration_bias_direction' ):
+                    spatial_type = True; 
+                elif( fixed_label == 'motility_vector' ):
+                    spatial_type = True; 
 
-                if nlabels == 3 and spatial_type == True:
-                    dir_label = ["_x", "_y", "_z"]
+                if( nlabels == 3 and spatial_type == True ):
+                    dir_label = ['_x', '_y', '_z']
                 else:
-                    dir_label = []
+                    dir_label = []; 
                     for nn in range(100):
-                        dir_label.append("_%u" % nn)
+                        dir_label.append( '_%u' % nn )
                 # print( dir_label )
-                for i in range(int(label.get("size"))):
+                for i in range(int(label.get('size'))):
                     # print( fixed_label + dir_label[i] )
                     data_labels.append(fixed_label + dir_label[i])
             else:
