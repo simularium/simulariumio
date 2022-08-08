@@ -177,7 +177,8 @@ class ParticleRotationCalculator:
             )
         else:
             neighbor_index = 1 if index1 < 0 else 0
-            x = neighbor_zero_orientation.neighbor_data[neighbor_index].type_name_substrings
+            neighbor_data = neighbor_zero_orientation.neighbor_data[neighbor_index]
+            x = neighbor_data.type_name_substrings
             print(
                 f"Rotation calculation failed for {self.type_name}: "
                 f"neighbor {neighbor_zero_orientation.type_name_substrings} "

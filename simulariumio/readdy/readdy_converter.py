@@ -216,8 +216,13 @@ class ReaddyConverter(TrajectoryConverter):
                         time_index
                     ][particle_id].get_euler_angles()
                     type_name = result.types[time_index][agent_index]
-                    if RotationUtility.vector_is_invalid(result.rotations[time_index][agent_index]):
-                        print(f"  {type_name} has invalid rotation at timestep # {time_index}")
+                    if RotationUtility.vector_is_invalid(
+                        result.rotations[time_index][agent_index]
+                    ):
+                        print(
+                            f"  {type_name} has invalid rotation "
+                            f"at timestep # {time_index}"
+                        )
         return result
 
     @staticmethod

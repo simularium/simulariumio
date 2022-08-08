@@ -17,6 +17,25 @@ from simulariumio.tests.conftest import test_zero_orientations
 @pytest.mark.parametrize(
     "rotation_calculator, expected_rotation_degrees",
     [
+        # Rotated 45 degrees clockwise
+        #
+        # Zero:
+        # z = 0
+        # y
+        # ^         D
+        # |         |
+        # |    B -- C
+        # |
+        # |_ _ _ _ > x
+        #
+        # Current:
+        # z = 0
+        # y
+        # ^    B      D
+        # |     \    /
+        # |      \  /
+        # |       C
+        # |_ _ _ _ > x
         (
             ParticleRotationCalculator(
                 type_name="C",
@@ -33,6 +52,25 @@ from simulariumio.tests.conftest import test_zero_orientations
             ),
             np.array([0, 0, -45]),
         ),
+        # Rotated 45 degrees counter-clockwise
+        #
+        # Zero:
+        # z = 0
+        # y
+        # ^    B      D
+        # |     \    /
+        # |      \  /
+        # |       C
+        # |_ _ _ _ > x
+        #
+        # Current:
+        # z = 0
+        # y
+        # ^         D
+        # |         |
+        # |    B -- C
+        # |
+        # |_ _ _ _ > x
         (
             ParticleRotationCalculator(
                 type_name="C",
@@ -63,6 +101,25 @@ from simulariumio.tests.conftest import test_zero_orientations
             ),
             np.array([0, 0, 45]),
         ),
+        # Rotated 45 degrees clockwise, with test particle not at origin
+        #
+        # Zero:
+        # z = 0
+        # y
+        # ^
+        # |    D -- E
+        # |    |
+        # |    C
+        # |_ _ _ _ > x
+        #
+        # Current:
+        # z = 0
+        # y
+        # ^       D
+        # |      /  \
+        # |     /    \
+        # |    C      E
+        # |_ _ _ _ > x
         (
             ParticleRotationCalculator(
                 type_name="D",
@@ -75,6 +132,25 @@ from simulariumio.tests.conftest import test_zero_orientations
             ),
             np.array([0, 0, -45]),
         ),
+        # Rotated ~30 degrees clockwise, with test particle not at origin
+        #
+        # Zero:
+        # z = 0
+        # y
+        # ^
+        # |    D -- E
+        # |    |
+        # |    C
+        # |_ _ _ _ > x
+        #
+        # Current:
+        # z = 0
+        # y
+        # ^       D
+        # |      /  \
+        # |     /    \
+        # |    C      E
+        # |_ _ _ _ > x
         (
             ParticleRotationCalculator(
                 type_name="D",

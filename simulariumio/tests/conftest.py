@@ -769,6 +769,16 @@ def assert_buffers_equal(
     assert test_buffer["plotData"] == expected_buffer["plotData"]
 
 
+"""
+z = 0
+
+y
+^         D -- E
+|         |
+|    B -- C
+|
+|_ _ _ _ > x
+"""
 test_zero_orientations = [
     OrientationData(
         type_name_substrings=["C"],

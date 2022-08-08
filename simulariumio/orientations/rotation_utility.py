@@ -200,7 +200,7 @@ class RotationUtility:
             A numpy array of the euler angles
         """
         return Rotation.from_euler("XYZ", euler_angles, degrees=False).as_matrix()
-    
+
     @staticmethod
     def vector_is_invalid(v: np.ndarray) -> bool:
         """

@@ -12,6 +12,24 @@ from simulariumio.tests.conftest import test_zero_orientations
 @pytest.mark.parametrize(
     "rotation_calculator, particle_rot_calculators, expected_rotation_degrees",
     [
+        # At zero:
+        #
+        #     D -- E
+        #     |
+        #     C
+        #
+        # Current positions:
+        #
+        # z = 0
+        #
+        # y
+        # ^       D
+        # |      /  \
+        # |     /    \
+        # |    C      E
+        # |_ _ _ _ > x
+        #
+        # (rotated clockwise ~60 deg)
         (
             ParticleRotationCalculator(
                 type_name="C",
@@ -36,6 +54,7 @@ from simulariumio.tests.conftest import test_zero_orientations
                     box_size=np.array(3 * [np.inf]),
                 )
             },
+            # maybe this should be (0, 0, -60)? TODO before merge to main
             np.array([180, 0, -60.3955493]),
         )
     ],
