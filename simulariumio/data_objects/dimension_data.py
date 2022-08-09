@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import logging
 
-from ..exceptions import DataError
-
 
 ###############################################################################
 
@@ -33,37 +31,22 @@ class DimensionData:
         total_steps : int
             The total number of timesteps in a trajectory
         max_agents : int
-            The number of agents at the timestep with the most agents
+            The number of agents per timestep
         max_subpoints : int (optional)
-            The number of subpoints on the agent at any timestep
-            with the most subpoints
+            The number of subpoints per agent
             Default: 0
         """
         self.total_steps = total_steps
         self.max_agents = max_agents
         self.max_subpoints = max_subpoints
 
-    def add(self, added_dimensions: DimensionData, axis: int = 1) -> DimensionData:
+    def add(self, added_dimensions: DimensionData):
         """
-        Add the given dimensions with this object's and return a copy
+        Add the given dimensions to this object's
         """
-        if axis == 1:
-            if (
-                self.total_steps > 0
-                and added_dimensions.total_steps != self.total_steps
-            ):
-                raise DataError(
-                    "Total steps must be equal when adding dimensions on agent axis: "
-                    f"{added_dimensions.total_steps} != {self.total_steps}"
-                )
-            result_total_steps = added_dimensions.total_steps
-        else:
-            result_total_steps = self.total_steps + added_dimensions.total_steps
-        return DimensionData(
-            total_steps=result_total_steps,
-            max_agents=self.max_agents + added_dimensions.max_agents,
-            max_subpoints=self.max_subpoints + added_dimensions.max_subpoints,
-        )
+        self.total_steps += added_dimensions.total_steps
+        self.max_agents += added_dimensions.max_agents
+        self.max_subpoints += added_dimensions.max_subpoints
 
     def __str__(self):
         return (

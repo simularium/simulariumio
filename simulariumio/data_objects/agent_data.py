@@ -13,7 +13,6 @@ import pandas as pd
 from ..constants import (
     V1_SPATIAL_BUFFER_STRUCT,
     VIZ_TYPE,
-    BUFFER_SIZE_INC,
     DISPLAY_TYPE,
 )
 from .dimension_data import DimensionData
@@ -434,7 +433,7 @@ class AgentData:
         Get number of timesteps
         Use n_timesteps to limit times if it has been provided
         """
-        return self.n_timesteps if self.n_timesteps >= 0 else len(self.times)
+        return self.n_timesteps if self.n_timesteps >= 0 else self.times.shape[0]
 
     def get_dimensions(self) -> DimensionData:
         """
@@ -443,23 +442,23 @@ class AgentData:
         return DimensionData(
             total_steps=self.total_timesteps(),
             max_agents=self.viz_types.shape[1],
-            max_subpoints=self.subpoints.shape[2]
-            if len(self.subpoints.shape) > 2
-            else 0,
+            max_subpoints=self.subpoints.shape[2],
         )
 
     def get_copy_with_increased_buffer_size(
-        self, added_dimensions: DimensionData, axis: int = 1
+        self,
+        added_dimensions: DimensionData,
     ) -> AgentData:
         """
         Create a copy of this object with the size of the numpy arrays increased
-        by the given added_dimensions
+        to the given new_dimensions
         """
-        print(f"increase buffer {axis}")
+        print(f"increase buffer size by {added_dimensions}")
         current_dimensions = self.get_dimensions()
-        new_dimensions = added_dimensions.add(current_dimensions, axis)
-        current_types = copy.deepcopy(self.types)
+        new_dimensions = copy.copy(current_dimensions)
+        new_dimensions.add(added_dimensions)
         result = AgentData.from_dimensions(new_dimensions)
+        current_types = copy.deepcopy(self.types)
         result.times[0 : current_dimensions.total_steps] = self.times[:]
         result.n_agents[0 : current_dimensions.total_steps] = self.n_agents[:]
         result.viz_types[

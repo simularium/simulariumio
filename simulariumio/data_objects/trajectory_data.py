@@ -90,12 +90,18 @@ class TrajectoryData:
         # create appropriate length buffer with current agents
         current_dimensions = self.agent_data.get_dimensions()
         added_dimensions = new_agents.get_dimensions()
-        new_dimensions = current_dimensions.add(added_dimensions, axis=1)
-        result = self.agent_data.check_increase_buffer_size(
-            new_dimensions.max_agents - 1, axis=1
-        )
+        added_steps = added_dimensions.total_steps
+        if added_steps > current_dimensions.total_steps:
+            raise Exception(
+                "Cannot append AgentData with more timesteps "
+                "than the current trajectory"
+            )
+        added_dimensions.total_steps = 0
+        new_dimensions = copy.copy(current_dimensions)
+        new_dimensions.add(added_dimensions)
+        result = self.agent_data.get_copy_with_increased_buffer_size(added_dimensions)
         # add new agents
-        result.n_agents = np.add(result.n_agents, new_agents.n_agents)
+        result.n_agents[:added_steps] += new_agents.n_agents[:]
         start_i = current_dimensions.max_agents
         end_i = start_i + added_dimensions.max_agents
         result.viz_types[:, start_i:end_i] = new_agents.viz_types[:]
