@@ -92,7 +92,7 @@ class CytosimConverter(TrajectoryConverter):
                 cytosim_data[object_type],
                 "fiber" in object_type,
             )
-            result = result.add(object_dimensions)
+            result.add(object_dimensions)
         return result
 
     @staticmethod
