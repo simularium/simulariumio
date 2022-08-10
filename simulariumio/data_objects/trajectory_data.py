@@ -114,7 +114,7 @@ class TrajectoryData:
         used_uids = list(np.unique(self.agent_data.unique_ids))
         new_uids = {}
         for time_index in range(new_dimensions.total_steps):
-            new_agent_index = self.agent_data.n_agents[time_index]
+            new_agent_index = int(self.agent_data.n_agents[time_index])
             n_a = int(new_agents.n_agents[time_index])
             for agent_index in range(n_a):
                 raw_uid = new_agents.unique_ids[time_index][agent_index]
