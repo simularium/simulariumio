@@ -455,8 +455,7 @@ class AgentData:
         """
         print(f"increase buffer size by {added_dimensions}")
         current_dimensions = self.get_dimensions()
-        new_dimensions = copy.copy(current_dimensions)
-        new_dimensions.add(added_dimensions)
+        new_dimensions = current_dimensions.add(added_dimensions)
         result = AgentData.from_dimensions(new_dimensions)
         current_types = copy.deepcopy(self.types)
         result.times[0 : current_dimensions.total_steps] = self.times[:]

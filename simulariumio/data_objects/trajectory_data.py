@@ -97,8 +97,7 @@ class TrajectoryData:
                 "than the current trajectory"
             )
         added_dimensions.total_steps = 0
-        new_dimensions = copy.copy(current_dimensions)
-        new_dimensions.add(added_dimensions)
+        new_dimensions = current_dimensions.add(added_dimensions)
         result = self.agent_data.get_copy_with_increased_buffer_size(added_dimensions)
         # add new agents
         result.n_agents[:added_steps] += new_agents.n_agents[:]

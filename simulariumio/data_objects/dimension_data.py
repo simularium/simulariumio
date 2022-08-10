@@ -40,13 +40,15 @@ class DimensionData:
         self.max_agents = max_agents
         self.max_subpoints = max_subpoints
 
-    def add(self, added_dimensions: DimensionData):
+    def add(self, added_dimensions: DimensionData) -> DimensionData:
         """
-        Add the given dimensions to this object's
+        Create a copy with the given dimensions added to this object's
         """
-        self.total_steps += added_dimensions.total_steps
-        self.max_agents += added_dimensions.max_agents
-        self.max_subpoints += added_dimensions.max_subpoints
+        return DimensionData(
+            total_steps=self.total_steps + added_dimensions.total_steps,
+            max_agents=self.max_agents + added_dimensions.max_agents,
+            max_subpoints=self.max_subpoints + added_dimensions.max_subpoints,
+        )
 
     def __str__(self):
         return (
