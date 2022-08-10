@@ -493,47 +493,6 @@ class AgentData:
         result.draw_fiber_points = self.draw_fiber_points
         return result
 
-    def check_increase_buffer_size(
-        self,
-        next_index: int,
-        axis: int = 1,
-        buffer_size_inc: DimensionData = BUFFER_SIZE_INC,
-    ) -> AgentData:
-        """
-        If needed for the next_index to fit in the arrays, create a copy of this object
-        with the size of the numpy arrays increased by the buffer_size_inc
-        """
-        result = self
-        if axis == 0:  # time dimension
-            while next_index >= result.get_dimensions().total_steps:
-                result = result.get_copy_with_increased_buffer_size(
-                    DimensionData(
-                        total_steps=buffer_size_inc.total_steps,
-                        max_agents=0,
-                    ),
-                    axis,
-                )
-        elif axis == 1:  # agents dimension
-            while next_index >= result.get_dimensions().max_agents:
-                result = result.get_copy_with_increased_buffer_size(
-                    DimensionData(
-                        total_steps=0,
-                        max_agents=buffer_size_inc.max_agents,
-                    ),
-                    axis,
-                )
-        elif axis == 2:  # subpoints dimension
-            while next_index >= result.get_dimensions().max_subpoints:
-                result = result.get_copy_with_increased_buffer_size(
-                    DimensionData(
-                        total_steps=0,
-                        max_agents=0,
-                        max_subpoints=buffer_size_inc.max_subpoints,
-                    ),
-                    axis,
-                )
-        return result
-
     def __deepcopy__(self, memo):
         result = type(self)(
             times=np.copy(self.times),
