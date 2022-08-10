@@ -102,18 +102,35 @@ class TrajectoryData:
         result = self.agent_data.get_copy_with_increased_buffer_size(added_dimensions)
         # add new agents
         result.n_agents[:added_steps] += new_agents.n_agents[:]
-        start_i = current_dimensions.max_agents
-        end_i = start_i + added_dimensions.max_agents
-        result.viz_types[:, start_i:end_i] = new_agents.viz_types[:]
-        result.positions[:, start_i:end_i] = new_agents.positions[:]
-        result.radii[:, start_i:end_i] = new_agents.radii[:]
-        result.rotations[:, start_i:end_i] = new_agents.rotations[:]
-        result.n_subpoints[:, start_i:end_i] = new_agents.n_subpoints[:]
-        result.subpoints[:, start_i:end_i] = new_agents.subpoints[:]
-        # generate new unique IDs and type IDs so they don't overlap
-        used_uids = list(np.unique(self.agent_data.unique_ids))
-        new_uids = {}
         for time_index in range(new_dimensions.total_steps):
+            start_i = int(self.agent_data.n_agents[time_index])
+            n_new_agents = int(new_agents.n_agents[time_index])
+            end_i = start_i + n_new_agents
+            result.viz_types[time_index, start_i:end_i] = new_agents.viz_types[
+                time_index, :start_i
+            ]
+            result.positions[time_index, start_i:end_i] = new_agents.positions[
+                time_index, :start_i
+            ]
+            result.radii[time_index, start_i:end_i] = new_agents.radii[
+                time_index, :start_i
+            ]
+            result.rotations[time_index, start_i:end_i] = new_agents.rotations[
+                time_index, :start_i
+            ]
+            result.n_subpoints[time_index, start_i:end_i] = new_agents.n_subpoints[
+                time_index, :start_i
+            ]
+            for agent_index in range(n_new_agents):
+                new_agent_index = start_i + agent_index
+                n_subpoints = int(new_agents.n_subpoints[time_index][agent_index])
+                result.subpoints[time_index][new_agent_index][
+                    :n_subpoints
+                ] = new_agents.subpoints[time_index][agent_index][:n_subpoints]
+        # generate new unique IDs and type IDs so they don't overlap
+        for time_index in range(new_dimensions.total_steps):
+            used_uids = list(np.unique(self.agent_data.unique_ids[time_index]))
+            new_uids = {}
             new_agent_index = int(self.agent_data.n_agents[time_index])
             n_a = int(new_agents.n_agents[time_index])
             for agent_index in range(n_a):
