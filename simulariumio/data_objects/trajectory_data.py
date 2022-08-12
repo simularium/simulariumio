@@ -10,6 +10,7 @@ import numpy as np
 from .agent_data import AgentData
 from .unit_data import UnitData
 from .meta_data import MetaData
+from .dimension_data import DimensionData
 
 ###############################################################################
 
@@ -81,6 +82,24 @@ class TrajectoryData:
             ),
             plots=buffer_data["plotData"]["data"],
         )
+    
+    def _get_added_dimensions(self, added_dimensions: DimensionData) -> DimensionData:
+        """
+        Get a DimensionData with the deltas for each dimension
+        of AgentData when adding new agents
+        """
+        current_dimensions = self.agent_data.get_dimensions()
+        added_steps = added_dimensions.total_steps
+        if added_steps > current_dimensions.total_steps:
+            raise Exception(
+                "Cannot append AgentData with more timesteps "
+                "than the current trajectory"
+            )
+        return DimensionData(
+            total_steps=0,
+            max_agents=added_dimensions.max_agents,
+            max_subpoints=max(0, added_dimensions.max_subpoints - current_dimensions.max_subpoints),
+        )
 
     def append_agents(self, new_agents: AgentData):
         """
@@ -91,34 +110,28 @@ class TrajectoryData:
         current_dimensions = self.agent_data.get_dimensions()
         added_dimensions = new_agents.get_dimensions()
         added_steps = added_dimensions.total_steps
-        if added_steps > current_dimensions.total_steps:
-            raise Exception(
-                "Cannot append AgentData with more timesteps "
-                "than the current trajectory"
-            )
-        added_dimensions.total_steps = 0
-        new_dimensions = current_dimensions.add(added_dimensions)
+        added_dimensions = self._get_added_dimensions(added_dimensions)
         result = self.agent_data.get_copy_with_increased_buffer_size(added_dimensions)
         # add new agents
         result.n_agents[:added_steps] += new_agents.n_agents[:]
-        for time_index in range(new_dimensions.total_steps):
+        for time_index in range(current_dimensions.total_steps):
             start_i = int(self.agent_data.n_agents[time_index])
             n_new_agents = int(new_agents.n_agents[time_index])
             end_i = start_i + n_new_agents
             result.viz_types[time_index, start_i:end_i] = new_agents.viz_types[
-                time_index, :start_i
+                time_index, :n_new_agents
             ]
             result.positions[time_index, start_i:end_i] = new_agents.positions[
-                time_index, :start_i
+                time_index, :n_new_agents
             ]
             result.radii[time_index, start_i:end_i] = new_agents.radii[
-                time_index, :start_i
+                time_index, :n_new_agents
             ]
             result.rotations[time_index, start_i:end_i] = new_agents.rotations[
-                time_index, :start_i
+                time_index, :n_new_agents
             ]
             result.n_subpoints[time_index, start_i:end_i] = new_agents.n_subpoints[
-                time_index, :start_i
+                time_index, :n_new_agents
             ]
             for agent_index in range(n_new_agents):
                 new_agent_index = start_i + agent_index
@@ -127,7 +140,7 @@ class TrajectoryData:
                     :n_subpoints
                 ] = new_agents.subpoints[time_index][agent_index][:n_subpoints]
         # generate new unique IDs and type IDs so they don't overlap
-        for time_index in range(new_dimensions.total_steps):
+        for time_index in range(current_dimensions.total_steps):
             used_uids = list(np.unique(self.agent_data.unique_ids[time_index]))
             new_uids = {}
             new_agent_index = int(self.agent_data.n_agents[time_index])
@@ -145,6 +158,7 @@ class TrajectoryData:
                     new_agents.types[time_index][agent_index]
                 )
                 new_agent_index += 1
+        result.display_data = {**result.display_data, **new_agents.display_data}
         self.agent_data = result
 
     def __deepcopy__(self, memo):

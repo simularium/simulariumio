@@ -453,8 +453,8 @@ class AgentData:
         Create a copy of this object with the size of the numpy arrays increased
         to the given new_dimensions
         """
-        print(f"increase buffer size by {added_dimensions}")
         current_dimensions = self.get_dimensions()
+        print(f"increase buffer size of ({current_dimensions}) by ({added_dimensions})")
         new_dimensions = current_dimensions.add(added_dimensions)
         result = AgentData.from_dimensions(new_dimensions)
         current_types = copy.deepcopy(self.types)
