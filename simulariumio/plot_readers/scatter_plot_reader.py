@@ -32,7 +32,7 @@ class ScatterPlotReader(PlotReader):
         for ytrace_name in data.ytraces:
             if len(data.ytraces[ytrace_name]) != len(data.xtrace):
                 raise DataError(
-                    f"y-trace {ytrace_name} has a different length than x-trace"
+                    f"Plot {data.title} y-trace {ytrace_name} has a different length than x-trace"
                 )
             simularium_data["data"].append(
                 {
