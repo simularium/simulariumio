@@ -21,11 +21,10 @@
 import os
 import sys
 
-import sphinx_rtd_theme
-
 import simulariumio
 
 sys.path.insert(0, os.path.abspath(".."))
+
 
 
 # -- General configuration ---------------------------------------------
@@ -37,18 +36,24 @@ sys.path.insert(0, os.path.abspath(".."))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named "sphinx.ext.*") or your custom ones.
 extensions = [
+    # Sphinx lib ext
     "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.mathjax",
-    "m2r",
+    # Installed Sphinx ext
+    "sphinx_copybutton",
+    # Doc installs
+    "m2r2",
+    "numpydoc", 
 ]
 
-# Control napoleon
-napoleon_google_docstring = False
-napolean_include_init_with_doc = True
-napoleon_use_ivar = True
-napoleon_use_param = False
+copybutton_prompt_text = r">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: "
+copybutton_prompt_is_regexp = True
+
+numpydoc_show_class_members = False
+
+sphinx_tabs_disable_tab_closing = True
 
 # Control autodoc
 autoclass_content = "both"  # include init doc with class
@@ -60,18 +65,18 @@ templates_path = ["_templates"]
 # You can specify multiple suffix as a list of string:
 #
 source_suffix = {
-        ".rst": "restructuredtext",
-        ".txt": "markdown",
-        ".md": "markdown",
+    ".rst": "restructuredtext",
+    ".txt": "markdown",
+    ".md": "markdown",
 }
 
-# The master toctree document.
-master_doc = "index"
+# The main toctree document.
+main_doc = "index"
 
 # General information about the project.
-project = u"Simularium Conversion"
-copyright = u'2020, Blair Lyons'
-author = u"Blair Lyons"
+project = "simulariumio"
+copyright = "2022"
+author = "Blair Lyons"
 
 # The version info for the project you"re documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -106,16 +111,13 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+html_theme = "furo"
 
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_theme_options = {
-    "collapse_navigation": False,
-    "prev_next_buttons_location": "top",
-}
+html_theme_options = {}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -135,15 +137,12 @@ latex_elements = {
     # The paper size ("letterpaper" or "a4paper").
     #
     # "papersize": "letterpaper",
-
     # The font size ("10pt", "11pt" or "12pt").
     #
     # "pointsize": "10pt",
-
     # Additional stuff for the LaTeX preamble.
     #
     # "preamble": "",
-
     # Latex figure (float) alignment
     #
     # "figure_align": "htbp",
@@ -153,9 +152,13 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass
 # [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "simulariumio.tex",
-     u"Simularium Conversion Documentation",
-     u"Blair Lyons", "manual"),
+    (
+        main_doc,
+        "simulariumio.tex",
+        "simulariumio Documentation",
+        "Blair Lyons",
+        "manual",
+    ),
 ]
 
 
@@ -163,11 +166,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, "simulariumio",
-     u"Simularium Conversion Documentation",
-     [author], 1)
-]
+man_pages = [(main_doc, "simulariumio", "simulariumio Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------
@@ -176,10 +175,12 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, "simulariumio",
-     u"Simularium Conversion Documentation",
-     author,
-     "simulariumio",
-     "One line description of project.",
-     "Miscellaneous"),
+    (
+        main_doc,
+        "simulariumio",
+        "simulariumio Documentation",
+        author,
+        "simulariumio",
+        "TODO: short description",
+    ),
 ]

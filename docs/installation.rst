@@ -8,13 +8,13 @@ Installation
 Stable release
 --------------
 
-To install Simularium Conversion, run this command in your terminal:
+To install simulariumio, run this command in your terminal:
 
 .. code-block:: console
 
     $ pip install simulariumio
 
-This is the preferred method to install Simularium Conversion, as it will always install the most recent stable release.
+This is the preferred method to install simulariumio, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -26,19 +26,19 @@ you through the process.
 From sources
 ------------
 
-The sources for Simularium Conversion can be downloaded from the `Github repo`_.
+The sources for simulariumio can be downloaded from the `Github repo`_.
 
 You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/allen-cell-animated/simulariumio
+    $ git clone git://github.com/Simularium/simulariumio
 
 Or download the `tarball`_:
 
 .. code-block:: console
 
-    $ curl  -OL https://github.com/allen-cell-animated/simulariumio/tarball/main
+    $ curl  -OL https://github.com/Simularium/simulariumio/tarball/main
 
 Once you have a copy of the source, you can install it with:
 
@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/allen-cell-animated/simulariumio
-.. _tarball: https://github.com/allen-cell-animated/simulariumio/tarball/main
+.. _Github repo: https://github.com/Simularium/simulariumio
+.. _tarball: https://github.com/Simularium/simulariumio/tarball/main

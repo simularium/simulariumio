@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+env/
 build/
 develop-eggs/
 dist/
@@ -24,7 +25,9 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
+
+# OS generated files
+.DS_Store
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -46,7 +49,6 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-*.py,cover
 .hypothesis/
 .pytest_cache/
 cover/
@@ -70,6 +72,8 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/simulariumio.*rst
+docs/modules.rst
 
 # PyBuilder
 .pybuilder/
@@ -99,13 +103,17 @@ __pypackages__/
 
 # Celery stuff
 celerybeat-schedule
-celerybeat.pid
+
+# Dask
+dask-worker-space
 
 # SageMath parsed files
 *.sage.py
 
-# Environments
+# dotenv
 .env
+
+# virtualenv
 .venv
 env/
 venv/
