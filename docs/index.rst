@@ -1,4 +1,4 @@
-Welcome to Simularium Conversion's documentation!
+Welcome to simulariumio's documentation!
 ======================================
 
 .. toctree::
@@ -10,12 +10,5 @@ Welcome to Simularium Conversion's documentation!
    installation
    Package modules <modules>
    contributing
-   math
 
 .. mdinclude:: ../README.md
-
-Indices and tables
-==================
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

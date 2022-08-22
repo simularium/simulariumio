@@ -12,7 +12,7 @@ This repository is part of the Simularium project ([simularium.allencell.org](ht
 <br/>
 
 # SimulariumIO
-[![Build Status](https://github.com/simularium/simulariumio/workflows/Build%20Master/badge.svg)](https://github.com/simularium/simulariumio/actions)
+[![Build Status](https://github.com/simularium/simulariumio/workflows/CI/badge.svg)](https://github.com/simularium/simulariumio/actions)
 [![Documentation](https://github.com/simularium/simulariumio/workflows/Documentation/badge.svg)](https://simularium.github.io/simulariumio)
 [![Code Coverage](https://codecov.io/gh/simularium/simulariumio/branch/master/graph/badge.svg)](https://codecov.io/gh/simularium/simulariumio)
 

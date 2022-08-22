@@ -1,0 +1,10 @@
+default_context:
+    author_name: "Blair Lyons"
+    author_email: "blairl@alleninstitute.org"
+    hosting_github_username_or_org: "Simularium"
+    project_name: "SimulariumIO"
+    project_slug: "simulariumio"
+    python_slug: "simulariumio"
+    project_short_description: "Python package that converts simulation outputs to the format consumed by the Simularium viewer website"
+    hosting_pypi_username: "__token__"
+    license: "Apache Software License 2.0"

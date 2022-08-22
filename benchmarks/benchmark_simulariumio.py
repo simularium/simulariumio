@@ -6,18 +6,11 @@ import os
 import time
 
 import numpy as np
+from download_benchmark_resources import Args, download_benchmark_resources
 
-from simulariumio import MetaData, InputFileData, DisplayData, DISPLAY_TYPE
-from simulariumio.cytosim import (
-    CytosimConverter,
-    CytosimData,
-    CytosimObjectInfo,
-)
-from simulariumio.springsalad import (
-    SpringsaladConverter,
-    SpringsaladData,
-)
-from download_benchmark_resources import download_benchmark_resources, Args
+from simulariumio import DISPLAY_TYPE, DisplayData, InputFileData, MetaData
+from simulariumio.cytosim import CytosimConverter, CytosimData, CytosimObjectInfo
+from simulariumio.springsalad import SpringsaladConverter, SpringsaladData
 
 ###############################################################################
 
@@ -94,7 +87,7 @@ convert_benchmarks = {
 
 
 def main():
-    parser = argparse.ArgumentParser(
+    argparse.ArgumentParser(
         description="Parses large data files to test speed of SimulariumIO"
     )
     # download data if there's none in resources
