@@ -110,7 +110,15 @@ include-package-data = true
 exclude = ["*docs/*", "*tests/*"]
 
 [tool.setuptools.package-data]
-"*" = ["*.yaml", "py.typed", "*.csv", ]
+"*" = [
+  "*.yaml",
+  "*.yml",
+  "py.typed",
+  "*.csv",
+  "*.gif",
+  "*.md",
+  "*.json",
+]
 
 # tools
 [tool.black]
@@ -136,7 +144,10 @@ ignore = [
   ".cookiecutter.yaml",
   "*docs/*",
   "*examples/*",
-  "*tests/*",
+  "*benchmarks/**",
+  "*tests/**",
+  "file_format.md",
+  "environment.yml",
 ]
 
 [tool.mypy]
