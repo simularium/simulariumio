@@ -93,7 +93,7 @@ docs = [
   "docutils>=0.18,<0.19",
 ]
 dev = [
-  "ipython>=8.4.0",
+  "ipython",
 ]
 
 # entry points
