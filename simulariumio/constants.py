@@ -127,3 +127,6 @@ def JMOL_COLORS() -> pd.DataFrame:
     """
     this_dir, _ = os.path.split(__file__)
     return pd.read_csv(os.path.join(this_dir, JMOL_COLORS_CSV_PATH))
+
+
+MAX_AGENT_ID = 0x80000000  # Agent IDs should fit in a 32 bit signed int
