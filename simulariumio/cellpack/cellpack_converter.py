@@ -7,13 +7,13 @@ import numpy as np
 import json
 from scipy.spatial.transform import Rotation as R
 
+from cellpack import RecipeLoader
 from ..constants import DISPLAY_TYPE, VIZ_TYPE
 from ..data_objects.camera_data import CameraData
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData
 from ..data_objects import MetaData, DisplayData
 from .cellpack_data import HAND_TYPE, CellpackData
-from cellpack.autopack.iotools_simple import RecipeLoader
 
 ###############################################################################
 
