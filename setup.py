@@ -22,7 +22,7 @@ md_requirements = [
 ]
 
 cellpack_requirements = [
-    "cellpack>=1.0.0",
+    "cellpack>=1.0.2",
 ]
 
 setup_requirements = [
