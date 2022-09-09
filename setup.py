@@ -130,6 +130,6 @@ setup(
     url="https://github.com/simularium/simulariumio",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
-    version="1.6.2",
+    version="1.6.3",
     zip_safe=False,
 )
