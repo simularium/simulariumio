@@ -5,7 +5,7 @@ import logging
 from typing import Any, Dict, List
 
 from ..data_objects import UnitData, MetaData, DisplayData
-from ..orientations import OrientationData
+from .orientations import OrientationData
 
 ###############################################################################
 

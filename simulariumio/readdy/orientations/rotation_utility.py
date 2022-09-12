@@ -132,11 +132,7 @@ class RotationUtility:
         """
         Calculate a random rotation matrix
         """
-        # get 2 random perpendicular vectors as bases
-        v1 = np.random.random(3)
-        v2 = RotationUtility.get_random_perpendicular_vector(v1)
-        # create matrix with basis
-        return RotationUtility.get_rotation_matrix_from_bases(v1, v2)
+        return Rotation.random().as_matrix()
 
     @staticmethod
     def get_rotation_matrix_from_neighbor_positions(

@@ -162,9 +162,12 @@ class ParticleRotationCalculator:
             )
             self.current_rot_matrix = np.identity(3)
             return
+        # if index1 is -1, this matched the second neighbor
+        # otherwise this matched the first neighbor
+        neighbor_index = 1 if index1 < 0 else 0
         relative_rotation_matrix = (
             neighbor_zero_orientation.get_neighbor_relative_rotation_matrix(
-                1 if index1 < 0 else 0
+                neighbor_index
             )
         )
         if relative_rotation_matrix is not None:
@@ -176,7 +179,6 @@ class ParticleRotationCalculator:
                 self.zero_rot_matrix,
             )
         else:
-            neighbor_index = 1 if index1 < 0 else 0
             neighbor_data = neighbor_zero_orientation.neighbor_data[neighbor_index]
             x = neighbor_data.type_name_substrings
             print(
@@ -209,6 +211,10 @@ class ParticleRotationCalculator:
         """
         Set the matching orientation data
         for the particle and neighbor of the given type
+
+        return the OrientationData for the match,
+        as well as the indices of the neighbors that matched.
+        If there's only one neighbor, return -1 for the unmatched index.
         """
         # check through the orientations
         for orientation in self.zero_orientations:
@@ -267,6 +273,8 @@ class ParticleRotationCalculator:
             self.current_rot_matrix = np.identity(3)
             return
         self._calculate_zero_rot_matrix()
+        # if index1 is -1, this matched the second neighbor
+        # otherwise this matched the first neighbor
         self.neighbor_index = index2 if index1 < 0 else index1
         # get the neighbor's current rotation matrix
         neighbor_id = self.neighbor_ids[self.neighbor_index]

@@ -5,7 +5,7 @@ import pytest
 
 import numpy as np
 
-from simulariumio.orientations import RotationUtility
+from simulariumio.readdy import RotationUtility
 
 
 @pytest.mark.parametrize(

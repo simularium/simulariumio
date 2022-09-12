@@ -86,6 +86,13 @@ class OrientationData:
             self.type_name_substrings, type_name
         )
 
+    def _neighbor_index_is_invalid(self, neighbor_index) -> bool:
+        """
+        Check the given neighbor_index isn't too large
+        for length of neighbor_data
+        """
+        return neighbor_index + 1 > len(self.neighbor_data) or neighbor_index < 0
+
     def neighbor_type_name_matches(self, neighbor_index: int, type_name: str) -> bool:
         """
         Does the type_name contain all the neighbor's type name substrings?
@@ -97,7 +104,7 @@ class OrientationData:
         type_name: str
             Type name of the particle instance to match
         """
-        if len(self.neighbor_data) < neighbor_index + 1:
+        if self._neighbor_index_is_invalid(neighbor_index):
             return False
         return OrientationData._type_name_contains_substrings(
             self.neighbor_data[neighbor_index].type_name_substrings, type_name
@@ -112,7 +119,7 @@ class OrientationData:
         neighbor_index : int
             Which neighbor to check, 0 or 1?
         """
-        if len(self.neighbor_data) < neighbor_index + 1:
+        if self._neighbor_index_is_invalid(neighbor_index):
             return None
         return self.neighbor_data[neighbor_index].relative_position
 
@@ -125,7 +132,7 @@ class OrientationData:
         neighbor_index : int
             Which neighbor to check, 0 or 1?
         """
-        if len(self.neighbor_data) < neighbor_index + 1:
+        if self._neighbor_index_is_invalid(neighbor_index):
             return None
         return self.neighbor_data[neighbor_index].relative_rotation_matrix
 

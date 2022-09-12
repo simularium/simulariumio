@@ -5,7 +5,7 @@ import pytest
 
 import numpy as np
 
-from simulariumio.orientations import (
+from simulariumio.readdy import (
     ParticleRotationCalculator,
     OrientationData,
     NeighborData,

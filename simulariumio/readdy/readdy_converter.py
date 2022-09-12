@@ -11,7 +11,7 @@ from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData
 from ..constants import VIZ_TYPE
 from .readdy_data import ReaddyData
-from ..orientations import ParticleRotationCalculator, RotationUtility
+from .orientations import ParticleRotationCalculator, RotationUtility
 
 ###############################################################################
 

@@ -18,7 +18,7 @@ from simulariumio import (
     ModelMetaData,
 )
 from simulariumio.constants import DISPLAY_TYPE
-from simulariumio.orientations import OrientationData, NeighborData
+from simulariumio.readdy import OrientationData, NeighborData
 
 
 def default_agents_type_mapping() -> Dict[str, Any]:

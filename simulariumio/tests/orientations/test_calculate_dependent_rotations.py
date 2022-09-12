@@ -5,7 +5,7 @@ import pytest
 
 import numpy as np
 
-from simulariumio.orientations import ParticleRotationCalculator
+from simulariumio.readdy import ParticleRotationCalculator
 from simulariumio.tests.conftest import test_zero_orientations
 
 
