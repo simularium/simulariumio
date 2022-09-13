@@ -259,6 +259,47 @@ def full_default_buffer() -> AgentData:
     )
 
 
+def fiber_agents_type_mapping() -> Dict[str, Any]:
+    return {
+        "0": {
+            "name": "H",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "1": {
+            "name": "A",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "2": {
+            "name": "C",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "3": {
+            "name": "L",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "4": {
+            "name": "D",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "5": {
+            "name": "K",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+    }
+
+
 def fiber_agents() -> TrajectoryData:
     return TrajectoryData(
         meta_data=MetaData(
@@ -347,6 +388,77 @@ def fiber_agents() -> TrajectoryData:
         spatial_units=UnitData("m", 10.0),
         plots=["plot data goes here"],
     )
+
+
+def mixed_agents_type_mapping() -> Dict[str, Any]:
+    return {
+        "0": {
+            "name": "H",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "1": {
+            "name": "A",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "2": {
+            "name": "C",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "3": {
+            "name": "X",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "4": {
+            "name": "J",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "5": {
+            "name": "L",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "6": {
+            "name": "D",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "7": {
+            "name": "U",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "8": {
+            "name": "E",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "9": {
+            "name": "Q",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "10": {
+            "name": "K",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+    }
 
 
 def mixed_agents() -> TrajectoryData:
