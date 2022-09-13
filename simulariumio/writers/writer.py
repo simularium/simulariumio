@@ -18,7 +18,10 @@ from ..constants import (
     VIZ_TYPE,
     DISPLAY_TYPE,
     CURRENT_VERSION,
+    MAX_AGENT_ID,
 )
+
+from ..exceptions import DataError
 
 ###############################################################################
 
@@ -35,7 +38,7 @@ class Writer(ABC):
 
     @staticmethod
     @abstractmethod
-    def save(self, trajectory_data: TrajectoryData) -> None:
+    def save(self, trajectory_data: TrajectoryData, validate_ids: bool) -> None:
         pass
 
     @staticmethod
@@ -264,6 +267,17 @@ class Writer(ABC):
                 agent_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX - 1
                 get_n_subpoints = True
         return True
+
+    @staticmethod
+    def _validate_ids(trajectory_data: TrajectoryData) -> None:
+        """
+        Check if agent unique IDs are valid 32 bit integers
+        returns a message identifying violating agent ID
+        """
+        agent_unique_ids = trajectory_data.agent_data.unique_ids
+        for uid in np.ndarray.flatten(agent_unique_ids):
+            if uid > MAX_AGENT_ID:
+                raise DataError(f"Agent IDs is larger than a 32 bit integer: {uid} ")
 
     @staticmethod
     def _check_type_matches_subpoints(

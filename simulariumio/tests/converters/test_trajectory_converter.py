@@ -15,6 +15,7 @@ from simulariumio.constants import (
     DISPLAY_TYPE,
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
+    MAX_AGENT_ID,
 )
 from simulariumio.exceptions import DataError
 
@@ -54,6 +55,12 @@ def mixed_agents_wrong_display_type1():
 def mixed_agents_wrong_display_type2():
     result = mixed_agents()
     result.agent_data.display_data["Q"].display_type = DISPLAY_TYPE.FIBER
+    return result
+
+
+def mixed_agents_invalid_agent_id():
+    result = mixed_agents()
+    result.agent_data.unique_ids[0][0] = MAX_AGENT_ID + 1
     return result
 
 
@@ -1067,10 +1074,17 @@ def mixed_agents_wrong_display_type2():
             {},
             marks=pytest.mark.raises(exception=DataError),
         ),
+        # Agent IDs are larger than a 32 bit int can represent
+        pytest.param(
+            mixed_agents_invalid_agent_id(),
+            {},
+            marks=pytest.mark.raises(exception=DataError),
+        ),
     ],
 )
 def test_trajectory_reader(trajectory, expected_data):
     converter = TrajectoryConverter(trajectory)
     buffer_data = JsonWriter.format_trajectory_data(converter._data)
+    JsonWriter._validate_ids(converter._data)
     assert expected_data == buffer_data
     assert JsonWriter._check_agent_ids_are_unique_per_frame(buffer_data)
