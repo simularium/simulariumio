@@ -411,6 +411,6 @@ def test_translate_filter(trajectory, _filter, expected_bundleData_t0):
     filtered_data = converter.filter_data([_filter])
     buffer_data = JsonWriter.format_trajectory_data(filtered_data)
     assert False not in np.isclose(
-        np.array(buffer_data["spatialData"]["bundleData"][0]["data"]), 
-        np.array(expected_bundleData_t0)
+        np.array(buffer_data["spatialData"]["bundleData"][0]["data"]),
+        np.array(expected_bundleData_t0),
     )
