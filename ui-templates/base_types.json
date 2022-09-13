@@ -1,0 +1,34 @@
+{
+    "base_types": [
+        {
+            "id": "float",
+            "data": "float"
+        },
+        {
+            "id": "text",
+            "data": "string"
+        },
+        {
+            "id": "url",
+            "data": "string",
+            "match": "\/(https?:\\\/\\\/)(([\\w\\-])+\\.{1}){1,3}([a-zA-Z]{2,63})([\\\/\\w-]*)*\\\/?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)\/g"
+        },
+        {
+            "id": "color",
+            "data": "string",
+            "match": "/#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})/i"
+        },
+        {
+            "id": "collection",
+            "data": "array"
+        },
+        {
+            "id": "enum",
+            "data": "string"
+        },
+        {
+            "id": "file",
+            "data": "string"
+        }
+    ]
+}

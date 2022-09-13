@@ -22,7 +22,7 @@ md_requirements = [
 ]
 
 cellpack_requirements = [
-    "cellpack>=0.2.3",
+    "cellpack>=1.0.3",
 ]
 
 setup_requirements = [
@@ -63,6 +63,8 @@ dev_requirements = [
     "coverage>=5.1",
     "ipython>=7.15.0",
     "m2r>=0.2.1",
+    "MarkupSafe==2.0.1",
+    "jinja2<3",
     "pytest-runner>=5.2",
     "Sphinx>=2.0.0b1,<3",
     "sphinx_rtd_theme>=0.4.3",
@@ -125,9 +127,9 @@ setup(
     test_suite="simulariumio/tests",
     tests_require=test_requirements,
     extras_require=extra_requirements,
-    url="https://github.com/allen-cell-animated/simulariumio",
+    url="https://github.com/simularium/simulariumio",
     # Do not edit this string manually, always use bumpversion
     # Details in CONTRIBUTING.rst
-    version="1.5.0",
+    version="1.6.3",
     zip_safe=False,
 )

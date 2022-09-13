@@ -1,0 +1,81 @@
+{
+    "model_meta_data": {
+        "python::module": "simulariumio",
+        "python::object": "ModelMetaData",
+        "parameters": {
+            "title": {
+                "name": "Title",
+                "data_type": "text",
+                "description": "Provide the title of the model",
+                "required": false,
+                "default": "",
+                "help": "If not provided, defaults to none"
+            },
+            "version": {
+                "name": "Version",
+                "data_type": "text",
+                "description": "Provide the model version",
+                "required": false,
+                "default": "",
+                "help": "If not provided, defaults to none"
+            },
+            "authors": {
+                "name": "Authors",
+                "data_type": "text",
+                "description": "Provide the model author(s)",
+                "required": false,
+                "default": "",
+                "help": "If not provided, defaults to none"
+            },
+            "description": {
+                "name": "Description",
+                "data_type": "text",
+                "description": "Provide a description of the model",
+                "required": false,
+                "default": "",
+                "help": "If not provided, defaults to none"
+            },
+            "doi": {
+                "name": "DOI",
+                "data_type": "text",
+                "description": "Provide the doi for a publication using this model",
+                "required": false,
+                "default": "",
+                "match": "\\\\b10\\\\.(\\\\d+\\\\.*)+[\\\\/](([^\\\\s\\\\.])+\\\\.*)+\\\\b",
+                "help": "Please provide the DOI code without a URL prefix. If not provided, defaults to none"
+            },
+            "source_code_url": {
+                "name": "Source code URL",
+                "data_type": "url",
+                "description": "Provide a link to the repository of source code",
+                "required": false,
+                "default": "",
+                "help": "If not provided, defaults to none"
+            },
+            "source_code_license_url": {
+                "name": "Source code license URL",
+                "data_type": "url",
+                "description": "Provide a link to the license for the source code",
+                "required": false,
+                "default": "",
+                "help": "If not provided, defaults to none"
+            },
+            "input_data_url": {
+                "name": "Input data URL",
+                "data_type": "url",
+                "description": "Provide a link to model configuration or parameter files",
+                "required": false,
+                "default": "",
+                "help": "If not provided, defaults to none"
+            },
+            "raw_output_data_url": {
+                "name": "Raw output data URL",
+                "data_type": "url",
+                "description": "Provide a link to raw outputs from the source code",
+                "required": false,
+                "default": "",
+                "help": "If not provided, defaults to none"
+            }
+        }
+    }
+}
