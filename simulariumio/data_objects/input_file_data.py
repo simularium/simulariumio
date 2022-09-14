@@ -57,7 +57,7 @@ class InputFileData:
 
     def _is_binary_file(self):
         """
-        Is this file binary? (or JSON?)VALUES_PER_3D_POINT
+        Is this file binary? (or JSON?)
         """
         with open(self.file_path, "rb") as open_file:
             header = open_file.read(len(BINARY_SETTINGS.FILE_IDENTIFIER)).decode(

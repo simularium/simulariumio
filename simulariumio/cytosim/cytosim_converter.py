@@ -14,7 +14,7 @@ from ..data_objects import (
     DimensionData,
     DisplayData,
 )
-from ..constants import VIZ_TYPE, DISPLAY_TYPE, VALUES_PER_3D_POINT
+from ..constants import VIZ_TYPE, DISPLAY_TYPE, SUBPOINT_VALUES_PER_ITEM
 from .cytosim_data import CytosimData
 from .cytosim_object_info import CytosimObjectInfo
 
@@ -77,7 +77,7 @@ class CytosimConverter(TrajectoryConverter):
                     agents += 1
                 continue
             if is_fiber:
-                subpoints += VALUES_PER_3D_POINT
+                subpoints += SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
             else:
                 agents += 1
         if agents > result.max_agents:
@@ -215,7 +215,8 @@ class CytosimConverter(TrajectoryConverter):
                 subpoint_index = int(result.n_subpoints[time_index][agent_index])
                 # position
                 result.subpoints[time_index][agent_index][
-                    subpoint_index : subpoint_index + VALUES_PER_3D_POINT
+                    subpoint_index : subpoint_index
+                    + SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
                 ] = scale_factor * np.array(
                     [
                         float(columns[1].strip("+,")),
@@ -223,7 +224,9 @@ class CytosimConverter(TrajectoryConverter):
                         float(columns[3].strip("+,")),
                     ]
                 )
-                result.n_subpoints[time_index][agent_index] += VALUES_PER_3D_POINT
+                result.n_subpoints[time_index][agent_index] += SUBPOINT_VALUES_PER_ITEM(
+                    DISPLAY_TYPE.FIBER
+                )
             else:
                 # each non-fiber object
                 (result, uids, used_unique_IDs,) = CytosimConverter._parse_object(

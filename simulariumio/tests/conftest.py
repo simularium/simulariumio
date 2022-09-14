@@ -17,7 +17,11 @@ from simulariumio import (
     CameraData,
     ModelMetaData,
 )
-from simulariumio.constants import DISPLAY_TYPE, VALUES_PER_3D_POINT
+from simulariumio.constants import (
+    DISPLAY_TYPE,
+    VALUES_PER_3D_POINT,
+    SUBPOINT_VALUES_PER_ITEM,
+)
 
 
 def default_agents_type_mapping() -> Dict[str, Any]:
@@ -240,7 +244,7 @@ def empty_buffer(total_steps: int, n_agents: int, n_subpoints: int) -> AgentData
         - box_size * 0.5,
         radii=np.ones((total_steps, n_agents)),
         rotations=np.ones((total_steps, n_agents, VALUES_PER_3D_POINT)) * 360,
-        n_subpoints=VALUES_PER_3D_POINT
+        n_subpoints=SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
         * n_subpoints
         * np.ones((total_steps, n_agents)),
         subpoints=np.ones((total_steps, n_agents, n_subpoints)),
@@ -250,7 +254,7 @@ def empty_buffer(total_steps: int, n_agents: int, n_subpoints: int) -> AgentData
 def full_default_buffer() -> AgentData:
     total_steps = 3
     max_agents = 4
-    max_subpoints = 2 * VALUES_PER_3D_POINT
+    max_subpoints = 2 * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
     return AgentData(
         times=0.1 * np.arange(total_steps),
         n_agents=np.array([2, 4, 0]),
@@ -269,7 +273,11 @@ def full_default_buffer() -> AgentData:
             (total_steps, max_agents, VALUES_PER_3D_POINT)
         ),
         n_subpoints=np.array(
-            total_steps * [int(0.5 * max_agents) * [2 * VALUES_PER_3D_POINT, 0]]
+            total_steps
+            * [
+                int(0.5 * max_agents)
+                * [2 * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER), 0]
+            ]
         ),
         subpoints=0.1
         * np.arange(total_steps * max_agents * max_subpoints).reshape(

@@ -13,7 +13,12 @@ from ..data_objects import (
     DimensionData,
     DisplayData,
 )
-from ..constants import VIZ_TYPE, DISPLAY_TYPE, VALUES_PER_3D_POINT
+from ..constants import (
+    VIZ_TYPE,
+    DISPLAY_TYPE,
+    VALUES_PER_3D_POINT,
+    SUBPOINT_VALUES_PER_ITEM,
+)
 from .medyan_data import MedyanData
 
 ###############################################################################
@@ -109,14 +114,20 @@ class MedyanConverter(TrajectoryConverter):
                     # start of filament
                     # filaments N xyz points = 3 * N subpoints
                     cols = line.split()
-                    subpoints = VALUES_PER_3D_POINT * int(cols[3])
+                    subpoints = SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER) * int(
+                        cols[3]
+                    )
                     if result.max_subpoints < subpoints:
                         result.max_subpoints = subpoints
                 else:
                     # start of linker or motor
                     # all linkers and motors have 2 xyz points = 6 subpoints
-                    if result.max_subpoints < 2 * VALUES_PER_3D_POINT:
-                        result.max_subpoints = 2 * VALUES_PER_3D_POINT
+                    if result.max_subpoints < 2 * SUBPOINT_VALUES_PER_ITEM(
+                        DISPLAY_TYPE.FIBER
+                    ):
+                        result.max_subpoints = 2 * SUBPOINT_VALUES_PER_ITEM(
+                            DISPLAY_TYPE.FIBER
+                        )
         if agents > result.max_agents:
             result.max_agents = agents
         return result
@@ -198,13 +209,13 @@ class MedyanConverter(TrajectoryConverter):
                     input_data.meta_data.scale_factor * radius
                 )
                 if object_type == "filament":
-                    result.n_subpoints[time_index][agent_index] = (
-                        int(cols[3]) * VALUES_PER_3D_POINT
-                    )
+                    result.n_subpoints[time_index][agent_index] = int(
+                        cols[3]
+                    ) * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
                 else:
-                    result.n_subpoints[time_index][agent_index] = (
-                        2 * VALUES_PER_3D_POINT
-                    )
+                    result.n_subpoints[time_index][
+                        agent_index
+                    ] = 2 * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
                 # draw endpoints?
                 if draw_endpoints:
                     for i in range(2):

@@ -18,6 +18,7 @@ from ..constants import (
     DISPLAY_TYPE,
     CURRENT_VERSION,
     VALUES_PER_3D_POINT,
+    SUBPOINT_VALUES_PER_ITEM,
 )
 
 ###############################################################################
@@ -193,7 +194,8 @@ class Writer(ABC):
                     if display_type != DISPLAY_TYPE.FIBER:
                         continue
                     n_fiber_points = math.floor(
-                        n_subpoints / float(VALUES_PER_3D_POINT)
+                        n_subpoints
+                        / float(SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER))
                     )
                     for p in range(n_fiber_points):
                         # every other fiber point
