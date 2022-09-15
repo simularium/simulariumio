@@ -11,6 +11,7 @@ import numpy as np
 from ..data_objects import (
     TrajectoryData,
     AgentData,
+    DisplayData,
 )
 from ..constants import (
     V1_SPATIAL_BUFFER_STRUCT,

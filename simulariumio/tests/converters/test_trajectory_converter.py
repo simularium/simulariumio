@@ -16,6 +16,7 @@ from simulariumio.constants import (
     CURRENT_VERSION,
     MAX_AGENT_ID,
 )
+from simulariumio.exceptions import DataError
 
 
 def mixed_agents_invalid_agent_id():
