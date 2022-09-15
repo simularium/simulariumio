@@ -19,7 +19,10 @@ from ..constants import (
     CURRENT_VERSION,
     VALUES_PER_3D_POINT,
     SUBPOINT_VALUES_PER_ITEM,
+    MAX_AGENT_ID,
 )
+
+from ..exceptions import DataError
 
 ###############################################################################
 
@@ -36,7 +39,7 @@ class Writer(ABC):
 
     @staticmethod
     @abstractmethod
-    def save(self, trajectory_data: TrajectoryData) -> None:
+    def save(self, trajectory_data: TrajectoryData, validate_ids: bool) -> None:
         pass
 
     @staticmethod
@@ -272,3 +275,67 @@ class Writer(ABC):
                 agent_index += V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX - 1
                 get_n_subpoints = True
         return True
+
+    @staticmethod
+    def _validate_ids(trajectory_data: TrajectoryData) -> None:
+        """
+        Check if agent unique IDs are valid 32 bit integers
+        returns a message identifying violating agent ID
+        """
+        agent_unique_ids = trajectory_data.agent_data.unique_ids
+        for uid in np.ndarray.flatten(agent_unique_ids):
+            if uid > MAX_AGENT_ID:
+                raise DataError(f"Agent IDs is larger than a 32 bit integer: {uid} ")
+
+    @staticmethod
+    def _check_type_matches_subpoints(
+        type_name: str,
+        n_subpoints: int,
+        viz_type: float,
+        display_data: DisplayData,
+        debug_name: str = "",
+    ) -> str:
+        """
+        If the agent has subpoints, check that it
+        also has a display_type of "FIBER" and viz type of "FIBER", and vice versa.
+        return a message saying what is inconsistent
+        """
+        has_subpoints = n_subpoints > 0
+        msg = (
+            f"Agent {debug_name}: Type {type_name} "
+            + ("has" if has_subpoints else "does not have")
+            + " subpoints and "
+        )
+        if has_subpoints != (viz_type == VIZ_TYPE.FIBER):
+            return msg + f"viz type is {viz_type}"
+        if type_name in display_data:
+            display_type = display_data[type_name].display_type
+            if display_type is not DISPLAY_TYPE.NONE and has_subpoints != (
+                display_type == DISPLAY_TYPE.FIBER
+            ):
+                return msg + f"display type is {display_type}"
+        return ""
+
+    @staticmethod
+    def _check_types_match_subpoints(trajectory_data: TrajectoryData) -> str:
+        """
+        For each frame, check that agents that have subpoints
+        also have a display_type of "FIBER" and viz type of "FIBER", and vice versa.
+        return a message with the type name of the first agent that is inconsistent
+        """
+        n_subpoints = trajectory_data.agent_data.n_subpoints
+        display_data = trajectory_data.agent_data.display_data
+        for time_index in range(n_subpoints.shape[0]):
+            for agent_index in range(
+                int(trajectory_data.agent_data.n_agents[time_index])
+            ):
+                inconsistent_type = Writer._check_type_matches_subpoints(
+                    trajectory_data.agent_data.types[time_index][agent_index],
+                    n_subpoints[time_index][agent_index],
+                    trajectory_data.agent_data.viz_types[time_index][agent_index],
+                    display_data,
+                    f"at index Time = {time_index}, Agent = {agent_index}",
+                )
+                if inconsistent_type:
+                    return inconsistent_type
+        return ""

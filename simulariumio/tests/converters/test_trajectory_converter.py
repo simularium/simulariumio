@@ -14,7 +14,14 @@ from simulariumio.tests.conftest import (
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
+    MAX_AGENT_ID,
 )
+
+
+def mixed_agents_invalid_agent_id():
+    result = mixed_agents()
+    result.agent_data.unique_ids[0][0] = MAX_AGENT_ID + 1
+    return result
 
 
 @pytest.mark.parametrize(
@@ -1215,10 +1222,17 @@ from simulariumio.constants import (
                 },
             },
         ),
+        # Agent IDs are larger than a 32 bit int can represent
+        pytest.param(
+            mixed_agents_invalid_agent_id(),
+            {},
+            marks=pytest.mark.raises(exception=DataError),
+        ),
     ],
 )
 def test_trajectory_reader(trajectory, expected_data):
     converter = TrajectoryConverter(trajectory)
     buffer_data = JsonWriter.format_trajectory_data(converter._data)
+    JsonWriter._validate_ids(converter._data)
     assert expected_data == buffer_data
     assert JsonWriter._check_agent_ids_are_unique_per_frame(buffer_data)

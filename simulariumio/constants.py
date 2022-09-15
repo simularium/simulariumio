@@ -168,3 +168,5 @@ DEFAULT_COLORS = [
     "#9f516c",
     "#00aabf",
 ]
+
+MAX_AGENT_ID = 0x80000000  # Agent IDs should fit in a 32 bit signed int
