@@ -10,7 +10,7 @@ from simulariumio.md import (
     MdData,
 )
 from simulariumio import MetaData, UnitData, DisplayData, JsonWriter
-from simulariumio.constants import DEFAULT_BOX_SIZE, VIZ_TYPE
+from simulariumio.constants import DEFAULT_BOX_SIZE, DISPLAY_TYPE, VIZ_TYPE
 
 data = MdData(md_universe=Universe("simulariumio/tests/data/md/example.xyz"))
 converter = MdConverter(data)
@@ -178,11 +178,13 @@ data_with_display_data = MdData(
     display_data={
         "type_27": DisplayData(
             name=type_27_name,
+            display_type=DISPLAY_TYPE.SPHERE,
             radius=type_27_radius,
             color=type_27_color,
         ),
         "H": DisplayData(
             name=h_name,
+            display_type=DISPLAY_TYPE.SPHERE,
         ),
     },
 )
@@ -226,11 +228,13 @@ data_nth_timestep = MdData(
     display_data={
         "type_27": DisplayData(
             name=type_27_name,
+            display_type=DISPLAY_TYPE.SPHERE,
             radius=type_27_radius,
             color=type_27_color,
         ),
         "H": DisplayData(
             name=h_name,
+            display_type=DISPLAY_TYPE.SPHERE,
         ),
     },
 )

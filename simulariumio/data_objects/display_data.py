@@ -23,8 +23,8 @@ class DisplayData:
     def __init__(
         self,
         name: str,
+        display_type: DISPLAY_TYPE,
         radius: float = None,
-        display_type: DISPLAY_TYPE = DISPLAY_TYPE.NONE,
         url: str = "",
         color: str = "",
     ):
@@ -36,17 +36,14 @@ class DisplayData:
         name : str
             A string display name for this type of agent
             Default: use names from simulator data if possible
+        display_type: DISPLAY_TYPE
+            the type of geometry to display
+            Options: SPHERE, FIBER, PDB, OBJ, or SPHERE_GROUP
         radius : float (optional)
             A float radius for rendering this agent.
             For fibers, this is the thickness of the line
             For default agents, this is the scale of the representation
             Default : 1.0
-        display_type: DISPLAY_TYPE (optional)
-            the type of geometry to display
-            Options: SPHERE, FIBER, PDB, or OBJ
-            Default: If not specified, the Simularium Viewer
-                defaults to SPHERE or FIBER depending on
-                the viz type of each agent
         url: str (optional)
             local path or web URL for the geometry file to display,
             web URLs are required for streaming
@@ -75,28 +72,10 @@ class DisplayData:
             raise DataError(f"{color} should be provided as '#xxxxxx' or '#xxx'")
         self.color = color
 
-    def is_default(self):
-        """
-        Check if this DisplayData is only holding default data
-        """
-        return (
-            self.display_type == DISPLAY_TYPE.NONE and not self.url and not self.color
-        )
-
-    def check_set_default_display_type(self, has_subpoints):
-        """
-        If the display type hasn't been specified, set it to a default
-        based on whether the agent has subpoints
-        """
-        if self.display_type != DISPLAY_TYPE.NONE:
-            return
-        self.display_type = DISPLAY_TYPE.FIBER if has_subpoints else DISPLAY_TYPE.SPHERE
-
     def __str__(self):
         return (
             f"{self.name}: display_type={self.display_type.value}, "
             f"url={self.url}, color={self.color} "
-            f"is_default? {self.is_default()}"
         )
 
     def __iter__(self):

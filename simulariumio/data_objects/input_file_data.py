@@ -60,7 +60,9 @@ class InputFileData:
         Is this file binary? (or JSON?)
         """
         with open(self.file_path, "rb") as open_file:
-            header = open_file.read(16).decode("utf-8")
+            header = open_file.read(len(BINARY_SETTINGS.FILE_IDENTIFIER)).decode(
+                "utf-8"
+            )
             if header == BINARY_SETTINGS.FILE_IDENTIFIER:
                 return True
         return False

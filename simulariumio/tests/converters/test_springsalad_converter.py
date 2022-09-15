@@ -133,6 +133,7 @@ data_with_display_data = SpringsaladData(
         ),
         "RED": DisplayData(
             name=name_1,
+            display_type=DISPLAY_TYPE.SPHERE,
             color=color_1,
         ),
     },
@@ -258,6 +259,7 @@ data_draw_bonds = SpringsaladData(
         ),
         "RED": DisplayData(
             name=name_1,
+            display_type=DISPLAY_TYPE.SPHERE,
             color=color_1,
         ),
     },

@@ -284,6 +284,7 @@ class BinaryWriter(Writer):
             the data to format
         """
         print("Converting Trajectory Data to Binary -------------")
+        trajectory_data.agent_data._check_subpoints_match_display_type()
         frame_buffers_n_values = BinaryWriter._frame_buffers_n_values(trajectory_data)
         type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
         file_chunks, traj_info_n_bytes, plot_data_n_bytes = BinaryWriter._chunk_files(

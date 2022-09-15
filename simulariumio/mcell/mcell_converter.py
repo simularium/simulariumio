@@ -12,8 +12,14 @@ import scipy.linalg as linalg
 from scipy.spatial.transform import Rotation
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData, DimensionData
+from ..data_objects import (
+    TrajectoryData,
+    AgentData,
+    UnitData,
+    DimensionData,
+)
 from .mcell_data import McellData
+from ..constants import VALUES_PER_3D_POINT
 
 ###############################################################################
 
@@ -54,7 +60,9 @@ class McellConverter(TrajectoryConverter):
         rotate a vector around axis by angle (radians)
         """
         rotation = linalg.expm(
-            np.cross(np.eye(3), McellConverter._normalize(axis) * angle)
+            np.cross(
+                np.eye(VALUES_PER_3D_POINT), McellConverter._normalize(axis) * angle
+            )
         )
         return np.dot(rotation, np.copy(v))
 
@@ -156,7 +164,7 @@ class McellConverter(TrajectoryConverter):
                     data.fromfile(mol_file, n_data)
                     if is_surface_mol:
                         data.fromfile(mol_file, n_data)
-                    total_mols += int(n_data / 3.0)
+                    total_mols += int(n_data / float(VALUES_PER_3D_POINT))
                 except EOFError:
                     mol_file.close()
                     break
@@ -209,11 +217,11 @@ class McellConverter(TrajectoryConverter):
                     n_chars_type_name.fromfile(mol_file, 1)
                     type_name_array = array.array("B")
                     type_name_array.fromfile(mol_file, n_chars_type_name[0])
-                    type_name = type_name_array.tobytes().decode()
+                    raw_type_name = type_name_array.tobytes().decode()
                     display_type_name = (
-                        input_data.display_data[type_name].name
-                        if type_name in input_data.display_data
-                        else type_name
+                        TrajectoryConverter._get_display_type_name_from_raw(
+                            raw_type_name, input_data.display_data
+                        )
                     )
                     # get positions and rotations
                     is_surface_mol = array.array("B")
@@ -226,18 +234,18 @@ class McellConverter(TrajectoryConverter):
                     positions = array.array("f")
                     positions.fromfile(mol_file, n_data)
                     positions = input_data.meta_data.scale_factor * np.array(positions)
-                    positions = positions.reshape(n_mols, 3)
+                    positions = positions.reshape(n_mols, VALUES_PER_3D_POINT)
                     if is_surface_mol:
                         normals = array.array("f")
                         normals.fromfile(mol_file, n_data)
                         normals = np.array(normals)
-                        normals = normals.reshape(n_mols, 3)
+                        normals = normals.reshape(n_mols, VALUES_PER_3D_POINT)
                         rotations = (
                             McellConverter._get_rotation_euler_angles_for_normals(
                                 normals, input_data.surface_mol_rotation_angle
                             )
                         )
-                        rotations = rotations.reshape(3 * n_mols)
+                        rotations = rotations.reshape(VALUES_PER_3D_POINT * n_mols)
                     else:
                         rotations = np.zeros_like(positions)
                     # save to AgentData
@@ -254,10 +262,11 @@ class McellConverter(TrajectoryConverter):
                         input_data.meta_data.scale_factor
                         * BLENDER_GEOMETRY_SCALE_FACTOR
                         * (
-                            input_data.display_data[type_name].radius
-                            if type_name in input_data.display_data
-                            and input_data.display_data[type_name].radius is not None
-                            else molecule_info[type_name]["display"]["scale"]
+                            input_data.display_data[raw_type_name].radius
+                            if raw_type_name in input_data.display_data
+                            and input_data.display_data[raw_type_name].radius
+                            is not None
+                            else molecule_info[raw_type_name]["display"]["scale"]
                         )
                         * np.ones(n_mols)
                     )

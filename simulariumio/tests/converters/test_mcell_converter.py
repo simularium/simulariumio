@@ -83,6 +83,7 @@ data_with_display_data = McellData(
         ),
         "t2": DisplayData(
             name=t2_name,
+            display_type=DISPLAY_TYPE.SPHERE,
             color=t2_color,
         ),
     },

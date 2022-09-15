@@ -7,9 +7,20 @@ from typing import List, Tuple
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData, DimensionData
+from ..data_objects import (
+    TrajectoryData,
+    AgentData,
+    UnitData,
+    DimensionData,
+    DisplayData,
+)
 from .springsalad_data import SpringsaladData
-from ..constants import VIZ_TYPE
+from ..constants import (
+    VIZ_TYPE,
+    DISPLAY_TYPE,
+    VALUES_PER_3D_POINT,
+    SUBPOINT_VALUES_PER_ITEM,
+)
 
 ###############################################################################
 
@@ -42,7 +53,9 @@ class SpringsaladConverter(TrajectoryConverter):
         Parse SpringSaLaD SIM_VIEW txt file to get the number of timesteps
         and maximum agents per timestep
         """
-        result = DimensionData(0, 0, 2 if draw_bonds else 0)
+        result = DimensionData(
+            0, 0, 2 * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER) if draw_bonds else 0
+        )
         agents = 0
         for line in springsalad_data:
             if "CurrentTime" in line:  # beginning of a frame
@@ -69,7 +82,7 @@ class SpringsaladConverter(TrajectoryConverter):
             springsalad_data, input_data.draw_bonds
         )
         result = AgentData.from_dimensions(dimensions)
-        box_size = np.zeros(3)
+        box_size = np.zeros(VALUES_PER_3D_POINT)
         time_index = -1
         agent_index = 0
         max_uid = 0
@@ -97,9 +110,9 @@ class SpringsaladConverter(TrajectoryConverter):
                 result.unique_ids[time_index][agent_index] = int(cols[1])
                 raw_type_name = cols[3]
                 result.types[time_index].append(
-                    input_data.display_data[raw_type_name].name
-                    if raw_type_name in input_data.display_data
-                    else raw_type_name
+                    TrajectoryConverter._get_display_type_name_from_raw(
+                        raw_type_name, input_data.display_data
+                    )
                 )
                 position = input_data.meta_data.scale_factor * np.array(
                     [float(cols[4]), float(cols[5]), float(cols[6])]
@@ -132,13 +145,15 @@ class SpringsaladConverter(TrajectoryConverter):
                 result.unique_ids[time_index][agent_index] = max_uid
                 max_uid += 1
                 result.types[time_index].append("Link")
-                result.n_subpoints[time_index][agent_index] = 2.0
-                result.subpoints[time_index][agent_index][0] = scene_agent_positions[
-                    particle1_id
-                ]
-                result.subpoints[time_index][agent_index][1] = scene_agent_positions[
-                    particle2_id
-                ]
+                result.n_subpoints[time_index][
+                    agent_index
+                ] = 2 * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
+                result.subpoints[time_index][agent_index][
+                    0:VALUES_PER_3D_POINT
+                ] = scene_agent_positions[particle1_id]
+                result.subpoints[time_index][agent_index][
+                    VALUES_PER_3D_POINT : 2 * VALUES_PER_3D_POINT
+                ] = scene_agent_positions[particle2_id]
                 agent_index += 1
         result.n_timesteps = time_index + 1
         return result, box_size
@@ -157,6 +172,11 @@ class SpringsaladConverter(TrajectoryConverter):
         for tid in input_data.display_data:
             display_data = input_data.display_data[tid]
             agent_data.display_data[display_data.name] = display_data
+        if input_data.draw_bonds:
+            agent_data.display_data["Link"] = DisplayData(
+                name="Link",
+                display_type=DISPLAY_TYPE.FIBER,
+            )
         input_data.meta_data._set_box_size(box_size)
         return TrajectoryData(
             meta_data=input_data.meta_data,

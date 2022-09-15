@@ -8,58 +8,20 @@ from simulariumio.tests.conftest import (
     fiber_agents_type_mapping,
     fully_default_data,
     mixed_agents_type_mapping,
-    three_default_agents,
     mixed_agents,
     fiber_agents,
     fully_default_data_type_mappings,
+    sphere_group_agents,
 )
 from simulariumio.constants import (
-    DEFAULT_BOX_SIZE,
-    VIZ_TYPE,
-    DISPLAY_TYPE,
-    DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
+    DEFAULT_BOX_SIZE,
+    DEFAULT_CAMERA_SETTINGS,
+    VIZ_TYPE,
     MAX_AGENT_ID,
 )
+
 from simulariumio.exceptions import DataError
-
-
-def fiber_agents_default_viz_type():
-    result = fiber_agents()
-    result.agent_data.viz_types[1][1] = VIZ_TYPE.DEFAULT
-    return result
-
-
-def default_agents_fiber_viz_type():
-    result = three_default_agents()
-    result.agent_data.viz_types[1][1] = VIZ_TYPE.FIBER
-    return result
-
-
-def mixed_agents_missing_subpoints():
-    result = mixed_agents()
-    result.agent_data.viz_types[2][1] = VIZ_TYPE.FIBER
-    result.agent_data.display_data["Q"].display_type = DISPLAY_TYPE.FIBER
-    return result
-
-
-def mixed_agents_extra_subpoints():
-    result = mixed_agents()
-    result.agent_data.viz_types[0][2] = VIZ_TYPE.DEFAULT
-    result.agent_data.display_data["C"].display_type = DISPLAY_TYPE.SPHERE
-    return result
-
-
-def mixed_agents_wrong_display_type1():
-    result = mixed_agents()
-    result.agent_data.display_data["A"].display_type = DISPLAY_TYPE.SPHERE
-    return result
-
-
-def mixed_agents_wrong_display_type2():
-    result = mixed_agents()
-    result.agent_data.display_data["Q"].display_type = DISPLAY_TYPE.FIBER
-    return result
 
 
 def mixed_agents_invalid_agent_id():
@@ -88,6 +50,10 @@ fiber_agents_trajectory = fiber_agents()
 fiber_agents_converter = TrajectoryConverter(fiber_agents_trajectory)
 fiber_agents_data = JsonWriter.format_trajectory_data(fiber_agents_converter._data)
 
+# 2 sphere group agents with 3 spheres each for 3 frames
+sphere_group_trajectory = sphere_group_agents()
+sphere_group_converter = TrajectoryConverter(sphere_group_trajectory)
+sphere_group_data = JsonWriter.format_trajectory_data(sphere_group_converter._data)
 
 # test trajectory info
 @pytest.mark.parametrize(
@@ -128,6 +94,10 @@ def test_versions_trajectory(trajectory_version, expected_version):
             fiber_agents_data["trajectoryInfo"]["timeUnits"],
             {"magnitude": 1.0, "name": "µs"},
         ),
+        (
+            sphere_group_data["trajectoryInfo"]["timeUnits"],
+            {"magnitude": 1.0, "name": "s"},
+        ),
     ],
 )
 def test_timeUnits(timeUnits, expected_timeUnits):
@@ -150,6 +120,10 @@ def test_timeUnits(timeUnits, expected_timeUnits):
         (
             fiber_agents_data["trajectoryInfo"]["spatialUnits"],
             {"magnitude": 10.0, "name": "m"},
+        ),
+        (
+            sphere_group_data["trajectoryInfo"]["spatialUnits"],
+            {"magnitude": 1.0, "name": "m"},
         ),
     ],
 )
@@ -183,6 +157,14 @@ def test_spatialUnits(spatialUnits, expected_spatialUnits):
                 "x": DEFAULT_BOX_SIZE[0] * 10,
                 "y": DEFAULT_BOX_SIZE[1] * 10,
                 "z": DEFAULT_BOX_SIZE[2] * 10,
+            },
+        ),
+         (
+            sphere_group_data["trajectoryInfo"]["size"],
+            {
+                "x": DEFAULT_BOX_SIZE[0],
+                "y": DEFAULT_BOX_SIZE[1],
+                "z": DEFAULT_BOX_SIZE[2],
             },
         ),
     ],
@@ -258,6 +240,27 @@ def test_box_size(size, expected_size):
                 "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
             },
         ),
+        (
+            sphere_group_data["trajectoryInfo"]["cameraDefault"],
+            {
+                "position": {
+                    "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                    "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                    "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                },
+                "lookAtPosition": {
+                    "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                    "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                    "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                },
+                "upVector": {
+                    "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                    "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                    "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                },
+                "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+            },
+        ),
     ],
 )
 def test_camera_defaults(camera, expected_camera):
@@ -280,6 +283,24 @@ def test_camera_defaults(camera, expected_camera):
             fiber_agents_data["trajectoryInfo"]["typeMapping"],
             fiber_agents_type_mapping(),
         ),
+        (
+            sphere_group_data["trajectoryInfo"]["typeMapping"],
+            {
+                "0": {
+                    "name": "A",
+                    "geometry": {
+                        "displayType": "SPHERE_GROUP",
+                    },
+                },
+                "1": {
+                    "name": "B",
+                    "geometry": {
+                        "displayType": "SPHERE_GROUP",
+                    },
+                },
+            },
+        ),
+        
     ],
 )
 def test_type_mapping(typeMapping, expected_typeMapping):
@@ -314,6 +335,10 @@ def test_type_mapping(typeMapping, expected_typeMapping):
                 "authors": "A Modeler",
             },
         ),
+        (
+            sphere_group_data["trajectoryInfo"].get("modelInfo", {}),
+            {},
+        ),
     ],
 )
 def test_model_info(modelInfo, expected_modelInfo):
@@ -327,6 +352,7 @@ def test_model_info(modelInfo, expected_modelInfo):
         (default_agents_data["spatialData"]["version"], CURRENT_VERSION.SPATIAL_DATA),
         (mixed_agents_data["spatialData"]["version"], CURRENT_VERSION.SPATIAL_DATA),
         (fiber_agents_data["spatialData"]["version"], CURRENT_VERSION.SPATIAL_DATA),
+        (sphere_group_data["spatialData"]["version"], CURRENT_VERSION.SPATIAL_DATA),
     ],
 )
 def test_versions_spatial_data(spatial_version, expected_version):
@@ -340,6 +366,7 @@ def test_versions_spatial_data(spatial_version, expected_version):
         (default_agents_data["spatialData"]["bundleSize"], 3),
         (mixed_agents_data["spatialData"]["bundleSize"], 3),
         (fiber_agents_data["spatialData"]["bundleSize"], 3),
+        (sphere_group_data["spatialData"]["bundleSize"], 3),
     ],
 )
 def test_bundle_size(bundleSize, expected_bundleSize):
@@ -353,6 +380,7 @@ def test_bundle_size(bundleSize, expected_bundleSize):
         (default_agents_data["spatialData"]["bundleStart"], 0),
         (mixed_agents_data["spatialData"]["bundleStart"], 0),
         (fiber_agents_data["spatialData"]["bundleStart"], 0),
+        (sphere_group_data["spatialData"]["bundleStart"], 0),
     ],
 )
 def test_bundle_start(bundleStart, expected_bundleStart):
@@ -366,6 +394,7 @@ def test_bundle_start(bundleStart, expected_bundleStart):
         (default_agents_data["spatialData"]["msgType"], 1),
         (mixed_agents_data["spatialData"]["msgType"], 1),
         (fiber_agents_data["spatialData"]["msgType"], 1),
+        (sphere_group_data["spatialData"]["msgType"], 1),
     ],
 )
 def test_msg_type(msgType, expected_msgType):
@@ -1141,6 +1170,180 @@ def test_bundle_data_fiber_agents(data, expected_data):
     assert data == expected_data
 
 
+@pytest.mark.parametrize(
+    "data, expected_data",
+    [
+        (
+            sphere_group_data["spatialData"]["bundleData"][0],
+            {
+                "frameNumber": 0,
+                "time": 0.0,
+                "data": [
+                    1000.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    12.0,
+                    10.0,
+                    12.0,
+                    0.0,
+                    2.0,
+                    12.0,
+                    9.0,
+                    0.0,
+                    1.0,
+                    8.0,
+                    9.0,
+                    0.0,
+                    1.0,
+                    1000.0,
+                    1.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    12.0,
+                    0.0,
+                    10.0,
+                    12.0,
+                    1.0,
+                    0.0,
+                    12.0,
+                    9.0,
+                    2.0,
+                    0.0,
+                    8.0,
+                    9.0,
+                    2.0,
+                ],
+            },
+        ),
+        (
+            sphere_group_data["spatialData"]["bundleData"][1],
+            {
+                "frameNumber": 1,
+                "time": 0.5,
+                "data": [
+                    1000.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    12.0,
+                    11.0,
+                    13.0,
+                    1.0,
+                    2.0,
+                    13.0,
+                    10.0,
+                    1.0,
+                    1.0,
+                    9.0,
+                    10.0,
+                    1.0,
+                    1.0,
+                    1000.0,
+                    1.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    12.0,
+                    1.0,
+                    10.0,
+                    12.0,
+                    1.0,
+                    1.0,
+                    12.0,
+                    9.0,
+                    2.0,
+                    1.0,
+                    8.0,
+                    9.0,
+                    2.0,
+                ],
+            },
+        ),
+        (
+            sphere_group_data["spatialData"]["bundleData"][2],
+            {
+                "frameNumber": 2,
+                "time": 1.0,
+                "data": [
+                    1000.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    12.0,
+                    11.0,
+                    13.0,
+                    1.0,
+                    2.0,
+                    13.0,
+                    10.0,
+                    1.0,
+                    1.0,
+                    9.0,
+                    10.0,
+                    1.0,
+                    1.0,
+                    1000.0,
+                    1.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    12.0,
+                    1.0,
+                    10.0,
+                    12.0,
+                    1.0,
+                    1.0,
+                    12.0,
+                    9.0,
+                    2.0,
+                    1.0,
+                    8.0,
+                    9.0,
+                    2.0,
+                ],
+            },
+        ),
+    ]
+)
+def test_bundle_data_sphere_group(data, expected_data):
+    assert data == expected_data
+
+
 # test plot data
 @pytest.mark.parametrize(
     "plot_version, expected_version",
@@ -1148,6 +1351,7 @@ def test_bundle_data_fiber_agents(data, expected_data):
         (default_agents_data["plotData"]["version"], CURRENT_VERSION.PLOT_DATA),
         (mixed_agents_data["plotData"]["version"], CURRENT_VERSION.PLOT_DATA),
         (fiber_agents_data["plotData"]["version"], CURRENT_VERSION.PLOT_DATA),
+        (sphere_group_data["plotData"]["version"], CURRENT_VERSION.PLOT_DATA),
     ],
 )
 def test_versions_plot_data(plot_version, expected_version):
@@ -1160,6 +1364,7 @@ def test_versions_plot_data(plot_version, expected_version):
         (default_agents_data["plotData"]["data"], []),
         (mixed_agents_data["plotData"]["data"], ["plot data goes here"]),
         (fiber_agents_data["plotData"]["data"], ["plot data goes here"]),
+        (sphere_group_data["plotData"]["data"], ["plot data goes here"]),
     ],
 )
 def test_plot_data(plot_data, expected_plot_data):
@@ -1170,6 +1375,7 @@ def test_unique_ids_per_frame():
     assert JsonWriter._check_agent_ids_are_unique_per_frame(default_agents_data)
     assert JsonWriter._check_agent_ids_are_unique_per_frame(mixed_agents_data)
     assert JsonWriter._check_agent_ids_are_unique_per_frame(fiber_agents_data)
+    assert JsonWriter._check_agent_ids_are_unique_per_frame(sphere_group_data)
 
 
 # Test inconsistent viz type error (default)

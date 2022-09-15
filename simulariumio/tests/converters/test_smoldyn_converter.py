@@ -216,11 +216,13 @@ data_with_display_data = SmoldynData(
         ),
         "E(front)": DisplayData(
             name="E",
+            display_type=DISPLAY_TYPE.SPHERE,
             radius=e_radius,
             color=e_color,
         ),
         "ES(front)": DisplayData(
             name="ES",
+            display_type=DISPLAY_TYPE.SPHERE,
         ),
     },
 )
@@ -331,6 +333,7 @@ data_3D = SmoldynData(
     display_data={
         "green(solution)": DisplayData(
             name=green_name,
+            display_type=DISPLAY_TYPE.SPHERE,
             radius=green_radius,
             color=green_color,
         ),

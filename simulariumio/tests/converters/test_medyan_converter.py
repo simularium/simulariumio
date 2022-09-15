@@ -6,7 +6,7 @@ import pytest
 
 from simulariumio.medyan import MedyanConverter, MedyanData
 from simulariumio import MetaData, DisplayData, InputFileData, JsonWriter
-from simulariumio.constants import DEFAULT_BOX_SIZE, VIZ_TYPE
+from simulariumio.constants import DEFAULT_BOX_SIZE, DISPLAY_TYPE, VIZ_TYPE
 
 
 data = MedyanData(
@@ -112,6 +112,7 @@ data_with_display_data = MedyanData(
     filament_display_data={
         0: DisplayData(
             name="Actin",
+            display_type=DISPLAY_TYPE.FIBER,
             radius=actin_radius,
             color=actin_color,
         ),
@@ -119,6 +120,7 @@ data_with_display_data = MedyanData(
     linker_display_data={
         1: DisplayData(
             name="Xlink",
+            display_type=DISPLAY_TYPE.FIBER,
             radius=linker_radius,
             color=linker_color,
         ),
@@ -231,6 +233,7 @@ data_with_drawing_endpoints = MedyanData(
     filament_display_data={
         0: DisplayData(
             name="Actin",
+            display_type=DISPLAY_TYPE.FIBER,
             radius=actin_radius,
             color=actin_color,
         ),
@@ -238,6 +241,7 @@ data_with_drawing_endpoints = MedyanData(
     linker_display_data={
         1: DisplayData(
             name="Xlink",
+            display_type=DISPLAY_TYPE.FIBER,
             radius=linker_radius,
             color=linker_color,
         ),
