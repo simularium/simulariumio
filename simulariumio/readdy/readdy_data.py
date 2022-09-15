@@ -5,6 +5,7 @@ import logging
 from typing import Any, Dict, List
 
 from ..data_objects import UnitData, MetaData, DisplayData
+from .orientations import OrientationData
 
 ###############################################################################
 
@@ -19,6 +20,7 @@ class ReaddyData:
     meta_data: MetaData
     display_data: Dict[str, DisplayData]
     ignore_types: List[str]
+    zero_orientations: List[OrientationData]
     time_units: UnitData
     spatial_units: UnitData
     plots: List[Dict[str, Any]]
@@ -30,6 +32,7 @@ class ReaddyData:
         meta_data: MetaData = None,
         display_data: Dict[str, DisplayData] = None,
         ignore_types: List[str] = None,
+        zero_orientations: List[OrientationData] = None,
         time_units: UnitData = None,
         spatial_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
@@ -57,6 +60,10 @@ class ReaddyData:
                 for rendering, use default representations and colors
         ignore_types : List[str] (optional)
             A list of string ReaDDy particle types to ignore
+        zero_orientations: List[OrientationData] (optional)
+            A list of OrientationDatas defining the zero orientation
+            for various particle types connected to various neighbor types
+            Default: all rotations will be set to zero
         time_units: UnitData (optional)
             multiplier and unit name for time values
             Default: 1.0 second
@@ -73,6 +80,7 @@ class ReaddyData:
         self.meta_data = meta_data if meta_data is not None else MetaData()
         self.display_data = display_data if display_data is not None else {}
         self.ignore_types = ignore_types if ignore_types is not None else []
+        self.zero_orientations = zero_orientations
         self.time_units = time_units if time_units is not None else UnitData("s")
         self.spatial_units = spatial_units if time_units is not None else UnitData("m")
         self.plots = plots if plots is not None else []

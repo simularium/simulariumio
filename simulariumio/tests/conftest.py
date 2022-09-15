@@ -18,6 +18,7 @@ from simulariumio import (
     ModelMetaData,
 )
 from simulariumio.constants import DISPLAY_TYPE
+from simulariumio.readdy import OrientationData, NeighborData
 
 
 def default_agents_type_mapping() -> Dict[str, Any]:
@@ -766,3 +767,45 @@ def assert_buffers_equal(
             np.array(test_frame["data"]), np.array(expected_frame["data"])
         )
     assert test_buffer["plotData"] == expected_buffer["plotData"]
+
+
+"""
+z = 0
+
+y
+^         D -- E
+|         |
+|    B -- C
+|
+|_ _ _ _ > x
+"""
+test_zero_orientations = [
+    OrientationData(
+        type_name_substrings=["C"],
+        neighbor_data=[
+            NeighborData(
+                type_name_substrings=["B"],
+                relative_position=np.array([-1, 0, 0]),
+            ),
+            NeighborData(
+                type_name_substrings=["D"],
+                relative_position=np.array([0, 1, 0]),
+            ),
+        ],
+    ),
+    OrientationData(
+        type_name_substrings=["D"],
+        neighbor_data=[
+            NeighborData(
+                type_name_substrings=["C"],
+                relative_position=np.array([0, -1, 0]),
+                neighbor_type_name_substrings=["B"],
+                neighbor_relative_position=np.array([-1, -1, 0]),
+            ),
+            NeighborData(
+                type_name_substrings=["E"],
+                relative_position=np.array([1, 0, 0]),
+            ),
+        ],
+    ),
+]
