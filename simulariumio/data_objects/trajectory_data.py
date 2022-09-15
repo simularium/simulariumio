@@ -10,6 +10,7 @@ import numpy as np
 from .agent_data import AgentData
 from .unit_data import UnitData
 from .meta_data import MetaData
+from .display_data import DisplayData
 
 ###############################################################################
 
@@ -64,13 +65,17 @@ class TrajectoryData:
         self.plots = plots if plots is not None else []
 
     @classmethod
-    def from_buffer_data(cls, buffer_data: Dict[str, Any]):
+    def from_buffer_data(
+        cls, buffer_data: Dict[str, Any], display_data: Dict[int, DisplayData] = None
+    ):
         """
         Create TrajectoryData from a simularium JSON dict containing buffers
         """
+        if display_data is None:
+            display_data = {}
         return cls(
             meta_data=MetaData.from_buffer_data(buffer_data),
-            agent_data=AgentData.from_buffer_data(buffer_data),
+            agent_data=AgentData.from_buffer_data(buffer_data, display_data),
             time_units=UnitData(
                 buffer_data["trajectoryInfo"]["timeUnits"]["name"],
                 float(buffer_data["trajectoryInfo"]["timeUnits"]["magnitude"]),
@@ -103,7 +108,8 @@ class TrajectoryData:
         result.radii[:, start_i:end_i] = new_agents.radii[:]
         result.rotations[:, start_i:end_i] = new_agents.rotations[:]
         result.n_subpoints[:, start_i:end_i] = new_agents.n_subpoints[:]
-        result.subpoints[:, start_i:end_i] = new_agents.subpoints[:]
+        if len(new_agents.subpoints.shape) > 2:
+            result.subpoints[:, start_i:end_i] = new_agents.subpoints[:]
         # generate new unique IDs and type IDs so they don't overlap
         used_uids = list(np.unique(self.agent_data.unique_ids))
         new_uids = {}

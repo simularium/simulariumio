@@ -23,6 +23,7 @@ from simulariumio.constants import CURRENT_VERSION, DISPLAY_TYPE
                 display_data={
                     "A": DisplayData(
                         name="C",
+                        display_type=DISPLAY_TYPE.SPHERE,
                         radius=3.0,
                         color="#0080ff",
                     ),
@@ -35,6 +36,7 @@ from simulariumio.constants import CURRENT_VERSION, DISPLAY_TYPE
                     ),
                     "D": DisplayData(
                         name="C",
+                        display_type=DISPLAY_TYPE.SPHERE,
                         radius=3.0,
                         color="#0080ff",
                     ),

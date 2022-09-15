@@ -6,7 +6,7 @@ import logging
 from typing import Any, Dict
 
 from .trajectory_converter import TrajectoryConverter
-from .data_objects import TrajectoryData, UnitData, InputFileData
+from .data_objects import TrajectoryData, UnitData, InputFileData, DisplayData
 from .constants import CURRENT_VERSION
 from .readers import SimulariumBinaryReader
 
@@ -18,7 +18,9 @@ log = logging.getLogger(__name__)
 
 
 class FileConverter(TrajectoryConverter):
-    def __init__(self, input_file: InputFileData):
+    def __init__(
+        self, input_file: InputFileData, display_data: Dict[int, DisplayData] = None
+    ):
         """
         This object loads data from the input file in .simularium format.
 
@@ -27,6 +29,8 @@ class FileConverter(TrajectoryConverter):
         input_file: InputFileData
             A InputFileData object containing .simularium data to load
         """
+        if display_data is None:
+            display_data = {}
         if input_file._is_binary_file():
             print("Reading Simularium binary -------------")
             buffer_data = SimulariumBinaryReader.load_binary(input_file)
@@ -38,7 +42,7 @@ class FileConverter(TrajectoryConverter):
             < CURRENT_VERSION.TRAJECTORY_INFO
         ):
             buffer_data = FileConverter.update_trajectory_info_version(buffer_data)
-        self._data = TrajectoryData.from_buffer_data(buffer_data)
+        self._data = TrajectoryData.from_buffer_data(buffer_data, display_data)
 
     @staticmethod
     def _update_trajectory_info_v1_to_v2(data: Dict[str, Any]) -> Dict[str, Any]:

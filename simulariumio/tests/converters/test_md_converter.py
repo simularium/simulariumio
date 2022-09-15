@@ -9,7 +9,7 @@ from simulariumio.md import (
     MdConverter,
     MdData,
 )
-from simulariumio import MetaData, UnitData, DisplayData, JsonWriter
+from simulariumio import MetaData, UnitData, DisplayData, JsonWriter, DISPLAY_TYPE
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
@@ -29,11 +29,13 @@ from simulariumio.constants import (
                 display_data={
                     "type_27": DisplayData(
                         name="A",
+                        display_type=DISPLAY_TYPE.SPHERE,
                         radius=2.0,
                         color="#dfdacd",
                     ),
                     "H": DisplayData(
                         name="Hydrogen",
+                        display_type=DISPLAY_TYPE.SPHERE,
                     ),
                 },
                 spatial_units=UnitData("nm"),
@@ -226,11 +228,13 @@ from simulariumio.constants import (
                 display_data={
                     "type_27": DisplayData(
                         name="A",
+                        display_type=DISPLAY_TYPE.SPHERE,
                         radius=2.0,
                         color="#dfdacd",
                     ),
                     "H": DisplayData(
                         name="Hydrogen",
+                        display_type=DISPLAY_TYPE.SPHERE,
                     ),
                 },
                 spatial_units=UnitData("nm"),

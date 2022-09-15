@@ -20,6 +20,8 @@ class PhysicellData:
     nth_timestep_to_read: int
     display_data: Dict[int, DisplayData]
     phase_names: Dict[int, Dict[int, str]]
+    max_owner_cells: int
+    owner_cell_display_name: str
     time_units: UnitData
     plots: List[Dict[str, Any]]
 
@@ -31,6 +33,8 @@ class PhysicellData:
         nth_timestep_to_read: int = 1,
         display_data: Dict[int, DisplayData] = None,
         phase_names: Dict[int, Dict[int, str]] = None,
+        max_owner_cells: int = -1,
+        owner_cell_display_name: str = "cell",
         time_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
     ):
@@ -64,6 +68,15 @@ class PhysicellData:
             the cell type ID from PhysiCell data mapped
             to display names for phases of that type
             Default: "phase[cell phase ID from PhysiCell data]"
+        max_owner_cells : int (optional)
+            MAX_OWNER_CELLS constant from PhysiCell OwnerCell module.
+            Every cell with ID >= this will be displayed
+            as part of a group of subcell spheres
+            Default: all cells will be rendered as individual spheres
+        owner_cell_display_name : str (optional)
+            Display name for cells that are rendered
+            as groups of spheres
+            Default: "cell"
         time_units: UnitData (optional)
             multiplier and unit name for time values
             Default: 1.0 second
@@ -77,5 +90,7 @@ class PhysicellData:
         self.nth_timestep_to_read = nth_timestep_to_read
         self.display_data = display_data if display_data is not None else {}
         self.phase_names = phase_names if phase_names is not None else {}
+        self.max_owner_cells = max_owner_cells
+        self.owner_cell_display_name = owner_cell_display_name
         self.time_units = time_units if time_units is not None else UnitData("s")
         self.plots = plots if plots is not None else []

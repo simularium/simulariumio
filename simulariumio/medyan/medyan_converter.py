@@ -11,8 +11,14 @@ from ..data_objects import (
     AgentData,
     UnitData,
     DimensionData,
+    DisplayData,
 )
-from ..constants import VIZ_TYPE, DISPLAY_TYPE
+from ..constants import (
+    VIZ_TYPE,
+    DISPLAY_TYPE,
+    VALUES_PER_3D_POINT,
+    SUBPOINT_VALUES_PER_ITEM,
+)
 from .medyan_data import MedyanData
 
 ###############################################################################
@@ -45,7 +51,7 @@ class MedyanConverter(TrajectoryConverter):
         and determine whether to also draw the endpoints as spheres
         """
         if object_type == "motor" or object_type == "linker":
-            type_name = MedyanConverter._get_output_type_name(
+            type_name = MedyanConverter._get_display_type_name(
                 line, object_type, input_data
             )
             if type_name in input_data.agents_with_endpoints:
@@ -53,7 +59,7 @@ class MedyanConverter(TrajectoryConverter):
         return False
 
     @staticmethod
-    def _get_output_type_name(
+    def _get_display_type_name(
         line: str, object_type: str, input_data: MedyanData
     ) -> bool:
         """
@@ -61,19 +67,23 @@ class MedyanConverter(TrajectoryConverter):
         and return the type name to display for this agent type
         """
         raw_tid = int(line.split()[2])
-        return (
-            input_data.display_data[object_type][raw_tid].name
-            if raw_tid in input_data.display_data[object_type]
-            else object_type + str(raw_tid)
-        )
+        if raw_tid not in input_data.display_data[object_type]:
+            display_name = object_type + str(raw_tid)
+            input_data.display_data[object_type][raw_tid] = DisplayData(
+                name=display_name,
+                display_type=DISPLAY_TYPE.FIBER,
+            )
+            return display_name
+        else:
+            return input_data.display_data[object_type][raw_tid].name
 
     @staticmethod
     def _parse_data_dimensions(
         lines: List[str], input_data: MedyanData
     ) -> DimensionData:
         """
-        Parse a MEDYAN snapshot.traj output file to get the number
-        of subpoints per agent per timestep
+        Parse a MEDYAN snapshot.traj output file to get the max numbers
+        of subpoints per agent and agents per timestep, and number of timesteps
         """
         result = DimensionData(0, 0)
         agents = 0
@@ -102,14 +112,22 @@ class MedyanConverter(TrajectoryConverter):
                     agents += 2
                 if "FILAMENT" in line:
                     # start of filament
+                    # filaments N xyz points = 3 * N subpoints
                     cols = line.split()
-                    subpoints = int(cols[3])
+                    subpoints = SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER) * int(
+                        cols[3]
+                    )
                     if result.max_subpoints < subpoints:
                         result.max_subpoints = subpoints
                 else:
                     # start of linker or motor
-                    if result.max_subpoints < 2:
-                        result.max_subpoints = 2
+                    # all linkers and motors have 2 xyz points = 6 subpoints
+                    if result.max_subpoints < 2 * SUBPOINT_VALUES_PER_ITEM(
+                        DISPLAY_TYPE.FIBER
+                    ):
+                        result.max_subpoints = 2 * SUBPOINT_VALUES_PER_ITEM(
+                            DISPLAY_TYPE.FIBER
+                        )
         if agents > result.max_agents:
             result.max_agents = agents
         return result
@@ -176,7 +194,9 @@ class MedyanConverter(TrajectoryConverter):
                     last_tid += 1
                 # type name
                 result.types[time_index].append(
-                    MedyanConverter._get_output_type_name(line, object_type, input_data)
+                    MedyanConverter._get_display_type_name(
+                        line, object_type, input_data
+                    )
                 )
                 # radius
                 radius = (
@@ -189,9 +209,13 @@ class MedyanConverter(TrajectoryConverter):
                     input_data.meta_data.scale_factor * radius
                 )
                 if object_type == "filament":
-                    result.n_subpoints[time_index][agent_index] = int(cols[3])
+                    result.n_subpoints[time_index][agent_index] = int(
+                        cols[3]
+                    ) * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
                 else:
-                    result.n_subpoints[time_index][agent_index] = 2
+                    result.n_subpoints[time_index][
+                        agent_index
+                    ] = 2 * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
                 # draw endpoints?
                 if draw_endpoints:
                     for i in range(2):
@@ -201,9 +225,13 @@ class MedyanConverter(TrajectoryConverter):
                         result.unique_ids[time_index][agent_index + i + 1] = (
                             uids[object_type][raw_uid] + i + 1
                         )
-                        result.types[time_index].append(
-                            result.types[time_index][agent_index] + " End"
-                        )
+                        end_type = result.types[time_index][agent_index] + " End"
+                        result.types[time_index].append(end_type)
+                        if end_type not in result.display_data:
+                            result.display_data[end_type] = DisplayData(
+                                name=end_type,
+                                display_type=DISPLAY_TYPE.SPHERE,
+                            )
                         result.radii[time_index][agent_index + i + 1] = (
                             2 * input_data.meta_data.scale_factor * radius
                         )
@@ -211,14 +239,14 @@ class MedyanConverter(TrajectoryConverter):
             elif parsing_object:
                 # object coordinates
                 for i in range(len(cols)):
-                    subpoint_index = math.floor(i / 3)
-                    d = i % 3
-                    result.subpoints[time_index][agent_index][subpoint_index][
-                        d
+                    result.subpoints[time_index][agent_index][
+                        i
                     ] = input_data.meta_data.scale_factor * float(cols[i])
                     if draw_endpoints:
-                        result.positions[time_index][agent_index + subpoint_index + 1][
-                            d
+                        endpoint_index = math.floor(i / float(VALUES_PER_3D_POINT))
+                        dim_index = i % VALUES_PER_3D_POINT
+                        result.positions[time_index][agent_index + endpoint_index + 1][
+                            dim_index
                         ] = input_data.meta_data.scale_factor * float(cols[i])
                 parsing_object = False
                 agent_index += 1

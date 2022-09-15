@@ -8,54 +8,15 @@ from simulariumio.tests.conftest import (
     three_default_agents,
     mixed_agents,
     fiber_agents,
+    sphere_group_agents,
     default_agents_type_mapping,
 )
 from simulariumio.constants import (
-    VIZ_TYPE,
-    DISPLAY_TYPE,
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
     MAX_AGENT_ID,
 )
 from simulariumio.exceptions import DataError
-
-
-def fiber_agents_default_viz_type():
-    result = fiber_agents()
-    result.agent_data.viz_types[1][1] = VIZ_TYPE.DEFAULT
-    return result
-
-
-def default_agents_fiber_viz_type():
-    result = three_default_agents()
-    result.agent_data.viz_types[1][1] = VIZ_TYPE.FIBER
-    return result
-
-
-def mixed_agents_missing_subpoints():
-    result = mixed_agents()
-    result.agent_data.viz_types[2][1] = VIZ_TYPE.FIBER
-    result.agent_data.display_data["Q"].display_type = DISPLAY_TYPE.FIBER
-    return result
-
-
-def mixed_agents_extra_subpoints():
-    result = mixed_agents()
-    result.agent_data.viz_types[0][2] = VIZ_TYPE.DEFAULT
-    result.agent_data.display_data["C"].display_type = DISPLAY_TYPE.SPHERE
-    return result
-
-
-def mixed_agents_wrong_display_type1():
-    result = mixed_agents()
-    result.agent_data.display_data["A"].display_type = DISPLAY_TYPE.SPHERE
-    return result
-
-
-def mixed_agents_wrong_display_type2():
-    result = mixed_agents()
-    result.agent_data.display_data["Q"].display_type = DISPLAY_TYPE.FIBER
-    return result
 
 
 def mixed_agents_invalid_agent_id():
@@ -67,8 +28,7 @@ def mixed_agents_invalid_agent_id():
 @pytest.mark.parametrize(
     "trajectory, expected_data",
     [
-        # 3 default agents (radius 5-10) at given positions for 3 frames,
-        # test string for plots
+        # 3 default agents (radius 5-10) at given positions for 3 frames
         (
             three_default_agents(),
             {
@@ -233,8 +193,8 @@ def mixed_agents_invalid_agent_id():
                 "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
         ),
-        # # 2 default agents (radius 5-10) and 3 fiber agents
-        # # at given positions for 3 frames, no plots
+        # 2 default agents (radius 5-10) and 3 fiber agents
+        # at given positions for 3 frames
         (
             mixed_agents(),
             {
@@ -608,7 +568,7 @@ def mixed_agents_invalid_agent_id():
             },
         ),
         # 3 fiber agents with points drawn
-        # at given positions for 3 frames, no plots
+        # at given positions for 3 frames
         (
             fiber_agents(),
             {
@@ -1043,36 +1003,225 @@ def mixed_agents_invalid_agent_id():
                 },
             },
         ),
-        # subpoints and viz or display types are inconsistent
-        pytest.param(
-            fiber_agents_default_viz_type(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
-        ),
-        pytest.param(
-            default_agents_fiber_viz_type(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
-        ),
-        pytest.param(
-            mixed_agents_missing_subpoints(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
-        ),
-        pytest.param(
-            mixed_agents_extra_subpoints(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
-        ),
-        pytest.param(
-            mixed_agents_wrong_display_type1(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
-        ),
-        pytest.param(
-            mixed_agents_wrong_display_type2(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
+        # 2 sphere group agents with 3 spheres each for 3 frames
+        (
+            sphere_group_agents(),
+            {
+                "trajectoryInfo": {
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
+                    "timeStepSize": 0.5,
+                    "totalSteps": 3,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "m",
+                    },
+                    "size": {"x": 100.0, "y": 100.0, "z": 100.0},
+                    "cameraDefault": {
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+                    },
+                    "typeMapping": {
+                        "0": {
+                            "name": "A",
+                            "geometry": {
+                                "displayType": "SPHERE_GROUP",
+                            },
+                        },
+                        "1": {
+                            "name": "B",
+                            "geometry": {
+                                "displayType": "SPHERE_GROUP",
+                            },
+                        },
+                    },
+                },
+                "spatialData": {
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
+                    "msgType": 1,
+                    "bundleStart": 0,
+                    "bundleSize": 3,
+                    "bundleData": [
+                        {
+                            "frameNumber": 0,
+                            "time": 0.0,
+                            "data": [
+                                1000.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                12.0,
+                                10.0,
+                                12.0,
+                                0.0,
+                                2.0,
+                                12.0,
+                                9.0,
+                                0.0,
+                                1.0,
+                                8.0,
+                                9.0,
+                                0.0,
+                                1.0,
+                                1000.0,
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                12.0,
+                                0.0,
+                                10.0,
+                                12.0,
+                                1.0,
+                                0.0,
+                                12.0,
+                                9.0,
+                                2.0,
+                                0.0,
+                                8.0,
+                                9.0,
+                                2.0,
+                            ],
+                        },
+                        {
+                            "frameNumber": 1,
+                            "time": 0.5,
+                            "data": [
+                                1000.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                12.0,
+                                11.0,
+                                13.0,
+                                1.0,
+                                2.0,
+                                13.0,
+                                10.0,
+                                1.0,
+                                1.0,
+                                9.0,
+                                10.0,
+                                1.0,
+                                1.0,
+                                1000.0,
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                12.0,
+                                1.0,
+                                10.0,
+                                12.0,
+                                1.0,
+                                1.0,
+                                12.0,
+                                9.0,
+                                2.0,
+                                1.0,
+                                8.0,
+                                9.0,
+                                2.0,
+                            ],
+                        },
+                        {
+                            "frameNumber": 2,
+                            "time": 1.0,
+                            "data": [
+                                1000.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                12.0,
+                                11.0,
+                                13.0,
+                                1.0,
+                                2.0,
+                                13.0,
+                                10.0,
+                                1.0,
+                                1.0,
+                                9.0,
+                                10.0,
+                                1.0,
+                                1.0,
+                                1000.0,
+                                1.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                12.0,
+                                1.0,
+                                10.0,
+                                12.0,
+                                1.0,
+                                1.0,
+                                12.0,
+                                9.0,
+                                2.0,
+                                1.0,
+                                8.0,
+                                9.0,
+                                2.0,
+                            ],
+                        },
+                    ],
+                },
+                "plotData": {
+                    "version": CURRENT_VERSION.PLOT_DATA,
+                    "data": ["plot data goes here"],
+                },
+            },
         ),
         # Agent IDs are larger than a 32 bit int can represent
         pytest.param(

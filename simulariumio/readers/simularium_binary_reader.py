@@ -181,7 +181,6 @@ class SimulariumBinaryReader:
             block_type_id = SimulariumBinaryReader._binary_block_type(
                 block_index, block_info, binary_data.int_view
             )
-
             if block_type_id == BINARY_BLOCK_TYPE.SPATIAL_DATA_JSON.value:
                 block_type = "spatialData"
                 data_type = "JSON"
