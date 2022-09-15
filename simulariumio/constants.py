@@ -23,8 +23,8 @@ class V1_SPATIAL_BUFFER_STRUCT:
     ROTZ_INDEX: int = 8
     R_INDEX: int = 9  # radius
     NSP_INDEX: int = 10  # num subpoints
-    SP_INDEX: int = 11  # subpoints
-    VALUES_PER_AGENT: int = 12
+    SP_INDEX: int = 11  # index of first subpoint, only valid if num subpoints > 0
+    MIN_VALUES_PER_AGENT: int = 11
 
 
 class VIZ_TYPE:
@@ -63,8 +63,28 @@ class DISPLAY_TYPE(Enum):
     PDB = "PDB"
     OBJ = "OBJ"
     FIBER = "FIBER"
+    SPHERE_GROUP = "SPHERE_GROUP"
     # CUBE = "CUBE"  # coming soon
     # GIZMO = "GIZMO"  # coming soon
+
+
+VALUES_PER_3D_POINT: int = 3
+
+
+def SUBPOINT_VALUES_PER_ITEM(display_type: DISPLAY_TYPE) -> int:
+    """
+    How many values per item saved in subpoints?
+    given the display type of the agent
+    """
+    if display_type == DISPLAY_TYPE.FIBER:
+        # fibers store xyz position
+        # for each control point in subpoints
+        return VALUES_PER_3D_POINT
+    if display_type == DISPLAY_TYPE.SPHERE_GROUP:
+        # sphere groups store xyz position and radius
+        # for each sphere in subpoints
+        return VALUES_PER_3D_POINT + 1
+    return 1  # other types don't use subpoints
 
 
 class CURRENT_VERSION:
@@ -127,3 +147,26 @@ def JMOL_COLORS() -> pd.DataFrame:
     """
     this_dir, _ = os.path.split(__file__)
     return pd.read_csv(os.path.join(this_dir, JMOL_COLORS_CSV_PATH))
+
+
+DEFAULT_COLORS = [
+    "#fee34d",
+    "#f7b232",
+    "#bf5736",
+    "#94a7fc",
+    "#ce8ec9",
+    "#58606c",
+    "#0ba345",
+    "#9267cb",
+    "#81dbe6",
+    "#bd7800",
+    "#bbbb99",
+    "#5b79f0",
+    "#89a500",
+    "#da8692",
+    "#418463",
+    "#9f516c",
+    "#00aabf",
+]
+
+MAX_AGENT_ID = 0x80000000  # Agent IDs should fit in a 32 bit signed int

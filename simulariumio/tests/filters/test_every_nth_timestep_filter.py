@@ -3,17 +3,51 @@
 
 import pytest
 
-from simulariumio import FileConverter, InputFileData, JsonWriter
+from simulariumio import FileConverter, InputFileData, JsonWriter, DisplayData
 from simulariumio.filters import EveryNthTimestepFilter
-from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
+from simulariumio.constants import (
+    DEFAULT_CAMERA_SETTINGS,
+    CURRENT_VERSION,
+    DISPLAY_TYPE,
+)
 
 
 @pytest.mark.parametrize(
-    "input_path, _filter, expected_data",
+    "input_path, display_data, _filter, expected_data",
     [
         (
             "simulariumio/tests/data/cytosim/aster_pull3D_couples_actin_solid_3_frames"
             "/aster_pull3D_couples_actin_solid_3_frames.json",
+            {
+                1: DisplayData(
+                    name="microtubule",
+                    display_type=DISPLAY_TYPE.FIBER,
+                ),
+                2: DisplayData(
+                    name="actin",
+                    display_type=DISPLAY_TYPE.FIBER,
+                ),
+                3: DisplayData(
+                    name="aster",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                4: DisplayData(
+                    name="vesicle",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                5: DisplayData(
+                    name="kinesin",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                6: DisplayData(
+                    name="dynein",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                7: DisplayData(
+                    name="motor complex",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+            },
             EveryNthTimestepFilter(n=2),
             {
                 "trajectoryInfo": {
@@ -605,8 +639,11 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
         ),
     ],
 )
-def test_every_nth_timestep_filter(input_path, _filter, expected_data):
-    converter = FileConverter(input_file=InputFileData(file_path=input_path))
+def test_every_nth_timestep_filter(input_path, display_data, _filter, expected_data):
+    converter = FileConverter(
+        input_file=InputFileData(file_path=input_path),
+        display_data=display_data,
+    )
     filtered_data = converter.filter_data([_filter])
     buffer_data = JsonWriter.format_trajectory_data(filtered_data)
     assert expected_data == buffer_data

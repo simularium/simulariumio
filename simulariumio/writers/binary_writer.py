@@ -284,6 +284,7 @@ class BinaryWriter(Writer):
             the data to format
         """
         print("Converting Trajectory Data to Binary -------------")
+        trajectory_data.agent_data._check_subpoints_match_display_type()
         frame_buffers_n_values = BinaryWriter._frame_buffers_n_values(trajectory_data)
         type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
         file_chunks, traj_info_n_bytes, plot_data_n_bytes = BinaryWriter._chunk_files(
@@ -376,7 +377,9 @@ class BinaryWriter(Writer):
         return len(databytes) + block_header_length
 
     @staticmethod
-    def save(trajectory_data: TrajectoryData, output_path: str) -> None:
+    def save(
+        trajectory_data: TrajectoryData, output_path: str, validate_ids: bool
+    ) -> None:
         """
         Save the simularium data in .simularium binary format
         at the output path
@@ -386,7 +389,11 @@ class BinaryWriter(Writer):
             the data to save
         output_path: str
             where to save the file
+        validate_ids: bool
+            additional validation to check agent ID size?
         """
+        if validate_ids:
+            Writer._validate_ids(trajectory_data)
         (
             binary_headers,
             trajectory_infos,

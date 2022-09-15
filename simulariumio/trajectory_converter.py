@@ -3,7 +3,7 @@
 
 import json
 import logging
-from typing import List
+from typing import List, Dict
 import copy
 
 import numpy as np
@@ -17,10 +17,12 @@ from .data_objects import (
     HistogramPlotData,
     ScatterPlotData,
     TrajectoryData,
+    DisplayData,
 )
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
 from .writers import JsonWriter, BinaryWriter
+from .constants import DISPLAY_TYPE
 
 ###############################################################################
 
@@ -52,6 +54,26 @@ class TrajectoryConverter:
             and plot data
         """
         self._data = input_data
+
+    @staticmethod
+    def _get_display_type_name_from_raw(
+        raw_type_name: str, display_data: Dict[str, DisplayData]
+    ) -> str:
+        """
+        Get the display type_name from the display data
+        given the raw type name from the engine.
+        If there is no DisplayData for this type, add it
+        using the raw type_name and SPHERE display_type
+        """
+        if raw_type_name in display_data:
+            display_type_name = display_data[raw_type_name].name
+        else:
+            display_type_name = raw_type_name
+            display_data[display_type_name] = DisplayData(
+                name=display_type_name,
+                display_type=DISPLAY_TYPE.SPHERE,
+            )
+        return display_type_name
 
     @staticmethod
     def _determine_plot_reader(plot_type: str = "scatter") -> [PlotReader]:
@@ -154,7 +176,7 @@ class TrajectoryConverter:
         """
         JsonWriter.save_plot_data(self._data.plots, output_path)
 
-    def save(self, output_path: str, binary: bool = True):
+    def save(self, output_path: str, binary: bool = True, validate_ids: bool = True):
         """
         Save the current simularium data in .simularium JSON format
         at the output path
@@ -166,8 +188,11 @@ class TrajectoryConverter:
         binary: bool (optional)
             save in binary format? otherwise use JSON
             Default: True
+        validate_ids: bool
+            additional validation to check agent ID size?
+            Default = True
         """
         if binary:
-            BinaryWriter.save(self._data, output_path)
+            BinaryWriter.save(self._data, output_path, validate_ids)
         else:
-            JsonWriter.save(self._data, output_path)
+            JsonWriter.save(self._data, output_path, validate_ids)

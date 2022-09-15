@@ -37,6 +37,7 @@ from simulariumio.constants import (
                     ),
                     "RED": DisplayData(
                         name="B",
+                        display_type=DISPLAY_TYPE.SPHERE,
                         color="#0080ff",
                     ),
                 },
@@ -276,6 +277,7 @@ from simulariumio.constants import (
                     ),
                     "RED": DisplayData(
                         name="B",
+                        display_type=DISPLAY_TYPE.SPHERE,
                         color="#0080ff",
                     ),
                 },

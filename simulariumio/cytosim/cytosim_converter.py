@@ -7,8 +7,14 @@ from typing import Any, Dict, List, Tuple
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import TrajectoryData, AgentData, UnitData, DimensionData
-from ..constants import VIZ_TYPE, DISPLAY_TYPE
+from ..data_objects import (
+    TrajectoryData,
+    AgentData,
+    UnitData,
+    DimensionData,
+    DisplayData,
+)
+from ..constants import VIZ_TYPE, DISPLAY_TYPE, SUBPOINT_VALUES_PER_ITEM
 from .cytosim_data import CytosimData
 from .cytosim_object_info import CytosimObjectInfo
 
@@ -71,7 +77,7 @@ class CytosimConverter(TrajectoryConverter):
                     agents += 1
                 continue
             if is_fiber:
-                subpoints += 1
+                subpoints += SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
             else:
                 agents += 1
         if agents > result.max_agents:
@@ -94,6 +100,25 @@ class CytosimConverter(TrajectoryConverter):
             )
             result = result.add(object_dimensions)
         return result
+
+    @staticmethod
+    def _get_display_type_name_from_raw(raw_tid, object_type, display_data):
+        """
+        Get the display type_name given the type ID from Cytosim
+        and the Cytosim object type
+        If there is no DisplayData for this type, add it
+        """
+        if raw_tid not in display_data:
+            type_name = object_type[:-1] + str(raw_tid)
+            display_data[raw_tid] = DisplayData(
+                name=type_name,
+                display_type=DISPLAY_TYPE.FIBER
+                if "fiber" in object_type
+                else DISPLAY_TYPE.SPHERE,
+            )
+        else:
+            type_name = display_data[raw_tid].name
+        return type_name
 
     @staticmethod
     def _parse_object(
@@ -130,9 +155,9 @@ class CytosimConverter(TrajectoryConverter):
         result.unique_ids[time_index][agent_index] = uids[raw_uid]
         # type name
         result.types[time_index].append(
-            object_info.display_data[raw_tid].name
-            if raw_tid in object_info.display_data
-            else object_type[:-1] + str(raw_tid)
+            CytosimConverter._get_display_type_name_from_raw(
+                raw_tid, object_type, object_info.display_data
+            )
         )
         # radius
         result.radii[time_index][agent_index] = scale_factor * (
@@ -186,12 +211,12 @@ class CytosimConverter(TrajectoryConverter):
                 continue
             elif is_fiber:
                 # each fiber point
-                subpoint_index = int(
-                    result.n_subpoints[time_index][int(result.n_agents[time_index] - 1)]
-                )
+                agent_index = int(result.n_agents[time_index] - 1)
+                subpoint_index = int(result.n_subpoints[time_index][agent_index])
                 # position
-                result.subpoints[time_index][int(result.n_agents[time_index] - 1)][
-                    subpoint_index
+                result.subpoints[time_index][agent_index][
+                    subpoint_index : subpoint_index
+                    + SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
                 ] = scale_factor * np.array(
                     [
                         float(columns[1].strip("+,")),
@@ -199,9 +224,9 @@ class CytosimConverter(TrajectoryConverter):
                         float(columns[3].strip("+,")),
                     ]
                 )
-                result.n_subpoints[time_index][
-                    int(result.n_agents[time_index] - 1)
-                ] += 1
+                result.n_subpoints[time_index][agent_index] += SUBPOINT_VALUES_PER_ITEM(
+                    DISPLAY_TYPE.FIBER
+                )
             else:
                 # each non-fiber object
                 (result, uids, used_unique_IDs,) = CytosimConverter._parse_object(

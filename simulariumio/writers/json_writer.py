@@ -11,9 +11,8 @@ from ..data_objects import (
     AgentData,
     TrajectoryData,
 )
-from ..constants import V1_SPATIAL_BUFFER_STRUCT, CURRENT_VERSION
+from ..constants import V1_SPATIAL_BUFFER_STRUCT, CURRENT_VERSION, VALUES_PER_3D_POINT
 from .writer import Writer
-from ..exceptions import DataError
 
 ###############################################################################
 
@@ -62,19 +61,27 @@ class JsonWriter(Writer):
         """
         bundle_data: List[Dict[str, Any]] = []
         max_n_agents = int(np.amax(agent_data.n_agents, 0))
-        ix_positions = np.empty((3 * max_n_agents,), dtype=int)
-        ix_rotations = np.empty((3 * max_n_agents,), dtype=int)
+        ix_positions = np.empty((VALUES_PER_3D_POINT * max_n_agents,), dtype=int)
+        ix_rotations = np.empty((VALUES_PER_3D_POINT * max_n_agents,), dtype=int)
         buffer_struct = V1_SPATIAL_BUFFER_STRUCT
         for i in range(max_n_agents):
-            ix_positions[3 * i : 3 * i + 3] = np.arange(
-                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.POSX_INDEX,
-                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.POSX_INDEX + 3,
+            ix_positions[
+                VALUES_PER_3D_POINT * i : VALUES_PER_3D_POINT * (i + 1)
+            ] = np.arange(
+                i * (buffer_struct.MIN_VALUES_PER_AGENT) + buffer_struct.POSX_INDEX,
+                i * (buffer_struct.MIN_VALUES_PER_AGENT)
+                + buffer_struct.POSX_INDEX
+                + VALUES_PER_3D_POINT,
             )
-            ix_rotations[3 * i : 3 * i + 3] = np.arange(
-                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.ROTX_INDEX,
-                i * (buffer_struct.VALUES_PER_AGENT - 1) + buffer_struct.ROTX_INDEX + 3,
+            ix_rotations[
+                VALUES_PER_3D_POINT * i : VALUES_PER_3D_POINT * (i + 1)
+            ] = np.arange(
+                i * (buffer_struct.MIN_VALUES_PER_AGENT) + buffer_struct.ROTX_INDEX,
+                i * (buffer_struct.MIN_VALUES_PER_AGENT)
+                + buffer_struct.ROTX_INDEX
+                + VALUES_PER_3D_POINT,
             )
-        frame_buf = np.zeros((buffer_struct.VALUES_PER_AGENT - 1) * max_n_agents)
+        frame_buf = np.zeros((buffer_struct.MIN_VALUES_PER_AGENT) * max_n_agents)
         total_steps = (
             agent_data.n_timesteps
             if agent_data.n_timesteps >= 0
@@ -85,24 +92,24 @@ class JsonWriter(Writer):
             frame_data["frameNumber"] = time_index
             frame_data["time"] = float(agent_data.times[time_index])
             n_agents = int(agent_data.n_agents[time_index])
-            local_buf = frame_buf[: (buffer_struct.VALUES_PER_AGENT - 1) * n_agents]
+            local_buf = frame_buf[: (buffer_struct.MIN_VALUES_PER_AGENT) * n_agents]
             local_buf[
-                buffer_struct.VIZ_TYPE_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
+                buffer_struct.VIZ_TYPE_INDEX :: buffer_struct.MIN_VALUES_PER_AGENT
             ] = agent_data.viz_types[time_index, :n_agents]
             local_buf[
-                buffer_struct.UID_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
+                buffer_struct.UID_INDEX :: buffer_struct.MIN_VALUES_PER_AGENT
             ] = agent_data.unique_ids[time_index, :n_agents]
             local_buf[
-                buffer_struct.TID_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
+                buffer_struct.TID_INDEX :: buffer_struct.MIN_VALUES_PER_AGENT
             ] = type_ids[time_index, :n_agents]
-            local_buf[ix_positions[: 3 * n_agents]] = agent_data.positions[
-                time_index, :n_agents
-            ].flatten()
-            local_buf[ix_rotations[: 3 * n_agents]] = agent_data.rotations[
-                time_index, :n_agents
-            ].flatten()
             local_buf[
-                buffer_struct.R_INDEX :: buffer_struct.VALUES_PER_AGENT - 1
+                ix_positions[: VALUES_PER_3D_POINT * n_agents]
+            ] = agent_data.positions[time_index, :n_agents].flatten()
+            local_buf[
+                ix_rotations[: VALUES_PER_3D_POINT * n_agents]
+            ] = agent_data.rotations[time_index, :n_agents].flatten()
+            local_buf[
+                buffer_struct.R_INDEX :: buffer_struct.MIN_VALUES_PER_AGENT
             ] = agent_data.radii[time_index, :n_agents]
             frame_data["data"] = local_buf.tolist()
             bundle_data.append(frame_data)
@@ -118,9 +125,7 @@ class JsonWriter(Writer):
             the data to format
         """
         print("Converting Trajectory Data to JSON -------------")
-        inconsistent_type = Writer._check_types_match_subpoints(trajectory_data)
-        if inconsistent_type:
-            raise DataError(inconsistent_type)
+        trajectory_data.agent_data._check_subpoints_match_display_type()
         simularium_data = {}
         # trajectory info
         total_steps = (
@@ -139,7 +144,7 @@ class JsonWriter(Writer):
             "bundleStart": 0,
             "bundleSize": total_steps,
         }
-        if trajectory_data.agent_data.subpoints is not None:
+        if np.amax(trajectory_data.agent_data.n_subpoints) > 0:
             spatialData["bundleData"] = JsonWriter._get_spatial_bundle_data_subpoints(
                 trajectory_data.agent_data, type_ids
             )
@@ -158,7 +163,9 @@ class JsonWriter(Writer):
         return simularium_data
 
     @staticmethod
-    def save(trajectory_data: TrajectoryData, output_path: str) -> None:
+    def save(
+        trajectory_data: TrajectoryData, output_path: str, validate_ids: bool
+    ) -> None:
         """
         Save the simularium data in .simularium JSON format
         at the output path
@@ -168,7 +175,11 @@ class JsonWriter(Writer):
             the data to save
         output_path: str
             where to save the file
+        validate_ids: bool (optional)
+            additional validation to check agent ID size?
         """
+        if validate_ids:
+            Writer._validate_ids(trajectory_data)
         json_data = JsonWriter.format_trajectory_data(trajectory_data)
         print("Writing JSON -------------")
         with open(f"{output_path}.simularium", "w+") as outfile:

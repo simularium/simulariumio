@@ -7,13 +7,13 @@ import numpy as np
 import json
 from scipy.spatial.transform import Rotation as R
 
-from ..constants import DISPLAY_TYPE, VIZ_TYPE
+from cellpack import RecipeLoader
+from ..constants import DISPLAY_TYPE, VIZ_TYPE, VALUES_PER_3D_POINT
 from ..data_objects.camera_data import CameraData
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData
 from ..data_objects import MetaData, DisplayData
 from .cellpack_data import HAND_TYPE, CellpackData
-from cellpack.autopack.iotools_simple import RecipeLoader
 
 ###############################################################################
 
@@ -75,7 +75,11 @@ class CellpackConverter(TrajectoryConverter):
 
     @staticmethod
     def _get_euler_from_matrix(data_in, handedness):
-        rotation_matrix = [data_in[0][0:3], data_in[1][0:3], data_in[2][0:3]]
+        rotation_matrix = [
+            data_in[0][0:VALUES_PER_3D_POINT],
+            data_in[1][0:VALUES_PER_3D_POINT],
+            data_in[2][0:VALUES_PER_3D_POINT],
+        ]
         if handedness == HAND_TYPE.LEFT:
             euler = R.from_matrix(rotation_matrix).as_euler("ZYX", degrees=False)
             return [euler[0], euler[1], -euler[2]]

@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from simulariumio.medyan import MedyanConverter, MedyanData
-from simulariumio import MetaData, DisplayData, InputFileData, JsonWriter
+from simulariumio import MetaData, DisplayData, InputFileData, JsonWriter, DISPLAY_TYPE
 from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
 
@@ -24,6 +24,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                 filament_display_data={
                     0: DisplayData(
                         name="Actin",
+                        display_type=DISPLAY_TYPE.FIBER,
                         radius=2,
                         color="#d71f5f",
                     ),
@@ -31,6 +32,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                 linker_display_data={
                     1: DisplayData(
                         name="Xlink",
+                        display_type=DISPLAY_TYPE.FIBER,
                         radius=0.5,
                         color="#0080ff",
                     ),
@@ -432,6 +434,7 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                 filament_display_data={
                     0: DisplayData(
                         name="Actin",
+                        display_type=DISPLAY_TYPE.FIBER,
                         radius=2,
                         color="#ff1493",
                     ),
@@ -439,11 +442,13 @@ from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
                 linker_display_data={
                     0: DisplayData(
                         name="Xlink0",
+                        display_type=DISPLAY_TYPE.FIBER,
                         radius=1.0,
                         color="#0080ff",
                     ),
                     1: DisplayData(
                         name="Xlink1",
+                        display_type=DISPLAY_TYPE.FIBER,
                         radius=0.5,
                     ),
                 },
