@@ -51,7 +51,7 @@ tutorial_requirements = [
 ]
 
 benchmark_requirements = [
-    "awscli>=1.20"
+    "awscli>=1.20",
     "quilt3",
 ]
 
