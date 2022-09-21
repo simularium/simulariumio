@@ -121,6 +121,8 @@ setup(
     include_package_data=True,
     keywords="simulariumio",
     name="simulariumio",
+    package_data={
+        '': ['package_data/*']},
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*"]),
     python_requires=">=3.7",
     setup_requires=setup_requirements,
