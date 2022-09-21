@@ -55,10 +55,11 @@ class InputFileData:
         with open(self.file_path, "r") as myfile:
             return myfile.read()
 
-    def _is_binary_file(self):
+    def _is_binary(self):
         """
-        Is this file binary? (or JSON?)
+        Is this data in binary? (or JSON?)
         """
+        contents = self.get_contents()
         with open(self.file_path, "rb") as open_file:
             header = open_file.read(len(BINARY_SETTINGS.FILE_IDENTIFIER)).decode(
                 "utf-8"
