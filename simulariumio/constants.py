@@ -138,7 +138,7 @@ class BINARY_SETTINGS:
     ]
 
 
-JMOL_COLORS_CSV_PATH = "jmolcolors.csv"
+JMOL_COLORS_CSV_PATH = "package_data/jmolcolors.csv"
 
 
 def JMOL_COLORS() -> pd.DataFrame:
