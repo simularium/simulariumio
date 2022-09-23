@@ -6,6 +6,7 @@ import pytest
 from simulariumio import TrajectoryConverter, JsonWriter
 from simulariumio.tests.conftest import (
     fiber_agents_type_mapping,
+    fully_default_data,
     mixed_agents_type_mapping,
     three_default_agents,
     mixed_agents,
@@ -35,9 +36,10 @@ def mixed_agents_invalid_agent_id():
     return result
 
 
-# 3 default agents (radius 5-10) at given positions for 3 frames,
-# test string for plots
-default_agents_trajectory = three_default_agents()
+# 3 default agents (radius 5-10) with all optional trajectory
+# parameters left blank
+default_agents_trajectory = fully_default_data()
+default_agents_trajectory.meta_data._set_box_size()
 default_agents_converter = TrajectoryConverter(default_agents_trajectory)
 default_agents_data = JsonWriter.format_trajectory_data(default_agents_converter._data)
 
@@ -276,7 +278,7 @@ def test_camera_defaults(camera, expected_camera):
     [
         (
             default_agents_data["trajectoryInfo"]["typeMapping"],
-            default_agents_type_mapping(),
+            fully_default_data_type_mappings(),
         ),
         (
             mixed_agents_data["trajectoryInfo"]["typeMapping"],
