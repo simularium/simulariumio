@@ -72,6 +72,53 @@ def default_agents_type_mapping() -> Dict[str, Any]:
     }
 
 
+def fully_default_data_type_mappings() -> Dict[str, Any]:
+    return {
+        "0": {
+            "name": "C",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "1": {
+            "name": "U",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "2": {
+            "name": "L",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "3": {
+            "name": "S",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "4": {
+            "name": "O",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "5": {
+            "name": "Y",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "6": {
+            "name": "W",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+    }
+
+
 def three_default_agents() -> TrajectoryData:
     return TrajectoryData(
         meta_data=MetaData(
@@ -156,6 +203,45 @@ def three_default_agents() -> TrajectoryData:
         ),
         time_units=UnitData("ns"),
         spatial_units=UnitData("nm"),
+    )
+
+
+def fully_default_data() -> TrajectoryData:
+    return TrajectoryData(
+        meta_data=MetaData(),
+        agent_data=AgentData(
+            times=0.5 * np.array(list(range(3))),
+            n_agents=np.array(3 * [3]),
+            viz_types=np.array(3 * [3 * [1000.0]]),
+            unique_ids=np.array([[0.0, 1.0, 2.0], [0.0, 1.0, 2.0], [0.0, 1.0, 2.0]]),
+            types=[["C", "U", "C"], ["U", "L", "S"], ["O", "Y", "W"]],
+            positions=np.array(
+                [
+                    [
+                        [4.89610492, -29.81564851, 40.77254057],
+                        [43.43048197, 48.00424379, -36.02881338],
+                        [29.84924588, -38.02769707, 2.46644825],
+                    ],
+                    [
+                        [-43.37181102, -13.41127423, -17.31316927],
+                        [9.62132397, 13.4774314, -20.30846039],
+                        [41.41039848, -45.85543786, 49.06208485],
+                    ],
+                    [
+                        [-24.91450698, -44.79360525, 13.32273796],
+                        [4.10861266, 43.86451151, 21.93697483],
+                        [-7.16740679, -13.06491594, 44.97026158],
+                    ],
+                ]
+            ),
+            radii=np.array(
+                [
+                    [8.38656327, 6.18568039, 6.61459206],
+                    [5.26366739, 6.69209780, 9.88033853],
+                    [8.91022619, 9.01379396, 8.39880154],
+                ]
+            ),
+        ),
     )
 
 
@@ -674,7 +760,7 @@ def mixed_agents() -> TrajectoryData:
                 ),
             },
         ),
-        time_units=UnitData("s"),
+        time_units=UnitData("s", 2.0),
         spatial_units=UnitData("um"),
         plots=["plot data goes here"],
     )

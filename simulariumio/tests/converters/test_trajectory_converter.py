@@ -6,11 +6,12 @@ import pytest
 from simulariumio import TrajectoryConverter, JsonWriter
 from simulariumio.tests.conftest import (
     fiber_agents_type_mapping,
+    fully_default_data,
     mixed_agents_type_mapping,
     three_default_agents,
     mixed_agents,
     fiber_agents,
-    default_agents_type_mapping,
+    fully_default_data_type_mappings,
 )
 from simulariumio.constants import (
     DEFAULT_BOX_SIZE,
@@ -68,9 +69,10 @@ def mixed_agents_invalid_agent_id():
     return result
 
 
-# 3 default agents (radius 5-10) at given positions for 3 frames,
-# test string for plots
-default_agents_trajectory = three_default_agents()
+# 3 default agents (radius 5-10) with all optional trajectory
+# parameters left blank
+default_agents_trajectory = fully_default_data()
+default_agents_trajectory.meta_data._set_box_size()
 default_agents_converter = TrajectoryConverter(default_agents_trajectory)
 default_agents_data = JsonWriter.format_trajectory_data(default_agents_converter._data)
 
@@ -114,12 +116,13 @@ def test_versions_trajectory(trajectory_version, expected_version):
     "timeUnits, expected_timeUnits",
     [
         (
+            # default time units: 1.0 sec
             default_agents_data["trajectoryInfo"]["timeUnits"],
-            {"magnitude": 1.0, "name": "ns"},
+            {"magnitude": 1.0, "name": "s"},
         ),
         (
             mixed_agents_data["trajectoryInfo"]["timeUnits"],
-            {"magnitude": 1.0, "name": "s"},
+            {"magnitude": 2.0, "name": "s"},
         ),
         (
             fiber_agents_data["trajectoryInfo"]["timeUnits"],
@@ -136,8 +139,9 @@ def test_timeUnits(timeUnits, expected_timeUnits):
     "spatialUnits, expected_spatialUnits",
     [
         (
+            # default spatial units: 1.0 m
             default_agents_data["trajectoryInfo"]["spatialUnits"],
-            {"magnitude": 1.0, "name": "nm"},
+            {"magnitude": 1.0, "name": "m"},
         ),
         (
             mixed_agents_data["trajectoryInfo"]["spatialUnits"],
@@ -266,7 +270,7 @@ def test_camera_defaults(camera, expected_camera):
     [
         (
             default_agents_data["trajectoryInfo"]["typeMapping"],
-            default_agents_type_mapping(),
+            fully_default_data_type_mappings(),
         ),
         (
             mixed_agents_data["trajectoryInfo"]["typeMapping"],
@@ -286,6 +290,10 @@ def test_type_mapping(typeMapping, expected_typeMapping):
 @pytest.mark.parametrize(
     "modelInfo, expected_modelInfo",
     [
+        (
+            default_agents_data["trajectoryInfo"].get("modelInfo", {}),
+            {},
+        ),
         (
             mixed_agents_data["trajectoryInfo"]["modelInfo"],
             {
@@ -379,9 +387,9 @@ def test_msg_type(msgType, expected_msgType):
                     4.89610492,
                     -29.81564851,
                     40.77254057,
-                    40.77254057,
-                    -29.81564851,
-                    4.89610492,
+                    0.0,
+                    0.0,
+                    0.0,
                     8.38656327,
                     0.0,
                     VIZ_TYPE.DEFAULT,  # agent 2
@@ -390,9 +398,9 @@ def test_msg_type(msgType, expected_msgType):
                     43.43048197,
                     48.00424379,
                     -36.02881338,
-                    -36.02881338,
-                    48.00424379,
-                    43.43048197,
+                    0.0,
+                    0.0,
+                    0.0,
                     6.18568039,
                     0.0,
                     VIZ_TYPE.DEFAULT,  # agent 3
@@ -401,9 +409,9 @@ def test_msg_type(msgType, expected_msgType):
                     29.84924588,
                     -38.02769707,
                     2.46644825,
-                    2.46644825,
-                    -38.02769707,
-                    29.84924588,
+                    0.0,
+                    0.0,
+                    0.0,
                     6.61459206,
                     0.0,
                 ],
@@ -421,9 +429,9 @@ def test_msg_type(msgType, expected_msgType):
                     -43.37181102,
                     -13.41127423,
                     -17.31316927,
-                    -17.31316927,
-                    -13.41127423,
-                    -43.37181102,
+                    0.0,
+                    0.0,
+                    0.0,
                     5.26366739,
                     0.0,
                     VIZ_TYPE.DEFAULT,
@@ -432,9 +440,9 @@ def test_msg_type(msgType, expected_msgType):
                     9.62132397,
                     13.4774314,
                     -20.30846039,
-                    -20.30846039,
-                    13.4774314,
-                    9.62132397,
+                    0.0,
+                    0.0,
+                    0.0,
                     6.69209780,
                     0.0,
                     VIZ_TYPE.DEFAULT,
@@ -443,9 +451,9 @@ def test_msg_type(msgType, expected_msgType):
                     41.41039848,
                     -45.85543786,
                     49.06208485,
-                    49.06208485,
-                    -45.85543786,
-                    41.41039848,
+                    0.0,
+                    0.0,
+                    0.0,
                     9.88033853,
                     0.0,
                 ],
@@ -463,9 +471,9 @@ def test_msg_type(msgType, expected_msgType):
                     -24.91450698,
                     -44.79360525,
                     13.32273796,
-                    13.32273796,
-                    -44.79360525,
-                    -24.91450698,
+                    0.0,
+                    0.0,
+                    0.0,
                     8.91022619,
                     0.0,
                     VIZ_TYPE.DEFAULT,
@@ -474,9 +482,9 @@ def test_msg_type(msgType, expected_msgType):
                     4.10861266,
                     43.86451151,
                     21.93697483,
-                    21.93697483,
-                    43.86451151,
-                    4.10861266,
+                    0.0,
+                    0.0,
+                    0.0,
                     9.01379396,
                     0.0,
                     VIZ_TYPE.DEFAULT,
@@ -485,9 +493,9 @@ def test_msg_type(msgType, expected_msgType):
                     -7.16740679,
                     -13.06491594,
                     44.97026158,
-                    44.97026158,
-                    -13.06491594,
-                    -7.16740679,
+                    0.0,
+                    0.0,
+                    0.0,
                     8.39880154,
                     0.0,
                 ],
