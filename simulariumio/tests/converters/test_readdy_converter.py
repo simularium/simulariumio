@@ -7,7 +7,6 @@ import pytest
 from simulariumio.readdy import ReaddyConverter, ReaddyData
 from simulariumio import UnitData, MetaData, DisplayData, JsonWriter
 from simulariumio.constants import (
-    DEFAULT_CAMERA_SETTINGS,
     DISPLAY_TYPE,
     DEFAULT_BOX_SIZE,
     VIZ_TYPE,
@@ -38,37 +37,6 @@ results = JsonWriter.format_trajectory_data(converter._data)
 )
 def test_box_size_default(box_size, expected_box_size):
     assert box_size == expected_box_size
-
-
-# test default camera settings
-@pytest.mark.parametrize(
-    "camera_settings, expected_camera_settings",
-    [
-        (
-            results["trajectoryInfo"]["cameraDefault"],
-            {
-                "position": {
-                    "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
-                    "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
-                    "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
-                },
-                "lookAtPosition": {
-                    "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
-                    "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
-                    "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
-                },
-                "upVector": {
-                    "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
-                    "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
-                    "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
-                },
-                "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
-            },
-        )
-    ],
-)
-def test_camera_setting_default(camera_settings, expected_camera_settings):
-    assert camera_settings == expected_camera_settings
 
 
 # test time units default
