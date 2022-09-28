@@ -25,8 +25,10 @@ class SimulariumBinaryReader:
         """
         Read a .simularium binary file and return multiple views of the data
         """
+        # if input_file.get_contents() returns BinaryFileData, just return that?
         result = BinaryFileData()
         with open(input_file.file_path, "rb") as open_binary_file:
+            # do this for binary in memory too, so no file open
             result.byte_view = open_binary_file.read()
             result.int_view = np.frombuffer(
                 result.byte_view, dtype=np.dtype("I").newbyteorder("<")

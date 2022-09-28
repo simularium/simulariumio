@@ -53,14 +53,15 @@ class InputFileData:
         if self.file_contents:
             return self.file_contents
         with open(self.file_path, "r") as myfile:
-            return myfile.read()
+            return myfile.read()  # only works for JSON files right now, maybe use SimulariumBinaryReader._binary_data_from_file()?
+        
 
     def _is_binary(self):
         """
         Is this data in binary? (or JSON?)
         """
-        contents = self.get_contents()
         with open(self.file_path, "rb") as open_file:
+            # need to be able to do this check with a binary blob rather than just file
             header = open_file.read(len(BINARY_SETTINGS.FILE_IDENTIFIER)).decode(
                 "utf-8"
             )
