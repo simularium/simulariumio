@@ -31,6 +31,7 @@ def test_binary_file_parsing(
     expected_buffer_data = JsonWriter.format_trajectory_data(expected_converter._data)
     assert_buffers_equal(test_buffer_data, expected_buffer_data)
 
+
 @pytest.mark.parametrize(
     "input_path, expected_data",
     [
@@ -51,5 +52,7 @@ def test_binary_parsing(
         )
         test_buffer_data = JsonWriter.format_trajectory_data(test_converter._data)
         expected_converter = TrajectoryConverter(expected_data)
-        expected_buffer_data = JsonWriter.format_trajectory_data(expected_converter._data)
+        expected_buffer_data = JsonWriter.format_trajectory_data(
+            expected_converter._data
+        )
         assert_buffers_equal(test_buffer_data, expected_buffer_data)

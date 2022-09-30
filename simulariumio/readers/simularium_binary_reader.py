@@ -27,23 +27,13 @@ class SimulariumBinaryReader:
         multiple views of the data
         """
         result = BinaryFileData()
-        if input_file.file_contents:
-            result.byte_view = input_file.file_contents
-            result.int_view = np.frombuffer(
-                input_file.file_contents, dtype=np.dtype("I").newbyteorder("<")
-            )
-            result.float_view = np.frombuffer(
-                input_file.file_contents, dtype=np.dtype("f").newbyteorder("<")
-            )
-            return result
-        with open(input_file.file_path, "rb") as open_binary_file:
-            result.byte_view = open_binary_file.read()
-            result.int_view = np.frombuffer(
-                result.byte_view, dtype=np.dtype("I").newbyteorder("<")
-            )
-            result.float_view = np.frombuffer(
-                result.byte_view, dtype=np.dtype("f").newbyteorder("<")
-            )
+        result.byte_view = input_file.get_contents()
+        result.int_view = np.frombuffer(
+            result.byte_view, dtype=np.dtype("I").newbyteorder("<")
+        )
+        result.float_view = np.frombuffer(
+            result.byte_view, dtype=np.dtype("f").newbyteorder("<")
+        )
         return result
 
     @staticmethod
