@@ -27,4 +27,4 @@ from simulariumio import InputFileData
 )
 def test_input_file_is_binary(input_path, is_binary):
     input_file = InputFileData(file_path=input_path)
-    assert input_file._is_binary_file() == is_binary
+    assert input_file._is_binary() == is_binary
