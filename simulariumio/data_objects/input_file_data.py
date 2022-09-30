@@ -67,8 +67,7 @@ class InputFileData:
         if self.file_contents:
             # check file contents string to see if they're binary
             header = self.file_contents[0 : len(BINARY_SETTINGS.FILE_IDENTIFIER)]
-            if header.decode("utf-8") == BINARY_SETTINGS.FILE_IDENTIFIER:
-                return True
+            return header.decode("utf-8") == BINARY_SETTINGS.FILE_IDENTIFIER
         with open(self.file_path, "rb") as open_file:
             # need to be able to do this check with a binary blob rather than just file
             header = open_file.read(len(BINARY_SETTINGS.FILE_IDENTIFIER)).decode(
