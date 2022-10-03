@@ -52,7 +52,7 @@ md = [
   "MDAnalysisTests>=2.0.0",
 ]
 cellpack = [
-  "cellpack>=0.2.3",
+  "cellpack>=1.0.3",
 ]
 tutorial = [
   "jupyter",
