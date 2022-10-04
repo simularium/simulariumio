@@ -28,7 +28,6 @@ simulariumio.cytosim.cytosim\_object\_info module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

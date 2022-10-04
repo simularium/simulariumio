@@ -5,7 +5,9 @@ Subpackages
 -----------
 
 .. toctree::
+   :maxdepth: 4
 
+   simulariumio.cellpack
    simulariumio.cytosim
    simulariumio.data_objects
    simulariumio.filters
@@ -15,8 +17,10 @@ Subpackages
    simulariumio.physicell
    simulariumio.plot_readers
    simulariumio.readdy
+   simulariumio.readers
    simulariumio.smoldyn
    simulariumio.springsalad
+   simulariumio.writers
 
 Submodules
 ----------
@@ -52,7 +56,6 @@ simulariumio.trajectory\_converter module
    :members:
    :undoc-members:
    :show-inheritance:
-
 
 Module contents
 ---------------

@@ -76,7 +76,6 @@ simulariumio.filters.translate\_filter module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 

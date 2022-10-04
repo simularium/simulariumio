@@ -5,6 +5,7 @@ Subpackages
 -----------
 
 .. toctree::
+   :maxdepth: 4
 
    simulariumio.physicell.dep
 
@@ -26,7 +27,6 @@ simulariumio.physicell.physicell\_data module
    :members:
    :undoc-members:
    :show-inheritance:
-
 
 Module contents
 ---------------

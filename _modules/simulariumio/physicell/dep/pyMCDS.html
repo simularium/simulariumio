@@ -1,109 +1,235 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>simulariumio.physicell.dep.pyMCDS &mdash; Simularium Conversion 1.4.1 documentation</title><link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/language_data.js"></script>
-    <script src="../../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
-</head>
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> Simularium Conversion
-          </a>
-              <div class="version">
-                1.4.1
-              </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>simulariumio.physicell.dep.pyMCDS - simulariumio 1.6.4.dev26+g3ecdba1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">simulariumio 1.6.4.dev26+g3ecdba1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">simulariumio 1.6.4.dev26+g3ecdba1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../index.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#stable-release">Stable release</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#from-sources">From sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../modules.html">Package modules</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../simulariumio.html">simulariumio package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.cellpack.html">simulariumio.cellpack package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.filters.html">simulariumio.filters package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.mcell.html">simulariumio.mcell package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.medyan.html">simulariumio.medyan package</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../simulariumio.physicell.html">simulariumio.physicell package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../simulariumio.physicell.dep.html">simulariumio.physicell.dep package</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Package modules</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../simulariumio.html">simulariumio package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../simulariumio.filters.html">simulariumio.filters package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../simulariumio.mcell.html">simulariumio.mcell package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../simulariumio.medyan.html">simulariumio.medyan package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../simulariumio.physicell.html">simulariumio.physicell package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../simulariumio.smoldyn.html">simulariumio.smoldyn package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../simulariumio.springsalad.html">simulariumio.springsalad package</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.html#module-simulariumio">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.readdy.html">simulariumio.readdy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.readers.html">simulariumio.readers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.smoldyn.html">simulariumio.smoldyn package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.springsalad.html">simulariumio.springsalad package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../simulariumio.writers.html">simulariumio.writers package</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#get-started">Get Started!</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#deploying">Deploying</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contributing.html#questions-or-thoughts">Questions or Thoughts?</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing</a></li>
 </ul>
 
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">Simularium Conversion</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-          <li><a href="../../../simulariumio.html">simulariumio</a> &raquo;</li>
-      <li>simulariumio.physicell.dep.pyMCDS</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for simulariumio.physicell.dep.pyMCDS</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for simulariumio.physicell.dep.pyMCDS</h1><div class="highlight"><pre>
+<span></span><span class="c1"># NOTE: this module will likely replace the pyMCDS.py module once it is tested further</span>
+<span class="c1">#</span>
+<span class="c1"># This module provides an optional 3rd argument: a boolean flag to indicate that</span>
+<span class="c1">#    continuum (microenv) data should be read. The flag is True by default (microenv data will be read).</span>
+<span class="c1">#    If your model has generated large output files and you only want to extract cell information, you could</span>
+<span class="c1">#    set this flag to False.</span>
+<span class="c1">#</span>
+<span class="c1">#  Example usage:</span>
+<span class="c1">#  from pyMCDS_optional_meshes import pyMCDS</span>
+<span class="c1">#  mcds = pyMCDS(&#39;output00000000.xml&#39;)</span>
+<span class="c1">#  mcds = pyMCDS(&#39;output00000000.xml&#39;, &#39;.&#39;)   # optional 2nd arg indicating data directory</span>
+<span class="c1">#  mcds = pyMCDS(&#39;output00000000.xml&#39;, &#39;.&#39;, False)   # skip over microenv data</span>
+<span class="c1">#</span>
+
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">scipy.io</span> <span class="k">as</span> <span class="nn">sio</span>
@@ -112,8 +238,8 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Source: https://github.com/PhysiCell-Tools/python-loader/blob/</span>
-<span class="sd">c6b40c0d1042a757c638b9da1ff1b602caad721a/pyMCDS.py</span>
+<span class="sd">Source: https://github.com/PhysiCell-Tools/vis3D/blob/</span>
+<span class="sd">c25a5da486d7b9ba52407b1460c2a5244eb243dc/Simularium/pyMCDS_optional_meshes.py</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -123,7 +249,6 @@
 <span class="sd">    output from a single time step of a PhysiCell Model. This class assumes that</span>
 <span class="sd">    all output files are stored in the same directory. Data is loaded by reading</span>
 <span class="sd">    the .xml file for a particular timestep.</span>
-
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    xml_name: str</span>
@@ -131,7 +256,6 @@
 <span class="sd">    output_path: str, optional</span>
 <span class="sd">        String containing the path (relative or absolute) to the directory</span>
 <span class="sd">        where PhysiCell output files are stored (default= &quot;.&quot;)</span>
-
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    data : dict</span>
@@ -139,8 +263,8 @@
 <span class="sd">        file and the files referenced therein.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">,</span> <span class="n">parse_continuum_variables</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_xml</span><span class="p">(</span><span class="n">xml_file</span><span class="p">,</span> <span class="n">parse_continuum_variables</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">,</span> <span class="n">parse_continuum_variables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_xml</span><span class="p">(</span><span class="n">xml_file</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">parse_continuum_variables</span><span class="p">)</span>
 
     <span class="c1"># METADATA RELATED FUNCTIONS</span>
 
@@ -153,13 +277,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a meshgrid of the computational domain. Can return either full</span>
 <span class="sd">        3D or a 2D plane for contour plots.</span>
-
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        flat : bool</span>
 <span class="sd">            If flat is set to true, we return only the x and y meshgrid.</span>
 <span class="sd">            Otherwise we return x, y, and z</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        splitting : list length=2 if flat=True, else length=3</span>
@@ -184,7 +306,6 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This function returns the x, y meshgrid as two numpy arrays. It is</span>
 <span class="sd">        identical to get_mesh with the option flat=True</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        splitting : list length=2</span>
@@ -207,7 +328,6 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the space in between voxel centers for the mesh in terms of the</span>
 <span class="sd">        mesh&#39;s spatial units. Assumes that voxel centers fall on integer values.</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dx : float</span>
@@ -236,11 +356,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Internal function to get the meshgrid indices for the center of a voxel</span>
 <span class="sd">        that contains the given position.</span>
-
 <span class="sd">        Note that pyMCDS stores meshgrids as &#39;cartesian&#39;</span>
 <span class="sd">        (indexing=&#39;xy&#39; in np.meshgrid) which means that we will have</span>
 <span class="sd">        to use these indices as [j, i, k] on the actual meshgrid objects</span>
-
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        x : float</span>
@@ -249,7 +367,6 @@
 <span class="sd">            y-coordinate for the position</span>
 <span class="sd">        z : float</span>
 <span class="sd">            z-coordinate for the position</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ijk : list length=3</span>
@@ -308,7 +425,6 @@
 <div class="viewcode-block" id="pyMCDS.get_substrate_names"><a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_substrate_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_substrate_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns list of chemical species in microenvironment</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        species_list : array (str), shape=[n_species,]</span>
@@ -325,12 +441,10 @@
 <span class="sd">        Returns the concentration array for the specified chemical species</span>
 <span class="sd">        in the microenvironment. Can return either the whole 3D picture, or</span>
 <span class="sd">        a 2D plane of concentrations.</span>
-
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        species_name : str</span>
 <span class="sd">            Name of the chemical species for which to get concentrations</span>
-
 <span class="sd">        z_slice : float</span>
 <span class="sd">            z-axis position to use as plane for 2D output. This value must match</span>
 <span class="sd">            a plane of voxel centers in the z-axis.</span>
@@ -360,7 +474,6 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return concentrations of each chemical species inside a particular voxel</span>
 <span class="sd">        that contains the point described in the arguments.</span>
-
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        x : float</span>
@@ -369,7 +482,6 @@
 <span class="sd">            y_position for the point of interest</span>
 <span class="sd">        z : float</span>
 <span class="sd">            z_position for the point of interest</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        concs : array, shape=[n_substrates,]</span>
@@ -389,7 +501,6 @@
 <div class="viewcode-block" id="pyMCDS.get_cell_df"><a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_cell_df">[docs]</a>    <span class="k">def</span> <span class="nf">get_cell_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Builds DataFrame from data[&#39;discrete_cells&#39;]</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        cells_df : pd.Dataframe, shape=[n_cells, n_variables]</span>
@@ -402,7 +513,6 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the names of all of the cell variables tracked in [&#39;discrete cells&#39;]</span>
 <span class="sd">        dictionary</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        var_list : list, shape=[n_variables]</span>
@@ -417,7 +527,6 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a dataframe for cells in the same voxel as the position given by</span>
 <span class="sd">        x, y, and z.</span>
-
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        x : float</span>
@@ -426,7 +535,6 @@
 <span class="sd">            y_position for the point of interest</span>
 <span class="sd">        z : float</span>
 <span class="sd">            z_position for the point of interest</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        vox_df : pd.DataFrame, shape=[n_cell_in_voxel, n_variables]</span>
@@ -452,7 +560,7 @@
         <span class="n">vox_df</span> <span class="o">=</span> <span class="n">cell_df</span><span class="p">[</span><span class="n">inside_voxel</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">vox_df</span></div>
 
-    <span class="k">def</span> <span class="nf">_read_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">,</span> <span class="n">parse_continuum_variables</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_read_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">parse_continuum_variables</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Does the actual work of initializing MultiCellDS by parsing the xml</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -490,15 +598,15 @@
         <span class="c1"># while we&#39;re at it, find the mesh</span>
         <span class="n">coord_str</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;x_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
         <span class="n">delimiter</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;x_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">)</span>
-        <span class="n">x_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coord_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+        <span class="n">x_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coord_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
         <span class="n">coord_str</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;y_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
         <span class="n">delimiter</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;y_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">)</span>
-        <span class="n">y_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coord_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+        <span class="n">y_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coord_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
         <span class="n">coord_str</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;z_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
         <span class="n">delimiter</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;z_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">)</span>
-        <span class="n">z_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coord_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+        <span class="n">z_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coord_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
         <span class="c1"># reshape into a mesh grid</span>
         <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">,</span> <span class="n">z_coords</span><span class="p">)</span>
@@ -508,24 +616,25 @@
         <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;z_coordinates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">zz</span>
 
         <span class="c1"># Voxel data must be loaded from .mat file</span>
-        <span class="c1"># voxel_file = mesh_node.find(&#39;voxels&#39;).find(&#39;filename&#39;).text</span>
-        <span class="c1"># voxel_path = output_path / voxel_file</span>
-        <span class="c1"># try:</span>
-        <span class="c1">#     initial_mesh = sio.loadmat(voxel_path)[&#39;mesh&#39;]</span>
-        <span class="c1"># except:</span>
-        <span class="c1">#     raise FileNotFoundError(</span>
-        <span class="c1">#         &quot;No such file or directory:\n&#39;{}&#39; referenced in &#39;{}&#39;&quot;.format(</span>
-        <span class="c1">#         voxel_path, xml_file)</span>
-        <span class="c1">#     )</span>
-        <span class="c1">#     sys.exit(1)</span>
-        <span class="c1">#</span>
-        <span class="c1"># print(&#39;Reading {}&#39;.format(voxel_path))</span>
-        <span class="c1">#</span>
+        <span class="n">voxel_file</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;voxels&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">voxel_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">/</span> <span class="n">voxel_file</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">initial_mesh</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">voxel_path</span><span class="p">)[</span><span class="s2">&quot;mesh&quot;</span><span class="p">]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="s2">&quot;No such file or directory:</span><span class="se">\n</span><span class="s2">&#39;</span><span class="si">{}</span><span class="s2">&#39; referenced in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">voxel_path</span><span class="p">,</span> <span class="n">xml_file</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">voxel_path</span><span class="p">))</span>
+
         <span class="c1"># # center of voxel specified by first three rows [ x, y, z ]</span>
         <span class="c1"># # volume specified by fourth row</span>
-        <span class="c1"># MCDS[&#39;mesh&#39;][&#39;voxels&#39;] = {}</span>
-        <span class="c1"># MCDS[&#39;mesh&#39;][&#39;voxels&#39;][&#39;centers&#39;] = initial_mesh[:3, :]</span>
-        <span class="c1"># MCDS[&#39;mesh&#39;][&#39;voxels&#39;][&#39;volumes&#39;] = initial_mesh[3, :]</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;voxels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;voxels&quot;</span><span class="p">][</span><span class="s2">&quot;centers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_mesh</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;voxels&quot;</span><span class="p">][</span><span class="s2">&quot;volumes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_mesh</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>
 
         <span class="k">if</span> <span class="n">parse_continuum_variables</span><span class="p">:</span>
             <span class="c1"># Continuum_variables, unlike in the matlab version the individual chemical</span>
@@ -623,16 +732,40 @@
         <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># iterate over &#39;label&#39;s which are children of &#39;labels&#39; these will be used to</span>
         <span class="c1"># label data arrays</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">):</span>
             <span class="c1"># I don&#39;t like spaces in my dictionary keys</span>
             <span class="n">fixed_label</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">nlabels</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">nlabels</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># tags to differentiate repeated labels (usually space related)</span>
-                <span class="n">dir_label</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_x&quot;</span><span class="p">,</span> <span class="s2">&quot;_y&quot;</span><span class="p">,</span> <span class="s2">&quot;_z&quot;</span><span class="p">]</span>
+                <span class="c1"># print(&quot;n=&quot;,n)</span>
+                <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">if</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span>
+                    <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">&quot;orientation&quot;</span><span class="p">:</span>
+                    <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">&quot;velocity&quot;</span><span class="p">:</span>
+                    <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">&quot;migration_bias_direction&quot;</span><span class="p">:</span>
+                    <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">&quot;motility_vector&quot;</span><span class="p">:</span>
+                    <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">if</span> <span class="n">nlabels</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">spatial_type</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">dir_label</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_x&quot;</span><span class="p">,</span> <span class="s2">&quot;_y&quot;</span><span class="p">,</span> <span class="s2">&quot;_z&quot;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">dir_label</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+                        <span class="n">dir_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;_</span><span class="si">%u</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nn</span><span class="p">)</span>
+                <span class="c1"># print( dir_label )</span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">))):</span>
+                    <span class="c1"># print( fixed_label + dir_label[i] )</span>
                     <span class="n">data_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fixed_label</span> <span class="o">+</span> <span class="n">dir_label</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">data_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fixed_label</span><span class="p">)</span>
+            <span class="c1"># print(fixed_label)</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="c1"># load the file</span>
         <span class="n">cell_file</span> <span class="o">=</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
@@ -653,32 +786,47 @@
 
         <span class="k">return</span> <span class="n">MCDS</span></div>
 </pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2020, Blair Lyons.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
+        </article>
       </div>
-    </section>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/scripts/furo.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    </body>
 </html>

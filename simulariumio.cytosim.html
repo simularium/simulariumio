@@ -1,203 +1,319 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>simulariumio.cytosim package &mdash; Simularium Conversion 1.4.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="simulariumio.data_objects package" href="simulariumio.data_objects.html" />
-    <link rel="prev" title="simulariumio package" href="simulariumio.html" /> 
-</head>
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.data_objects package" href="simulariumio.data_objects.html" /><link rel="prev" title="simulariumio.cellpack package" href="simulariumio.cellpack.html" />
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> Simularium Conversion
-          </a>
-              <div class="version">
-                1.4.1
-              </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>simulariumio.cytosim package - simulariumio 1.6.4.dev26+g3ecdba1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">simulariumio 1.6.4.dev26+g3ecdba1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">simulariumio 1.6.4.dev26+g3ecdba1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">Package modules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="simulariumio.html">simulariumio package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.cellpack.html">simulariumio.cellpack package</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">simulariumio.cytosim package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.filters.html">simulariumio.filters package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.mcell.html">simulariumio.mcell package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.medyan.html">simulariumio.medyan package</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.physicell.dep.html">simulariumio.physicell.dep package</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="simulariumio.html">simulariumio package</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="simulariumio.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">simulariumio.cytosim package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.filters.html">simulariumio.filters package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.mcell.html">simulariumio.mcell package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.medyan.html">simulariumio.medyan package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.smoldyn.html">simulariumio.smoldyn package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.springsalad.html">simulariumio.springsalad package</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.readers.html">simulariumio.readers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.smoldyn.html">simulariumio.smoldyn package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.springsalad.html">simulariumio.springsalad package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.writers.html">simulariumio.writers package</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#questions-or-thoughts">Questions or Thoughts?</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 </ul>
 
-        </div>
+</div>
+</div>
+
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Simularium Conversion</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">simulariumio</a> &raquo;</li>
-          <li><a href="simulariumio.html">simulariumio package</a> &raquo;</li>
-      <li>simulariumio.cytosim package</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/simulariumio.cytosim.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
-        <a href="simulariumio.html" class="btn btn-neutral float-left" title="simulariumio package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="simulariumio.data_objects.html" class="btn btn-neutral float-right" title="simulariumio.data_objects package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-  </div>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <div class="section" id="simulariumio-cytosim-package">
-<h1>simulariumio.cytosim package<a class="headerlink" href="#simulariumio-cytosim-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-simulariumio.cytosim.cytosim_converter">
-<span id="simulariumio-cytosim-cytosim-converter-module"></span><h2>simulariumio.cytosim.cytosim_converter module<a class="headerlink" href="#module-simulariumio.cytosim.cytosim_converter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.cytosim.cytosim_converter.CytosimConverter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.cytosim.cytosim_converter.</code><code class="sig-name descname">CytosimConverter</code><span class="sig-paren">(</span><em class="sig-param">input_data: simulariumio.cytosim.cytosim_data.CytosimData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/cytosim/cytosim_converter.html#CytosimConverter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.cytosim.cytosim_converter.CytosimConverter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter" title="simulariumio.trajectory_converter.TrajectoryConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.trajectory_converter.TrajectoryConverter</span></code></a></p>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="simulariumio-cytosim-package">
+<h1>simulariumio.cytosim package<a class="headerlink" href="#simulariumio-cytosim-package" title="Permalink to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="module-simulariumio.cytosim.cytosim_converter">
+<span id="simulariumio-cytosim-cytosim-converter-module"></span><h2>simulariumio.cytosim.cytosim_converter module<a class="headerlink" href="#module-simulariumio.cytosim.cytosim_converter" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.cytosim.cytosim_converter.CytosimConverter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.cytosim.cytosim_converter.</span></span><span class="sig-name descname"><span class="pre">CytosimConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#simulariumio.cytosim.cytosim_data.CytosimData" title="simulariumio.cytosim.cytosim_data.CytosimData"><span class="pre">CytosimData</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/cytosim/cytosim_converter.html#CytosimConverter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.cytosim.cytosim_converter.CytosimConverter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter" title="simulariumio.trajectory_converter.TrajectoryConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrajectoryConverter</span></code></a></p>
 <p>This object reads simulation trajectory outputs
 from CytoSim (<a class="reference external" href="https://gitlab.com/f.nedelec/cytosim">https://gitlab.com/f.nedelec/cytosim</a>)
 and plot data and writes them in the JSON format used
 by the Simularium viewer</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_data</strong> (<em>CytosimData</em>) – An object containing info for reading
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>input_data</strong><span class="classifier">CytosimData</span></dt><dd><p>An object containing info for reading
 Cytosim simulation trajectory outputs and plot data</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.cytosim.cytosim_data">
-<span id="simulariumio-cytosim-cytosim-data-module"></span><h2>simulariumio.cytosim.cytosim_data module<a class="headerlink" href="#module-simulariumio.cytosim.cytosim_data" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.cytosim.cytosim_data.CytosimData">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.cytosim.cytosim_data.</code><code class="sig-name descname">CytosimData</code><a class="reference internal" href="_modules/simulariumio/cytosim/cytosim_data.html#CytosimData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.cytosim.cytosim_data.CytosimData" title="Permalink to this definition">¶</a></dt>
+</section>
+<section id="module-simulariumio.cytosim.cytosim_data">
+<span id="simulariumio-cytosim-cytosim-data-module"></span><h2>simulariumio.cytosim.cytosim_data module<a class="headerlink" href="#module-simulariumio.cytosim.cytosim_data" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.cytosim.cytosim_data.CytosimData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.cytosim.cytosim_data.</span></span><span class="sig-name descname"><span class="pre">CytosimData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo" title="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo"><span class="pre">CytosimObjectInfo</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.meta_data.MetaData" title="simulariumio.data_objects.meta_data.MetaData"><span class="pre">MetaData</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw_fiber_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/cytosim/cytosim_data.html#CytosimData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.cytosim.cytosim_data.CytosimData" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object holds simulation trajectory outputs
 from CytoSim (<a class="reference external" href="https://gitlab.com/f.nedelec/cytosim">https://gitlab.com/f.nedelec/cytosim</a>)
 and plot data</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>object_info</strong> (<em>Dict[str, CytosimObjectInfo]</em>) – A dict mapping Cytosim object type
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>object_info</strong><span class="classifier">Dict[str, CytosimObjectInfo]</span></dt><dd><p>A dict mapping Cytosim object type
 (either “fibers”, “solids”, “singles”, or “couples”)
 to info for reading and rendering the Cytosim data
-for agents of that object type</p></li>
-<li><p><strong>meta_data</strong> (<em>MetaData</em>) – An object containing metadata for the trajectory
-including box size, scale factor, and camera defaults</p></li>
-<li><p><strong>draw_fiber_points</strong> (<em>bool (optional)</em>) – (only used for fibers)
+for agents of that object type</p>
+</dd>
+<dt><strong>meta_data</strong><span class="classifier">MetaData</span></dt><dd><p>An object containing metadata for the trajectory
+including box size, scale factor, and camera defaults</p>
+</dd>
+<dt><strong>draw_fiber_points</strong><span class="classifier">bool (optional)</span></dt><dd><p>(only used for fibers)
 in addition to drawing a line for each fiber,
 also draw spheres at every other point along it?
-Default: False</p></li>
-<li><p><strong>plots</strong> (<em>List[Dict[str, Any]] (optional)</em>) – An object containing plot data already
-in Simularium format</p></li>
-</ul>
+Default: False</p>
+</dd>
+<dt><strong>plots</strong><span class="classifier">List[Dict[str, Any]] (optional)</span></dt><dd><p>An object containing plot data already
+in Simularium format</p>
 </dd>
 </dl>
-<dl class="attribute">
-<dt id="simulariumio.cytosim.cytosim_data.CytosimData.draw_fiber_points">
-<code class="sig-name descname">draw_fiber_points</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.cytosim.cytosim_data.CytosimData.draw_fiber_points" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.cytosim.cytosim_data.CytosimData.draw_fiber_points">
+<span class="sig-name descname"><span class="pre">draw_fiber_points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#simulariumio.cytosim.cytosim_data.CytosimData.draw_fiber_points" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.cytosim.cytosim_data.CytosimData.meta_data">
-<code class="sig-name descname">meta_data</code><em class="property">: MetaData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.cytosim.cytosim_data.CytosimData.meta_data" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.cytosim.cytosim_data.CytosimData.meta_data">
+<span class="sig-name descname"><span class="pre">meta_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.meta_data.MetaData" title="simulariumio.data_objects.meta_data.MetaData"><span class="pre">MetaData</span></a></em><a class="headerlink" href="#simulariumio.cytosim.cytosim_data.CytosimData.meta_data" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.cytosim.cytosim_data.CytosimData.object_info">
-<code class="sig-name descname">object_info</code><em class="property">: Dict[str, CytosimObjectInfo]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.cytosim.cytosim_data.CytosimData.object_info" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.cytosim.cytosim_data.CytosimData.object_info">
+<span class="sig-name descname"><span class="pre">object_info</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo" title="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo"><span class="pre">CytosimObjectInfo</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.cytosim.cytosim_data.CytosimData.object_info" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.cytosim.cytosim_data.CytosimData.plots">
-<code class="sig-name descname">plots</code><em class="property">: List[Dict[str, Any]]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.cytosim.cytosim_data.CytosimData.plots" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.cytosim.cytosim_data.CytosimData.plots">
+<span class="sig-name descname"><span class="pre">plots</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.cytosim.cytosim_data.CytosimData.plots" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.cytosim.cytosim_object_info">
-<span id="simulariumio-cytosim-cytosim-object-info-module"></span><h2>simulariumio.cytosim.cytosim_object_info module<a class="headerlink" href="#module-simulariumio.cytosim.cytosim_object_info" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.cytosim.cytosim_object_info.</code><code class="sig-name descname">CytosimObjectInfo</code><a class="reference internal" href="_modules/simulariumio/cytosim/cytosim_object_info.html#CytosimObjectInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo" title="Permalink to this definition">¶</a></dt>
+</section>
+<section id="module-simulariumio.cytosim.cytosim_object_info">
+<span id="simulariumio-cytosim-cytosim-object-info-module"></span><h2>simulariumio.cytosim.cytosim_object_info module<a class="headerlink" href="#module-simulariumio.cytosim.cytosim_object_info" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.cytosim.cytosim_object_info.</span></span><span class="sig-name descname"><span class="pre">CytosimObjectInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cytosim_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.input_file_data.InputFileData" title="simulariumio.data_objects.input_file_data.InputFileData"><span class="pre">InputFileData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.display_data.DisplayData" title="simulariumio.data_objects.display_data.DisplayData"><span class="pre">DisplayData</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[2,</span> <span class="pre">3,</span> <span class="pre">4]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/cytosim/cytosim_object_info.html#CytosimObjectInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object contains info for reading Cytosim data
 for one type of Cytosim object
 (e.g. fibers, couples, singles, or solids)</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul>
-<li><p><strong>cytosim_file</strong> (<em>InputFileData</em>) – A InputFileData object containing a string path
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>cytosim_file</strong><span class="classifier">InputFileData</span></dt><dd><p>A InputFileData object containing a string path
 or string contents of Cytosim output text file,
-e.g. fiber_points.txt</p></li>
-<li><p><strong>display_data</strong> (<em>Dict[int, DisplayData] (optional)</em>) – A dict mapping the type index from Cytosim data
+e.g. fiber_points.txt</p>
+</dd>
+<dt><strong>display_data</strong><span class="classifier">Dict[int, DisplayData] (optional)</span></dt><dd><p>A dict mapping the type index from Cytosim data
 to DisplayData, including names and display info
 to use for rendering this agent type in the Simularium Viewer
 Default: for names, use “[object type][type ID]”. e.g. “filament1”,</p>
@@ -205,64 +321,141 @@ Default: for names, use “[object type][type ID]”. e.g. “filament1”,</p>
 <div><p>for radius, use 1.0,
 for rendering, use default representations and colors</p>
 </div></blockquote>
-</li>
-<li><p><strong>position_indices</strong> (<em>List[int] (optional)</em>) – the columns in Cytosim’s reports are not
+</dd>
+<dt><strong>position_indices</strong><span class="classifier">List[int] (optional)</span></dt><dd><p>the columns in Cytosim’s reports are not
 always consistent, use this to override them
 if your output file has different column indices
 for position XYZ
-Default: [2, 3, 4]</p></li>
-</ul>
+Default: [2, 3, 4]</p>
 </dd>
 </dl>
-<dl class="attribute">
-<dt id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.cytosim_file">
-<code class="sig-name descname">cytosim_file</code><em class="property">: InputFileData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.cytosim_file" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.cytosim_file">
+<span class="sig-name descname"><span class="pre">cytosim_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.input_file_data.InputFileData" title="simulariumio.data_objects.input_file_data.InputFileData"><span class="pre">InputFileData</span></a></em><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.cytosim_file" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.display_data">
-<code class="sig-name descname">display_data</code><em class="property">: Dict[int, DisplayData]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.display_data" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.display_data">
+<span class="sig-name descname"><span class="pre">display_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.display_data.DisplayData" title="simulariumio.data_objects.display_data.DisplayData"><span class="pre">DisplayData</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.display_data" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.position_indices">
-<code class="sig-name descname">position_indices</code><em class="property">: List[int]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.position_indices" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.position_indices">
+<span class="sig-name descname"><span class="pre">position_indices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.position_indices" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.cytosim">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.cytosim" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
+</section>
+<section id="module-simulariumio.cytosim">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.cytosim" title="Permalink to this heading">#</a></h2>
+</section>
+</section>
 
-
-           </div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="simulariumio.data_objects.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">simulariumio.data_objects package</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="simulariumio.cellpack.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">simulariumio.cellpack package</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
           </div>
-          <footer>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">simulariumio.cytosim package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-simulariumio.cytosim.cytosim_converter">simulariumio.cytosim.cytosim_converter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.cytosim.cytosim_converter.CytosimConverter"><code class="docutils literal notranslate"><span class="pre">CytosimConverter</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.cytosim.cytosim_data">simulariumio.cytosim.cytosim_data module</a><ul>
+<li><a class="reference internal" href="#simulariumio.cytosim.cytosim_data.CytosimData"><code class="docutils literal notranslate"><span class="pre">CytosimData</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.cytosim.cytosim_data.CytosimData.draw_fiber_points"><code class="docutils literal notranslate"><span class="pre">CytosimData.draw_fiber_points</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.cytosim.cytosim_data.CytosimData.meta_data"><code class="docutils literal notranslate"><span class="pre">CytosimData.meta_data</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.cytosim.cytosim_data.CytosimData.object_info"><code class="docutils literal notranslate"><span class="pre">CytosimData.object_info</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.cytosim.cytosim_data.CytosimData.plots"><code class="docutils literal notranslate"><span class="pre">CytosimData.plots</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.cytosim.cytosim_object_info">simulariumio.cytosim.cytosim_object_info module</a><ul>
+<li><a class="reference internal" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo"><code class="docutils literal notranslate"><span class="pre">CytosimObjectInfo</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.cytosim_file"><code class="docutils literal notranslate"><span class="pre">CytosimObjectInfo.cytosim_file</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.display_data"><code class="docutils literal notranslate"><span class="pre">CytosimObjectInfo.display_data</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.cytosim.cytosim_object_info.CytosimObjectInfo.position_indices"><code class="docutils literal notranslate"><span class="pre">CytosimObjectInfo.position_indices</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.cytosim">Module contents</a></li>
+</ul>
+</li>
+</ul>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2020, Blair Lyons.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
+          </div>
         </div>
       </div>
-    </section>
+      
+      
+    </aside>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    </body>
 </html>

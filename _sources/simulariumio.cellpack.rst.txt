@@ -1,0 +1,29 @@
+simulariumio.cellpack package
+=============================
+
+Submodules
+----------
+
+simulariumio.cellpack.cellpack\_converter module
+------------------------------------------------
+
+.. automodule:: simulariumio.cellpack.cellpack_converter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.cellpack.cellpack\_data module
+-------------------------------------------
+
+.. automodule:: simulariumio.cellpack.cellpack_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: simulariumio.cellpack
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,425 +1,688 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>simulariumio.filters package &mdash; Simularium Conversion 1.4.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="simulariumio.mcell package" href="simulariumio.mcell.html" />
-    <link rel="prev" title="simulariumio.data_objects package" href="simulariumio.data_objects.html" /> 
-</head>
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.mcell package" href="simulariumio.mcell.html" /><link rel="prev" title="simulariumio.data_objects package" href="simulariumio.data_objects.html" />
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> Simularium Conversion
-          </a>
-              <div class="version">
-                1.4.1
-              </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>simulariumio.filters package - simulariumio 1.6.4.dev26+g3ecdba1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #eeffcc;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">simulariumio 1.6.4.dev26+g3ecdba1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">simulariumio 1.6.4.dev26+g3ecdba1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#stable-release">Stable release</a></li>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#from-sources">From sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">Package modules</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="simulariumio.html">simulariumio package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.cellpack.html">simulariumio.cellpack package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">simulariumio.filters package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.mcell.html">simulariumio.mcell package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.medyan.html">simulariumio.medyan package</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="simulariumio.physicell.dep.html">simulariumio.physicell.dep package</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Package modules</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="simulariumio.html">simulariumio package</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="simulariumio.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">simulariumio.filters package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.mcell.html">simulariumio.mcell package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.medyan.html">simulariumio.medyan package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.smoldyn.html">simulariumio.smoldyn package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="simulariumio.springsalad.html">simulariumio.springsalad package</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.constants">simulariumio.constants module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.exceptions">simulariumio.exceptions module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.file_converter">simulariumio.file_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio.trajectory_converter">simulariumio.trajectory_converter module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.html#module-simulariumio">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.readers.html">simulariumio.readers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.smoldyn.html">simulariumio.smoldyn package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.springsalad.html">simulariumio.springsalad package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.writers.html">simulariumio.writers package</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#get-started">Get Started!</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#deploying">Deploying</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing.html#questions-or-thoughts">Questions or Thoughts?</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 </ul>
 
-        </div>
+</div>
+</div>
+
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Simularium Conversion</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">simulariumio</a> &raquo;</li>
-          <li><a href="simulariumio.html">simulariumio package</a> &raquo;</li>
-      <li>simulariumio.filters package</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/simulariumio.filters.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
-        <a href="simulariumio.data_objects.html" class="btn btn-neutral float-left" title="simulariumio.data_objects package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="simulariumio.mcell.html" class="btn btn-neutral float-right" title="simulariumio.mcell package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-  </div>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <div class="section" id="simulariumio-filters-package">
-<h1>simulariumio.filters package<a class="headerlink" href="#simulariumio-filters-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-simulariumio.filters.add_agents_filter">
-<span id="simulariumio-filters-add-agents-filter-module"></span><h2>simulariumio.filters.add_agents_filter module<a class="headerlink" href="#module-simulariumio.filters.add_agents_filter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.filters.add_agents_filter.AddAgentsFilter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.filters.add_agents_filter.</code><code class="sig-name descname">AddAgentsFilter</code><span class="sig-paren">(</span><em class="sig-param">new_agent_data: simulariumio.data_objects.agent_data.AgentData</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/add_agents_filter.html#AddAgentsFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.filters.filter.Filter</span></code></a></p>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="simulariumio-filters-package">
+<h1>simulariumio.filters package<a class="headerlink" href="#simulariumio-filters-package" title="Permalink to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="module-simulariumio.filters.add_agents_filter">
+<span id="simulariumio-filters-add-agents-filter-module"></span><h2>simulariumio.filters.add_agents_filter module<a class="headerlink" href="#module-simulariumio.filters.add_agents_filter" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.filters.add_agents_filter.AddAgentsFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.add_agents_filter.</span></span><span class="sig-name descname"><span class="pre">AddAgentsFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_agent_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData" title="simulariumio.data_objects.agent_data.AgentData"><span class="pre">AgentData</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/add_agents_filter.html#AddAgentsFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
 <p>This filter adds the given agents
 to each frame of the simulation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>new_agent_data</strong> (<em>AgentData</em>) – agent data to append to the trajectory</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>new_agent_data</strong><span class="classifier">AgentData</span></dt><dd><p>agent data to append to the trajectory</p>
 </dd>
 </dl>
-<dl class="method">
-<dt id="simulariumio.filters.add_agents_filter.AddAgentsFilter.apply">
-<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">data: simulariumio.data_objects.trajectory_data.TrajectoryData</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/filters/add_agents_filter.html#AddAgentsFilter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter.apply" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.filters.add_agents_filter.AddAgentsFilter.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/filters/add_agents_filter.html#AddAgentsFilter.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter.apply" title="Permalink to this definition">#</a></dt>
 <dd><p>Add the given agents to each frame of the simularium data</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.add_agents_filter.AddAgentsFilter.new_agent_data">
-<code class="sig-name descname">new_agent_data</code><em class="property">: AgentData</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter.new_agent_data" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.add_agents_filter.AddAgentsFilter.new_agent_data">
+<span class="sig-name descname"><span class="pre">new_agent_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData" title="simulariumio.data_objects.agent_data.AgentData"><span class="pre">AgentData</span></a></em><a class="headerlink" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter.new_agent_data" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.filters.every_nth_agent_filter">
-<span id="simulariumio-filters-every-nth-agent-filter-module"></span><h2>simulariumio.filters.every_nth_agent_filter module<a class="headerlink" href="#module-simulariumio.filters.every_nth_agent_filter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.filters.every_nth_agent_filter.</code><code class="sig-name descname">EveryNthAgentFilter</code><a class="reference internal" href="_modules/simulariumio/filters/every_nth_agent_filter.html#EveryNthAgentFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.filters.filter.Filter</span></code></a></p>
+</section>
+<section id="module-simulariumio.filters.every_nth_agent_filter">
+<span id="simulariumio-filters-every-nth-agent-filter-module"></span><h2>simulariumio.filters.every_nth_agent_filter module<a class="headerlink" href="#module-simulariumio.filters.every_nth_agent_filter" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.every_nth_agent_filter.</span></span><span class="sig-name descname"><span class="pre">EveryNthAgentFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_per_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/every_nth_agent_filter.html#EveryNthAgentFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
 <p>This filter reduces the number of agents in each frame
 of simularium data by filtering out all but every nth agent</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n_per_type</strong> (<em>Dict[str, int]</em>) – N for agents of each type,
-keep every nth agent of that type, filter out all the others</p></li>
-<li><p><strong>default_n</strong> (<em>int (optional)</em>) – N for any agents of type not specified in n_per_type
-Default: 1</p></li>
-</ul>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_per_type</strong><span class="classifier">Dict[str, int]</span></dt><dd><p>N for agents of each type,
+keep every nth agent of that type, filter out all the others</p>
+</dd>
+<dt><strong>default_n</strong><span class="classifier">int (optional)</span></dt><dd><p>N for any agents of type not specified in n_per_type
+Default: 1</p>
 </dd>
 </dl>
-<dl class="method">
-<dt id="simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.apply">
-<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">data: simulariumio.data_objects.trajectory_data.TrajectoryData</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/filters/every_nth_agent_filter.html#EveryNthAgentFilter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.apply" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/filters/every_nth_agent_filter.html#EveryNthAgentFilter.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.apply" title="Permalink to this definition">#</a></dt>
 <dd><p>Reduce the number of agents in each frame of the simularium
 data by filtering out all but every nth agent</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.default_n">
-<code class="sig-name descname">default_n</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.default_n" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.default_n">
+<span class="sig-name descname"><span class="pre">default_n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.default_n" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.n_per_type">
-<code class="sig-name descname">n_per_type</code><em class="property">: Dict[str, int]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.n_per_type" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.n_per_type">
+<span class="sig-name descname"><span class="pre">n_per_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.n_per_type" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.filters.every_nth_subpoint_filter">
-<span id="simulariumio-filters-every-nth-subpoint-filter-module"></span><h2>simulariumio.filters.every_nth_subpoint_filter module<a class="headerlink" href="#module-simulariumio.filters.every_nth_subpoint_filter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.filters.every_nth_subpoint_filter.</code><code class="sig-name descname">EveryNthSubpointFilter</code><a class="reference internal" href="_modules/simulariumio/filters/every_nth_subpoint_filter.html#EveryNthSubpointFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.filters.filter.Filter</span></code></a></p>
+</section>
+<section id="module-simulariumio.filters.every_nth_subpoint_filter">
+<span id="simulariumio-filters-every-nth-subpoint-filter-module"></span><h2>simulariumio.filters.every_nth_subpoint_filter module<a class="headerlink" href="#module-simulariumio.filters.every_nth_subpoint_filter" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.every_nth_subpoint_filter.</span></span><span class="sig-name descname"><span class="pre">EveryNthSubpointFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_per_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/every_nth_subpoint_filter.html#EveryNthSubpointFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
 <p>This filter reduces the number of subpoints in each frame
 of simularium data</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n_per_type</strong> (<em>Dict[str, int]</em>) – N for agents of each type,
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_per_type</strong><span class="classifier">Dict[str, int]</span></dt><dd><p>N for agents of each type,
 keep every nth subpoint for that type (if subpoints exist),
-filter out all the others</p></li>
-<li><p><strong>default_n</strong> (<em>int (optional)</em>) – N for any agents of type not specified in n_per_type
-Default: 1</p></li>
-</ul>
+filter out all the others</p>
+</dd>
+<dt><strong>default_n</strong><span class="classifier">int (optional)</span></dt><dd><p>N for any agents of type not specified in n_per_type
+Default: 1</p>
 </dd>
 </dl>
-<dl class="method">
-<dt id="simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.apply">
-<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">data: simulariumio.data_objects.trajectory_data.TrajectoryData</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/filters/every_nth_subpoint_filter.html#EveryNthSubpointFilter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.apply" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/filters/every_nth_subpoint_filter.html#EveryNthSubpointFilter.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.apply" title="Permalink to this definition">#</a></dt>
 <dd><p>Reduce the number of subpoints in each frame of the simularium
 data by filtering out all but every nth subpoint</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.default_n">
-<code class="sig-name descname">default_n</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.default_n" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.default_n">
+<span class="sig-name descname"><span class="pre">default_n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.default_n" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.n_per_type">
-<code class="sig-name descname">n_per_type</code><em class="property">: Dict[str, int]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.n_per_type" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.n_per_type">
+<span class="sig-name descname"><span class="pre">n_per_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.n_per_type" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.filters.every_nth_timestep_filter">
-<span id="simulariumio-filters-every-nth-timestep-filter-module"></span><h2>simulariumio.filters.every_nth_timestep_filter module<a class="headerlink" href="#module-simulariumio.filters.every_nth_timestep_filter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.filters.every_nth_timestep_filter.</code><code class="sig-name descname">EveryNthTimestepFilter</code><span class="sig-paren">(</span><em class="sig-param">n: int</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/every_nth_timestep_filter.html#EveryNthTimestepFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.filters.filter.Filter</span></code></a></p>
+</section>
+<section id="module-simulariumio.filters.every_nth_timestep_filter">
+<span id="simulariumio-filters-every-nth-timestep-filter-module"></span><h2>simulariumio.filters.every_nth_timestep_filter module<a class="headerlink" href="#module-simulariumio.filters.every_nth_timestep_filter" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.every_nth_timestep_filter.</span></span><span class="sig-name descname"><span class="pre">EveryNthTimestepFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/every_nth_timestep_filter.html#EveryNthTimestepFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
 <p>This filter reduces the number
 of timesteps in simularium data</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – keep every nth time step, filter out all the others</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>keep every nth time step, filter out all the others</p>
 </dd>
 </dl>
-<dl class="method">
-<dt id="simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.apply">
-<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">data: simulariumio.data_objects.trajectory_data.TrajectoryData</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/filters/every_nth_timestep_filter.html#EveryNthTimestepFilter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.apply" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/filters/every_nth_timestep_filter.html#EveryNthTimestepFilter.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.apply" title="Permalink to this definition">#</a></dt>
 <dd><p>Reduce the number of timesteps in each frame of the simularium
 data by filtering out all but every nth timestep</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.n">
-<code class="sig-name descname">n</code><em class="property">: int</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.n" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.n">
+<span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.n" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.filters.filter">
-<span id="simulariumio-filters-filter-module"></span><h2>simulariumio.filters.filter module<a class="headerlink" href="#module-simulariumio.filters.filter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.filters.filter.Filter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.filters.filter.</code><code class="sig-name descname">Filter</code><a class="reference internal" href="_modules/simulariumio/filters/filter.html#Filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.filter.Filter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
-<dl class="method">
-<dt id="simulariumio.filters.filter.Filter.apply">
-<em class="property">abstract </em><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">data: simulariumio.data_objects.trajectory_data.TrajectoryData</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/filters/filter.html#Filter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.filter.Filter.apply" title="Permalink to this definition">¶</a></dt>
+</section>
+<section id="module-simulariumio.filters.filter">
+<span id="simulariumio-filters-filter-module"></span><h2>simulariumio.filters.filter module<a class="headerlink" href="#module-simulariumio.filters.filter" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.filters.filter.Filter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.filter.</span></span><span class="sig-name descname"><span class="pre">Filter</span></span><a class="reference internal" href="_modules/simulariumio/filters/filter.html#Filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.filter.Filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.filters.filter.Filter.apply">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/filters/filter.html#Filter.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.filter.Filter.apply" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.filters.filter.Filter.get_items_from_subpoints">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_items_from_subpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData" title="simulariumio.data_objects.agent_data.AgentData"><span class="pre">AgentData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/simulariumio/filters/filter.html#Filter.get_items_from_subpoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.filter.Filter.get_items_from_subpoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Reshape the subpoints array by the items represented</p>
+</dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.filters.multiply_space_filter">
-<span id="simulariumio-filters-multiply-space-filter-module"></span><h2>simulariumio.filters.multiply_space_filter module<a class="headerlink" href="#module-simulariumio.filters.multiply_space_filter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.filters.multiply_space_filter.MultiplySpaceFilter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.filters.multiply_space_filter.</code><code class="sig-name descname">MultiplySpaceFilter</code><span class="sig-paren">(</span><em class="sig-param">multiplier: float</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/multiply_space_filter.html#MultiplySpaceFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.filters.filter.Filter</span></code></a></p>
+</section>
+<section id="module-simulariumio.filters.multiply_space_filter">
+<span id="simulariumio-filters-multiply-space-filter-module"></span><h2>simulariumio.filters.multiply_space_filter module<a class="headerlink" href="#module-simulariumio.filters.multiply_space_filter" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.filters.multiply_space_filter.MultiplySpaceFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.multiply_space_filter.</span></span><span class="sig-name descname"><span class="pre">MultiplySpaceFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/multiply_space_filter.html#MultiplySpaceFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
 <p>This filter scales all spatial data by a supplied multiplier</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>multiplier</strong> (<em>float</em>) – float by which to multiply spatial values</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>multiplier</strong><span class="classifier">float</span></dt><dd><p>float by which to multiply spatial values</p>
 </dd>
 </dl>
-<dl class="method">
-<dt id="simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.apply">
-<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">data: simulariumio.data_objects.trajectory_data.TrajectoryData</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/filters/multiply_space_filter.html#MultiplySpaceFilter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.apply" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/filters/multiply_space_filter.html#MultiplySpaceFilter.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.apply" title="Permalink to this definition">#</a></dt>
 <dd><p>Multiply spatial values in the data</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.multiplier">
-<code class="sig-name descname">multiplier</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.multiplier" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.multiplier">
+<span class="sig-name descname"><span class="pre">multiplier</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.multiplier" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.filters.multiply_time_filter">
-<span id="simulariumio-filters-multiply-time-filter-module"></span><h2>simulariumio.filters.multiply_time_filter module<a class="headerlink" href="#module-simulariumio.filters.multiply_time_filter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.filters.multiply_time_filter.MultiplyTimeFilter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.filters.multiply_time_filter.</code><code class="sig-name descname">MultiplyTimeFilter</code><span class="sig-paren">(</span><em class="sig-param">multiplier: float</em>, <em class="sig-param">apply_to_plots: bool = True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/multiply_time_filter.html#MultiplyTimeFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.filters.filter.Filter</span></code></a></p>
+</section>
+<section id="module-simulariumio.filters.multiply_time_filter">
+<span id="simulariumio-filters-multiply-time-filter-module"></span><h2>simulariumio.filters.multiply_time_filter module<a class="headerlink" href="#module-simulariumio.filters.multiply_time_filter" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.filters.multiply_time_filter.MultiplyTimeFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.multiply_time_filter.</span></span><span class="sig-name descname"><span class="pre">MultiplyTimeFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_to_plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/multiply_time_filter.html#MultiplyTimeFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
 <p>This filter scales the time-stamp values
 for each simulation frame by a provided multiplier</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>multiplier</strong> (<em>float</em>) – float by which to multiply time values</p></li>
-<li><p><strong>apply_to_plots</strong> (<em>bool (optional)</em>) – also multiply time values in plot data?
-Default = True</p></li>
-</ul>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>multiplier</strong><span class="classifier">float</span></dt><dd><p>float by which to multiply time values</p>
+</dd>
+<dt><strong>apply_to_plots</strong><span class="classifier">bool (optional)</span></dt><dd><p>also multiply time values in plot data?
+Default = True</p>
 </dd>
 </dl>
-<dl class="method">
-<dt id="simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply">
-<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">data: simulariumio.data_objects.trajectory_data.TrajectoryData</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/filters/multiply_time_filter.html#MultiplyTimeFilter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/filters/multiply_time_filter.html#MultiplyTimeFilter.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply" title="Permalink to this definition">#</a></dt>
 <dd><p>Multiply time values in the data</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply_to_plots">
-<code class="sig-name descname">apply_to_plots</code><em class="property">: bool</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply_to_plots" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply_to_plots">
+<span class="sig-name descname"><span class="pre">apply_to_plots</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply_to_plots" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.multiplier">
-<code class="sig-name descname">multiplier</code><em class="property">: float</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.multiplier" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.multiplier">
+<span class="sig-name descname"><span class="pre">multiplier</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.multiplier" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.filters.transform_spatial_axes_filter">
-<span id="simulariumio-filters-transform-spatial-axes-filter-module"></span><h2>simulariumio.filters.transform_spatial_axes_filter module<a class="headerlink" href="#module-simulariumio.filters.transform_spatial_axes_filter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.filters.transform_spatial_axes_filter.</code><code class="sig-name descname">TransformSpatialAxesFilter</code><a class="reference internal" href="_modules/simulariumio/filters/transform_spatial_axes_filter.html#TransformSpatialAxesFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.filters.filter.Filter</span></code></a></p>
+</section>
+<section id="module-simulariumio.filters.transform_spatial_axes_filter">
+<span id="simulariumio-filters-transform-spatial-axes-filter-module"></span><h2>simulariumio.filters.transform_spatial_axes_filter module<a class="headerlink" href="#module-simulariumio.filters.transform_spatial_axes_filter" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.transform_spatial_axes_filter.</span></span><span class="sig-name descname"><span class="pre">TransformSpatialAxesFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axes_mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/transform_spatial_axes_filter.html#TransformSpatialAxesFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
 <p>This filter transforms spatial axes
 to rotate and/or reflect the scene
 in each frame of simularium data</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>axes_mapping</strong> (<em>List[str]</em>) – a list describing how to remap the axes
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>axes_mapping</strong><span class="classifier">List[str]</span></dt><dd><p>a list describing how to remap the axes
 e.g. [“+X”, “-Z”, “+Y”] for [+X, +Y, +Z] -&gt; [+X, -Z, +Y]
 e.g. [“-Z”, “-Y”, “+X”] for [+X, +Y, +Z] -&gt; [-Z, -Y, +X]</p>
 </dd>
 </dl>
-<dl class="method">
-<dt id="simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.apply">
-<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">data: simulariumio.data_objects.trajectory_data.TrajectoryData</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/filters/transform_spatial_axes_filter.html#TransformSpatialAxesFilter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.apply" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/filters/transform_spatial_axes_filter.html#TransformSpatialAxesFilter.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.apply" title="Permalink to this definition">#</a></dt>
 <dd><p>Transform spatial coordinates to rotate and/or reflect the scene</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.axes_mapping">
-<code class="sig-name descname">axes_mapping</code><em class="property">: List[str]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.axes_mapping" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.axes_mapping">
+<span class="sig-name descname"><span class="pre">axes_mapping</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.axes_mapping" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.filters.translate_filter">
-<span id="simulariumio-filters-translate-filter-module"></span><h2>simulariumio.filters.translate_filter module<a class="headerlink" href="#module-simulariumio.filters.translate_filter" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="simulariumio.filters.translate_filter.TranslateFilter">
-<em class="property">class </em><code class="sig-prename descclassname">simulariumio.filters.translate_filter.</code><code class="sig-name descname">TranslateFilter</code><a class="reference internal" href="_modules/simulariumio/filters/translate_filter.html#TranslateFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">simulariumio.filters.filter.Filter</span></code></a></p>
+</section>
+<section id="module-simulariumio.filters.translate_filter">
+<span id="simulariumio-filters-translate-filter-module"></span><h2>simulariumio.filters.translate_filter module<a class="headerlink" href="#module-simulariumio.filters.translate_filter" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.filters.translate_filter.TranslateFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.translate_filter.</span></span><span class="sig-name descname"><span class="pre">TranslateFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">translation_per_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_translation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/translate_filter.html#TranslateFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
 <p>This object contains parameters for translating 3D positions
 in each frame of simularium data</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>translation_per_type</strong> (<em>Dict[str, int]</em>) – translation for agents of each type
-Default: {}</p></li>
-<li><p><strong>default_translation</strong> (<em>int</em>) – translation for any agent types not specified
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>translation_per_type</strong><span class="classifier">Dict[str, int]</span></dt><dd><p>translation for agents of each type
+Default: {}</p>
+</dd>
+<dt><strong>default_translation</strong><span class="classifier">int</span></dt><dd><p>translation for any agent types not specified
 in translation_per_type
-Default: np.zeros(3)</p></li>
-</ul>
+Default: np.zeros(3)</p>
 </dd>
 </dl>
-<dl class="method">
-<dt id="simulariumio.filters.translate_filter.TranslateFilter.apply">
-<code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param">data: simulariumio.data_objects.trajectory_data.TrajectoryData</em><span class="sig-paren">)</span> &#x2192; simulariumio.data_objects.trajectory_data.TrajectoryData<a class="reference internal" href="_modules/simulariumio/filters/translate_filter.html#TranslateFilter.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter.apply" title="Permalink to this definition">¶</a></dt>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.filters.translate_filter.TranslateFilter.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/filters/translate_filter.html#TranslateFilter.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter.apply" title="Permalink to this definition">#</a></dt>
 <dd><p>Add the XYZ translation to all spatial coordinates</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.translate_filter.TranslateFilter.default_translation">
-<code class="sig-name descname">default_translation</code><em class="property">: np.ndarray</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter.default_translation" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.translate_filter.TranslateFilter.default_translation">
+<span class="sig-name descname"><span class="pre">default_translation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter.default_translation" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="simulariumio.filters.translate_filter.TranslateFilter.translation_per_type">
-<code class="sig-name descname">translation_per_type</code><em class="property">: Dict[str, np.ndarray]</em><em class="property"> = None</em><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter.translation_per_type" title="Permalink to this definition">¶</a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.filters.translate_filter.TranslateFilter.translation_per_type">
+<span class="sig-name descname"><span class="pre">translation_per_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter.translation_per_type" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</div>
-<div class="section" id="module-simulariumio.filters">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.filters" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
+</section>
+<section id="module-simulariumio.filters">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.filters" title="Permalink to this heading">#</a></h2>
+</section>
+</section>
 
-
-           </div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="simulariumio.mcell.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">simulariumio.mcell package</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="simulariumio.data_objects.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">simulariumio.data_objects package</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
           </div>
-          <footer>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">simulariumio.filters package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-simulariumio.filters.add_agents_filter">simulariumio.filters.add_agents_filter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter"><code class="docutils literal notranslate"><span class="pre">AddAgentsFilter</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter.apply"><code class="docutils literal notranslate"><span class="pre">AddAgentsFilter.apply()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter.new_agent_data"><code class="docutils literal notranslate"><span class="pre">AddAgentsFilter.new_agent_data</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.filters.every_nth_agent_filter">simulariumio.filters.every_nth_agent_filter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter"><code class="docutils literal notranslate"><span class="pre">EveryNthAgentFilter</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.apply"><code class="docutils literal notranslate"><span class="pre">EveryNthAgentFilter.apply()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.default_n"><code class="docutils literal notranslate"><span class="pre">EveryNthAgentFilter.default_n</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.n_per_type"><code class="docutils literal notranslate"><span class="pre">EveryNthAgentFilter.n_per_type</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.filters.every_nth_subpoint_filter">simulariumio.filters.every_nth_subpoint_filter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter"><code class="docutils literal notranslate"><span class="pre">EveryNthSubpointFilter</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.apply"><code class="docutils literal notranslate"><span class="pre">EveryNthSubpointFilter.apply()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.default_n"><code class="docutils literal notranslate"><span class="pre">EveryNthSubpointFilter.default_n</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.n_per_type"><code class="docutils literal notranslate"><span class="pre">EveryNthSubpointFilter.n_per_type</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.filters.every_nth_timestep_filter">simulariumio.filters.every_nth_timestep_filter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter"><code class="docutils literal notranslate"><span class="pre">EveryNthTimestepFilter</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.apply"><code class="docutils literal notranslate"><span class="pre">EveryNthTimestepFilter.apply()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.n"><code class="docutils literal notranslate"><span class="pre">EveryNthTimestepFilter.n</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.filters.filter">simulariumio.filters.filter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.filter.Filter"><code class="docutils literal notranslate"><span class="pre">Filter</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.filter.Filter.apply"><code class="docutils literal notranslate"><span class="pre">Filter.apply()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.filter.Filter.get_items_from_subpoints"><code class="docutils literal notranslate"><span class="pre">Filter.get_items_from_subpoints()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.filters.multiply_space_filter">simulariumio.filters.multiply_space_filter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter"><code class="docutils literal notranslate"><span class="pre">MultiplySpaceFilter</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.apply"><code class="docutils literal notranslate"><span class="pre">MultiplySpaceFilter.apply()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.multiplier"><code class="docutils literal notranslate"><span class="pre">MultiplySpaceFilter.multiplier</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.filters.multiply_time_filter">simulariumio.filters.multiply_time_filter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter"><code class="docutils literal notranslate"><span class="pre">MultiplyTimeFilter</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply"><code class="docutils literal notranslate"><span class="pre">MultiplyTimeFilter.apply()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply_to_plots"><code class="docutils literal notranslate"><span class="pre">MultiplyTimeFilter.apply_to_plots</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.multiplier"><code class="docutils literal notranslate"><span class="pre">MultiplyTimeFilter.multiplier</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.filters.transform_spatial_axes_filter">simulariumio.filters.transform_spatial_axes_filter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter"><code class="docutils literal notranslate"><span class="pre">TransformSpatialAxesFilter</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.apply"><code class="docutils literal notranslate"><span class="pre">TransformSpatialAxesFilter.apply()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.axes_mapping"><code class="docutils literal notranslate"><span class="pre">TransformSpatialAxesFilter.axes_mapping</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.filters.translate_filter">simulariumio.filters.translate_filter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.translate_filter.TranslateFilter"><code class="docutils literal notranslate"><span class="pre">TranslateFilter</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.filters.translate_filter.TranslateFilter.apply"><code class="docutils literal notranslate"><span class="pre">TranslateFilter.apply()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.translate_filter.TranslateFilter.default_translation"><code class="docutils literal notranslate"><span class="pre">TranslateFilter.default_translation</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.filters.translate_filter.TranslateFilter.translation_per_type"><code class="docutils literal notranslate"><span class="pre">TranslateFilter.translation_per_type</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.filters">Module contents</a></li>
+</ul>
+</li>
+</ul>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2020, Blair Lyons.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
+          </div>
         </div>
       </div>
-    </section>
+      
+      
+    </aside>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    </body>
 </html>

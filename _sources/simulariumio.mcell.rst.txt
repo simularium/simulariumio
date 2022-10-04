@@ -20,7 +20,6 @@ simulariumio.mcell.mcell\_data module
    :undoc-members:
    :show-inheritance:
 
-
 Module contents
 ---------------
 
