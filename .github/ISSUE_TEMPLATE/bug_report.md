@@ -1,31 +1,35 @@
 ---
 name: Bug Report
-about: Create a report to help us improve simulariumio
-labels: bug
+about: '"Something''s wrong..."'
+title: ''
+labels: 'bug'
+assignees: ''
+
 ---
 
-<!--
-  ⚠️⚠️ Please do the following before submitting: ⚠️⚠️
+## System and Software
+* simulariumio Version:
+* Python Version:
+* Operating System:
 
-  📖 Please read our Code of Conduct.
-  🔎 Please search existing issues to avoid creating duplicates.
--->
 
-### Describe the Bug
+## Description
+*A clear description of the bug*
 
-<!-- A clear and concise description of the bug. -->
 
-### Expected Behavior
 
-<!-- What did you expect to happen instead? -->
 
-### Reproduction
+## Expected Behavior
+*What did you expect to happen instead?*
 
-<!-- Steps to reproduce the behavior and/or a minimal example that exhibits the behavior. -->
 
-### Environment
 
-<!-- Any additional information about your environment. -->
 
--   OS Version: _[e.g. macOS 11.3.1]_
--   simulariumio Version: _[e.g. 0.5.0]_
+## Reproduction
+*A minimal example that exhibits the behavior.*
+
+
+
+
+## Environment
+*Any additional information about your environment*
