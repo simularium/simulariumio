@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.plot_readers package" href="simulariumio.plot_readers.html" /><link rel="prev" title="simulariumio.physicell package" href="simulariumio.physicell.html" />
 
-    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>simulariumio.physicell.dep package - simulariumio 1.6.4.dev27+g8758113 documentation</title>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
+        <title>simulariumio.physicell.dep package - simulariumio 1.6.4.dev28+gde2b68b documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">simulariumio 1.6.4.dev27+g8758113 documentation</div></a>
+      <a href="index.html"><div class="brand">simulariumio 1.6.4.dev28+gde2b68b documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.6.4.dev27+g8758113 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.6.4.dev28+gde2b68b documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -242,6 +242,8 @@ xml_name: str</p>
 where PhysiCell output files are stored (default= “.”)</p>
 </dd>
 </dl>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h3>
 <dl class="simple">
 <dt>data<span class="classifier">dict</span></dt><dd><p>Hierarchical container for all of the data retrieved by parsing the xml
 file and the files referenced therein.</p>
@@ -290,11 +292,14 @@ x : float</p>
 <dt>z<span class="classifier">float</span></dt><dd><p>z_position for the point of interest</p>
 </dd>
 </dl>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>vox_df<span class="classifier">pd.DataFrame, shape=[n_cell_in_voxel, n_variables]</span></dt><dd><p>cell dataframe containing only cells in the same voxel as the point
 specified by x, y, and z.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -327,11 +332,14 @@ species_name : str</p>
 a plane of voxel centers in the z-axis.</p>
 </dd>
 </dl>
+<section id="id1">
+<h4>Returns<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>conc_arr<span class="classifier">array (np.float) shape=[nx_voxels, ny_voxels, nz_voxels]</span></dt><dd><p>Contains the concentration of the specified chemical in each voxel.
 The array spatially maps to a meshgrid of the voxel centers.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -351,10 +359,13 @@ x : float</p>
 <dt>z<span class="classifier">float</span></dt><dd><p>z_position for the point of interest</p>
 </dd>
 </dl>
+<section id="id2">
+<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>concs<span class="classifier">array, shape=[n_substrates,]</span></dt><dd><p>array of concentrations in the order given by get_substrate_names()</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -377,10 +388,13 @@ x : float</p>
 <dt>z<span class="classifier">float</span></dt><dd><p>z-coordinate for the position</p>
 </dd>
 </dl>
+<section id="id3">
+<h4>Returns<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>ijk<span class="classifier">list length=3</span></dt><dd><p>contains the i, j, and k indices for the containing voxel’s center</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -402,11 +416,14 @@ flat : bool</p>
 <div><p>If flat is set to true, we return only the x and y meshgrid.
 Otherwise we return x, y, and z</p>
 </div></blockquote>
+<section id="id4">
+<h4>Returns<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
 <dl class="simple">
 <dt>splitting<span class="classifier">list length=2 if flat=True, else length=3</span></dt><dd><p>Contains arrays of voxel center coordinates as meshgrid with shape
 [nx_voxel, ny_voxel, nz_voxel] or [nx_voxel, ny_voxel] if flat=True.</p>
 </dd>
 </dl>
+</section>
 </dd></dl>
 
 <dl class="py method">
@@ -440,6 +457,7 @@ species_list : array (str), shape=[n_species,]</p>
 <span class="sig-name descname"><span class="pre">get_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/physicell/dep/pyMCDS.html#pyMCDS.get_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_time" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
+</section>
 </dd></dl>
 
 </section>
