@@ -7,7 +7,8 @@
                 "name": "File",
                 "data_type": "file",
                 "description": "A Smoldyn file",
-                "required": true
+                "required": true,
+                "match": ".*\\\\.txt$"
             },
             "meta_data": {
                 "name": "Metadata",
