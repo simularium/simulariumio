@@ -229,6 +229,36 @@ def fully_default_data() -> TrajectoryData:
             viz_types=np.array(3 * [3 * [1000.0]]),
             unique_ids=np.array([[0.0, 1.0, 2.0], [0.0, 1.0, 2.0], [0.0, 1.0, 2.0]]),
             types=[["C", "U", "C"], ["U", "L", "S"], ["O", "Y", "W"]],
+            display_data={
+                "C": DisplayData(
+                    name="C",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "W": DisplayData(
+                    name="W",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "S": DisplayData(
+                    name="S",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "Y": DisplayData(
+                    name="Y",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "L": DisplayData(
+                    name="L",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "U": DisplayData(
+                    name="U",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "O": DisplayData(
+                    name="O",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+            },
             positions=np.array(
                 [
                     [

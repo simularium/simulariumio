@@ -8,7 +8,6 @@ from simulariumio.tests.conftest import (
     fiber_agents_type_mapping,
     fully_default_data,
     mixed_agents_type_mapping,
-    three_default_agents,
     mixed_agents,
     fiber_agents,
     fully_default_data_type_mappings,
@@ -16,12 +15,8 @@ from simulariumio.tests.conftest import (
 )
 from simulariumio.constants import (
     DEFAULT_BOX_SIZE,
-    VIZ_TYPE,
-    DISPLAY_TYPE,
     DEFAULT_CAMERA_SETTINGS,
     CURRENT_VERSION,
-    DEFAULT_BOX_SIZE,
-    DEFAULT_CAMERA_SETTINGS,
     VIZ_TYPE,
     MAX_AGENT_ID,
 )
@@ -60,6 +55,7 @@ sphere_group_trajectory = sphere_group_agents()
 sphere_group_converter = TrajectoryConverter(sphere_group_trajectory)
 sphere_group_data = JsonWriter.format_trajectory_data(sphere_group_converter._data)
 
+
 # test trajectory info
 @pytest.mark.parametrize(
     "trajectory_version, expected_version",
@@ -76,6 +72,10 @@ sphere_group_data = JsonWriter.format_trajectory_data(sphere_group_converter._da
             fiber_agents_data["trajectoryInfo"]["version"],
             CURRENT_VERSION.TRAJECTORY_INFO,
         ),
+        (
+            sphere_group_data["trajectoryInfo"]["version"],
+            CURRENT_VERSION.TRAJECTORY_INFO,
+        )
     ],
 )
 def test_versions_trajectory(trajectory_version, expected_version):
@@ -164,7 +164,7 @@ def test_spatialUnits(spatialUnits, expected_spatialUnits):
                 "z": DEFAULT_BOX_SIZE[2] * 10,
             },
         ),
-         (
+        (
             sphere_group_data["trajectoryInfo"]["size"],
             {
                 "x": DEFAULT_BOX_SIZE[0],
@@ -305,7 +305,6 @@ def test_camera_defaults(camera, expected_camera):
                 },
             },
         ),
-        
     ],
 )
 def test_type_mapping(typeMapping, expected_typeMapping):
@@ -1381,96 +1380,6 @@ def test_unique_ids_per_frame():
     assert JsonWriter._check_agent_ids_are_unique_per_frame(mixed_agents_data)
     assert JsonWriter._check_agent_ids_are_unique_per_frame(fiber_agents_data)
     assert JsonWriter._check_agent_ids_are_unique_per_frame(sphere_group_data)
-
-
-# Test inconsistent viz type error (default)
-@pytest.mark.parametrize(
-    "trajectory, expected_data",
-    [
-        pytest.param(
-            fiber_agents_default_viz_type(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
-        ),
-    ],
-)
-def test_inconsistent_viz_default(trajectory, expected_data):
-    converter = TrajectoryConverter(trajectory)
-    buffer_data = JsonWriter.format_trajectory_data(converter._data)
-    assert expected_data == buffer_data
-
-
-# Test inconsistent viz type error (fiber)
-@pytest.mark.parametrize(
-    "trajectory, expected_data",
-    [
-        pytest.param(
-            default_agents_fiber_viz_type(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
-        ),
-    ],
-)
-def test_inconsistent_viz_fiber(trajectory, expected_data):
-    converter = TrajectoryConverter(trajectory)
-    buffer_data = JsonWriter.format_trajectory_data(converter._data)
-    assert expected_data == buffer_data
-
-
-# Test missing subpoints error
-@pytest.mark.parametrize(
-    "trajectory, expected_data",
-    [
-        pytest.param(
-            mixed_agents_missing_subpoints(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
-        ),
-    ],
-)
-def test_missing_subpoinds(trajectory, expected_data):
-    converter = TrajectoryConverter(trajectory)
-    buffer_data = JsonWriter.format_trajectory_data(converter._data)
-    assert expected_data == buffer_data
-
-
-# Test extra subpoints error
-@pytest.mark.parametrize(
-    "trajectory, expected_data",
-    [
-        pytest.param(
-            mixed_agents_extra_subpoints(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
-        ),
-    ],
-)
-def test_extra_subpoints(trajectory, expected_data):
-    converter = TrajectoryConverter(trajectory)
-    buffer_data = JsonWriter.format_trajectory_data(converter._data)
-    assert expected_data == buffer_data
-
-
-# Test wrong display type errors
-@pytest.mark.parametrize(
-    "trajectory, expected_data",
-    [
-        pytest.param(
-            mixed_agents_wrong_display_type1(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
-        ),
-        pytest.param(
-            mixed_agents_wrong_display_type2(),
-            {},
-            marks=pytest.mark.raises(exception=DataError),
-        ),
-    ],
-)
-def test_wrong_display_type(trajectory, expected_data):
-    converter = TrajectoryConverter(trajectory)
-    buffer_data = JsonWriter.format_trajectory_data(converter._data)
-    assert expected_data == buffer_data
 
 
 # Test invalid agent IDs errors

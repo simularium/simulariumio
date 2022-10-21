@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from dis import dis
 import numpy as np
 import pytest
 
@@ -279,6 +278,7 @@ data_with_ignore_type = ReaddyData(
     display_data={
         "A": DisplayData(
             name=name_0,
+            display_type=DISPLAY_TYPE.SPHERE,
             radius=radius_0,
             color=color_0,
         ),
@@ -291,6 +291,7 @@ data_with_ignore_type = ReaddyData(
         ),
         "D": DisplayData(
             name=name_0,
+            display_type=DISPLAY_TYPE.SPHERE,
             radius=radius_0,
             color=color_0,
         ),

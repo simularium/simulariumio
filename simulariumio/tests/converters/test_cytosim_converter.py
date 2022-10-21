@@ -337,4 +337,4 @@ def test_parse_dimensions():
     dimension_data = CytosimConverter._parse_dimensions(cytosim_data)
     assert dimension_data.total_steps == 3
     assert dimension_data.max_agents == 19
-    assert dimension_data.max_subpoints == 6
+    assert dimension_data.max_subpoints == 18
