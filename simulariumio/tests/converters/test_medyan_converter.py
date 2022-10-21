@@ -6,8 +6,12 @@ import pytest
 
 from simulariumio.medyan import MedyanConverter, MedyanData
 from simulariumio import MetaData, DisplayData, InputFileData, JsonWriter
-from simulariumio.constants import DEFAULT_BOX_SIZE, DEFAULT_CAMERA_SETTINGS, VIZ_TYPE, DISPLAY_TYPE
-
+from simulariumio.constants import (
+    DEFAULT_BOX_SIZE,
+    DEFAULT_CAMERA_SETTINGS,
+    VIZ_TYPE,
+    DISPLAY_TYPE
+)
 
 data = MedyanData(
     snapshot_file=InputFileData(file_path="simulariumio/tests/data/medyan/test.traj"),
