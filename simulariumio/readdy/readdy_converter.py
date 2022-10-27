@@ -78,13 +78,13 @@ class ReaddyConverter(TrajectoryConverter):
                 if traj.species_name(tid) in input_data.ignore_types:
                     continue
                 raw_type_name = traj.species_name(tid)
-                display_data = (
-                    input_data.display_data[raw_type_name]
-                    if raw_type_name in input_data.display_data
-                    else DisplayData(
+                if raw_type_name in input_data.display_data:
+                    display_data = input_data.display_data[raw_type_name]
+                else:
+                    display_data = DisplayData(
                         name=raw_type_name, display_type=DISPLAY_TYPE.SPHERE
                     )
-                )
+                    input_data.display_data[raw_type_name] = display_data
                 result.unique_ids[time_index][new_agent_index] = ids[time_index][
                     agent_index
                 ]
