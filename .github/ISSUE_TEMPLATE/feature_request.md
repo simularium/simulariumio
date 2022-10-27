@@ -1,28 +1,20 @@
 ---
 name: Feature Request
-about: Suggest a feature for simulariumio
-labels: enhancement
+about: '"It would be really cool if x did y..."'
+title: ''
+labels: ''
+assignees: ''
+
 ---
 
-<!--
-  ⚠️⚠️ Please do the following before submitting: ⚠️⚠️
+## Use Case
 
-  📖 Please read our Code of Conduct.
-  🔎 Please search existing issues to avoid creating duplicates.
--->
+_Please provide a use case to help us understand your request in context_
 
-### Feature Description
+## Acceptance Criteria
 
-<!-- A clear and concise description of the feature you're requesting. -->
+_Please describe how you know this is done_
 
-### Use Case
+## Details
 
-<!-- Please provide a use case to help us understand your request in context. -->
-
-### Solution
-
-<!-- Please describe your ideal solution. -->
-
-### Alternatives
-
-<!-- Please describe any alternatives you've considered, even if you've dismissed them. -->
+_Please provide any helpful specifications_
