@@ -536,8 +536,24 @@ class AgentData:
         """
         type_name = self.types[time_index][agent_index]
         if type_name not in self.display_data:
-            raise DataError(f"{type_name} has no DisplayData, cannot get display_type")
+            self.display_data[type_name] = DisplayData(
+                name=type_name,
+                display_type=self._default_display_type_for_agent(time_index, agent_index),
+            )
         return self.display_data[type_name].display_type
+
+    def _default_display_type_for_agent(self, time_index: int, agent_index: int) -> DISPLAY_TYPE:
+        """
+        Get the default DISPLAY_TYPE to use 
+        given the number of subpoints for the agent
+        at the given time and agent indices
+        """
+        n_subpoints = self.n_subpoints[time_index][agent_index]
+        default_display_types = [DISPLAY_TYPE.FIBER, DISPLAY_TYPE.SPHERE_GROUP, DISPLAY_TYPE.SPHERE]
+        for display_type in default_display_types:
+            if n_subpoints % float(SUBPOINT_VALUES_PER_ITEM(display_type)) == 0:
+                return display_type
+        return DISPLAY_TYPE.SPHERE
 
     def _check_subpoints_match_display_type(self):
         """
