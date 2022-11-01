@@ -682,7 +682,10 @@ def test_typeMapping_subcells(typeMapping, expected_typeMapping):
     ],
 )
 def test_bundleData(bundleData, expected_bundleData):
-    assert expected_bundleData == bundleData["data"]
+    assert False not in np.isclose(
+        np.array(expected_bundleData),
+        np.array(bundleData["data"]),
+    )
 
 
 def test_agent_ids():
