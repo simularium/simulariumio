@@ -31,7 +31,7 @@ class FileConverter(TrajectoryConverter):
         """
         if display_data is None:
             display_data = {}
-        if input_file._is_binary_file():
+        if input_file._is_binary():
             print("Reading Simularium binary -------------")
             buffer_data = SimulariumBinaryReader.load_binary(input_file)
         else:

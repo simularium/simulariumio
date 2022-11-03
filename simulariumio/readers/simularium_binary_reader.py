@@ -21,19 +21,19 @@ log = logging.getLogger(__name__)
 
 class SimulariumBinaryReader:
     @staticmethod
-    def _binary_data_from_file(input_file: InputFileData) -> BinaryFileData:
+    def _binary_data_from_source(input_file: InputFileData) -> BinaryFileData:
         """
-        Read a .simularium binary file and return multiple views of the data
+        Read a .simularium binary file or take binary input bytes and return
+        multiple views of the data
         """
         result = BinaryFileData()
-        with open(input_file.file_path, "rb") as open_binary_file:
-            result.byte_view = open_binary_file.read()
-            result.int_view = np.frombuffer(
-                result.byte_view, dtype=np.dtype("I").newbyteorder("<")
-            )
-            result.float_view = np.frombuffer(
-                result.byte_view, dtype=np.dtype("f").newbyteorder("<")
-            )
+        result.byte_view = input_file.get_contents()
+        result.int_view = np.frombuffer(
+            result.byte_view, dtype=np.dtype("I").newbyteorder("<")
+        )
+        result.float_view = np.frombuffer(
+            result.byte_view, dtype=np.dtype("f").newbyteorder("<")
+        )
         return result
 
     @staticmethod
@@ -173,7 +173,7 @@ class SimulariumBinaryReader:
         Load data from the input file in .simularium binary format and update it.
         """
         result = {}
-        binary_data = SimulariumBinaryReader._binary_data_from_file(input_file)
+        binary_data = SimulariumBinaryReader._binary_data_from_source(input_file)
         block_info = SimulariumBinaryReader._parse_binary_header(binary_data.byte_view)
         # parse blocks
         found_blocks = []
