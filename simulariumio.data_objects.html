@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.filters package" href="simulariumio.filters.html" /><link rel="prev" title="simulariumio.cytosim package" href="simulariumio.cytosim.html" />
 
     <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
-        <title>simulariumio.data_objects package - simulariumio 1.6.4.dev30+g53f416a documentation</title>
+        <title>simulariumio.data_objects package - simulariumio 1.6.4.dev37+gb303ede documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">simulariumio 1.6.4.dev30+g53f416a documentation</div></a>
+      <a href="index.html"><div class="brand">simulariumio 1.6.4.dev37+gb303ede documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.6.4.dev30+g53f416a documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.6.4.dev37+gb303ede documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -635,7 +635,7 @@ each mapped to a numpy ndarray of values</p>
 <span id="simulariumio-data-objects-input-file-data-module"></span><h2>simulariumio.data_objects.input_file_data module<a class="headerlink" href="#module-simulariumio.data_objects.input_file_data" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.data_objects.input_file_data.InputFileData">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.data_objects.input_file_data.</span></span><span class="sig-name descname"><span class="pre">InputFileData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_contents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/input_file_data.html#InputFileData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.input_file_data.InputFileData" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.data_objects.input_file_data.</span></span><span class="sig-name descname"><span class="pre">InputFileData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_contents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/input_file_data.html#InputFileData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.input_file_data.InputFileData" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object contains data about a file</p>
 <dl class="field-list simple">
@@ -644,7 +644,7 @@ each mapped to a numpy ndarray of values</p>
 <dt><strong>file_path: str (optional)</strong></dt><dd><p>A string path to the file
 Default: use file_contents instead</p>
 </dd>
-<dt><strong>file_contents: str (optional)</strong></dt><dd><p>A string of data from an opened file
+<dt><strong>file_contents: str or bytes (optional)</strong></dt><dd><p>A string of data from an opened file
 Default: use file_path instead</p>
 </dd>
 </dl>
@@ -666,7 +666,8 @@ Default: use file_path instead</p>
 <dd><p>Return the contents of the file.</p>
 <p>If file_contents is not empty, return that.
 Otherwise try to open the file at file_path
-and return the data inside as a string.</p>
+and return the data inside as a string or as
+bytes, for binary files.</p>
 </dd></dl>
 
 </dd></dl>

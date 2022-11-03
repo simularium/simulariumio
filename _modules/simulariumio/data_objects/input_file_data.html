@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
-        <title>simulariumio.data_objects.input_file_data - simulariumio 1.6.4.dev30+g53f416a documentation</title>
+        <title>simulariumio.data_objects.input_file_data - simulariumio 1.6.4.dev37+gb303ede documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.6.4.dev30+g53f416a documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.6.4.dev37+gb303ede documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.6.4.dev30+g53f416a documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.6.4.dev37+gb303ede documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -219,6 +219,7 @@
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">..exceptions</span> <span class="kn">import</span> <span class="n">DataError</span>
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">BINARY_SETTINGS</span>
@@ -237,7 +238,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">file_contents</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">file_contents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object contains data about a file</span>
@@ -247,7 +248,7 @@
 <span class="sd">        file_path: str (optional)</span>
 <span class="sd">            A string path to the file</span>
 <span class="sd">            Default: use file_contents instead</span>
-<span class="sd">        file_contents: str (optional)</span>
+<span class="sd">        file_contents: str or bytes (optional)</span>
 <span class="sd">            A string of data from an opened file</span>
 <span class="sd">            Default: use file_path instead</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -265,17 +266,25 @@
 
 <span class="sd">        If file_contents is not empty, return that.</span>
 <span class="sd">        Otherwise try to open the file at file_path</span>
-<span class="sd">        and return the data inside as a string.</span>
+<span class="sd">        and return the data inside as a string or as</span>
+<span class="sd">        bytes, for binary files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_contents</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_contents</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_binary</span><span class="p">():</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">myfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">myfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">_is_binary_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_is_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Is this file binary? (or JSON?)</span>
+<span class="sd">        Is this data in binary? (or JSON?)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_contents</span><span class="p">:</span>
+            <span class="c1"># check file contents string to see if they&#39;re binary</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_contents</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">FILE_IDENTIFIER</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="n">header</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">FILE_IDENTIFIER</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">open_file</span><span class="p">:</span>
             <span class="n">header</span> <span class="o">=</span> <span class="n">open_file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">FILE_IDENTIFIER</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
                 <span class="s2">&quot;utf-8&quot;</span>
