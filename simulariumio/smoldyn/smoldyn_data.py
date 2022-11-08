@@ -124,46 +124,11 @@ class SmoldynData:
 
             if "camera_defaults" in metadata:
                 camera_defaults = metadata["camera_defaults"]
-
-                position = SmoldynData._unpack_position_vector(
-                    camera_defaults.get("position"),
-                    DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION
-                )
-                up_vector = SmoldynData._unpack_position_vector(
-                    camera_defaults.get("up_vector"),
-                    DEFAULT_CAMERA_SETTINGS.UP_VECTOR
-                )
-                look_at_position = SmoldynData._unpack_position_vector(
-                    camera_defaults.get("look_at_position"),
-                    DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION
-                )
-                fov_degrees = float(camera_defaults.get(
-                    "fov_degrees",
-                    DEFAULT_CAMERA_SETTINGS.FOV_DEGREES
-                ))
-
-                camera_data = CameraData(
-                    fov_degrees=fov_degrees,
-                    position=position,
-                    up_vector=up_vector,
-                    look_at_position=look_at_position,
-                )
+                camera_data = CameraData.from_buffer_data(camera_defaults)
 
             if "model_meta_data" in metadata:
                 model_data = metadata["model_meta_data"]
-                model_meta_data = ModelMetaData(
-                    title=model_data.get("title"),
-                    version=model_data.get("version", ""),
-                    authors=model_data.get("author", ""),
-                    description=model_data.get("description", ""),
-                    doi=model_data.get("doi", ""),
-                    source_code_url=model_data.get("source_code_url", ""),
-                    source_code_license_url=model_data.get(
-                        "source_code_license_url", ""
-                    ),
-                    input_data_url=model_data.get("input_data_url", ""),
-                    raw_output_data_url=model_data.get("raw_output_data_url", ""),
-                )
+                model_meta_data = ModelMetaData.from_buffer_data(model_data)
 
         spatial_units = None
         if "spatial_units" in buffer_data:
@@ -200,7 +165,7 @@ class SmoldynData:
         return cls(
             meta_data=MetaData(
                 box_size=box_size,
-                trajectory_title=buffer_data.get("trajectory_title", "No Title"),
+                trajectory_title=buffer_data.get("trajectory_title", ""),
                 scale_factor=float(buffer_data.get("scale_factor", 1.0)),
                 camera_defaults=camera_data,
                 model_meta_data=model_meta_data,
