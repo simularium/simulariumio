@@ -2,18 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import numpy as np
 from typing import Any, Dict, List
 
 from ..data_objects import (
     MetaData,
-    ModelMetaData,
     UnitData,
     DisplayData,
     InputFileData,
-    CameraData
 )
-from ..constants import DISPLAY_TYPE, DEFAULT_CAMERA_SETTINGS, DEFAULT_BOX_SIZE
 
 ###############################################################################
 
@@ -95,30 +91,13 @@ class SmoldynData:
             data to be turned into a SmoldynData object
         """
         display_data = None
-        box_size = None
         if "display_data" in buffer_data:
             display_data = dict()
             for index in buffer_data["display_data"]:
                 agent_info = buffer_data["display_data"][index]
                 for agent_name in agent_info:
                     agent_data = agent_info[agent_name]
-                    display_data[agent_name] = DisplayData(
-                        name=agent_data.get("name"),
-                        radius=float(agent_data.get("radius", 1.0)),
-                        display_type=agent_data.get(
-                            "display_type",
-                            DISPLAY_TYPE.SPHERE
-                        ),
-                        url=agent_data.get("url"),
-                        color=agent_data.get("color"),
-                    )
-        if "meta_data" in buffer_data:
-            metadata = buffer_data["meta_data"]
-            if "box_size" in metadata:
-                box_size = SmoldynData._unpack_position_vector(
-                    metadata["box_size"],
-                    DEFAULT_BOX_SIZE
-                )
+                    display_data[agent_name] = DisplayData.from_dict(agent_data)
 
         spatial_units = None
         if "spatial_units" in buffer_data:
@@ -153,34 +132,11 @@ class SmoldynData:
                 time_units = UnitData(name)
 
         return cls(
-            meta_data=MetaData(
-                box_size=box_size,
-                trajectory_title=buffer_data.get("trajectory_title", ""),
-                scale_factor=float(buffer_data.get("scale_factor", 1.0)),
-                camera_defaults=CameraData.from_dict(buffer_data),
-                model_meta_data=ModelMetaData.from_dict(buffer_data),
-            ),
+            meta_data=MetaData.from_dict(buffer_data),
             smoldyn_file=InputFileData(
                 file_contents=buffer_data["file_contents"]["file_contents"],
             ),
             display_data=display_data,
             time_units=time_units,
             spatial_units=spatial_units,
-        )
-
-    @staticmethod
-    def _unpack_position_vector(
-        vector_dict: Dict[str, str], defaults: np.ndarray
-    ) -> np.ndarray:
-        # if no vector information was given, go with the defaults
-        if vector_dict is None:
-            return defaults
-
-        # use all positions given, but use defaults if any are missing
-        return np.array(
-            [
-                float(vector_dict.get("0", defaults[0])),
-                float(vector_dict.get("1", defaults[1])),
-                float(vector_dict.get("2", defaults[2])),
-            ]
         )
