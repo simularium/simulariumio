@@ -65,28 +65,21 @@ class CameraData:
         if camera_default is None:
             return cls()
         return cls(
-            position=np.array(
-                [
-                    float(camera_default["position"]["x"]),
-                    float(camera_default["position"]["y"]),
-                    float(camera_default["position"]["z"]),
-                ]
+            position = CameraData._unpack_position_vector(
+                camera_default["position"],
+                DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION
             ),
-            look_at_position=np.array(
-                [
-                    float(camera_default["lookAtPosition"]["x"]),
-                    float(camera_default["lookAtPosition"]["y"]),
-                    float(camera_default["lookAtPosition"]["z"]),
-                ]
+            look_at_position = CameraData._unpack_position_vector(
+                camera_default["lookAtPosition"],
+                DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION
             ),
-            up_vector=np.array(
-                [
-                    float(camera_default["upVector"]["x"]),
-                    float(camera_default["upVector"]["y"]),
-                    float(camera_default["upVector"]["z"]),
-                ]
+            up_vector = CameraData._unpack_position_vector(
+                camera_default["upVector"],
+                DEFAULT_CAMERA_SETTINGS.UP_VECTOR
             ),
-            fov_degrees=float(camera_default["fovDegrees"]),
+            fov_degrees=float(
+                camera_default.get("fovDegrees", DEFAULT_CAMERA_SETTINGS.FOV_DEGREES)
+            ),
         )
 
     def __deepcopy__(self, memo):
@@ -97,3 +90,20 @@ class CameraData:
             fov_degrees=self.fov_degrees,
         )
         return result
+
+    @staticmethod
+    def _unpack_position_vector(
+        vector_dict: Dict[str, str], defaults: np.ndarray
+    ) -> np.ndarray:
+        # if no vector information was given, go with the defaults
+        if vector_dict is None:
+            return defaults
+
+        # use all positions given, but use defaults if any are missing
+        return np.array(
+            [
+                float(vector_dict.get("x", defaults[0])),
+                float(vector_dict.get("y", defaults[1])),
+                float(vector_dict.get("z", defaults[2])),
+            ]
+        )
