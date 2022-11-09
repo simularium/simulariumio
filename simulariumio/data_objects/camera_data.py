@@ -7,6 +7,7 @@ from typing import Any, Dict
 import numpy as np
 
 from ..constants import DEFAULT_CAMERA_SETTINGS
+from ..utils import unpack_position_vector
 
 ###############################################################################
 
@@ -63,15 +64,15 @@ class CameraData:
         if camera_default is None:
             return cls()
         return cls(
-            position=CameraData._unpack_position_vector(
+            position=unpack_position_vector(
                 camera_default["position"],
                 DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION
             ),
-            look_at_position=CameraData._unpack_position_vector(
+            look_at_position=unpack_position_vector(
                 camera_default["lookAtPosition"],
                 DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION
             ),
-            up_vector=CameraData._unpack_position_vector(
+            up_vector=unpack_position_vector(
                 camera_default["upVector"],
                 DEFAULT_CAMERA_SETTINGS.UP_VECTOR
             ),
@@ -88,20 +89,3 @@ class CameraData:
             fov_degrees=self.fov_degrees,
         )
         return result
-
-    @staticmethod
-    def _unpack_position_vector(
-        vector_dict: Dict[str, str], defaults: np.ndarray
-    ) -> np.ndarray:
-        # if no vector information was given, go with the defaults
-        if vector_dict is None:
-            return defaults
-
-        # use all positions given, but use defaults if any are missing
-        return np.array(
-            [
-                float(vector_dict.get("x", defaults[0])),
-                float(vector_dict.get("y", defaults[1])),
-                float(vector_dict.get("z", defaults[2])),
-            ]
-        )
