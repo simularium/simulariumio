@@ -92,7 +92,6 @@ class DisplayData:
             color=display_info.get("color"),
         )
 
-
     def __str__(self):
         return (
             f"{self.name}: display_type={self.display_type.value}, "
