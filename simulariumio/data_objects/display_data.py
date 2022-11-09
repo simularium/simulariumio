@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from typing import Any, Dict
 
 from ..constants import DISPLAY_TYPE
 from ..exceptions import DataError
@@ -71,6 +72,26 @@ class DisplayData:
         if color and ((len(color) != 4 and len(color) != 7) or color[0] != "#"):
             raise DataError(f"{color} should be provided as '#xxxxxx' or '#xxx'")
         self.color = color
+
+    @classmethod
+    def from_dict(
+        cls,
+        display_info: Dict[str, Any],
+        default_display_type: DISPLAY_TYPE = DISPLAY_TYPE.SPHERE
+    ):
+        """
+        Create DisplayData from a simularium JSON dict containing buffers.
+        """
+        if display_info is None:
+            return cls()
+        return cls(
+            name=display_info.get("name"),
+            radius=float(display_info.get("radius", 1.0)),
+            display_type=display_info.get("display_type", default_display_type),
+            url=display_info.get("url"),
+            color=display_info.get("color"),
+        )
+
 
     def __str__(self):
         return (
