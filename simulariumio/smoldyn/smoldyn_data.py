@@ -82,7 +82,7 @@ class SmoldynData:
         self.plots = plots if plots is not None else []
 
     @classmethod
-    def from_buffer_data(
+    def from_dict(
         cls, buffer_data: Dict[str, Any]
     ):
         """
@@ -95,9 +95,7 @@ class SmoldynData:
             data to be turned into a SmoldynData object
         """
         display_data = None
-        camera_data = None
         box_size = None
-        model_meta_data = None
         if "display_data" in buffer_data:
             display_data = dict()
             for index in buffer_data["display_data"]:
@@ -121,14 +119,6 @@ class SmoldynData:
                     metadata["box_size"],
                     DEFAULT_BOX_SIZE
                 )
-
-            if "camera_defaults" in metadata:
-                camera_defaults = metadata["camera_defaults"]
-                camera_data = CameraData.from_buffer_data(camera_defaults)
-
-            if "model_meta_data" in metadata:
-                model_data = metadata["model_meta_data"]
-                model_meta_data = ModelMetaData.from_buffer_data(model_data)
 
         spatial_units = None
         if "spatial_units" in buffer_data:
@@ -167,8 +157,8 @@ class SmoldynData:
                 box_size=box_size,
                 trajectory_title=buffer_data.get("trajectory_title", ""),
                 scale_factor=float(buffer_data.get("scale_factor", 1.0)),
-                camera_defaults=camera_data,
-                model_meta_data=model_meta_data,
+                camera_defaults=CameraData.from_dict(buffer_data),
+                model_meta_data=ModelMetaData.from_dict(buffer_data),
             ),
             smoldyn_file=InputFileData(
                 file_contents=buffer_data["file_contents"]["file_contents"],

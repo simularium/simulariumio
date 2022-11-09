@@ -69,23 +69,23 @@ class MetaData:
         )
 
     @classmethod
-    def from_buffer_data(cls, buffer_data: Dict[str, Any]):
+    def from_dict(cls, buffer_data: Dict[str, Any]):
         """
         Create MetaData from a simularium JSON dict containing buffers
         """
         return cls(
             box_size=np.array(
                 [
-                    float(buffer_data["trajectoryInfo"]["size"]["x"]),
-                    float(buffer_data["trajectoryInfo"]["size"]["y"]),
-                    float(buffer_data["trajectoryInfo"]["size"]["z"]),
+                    float(buffer_data["size"]["x"]),
+                    float(buffer_data["size"]["y"]),
+                    float(buffer_data["size"]["z"]),
                 ]
             ),
-            camera_defaults=CameraData.from_buffer_data(buffer_data),
-            trajectory_title=buffer_data["trajectoryInfo"]["trajectoryTitle"]
-            if "trajectoryTitle" in buffer_data["trajectoryInfo"]
+            camera_defaults=CameraData.from_dict(buffer_data),
+            trajectory_title=buffer_data["trajectoryTitle"]
+            if "trajectoryTitle" in buffer_data
             else "",
-            model_meta_data=ModelMetaData.from_buffer_data(buffer_data),
+            model_meta_data=ModelMetaData.from_dict(buffer_data),
         )
 
     def _set_box_size(self, box_size: np.ndarray = None):

@@ -57,12 +57,10 @@ class CameraData:
         self.fov_degrees = fov_degrees
 
     @classmethod
-    def from_buffer_data(cls, buffer_data: Dict[str, Any]):
+    def from_dict(cls, buffer_data: Dict[str, Any]):
         """ """
         camera_default = (
-            buffer_data["trajectoryInfo"]["cameraDefault"]
-            if "cameraDefault" in buffer_data["trajectoryInfo"]
-            else None
+            buffer_data["cameraDefault"] if "cameraDefault" in buffer_data else None
         )
         if camera_default is None:
             return cls()
