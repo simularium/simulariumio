@@ -82,9 +82,7 @@ class MetaData:
                 ]
             ),
             camera_defaults=CameraData.from_dict(buffer_data),
-            trajectory_title=buffer_data["trajectoryTitle"]
-            if "trajectoryTitle" in buffer_data
-            else "",
+            trajectory_title=buffer_data.get("trajectoryTitle", ""),
             model_meta_data=ModelMetaData.from_dict(buffer_data),
         )
 
