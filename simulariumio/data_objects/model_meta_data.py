@@ -74,14 +74,12 @@ class ModelMetaData:
         self.raw_output_data_url = raw_output_data_url
 
     @classmethod
-    def from_buffer_data(cls, buffer_data: Dict[str, Any]):
+    def from_dict(cls, buffer_data: Dict[str, Any]):
         """
         Create ModelMetaData from a simularium JSON dict containing buffers
         """
         model_info = (
-            buffer_data["trajectoryInfo"]["modelInfo"]
-            if "modelInfo" in buffer_data["trajectoryInfo"]
-            else None
+            buffer_data["modelInfo"] if "modelInfo" in buffer_data else None
         )
         if model_info is None:
             return cls()

@@ -74,7 +74,7 @@ class TrajectoryData:
         if display_data is None:
             display_data = {}
         return cls(
-            meta_data=MetaData.from_buffer_data(buffer_data),
+            meta_data=MetaData.from_dict(buffer_data["trajectoryInfo"]),
             agent_data=AgentData.from_buffer_data(buffer_data, display_data),
             time_units=UnitData(
                 buffer_data["trajectoryInfo"]["timeUnits"]["name"],
