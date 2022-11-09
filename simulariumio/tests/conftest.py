@@ -76,7 +76,7 @@ def default_agents_type_mapping() -> Dict[str, Any]:
     }
 
 
-def fully_default_data_type_mappings() -> Dict[str, Any]:
+def minimal_custom_type_mappings() -> Dict[str, Any]:
     return {
         "0": {
             "name": "C",
@@ -220,7 +220,7 @@ def three_default_agents() -> TrajectoryData:
     )
 
 
-def fully_default_data() -> TrajectoryData:
+def minimal_custom_data() -> TrajectoryData:
     return TrajectoryData(
         meta_data=MetaData(),
         agent_data=AgentData(
