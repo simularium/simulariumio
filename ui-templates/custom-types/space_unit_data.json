@@ -38,7 +38,8 @@
                     "bohr_radius",
                     "angstrom_star",
                     "planck_length"
-                ]
+                ],
+                "default": "meter"
             },
             "magnitude": {
                 "name": "Magnitude",

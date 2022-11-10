@@ -44,7 +44,8 @@
                     "svedberg",
                     "atomic_unit_of_time",
                     "planck_time"
-                ]
+                ],
+                "default": "second"
             },
             "magnitude": {
                 "name": "Magnitude",
