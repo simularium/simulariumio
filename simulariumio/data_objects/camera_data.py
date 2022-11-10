@@ -62,10 +62,7 @@ class CameraData:
         """
         Create CameraData object from a simularium JSON dict
         """
-        # dictionary keys may be in camel case or snake case
-        camera_default = buffer_data.get(
-            "cameraDefault", buffer_data.get("camera_defaults")
-        )
+        camera_default = buffer_data.get("cameraDefault")
         if camera_default is None:
             return cls()
         return cls(

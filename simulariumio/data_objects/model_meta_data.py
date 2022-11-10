@@ -78,8 +78,7 @@ class ModelMetaData:
         """
         Create ModelMetaData from a simularium JSON dict containing buffers
         """
-        # dict keys may be in camel case or snake case
-        model_info = buffer_data.get("modelInfo", buffer_data.get("model_meta_data"))
+        model_info = buffer_data.get("modelInfo")
         if model_info is None:
             return cls()
         return cls(
