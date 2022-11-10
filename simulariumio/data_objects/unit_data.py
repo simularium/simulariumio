@@ -3,6 +3,7 @@
 
 import sys
 import logging
+from typing import Any, Dict
 from pint import UnitRegistry
 
 ###############################################################################
@@ -62,6 +63,21 @@ class UnitData:
         """
         self._quantity *= multiplier
         self._update_units()
+
+    @classmethod
+    def from_dict(
+        cls,
+        buffer_data: Dict[str, Any],
+        default_name: str,
+        default_mag: float
+    ):
+        """
+        Create UnitData object from a simularium JSON dict
+        """
+        return cls(
+            name=buffer_data.get("name", default_name),
+            magnitude=float(buffer_data.get("magnitude", default_mag)),
+        )
 
     def __str__(self):
         """

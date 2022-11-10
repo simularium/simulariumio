@@ -101,35 +101,21 @@ class SmoldynData:
 
         spatial_units = None
         if "spatial_units" in buffer_data:
-            # spatial units defaults to meters on UI
-            name = (
-                buffer_data["spatial_units"]["name"]
-                if "name" in buffer_data["spatial_units"]
-                else "meter")
-
-            if "magnitude" in buffer_data["spatial_units"]:
-                spatial_units = UnitData(
-                    name,
-                    float(buffer_data["spatial_units"]["magnitude"])
-                )
-            else:
-                spatial_units = UnitData(name)
+            # spatial units defaults to meter in the UI
+            spatial_units = UnitData.from_dict(
+                buffer_data["spatial_units"],
+                default_name="meter",
+                default_mag=1.0
+            )
 
         time_units = None
         if "time_units" in buffer_data:
             # time units default to seconds on UI
-            name = (
-                buffer_data["time_units"]["name"]
-                if "name" in buffer_data["time_units"]
-                else "second")
-
-            if "magnitude" in buffer_data["time_units"]:
-                time_units = UnitData(
-                    name,
-                    float(buffer_data["time_units"]["magnitude"])
-                )
-            else:
-                time_units = UnitData(name)
+            time_units = UnitData.from_dict(
+                buffer_data["time_units"],
+                default_name="second",
+                default_mag=1.0
+            )
 
         return cls(
             meta_data=MetaData.from_dict(buffer_data["meta_data"]),
