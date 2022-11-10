@@ -60,7 +60,10 @@ class CameraData:
     @classmethod
     def from_dict(cls, buffer_data: Dict[str, Any]):
         """ """
-        camera_default = buffer_data.get("cameraDefault")
+        # dictionary keys may be in camel case or snake case
+        camera_default = buffer_data.get(
+            "cameraDefault", buffer_data.get("camera_defaults")
+        )
         if camera_default is None:
             return cls()
         return cls(
@@ -69,15 +72,21 @@ class CameraData:
                 DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION
             ),
             look_at_position=unpack_position_vector(
-                camera_default["lookAtPosition"],
+                camera_default.get(
+                    "lookAtPosition", camera_default.get("look_at_position")),
                 DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION
             ),
             up_vector=unpack_position_vector(
-                camera_default["upVector"],
+                camera_default.get("upVector", camera_default.get("up_vector")),
                 DEFAULT_CAMERA_SETTINGS.UP_VECTOR
             ),
             fov_degrees=float(
-                camera_default.get("fovDegrees", DEFAULT_CAMERA_SETTINGS.FOV_DEGREES)
+                camera_default.get(
+                    "fovDegrees", camera_default.get(
+                        "fov_degrees",
+                        DEFAULT_CAMERA_SETTINGS.FOV_DEGREES
+                    )
+                )
             ),
         )
 

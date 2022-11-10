@@ -74,13 +74,17 @@ class MetaData:
         """
         Create MetaData from a simularium JSON dict containing buffers
         """
+        # dictionary keys may be in camel case or snake case
         return cls(
             box_size=unpack_position_vector(
-                buffer_data["size"], DEFAULT_BOX_SIZE
+                buffer_data.get("size", buffer_data.get("box_size")), DEFAULT_BOX_SIZE
             ),
             camera_defaults=CameraData.from_dict(buffer_data),
-            trajectory_title=buffer_data.get("trajectoryTitle", ""),
+            trajectory_title=buffer_data.get(
+                "trajectoryTitle", buffer_data.get("trajectory_title", "")
+            ),
             model_meta_data=ModelMetaData.from_dict(buffer_data),
+            scale_factor=buffer_data.get("scale_factor")
         )
 
     def _set_box_size(self, box_size: np.ndarray = None):

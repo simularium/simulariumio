@@ -78,7 +78,8 @@ class ModelMetaData:
         """
         Create ModelMetaData from a simularium JSON dict containing buffers
         """
-        model_info = buffer_data.get("modelInfo")
+        # dict keys may be in camel case or snake case
+        model_info = buffer_data.get("modelInfo", buffer_data.get("model_meta_data"))
         if model_info is None:
             return cls()
         return cls(
@@ -87,10 +88,18 @@ class ModelMetaData:
             authors=model_info.get("authors", ""),
             description=model_info.get("description", ""),
             doi=model_info.get("doi", ""),
-            source_code_url=model_info.get("sourceCodeUrl", ""),
-            source_code_license_url=model_info.get("sourceCodeLicenseUrl", ""),
-            input_data_url=model_info.get("inputDataUrl", ""),
-            raw_output_data_url=model_info.get("rawOutputDataUrl", ""),
+            source_code_url=model_info.get(
+                "sourceCodeUrl", model_info.get("source_code_url", "")
+            ),
+            source_code_license_url=model_info.get(
+                "sourceCodeLicenseUrl", model_info.get("source_code_license_url", "")
+            ),
+            input_data_url=model_info.get(
+                "inputDataUrl", model_info.get("input_data_url", "")
+            ),
+            raw_output_data_url=model_info.get(
+                "rawOutputDataUrl", model_info.get("raw_output_data_url", "")
+            ),
         )
 
     def is_default(self):

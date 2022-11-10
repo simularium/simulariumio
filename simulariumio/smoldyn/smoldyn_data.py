@@ -132,7 +132,7 @@ class SmoldynData:
                 time_units = UnitData(name)
 
         return cls(
-            meta_data=MetaData.from_dict(buffer_data),
+            meta_data=MetaData.from_dict(buffer_data["meta_data"]),
             smoldyn_file=InputFileData(
                 file_contents=buffer_data["file_contents"]["file_contents"],
             ),
