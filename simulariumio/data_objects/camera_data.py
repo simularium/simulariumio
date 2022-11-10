@@ -70,24 +70,21 @@ class CameraData:
             return cls()
         return cls(
             position=unpack_position_vector(
-                camera_default["position"],
+                camera_default.get("position"),
                 DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION
             ),
             look_at_position=unpack_position_vector(
-                camera_default.get(
-                    "lookAtPosition", camera_default.get("look_at_position")),
+                camera_default.get("lookAtPosition"),
                 DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION
             ),
             up_vector=unpack_position_vector(
-                camera_default.get("upVector", camera_default.get("up_vector")),
+                camera_default.get("upVector"),
                 DEFAULT_CAMERA_SETTINGS.UP_VECTOR
             ),
             fov_degrees=float(
                 camera_default.get(
-                    "fovDegrees", camera_default.get(
-                        "fov_degrees",
-                        DEFAULT_CAMERA_SETTINGS.FOV_DEGREES
-                    )
+                    "fovDegrees",
+                    DEFAULT_CAMERA_SETTINGS.FOV_DEGREES
                 )
             ),
         )

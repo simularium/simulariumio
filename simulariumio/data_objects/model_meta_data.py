@@ -88,18 +88,10 @@ class ModelMetaData:
             authors=model_info.get("authors", ""),
             description=model_info.get("description", ""),
             doi=model_info.get("doi", ""),
-            source_code_url=model_info.get(
-                "sourceCodeUrl", model_info.get("source_code_url", "")
-            ),
-            source_code_license_url=model_info.get(
-                "sourceCodeLicenseUrl", model_info.get("source_code_license_url", "")
-            ),
-            input_data_url=model_info.get(
-                "inputDataUrl", model_info.get("input_data_url", "")
-            ),
-            raw_output_data_url=model_info.get(
-                "rawOutputDataUrl", model_info.get("raw_output_data_url", "")
-            ),
+            source_code_url=model_info.get("sourceCodeUrl", ""),
+            source_code_license_url=model_info.get("sourceCodeLicenseUrl", ""),
+            input_data_url=model_info.get("inputDataUrl", ""),
+            raw_output_data_url=model_info.get("rawOutputDataUrl", ""),
         )
 
     def is_default(self):

@@ -87,7 +87,7 @@ class DisplayData:
         return cls(
             name=display_info.get("name"),
             radius=float(display_info.get("radius", 1.0)),
-            display_type=display_info.get("display_type", default_display_type),
+            display_type=display_info.get("displayType", default_display_type),
             url=display_info.get("url"),
             color=display_info.get("color"),
         )

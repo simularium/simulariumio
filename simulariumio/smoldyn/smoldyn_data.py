@@ -91,36 +91,36 @@ class SmoldynData:
             data to be turned into a SmoldynData object
         """
         display_data = None
-        if "display_data" in buffer_data:
+        if "displayData" in buffer_data:
             display_data = dict()
-            for index in buffer_data["display_data"]:
-                agent_info = buffer_data["display_data"][index]
+            for index in buffer_data["displayData"]:
+                agent_info = buffer_data["displayData"][index]
                 for agent_name in agent_info:
                     agent_data = agent_info[agent_name]
                     display_data[agent_name] = DisplayData.from_dict(agent_data)
 
         spatial_units = None
-        if "spatial_units" in buffer_data:
+        if "spatialUnits" in buffer_data:
             # spatial units defaults to meter in the UI
             spatial_units = UnitData.from_dict(
-                buffer_data["spatial_units"],
+                buffer_data["spatialUnits"],
                 default_name="meter",
                 default_mag=1.0
             )
 
         time_units = None
-        if "time_units" in buffer_data:
+        if "timeUnits" in buffer_data:
             # time units default to seconds on UI
             time_units = UnitData.from_dict(
-                buffer_data["time_units"],
+                buffer_data["timeUnits"],
                 default_name="second",
                 default_mag=1.0
             )
 
         return cls(
-            meta_data=MetaData.from_dict(buffer_data["meta_data"]),
+            meta_data=MetaData.from_dict(buffer_data["metaData"]),
             smoldyn_file=InputFileData(
-                file_contents=buffer_data["file_contents"]["file_contents"],
+                file_contents=buffer_data["fileContents"]["fileContents"],
             ),
             display_data=display_data,
             time_units=time_units,
