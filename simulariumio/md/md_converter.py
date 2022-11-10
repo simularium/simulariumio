@@ -12,7 +12,7 @@ from MDAnalysis.topology.tables import vdwradii
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData, DisplayData
-from ..constants import JMOL_COLORS
+from ..constants import DISPLAY_TYPE, JMOL_COLORS
 from .md_data import MdData
 
 ###############################################################################
@@ -115,7 +115,10 @@ class MdConverter(TrajectoryConverter):
                 display_data = copy.copy(input_data.display_data[element_type])
                 display_data.name = type_name
             else:
-                display_data = DisplayData(name=type_name)
+                display_data = DisplayData(
+                    name=type_name,
+                    display_type=DISPLAY_TYPE.SPHERE
+                )
         if display_data.color:
             return display_data
         display_data.color = color
