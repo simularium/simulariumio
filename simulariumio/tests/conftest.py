@@ -76,6 +76,53 @@ def default_agents_type_mapping() -> Dict[str, Any]:
     }
 
 
+def minimal_custom_type_mappings() -> Dict[str, Any]:
+    return {
+        "0": {
+            "name": "C",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "1": {
+            "name": "U",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "2": {
+            "name": "L",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "3": {
+            "name": "S",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "4": {
+            "name": "O",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "5": {
+            "name": "Y",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "6": {
+            "name": "W",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+    }
+
+
 def three_default_agents() -> TrajectoryData:
     return TrajectoryData(
         meta_data=MetaData(
@@ -170,6 +217,75 @@ def three_default_agents() -> TrajectoryData:
         ),
         time_units=UnitData("ns"),
         spatial_units=UnitData("nm"),
+    )
+
+
+def minimal_custom_data() -> TrajectoryData:
+    return TrajectoryData(
+        meta_data=MetaData(),
+        agent_data=AgentData(
+            times=0.5 * np.array(list(range(3))),
+            n_agents=np.array(3 * [3]),
+            viz_types=np.array(3 * [3 * [1000.0]]),
+            unique_ids=np.array([[0.0, 1.0, 2.0], [0.0, 1.0, 2.0], [0.0, 1.0, 2.0]]),
+            types=[["C", "U", "C"], ["U", "L", "S"], ["O", "Y", "W"]],
+            display_data={
+                "C": DisplayData(
+                    name="C",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "W": DisplayData(
+                    name="W",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "S": DisplayData(
+                    name="S",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "Y": DisplayData(
+                    name="Y",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "L": DisplayData(
+                    name="L",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "U": DisplayData(
+                    name="U",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+                "O": DisplayData(
+                    name="O",
+                    display_type=DISPLAY_TYPE.SPHERE,
+                ),
+            },
+            positions=np.array(
+                [
+                    [
+                        [4.89610492, -29.81564851, 40.77254057],
+                        [43.43048197, 48.00424379, -36.02881338],
+                        [29.84924588, -38.02769707, 2.46644825],
+                    ],
+                    [
+                        [-43.37181102, -13.41127423, -17.31316927],
+                        [9.62132397, 13.4774314, -20.30846039],
+                        [41.41039848, -45.85543786, 49.06208485],
+                    ],
+                    [
+                        [-24.91450698, -44.79360525, 13.32273796],
+                        [4.10861266, 43.86451151, 21.93697483],
+                        [-7.16740679, -13.06491594, 44.97026158],
+                    ],
+                ]
+            ),
+            radii=np.array(
+                [
+                    [8.38656327, 6.18568039, 6.61459206],
+                    [5.26366739, 6.69209780, 9.88033853],
+                    [8.91022619, 9.01379396, 8.39880154],
+                ]
+            ),
+        ),
     )
 
 
@@ -284,6 +400,47 @@ def full_default_buffer() -> AgentData:
             (total_steps, max_agents, max_subpoints)
         ),
     )
+
+
+def fiber_agents_type_mapping() -> Dict[str, Any]:
+    return {
+        "0": {
+            "name": "H",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "1": {
+            "name": "A",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "2": {
+            "name": "C",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "3": {
+            "name": "L",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "4": {
+            "name": "D",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "5": {
+            "name": "K",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+    }
 
 
 def fiber_agents() -> TrajectoryData:
@@ -472,6 +629,77 @@ def fiber_agents() -> TrajectoryData:
         spatial_units=UnitData("m", 10.0),
         plots=["plot data goes here"],
     )
+
+
+def mixed_agents_type_mapping() -> Dict[str, Any]:
+    return {
+        "0": {
+            "name": "H",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "1": {
+            "name": "A",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "2": {
+            "name": "C",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "3": {
+            "name": "X",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "4": {
+            "name": "J",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "5": {
+            "name": "L",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "6": {
+            "name": "D",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "7": {
+            "name": "U",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+        "8": {
+            "name": "E",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "9": {
+            "name": "Q",
+            "geometry": {
+                "displayType": "SPHERE",
+            },
+        },
+        "10": {
+            "name": "K",
+            "geometry": {
+                "displayType": "FIBER",
+            },
+        },
+    }
 
 
 def mixed_agents() -> TrajectoryData:
@@ -818,7 +1046,7 @@ def mixed_agents() -> TrajectoryData:
                 ),
             },
         ),
-        time_units=UnitData("s"),
+        time_units=UnitData("s", 2.0),
         spatial_units=UnitData("um"),
         plots=["plot data goes here"],
     )
