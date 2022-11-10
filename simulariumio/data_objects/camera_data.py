@@ -59,7 +59,9 @@ class CameraData:
 
     @classmethod
     def from_dict(cls, buffer_data: Dict[str, Any]):
-        """ """
+        """
+        Create CameraData object from a simularium JSON dict
+        """
         # dictionary keys may be in camel case or snake case
         camera_default = buffer_data.get(
             "cameraDefault", buffer_data.get("camera_defaults")
