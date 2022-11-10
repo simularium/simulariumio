@@ -1,6 +1,7 @@
 import numpy as np
 from typing import Dict
 
+
 def unpack_position_vector(
     vector_dict: Dict[str, str], defaults: np.ndarray
 ) -> np.ndarray:
