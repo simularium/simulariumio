@@ -257,7 +257,7 @@ results_display_data = JsonWriter.format_trajectory_data(converter_display_data.
                     },
                 },
                 "1": {
-                    "name": "B",
+                    "name": name_1,
                     "geometry": {
                         "displayType": "OBJ",
                         "url": "c.obj",
