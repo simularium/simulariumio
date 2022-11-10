@@ -118,7 +118,7 @@ class SmoldynData:
             )
 
         return cls(
-            meta_data=MetaData.from_dict(buffer_data["metaData"]),
+            meta_data=MetaData.from_dict(buffer_data.get("metaData")),
             smoldyn_file=InputFileData(
                 file_contents=buffer_data["fileContents"]["fileContents"],
             ),
