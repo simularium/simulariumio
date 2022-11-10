@@ -74,7 +74,6 @@ class MetaData:
         """
         Create MetaData from a simularium JSON dict containing buffers
         """
-        # dictionary keys may be in camel case or snake case
         return cls(
             box_size=unpack_position_vector(
                 buffer_data.get("size"), DEFAULT_BOX_SIZE
