@@ -75,15 +75,15 @@ class MetaData:
         Create MetaData from a simularium JSON dict containing buffers
         """
         if meta_info is None:
-            return MetaData()
+            return cls()
         return cls(
             box_size=unpack_position_vector(
                 meta_info.get("size"), DEFAULT_BOX_SIZE
             ),
-            camera_defaults=CameraData.from_dict(meta_info),
+            camera_defaults=CameraData.from_dict(meta_info.get("cameraDefault")),
             trajectory_title=meta_info.get("trajectoryTitle"),
-            model_meta_data=ModelMetaData.from_dict(meta_info),
-            scale_factor=meta_info.get("scaleFactor")
+            model_meta_data=ModelMetaData.from_dict(meta_info.get("modelInfo")),
+            scale_factor=meta_info.get("scaleFactor", 1.0)
         )
 
     def _set_box_size(self, box_size: np.ndarray = None):

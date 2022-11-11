@@ -67,16 +67,18 @@ class UnitData:
     @classmethod
     def from_dict(
         cls,
-        buffer_data: Dict[str, Any],
-        default_name: str,
-        default_mag: float
+        unit_data: Dict[str, Any],
+        default_name: str = None,
+        default_mag: float = 1.0
     ):
         """
         Create UnitData object from a simularium JSON dict
         """
+        if unit_data is None:
+            return cls()
         return cls(
-            name=buffer_data.get("name", default_name),
-            magnitude=float(buffer_data.get("magnitude", default_mag)),
+            name=unit_data.get("name", default_name),
+            magnitude=float(unit_data.get("magnitude", default_mag)),
         )
 
     def __str__(self):
