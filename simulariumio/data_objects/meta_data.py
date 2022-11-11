@@ -83,7 +83,7 @@ class MetaData:
             camera_defaults=CameraData.from_dict(meta_info.get("cameraDefault")),
             trajectory_title=meta_info.get("trajectoryTitle"),
             model_meta_data=ModelMetaData.from_dict(meta_info.get("modelInfo")),
-            scale_factor=meta_info.get("scaleFactor", 1.0)
+            scale_factor=float(meta_info.get("scaleFactor", 1.0))
         )
 
     def _set_box_size(self, box_size: np.ndarray = None):
