@@ -58,11 +58,10 @@ class CameraData:
         self.fov_degrees = fov_degrees
 
     @classmethod
-    def from_dict(cls, buffer_data: Dict[str, Any]):
+    def from_dict(cls, camera_default: Dict[str, Any]):
         """
         Create CameraData object from a simularium JSON dict
         """
-        camera_default = buffer_data.get("cameraDefault")
         if camera_default is None:
             return cls()
         return cls(
