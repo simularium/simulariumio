@@ -12,9 +12,9 @@ except PackageNotFoundError:
 
 from .data_objects import (  # noqa: F401
     AgentData,
+    DisplayData,
     CameraData,
     DimensionData,
-    DisplayData,
     HistogramPlotData,
     InputFileData,
     MetaData,
