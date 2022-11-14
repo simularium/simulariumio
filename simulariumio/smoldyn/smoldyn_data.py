@@ -10,6 +10,7 @@ from ..data_objects import (
     DisplayData,
     InputFileData,
 )
+from ..utils import unpack_display_data
 
 ###############################################################################
 
@@ -92,12 +93,7 @@ class SmoldynData:
         """
         display_data = None
         if "displayData" in buffer_data:
-            display_data = dict()
-            for index in buffer_data["displayData"]:
-                agent_info = buffer_data["displayData"][index]
-                for agent_name in agent_info:
-                    agent_data = agent_info[agent_name]
-                    display_data[agent_name] = DisplayData.from_dict(agent_data)
+            display_data = unpack_display_data(buffer_data["displayData"])
 
         spatial_units = None
         if "spatialUnits" in buffer_data:

@@ -1,5 +1,7 @@
 import numpy as np
-from typing import Dict
+from typing import Dict, Any
+
+from .data_objects import DisplayData
 
 
 def unpack_position_vector(
@@ -31,3 +33,19 @@ def unpack_position_vector(
             float(vector_dict.get("z", defaults[2])),
         ]
     )
+
+
+def unpack_display_data(
+    data_dict: Dict[str, Any]
+) -> Dict[str, DisplayData]:
+    """
+    Create dict [str, DisplayData] mapping agent names to display data from
+    a JSON dict
+    """
+    display_data = dict()
+    for index in data_dict:
+        agent_info = data_dict[index]
+        for agent_name in agent_info:
+            agent_data = agent_info[agent_name]
+            display_data[agent_name] = DisplayData.from_dict(agent_data)
+    return display_data
