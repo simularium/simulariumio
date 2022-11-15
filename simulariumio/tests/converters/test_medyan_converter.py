@@ -5,478 +5,965 @@ import numpy as np
 import pytest
 
 from simulariumio.medyan import MedyanConverter, MedyanData
-from simulariumio import MetaData, DisplayData, InputFileData, JsonWriter
-from simulariumio.constants import (
-    DEFAULT_BOX_SIZE,
-    DEFAULT_CAMERA_SETTINGS,
-    VIZ_TYPE,
-    DISPLAY_TYPE
-)
-
-data = MedyanData(
-    snapshot_file=InputFileData(file_path="simulariumio/tests/data/medyan/test.traj"),
-)
-converter = MedyanConverter(data)
-results = JsonWriter.format_trajectory_data(converter._data)
+from simulariumio import MetaData, DisplayData, InputFileData, JsonWriter, DISPLAY_TYPE
+from simulariumio.constants import DEFAULT_CAMERA_SETTINGS, CURRENT_VERSION
 
 
-# test box data default
 @pytest.mark.parametrize(
-    "box_size, expected_box_size",
+    "trajectory, expected_data",
     [
+        # truncated data from 50filaments_motor_linker example
         (
-            results["trajectoryInfo"]["size"],
+            MedyanData(
+                meta_data=MetaData(
+                    box_size=np.array([1000.0, 1000.0, 500.0]),
+                ),
+                snapshot_file=InputFileData(
+                    file_path="simulariumio/tests/data/medyan/snapshot.traj"
+                ),
+                filament_display_data={
+                    0: DisplayData(
+                        name="Actin",
+                        display_type=DISPLAY_TYPE.FIBER,
+                        radius=2,
+                        color="#d71f5f",
+                    ),
+                },
+                linker_display_data={
+                    1: DisplayData(
+                        name="Xlink",
+                        display_type=DISPLAY_TYPE.FIBER,
+                        radius=0.5,
+                        color="#0080ff",
+                    ),
+                },
+            ),
             {
-                "x": DEFAULT_BOX_SIZE[0],
-                "y": DEFAULT_BOX_SIZE[1],
-                "z": DEFAULT_BOX_SIZE[2],
+                "trajectoryInfo": {
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
+                    "timeStepSize": 1.0,
+                    "totalSteps": 3,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "nm",
+                    },
+                    "size": {"x": 1000.0, "y": 1000.0, "z": 500.0},
+                    "cameraDefault": {
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+                    },
+                    "typeMapping": {
+                        "0": {
+                            "name": "Actin",
+                            "geometry": {
+                                "displayType": "FIBER",
+                                "color": "#d71f5f",
+                            },
+                        },
+                        "1": {
+                            "name": "linker0",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "2": {
+                            "name": "Xlink",
+                            "geometry": {
+                                "displayType": "FIBER",
+                                "color": "#0080ff",
+                            },
+                        },
+                        "3": {
+                            "name": "linker2",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "4": {
+                            "name": "motor1",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                    },
+                },
+                "spatialData": {
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
+                    "msgType": 1,
+                    "bundleStart": 0,
+                    "bundleSize": 3,
+                    "bundleData": [
+                        {
+                            "frameNumber": 0,
+                            "time": 0.0,
+                            "data": [
+                                1001.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                6.0,
+                                454.3434234,
+                                363.439226,
+                                265.4405349,
+                                519.7377041,
+                                351.5737487,
+                                180.312405,
+                                1001.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                6.0,
+                                547.5943503,
+                                280.3075619,
+                                307.4127023,
+                                535.194707,
+                                173.0325428,
+                                308.9355694,
+                            ],
+                        },
+                        {
+                            "frameNumber": 1,
+                            "time": 1.000038293,
+                            "data": [
+                                1001.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                18.0,
+                                443.3162276,
+                                369.8644852,
+                                293.1521372,
+                                458.4600122,
+                                366.5425284,
+                                274.4414626,
+                                525.5102849,
+                                351.3129172,
+                                191.1648549,
+                                595.4174881,
+                                336.6403217,
+                                110.1741389,
+                                672.5234407,
+                                322.3132598,
+                                35.94250437,
+                                678.3129825,
+                                321.2378855,
+                                30.3779709,
+                                1001.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                15.0,
+                                549.7619454,
+                                310.7627687,
+                                302.0296124,
+                                547.773019,
+                                286.5808386,
+                                303.3456815,
+                                537.9496947,
+                                179.2424416,
+                                309.5407552,
+                                518.8214547,
+                                73.12680239,
+                                314.8723733,
+                                509.9893907,
+                                28.15495189,
+                                317.0372613,
+                                1001.0,
+                                2.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                216.8006048,
+                                854.8097767,
+                                302.9108981,
+                                191.2656514,
+                                867.5975965,
+                                281.4725825,
+                                1001.0,
+                                3.0,
+                                2.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.5,
+                                6.0,
+                                657.3317212,
+                                421.4935263,
+                                212.7250047,
+                                662.1669685,
+                                436.2944039,
+                                182.6128889,
+                                1001.0,
+                                4.0,
+                                3.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                639.8034428,
+                                430.9883592,
+                                162.5605615,
+                                670.9326577,
+                                411.1640706,
+                                178.0690934,
+                                1001.0,
+                                5.0,
+                                4.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                541.3878582,
+                                216.8108805,
+                                307.3724794,
+                                584.5992533,
+                                412.7637236,
+                                381.2579975,
+                            ],
+                        },
+                        {
+                            "frameNumber": 2,
+                            "time": 2.000139228,
+                            "data": [
+                                1001.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                18.0,
+                                419.3626297,
+                                381.10638,
+                                315.8483744,
+                                446.7371319,
+                                375.818468,
+                                282.8508029,
+                                516.3105843,
+                                361.2676189,
+                                201.5443633,
+                                592.9597694,
+                                344.2612152,
+                                127.3963243,
+                                679.1547838,
+                                328.7033152,
+                                64.22840104,
+                                728.0327863,
+                                320.5202629,
+                                31.49161861,
+                                1001.0,
+                                2.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                219.5947346,
+                                861.7155242,
+                                300.8401219,
+                                190.1993603,
+                                868.6151397,
+                                282.8074954,
+                                1001.0,
+                                3.0,
+                                2.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.5,
+                                6.0,
+                                655.5447164,
+                                417.8251525,
+                                217.1708231,
+                                669.7077335,
+                                432.941762,
+                                190.7921575,
+                                1001.0,
+                                6.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                748.6131058,
+                                312.0532071,
+                                295.8168199,
+                                713.2424309,
+                                307.8785764,
+                                295.6282915,
+                                1001.0,
+                                7.0,
+                                3.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                543.4687581,
+                                148.8799083,
+                                277.8911145,
+                                529.893394,
+                                146.6094325,
+                                312.4195341,
+                                1001.0,
+                                5.0,
+                                4.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                610.406461,
+                                152.6068272,
+                                304.3073239,
+                                432.9961836,
+                                229.7552013,
+                                191.6383788,
+                                1001.0,
+                                8.0,
+                                4.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                668.8368056,
+                                523.9037131,
+                                357.0977571,
+                                721.9538022,
+                                345.9688898,
+                                427.5226707,
+                            ],
+                        },
+                    ],
+                },
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
-        )
-    ],
-)
-def test_box_size_default(box_size, expected_box_size):
-    assert box_size == expected_box_size
-
-
-# test type mapping default
-@pytest.mark.parametrize(
-    "typeMapping, expected_typeMapping",
-    [
-        (
-            results["trajectoryInfo"]["typeMapping"],
-            {
-                "0": {
-                    "name": "filament0",
-                    "geometry": {
-                        "displayType": "FIBER",
-                    },
-                },
-                "1": {
-                    "name": "linker0",
-                    "geometry": {
-                        "displayType": "FIBER",
-                    },
-                },
-                "2": {
-                    "name": "linker1",
-                    "geometry": {
-                        "displayType": "FIBER",
-                    },
-                },
-                "3": {
-                    "name": "motor1",
-                    "geometry": {
-                        "displayType": "FIBER",
-                    },
-                },
-            },
-        )
-    ],
-)
-def test_typeMapping_default(typeMapping, expected_typeMapping):
-    assert expected_typeMapping == typeMapping
-
-
-# test default camera settings
-@pytest.mark.parametrize(
-    "camera_settings, expected_camera_settings",
-    [
-        (
-            results["trajectoryInfo"]["cameraDefault"],
-            {
-                "position": {
-                    "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
-                    "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
-                    "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
-                },
-                "lookAtPosition": {
-                    "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
-                    "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
-                    "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
-                },
-                "upVector": {
-                    "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
-                    "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
-                    "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
-                },
-                "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
-            },
-        )
-    ],
-)
-def test_camera_setting_default(camera_settings, expected_camera_settings):
-    assert camera_settings == expected_camera_settings
-
-
-x_size = 1000.0
-y_size = 1000.0
-z_size = 500.0
-data_with_meta_data = MedyanData(
-    meta_data=MetaData(
-        box_size=np.array([x_size, y_size, z_size]),
-    ),
-    snapshot_file=InputFileData(file_path="simulariumio/tests/data/medyan/test.traj"),
-)
-converter_meta_data = MedyanConverter(data_with_meta_data)
-results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
-
-
-# test box data provided
-@pytest.mark.parametrize(
-    "box_size, expected_box_size",
-    [
-        (
-            results_meta_data["trajectoryInfo"]["size"],
-            {"x": x_size, "y": y_size, "z": z_size},
-        )
-    ],
-)
-def test_box_size_provided(box_size, expected_box_size):
-    assert box_size == expected_box_size
-
-
-actin_radius = 2.0
-actin_color = "#d71f5f"
-linker_radius = 0.5
-linker_color = "#0080ff"
-data_with_display_data = MedyanData(
-    meta_data=MetaData(
-        box_size=np.array([x_size, y_size, z_size]),
-    ),
-    snapshot_file=InputFileData(file_path="simulariumio/tests/data/medyan/test.traj"),
-    filament_display_data={
-        0: DisplayData(
-            name="Actin",
-            display_type=DISPLAY_TYPE.FIBER,
-            radius=actin_radius,
-            color=actin_color,
         ),
-    },
-    linker_display_data={
-        1: DisplayData(
-            name="Xlink",
-            display_type=DISPLAY_TYPE.FIBER,
-            radius=linker_radius,
-            color=linker_color,
-        ),
-    },
-)
-converter_display_data = MedyanConverter(data_with_display_data)
-results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
-
-
-# test type mapping with display data provided
-@pytest.mark.parametrize(
-    "typeMapping, expected_typeMapping",
-    [
+        # same data but add drawing endpoints
         (
-            results_display_data["trajectoryInfo"]["typeMapping"],
+            MedyanData(
+                meta_data=MetaData(
+                    box_size=np.array([1000.0, 1000.0, 500.0]),
+                ),
+                snapshot_file=InputFileData(
+                    file_path="simulariumio/tests/data/medyan/snapshot.traj"
+                ),
+                filament_display_data={
+                    0: DisplayData(
+                        name="Actin",
+                        display_type=DISPLAY_TYPE.FIBER,
+                        radius=2,
+                        color="#ff1493",
+                    ),
+                },
+                linker_display_data={
+                    0: DisplayData(
+                        name="Xlink0",
+                        display_type=DISPLAY_TYPE.FIBER,
+                        radius=1.0,
+                        color="#0080ff",
+                    ),
+                    1: DisplayData(
+                        name="Xlink1",
+                        display_type=DISPLAY_TYPE.FIBER,
+                        radius=0.5,
+                    ),
+                },
+                agents_with_endpoints=["Xlink0", "Xlink1"],
+            ),
             {
-                "0": {
-                    "name": "Actin",
-                    "geometry": {
-                        "displayType": "FIBER",
-                        "color": actin_color,
+                "trajectoryInfo": {
+                    "version": CURRENT_VERSION.TRAJECTORY_INFO,
+                    "timeUnits": {
+                        "magnitude": 1.0,
+                        "name": "s",
+                    },
+                    "timeStepSize": 1.0,
+                    "totalSteps": 3,
+                    "spatialUnits": {
+                        "magnitude": 1.0,
+                        "name": "nm",
+                    },
+                    "size": {"x": 1000.0, "y": 1000.0, "z": 500.0},
+                    "cameraDefault": {
+                        "position": {
+                            "x": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION[2],
+                        },
+                        "lookAtPosition": {
+                            "x": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION[2],
+                        },
+                        "upVector": {
+                            "x": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[0],
+                            "y": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[1],
+                            "z": DEFAULT_CAMERA_SETTINGS.UP_VECTOR[2],
+                        },
+                        "fovDegrees": DEFAULT_CAMERA_SETTINGS.FOV_DEGREES,
+                    },
+                    "typeMapping": {
+                        "0": {
+                            "name": "Actin",
+                            "geometry": {
+                                "displayType": "FIBER",
+                                "color": "#ff1493",
+                            },
+                        },
+                        "1": {
+                            "name": "Xlink0",
+                            "geometry": {
+                                "displayType": "FIBER",
+                                "color": "#0080ff",
+                            },
+                        },
+                        "2": {
+                            "name": "Xlink0 End",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "3": {
+                            "name": "Xlink1",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "4": {
+                            "name": "Xlink1 End",
+                            "geometry": {
+                                "displayType": "SPHERE",
+                            },
+                        },
+                        "5": {
+                            "name": "linker2",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
+                        "6": {
+                            "name": "motor1",
+                            "geometry": {
+                                "displayType": "FIBER",
+                            },
+                        },
                     },
                 },
-                "1": {
-                    "name": "linker0",
-                    "geometry": {
-                        "displayType": "FIBER",
-                    },
+                "spatialData": {
+                    "version": CURRENT_VERSION.SPATIAL_DATA,
+                    "msgType": 1,
+                    "bundleStart": 0,
+                    "bundleSize": 3,
+                    "bundleData": [
+                        {
+                            "frameNumber": 0,
+                            "time": 0.0,
+                            "data": [
+                                1001.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                6.0,
+                                454.3434234,
+                                363.439226,
+                                265.4405349,
+                                519.7377041,
+                                351.5737487,
+                                180.312405,
+                                1001.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                6.0,
+                                547.5943503,
+                                280.3075619,
+                                307.4127023,
+                                535.194707,
+                                173.0325428,
+                                308.9355694,
+                            ],
+                        },
+                        {
+                            "frameNumber": 1,
+                            "time": 1.000038293,
+                            "data": [
+                                1001.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                18.0,
+                                443.3162276,
+                                369.8644852,
+                                293.1521372,
+                                458.4600122,
+                                366.5425284,
+                                274.4414626,
+                                525.5102849,
+                                351.3129172,
+                                191.1648549,
+                                595.4174881,
+                                336.6403217,
+                                110.1741389,
+                                672.5234407,
+                                322.3132598,
+                                35.94250437,
+                                678.3129825,
+                                321.2378855,
+                                30.3779709,
+                                1001.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                15.0,
+                                549.7619454,
+                                310.7627687,
+                                302.0296124,
+                                547.773019,
+                                286.5808386,
+                                303.3456815,
+                                537.9496947,
+                                179.2424416,
+                                309.5407552,
+                                518.8214547,
+                                73.12680239,
+                                314.8723733,
+                                509.9893907,
+                                28.15495189,
+                                317.0372613,
+                                1001.0,
+                                2.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                216.8006048,
+                                854.8097767,
+                                302.9108981,
+                                191.2656514,
+                                867.5975965,
+                                281.4725825,
+                                1000.0,
+                                3.0,
+                                2.0,
+                                216.8006048,
+                                854.8097767,
+                                302.9108981,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                0.0,
+                                1000.0,
+                                4.0,
+                                2.0,
+                                191.2656514,
+                                867.5975965,
+                                281.4725825,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                0.0,
+                                1001.0,
+                                5.0,
+                                3.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.5,
+                                6.0,
+                                657.3317212,
+                                421.4935263,
+                                212.7250047,
+                                662.1669685,
+                                436.2944039,
+                                182.6128889,
+                                1000.0,
+                                6.0,
+                                4.0,
+                                657.3317212,
+                                421.4935263,
+                                212.7250047,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                0.0,
+                                1000.0,
+                                7.0,
+                                4.0,
+                                662.1669685,
+                                436.2944039,
+                                182.6128889,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                0.0,
+                                1001.0,
+                                8.0,
+                                5.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                639.8034428,
+                                430.9883592,
+                                162.5605615,
+                                670.9326577,
+                                411.1640706,
+                                178.0690934,
+                                1001.0,
+                                9.0,
+                                6.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                541.3878582,
+                                216.8108805,
+                                307.3724794,
+                                584.5992533,
+                                412.7637236,
+                                381.2579975,
+                            ],
+                        },
+                        {
+                            "frameNumber": 2,
+                            "time": 2.000139228,
+                            "data": [
+                                1001.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                18.0,
+                                419.3626297,
+                                381.10638,
+                                315.8483744,
+                                446.7371319,
+                                375.818468,
+                                282.8508029,
+                                516.3105843,
+                                361.2676189,
+                                201.5443633,
+                                592.9597694,
+                                344.2612152,
+                                127.3963243,
+                                679.1547838,
+                                328.7033152,
+                                64.22840104,
+                                728.0327863,
+                                320.5202629,
+                                31.49161861,
+                                1001.0,
+                                2.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                219.5947346,
+                                861.7155242,
+                                300.8401219,
+                                190.1993603,
+                                868.6151397,
+                                282.8074954,
+                                1000.0,
+                                3.0,
+                                2.0,
+                                219.5947346,
+                                861.7155242,
+                                300.8401219,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                0.0,
+                                1000.0,
+                                4.0,
+                                2.0,
+                                190.1993603,
+                                868.6151397,
+                                282.8074954,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                0.0,
+                                1001.0,
+                                5.0,
+                                3.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.5,
+                                6.0,
+                                655.5447164,
+                                417.8251525,
+                                217.1708231,
+                                669.7077335,
+                                432.941762,
+                                190.7921575,
+                                1000.0,
+                                6.0,
+                                4.0,
+                                655.5447164,
+                                417.8251525,
+                                217.1708231,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                0.0,
+                                1000.0,
+                                7.0,
+                                4.0,
+                                669.7077335,
+                                432.941762,
+                                190.7921575,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                0.0,
+                                1001.0,
+                                10.0,
+                                1.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                748.6131058,
+                                312.0532071,
+                                295.8168199,
+                                713.2424309,
+                                307.8785764,
+                                295.6282915,
+                                1000.0,
+                                11.0,
+                                2.0,
+                                748.6131058,
+                                312.0532071,
+                                295.8168199,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                0.0,
+                                1000.0,
+                                12.0,
+                                2.0,
+                                713.2424309,
+                                307.8785764,
+                                295.6282915,
+                                0.0,
+                                0.0,
+                                0.0,
+                                2.0,
+                                0.0,
+                                1001.0,
+                                13.0,
+                                5.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                543.4687581,
+                                148.8799083,
+                                277.8911145,
+                                529.893394,
+                                146.6094325,
+                                312.4195341,
+                                1001.0,
+                                9.0,
+                                6.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                610.406461,
+                                152.6068272,
+                                304.3073239,
+                                432.9961836,
+                                229.7552013,
+                                191.6383788,
+                                1001.0,
+                                14.0,
+                                6.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0,
+                                6.0,
+                                668.8368056,
+                                523.9037131,
+                                357.0977571,
+                                721.9538022,
+                                345.9688898,
+                                427.5226707,
+                            ],
+                        },
+                    ],
                 },
-                "2": {
-                    "name": "Xlink",
-                    "geometry": {
-                        "displayType": "FIBER",
-                        "color": linker_color,
-                    },
-                },
-                "3": {
-                    "name": "motor1",
-                    "geometry": {
-                        "displayType": "FIBER",
-                    },
-                },
+                "plotData": {"version": CURRENT_VERSION.PLOT_DATA, "data": []},
             },
-        )
-    ],
-)
-def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
-    assert typeMapping == expected_typeMapping
-
-
-@pytest.mark.parametrize(
-    "bundleData, expected_bundleData",
-    [
-        (
-            # just testing the first frame
-            results_display_data["spatialData"]["bundleData"][0],
-            [
-                VIZ_TYPE.FIBER,  # first agent
-                0.0,  # id
-                0.0,  # type
-                0.0,  # x
-                0.0,  # y
-                0.0,  # z
-                0.0,  # x rotation
-                0.0,  # y rotation
-                0.0,  # z rotation
-                actin_radius,  # radius
-                6.0,  # number of subpoints
-                454.3434234,
-                363.439226,
-                265.4405349,
-                519.7377041,
-                351.5737487,
-                180.312405,
-                VIZ_TYPE.FIBER,  # second agent
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                actin_radius,
-                6.0,
-                547.5943503,
-                280.3075619,
-                307.4127023,
-                535.194707,
-                173.0325428,
-                308.9355694,
-            ],
-        )
-    ],
-)
-def test_bundleData(bundleData, expected_bundleData):
-    assert expected_bundleData == bundleData["data"]
-
-
-def test_agent_ids():
-    assert JsonWriter._check_agent_ids_are_unique_per_frame(results_display_data)
-
-
-# add in drawing endpoints
-data_with_drawing_endpoints = MedyanData(
-    meta_data=MetaData(
-        box_size=np.array([x_size, y_size, z_size]),
-    ),
-    snapshot_file=InputFileData(file_path="simulariumio/tests/data/medyan/test.traj"),
-    filament_display_data={
-        0: DisplayData(
-            name="Actin",
-            display_type=DISPLAY_TYPE.FIBER,
-            radius=actin_radius,
-            color=actin_color,
         ),
-    },
-    linker_display_data={
-        1: DisplayData(
-            name="Xlink",
-            display_type=DISPLAY_TYPE.FIBER,
-            radius=linker_radius,
-            color=linker_color,
-        ),
-    },
-    agents_with_endpoints=["Xlink"],
-)
-converter_drawing_endpoints = MedyanConverter(data_with_drawing_endpoints)
-results_drawing_endpoints = JsonWriter.format_trajectory_data(
-    converter_drawing_endpoints._data
-)
-
-
-@pytest.mark.parametrize(
-    "typeMapping, expected_typeMapping",
-    [
-        (
-            results_drawing_endpoints["trajectoryInfo"]["typeMapping"],
-            {
-                "0": {
-                    "name": "Actin",
-                    "geometry": {
-                        "displayType": "FIBER",
-                        "color": actin_color,
-                    },
-                },
-                "1": {
-                    "name": "linker0",
-                    "geometry": {
-                        "displayType": "FIBER",
-                    },
-                },
-                "2": {
-                    "name": "Xlink",
-                    "geometry": {
-                        "displayType": "FIBER",
-                        "color": linker_color,
-                    },
-                },
-                "3": {
-                    "name": "Xlink End",
-                    "geometry": {
-                        "displayType": "SPHERE",
-                    },
-                },
-                "4": {
-                    "name": "motor1",
-                    "geometry": {
-                        "displayType": "FIBER",
-                    },
-                },
-            },
-        )
     ],
 )
-def test_typeMapping_with_drawing_endpoints(typeMapping, expected_typeMapping):
-    assert typeMapping == expected_typeMapping
-
-
-@pytest.mark.parametrize(
-    "bundleData, expected_bundleData",
-    [
-        (
-            # just testing the first frame
-            results_drawing_endpoints["spatialData"]["bundleData"][1],
-            [
-                VIZ_TYPE.FIBER,  # first agent
-                0.0,  # id
-                0.0,  # type - Actin
-                0.0,  # x
-                0.0,  # y
-                0.0,  # z
-                0.0,  # x rotation
-                0.0,  # y rotation
-                0.0,  # z rotation
-                actin_radius,  # radius
-                18.0,  # number of subpoints (18)
-                443.3162276,  # subpoint 1 x
-                369.8644852,  # subpoint 1 y
-                293.1521372,  # subpoint 1 z
-                458.4600122,  # subpoint 2 x
-                366.5425284,  # ...
-                274.4414626,
-                525.5102849,
-                351.3129172,
-                191.1648549,
-                595.4174881,
-                336.6403217,
-                110.1741389,
-                672.5234407,
-                322.3132598,
-                35.94250437,
-                678.3129825,
-                321.2378855,
-                30.3779709,
-                VIZ_TYPE.FIBER,  # second agent
-                1.0,  # id
-                0.0,  # type - Actin
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                actin_radius,
-                15.0,  # 15 subpoints
-                549.7619454,
-                310.7627687,
-                302.0296124,
-                547.773019,
-                286.5808386,
-                303.3456815,
-                537.9496947,
-                179.2424416,
-                309.5407552,
-                518.8214547,
-                73.12680239,
-                314.8723733,
-                509.9893907,
-                28.15495189,
-                317.0372613,
-                VIZ_TYPE.FIBER,  # third agent
-                2.0,  # id
-                1.0,  # type - linker0
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,  # default radius
-                6.0,  # 6 subpoints
-                216.8006048,
-                854.8097767,
-                302.9108981,
-                191.2656514,
-                867.5975965,
-                281.4725825,
-                VIZ_TYPE.FIBER,  # 4th agent
-                3.0,  # id
-                2.0,  # type - Xlink
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                linker_radius,
-                6.0,
-                657.3317212,
-                421.4935263,
-                212.7250047,
-                662.1669685,
-                436.2944039,
-                182.6128889,
-                VIZ_TYPE.DEFAULT,  # 5th agent
-                4.0,  # id
-                3.0,  # type - Xlink End
-                657.3317212,
-                421.4935263,
-                212.7250047,
-                0.0,
-                0.0,
-                0.0,
-                1.0,  # default radius
-                0.0,
-                VIZ_TYPE.DEFAULT,  # 6th agent
-                5.0,  # id
-                3.0,  # type - Xlink End
-                662.1669685,
-                436.2944039,
-                182.6128889,
-                0.0,
-                0.0,
-                0.0,
-                1.0,  # default radius
-                0.0,
-                VIZ_TYPE.FIBER,  # 7th agent
-                6.0,  # id
-                4.0,  # motor1
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,  # default radius
-                6.0,
-                541.3878582,
-                216.8108805,
-                307.3724794,
-                584.5992533,
-                412.7637236,
-                381.2579975,
-            ],
-        )
-    ],
-)
-def test_bundleData_drawing_endpoints(bundleData, expected_bundleData):
-    assert expected_bundleData == bundleData["data"]
-
-
-def test_agent_ids_drawing_endpoints():
-    assert JsonWriter._check_agent_ids_are_unique_per_frame(results_drawing_endpoints)
+def test_medyan_converter(trajectory, expected_data):
+    converter = MedyanConverter(trajectory)
+    buffer_data = JsonWriter.format_trajectory_data(converter._data)
+    assert expected_data == buffer_data
+    assert JsonWriter._check_agent_ids_are_unique_per_frame(buffer_data)
