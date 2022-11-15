@@ -17,6 +17,8 @@ TEST_CONSTANTS = np.array([10.0, 20.0, 30.0])
 x = 100.0
 y = 120.0
 z = 110.0
+
+
 @pytest.mark.parametrize(
     "vector_dict, vector_array",
     [
@@ -79,6 +81,8 @@ display_data_objs = {
     }),
     agent_key_1: DisplayData.from_dict({"name": name_1}),
 }
+
+
 @pytest.mark.parametrize(
     "display_dict, data_dict",
     [
@@ -137,6 +141,8 @@ partial_camera_data = {
         "z": position_0
     }
 }
+
+
 @pytest.mark.parametrize(
     "camera_dict, camera_data",
     [
@@ -200,6 +206,8 @@ partial_model_meta_data = {
     "title": title,
     "doi": doi
 }
+
+
 @pytest.mark.parametrize(
     "model_meta_data_dict, model_meta_data",
     [
@@ -247,6 +255,8 @@ full_metadata_obj = MetaData(
     trajectory_title=title,
     model_meta_data=full_model_meta_data_obj
 )
+
+
 @pytest.mark.parametrize(
     "metadata_dict, metadata",
     [
@@ -263,6 +273,7 @@ full_metadata_obj = MetaData(
 def test_metadata_from_dict(metadata_dict, metadata):
     result = MetaData.from_dict(metadata_dict)
     assert result == metadata
+
 
 magnitude_0 = 2.0
 name0 = "microsecond"
@@ -281,6 +292,8 @@ full_spatial_units = {
 partial_units = {
     "name": name0
 }
+
+
 @pytest.mark.parametrize(
     "unit_data_dict, unit_data",
     [
@@ -342,6 +355,8 @@ full_display_data_obj = DisplayData(
     color=color,
     display_type=DISPLAY_TYPE.SPHERE
 )
+
+
 @pytest.mark.parametrize(
     "display_data_dict, display_data",
     [
@@ -367,7 +382,11 @@ def test_display_data_from_dict(display_data_dict, display_data):
     assert result == display_data
 
 
-file_contents_str = "0 0\nS(solution) -0.8748 -0.451012 500\nS(solution) 0.63683 0.445285 499\nE(front) 0.844989 -0.534784 600\n0.01 0\nS(solution) -0.813601 -0.465024 500\nS(solution) 0.681931 0.262768 499\nE(front) 0.844989 -0.534784 600\nES(front) 0.666775 0.745259 606\n0.02 0\nS(solution) -0.828472 -0.517215 500\nE(front) 0.844989 -0.534784 600\nES(front) 0.262632 -0.964896 602\n"
+file_contents_str = """0 0\nS(solution) -0.8748 -0.451012 500\nS(solution) 0.63683 
+0.445285 499\nE(front) 0.844989 -0.534784 600\n0.01 0\nS(solution) -0.813601 
+-0.465024 500\nS(solution) 0.681931 0.262768 499\nE(front) 0.844989 -0.534784 
+600\nES(front) 0.666775 0.745259 606\n0.02 0\nS(solution) -0.828472 -0.517215 
+500\nE(front) 0.844989 -0.534784 600\nES(front) 0.262632 -0.964896 602\n"""
 
 full_smoldyn_dict = {
     "fileContents": {
@@ -385,6 +404,8 @@ default_smoldyn_dict = {
         "fileContents": file_contents_str
     }
 }
+
+
 @pytest.mark.parametrize(
     "smoldyn_dict, smoldyn_data",
     [
