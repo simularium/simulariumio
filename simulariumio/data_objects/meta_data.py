@@ -74,7 +74,7 @@ class MetaData:
         """
         Create MetaData from a simularium JSON dict containing buffers
         """
-        if meta_info is None:
+        if meta_info is None or meta_info == {}:
             return cls()
         return cls(
             box_size=unpack_position_vector(
@@ -109,3 +109,14 @@ class MetaData:
             model_meta_data=copy.copy(self.model_meta_data),
         )
         return result
+
+    def __eq__(self, other):
+        if isinstance(other, MetaData):
+            return (
+                np.array_equal(self.box_size, other.box_size)
+                and self.camera_defaults == other.camera_defaults
+                and np.isclose(self.scale_factor, other.scale_factor)
+                and self.trajectory_title == other.trajectory_title
+                and self.model_meta_data == other.model_meta_data
+            )
+        return False

@@ -5,6 +5,7 @@ import sys
 import logging
 from typing import Any, Dict
 from pint import UnitRegistry
+import numpy as np
 
 ###############################################################################
 
@@ -75,7 +76,7 @@ class UnitData:
         Create UnitData object from a simularium JSON dict
         """
         if unit_data is None:
-            return cls()
+            return cls(name=default_name, magnitude=default_mag)
         return cls(
             name=unit_data.get("name", default_name),
             magnitude=float(unit_data.get("magnitude", default_mag)),
@@ -99,3 +100,11 @@ class UnitData:
             magnitude=self.magnitude,
         )
         return result
+
+    def __eq__(self, other):
+        if isinstance(other, UnitData):
+            return (
+                np.isclose(self.magnitude, other.magnitude)
+                and self.name == other.name
+            )
+        return False

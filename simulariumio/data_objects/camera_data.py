@@ -62,7 +62,7 @@ class CameraData:
         """
         Create CameraData object from a simularium JSON dict
         """
-        if camera_default is None:
+        if camera_default is None or camera_default == {}:
             return cls()
         return cls(
             position=unpack_position_vector(
@@ -93,3 +93,14 @@ class CameraData:
             fov_degrees=self.fov_degrees,
         )
         return result
+
+    def __eq__(self, other):
+        if isinstance(other, CameraData):
+            return (
+                False not in np.isclose(self.position, other.position)
+                and False not in np.isclose(
+                    self.look_at_position, other.look_at_position)
+                and False not in np.isclose(self.up_vector, other.up_vector)
+                and np.isclose(self.fov_degrees, other.fov_degrees)
+            )
+        return False

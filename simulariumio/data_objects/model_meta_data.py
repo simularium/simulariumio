@@ -78,7 +78,7 @@ class ModelMetaData:
         """
         Create ModelMetaData from a simularium JSON dict containing buffers
         """
-        if model_info is None:
+        if model_info is None or model_info == {}:
             return cls()
         return cls(
             title=model_info.get("title", ""),
@@ -127,3 +127,18 @@ class ModelMetaData:
             yield "inputDataUrl", self.input_data_url
         if self.raw_output_data_url:
             yield "rawOutputDataUrl", self.raw_output_data_url
+
+    def __eq__(self, other):
+        if isinstance(other, ModelMetaData):
+            return (
+                self.title == other.title
+                and self.version == other.version
+                and self.authors == other.authors
+                and self.description == other.description
+                and self.doi == other.doi
+                and self.source_code_url == other.source_code_url
+                and self.source_code_license_url == other.source_code_license_url
+                and self.input_data_url == other.input_data_url
+                and self.raw_output_data_url == other.raw_output_data_url
+            )
+        return False

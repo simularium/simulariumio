@@ -88,8 +88,8 @@ class DisplayData:
             name=display_info.get("name"),
             radius=float(display_info.get("radius", 1.0)),
             display_type=display_info.get("displayType", default_display_type),
-            url=display_info.get("url"),
-            color=display_info.get("color"),
+            url=display_info.get("url", ""),
+            color=display_info.get("color", ""),
         )
 
     def __str__(self):
@@ -114,3 +114,14 @@ class DisplayData:
             color=self.color,
         )
         return result
+
+    def __eq__(self, other):
+        if isinstance(other, DisplayData):
+            return (
+                self.name == other.name
+                and self.radius == other.radius
+                and self.display_type == other.display_type
+                and self.url == other.url
+                and self.color == other.color
+            )
+        return False
