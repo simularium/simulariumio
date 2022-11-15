@@ -4,6 +4,7 @@
 import logging
 from typing import Any, Dict, List
 
+
 from ..data_objects import (
     MetaData,
     UnitData,
@@ -11,6 +12,7 @@ from ..data_objects import (
     InputFileData,
 )
 from ..utils import unpack_display_data
+from ..exceptions import DataError
 
 ###############################################################################
 
@@ -91,6 +93,15 @@ class SmoldynData:
             JSON dict containing values key value pairs representing the
             data to be turned into a SmoldynData object
         """
+        if (
+            "fileContents" not in buffer_data
+            or ("fileContents" not in buffer_data["fileContents"]
+                and "filePath" not in buffer_data["fileContents"])
+        ):
+            raise DataError(
+                "File contents or file path must be provided "
+                "to create a SmoldynData object"
+            )
         display_data = None
         if "displayData" in buffer_data:
             display_data = unpack_display_data(buffer_data["displayData"])
@@ -116,9 +127,22 @@ class SmoldynData:
         return cls(
             meta_data=MetaData.from_dict(buffer_data.get("metaData")),
             smoldyn_file=InputFileData(
-                file_contents=buffer_data["fileContents"]["fileContents"],
+                file_contents=buffer_data["fileContents"].get("fileContents"),
+                file_path=buffer_data["fileContents"].get("filePath")
             ),
             display_data=display_data,
             time_units=time_units,
             spatial_units=spatial_units,
         )
+
+    def __eq__(self, other):
+        if isinstance(other, SmoldynData):
+            return (
+                self.smoldyn_file.get_contents() == other.smoldyn_file.get_contents()
+                and self.meta_data == other.meta_data
+                and self.display_data == other.display_data
+                and self.time_units == other.time_units
+                and self.spatial_units == other.spatial_units
+                and self.plots == other.plots
+            )
+        return False
