@@ -1,0 +1,50 @@
+{
+    "springsalad_data": {
+        "python::module": "simulariumio.springsalad",
+        "python::object": "SpringsaladData",
+        "parameters": {
+            "fileContents": {
+                "name": "File",
+                "data_type": "file",
+                "description": "A SpringSaLaD file",
+                "required": true
+            },
+            "metaData": {
+                "name": "Metadata",
+                "data_type": "meta_data",
+                "description": "Provide metadata for this trajectory",
+                "required": false,
+                "help": "If not provided, defaults to box size = [100, 100, 100], scale = 1.0, and no metadata about the trajectory or model"
+            },
+            "displayData": {
+                "name": "Display data",
+                "data_type": "collection",
+                "description": "Provide display information for each particle type from SpringSaLaD, using names from sim view txt file",
+                "required": false,
+                "help": "If not provided, defaults to display name from SpringSaLaD, and draws agent as a sphere with radius = 1.0 and default colors",
+                "length": 1,
+                "extendible": true,
+                "key_item": {
+                    "name": "Particle name",
+                    "data_type": "text",
+                    "description": "Provide the name of the particle in SpringSaLaD",
+                    "required": true
+                },
+                "value_item": {
+                    "name": "Particle display data",
+                    "data_type": "display_data",
+                    "description": "Provide information about how to display this particle",
+                    "required": true
+                }
+            },
+            "drawBonds": {
+                "name": "Draw bonds",
+                "data_type": "boolean",
+                "description": "Draw lines connecting bonded particles?",
+                "required": false,
+                "default": true,
+                "help": "If not provided, defaults to true"
+            }
+        }
+    }
+}
