@@ -1,5 +1,5 @@
 {
-    "display_data": {
+    "cytosim_object_info": {
         "python::module": "simulariumio",
         "python::object": "CytosimObjectInfo",
         "parameters": {
