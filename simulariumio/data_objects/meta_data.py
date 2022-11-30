@@ -81,7 +81,7 @@ class MetaData:
                 meta_info.get("size"), DEFAULT_BOX_SIZE
             ),
             camera_defaults=CameraData.from_dict(meta_info.get("cameraDefault")),
-            trajectory_title=meta_info.get("trajectoryTitle"),
+            trajectory_title=meta_info.get("trajectoryTitle", "[No title]"),
             model_meta_data=ModelMetaData.from_dict(meta_info.get("modelInfo")),
             scale_factor=float(meta_info.get("scaleFactor", 1.0))
         )

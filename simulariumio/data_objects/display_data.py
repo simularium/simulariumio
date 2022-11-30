@@ -85,7 +85,7 @@ class DisplayData:
         if display_info is None:
             return cls(name="")
         return cls(
-            name=display_info.get("name", ""),
+            name=display_info.get("name", "[No name]"),
             radius=float(display_info.get("radius", 1.0)),
             display_type=display_info.get("displayType", default_display_type),
             url=display_info.get("url", ""),
