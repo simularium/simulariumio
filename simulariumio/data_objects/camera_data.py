@@ -58,27 +58,27 @@ class CameraData:
         self.fov_degrees = fov_degrees
 
     @classmethod
-    def from_dict(cls, camera_default: Dict[str, Any]):
+    def from_dict(cls, camera_info: Dict[str, Any]):
         """
         Create CameraData object from a simularium JSON dict
         """
-        if camera_default is None or camera_default == {}:
+        if camera_info is None or camera_info == {}:
             return cls()
         return cls(
             position=unpack_position_vector(
-                camera_default.get("position"),
+                camera_info.get("position"),
                 DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION
             ),
             look_at_position=unpack_position_vector(
-                camera_default.get("lookAtPosition"),
+                camera_info.get("lookAtPosition"),
                 DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION
             ),
             up_vector=unpack_position_vector(
-                camera_default.get("upVector"),
+                camera_info.get("upVector"),
                 DEFAULT_CAMERA_SETTINGS.UP_VECTOR
             ),
             fov_degrees=float(
-                camera_default.get(
+                camera_info.get(
                     "fovDegrees",
                     DEFAULT_CAMERA_SETTINGS.FOV_DEGREES
                 )
