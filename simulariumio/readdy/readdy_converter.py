@@ -89,7 +89,6 @@ class ReaddyConverter(TrajectoryConverter):
                     agent_index
                 ]
                 result.types[time_index].append(display_data.name)
-                result.display_data[display_data.name] = display_data
                 result.positions[time_index][new_agent_index] = (
                     input_data.meta_data.scale_factor
                     * positions[time_index][agent_index]

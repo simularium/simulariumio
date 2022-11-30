@@ -74,37 +74,22 @@ class ModelMetaData:
         self.raw_output_data_url = raw_output_data_url
 
     @classmethod
-    def from_buffer_data(cls, buffer_data: Dict[str, Any]):
+    def from_dict(cls, model_info: Dict[str, Any]):
         """
         Create ModelMetaData from a simularium JSON dict containing buffers
         """
-        model_info = (
-            buffer_data["trajectoryInfo"]["modelInfo"]
-            if "modelInfo" in buffer_data["trajectoryInfo"]
-            else None
-        )
-        if model_info is None:
+        if model_info is None or model_info == {}:
             return cls()
         return cls(
-            title=model_info["title"] if "title" in model_info else "",
-            version=model_info["version"] if "version" in model_info else "",
-            authors=model_info["authors"] if "authors" in model_info else "",
-            description=model_info["description"]
-            if "description" in model_info
-            else "",
-            doi=model_info["doi"] if "doi" in model_info else "",
-            source_code_url=model_info["sourceCodeUrl"]
-            if "sourceCodeUrl" in model_info
-            else "",
-            source_code_license_url=model_info["sourceCodeLicenseUrl"]
-            if "sourceCodeLicenseUrl" in model_info
-            else "",
-            input_data_url=model_info["inputDataUrl"]
-            if "inputDataUrl" in model_info
-            else "",
-            raw_output_data_url=model_info["rawOutputDataUrl"]
-            if "rawOutputDataUrl" in model_info
-            else "",
+            title=model_info.get("title", ""),
+            version=model_info.get("version", ""),
+            authors=model_info.get("authors", ""),
+            description=model_info.get("description", ""),
+            doi=model_info.get("doi", ""),
+            source_code_url=model_info.get("sourceCodeUrl", ""),
+            source_code_license_url=model_info.get("sourceCodeLicenseUrl", ""),
+            input_data_url=model_info.get("inputDataUrl", ""),
+            raw_output_data_url=model_info.get("rawOutputDataUrl", ""),
         )
 
     def is_default(self):
@@ -142,3 +127,18 @@ class ModelMetaData:
             yield "inputDataUrl", self.input_data_url
         if self.raw_output_data_url:
             yield "rawOutputDataUrl", self.raw_output_data_url
+
+    def __eq__(self, other):
+        if isinstance(other, ModelMetaData):
+            return (
+                self.title == other.title
+                and self.version == other.version
+                and self.authors == other.authors
+                and self.description == other.description
+                and self.doi == other.doi
+                and self.source_code_url == other.source_code_url
+                and self.source_code_license_url == other.source_code_license_url
+                and self.input_data_url == other.input_data_url
+                and self.raw_output_data_url == other.raw_output_data_url
+            )
+        return False
