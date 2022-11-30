@@ -16,7 +16,7 @@
                 "required": false,
                 "help": "If not provided, uses value from the simulation engine or defaults to 1.0"
             },
-            "display_type": {
+            "displayType": {
                 "name": "Display type",
                 "data_type": "enum",
                 "description": "type of geometry",

@@ -44,7 +44,7 @@
                 "match": "\\\\b10\\\\.(\\\\d+\\\\.*)+[\\\\/](([^\\\\s\\\\.])+\\\\.*)+\\\\b",
                 "help": "Please provide the DOI code without a URL prefix. If not provided, defaults to none"
             },
-            "source_code_url": {
+            "sourceCodeUrl": {
                 "name": "Source code URL",
                 "data_type": "url",
                 "description": "Provide a link to the repository of source code",
@@ -52,7 +52,7 @@
                 "default": "",
                 "help": "If not provided, defaults to none"
             },
-            "source_code_license_url": {
+            "sourceCodeLicenseUrl": {
                 "name": "Source code license URL",
                 "data_type": "url",
                 "description": "Provide a link to the license for the source code",
@@ -60,7 +60,7 @@
                 "default": "",
                 "help": "If not provided, defaults to none"
             },
-            "input_data_url": {
+            "inputDataUrl": {
                 "name": "Input data URL",
                 "data_type": "url",
                 "description": "Provide a link to model configuration or parameter files",
@@ -68,7 +68,7 @@
                 "default": "",
                 "help": "If not provided, defaults to none"
             },
-            "raw_output_data_url": {
+            "rawOutputDataUrl": {
                 "name": "Raw output data URL",
                 "data_type": "url",
                 "description": "Provide a link to raw outputs from the source code",

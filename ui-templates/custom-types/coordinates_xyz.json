@@ -3,21 +3,21 @@
         "python::module": "numpy",
         "python::object": "array",
         "parameters": {
-            "0": {
+            "x": {
                 "name": "X",
                 "data_type": "float",
                 "description": "Provide the X dimension",
                 "required": false,
                 "default": 0.0
             },
-            "1": {
+            "y": {
                 "name": "Y",
                 "data_type": "float",
                 "description": "Provide the Y dimension",
                 "required": false,
                 "default": 0.0
             },
-            "2": {
+            "z": {
                 "name": "Z",
                 "data_type": "float",
                 "description": "Provide the Z dimension",
