@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.springsalad package" href="simulariumio.springsalad.html" /><link rel="prev" title="simulariumio.readers package" href="simulariumio.readers.html" />
 
     <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
-        <title>simulariumio.smoldyn package - simulariumio 1.6.4.dev75+gd724518 documentation</title>
+        <title>simulariumio.smoldyn package - simulariumio 1.6.4.dev131+gc4f2a79 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">simulariumio 1.6.4.dev75+gd724518 documentation</div></a>
+      <a href="index.html"><div class="brand">simulariumio 1.6.4.dev131+gc4f2a79 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.6.4.dev75+gd724518 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.6.4.dev131+gc4f2a79 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -292,6 +292,21 @@ in Simularium format</p>
 <span class="sig-name descname"><span class="pre">display_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.display_data.DisplayData" title="simulariumio.data_objects.display_data.DisplayData"><span class="pre">DisplayData</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData.display_data" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.smoldyn.smoldyn_data.SmoldynData.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">smoldyn_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/smoldyn/smoldyn_data.html#SmoldynData.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData.from_dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Create SmoldynData from a simularium JSON dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>smoldyn_info: Dict[str, Any]</strong></dt><dd><p>JSON dict containing values key value pairs representing the
+data to be turned into a SmoldynData object</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.smoldyn.smoldyn_data.SmoldynData.meta_data">
 <span class="sig-name descname"><span class="pre">meta_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.meta_data.MetaData" title="simulariumio.data_objects.meta_data.MetaData"><span class="pre">MetaData</span></a></em><a class="headerlink" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData.meta_data" title="Permalink to this definition">#</a></dt>
@@ -391,6 +406,7 @@ in Simularium format</p>
 <li><a class="reference internal" href="#module-simulariumio.smoldyn.smoldyn_data">simulariumio.smoldyn.smoldyn_data module</a><ul>
 <li><a class="reference internal" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData"><code class="docutils literal notranslate"><span class="pre">SmoldynData</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData.display_data"><code class="docutils literal notranslate"><span class="pre">SmoldynData.display_data</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData.from_dict"><code class="docutils literal notranslate"><span class="pre">SmoldynData.from_dict()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData.meta_data"><code class="docutils literal notranslate"><span class="pre">SmoldynData.meta_data</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData.plots"><code class="docutils literal notranslate"><span class="pre">SmoldynData.plots</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData.smoldyn_file"><code class="docutils literal notranslate"><span class="pre">SmoldynData.smoldyn_file</span></code></a></li>

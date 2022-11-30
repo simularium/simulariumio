@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
-        <title>simulariumio.exceptions - simulariumio 1.6.4.dev131+gc4f2a79 documentation</title>
+        <title>simulariumio.utils - simulariumio 1.6.4.dev131+gc4f2a79 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
@@ -214,51 +214,58 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for simulariumio.exceptions</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1"># -*- coding: utf-8 -*-</span>
+          <h1>Source code for simulariumio.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">.data_objects</span> <span class="kn">import</span> <span class="n">DisplayData</span>
 
 
-<div class="viewcode-block" id="UnsupportedPlotTypeError"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.exceptions.UnsupportedPlotTypeError">[docs]</a><span class="k">class</span> <span class="nc">UnsupportedPlotTypeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="unpack_position_vector"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.utils.unpack_position_vector">[docs]</a><span class="k">def</span> <span class="nf">unpack_position_vector</span><span class="p">(</span>
+    <span class="n">vector_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">defaults</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This exception is intended to communicate that the requested plot type</span>
-<span class="sd">    is not one of the supported types and cannot be parsed with simulariumio.</span>
+<span class="sd">    Takes a vector dict describing x, y, z coordinates and default values</span>
+<span class="sd">    and returns a numpy array representing the 3 coordintes</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vector_dict : Dict[str, str]</span>
+<span class="sd">        Dict representing values of X, Y, and/or Z coordinates</span>
+<span class="sd">        Keys should be {&#39;x&#39;,&#39;y&#39;,&#39;z&#39;}</span>
+<span class="sd">    defaults: np.ndarray</span>
+<span class="sd">        Numpy array representing default XYZ coordinates. For any coordinates</span>
+<span class="sd">        not provided in vector_dict, these default values will be used in the</span>
+<span class="sd">        result vector</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># if no vector information was given, go with the defaults</span>
+    <span class="k">if</span> <span class="n">vector_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">defaults</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plot_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plot_type</span> <span class="o">=</span> <span class="n">plot_type</span>
+    <span class="c1"># use all positions given, but use defaults if any are missing</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">vector_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">vector_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">vector_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="n">defaults</span><span class="p">[</span><span class="mi">2</span><span class="p">])),</span>
+        <span class="p">]</span>
+    <span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;simulariumio does not support this plot type: &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plot_type</span><span class="si">}</span><span class="s2">&#39;.&quot;</span></div>
 
-
-<div class="viewcode-block" id="MissingDataError"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.exceptions.MissingDataError">[docs]</a><span class="k">class</span> <span class="nc">MissingDataError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="unpack_display_data"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.utils.unpack_display_data">[docs]</a><span class="k">def</span> <span class="nf">unpack_display_data</span><span class="p">(</span>
+    <span class="n">data_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This exception is intended to communicate that the data provided</span>
-<span class="sd">    is missing a field needed to parse it.</span>
+<span class="sd">    Create dict [str, DisplayData] mapping agent names to display data from</span>
+<span class="sd">    a JSON dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">field_name</span> <span class="o">=</span> <span class="n">field_name</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Missing data: &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">field_name</span><span class="si">}</span><span class="s2">&#39;.&quot;</span></div>
-
-
-<div class="viewcode-block" id="DataError"><a class="viewcode-back" href="../../simulariumio.html#simulariumio.exceptions.DataError">[docs]</a><span class="k">class</span> <span class="nc">DataError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This exception is intended to communicate that something</span>
-<span class="sd">    is wrong with the data provided.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">issue</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">issue</span> <span class="o">=</span> <span class="n">issue</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Problem with Data: &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">issue</span><span class="si">}</span><span class="s2">&#39;.&quot;</span></div>
+    <span class="n">display_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">:</span>
+        <span class="n">agent_info</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">agent_name</span> <span class="ow">in</span> <span class="n">agent_info</span><span class="p">:</span>
+            <span class="n">agent_data</span> <span class="o">=</span> <span class="n">agent_info</span><span class="p">[</span><span class="n">agent_name</span><span class="p">]</span>
+            <span class="n">display_data</span><span class="p">[</span><span class="n">agent_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">DisplayData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">agent_data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">display_data</span></div>
 </pre></div>
         </article>
       </div>

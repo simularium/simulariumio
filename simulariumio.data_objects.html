@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.filters package" href="simulariumio.filters.html" /><link rel="prev" title="simulariumio.cytosim package" href="simulariumio.cytosim.html" />
 
     <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
-        <title>simulariumio.data_objects package - simulariumio 1.6.4.dev75+gd724518 documentation</title>
+        <title>simulariumio.data_objects package - simulariumio 1.6.4.dev131+gc4f2a79 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">simulariumio 1.6.4.dev75+gd724518 documentation</div></a>
+      <a href="index.html"><div class="brand">simulariumio 1.6.4.dev131+gc4f2a79 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.6.4.dev75+gd724518 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.6.4.dev131+gc4f2a79 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -461,9 +461,10 @@ Default: 75.0</p>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="simulariumio.data_objects.camera_data.CameraData.from_buffer_data">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_buffer_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/camera_data.html#CameraData.from_buffer_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData.from_buffer_data" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="simulariumio.data_objects.camera_data.CameraData.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">camera_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/camera_data.html#CameraData.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.camera_data.CameraData.from_dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Create CameraData object from a simularium JSON dict</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.data_objects.camera_data.CameraData.look_at_position">
@@ -569,6 +570,12 @@ Default: Use default colors from Simularium Viewer</p>
 <dt class="sig sig-object py" id="simulariumio.data_objects.display_data.DisplayData.display_type">
 <span class="sig-name descname"><span class="pre">display_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.html#simulariumio.constants.DISPLAY_TYPE" title="simulariumio.constants.DISPLAY_TYPE"><span class="pre">DISPLAY_TYPE</span></a></em><a class="headerlink" href="#simulariumio.data_objects.display_data.DisplayData.display_type" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.display_data.DisplayData.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">display_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_display_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.html#simulariumio.constants.DISPLAY_TYPE" title="simulariumio.constants.DISPLAY_TYPE"><span class="pre">DISPLAY_TYPE</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">DISPLAY_TYPE.SPHERE</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/display_data.html#DisplayData.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.display_data.DisplayData.from_dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Create DisplayData from a simularium JSON dict containing buffers.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.data_objects.display_data.DisplayData.name">
@@ -713,8 +720,8 @@ Default: 1.0</p>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="simulariumio.data_objects.meta_data.MetaData.from_buffer_data">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_buffer_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/meta_data.html#MetaData.from_buffer_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.from_buffer_data" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="simulariumio.data_objects.meta_data.MetaData.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meta_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/meta_data.html#MetaData.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.meta_data.MetaData.from_dict" title="Permalink to this definition">#</a></dt>
 <dd><p>Create MetaData from a simularium JSON dict containing buffers</p>
 </dd></dl>
 
@@ -788,8 +795,8 @@ a link to the repository of source code</p>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="simulariumio.data_objects.model_meta_data.ModelMetaData.from_buffer_data">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_buffer_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buffer_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/model_meta_data.html#ModelMetaData.from_buffer_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.from_buffer_data" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="simulariumio.data_objects.model_meta_data.ModelMetaData.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/model_meta_data.html#ModelMetaData.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.from_dict" title="Permalink to this definition">#</a></dt>
 <dd><p>Create ModelMetaData from a simularium JSON dict containing buffers</p>
 </dd></dl>
 
@@ -988,6 +995,12 @@ Default: 1.0</p>
 </dl>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.unit_data.UnitData.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_mag</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/unit_data.html#UnitData.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.unit_data.UnitData.from_dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Create UnitData object from a simularium JSON dict</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.data_objects.unit_data.UnitData.magnitude">
 <span class="sig-name descname"><span class="pre">magnitude</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#simulariumio.data_objects.unit_data.UnitData.magnitude" title="Permalink to this definition">#</a></dt>
@@ -1104,7 +1117,7 @@ Default: 1.0</p>
 <li><a class="reference internal" href="#module-simulariumio.data_objects.camera_data">simulariumio.data_objects.camera_data module</a><ul>
 <li><a class="reference internal" href="#simulariumio.data_objects.camera_data.CameraData"><code class="docutils literal notranslate"><span class="pre">CameraData</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.data_objects.camera_data.CameraData.fov_degrees"><code class="docutils literal notranslate"><span class="pre">CameraData.fov_degrees</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.data_objects.camera_data.CameraData.from_buffer_data"><code class="docutils literal notranslate"><span class="pre">CameraData.from_buffer_data()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.camera_data.CameraData.from_dict"><code class="docutils literal notranslate"><span class="pre">CameraData.from_dict()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.camera_data.CameraData.look_at_position"><code class="docutils literal notranslate"><span class="pre">CameraData.look_at_position</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.camera_data.CameraData.position"><code class="docutils literal notranslate"><span class="pre">CameraData.position</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.camera_data.CameraData.up_vector"><code class="docutils literal notranslate"><span class="pre">CameraData.up_vector</span></code></a></li>
@@ -1126,6 +1139,7 @@ Default: 1.0</p>
 <li><a class="reference internal" href="#simulariumio.data_objects.display_data.DisplayData"><code class="docutils literal notranslate"><span class="pre">DisplayData</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.data_objects.display_data.DisplayData.color"><code class="docutils literal notranslate"><span class="pre">DisplayData.color</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.display_data.DisplayData.display_type"><code class="docutils literal notranslate"><span class="pre">DisplayData.display_type</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.display_data.DisplayData.from_dict"><code class="docutils literal notranslate"><span class="pre">DisplayData.from_dict()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.display_data.DisplayData.name"><code class="docutils literal notranslate"><span class="pre">DisplayData.name</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.display_data.DisplayData.radius"><code class="docutils literal notranslate"><span class="pre">DisplayData.radius</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.display_data.DisplayData.url"><code class="docutils literal notranslate"><span class="pre">DisplayData.url</span></code></a></li>
@@ -1156,7 +1170,7 @@ Default: 1.0</p>
 <li><a class="reference internal" href="#simulariumio.data_objects.meta_data.MetaData"><code class="docutils literal notranslate"><span class="pre">MetaData</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.data_objects.meta_data.MetaData.box_size"><code class="docutils literal notranslate"><span class="pre">MetaData.box_size</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.meta_data.MetaData.camera_defaults"><code class="docutils literal notranslate"><span class="pre">MetaData.camera_defaults</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.data_objects.meta_data.MetaData.from_buffer_data"><code class="docutils literal notranslate"><span class="pre">MetaData.from_buffer_data()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.meta_data.MetaData.from_dict"><code class="docutils literal notranslate"><span class="pre">MetaData.from_dict()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.meta_data.MetaData.model_meta_data"><code class="docutils literal notranslate"><span class="pre">MetaData.model_meta_data</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.meta_data.MetaData.scale_factor"><code class="docutils literal notranslate"><span class="pre">MetaData.scale_factor</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.meta_data.MetaData.trajectory_title"><code class="docutils literal notranslate"><span class="pre">MetaData.trajectory_title</span></code></a></li>
@@ -1169,7 +1183,7 @@ Default: 1.0</p>
 <li><a class="reference internal" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.authors"><code class="docutils literal notranslate"><span class="pre">ModelMetaData.authors</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.description"><code class="docutils literal notranslate"><span class="pre">ModelMetaData.description</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.doi"><code class="docutils literal notranslate"><span class="pre">ModelMetaData.doi</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.from_buffer_data"><code class="docutils literal notranslate"><span class="pre">ModelMetaData.from_buffer_data()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.from_dict"><code class="docutils literal notranslate"><span class="pre">ModelMetaData.from_dict()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.input_data_url"><code class="docutils literal notranslate"><span class="pre">ModelMetaData.input_data_url</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.is_default"><code class="docutils literal notranslate"><span class="pre">ModelMetaData.is_default()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.model_meta_data.ModelMetaData.raw_output_data_url"><code class="docutils literal notranslate"><span class="pre">ModelMetaData.raw_output_data_url</span></code></a></li>
@@ -1208,6 +1222,7 @@ Default: 1.0</p>
 </li>
 <li><a class="reference internal" href="#module-simulariumio.data_objects.unit_data">simulariumio.data_objects.unit_data module</a><ul>
 <li><a class="reference internal" href="#simulariumio.data_objects.unit_data.UnitData"><code class="docutils literal notranslate"><span class="pre">UnitData</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.data_objects.unit_data.UnitData.from_dict"><code class="docutils literal notranslate"><span class="pre">UnitData.from_dict()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.unit_data.UnitData.magnitude"><code class="docutils literal notranslate"><span class="pre">UnitData.magnitude</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.unit_data.UnitData.multiply"><code class="docutils literal notranslate"><span class="pre">UnitData.multiply()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.unit_data.UnitData.name"><code class="docutils literal notranslate"><span class="pre">UnitData.name</span></code></a></li>

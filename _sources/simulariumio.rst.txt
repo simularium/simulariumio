@@ -57,6 +57,14 @@ simulariumio.trajectory\_converter module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.utils module
+-------------------------
+
+.. automodule:: simulariumio.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

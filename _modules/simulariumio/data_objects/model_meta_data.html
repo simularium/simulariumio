@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
-        <title>simulariumio.data_objects.model_meta_data - simulariumio 1.6.4.dev75+gd724518 documentation</title>
+        <title>simulariumio.data_objects.model_meta_data - simulariumio 1.6.4.dev131+gc4f2a79 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.6.4.dev75+gd724518 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.6.4.dev131+gc4f2a79 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.6.4.dev75+gd724518 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.6.4.dev131+gc4f2a79 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -290,38 +290,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">input_data_url</span> <span class="o">=</span> <span class="n">input_data_url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span> <span class="o">=</span> <span class="n">raw_output_data_url</span>
 
-<div class="viewcode-block" id="ModelMetaData.from_buffer_data"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.model_meta_data.ModelMetaData.from_buffer_data">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_buffer_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">buffer_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+<div class="viewcode-block" id="ModelMetaData.from_dict"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.model_meta_data.ModelMetaData.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create ModelMetaData from a simularium JSON dict containing buffers</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">model_info</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;modelInfo&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;modelInfo&quot;</span> <span class="ow">in</span> <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]</span>
-            <span class="k">else</span> <span class="kc">None</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">model_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">model_info</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">model_info</span> <span class="o">==</span> <span class="p">{}:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">title</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">model_info</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">version</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;version&quot;</span> <span class="ow">in</span> <span class="n">model_info</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">authors</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;authors&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;authors&quot;</span> <span class="ow">in</span> <span class="n">model_info</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">description</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;description&quot;</span> <span class="ow">in</span> <span class="n">model_info</span>
-            <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">doi</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;doi&quot;</span> <span class="ow">in</span> <span class="n">model_info</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">source_code_url</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;sourceCodeUrl&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;sourceCodeUrl&quot;</span> <span class="ow">in</span> <span class="n">model_info</span>
-            <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">source_code_license_url</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;sourceCodeLicenseUrl&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;sourceCodeLicenseUrl&quot;</span> <span class="ow">in</span> <span class="n">model_info</span>
-            <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">input_data_url</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;inputDataUrl&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;inputDataUrl&quot;</span> <span class="ow">in</span> <span class="n">model_info</span>
-            <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">raw_output_data_url</span><span class="o">=</span><span class="n">model_info</span><span class="p">[</span><span class="s2">&quot;rawOutputDataUrl&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s2">&quot;rawOutputDataUrl&quot;</span> <span class="ow">in</span> <span class="n">model_info</span>
-            <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">version</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">authors</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">doi</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">source_code_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sourceCodeUrl&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">source_code_license_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sourceCodeLicenseUrl&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">input_data_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;inputDataUrl&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">raw_output_data_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rawOutputDataUrl&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="ModelMetaData.is_default"><a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.model_meta_data.ModelMetaData.is_default">[docs]</a>    <span class="k">def</span> <span class="nf">is_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -358,7 +343,22 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_data_url</span><span class="p">:</span>
             <span class="k">yield</span> <span class="s2">&quot;inputDataUrl&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_data_url</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s2">&quot;rawOutputDataUrl&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span></div>
+            <span class="k">yield</span> <span class="s2">&quot;rawOutputDataUrl&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ModelMetaData</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">title</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">version</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">authors</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">authors</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">description</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">doi</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_url</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">source_code_url</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_license_url</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">source_code_license_url</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_data_url</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">input_data_url</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">raw_output_data_url</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 </pre></div>
         </article>
       </div>
