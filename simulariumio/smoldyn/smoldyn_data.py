@@ -82,53 +82,53 @@ class SmoldynData:
 
     @classmethod
     def from_dict(
-        cls, buffer_data: Dict[str, Any]
+        cls, smoldyn_info: Dict[str, Any]
     ):
         """
-        Create SmoldynData from a simularium JSON dict containing buffers
+        Create SmoldynData from a simularium JSON dict
 
         Parameters
         ----------
-        buffer_data: Dict[str, Any]
+        smoldyn_info: Dict[str, Any]
             JSON dict containing values key value pairs representing the
             data to be turned into a SmoldynData object
         """
         if (
-            "fileContents" not in buffer_data
-            or ("fileContents" not in buffer_data["fileContents"]
-                and "filePath" not in buffer_data["fileContents"])
+            "fileContents" not in smoldyn_info
+            or ("fileContents" not in smoldyn_info["fileContents"]
+                and "filePath" not in smoldyn_info["fileContents"])
         ):
             raise DataError(
                 "File contents or file path must be provided "
                 "to create a SmoldynData object"
             )
         display_data = None
-        if "displayData" in buffer_data:
-            display_data = unpack_display_data(buffer_data["displayData"])
+        if "displayData" in smoldyn_info:
+            display_data = unpack_display_data(smoldyn_info["displayData"])
 
         spatial_units = None
-        if "spatialUnits" in buffer_data:
+        if "spatialUnits" in smoldyn_info:
             # spatial units defaults to meter in the UI
             spatial_units = UnitData.from_dict(
-                buffer_data["spatialUnits"],
+                smoldyn_info["spatialUnits"],
                 default_name="meter",
                 default_mag=1.0
             )
 
         time_units = None
-        if "timeUnits" in buffer_data:
+        if "timeUnits" in smoldyn_info:
             # time units default to seconds on UI
             time_units = UnitData.from_dict(
-                buffer_data["timeUnits"],
+                smoldyn_info["timeUnits"],
                 default_name="second",
                 default_mag=1.0
             )
 
         return cls(
-            meta_data=MetaData.from_dict(buffer_data.get("metaData")),
+            meta_data=MetaData.from_dict(smoldyn_info.get("metaData")),
             smoldyn_file=InputFileData(
-                file_contents=buffer_data["fileContents"].get("fileContents"),
-                file_path=buffer_data["fileContents"].get("filePath")
+                file_contents=smoldyn_info["fileContents"].get("fileContents"),
+                file_path=smoldyn_info["fileContents"].get("filePath")
             ),
             display_data=display_data,
             time_units=time_units,
