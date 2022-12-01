@@ -10,6 +10,7 @@ import numpy as np
 from .camera_data import CameraData
 from .model_meta_data import ModelMetaData
 from ..constants import DEFAULT_BOX_SIZE
+from ..utils import unpack_position_vector
 
 ###############################################################################
 
@@ -69,23 +70,20 @@ class MetaData:
         )
 
     @classmethod
-    def from_buffer_data(cls, buffer_data: Dict[str, Any]):
+    def from_dict(cls, meta_info: Dict[str, Any]):
         """
         Create MetaData from a simularium JSON dict containing buffers
         """
+        if meta_info is None or meta_info == {}:
+            return cls()
         return cls(
-            box_size=np.array(
-                [
-                    float(buffer_data["trajectoryInfo"]["size"]["x"]),
-                    float(buffer_data["trajectoryInfo"]["size"]["y"]),
-                    float(buffer_data["trajectoryInfo"]["size"]["z"]),
-                ]
+            box_size=unpack_position_vector(
+                meta_info.get("size"), DEFAULT_BOX_SIZE
             ),
-            camera_defaults=CameraData.from_buffer_data(buffer_data),
-            trajectory_title=buffer_data["trajectoryInfo"]["trajectoryTitle"]
-            if "trajectoryTitle" in buffer_data["trajectoryInfo"]
-            else "",
-            model_meta_data=ModelMetaData.from_buffer_data(buffer_data),
+            camera_defaults=CameraData.from_dict(meta_info.get("cameraDefault")),
+            trajectory_title=meta_info.get("trajectoryTitle", ""),
+            model_meta_data=ModelMetaData.from_dict(meta_info.get("modelInfo")),
+            scale_factor=float(meta_info.get("scaleFactor", 1.0))
         )
 
     def _set_box_size(self, box_size: np.ndarray = None):
@@ -111,3 +109,14 @@ class MetaData:
             model_meta_data=copy.copy(self.model_meta_data),
         )
         return result
+
+    def __eq__(self, other):
+        if isinstance(other, MetaData):
+            return (
+                np.array_equal(self.box_size, other.box_size)
+                and self.camera_defaults == other.camera_defaults
+                and np.isclose(self.scale_factor, other.scale_factor)
+                and self.trajectory_title == other.trajectory_title
+                and self.model_meta_data == other.model_meta_data
+            )
+        return False

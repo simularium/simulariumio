@@ -7,6 +7,7 @@ from typing import Any, Dict
 import numpy as np
 
 from ..constants import DEFAULT_CAMERA_SETTINGS
+from ..utils import unpack_position_vector
 
 ###############################################################################
 
@@ -57,38 +58,31 @@ class CameraData:
         self.fov_degrees = fov_degrees
 
     @classmethod
-    def from_buffer_data(cls, buffer_data: Dict[str, Any]):
-        """ """
-        camera_default = (
-            buffer_data["trajectoryInfo"]["cameraDefault"]
-            if "cameraDefault" in buffer_data["trajectoryInfo"]
-            else None
-        )
-        if camera_default is None:
+    def from_dict(cls, camera_info: Dict[str, Any]):
+        """
+        Create CameraData object from a simularium JSON dict
+        """
+        if camera_info is None or camera_info == {}:
             return cls()
         return cls(
-            position=np.array(
-                [
-                    float(camera_default["position"]["x"]),
-                    float(camera_default["position"]["y"]),
-                    float(camera_default["position"]["z"]),
-                ]
+            position=unpack_position_vector(
+                camera_info.get("position"),
+                DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION
             ),
-            look_at_position=np.array(
-                [
-                    float(camera_default["lookAtPosition"]["x"]),
-                    float(camera_default["lookAtPosition"]["y"]),
-                    float(camera_default["lookAtPosition"]["z"]),
-                ]
+            look_at_position=unpack_position_vector(
+                camera_info.get("lookAtPosition"),
+                DEFAULT_CAMERA_SETTINGS.LOOK_AT_POSITION
             ),
-            up_vector=np.array(
-                [
-                    float(camera_default["upVector"]["x"]),
-                    float(camera_default["upVector"]["y"]),
-                    float(camera_default["upVector"]["z"]),
-                ]
+            up_vector=unpack_position_vector(
+                camera_info.get("upVector"),
+                DEFAULT_CAMERA_SETTINGS.UP_VECTOR
             ),
-            fov_degrees=float(camera_default["fovDegrees"]),
+            fov_degrees=float(
+                camera_info.get(
+                    "fovDegrees",
+                    DEFAULT_CAMERA_SETTINGS.FOV_DEGREES
+                )
+            ),
         )
 
     def __deepcopy__(self, memo):
@@ -99,3 +93,14 @@ class CameraData:
             fov_degrees=self.fov_degrees,
         )
         return result
+
+    def __eq__(self, other):
+        if isinstance(other, CameraData):
+            return (
+                False not in np.isclose(self.position, other.position)
+                and False not in np.isclose(
+                    self.look_at_position, other.look_at_position)
+                and False not in np.isclose(self.up_vector, other.up_vector)
+                and np.isclose(self.fov_degrees, other.fov_degrees)
+            )
+        return False

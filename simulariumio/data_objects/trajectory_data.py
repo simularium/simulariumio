@@ -74,15 +74,13 @@ class TrajectoryData:
         if display_data is None:
             display_data = {}
         return cls(
-            meta_data=MetaData.from_buffer_data(buffer_data),
+            meta_data=MetaData.from_dict(buffer_data["trajectoryInfo"]),
             agent_data=AgentData.from_buffer_data(buffer_data, display_data),
-            time_units=UnitData(
-                buffer_data["trajectoryInfo"]["timeUnits"]["name"],
-                float(buffer_data["trajectoryInfo"]["timeUnits"]["magnitude"]),
+            time_units=UnitData.from_dict(
+                buffer_data["trajectoryInfo"]["timeUnits"], default_mag=1.0
             ),
-            spatial_units=UnitData(
-                buffer_data["trajectoryInfo"]["spatialUnits"]["name"],
-                float(buffer_data["trajectoryInfo"]["spatialUnits"]["magnitude"]),
+            spatial_units=UnitData.from_dict(
+                buffer_data["trajectoryInfo"]["spatialUnits"], default_mag=1.0
             ),
             plots=buffer_data["plotData"]["data"],
         )
