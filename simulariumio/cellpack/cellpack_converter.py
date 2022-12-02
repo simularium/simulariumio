@@ -274,7 +274,10 @@ class CellpackConverter(TrajectoryConverter):
             ingredient_data = ingredient["recipe_data"]
             ingredient_key = ingredient_data["name"]
             ingredient_results_data = ingredient["results"]
-            if ingredient_key not in display_data:
+            agent_display_data = TrajectoryConverter._get_display_data_for_agent(
+                ingredient_key, display_data
+            )
+            if agent_display_data is None:
                 agent_display_data = CellpackConverter._get_ingredient_display_data(
                     geo_type, ingredient_data, geometry_url
                 )
@@ -285,8 +288,8 @@ class CellpackConverter(TrajectoryConverter):
                     color=agent_display_data["color"],
                 )
             else:
-                new_name = display_data[ingredient_key].name
-                display_data[new_name] = display_data[ingredient_key]
+                new_name = agent_display_data.name
+                display_data[new_name] = agent_display_data
                 ingredient_key = new_name
             if "coordsystem" in ingredient_data:
                 handedness = (
