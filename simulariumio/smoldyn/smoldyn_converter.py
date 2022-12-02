@@ -132,7 +132,6 @@ class SmoldynConverter(TrajectoryConverter):
         # get display data (geometry and color)
         for tid in input_data.display_data:
             display_data = input_data.display_data[tid]
-            print(f'display_data.name: {display_data.name}, tid: {tid} ')
             agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
