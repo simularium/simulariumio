@@ -65,15 +65,33 @@ class TrajectoryConverter:
         If there is no DisplayData for this type, add it
         using the raw type_name and SPHERE display_type
         """
-        if raw_type_name in display_data:
-            display_type_name = display_data[raw_type_name].name
-        else:
-            display_type_name = raw_type_name
-            display_data[display_type_name] = DisplayData(
-                name=display_type_name,
-                display_type=DISPLAY_TYPE.SPHERE,
-            )
+        agent_display_data = TrajectoryConverter._get_display_data_for_agent(
+            raw_type_name, display_data
+        )
+        if agent_display_data:
+            return agent_display_data.name
+
+        display_type_name = raw_type_name
+        display_data[display_type_name] = DisplayData(
+            name=display_type_name,
+            display_type=DISPLAY_TYPE.SPHERE,
+        )
         return display_type_name
+
+    @staticmethod
+    def _get_display_data_for_agent(
+        raw_type_name: str,
+        display_data: Dict[str, DisplayData]
+    ) -> DisplayData | None:
+        """
+        If the provided raw_type_name matches a key in the display data dict,
+        ignoring case, return the corresponding DisplayDat for that key.
+        Otherwise, return None
+        """
+        for input_name in display_data:
+            if input_name.lower() == raw_type_name.lower():
+                return display_data[input_name]
+        return None
 
     @staticmethod
     def _determine_plot_reader(plot_type: str = "scatter") -> [PlotReader]:
