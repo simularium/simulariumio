@@ -119,12 +119,14 @@ class SpringsaladConverter(TrajectoryConverter):
                 )
                 scene_agent_positions[int(cols[1])] = position
                 result.positions[time_index][agent_index] = position
+                input_display_data = TrajectoryConverter._get_display_data_for_agent(
+                    raw_type_name, input_data.display_data
+                )
                 result.radii[time_index][
                     agent_index
                 ] = input_data.meta_data.scale_factor * (
-                    input_data.display_data[raw_type_name].radius
-                    if raw_type_name in input_data.display_data
-                    and input_data.display_data[raw_type_name].radius is not None
+                    input_display_data.radius
+                    if input_display_data and input_display_data.radius is not None
                     else float(cols[2])
                 )
                 agent_index += 1
