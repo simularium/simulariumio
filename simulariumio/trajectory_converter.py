@@ -82,7 +82,7 @@ class TrajectoryConverter:
     def _get_display_data_for_agent(
         raw_type_name: str,
         display_data: Dict[str, DisplayData]
-    ) -> DisplayData | None:
+    ) -> DisplayData:
         """
         If the provided raw_type_name matches a key in the display data dict,
         ignoring case, return the corresponding DisplayDat for that key.
