@@ -78,9 +78,11 @@ class ReaddyConverter(TrajectoryConverter):
                 if traj.species_name(tid) in input_data.ignore_types:
                     continue
                 raw_type_name = traj.species_name(tid)
+                input_display_data = TrajectoryConverter._get_display_data_for_agent(
+                    raw_type_name, input_data.display_data
+                )
                 display_data = (
-                    input_data.display_data[raw_type_name]
-                    if raw_type_name in input_data.display_data
+                    input_display_data if input_display_data is not None
                     else DisplayData(
                         name=raw_type_name, display_type=DISPLAY_TYPE.SPHERE
                     )
