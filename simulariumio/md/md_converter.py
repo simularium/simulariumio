@@ -62,11 +62,12 @@ class MdConverter(TrajectoryConverter):
         """
         Get the type_name to use for the particle with the given raw type_name
         """
-        if raw_type_name in input_data.display_data:
-            return input_data.display_data[raw_type_name].name
         element_type = guess_atom_element(raw_type_name)
-        if element_type in input_data.display_data:
-            return input_data.display_data[element_type].name + "#" + raw_type_name
+        for name in input_data.display_data:
+            if raw_type_name.lower() == name.lower():
+                return input_data.display_data[name].name
+            if element_type.lower() == name.lower():
+                return input_data.display_data[name].name + "#" + raw_type_name
         return element_type + "#" + raw_type_name
 
     @staticmethod
@@ -74,17 +75,17 @@ class MdConverter(TrajectoryConverter):
         """
         Get the radius to use for the particle with the given raw_type_name
         """
-        if (
-            raw_type_name in input_data.display_data
-            and input_data.display_data[raw_type_name].radius is not None
-        ):
-            return input_data.display_data[raw_type_name].radius
+        raw_display_data = TrajectoryConverter._get_display_data_for_agent(
+            raw_type_name, input_data.display_data
+        )
+        if raw_display_data and raw_display_data.radius is not None:
+            return raw_display_data.radius
         element_type = guess_atom_element(raw_type_name)
-        if (
-            element_type in input_data.display_data
-            and input_data.display_data[element_type].radius is not None
-        ):
-            return input_data.display_data[element_type].radius
+        element_display_data = TrajectoryConverter._get_display_data_for_agent(
+            element_type, input_data.display_data
+        )
+        if element_display_data and element_display_data.radius is not None:
+            return element_display_data.radius
         if element_type in vdwradii:
             return vdwradii[element_type]
         return 1.0
@@ -107,12 +108,18 @@ class MdConverter(TrajectoryConverter):
         element_type = guess_atom_element(raw_type_name)
         color = MdConverter._get_element_hex_color(element_type, jmol_colors)
         display_data = None
-        if raw_type_name in input_data.display_data:
-            display_data = copy.copy(input_data.display_data[raw_type_name])
+        raw_name_display_data = TrajectoryConverter._get_display_data_for_agent(
+            raw_type_name, input_data.display_data
+        )
+        if raw_name_display_data:
+            display_data = copy.copy(raw_name_display_data)
         else:
             type_name = MdConverter._get_type_name(raw_type_name, input_data)
-            if element_type in input_data.display_data:
-                display_data = copy.copy(input_data.display_data[element_type])
+            element_display_data = TrajectoryConverter._get_display_data_for_agent(
+                type_name, input_data.display_data
+            )
+            if element_display_data:
+                display_data = copy.copy(element_display_data)
                 display_data.name = type_name
             else:
                 display_data = DisplayData(
