@@ -258,14 +258,18 @@ class McellConverter(TrajectoryConverter):
                     result.positions[
                         time_index, total_mols : total_mols + n_mols, :
                     ] = positions
+                    agent_display_data = (
+                        TrajectoryConverter._get_display_data_for_agent(
+                            raw_type_name, input_data.display_data
+                        )
+                    )
                     result.radii[time_index, total_mols : total_mols + n_mols] = (
                         input_data.meta_data.scale_factor
                         * BLENDER_GEOMETRY_SCALE_FACTOR
                         * (
-                            input_data.display_data[raw_type_name].radius
-                            if raw_type_name in input_data.display_data
-                            and input_data.display_data[raw_type_name].radius
-                            is not None
+                            agent_display_data.radius
+                            if agent_display_data
+                            and agent_display_data.radius is not None
                             else molecule_info[raw_type_name]["display"]["scale"]
                         )
                         * np.ones(n_mols)
