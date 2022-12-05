@@ -3,7 +3,7 @@
 
 import pytest
 
-from simulariumio import TrajectoryConverter, JsonWriter
+from simulariumio import TrajectoryConverter, JsonWriter, DisplayData
 from simulariumio.tests.conftest import (
     fiber_agents_type_mapping,
     minimal_custom_data,
@@ -19,6 +19,7 @@ from simulariumio.constants import (
     CURRENT_VERSION,
     VIZ_TYPE,
     MAX_AGENT_ID,
+    DISPLAY_TYPE,
 )
 
 from simulariumio.exceptions import DataError
@@ -1398,3 +1399,34 @@ def test_invalid_agent_id(trajectory, expected_data):
     buffer_data = JsonWriter.format_trajectory_data(converter._data)
     JsonWriter._validate_ids(converter._data)
     assert expected_data == buffer_data
+
+data0 = DisplayData(name="Name 0", display_type=DISPLAY_TYPE.SPHERE)
+data1 = DisplayData(name="Name 1", display_type=DISPLAY_TYPE.FIBER)
+data2 = DisplayData(name="Name 2", display_type=DISPLAY_TYPE.OBJ)
+key0 = "Red"
+key1 = "Green"
+key2 = "Blue"
+display_dict = {key0: data0, key1: data1, key2: data2}
+@pytest.mark.parametrize(
+    "key, expected_data",
+    [
+        (
+            key2.upper(),
+            data2,
+        ),
+        (
+            key0.lower(),
+            data0,
+        ),
+        (
+            key1,
+            data1,
+        ),
+        (
+            key0 + "x",
+            None,
+        ),
+    ],
+)
+def test_get_display_data_for_agent(key, expected_data):
+    assert expected_data == TrajectoryConverter._get_display_data_for_agent(key, display_dict)
