@@ -85,7 +85,7 @@ class TrajectoryConverter:
     ) -> DisplayData:
         """
         If the provided raw_type_name matches a key in the display data dict,
-        ignoring case, return the corresponding DisplayDat for that key.
+        ignoring case, return the corresponding DisplayData for that key.
         Otherwise, return None
         """
         for input_name in display_data:
