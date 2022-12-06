@@ -555,14 +555,14 @@ class AgentData:
         at the given time and agent indices
         """
         n_subpoints = self.n_subpoints[time_index][agent_index]
-        default_display_types = [
-            DISPLAY_TYPE.FIBER, 
-            DISPLAY_TYPE.SPHERE_GROUP, 
-            DISPLAY_TYPE.SPHERE,
-        ]
-        for display_type in default_display_types:
-            if n_subpoints % float(SUBPOINT_VALUES_PER_ITEM(display_type)) == 0:
-                return display_type
+        default_display_types = {
+            4 : DISPLAY_TYPE.SPHERE_GROUP, 
+            3 : DISPLAY_TYPE.FIBER, 
+            1 : DISPLAY_TYPE.SPHERE,
+        }
+        for values_per_item in default_display_types:
+            if n_subpoints % float(values_per_item) == 0:
+                return default_display_types[values_per_item]
         return DISPLAY_TYPE.SPHERE
 
     def _check_subpoints_match_display_type(self):
