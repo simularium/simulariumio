@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from typing import Any, Dict
 
 from ..constants import DISPLAY_TYPE
 from ..exceptions import DataError
@@ -72,6 +73,25 @@ class DisplayData:
             raise DataError(f"{color} should be provided as '#xxxxxx' or '#xxx'")
         self.color = color
 
+    @classmethod
+    def from_dict(
+        cls,
+        display_info: Dict[str, Any],
+        default_display_type: DISPLAY_TYPE = DISPLAY_TYPE.SPHERE
+    ):
+        """
+        Create DisplayData from a simularium JSON dict containing buffers.
+        """
+        if display_info is None:
+            return cls(name="")
+        return cls(
+            name=display_info.get("name", "[No name]"),
+            radius=float(display_info.get("radius", 1.0)),
+            display_type=display_info.get("displayType", default_display_type),
+            url=display_info.get("url", ""),
+            color=display_info.get("color", ""),
+        )
+
     def __str__(self):
         return (
             f"{self.name}: display_type={self.display_type.value}, "
@@ -94,3 +114,14 @@ class DisplayData:
             color=self.color,
         )
         return result
+
+    def __eq__(self, other):
+        if isinstance(other, DisplayData):
+            return (
+                self.name == other.name
+                and self.radius == other.radius
+                and self.display_type == other.display_type
+                and self.url == other.url
+                and self.color == other.color
+            )
+        return False

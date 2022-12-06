@@ -3,7 +3,9 @@
 
 import sys
 import logging
+from typing import Any, Dict
 from pint import UnitRegistry
+import numpy as np
 
 ###############################################################################
 
@@ -63,6 +65,23 @@ class UnitData:
         self._quantity *= multiplier
         self._update_units()
 
+    @classmethod
+    def from_dict(
+        cls,
+        unit_data: Dict[str, Any],
+        default_name: str = None,
+        default_mag: float = 1.0
+    ):
+        """
+        Create UnitData object from a simularium JSON dict
+        """
+        if unit_data is None:
+            return cls(name=default_name, magnitude=default_mag)
+        return cls(
+            name=unit_data.get("name", default_name),
+            magnitude=float(unit_data.get("magnitude", default_mag)),
+        )
+
     def __str__(self):
         """
         get a string for the units
@@ -81,3 +100,11 @@ class UnitData:
             magnitude=self.magnitude,
         )
         return result
+
+    def __eq__(self, other):
+        if isinstance(other, UnitData):
+            return (
+                np.isclose(self.magnitude, other.magnitude)
+                and self.name == other.name
+            )
+        return False

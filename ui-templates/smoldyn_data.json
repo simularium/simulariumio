@@ -3,20 +3,21 @@
         "python::module": "simulariumio.smoldyn",
         "python::object": "SmoldynData",
         "parameters": {
-            "file_contents": {
+            "fileContents": {
                 "name": "File",
                 "data_type": "file",
                 "description": "A Smoldyn file",
-                "required": true
+                "required": true,
+                "match": ".*\\\\.txt$"
             },
-            "meta_data": {
+            "metaData": {
                 "name": "Metadata",
                 "data_type": "meta_data",
                 "description": "Provide metadata for this trajectory",
                 "required": false,
                 "help": "If not provided, defaults to box size = [100, 100, 100], scale = 1.0, and no metadata about the trajectory or model"
             },
-            "display_data": {
+            "displayData": {
                 "name": "Display data",
                 "data_type": "collection",
                 "description": "Provide display information for each particle type from Smoldyn",
@@ -37,14 +38,14 @@
                     "required": true
                 }
             },
-            "time_units": {
+            "timeUnits": {
                 "name": "Time units",
                 "data_type": "time_unit_data",
                 "description": "Provide units for time values",
                 "required": false,
                 "help": "If not provided, defaults to seconds"
             },
-            "spatial_units": {
+            "spatialUnits": {
                 "name": "Spatial units",
                 "data_type": "space_unit_data",
                 "description": "Provide units for 3D coordinates",
