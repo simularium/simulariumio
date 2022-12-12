@@ -31,6 +31,7 @@ Each custom data type has:
 * `text`
 * `url`
 * `color`
+* `boolean`
 
 ### Custom types
 
