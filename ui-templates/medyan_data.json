@@ -81,7 +81,7 @@
             },
             "agentsWithEndpoints": {
                 "name": "Agents with endpoints",
-                "data_type": "array",
+                "data_type": "collection",
                 "description": "For motors and linkers, a list of output agent names for which to draw spheres at the end points in addition to a line connecting them",
                 "required": false,
                 "extendible": true,

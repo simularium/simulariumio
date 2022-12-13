@@ -33,10 +33,6 @@
         {
             "id": "boolean",
             "data": "boolean"
-        },
-        {
-            "id": "array",
-            "data": "array"
         }
     ]
 }
