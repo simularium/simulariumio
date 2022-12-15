@@ -20,7 +20,10 @@ Each custom data type has:
 
 ### Main types
 * `smoldyn_data` - information for populating a `SmoldynData` to visualize a trajectory from Smoldyn
-* (more coming soon)
+* `cytosim_data` - information for populating a `CytosimData` to visualize a trajectory from Cytosim
+* `medyan_data` - information for populating a `MedyanData` to visualize a trajectory from Medyan
+* `springsalad_data` - information for populating a `SpringsaladData` to visualize a trajectory from SpringSaLaD
+* `cellpack_data` - information for populating a `CellpackData` to visualize a trajectory from Cellpack
 
 ### Base types
 
@@ -28,6 +31,7 @@ Each custom data type has:
 * `text`
 * `url`
 * `color`
+* `boolean`
 
 ### Custom types
 
@@ -50,3 +54,4 @@ Each custom data type has:
     * `options` - enum values that a user can choose
 * `time_unit_data`
 * `space_unit_data`
+* `cytosim_object_info`

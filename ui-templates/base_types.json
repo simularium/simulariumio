@@ -29,6 +29,10 @@
         {
             "id": "file",
             "data": "string"
+        },
+        {
+            "id": "boolean",
+            "data": "boolean"
         }
     ]
 }

@@ -1,0 +1,49 @@
+{
+    "cytosim_data": {
+        "python::module": "simulariumio.cytosim",
+        "python::object": "CytosimData",
+        "parameters": {
+            "metaData": {
+                "name": "Metadata",
+                "data_type": "meta_data",
+                "description": "Provide metadata for this trajectory",
+                "required": false,
+                "help": "If not provided, defaults to box size = [100, 100, 100], scale = 1.0, and no metadata about the trajectory or model"
+            },
+            "cytosimObjectInfo": {
+                "name": "Cytosim object info",
+                "data_type": "collection",
+                "description": "Provide information for reading Cytosim data for a Cytosim object type (fibers, solids, singles, or couples)",
+                "required": true,
+                "length": 1,
+                "extendible": true,
+                "key_item": {
+                    "name": "Cytosim object type",
+                    "data_type": "text",
+                    "description": "Provide the type of the Cytosim object (fibers, solids, singles, or couples)",
+                    "options": [
+                        "fibers",
+                        "solids",
+                        "singles",
+                        "couples"
+                    ],
+                    "required": true
+                },
+                "value_item": {
+                    "name": "Cytosim object info",
+                    "data_type": "cytosim_object_info",
+                    "description": "Provide information about how to read and render the Cytosim data for agents of that object type",
+                    "required": true
+                }
+            },
+            "drawFiberPoints": {
+                "name": "Draw fiber points",
+                "data_type": "boolean",
+                "description": "in addition to drawing a line for each fiber, also draw spheres at every other point along it??",
+                "required": false,
+                "default": false,
+                "help": "Only used for fibers. If not provided, defaults to false"
+            }
+        }
+    }
+}

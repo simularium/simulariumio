@@ -1,0 +1,100 @@
+{
+    "medyan_data": {
+        "python::module": "simulariumio.medyan",
+        "python::object": "MedyanData",
+        "parameters": {
+            "fileContents": {
+                "name": "File",
+                "data_type": "file",
+                "description": "A medyan file",
+                "required": true
+            },
+            "metaData": {
+                "name": "Metadata",
+                "data_type": "meta_data",
+                "description": "Provide metadata for this trajectory",
+                "required": false,
+                "help": "If not provided, defaults to box size = [100, 100, 100], scale = 1.0, and no metadata about the trajectory or model"
+            },
+            "filamentDisplayData": {
+                "name": "Filament display data",
+                "data_type": "collection",
+                "description": "Provide display information for each filament from Medyan",
+                "required": false,
+                "help": "If not provided, defaults to display name of filament[type ID], radius = 1.0 and default colors",
+                "length": 1,
+                "extendible": true,
+                "key_item": {
+                    "name": "Type ID for filament",
+                    "data_type": "text",
+                    "description": "Provide the type ID for the filament",
+                    "required": true
+                },
+                "value_item": {
+                    "name": "Filament display data",
+                    "data_type": "display_data",
+                    "description": "Provide display info to use for rendering this filament",
+                    "required": true
+                }
+            },
+            "linkerDisplayData": {
+                "name": "Linker display data",
+                "data_type": "collection",
+                "description": "Provide display information for each linker from Medyan",
+                "required": false,
+                "help": "If not provided, defaults to display name of linker[type ID], radius = 1.0 and default colors",
+                "length": 1,
+                "extendible": true,
+                "key_item": {
+                    "name": "Type ID for linker",
+                    "data_type": "text",
+                    "description": "Provide the type ID for the linker",
+                    "required": true
+                },
+                "value_item": {
+                    "name": "Linker display data",
+                    "data_type": "display_data",
+                    "description": "Provide display info to use for rendering this linker",
+                    "required": true
+                }
+            },
+            "motorDisplayData": {
+                "name": "Motor display data",
+                "data_type": "collection",
+                "description": "Provide display information for each motor from Medyan",
+                "required": false,
+                "help": "If not provided, defaults to display name of motor[type ID], radius = 1.0 and default colors",
+                "length": 1,
+                "extendible": true,
+                "key_item": {
+                    "name": "Type ID for motor",
+                    "data_type": "text",
+                    "description": "Provide the type ID for the motor",
+                    "required": true
+                },
+                "value_item": {
+                    "name": "Motor display data",
+                    "data_type": "display_data",
+                    "description": "Provide display info to use for rendering this motor",
+                    "required": true
+                }
+            },
+            "agentsWithEndpoints": {
+                "name": "Agents with endpoints",
+                "data_type": "collection",
+                "description": "For motors and linkers, a list of output agent names for which to draw spheres at the end points in addition to a line connecting them",
+                "required": false,
+                "extendible": true,
+                "help": "If not provided, no endpoints will be drawn"
+            },
+            "drawFiberPoints": {
+                "name": "Draw fiber points",
+                "data_type": "boolean",
+                "description": "For fibers, in addition to drawing a line for each fiber, also draw spheres at every other point along it?",
+                "required": false,
+                "default": false,
+                "help": "Only for fibers, defaults to false"
+            }
+        }
+    }
+}

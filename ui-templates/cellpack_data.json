@@ -1,0 +1,101 @@
+{
+    "cellpack_data": {
+        "python::module": "simulariumio.cellpack",
+        "python::object": "CellpackData",
+        "parameters": {
+            "fileContents": {
+                "name": "Result File",
+                "data_type": "file",
+                "description": "A .txt file containing the Cellpack results output",
+                "required": true
+            },
+            "recipeFileContents": {
+                "name": "Recipe File",
+                "data_type": "file",
+                "description": "A file containing the Cellpack recipe that was used to produce the results file. The recipe name must match in both files",
+                "required": true
+            },
+            "geometryType": {
+                "name": "Geometry type",
+                "data_type": "enum",
+                "description": "The display type to use for the ingredients",
+                "help": "If not provided, defaults to DISPLAY_TYPE.PDB",
+                "required": false,
+                "default": "PDB",
+                "python::module": "simulariumio",
+                "python::object": "DISPLAY_TYPE",
+                "options": [
+                    "PDB",
+                    "SPHERE",
+                    "OBJ",
+                    "FIBER",
+                    "SPHERE_GROUP"
+                ]
+            },
+            "metaData": {
+                "name": "Metadata",
+                "data_type": "meta_data",
+                "description": "Provide metadata for this trajectory",
+                "required": false,
+                "help": "If not provided, defaults to box size = [100, 100, 100], scale = 1.0, and no metadata about the trajectory or model"
+            },
+            "displayData": {
+                "name": "Display data",
+                "data_type": "collection",
+                "description": "Provide display information for each particle type from Cellpack",
+                "required": false,
+                "help": "If not provided, defaults to display name from Cellpack, and draws agent as a sphere with radius = 1.0 and default colors",
+                "length": 1,
+                "extendible": true,
+                "key_item": {
+                    "name": "Particle name",
+                    "data_type": "text",
+                    "description": "Provide the name of the particle in Cellpack",
+                    "required": true
+                },
+                "value_item": {
+                    "name": "Particle display data",
+                    "data_type": "display_data",
+                    "description": "Provide information about how to display this particle",
+                    "required": true
+                }
+            },
+            "timeUnits": {
+                "name": "Time units",
+                "data_type": "time_unit_data",
+                "description": "Provide units for time values",
+                "required": false,
+                "help": "If not provided, defaults to 1 second"
+            },
+            "spatialUnits": {
+                "name": "Spatial units",
+                "data_type": "space_unit_data",
+                "description": "Provide units for 3D coordinates",
+                "required": false,
+                "help": "If not provided, defaults to 1 meter"
+            },
+            "handedness": {
+                "name": "Handedness",
+                "data_type": "enum",
+                "description": "The handedness of the data's coordinate system",
+                "help": "If not provided, defaults to RIGHT",
+                "required": false,
+                "python::module": "simulariumio.cellpack",
+                "python::object": "HAND_TYPE",
+                "default": "RIGHT",
+                "options": [
+                    "RIGHT",
+                    "LEFT"
+                ]
+            },
+            "geometryUrl": {
+                "name": "Geometry URL",
+                "data_type": "url",
+                "description": "Base URL for all geometry files",
+                "required": false,
+                "default": "",
+                "help": "If not provided, defaults to none"
+            }
+        }
+    }
+}

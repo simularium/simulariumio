@@ -1,0 +1,43 @@
+{
+    "cytosim_object_info": {
+        "python::module": "simulariumio",
+        "python::object": "CytosimObjectInfo",
+        "parameters": {
+            "fileContents": {
+                "name": "File",
+                "data_type": "file",
+                "description": "A cytosim file",
+                "required": true
+            },
+            "displayData": {
+                "name": "Display data",
+                "data_type": "collection",
+                "description": "Provide display information for each particle type from Cytosim",
+                "required": false,
+                "help": "If not provided, defaults to display name from Cytosim, and draws agent as a sphere with radius = 1.0 and default colors",
+                "length": 1,
+                "extendible": true,
+                "key_item": {
+                    "name": "Particle name",
+                    "data_type": "text",
+                    "description": "Provide the name of the particle in Cytosim",
+                    "required": true
+                },
+                "value_item": {
+                    "name": "Particle display data",
+                    "data_type": "display_data",
+                    "description": "Provide information about how to display this particle",
+                    "required": true
+                }
+            },
+            "position_indices": {
+                "name": "Position Indices",
+                "data_type": "collection",
+                "description": "the columns in Cytosim's reports are not always consistent, use this sto override them if you output has different column indices for position XYZ",
+                "required": false,
+                "default": [2,3,4],
+                "help": "If not provided, defaults to [2, 3, 4]"
+            }
+        }
+    }
+}
