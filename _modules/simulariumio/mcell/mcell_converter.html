@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>simulariumio.mcell.mcell_converter - simulariumio 1.7.1.dev20+g4a8b18d documentation</title>
+    <!-- Generated with Sphinx 6.0.0 and Furo 2022.12.07 -->
+        <title>simulariumio.mcell.mcell_converter - simulariumio 1.7.1.dev21+g1c48331 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.7.1.dev20+g4a8b18d documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.7.1.dev21+g1c48331 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.7.1.dev20+g4a8b18d documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.7.1.dev21+g1c48331 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -250,7 +250,7 @@
 
 <div class="viewcode-block" id="McellConverter"><a class="viewcode-back" href="../../../simulariumio.mcell.html#simulariumio.mcell.mcell_converter.McellConverter">[docs]</a><span class="k">class</span> <span class="nc">McellConverter</span><span class="p">(</span><span class="n">TrajectoryConverter</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">McellData</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object reads simulation trajectory outputs</span>
 <span class="sd">        from MCell (https://mcell.org/)</span>
 <span class="sd">        and plot data and writes them in the JSON format used</span>
@@ -266,14 +266,14 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_normalize</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        normalize a vector</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">v</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_rotate</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        rotate a vector around axis by angle (radians)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rotation</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span>
@@ -285,7 +285,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_perpendicular_vector</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a unit vector perpendicular to the given vector</span>
 <span class="sd">        rotated by the given angle</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -298,7 +298,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_rotation_matrix</span><span class="p">(</span><span class="n">v1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">v2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Orthonormalize and cross the vectors to get a rotation matrix</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">v1</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
@@ -315,7 +315,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_euler_angles</span><span class="p">(</span><span class="n">normal</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get euler angles in degrees representing a rotation defined by the basis</span>
 <span class="sd">        between the given normal and a perpendicular vector rotated at angle</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -327,7 +327,7 @@
     <span class="k">def</span> <span class="nf">_get_rotation_euler_angles_for_normals</span><span class="p">(</span>
         <span class="n">normals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate an orientation around each normal and return euler angles</span>
 <span class="sd">        Either use the given angle or random ones</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -343,7 +343,7 @@
     <span class="k">def</span> <span class="nf">_should_read_cellblender_binary_file</span><span class="p">(</span>
         <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nth_timestep_to_read</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Is this a cellblender binary file?</span>
 <span class="sd">        And should this frame of data be included in the visualization?</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -355,7 +355,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_count_agents_in_binary_cellblender_viz_frame</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Count the number of agents in the frame of cellblender data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">total_mols</span> <span class="o">=</span> <span class="mi">0</span>
@@ -391,7 +391,7 @@
     <span class="k">def</span> <span class="nf">_get_dimensions_of_cellblender_data</span><span class="p">(</span>
         <span class="n">path_to_binary_files</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nth_timestep_to_read</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DimensionData</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse cellblender binary files to get the number of timesteps</span>
 <span class="sd">        and maximum agents per timestep</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -417,7 +417,7 @@
         <span class="n">input_data</span><span class="p">:</span> <span class="n">McellData</span><span class="p">,</span>
         <span class="n">result</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Read MCell binary visualization files</span>
 
 <span class="sd">        code based on cellblender/cellblender_mol_viz.py function mol_viz_file_read</span>
@@ -506,7 +506,7 @@
         <span class="n">molecule_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">input_data</span><span class="p">:</span> <span class="n">McellData</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse cellblender binary files to get spatial data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dimensions</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_get_dimensions_of_cellblender_data</span><span class="p">(</span>
@@ -540,7 +540,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">:</span> <span class="n">McellData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return an object containing the data shaped for Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading MCell Data -------------&quot;</span><span class="p">)</span>
@@ -611,9 +611,6 @@
     </aside>
   </div>
 </div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/scripts/furo.js"></script>

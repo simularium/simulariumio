@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>simulariumio.md.md_converter - simulariumio 1.7.1.dev20+g4a8b18d documentation</title>
+    <!-- Generated with Sphinx 6.0.0 and Furo 2022.12.07 -->
+        <title>simulariumio.md.md_converter - simulariumio 1.7.1.dev21+g1c48331 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.7.1.dev20+g4a8b18d documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.7.1.dev21+g1c48331 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.7.1.dev20+g4a8b18d documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.7.1.dev21+g1c48331 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -241,7 +241,7 @@
 
 <div class="viewcode-block" id="MdConverter"><a class="viewcode-back" href="../../../simulariumio.md.html#simulariumio.md.md_converter.MdConverter">[docs]</a><span class="k">class</span> <span class="nc">MdConverter</span><span class="p">(</span><span class="n">TrajectoryConverter</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object reads simulation trajectory outputs</span>
 <span class="sd">        from molecular dynamics models</span>
 <span class="sd">        and plot data and writes them in the format used</span>
@@ -259,7 +259,7 @@
     <span class="k">def</span> <span class="nf">_read_universe_dimensions</span><span class="p">(</span>
         <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Use a MD Universe to get the number of timesteps</span>
 <span class="sd">        and maximum agents per timestep</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -276,7 +276,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_type_name</span><span class="p">(</span><span class="n">raw_type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the type_name to use for the particle with the given raw type_name</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">element_type</span> <span class="o">=</span> <span class="n">guess_atom_element</span><span class="p">(</span><span class="n">raw_type_name</span><span class="p">)</span>
@@ -289,7 +289,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_radius</span><span class="p">(</span><span class="n">raw_type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the radius to use for the particle with the given raw_type_name</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">raw_display_data</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">_get_display_data_for_agent</span><span class="p">(</span>
@@ -309,7 +309,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_element_hex_color</span><span class="p">(</span><span class="n">element_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">jmol_colors</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the standard Jmol hex color for the atomic element type</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">element_df</span> <span class="o">=</span> <span class="n">jmol_colors</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">jmol_colors</span><span class="p">[</span><span class="s2">&quot;atom&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">element_type</span><span class="o">.</span><span class="n">title</span><span class="p">()]</span>
@@ -319,7 +319,7 @@
     <span class="k">def</span> <span class="nf">_get_display_data_for_type</span><span class="p">(</span>
         <span class="n">raw_type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">jmol_colors</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DisplayData</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the DisplayData with atomic element colors from Jmol</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">element_type</span> <span class="o">=</span> <span class="n">guess_atom_element</span><span class="p">(</span><span class="n">raw_type_name</span><span class="p">)</span>
@@ -352,7 +352,7 @@
     <span class="k">def</span> <span class="nf">_get_display_data_mapping</span><span class="p">(</span>
         <span class="n">unique_raw_type_names</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DisplayData</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get display names mapped to display data (geometry and color)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
@@ -368,7 +368,7 @@
     <span class="k">def</span> <span class="nf">_read_universe</span><span class="p">(</span>
         <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Use a MD Universe to get AgentData</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dimensions</span> <span class="o">=</span> <span class="n">MdConverter</span><span class="o">.</span><span class="n">_read_universe_dimensions</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
@@ -405,7 +405,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a TrajectoryData object containing the MD data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading MD Data -------------&quot;</span><span class="p">)</span>
@@ -454,9 +454,6 @@
     </aside>
   </div>
 </div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/scripts/furo.js"></script>

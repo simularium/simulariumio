@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>simulariumio.writers.writer - simulariumio 1.7.1.dev20+g4a8b18d documentation</title>
+    <!-- Generated with Sphinx 6.0.0 and Furo 2022.12.07 -->
+        <title>simulariumio.writers.writer - simulariumio 1.7.1.dev21+g1c48331 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.7.1.dev20+g4a8b18d documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.7.1.dev21+g1c48331 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.7.1.dev20+g4a8b18d documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.7.1.dev21+g1c48331 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -268,7 +268,7 @@
     <span class="k">def</span> <span class="nf">_get_trajectory_info</span><span class="p">(</span>
         <span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">total_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">type_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the trajectoryInfo block for the trajectory</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
@@ -335,7 +335,7 @@
         <span class="n">time_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the required size for a buffer to hold the given frame of AgentData</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">n_agents</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">])</span>
@@ -359,7 +359,7 @@
         <span class="n">uids</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">used_unique_IDs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get a float buffer for one frame of AgentData</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">buffer_size</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -459,7 +459,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_check_agent_ids_are_unique_per_frame</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        For each frame, check that none of the unique agent IDs overlap</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bundle_data</span> <span class="o">=</span> <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;spatialData&quot;</span><span class="p">][</span><span class="s2">&quot;bundleData&quot;</span><span class="p">]</span>
@@ -496,7 +496,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_validate_ids</span><span class="p">(</span><span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check if agent unique IDs are valid 32 bit integers</span>
 <span class="sd">        returns a message identifying violating agent ID</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -513,7 +513,7 @@
         <span class="n">display_data</span><span class="p">:</span> <span class="n">DisplayData</span><span class="p">,</span>
         <span class="n">debug_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If the agent has subpoints, check that it</span>
 <span class="sd">        also has a display_type of &quot;FIBER&quot; and viz type of &quot;FIBER&quot;, and vice versa.</span>
 <span class="sd">        return a message saying what is inconsistent</span>
@@ -536,7 +536,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_check_types_match_subpoints</span><span class="p">(</span><span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        For each frame, check that agents that have subpoints</span>
 <span class="sd">        also have a display_type of &quot;FIBER&quot; and viz type of &quot;FIBER&quot;, and vice versa.</span>
 <span class="sd">        return a message with the type name of the first agent that is inconsistent</span>
@@ -590,9 +590,6 @@
     </aside>
   </div>
 </div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/scripts/furo.js"></script>
