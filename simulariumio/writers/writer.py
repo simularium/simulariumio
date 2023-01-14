@@ -340,3 +340,23 @@ class Writer(ABC):
                 if inconsistent_type:
                     return inconsistent_type
         return ""
+
+    @staticmethod
+    def _check_floats(agent_data: AgentData):
+        """
+        Replace any float values that are nan or too large.
+        """
+        MIN_F4 = -1E+38
+        MAX_F4 = 1E+38
+        arrays = [
+            agent_data.times,
+            agent_data.n_agents,
+            agent_data.unique_ids,
+            agent_data.positions,
+            agent_data.radii,
+            agent_data.rotations,
+            agent_data.subpoints,
+        ]
+        for array in arrays:
+            np.nan_to_num(array, copy=False)
+            np.clip(array, MIN_F4, MAX_F4, out=array)

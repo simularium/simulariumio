@@ -164,7 +164,7 @@ class JsonWriter(Writer):
 
     @staticmethod
     def save(
-        trajectory_data: TrajectoryData, output_path: str, validate_ids: bool
+        trajectory_data: TrajectoryData, output_path: str, validate: bool = True
     ) -> None:
         """
         Save the simularium data in .simularium JSON format
@@ -175,11 +175,13 @@ class JsonWriter(Writer):
             the data to save
         output_path: str
             where to save the file
-        validate_ids: bool (optional)
-            additional validation to check agent ID size?
+        validate: bool (optional)
+            additional validation to check agent ID and float sizes?
+            Default: True
         """
-        if validate_ids:
+        if validate:
             Writer._validate_ids(trajectory_data)
+            Writer._check_floats(trajectory_data.agent_data)
         json_data = JsonWriter.format_trajectory_data(trajectory_data)
         print("Writing JSON -------------")
         with open(f"{output_path}.simularium", "w+") as outfile:

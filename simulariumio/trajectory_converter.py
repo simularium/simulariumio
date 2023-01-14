@@ -194,7 +194,7 @@ class TrajectoryConverter:
         """
         JsonWriter.save_plot_data(self._data.plots, output_path)
 
-    def save(self, output_path: str, binary: bool = True, validate_ids: bool = True):
+    def save(self, output_path: str, binary: bool = True, validate: bool = True):
         """
         Save the current simularium data in .simularium JSON format
         at the output path
@@ -206,11 +206,11 @@ class TrajectoryConverter:
         binary: bool (optional)
             save in binary format? otherwise use JSON
             Default: True
-        validate_ids: bool
-            additional validation to check agent ID size?
+        validate: bool
+            additional validation to check agent ID and float sizes?
             Default = True
         """
         if binary:
-            BinaryWriter.save(self._data, output_path, validate_ids)
+            BinaryWriter.save(self._data, output_path, validate)
         else:
-            JsonWriter.save(self._data, output_path, validate_ids)
+            JsonWriter.save(self._data, output_path, validate)

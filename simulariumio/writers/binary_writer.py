@@ -378,7 +378,7 @@ class BinaryWriter(Writer):
 
     @staticmethod
     def save(
-        trajectory_data: TrajectoryData, output_path: str, validate_ids: bool
+        trajectory_data: TrajectoryData, output_path: str, validate: bool = True
     ) -> None:
         """
         Save the simularium data in .simularium binary format
@@ -389,11 +389,13 @@ class BinaryWriter(Writer):
             the data to save
         output_path: str
             where to save the file
-        validate_ids: bool
-            additional validation to check agent ID size?
+        validate: bool (optional)
+            additional validation to check agent ID and float sizes?
+            Default: True
         """
-        if validate_ids:
+        if validate:
             Writer._validate_ids(trajectory_data)
+            Writer._check_floats(trajectory_data.agent_data)
         (
             binary_headers,
             trajectory_infos,
