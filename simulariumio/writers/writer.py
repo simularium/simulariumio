@@ -346,7 +346,6 @@ class Writer(ABC):
         """
         Replace any float values that are nan or too large.
         """
-        MIN_F4 = -1E+38
         MAX_F4 = 1E+38
         arrays = [
             agent_data.times,
@@ -359,4 +358,4 @@ class Writer(ABC):
         ]
         for array in arrays:
             np.nan_to_num(array, copy=False)
-            np.clip(array, MIN_F4, MAX_F4, out=array)
+            np.clip(array, -MAX_F4, MAX_F4, out=array)

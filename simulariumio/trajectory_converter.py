@@ -196,7 +196,7 @@ class TrajectoryConverter:
 
     def save(self, output_path: str, binary: bool = True, validate: bool = True):
         """
-        Save the current simularium data in .simularium JSON format
+        Save the current simularium data in .simularium format
         at the output path
 
         Parameters
