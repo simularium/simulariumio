@@ -102,10 +102,11 @@ class SimulariumBinaryReader:
         return block_type
 
     @staticmethod
-    def _binary_block_json(
+    def _binary_block(
         block_index: int,
         block_info: BinaryBlockInfo,
         data_as_bytes: bytes,
+        leave_binary: bool,
     ) -> Dict[str, Any]:
         """
         Parse JSON block from a .simularium binary file
@@ -118,7 +119,7 @@ class SimulariumBinaryReader:
         block_offset += block_header_n_bytes
         block_length -= block_header_n_bytes
         traj_info_bytes = data_as_bytes[block_offset : block_offset + block_length]
-        return json.loads(traj_info_bytes.decode("utf-8").strip("\x00"))
+        return traj_info_bytes if leave_binary else json.loads(traj_info_bytes.decode("utf-8").strip("\x00"))
 
     @staticmethod
     def _binary_block_spatial_data(
@@ -168,7 +169,7 @@ class SimulariumBinaryReader:
         return result
 
     @staticmethod
-    def load_binary(input_file: InputFileData) -> Dict[str, Any]:
+    def load_binary(input_file: InputFileData, leave_spatial_bin: bool = False) -> Dict[str, Any]:
         """
         Load data from the input file in .simularium binary format and update it.
         """
@@ -206,11 +207,12 @@ class SimulariumBinaryReader:
                     block_index, block_info, binary_data.byte_view
                 )
             elif block_type == "spatialData":
-                result[block_type] = SimulariumBinaryReader._binary_block_spatial_data(
+                result[block_type] = SimulariumBinaryReader._get_binary_block(
                     block_index,
                     block_info,
                     binary_data.int_view,
                     binary_data.float_view,
+                    leave_spatial_bin
                 )
             else:
                 raise DataError(
