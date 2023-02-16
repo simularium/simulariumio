@@ -155,7 +155,8 @@ class SimulariumBinaryReader:
             frame_n_values = int(frame_lengths[index] / BINARY_SETTINGS.BYTES_PER_VALUE)
             if binary_spatial_data:
                 data = data_as_bytes[
-                    current_frame_offset + 3 : current_frame_offset + frame_n_values
+                    4 * (current_frame_offset + 3) :
+                    4 * (current_frame_offset + frame_n_values)
                 ]
             else:
                 data = list(
