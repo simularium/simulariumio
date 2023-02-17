@@ -127,7 +127,7 @@ class SimulariumBinaryReader:
         data_as_bytes: np.ndarray,
         data_as_ints: np.ndarray,
         data_as_floats: np.ndarray,
-        binary_spatial_data: bool,
+        parse_data_as_binary: bool,
     ) -> Dict[str, Any]:
         """
         Parse spatial data binary block from a .simularium binary file
@@ -153,7 +153,7 @@ class SimulariumBinaryReader:
             if index == 0:
                 result["bundleStart"] = frame_index
             frame_n_values = int(frame_lengths[index] / BINARY_SETTINGS.BYTES_PER_VALUE)
-            if binary_spatial_data:
+            if parse_data_as_binary:
                 data = data_as_bytes[
                     4 * (current_frame_offset + 3) :
                     4 * (current_frame_offset + frame_n_values)
@@ -177,7 +177,7 @@ class SimulariumBinaryReader:
 
     @staticmethod
     def load_binary(
-        input_file: InputFileData, binary_spatial_data: bool = False
+        input_file: InputFileData, parse_spatial_data_as_binary: bool = False
     ) -> Dict[str, Any]:
         """
         Load data from the input file in .simularium binary format and update it.
@@ -186,8 +186,8 @@ class SimulariumBinaryReader:
         ----------
         input_file: InputFileData
             A InputFileData object containing binary .simularium data to load
-        binary_spatial_data: bool (optional)
-            Leave spatial data binary encoded in response?
+        parse_spatial_data_as_binary: bool (optional)
+            Leave spatial data binary encoded in returned dict?
             Default = False
         """
         result = {}
@@ -230,7 +230,7 @@ class SimulariumBinaryReader:
                     binary_data.byte_view,
                     binary_data.int_view,
                     binary_data.float_view,
-                    binary_spatial_data,
+                    parse_spatial_data_as_binary,
                 )
             else:
                 raise DataError(
