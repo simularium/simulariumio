@@ -124,8 +124,10 @@ class SimulariumBinaryReader:
     def _binary_block_spatial_data(
         block_index: int,
         block_info: BinaryBlockInfo,
+        data_as_bytes: np.ndarray,
         data_as_ints: np.ndarray,
         data_as_floats: np.ndarray,
+        parse_data_as_binary: bool,
     ) -> Dict[str, Any]:
         """
         Parse spatial data binary block from a .simularium binary file
@@ -151,26 +153,42 @@ class SimulariumBinaryReader:
             if index == 0:
                 result["bundleStart"] = frame_index
             frame_n_values = int(frame_lengths[index] / BINARY_SETTINGS.BYTES_PER_VALUE)
+            if parse_data_as_binary:
+                data = data_as_bytes[
+                    4 * (current_frame_offset + 3) :
+                    4 * (current_frame_offset + frame_n_values)
+                ]
+            else:
+                data = list(
+                    data_as_floats[
+                        current_frame_offset + 3 : current_frame_offset + frame_n_values
+                    ]
+                )
             result["bundleData"].append(
                 {
                     "frameNumber": frame_index,
                     "time": data_as_floats[current_frame_offset + 1],
-                    "data": list(
-                        data_as_floats[
-                            current_frame_offset
-                            + 3 : current_frame_offset
-                            + frame_n_values
-                        ]
-                    ),
+                    "nAgents": data_as_ints[current_frame_offset + 2],
+                    "data": data,
                 }
             )
             current_frame_offset += frame_n_values
         return result
 
     @staticmethod
-    def load_binary(input_file: InputFileData) -> Dict[str, Any]:
+    def load_binary(
+        input_file: InputFileData, parse_spatial_data_as_binary: bool = False
+    ) -> Dict[str, Any]:
         """
         Load data from the input file in .simularium binary format and update it.
+
+        Parameters
+        ----------
+        input_file: InputFileData
+            A InputFileData object containing binary .simularium data to load
+        parse_spatial_data_as_binary: bool (optional)
+            Leave spatial data binary encoded in returned dict?
+            Default = False
         """
         result = {}
         binary_data = SimulariumBinaryReader._binary_data_from_source(input_file)
@@ -209,8 +227,10 @@ class SimulariumBinaryReader:
                 result[block_type] = SimulariumBinaryReader._binary_block_spatial_data(
                     block_index,
                     block_info,
+                    binary_data.byte_view,
                     binary_data.int_view,
                     binary_data.float_view,
+                    parse_spatial_data_as_binary,
                 )
             else:
                 raise DataError(
