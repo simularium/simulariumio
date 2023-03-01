@@ -103,7 +103,7 @@ def test_agent_data_jagged_list():
 
 
 def test_from_list_with_scale_factor():
-    traj_dict = {
+    list_data = {
         "times": [0.0, 0.1, 0.2],
         "n_agents": [3, 3, 3],
         "viz_types": [
@@ -193,12 +193,13 @@ def test_from_list_with_scale_factor():
             ],
         ),
     )
-    result = AgentData.from_lists(traj_dict, 10.0)
+    scale_factor = 10.0
+    result = AgentData.from_lists(list_data, scale_factor)
     assert expected_results == result
 
 
 def test_jagged_data_subpoints():
-    traj_dict = {
+    list_data = {
         "times": [0.0, 1.00001, 2.00001],
         "n_agents": [3, 3, 3],
         "viz_types": [
@@ -488,5 +489,5 @@ def test_jagged_data_subpoints():
             ]
         ),
     )
-    result = AgentData.from_lists(traj_dict, 1.0)
+    result = AgentData.from_lists(list_data, 1.0)
     assert agent_data == result
