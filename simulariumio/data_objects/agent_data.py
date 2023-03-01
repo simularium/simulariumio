@@ -330,6 +330,90 @@ class AgentData:
             draw_fiber_points=False,
         )
 
+    @staticmethod
+    def fill_df(df, fill):
+        """
+        Fill Nones in a DataFrame with a fill value
+        """
+        # Create a dataframe of fill values
+        fill_array = [[fill] * df.shape[1]] * df.shape[0]
+        fill_df = pd.DataFrame(fill_array)
+        # Replace all entries with None with the fill
+        df[df.isna()] = fill_df
+        return df
+
+    @staticmethod
+    def jagged_3d_list_to_numpy_array(jagged_3d_list):
+        """
+        Shape a jagged list with 3 dimensions to a numpy array
+        """
+        df = AgentData.fill_df(pd.DataFrame(jagged_3d_list), [0, 0, 0])
+        df_t = df.transpose()
+        exploded = [df_t[col].explode() for col in list(df_t.columns)]
+        return np.array(exploded, dtype=float).reshape((df.shape[0], df.shape[1], 3))
+
+    @staticmethod
+    def get_subpoints_numpy_array(trajectory) -> np.ndarray:
+        """
+        Shape a 3 dimensional jagged list for subpoints into a numpy array
+        """
+        frame_arrays = []
+        max_agents = 0
+        max_subpoints = 0
+        total_steps = len(trajectory.get("subpoints", []))
+        for time_index in range(total_steps):
+            filled_frame = AgentData.fill_df(
+                pd.DataFrame(trajectory["subpoints"][time_index]), 0.0
+            )
+            frame_array = np.array(filled_frame, dtype=float)
+            if frame_array.shape[0] > max_agents:
+                max_agents = frame_array.shape[0]
+            if frame_array.shape[1] > max_subpoints:
+                max_subpoints = frame_array.shape[1]
+            frame_arrays.append(frame_array)
+        values_per_frame = max_agents * max_subpoints  # * 3
+        result = np.zeros(total_steps * values_per_frame)
+        for time_index, frame_array in enumerate(frame_arrays):
+            if frame_array.shape[1] < max_subpoints:
+                new_frame_array = np.zeros((frame_array.shape[0], max_subpoints, 3))
+                new_frame_array[:, : frame_array.shape[1]] = frame_array
+                frame_array = new_frame_array
+            flat_array = frame_array.flatten()
+            start_index = time_index * values_per_frame
+            result[start_index : start_index + flat_array.shape[0]] = flat_array
+        return result.reshape(total_steps, max_agents, max_subpoints)
+
+    @classmethod
+    def from_lists(cls, trajectory_dict, scale_factor):
+        """
+        Shape a dictionary of jagged lists into a Simularium AgentData object
+        """
+        return cls(
+            times=np.array(trajectory_dict["times"]),
+            n_agents=np.array(trajectory_dict["n_agents"]),
+            viz_types=AgentData.fill_df(
+                pd.DataFrame(trajectory_dict["viz_types"]), 1000.0
+            ).to_numpy(dtype=float),
+            unique_ids=AgentData.fill_df(
+                pd.DataFrame(trajectory_dict["unique_ids"]), 0
+            ).to_numpy(dtype=int),
+            types=trajectory_dict["type_names"],
+            positions=scale_factor
+            * AgentData.jagged_3d_list_to_numpy_array(trajectory_dict["positions"]),
+            radii=scale_factor
+            * AgentData.fill_df(pd.DataFrame(trajectory_dict["radii"]), 0.0).to_numpy(),
+            n_subpoints=AgentData.fill_df(
+                pd.DataFrame(trajectory_dict.get("n_subpoints")), 0.0
+            ).to_numpy(dtype=int)
+            if trajectory_dict.get("n_subpoints")
+            else None,
+            subpoints=scale_factor
+            * AgentData.get_subpoints_numpy_array(trajectory_dict)
+            if trajectory_dict.get("subpoints")
+            else None,
+            rotations=None,
+        )
+
     @classmethod
     def from_dataframe(cls, traj: pd.DataFrame):
         """
