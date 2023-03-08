@@ -13,6 +13,7 @@ from ..data_objects.camera_data import CameraData
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData
 from ..data_objects import MetaData, DisplayData
+from ..exceptions import InputDataError
 from .cellpack_data import HAND_TYPE, CellpackData
 
 ###############################################################################
@@ -348,11 +349,14 @@ class CellpackConverter(TrajectoryConverter):
         # if they send one in at all.
         input_data.meta_data.scale_factor *= 0.1
 
-        # load the data from Cellpack output JSON file
-        recipe_loader = RecipeLoader(input_data.recipe_file_path)
-        recipe_data = recipe_loader.recipe_data
-        results_data = json.loads(input_data.results_file.get_contents())
-        all_ingredients = recipe_loader.get_all_ingredients(results_data)
+        try:
+            # load the data from Cellpack output JSON file
+            recipe_loader = RecipeLoader(input_data.recipe_file_path)
+            recipe_data = recipe_loader.recipe_data
+            results_data = json.loads(input_data.results_file.get_contents())
+            all_ingredients = recipe_loader.get_all_ingredients(results_data)
+        except Exception as e:
+            raise InputDataError(f"Error reading cellpack input file: {e}")
 
         box_center = CellpackConverter._get_box_center(recipe_data)
         agent_data = CellpackConverter._process_ingredients(

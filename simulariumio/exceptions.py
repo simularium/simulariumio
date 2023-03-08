@@ -42,3 +42,17 @@ class DataError(Exception):
 
     def __str__(self):
         return f"Problem with Data: '{self.issue}'."
+
+
+class InputDataError(Exception):
+    """
+    This exception is intended to communicate that an error occurred
+    while the input files were being read or parsed.
+    """
+
+    def __init__(self, issue, **kwargs):
+        super().__init__(**kwargs)
+        self.issue = issue
+
+    def __str__(self):
+        return f"Problem with input file: {self.issue}."

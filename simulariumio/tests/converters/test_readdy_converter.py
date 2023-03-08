@@ -12,6 +12,7 @@ from simulariumio.constants import (
     DEFAULT_BOX_SIZE,
     VIZ_TYPE,
 )
+from simulariumio.exceptions import InputDataError
 
 
 data = ReaddyData(
@@ -424,3 +425,21 @@ def test_bundleData_ignored_types(bundleData, expected_bundleData):
 
 def test_agent_ids_ignored_types():
     assert JsonWriter._check_agent_ids_are_unique_per_frame(results_display_data)
+
+
+def test_input_file_error():
+    # a .txt file should trigger an error when trying to read the data
+    txt_file = ReaddyData(
+        timestep=0.1,
+        path_to_readdy_h5="simulariumio/tests/data/smoldyn/example_data.txt",
+    )
+    with pytest.raises(InputDataError):
+        ReaddyConverter(txt_file)
+
+    # also expect an error for a json file
+    json_file = ReaddyData(
+        timestep=0.1,
+        path_to_readdy_h5="simulariumio/tests/data/cellpack/mock_results.json",
+    )
+    with pytest.raises(InputDataError):
+        ReaddyConverter(json_file)

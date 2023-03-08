@@ -15,6 +15,7 @@ from ..data_objects import (
     DisplayData,
 )
 from ..constants import VIZ_TYPE, DISPLAY_TYPE, SUBPOINT_VALUES_PER_ITEM
+from ..exceptions import InputDataError
 from .cytosim_data import CytosimData
 from .cytosim_object_info import CytosimObjectInfo
 
@@ -263,26 +264,33 @@ class CytosimConverter(TrajectoryConverter):
         print("Reading Cytosim Data -------------")
         # load the data from Cytosim output .txt files
         cytosim_data = {}
-        for object_type in input_data.object_info:
-            cytosim_data[object_type] = (
-                input_data.object_info[object_type]
-                .cytosim_file.get_contents()
-                .split("\n")
-            )
+        try:
+            for object_type in input_data.object_info:
+                cytosim_data[object_type] = (
+                    input_data.object_info[object_type]
+                    .cytosim_file.get_contents()
+                    .split("\n")
+                )
+        except Exception as e:
+            raise InputDataError(f"Error reading input cytosim file: {e}")
+
         # parse
         dimensions = CytosimConverter._parse_dimensions(cytosim_data)
         agent_data = AgentData.from_dimensions(dimensions)
         agent_data.draw_fiber_points = input_data.draw_fiber_points
         uids = []
         for object_type in input_data.object_info:
-            agent_data, uids = CytosimConverter._parse_objects(
-                object_type,
-                cytosim_data[object_type],
-                input_data.meta_data.scale_factor,
-                input_data.object_info[object_type],
-                agent_data,
-                uids,
-            )
+            try:
+                agent_data, uids = CytosimConverter._parse_objects(
+                    object_type,
+                    cytosim_data[object_type],
+                    input_data.meta_data.scale_factor,
+                    input_data.object_info[object_type],
+                    agent_data,
+                    uids,
+                )
+            except Exception as e:
+                raise InputDataError(f"Error reading input cytosim data: {e}")
         # get display data (geometry and color)
         for object_type in input_data.object_info:
             for tid in input_data.object_info[object_type].display_data:
