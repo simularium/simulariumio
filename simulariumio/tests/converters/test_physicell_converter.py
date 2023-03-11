@@ -721,7 +721,9 @@ def test_input_file_error():
     # path to a file, not a directory
     invalid_data_0 = PhysicellData(
         timestep=360.0,
-        path_to_output_dir="simulariumio/tests/data/physicell/default_output/output00000000.xml",
+        path_to_output_dir=(
+            "simulariumio/tests/data/physicell/default_output/output00000000.xml",
+        )
     )
     with pytest.raises(InputDataError):
         PhysicellConverter(invalid_data_0)

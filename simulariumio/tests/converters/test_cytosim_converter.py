@@ -363,7 +363,8 @@ def test_input_file_error():
             "fibers": CytosimObjectInfo(
                 cytosim_file=InputFileData(
                     file_path=(
-                        "simulariumio/tests/data/physicell/default_output/initial_cells.mat"
+                        "simulariumio/tests/data/physicell/"
+                        "default_output/initial_cells.mat"
                     ),
                 ),
             )

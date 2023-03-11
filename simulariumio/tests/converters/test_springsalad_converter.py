@@ -426,7 +426,9 @@ def test_input_file_error():
     # springsalad_broken_link.txt is makes a link with an agent that doesn't exist
     data = SpringsaladData(
         sim_view_txt_file=InputFileData(
-            file_path="simulariumio/tests/data/malformed_data/springsalad_broken_link.txt"
+            file_path=(
+                "simulariumio/tests/data/malformed_data/springsalad_broken_link.txt"
+            )
         ),
         draw_bonds=True,
     )

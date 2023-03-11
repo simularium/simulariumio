@@ -283,8 +283,10 @@ def test_input_file_error():
         McellConverter(invalid_json)
 
     wrong_bin = McellData(
-        path_to_data_model_json="simulariumio/tests/data/mcell/organelle_model_viz_output/Scene.data_model.00.json",
-        path_to_binary_files="simulariumio/tests/data/mcell/organelle_model_example_files/mcell/output_data/react_data/seed_00001",
+        path_to_data_model_json="simulariumio/tests/data/mcell/"
+        "organelle_model_viz_output/Scene.data_model.00.json",
+        path_to_binary_files="simulariumio/tests/data/mcell/"
+        "organelle_model_example_files/mcell/output_data/react_data/seed_00001",
     )
     with pytest.raises(InputDataError):
         McellConverter(wrong_bin)
