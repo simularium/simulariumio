@@ -160,8 +160,8 @@ def test_from_list_with_scale_factor():
         viz_types=np.array(viz_types),
         unique_ids=np.array(unique_ids),
         types=types,
-        positions=scale_factor*np.array(positions),
-        radii=scale_factor*np.array(radii),
+        positions=scale_factor * np.array(positions),
+        radii=scale_factor * np.array(radii),
     )
 
     result = AgentData.from_lists(list_data, scale_factor)
