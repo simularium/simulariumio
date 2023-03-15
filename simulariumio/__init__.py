@@ -22,6 +22,7 @@ from .data_objects import (  # noqa: F401
     ScatterPlotData,
     TrajectoryData,
     UnitData,
+    AgentDataLists,
 )
 # DO NOT ISORT DISPLAY_TYPE, CAUSES CIRCULAR DEP
 from .constants import DISPLAY_TYPE  # noqa: F401

@@ -1,6 +1,6 @@
 import numpy as np
 
-from simulariumio import AgentData
+from simulariumio import AgentData, AgentDataLists
 
 
 def test_agent_data_jagged_list():
@@ -98,7 +98,22 @@ def test_agent_data_jagged_list():
             ],
         ),
     )
-    result = AgentData.from_lists(list_data, 1.0)
+    agent_list_obj = AgentDataLists(
+        times=list_data.get("times"),
+        n_agents=list_data.get("n_agents"),
+        viz_types=list_data.get("viz_types"),
+        unique_ids=list_data.get("unique_ids"),
+        types=list_data.get("type_names"),
+        positions=list_data.get("positions"),
+        radii=list_data.get("radii"),
+        rotations=list_data.get("rotations"),
+        n_subpoints=list_data.get("n_subpoints"),
+        subpoints=list_data.get("subpoints"),
+        display_data=list_data.get("display_data"),
+        draw_fiber_points=list_data.get("draw_fiber_points"),
+        n_timesteps=list_data.get("n_timesteps"),
+    )
+    result = AgentData.from_lists(agent_list_obj, 1.0)
     assert expected_results == result
 
 
@@ -194,7 +209,22 @@ def test_from_list_with_scale_factor():
         ),
     )
     scale_factor = 10.0
-    result = AgentData.from_lists(list_data, scale_factor)
+    agent_list_obj = AgentDataLists(
+        times=list_data.get("times"),
+        n_agents=list_data.get("n_agents"),
+        viz_types=list_data.get("viz_types"),
+        unique_ids=list_data.get("unique_ids"),
+        types=list_data.get("type_names"),
+        positions=list_data.get("positions"),
+        radii=list_data.get("radii"),
+        rotations=list_data.get("rotations"),
+        n_subpoints=list_data.get("n_subpoints"),
+        subpoints=list_data.get("subpoints"),
+        display_data=list_data.get("display_data"),
+        draw_fiber_points=list_data.get("draw_fiber_points"),
+        n_timesteps=list_data.get("n_timesteps"),
+    )
+    result = AgentData.from_lists(agent_list_obj, scale_factor)
     assert expected_results == result
 
 
@@ -489,5 +519,20 @@ def test_jagged_data_subpoints():
             ]
         ),
     )
-    result = AgentData.from_lists(list_data, 1.0)
+    agent_list_obj = AgentDataLists(
+        times=list_data.get("times"),
+        n_agents=list_data.get("n_agents"),
+        viz_types=list_data.get("viz_types"),
+        unique_ids=list_data.get("unique_ids"),
+        types=list_data.get("type_names"),
+        positions=list_data.get("positions"),
+        radii=list_data.get("radii"),
+        rotations=list_data.get("rotations"),
+        n_subpoints=list_data.get("n_subpoints"),
+        subpoints=list_data.get("subpoints"),
+        display_data=list_data.get("display_data"),
+        draw_fiber_points=list_data.get("draw_fiber_points"),
+        n_timesteps=list_data.get("n_timesteps"),
+    )
+    result = AgentData.from_lists(agent_list_obj, 1.0)
     assert agent_data == result

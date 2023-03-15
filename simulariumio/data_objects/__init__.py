@@ -10,5 +10,6 @@ from .camera_data import CameraData  # noqa: F401
 from .dimension_data import DimensionData  # noqa: F401
 from .input_file_data import InputFileData  # noqa: F401
 from .model_meta_data import ModelMetaData  # noqa: F401
+from .agent_data_lists import AgentDataLists  # noqa: F401
 from .histogram_plot_data import HistogramPlotData  # noqa: F401
 from .scatter_plot_data import ScatterPlotData  # noqa: F401

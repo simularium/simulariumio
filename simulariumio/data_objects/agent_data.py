@@ -20,6 +20,7 @@ from ..constants import (
 from ..exceptions import DataError
 from .dimension_data import DimensionData
 from .display_data import DisplayData
+from .agent_data_lists import AgentDataLists
 
 ###############################################################################
 
@@ -353,17 +354,17 @@ class AgentData:
         return np.array(exploded, dtype=float).reshape((df.shape[0], df.shape[1], 3))
 
     @staticmethod
-    def _get_subpoints_numpy_array(trajectory) -> np.ndarray:
+    def _get_subpoints_numpy_array(list_data: AgentDataLists) -> np.ndarray:
         """
         Shape a 3 dimensional jagged list for subpoints into a numpy array
         """
         frame_arrays = []
         max_agents = 0
         max_subpoints = 0
-        total_steps = len(trajectory.get("subpoints", []))
+        total_steps = len(list_data.subpoints) if list_data.subpoints else 0
         for time_index in range(total_steps):
             filled_frame = AgentData._fill_df(
-                pd.DataFrame(trajectory["subpoints"][time_index]), 0.0
+                pd.DataFrame(list_data.subpoints[time_index]), 0.0
             )
             frame_array = np.array(filled_frame, dtype=float)
             if frame_array.shape[0] > max_agents:
@@ -371,7 +372,7 @@ class AgentData:
             if frame_array.shape[1] > max_subpoints:
                 max_subpoints = frame_array.shape[1]
             frame_arrays.append(frame_array)
-        values_per_frame = max_agents * max_subpoints  # * 3
+        values_per_frame = max_agents * max_subpoints
         result = np.zeros(total_steps * values_per_frame)
         for time_index, frame_array in enumerate(frame_arrays):
             if frame_array.shape[1] < max_subpoints:
@@ -384,32 +385,33 @@ class AgentData:
         return result.reshape(total_steps, max_agents, max_subpoints)
 
     @classmethod
-    def from_lists(cls, trajectory_dict, scale_factor):
+    def from_lists(cls, list_data: AgentDataLists, scale_factor):
         """
-        Shape a dictionary of jagged lists into a Simularium AgentData object
+        Shape AgentDataLists object, which may contain jagged lists,
+        into an AgentData object
         """
         return cls(
-            times=np.array(trajectory_dict["times"]),
-            n_agents=np.array(trajectory_dict["n_agents"]),
+            times=np.array(list_data.times),
+            n_agents=np.array(list_data.n_agents),
             viz_types=AgentData._fill_df(
-                pd.DataFrame(trajectory_dict["viz_types"]), 1000.0
+                pd.DataFrame(list_data.viz_types), 1000.0
             ).to_numpy(dtype=float),
             unique_ids=AgentData._fill_df(
-                pd.DataFrame(trajectory_dict["unique_ids"]), 0
+                pd.DataFrame(list_data.unique_ids), 0
             ).to_numpy(dtype=int),
-            types=trajectory_dict["type_names"],
+            types=list_data.types,
             positions=scale_factor
-            * AgentData._jagged_3d_list_to_numpy_array(trajectory_dict["positions"]),
+            * AgentData._jagged_3d_list_to_numpy_array(list_data.positions),
             radii=scale_factor
-            * AgentData._fill_df(pd.DataFrame(trajectory_dict["radii"]), 0.0).to_numpy(),
+            * AgentData._fill_df(pd.DataFrame(list_data.radii), 0.0).to_numpy(),
             n_subpoints=AgentData._fill_df(
-                pd.DataFrame(trajectory_dict.get("n_subpoints")), 0.0
+                pd.DataFrame(list_data.n_subpoints), 0.0
             ).to_numpy(dtype=int)
-            if trajectory_dict.get("n_subpoints")
+            if list_data.n_subpoints
             else None,
             subpoints=scale_factor
-            * AgentData._get_subpoints_numpy_array(trajectory_dict)
-            if trajectory_dict.get("subpoints")
+            * AgentData._get_subpoints_numpy_array(list_data)
+            if list_data.subpoints
             else None,
             rotations=None,
         )
@@ -629,20 +631,18 @@ class AgentData:
         return self.display_data[type_name].display_type
 
     def _default_display_type_for_agent(
-        self, 
-        time_index: int, 
-        agent_index: int
+        self, time_index: int, agent_index: int
     ) -> DISPLAY_TYPE:
         """
-        Get the default DISPLAY_TYPE to use 
+        Get the default DISPLAY_TYPE to use
         given the number of subpoints for the agent
         at the given time and agent indices
         """
         n_subpoints = self.n_subpoints[time_index][agent_index]
         default_display_types = {
-            4 : DISPLAY_TYPE.SPHERE_GROUP, 
-            3 : DISPLAY_TYPE.FIBER, 
-            1 : DISPLAY_TYPE.SPHERE,
+            4: DISPLAY_TYPE.SPHERE_GROUP,
+            3: DISPLAY_TYPE.FIBER,
+            1: DISPLAY_TYPE.SPHERE,
         }
         for values_per_item in default_display_types:
             if n_subpoints % float(values_per_item) == 0:
