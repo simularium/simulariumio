@@ -331,7 +331,7 @@ class AgentData:
         )
 
     @staticmethod
-    def fill_df(df, fill):
+    def _fill_df(df, fill):
         """
         Fill Nones in a DataFrame with a fill value
         """
@@ -343,17 +343,17 @@ class AgentData:
         return df
 
     @staticmethod
-    def jagged_3d_list_to_numpy_array(jagged_3d_list):
+    def _jagged_3d_list_to_numpy_array(jagged_3d_list):
         """
         Shape a jagged list with 3 dimensions to a numpy array
         """
-        df = AgentData.fill_df(pd.DataFrame(jagged_3d_list), [0, 0, 0])
+        df = AgentData._fill_df(pd.DataFrame(jagged_3d_list), [0, 0, 0])
         df_t = df.transpose()
         exploded = [df_t[col].explode() for col in list(df_t.columns)]
         return np.array(exploded, dtype=float).reshape((df.shape[0], df.shape[1], 3))
 
     @staticmethod
-    def get_subpoints_numpy_array(trajectory) -> np.ndarray:
+    def _get_subpoints_numpy_array(trajectory) -> np.ndarray:
         """
         Shape a 3 dimensional jagged list for subpoints into a numpy array
         """
@@ -362,7 +362,7 @@ class AgentData:
         max_subpoints = 0
         total_steps = len(trajectory.get("subpoints", []))
         for time_index in range(total_steps):
-            filled_frame = AgentData.fill_df(
+            filled_frame = AgentData._fill_df(
                 pd.DataFrame(trajectory["subpoints"][time_index]), 0.0
             )
             frame_array = np.array(filled_frame, dtype=float)
@@ -391,24 +391,24 @@ class AgentData:
         return cls(
             times=np.array(trajectory_dict["times"]),
             n_agents=np.array(trajectory_dict["n_agents"]),
-            viz_types=AgentData.fill_df(
+            viz_types=AgentData._fill_df(
                 pd.DataFrame(trajectory_dict["viz_types"]), 1000.0
             ).to_numpy(dtype=float),
-            unique_ids=AgentData.fill_df(
+            unique_ids=AgentData._fill_df(
                 pd.DataFrame(trajectory_dict["unique_ids"]), 0
             ).to_numpy(dtype=int),
             types=trajectory_dict["type_names"],
             positions=scale_factor
-            * AgentData.jagged_3d_list_to_numpy_array(trajectory_dict["positions"]),
+            * AgentData._jagged_3d_list_to_numpy_array(trajectory_dict["positions"]),
             radii=scale_factor
-            * AgentData.fill_df(pd.DataFrame(trajectory_dict["radii"]), 0.0).to_numpy(),
-            n_subpoints=AgentData.fill_df(
+            * AgentData._fill_df(pd.DataFrame(trajectory_dict["radii"]), 0.0).to_numpy(),
+            n_subpoints=AgentData._fill_df(
                 pd.DataFrame(trajectory_dict.get("n_subpoints")), 0.0
             ).to_numpy(dtype=int)
             if trajectory_dict.get("n_subpoints")
             else None,
             subpoints=scale_factor
-            * AgentData.get_subpoints_numpy_array(trajectory_dict)
+            * AgentData._get_subpoints_numpy_array(trajectory_dict)
             if trajectory_dict.get("subpoints")
             else None,
             rotations=None,
