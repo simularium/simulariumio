@@ -332,7 +332,7 @@ class AgentData:
         )
 
     @staticmethod
-    def _fill_df(df, fill):
+    def _fill_df(df: pd.DataFrame, fill: List[float]) -> pd.DataFrame:
         """
         Fill Nones in a DataFrame with a fill value
         """
@@ -344,7 +344,7 @@ class AgentData:
         return df
 
     @staticmethod
-    def _jagged_3d_list_to_numpy_array(jagged_3d_list):
+    def _jagged_3d_list_to_numpy_array(jagged_3d_list: np.ndarray) -> np.ndarray:
         """
         Shape a jagged list with 3 dimensions to a numpy array
         """
@@ -385,7 +385,7 @@ class AgentData:
         return result.reshape(total_steps, max_agents, max_subpoints)
 
     @classmethod
-    def from_lists(cls, list_data: AgentDataLists, scale_factor):
+    def from_lists(cls, list_data: AgentDataLists, scale_factor: float) -> AgentData:
         """
         Shape AgentDataLists object, which may contain jagged lists,
         into an AgentData object
