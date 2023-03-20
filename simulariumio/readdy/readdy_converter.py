@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Any, Tuple
+from typing import Any, Tuple, Callable
 
 import numpy as np
 import readdy
@@ -21,7 +21,12 @@ log = logging.getLogger(__name__)
 
 
 class ReaddyConverter(TrajectoryConverter):
-    def __init__(self, input_data: ReaddyData):
+    def __init__(
+        self,
+        input_data: ReaddyData,
+        progress_callback: Callable = None,
+        num_progress_reports: int = 4,
+    ):
         """
         This object reads simulation trajectory outputs
         from ReaDDy (https://readdy.github.io/)
@@ -33,8 +38,17 @@ class ReaddyConverter(TrajectoryConverter):
         input_data : ReaddyData
             An object containing info for reading
             ReaDDy simulation trajectory outputs and plot data
+        progress_callback : Callable (optional)
+            Callback function that will be called at a given progress interval,
+            determined by num_progress_reports requested, providing the current
+            percent progress
+            Default: None
+        num_progress_reports : int (optional)
+            If a progress_callback was provided, number of updates to send
+            while converting data
+            Default: 4
         """
-        self._data = self._read(input_data)
+        self._data = self._read(input_data, progress_callback, num_progress_reports)
 
     @staticmethod
     def _get_raw_trajectory_data(
@@ -51,6 +65,8 @@ class ReaddyConverter(TrajectoryConverter):
     @staticmethod
     def _get_agent_data(
         input_data: ReaddyData,
+        progress_callback: Callable,
+        reports_requested: int,
     ) -> AgentData:
         """
         Pack raw ReaDDy trajectory data into AgentData,
@@ -67,6 +83,18 @@ class ReaddyConverter(TrajectoryConverter):
             total_steps=n_agents.shape[0],
             max_agents=int(np.amax(n_agents)),
         )
+
+        # Create a numpy array indicating which time indices to report
+        # on in order to send reports_requested evenly spaced reports
+        # (skipping time index 0)
+        report_indices = np.linspace(
+            0,
+            data_dimensions.total_steps,
+            reports_requested + 1,
+            endpoint=False,
+            dtype=int,
+        )
+
         result = AgentData.from_dimensions(data_dimensions)
         result.times = input_data.timestep * np.arange(data_dimensions.total_steps)
         result.viz_types = VIZ_TYPE.DEFAULT * np.ones(
@@ -83,7 +111,8 @@ class ReaddyConverter(TrajectoryConverter):
                     raw_type_name, input_data.display_data
                 )
                 display_data = (
-                    input_display_data if input_display_data is not None
+                    input_display_data
+                    if input_display_data is not None
                     else DisplayData(
                         name=raw_type_name, display_type=DISPLAY_TYPE.SPHERE
                     )
@@ -102,16 +131,25 @@ class ReaddyConverter(TrajectoryConverter):
                 )
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index
+            if progress_callback and time_index != 0 and time_index in report_indices:
+                # send a progress update for % complete
+                progress_callback(time_index / data_dimensions.total_steps)
         return result
 
     @staticmethod
-    def _read(input_data: ReaddyData) -> TrajectoryData:
+    def _read(
+        input_data: ReaddyData,
+        progress_callback: Callable,
+        reports_requested: int,
+    ) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
         print("Reading ReaDDy Data -------------")
         try:
-            agent_data = ReaddyConverter._get_agent_data(input_data)
+            agent_data = ReaddyConverter._get_agent_data(
+                input_data, progress_callback, reports_requested
+            )
         except Exception as e:
             raise InputDataError(f"Error reading input Readdy data: {e}")
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Dict, Any
+from typing import Dict, Any, Callable
 import json
 import os
 import array
@@ -33,7 +33,12 @@ BLENDER_GEOMETRY_SCALE_FACTOR = 0.005
 
 
 class McellConverter(TrajectoryConverter):
-    def __init__(self, input_data: McellData):
+    def __init__(
+        self,
+        input_data: McellData,
+        progress_callback: Callable = None,
+        num_progress_reports: int = 4,
+    ):
         """
         This object reads simulation trajectory outputs
         from MCell (https://mcell.org/)
@@ -45,8 +50,17 @@ class McellConverter(TrajectoryConverter):
         input_data : McellData
             An object containing info for reading
             MCell simulation trajectory outputs and plot data
+        progress_callback : Callable (optional)
+            Callback function that will be called at a given progress interval,
+            determined by num_progress_reports requested, providing the current
+            percent progress
+            Default: None
+        num_progress_reports : int (optional)
+            If a progress_callback was provided, number of updates to send
+            while converting data
+            Default: 4
         """
-        self._data = self._read(input_data)
+        self._data = self._read(input_data, progress_callback, num_progress_reports)
 
     @staticmethod
     def _normalize(v: np.ndarray) -> np.ndarray:
@@ -289,6 +303,8 @@ class McellConverter(TrajectoryConverter):
         timestep: float,
         molecule_list: Dict[str, Any],
         input_data: McellData,
+        progress_callback: Callable,
+        reports_requested: int,
     ) -> AgentData:
         """
         Parse cellblender binary files to get spatial data
@@ -304,6 +320,14 @@ class McellConverter(TrajectoryConverter):
         # get metadata for each agent type
         molecule_info = {}
         total_steps = 0
+
+        # Create a numpy array indicating which time indices to report
+        # on in order to send reports_requested evenly spaced reports
+        # (skipping time index 0)
+        report_indices = np.linspace(
+            0, dimensions.total_steps, reports_requested + 1, endpoint=False, dtype=int
+        )
+
         for molecule in molecule_list:
             molecule_info[molecule["mol_name"]] = molecule
         for file_name in os.listdir(input_data.path_to_binary_files):
@@ -323,11 +347,16 @@ class McellConverter(TrajectoryConverter):
                 input_data,
                 result,
             )
+            if progress_callback and time_index in report_indices and time_index != 0:
+                # send a progress update for % complete
+                progress_callback(time_index / dimensions.total_steps)
         result.n_timesteps = total_steps + 1
         return result
 
     @staticmethod
-    def _read(input_data: McellData) -> TrajectoryData:
+    def _read(
+        input_data: McellData, progress_callback: Callable, reports_requested: int
+    ) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
@@ -347,6 +376,8 @@ class McellConverter(TrajectoryConverter):
             time_units.magnitude,
             data_model["mcell"]["define_molecules"]["molecule_list"],
             input_data,
+            progress_callback,
+            reports_requested,
         )
         time_units.magnitude = 1
         # get box size

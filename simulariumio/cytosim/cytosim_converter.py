@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Callable
 
 import numpy as np
 
@@ -27,7 +27,12 @@ log = logging.getLogger(__name__)
 
 
 class CytosimConverter(TrajectoryConverter):
-    def __init__(self, input_data: CytosimData):
+    def __init__(
+        self,
+        input_data: CytosimData,
+        progress_callback: Callable = None,
+        num_progress_reports: int = 4,
+    ):
         """
         This object reads simulation trajectory outputs
         from CytoSim (https://gitlab.com/f.nedelec/cytosim)
@@ -39,8 +44,17 @@ class CytosimConverter(TrajectoryConverter):
         input_data : CytosimData
             An object containing info for reading
             Cytosim simulation trajectory outputs and plot data
+        progress_callback : Callable (optional)
+            Callback function that will be called at a given progress interval,
+            determined by num_progress_reports requested, providing the current
+            percent progress
+            Default: None
+        num_progress_reports : int (optional)
+            If a progress_callback was provided, number of updates to send
+            while converting data
+            Default: 4
         """
-        self._data = self._read(input_data)
+        self._data = self._read(input_data, progress_callback, num_progress_reports)
 
     @staticmethod
     def _ignore_line(line: str) -> bool:
@@ -177,7 +191,11 @@ class CytosimConverter(TrajectoryConverter):
         object_info: CytosimObjectInfo,
         result: AgentData,
         used_unique_IDs: List[int],
-    ) -> Tuple[Dict[str, Any], List[int]]:
+        progress_callback: Callable,
+        report_lines: np.ndarray,
+        overall_line: int,
+        total_lines: int,
+    ) -> Tuple[Dict[str, Any], List[int], int]:
         """
         Parse a Cytosim output file containing objects
         (fibers, solids, singles, or couples) to get agents
@@ -253,11 +271,18 @@ class CytosimConverter(TrajectoryConverter):
                     )
                 )
                 result.n_agents[time_index] += 1
+            overall_line += 1
+            if progress_callback and overall_line in report_lines:
+                # send a progress update for % complete
+                progress_callback(overall_line / total_lines)
+
         result.n_timesteps = time_index + 1
-        return (result, used_unique_IDs)
+        return (result, used_unique_IDs, overall_line)
 
     @staticmethod
-    def _read(input_data: CytosimData) -> TrajectoryData:
+    def _read(
+        input_data: CytosimData, progress_callback: Callable, reports_requested: int
+    ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the CytoSim data
         """
@@ -278,16 +303,30 @@ class CytosimConverter(TrajectoryConverter):
         dimensions = CytosimConverter._parse_dimensions(cytosim_data)
         agent_data = AgentData.from_dimensions(dimensions)
         agent_data.draw_fiber_points = input_data.draw_fiber_points
+        overall_line = 0
+
+        # Create a numpy array indicating which lines to report on in order
+        # to send reports_requested evenly spaced reports across all of the
+        # object types (skipping time index 0)
+        total_lines = sum(len(obj_data) for obj_data in cytosim_data)
+        report_lines = np.linspace(
+            0, total_lines, reports_requested + 1, endpoint=False, dtype=int
+        )
+
         uids = []
         for object_type in input_data.object_info:
             try:
-                agent_data, uids = CytosimConverter._parse_objects(
+                agent_data, uids, overall_line = CytosimConverter._parse_objects(
                     object_type,
                     cytosim_data[object_type],
                     input_data.meta_data.scale_factor,
                     input_data.object_info[object_type],
                     agent_data,
                     uids,
+                    progress_callback,
+                    report_lines,
+                    overall_line,
+                    total_lines,
                 )
             except Exception as e:
                 raise InputDataError(f"Error reading input cytosim data: {e}")

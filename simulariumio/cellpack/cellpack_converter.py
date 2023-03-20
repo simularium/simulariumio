@@ -6,6 +6,7 @@ import os
 import numpy as np
 import json
 from scipy.spatial.transform import Rotation as R
+from typing import Callable
 
 from cellpack import RecipeLoader
 from ..constants import DISPLAY_TYPE, VIZ_TYPE, VALUES_PER_3D_POINT
@@ -33,7 +34,12 @@ DEFAULT_RADIUS = 10
 
 
 class CellpackConverter(TrajectoryConverter):
-    def __init__(self, input_data: CellpackData):
+    def __init__(
+        self,
+        input_data: CellpackData,
+        progress_callback: Callable = None,
+        num_progress_reports: int = 4,
+    ):
         """
         This object reads packing results outputs
         from Cellpack (http://www.cellpack.org)
@@ -45,8 +51,17 @@ class CellpackConverter(TrajectoryConverter):
         input_data : CellpackData
             An object containing info for reading
             Cellpack simulation trajectory outputs and plot data
+        progress_callback : Callable (optional)
+            Callback function that will be called at a given progress interval,
+            determined by num_progress_reports requested, providing the current
+            percent progress
+            Default: None
+        num_progress_reports : int (optional)
+            If a progress_callback was provided, number of updates to send
+            while converting data
+            Default: 4
         """
-        self._data = self._read(input_data)
+        self._data = self._read(input_data, progress_callback, num_progress_reports)
 
     @staticmethod
     def _get_box_center(recipe_data):
@@ -266,11 +281,26 @@ class CellpackConverter(TrajectoryConverter):
         handedness: HAND_TYPE,
         geometry_url: str,
         display_data,
+        progress_callback: Callable,
+        reports_requested: int,
     ) -> AgentData:
         dimensions = CellpackConverter._parse_dimensions(all_ingredients)
         spatial_data = AgentData.from_dimensions(dimensions)
         display_data = {} if display_data is None else display_data
         agent_id_counter = 0
+        ingredient_count = 0
+
+        # Create a numpy array indicating which ingredients to report
+        # on in order to send reports_requested evenly spaced reports
+        # (skipping ingredient 0)
+        report_ingredients = np.linspace(
+            0,
+            len(all_ingredients),
+            reports_requested + 1,
+            endpoint=False,
+            dtype=int
+        )
+
         for ingredient in all_ingredients:
             ingredient_data = ingredient["recipe_data"]
             ingredient_key = ingredient_data["name"]
@@ -325,6 +355,11 @@ class CellpackConverter(TrajectoryConverter):
                         box_center,
                     )
                     agent_id_counter += 1
+            ingredient_count += 1
+            if progress_callback and ingredient_count in report_ingredients:
+                # send a progress update
+                progress_callback(ingredient_count / len(all_ingredients))
+
         spatial_data.display_data = display_data
         return spatial_data
 
@@ -337,7 +372,9 @@ class CellpackConverter(TrajectoryConverter):
         )
 
     @staticmethod
-    def _read(input_data: CellpackData) -> TrajectoryData:
+    def _read(
+        input_data: CellpackData, progress_callback: Callable, reports_requested: int
+    ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the Cellpack data
         """
@@ -368,6 +405,8 @@ class CellpackConverter(TrajectoryConverter):
             input_data.handedness,
             input_data.geometry_url,
             input_data.display_data,
+            progress_callback,
+            reports_requested
         )
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))

@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List
+from typing import List, Callable
 import math
+import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import (
@@ -30,7 +31,12 @@ log = logging.getLogger(__name__)
 
 
 class MedyanConverter(TrajectoryConverter):
-    def __init__(self, input_data: MedyanData):
+    def __init__(
+        self,
+        input_data: MedyanData,
+        progress_callback: Callable = None,
+        num_progress_reports: int = 4,
+    ):
         """
         This object reads simulation trajectory outputs
         from MEDYAN (http://medyan.org/)
@@ -42,8 +48,17 @@ class MedyanConverter(TrajectoryConverter):
         input_data : MedyanData
             An object containing info for reading
             MEDYAN simulation trajectory outputs and plot data
+        progress_callback : Callable (optional)
+            Callback function that will be called at a given progress interval,
+            determined by num_progress_reports requested, providing the current
+            percent progress
+            Default: None
+        num_progress_reports : int (optional)
+            If a progress_callback was provided, number of updates to send
+            while converting data
+            Default: 4
         """
-        self._data = self._read(input_data)
+        self._data = self._read(input_data, progress_callback, num_progress_reports)
 
     @staticmethod
     def _draw_endpoints(line: str, object_type: str, input_data: MedyanData) -> bool:
@@ -134,7 +149,11 @@ class MedyanConverter(TrajectoryConverter):
         return result
 
     @staticmethod
-    def _get_trajectory_data(input_data: MedyanData) -> AgentData:
+    def _get_trajectory_data(
+        input_data: MedyanData,
+        progress_callback: Callable,
+        reports_requested: int,
+    ) -> AgentData:
         """
         Parse a MEDYAN snapshot.traj output file to get agents
         """
@@ -162,6 +181,14 @@ class MedyanConverter(TrajectoryConverter):
         last_tid = 0
         object_type = ""
         draw_endpoints = False
+        line_count = 0
+
+        # Create a numpy array for which lines to report on in order to send
+        # reports_requested evenly spaced reports (skipping line 0)
+        report_lines = np.linspace(
+            0, len(lines), reports_requested + 1, endpoint=False, dtype=int
+        )
+
         for line in lines:
             if len(line) < 1:
                 at_frame_start = True
@@ -258,16 +285,25 @@ class MedyanConverter(TrajectoryConverter):
                 if draw_endpoints:
                     agent_index += 2
                     result.n_agents[time_index] += 2
+            line_count += 1
+            if progress_callback and line_count in report_lines:
+                # send a progress update for % complete
+                progress_callback(line_count / len(lines))
+
         result.n_timesteps = time_index + 1
         return result
 
     @staticmethod
-    def _read(input_data: MedyanData) -> TrajectoryData:
+    def _read(
+        input_data: MedyanData, progress_callback: Callable, reports_requested: int
+    ) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
         print("Reading MEDYAN Data -------------")
-        agent_data = MedyanConverter._get_trajectory_data(input_data)
+        agent_data = MedyanConverter._get_trajectory_data(
+            input_data, progress_callback, reports_requested
+        )
         # get display data (geometry and color)
         for object_type in input_data.display_data:
             for tid in input_data.display_data[object_type]:

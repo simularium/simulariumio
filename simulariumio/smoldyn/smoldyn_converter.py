@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List
+from typing import List, Callable
 
 import numpy as np
 
@@ -19,7 +19,12 @@ log = logging.getLogger(__name__)
 
 
 class SmoldynConverter(TrajectoryConverter):
-    def __init__(self, input_data: SmoldynData):
+    def __init__(
+        self,
+        input_data: SmoldynData,
+        progress_callback: Callable = None,
+        num_progress_reports: int = 4,
+    ):
         """
         This object reads simulation trajectory outputs
         from Smoldyn (http://www.smoldyn.org)
@@ -31,8 +36,17 @@ class SmoldynConverter(TrajectoryConverter):
         input_data : SmoldynData
             An object containing info for reading
             Smoldyn simulation trajectory outputs and plot data
+        progress_callback : Callable (optional)
+            Callback function that will be called at a given progress interval,
+            determined by num_progress_reports requested, providing the current
+            percent progress
+            Default: None
+        num_progress_reports : int (optional)
+            If a progress_callback was provided, number of updates to send
+            while converting data
+            Default: 4
         """
-        self._data = self._read(input_data)
+        self._data = self._read(input_data, progress_callback, num_progress_reports)
 
     @staticmethod
     def _parse_dimensions(smoldyn_data_lines: List[str]) -> DimensionData:
@@ -59,6 +73,8 @@ class SmoldynConverter(TrajectoryConverter):
     def _parse_objects(
         smoldyn_data_lines: List[str],
         input_data: SmoldynData,
+        progress_callback: Callable,
+        reports_requested: int,
     ) -> AgentData:
         """
         Parse a Smoldyn output file to get AgentData
@@ -67,6 +83,14 @@ class SmoldynConverter(TrajectoryConverter):
         result = AgentData.from_dimensions(dimensions)
         time_index = -1
         agent_index = 0
+        line_count = 0
+
+        # Create a numpy array for which lines to report on in order to send
+        # reports_requested evenly spaced reports (skipping line 0)
+        report_lines = np.linspace(
+            0, len(smoldyn_data_lines), reports_requested + 1, endpoint=False, dtype=int
+        )
+
         for line in smoldyn_data_lines:
             if len(line) < 1:
                 continue
@@ -116,12 +140,21 @@ class SmoldynConverter(TrajectoryConverter):
                     else 1.0
                 )
                 agent_index += 1
+            line_count += 1
+            if progress_callback and line_count in report_lines:
+                # send a progress update for % complete
+                progress_callback(line_count / len(smoldyn_data_lines))
+
         result.n_agents[time_index] = agent_index
         result.n_timesteps = time_index + 1
         return result
 
     @staticmethod
-    def _read(input_data: SmoldynData) -> TrajectoryData:
+    def _read(
+        input_data: SmoldynData,
+        progress_callback: Callable,
+        reports_requested: int,
+    ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the Smoldyn data
         """
@@ -132,7 +165,9 @@ class SmoldynConverter(TrajectoryConverter):
         except Exception as e:
             raise InputDataError(f"Error reading input smoldyn data: {e}")
         # parse
-        agent_data = SmoldynConverter._parse_objects(smoldyn_data, input_data)
+        agent_data = SmoldynConverter._parse_objects(
+            smoldyn_data, input_data, progress_callback, reports_requested
+        )
         # get display data (geometry and color)
         for tid in input_data.display_data:
             display_data = input_data.display_data[tid]

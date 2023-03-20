@@ -3,7 +3,7 @@
 
 import logging
 from simulariumio.data_objects.dimension_data import DimensionData
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Callable
 from pathlib import Path
 
 import numpy as np
@@ -29,7 +29,12 @@ log = logging.getLogger(__name__)
 
 
 class PhysicellConverter(TrajectoryConverter):
-    def __init__(self, input_data: PhysicellData):
+    def __init__(
+        self,
+        input_data: PhysicellData,
+        progress_callback: Callable = None,
+        num_progress_reports: int = 4,
+    ):
         """
         This object reads simulation trajectory outputs
         from PhysiCell (http://physicell.org/)
@@ -41,8 +46,17 @@ class PhysicellConverter(TrajectoryConverter):
         input_data : PhysicellData
             An object containing info for reading
             PhysiCell simulation trajectory outputs and plot data
+        progress_callback : Callable (optional)
+            Callback function that will be called at a given progress interval,
+            determined by num_progress_reports requested, providing the current
+            percent progress
+            Default: None
+        num_progress_reports : int (optional)
+            If a progress_callback was provided, number of updates to send
+            while converting data
+            Default: 4
         """
-        self._data = self._read(input_data)
+        self._data = self._read(input_data, progress_callback, num_progress_reports)
 
     @staticmethod
     def _load_data(
@@ -151,6 +165,8 @@ class PhysicellConverter(TrajectoryConverter):
     @staticmethod
     def _get_trajectory_data(
         input_data: PhysicellData,
+        progress_callback: Callable,
+        reports_requested: int,
     ) -> Tuple[AgentData, UnitData, Dict[int, Dict[int, int]]]:
         """
         Get data in Simularium format
@@ -177,10 +193,25 @@ class PhysicellConverter(TrajectoryConverter):
         values_per_subcell = SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.SPHERE_GROUP)
         n_def_agents = []
         subcells = []
+
+        # Create a numpy array indicating which time indices to report
+        # on in order to send reports_requested evenly spaced reports,
+        # skipping time index 0, over the two for loops
+        report_indices = np.linspace(
+            0,
+            dimensions.total_steps * 2,
+            reports_requested + 1,
+            endpoint=False,
+            dtype=int,
+        )
+
         for time_index in range(dimensions.total_steps):
             n_cells = int(len(discrete_cells[time_index]["position_x"]))
             n_def_agents.append(0)
             subcells.append({})
+            if progress_callback and time_index in report_indices and time_index != 0:
+                # send a progress update
+                progress_callback(time_index / (dimensions.total_steps * 2))
             for cell_index in range(n_cells):
                 cell_type_id = int(discrete_cells[time_index]["cell_type"][cell_index])
                 if PhysicellConverter._cell_is_subcell(cell_type_id, input_data):
@@ -250,6 +281,14 @@ class PhysicellConverter(TrajectoryConverter):
         next_color_index = 0
         for time_index in range(dimensions.total_steps):
             agent_index = n_def_agents[time_index]
+            if (
+                progress_callback
+                and (time_index + dimensions.total_steps) in report_indices
+            ):
+                # send a progress update
+                progress_callback(
+                    (time_index + dimensions.total_steps) / (dimensions.total_steps * 2)
+                )
             for owner_id in subcells[time_index]:
                 if owner_id not in owner_cell_color_indices:
                     owner_cell_color_indices[owner_id] = next_color_index
@@ -313,13 +352,17 @@ class PhysicellConverter(TrajectoryConverter):
         return result, spatial_units, type_ids
 
     @staticmethod
-    def _read(input_data: PhysicellData) -> TrajectoryData:
+    def _read(
+        input_data: PhysicellData,
+        progress_callback: Callable,
+        reports_requested: int,
+    ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the PhysiCell data
         """
         print("Reading PhysiCell Data -------------")
         agent_data, spatial_units, type_ids = PhysicellConverter._get_trajectory_data(
-            input_data
+            input_data, progress_callback, reports_requested
         )
         # get display data (geometry and color)
         for cell_id in input_data.display_data:

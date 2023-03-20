@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Tuple
+from typing import List, Tuple, Callable
 
 import numpy as np
 
@@ -31,7 +31,12 @@ log = logging.getLogger(__name__)
 
 
 class SpringsaladConverter(TrajectoryConverter):
-    def __init__(self, input_data: SpringsaladData):
+    def __init__(
+        self,
+        input_data: SpringsaladData,
+        progress_callback: Callable = None,
+        num_progress_reports: int = 4,
+    ):
         """
         This object reads simulation trajectory outputs
         from SpringSaLaD (https://vcell.org/ssalad)
@@ -43,8 +48,17 @@ class SpringsaladConverter(TrajectoryConverter):
         input_data : SpringsaladData
             An object containing info for reading
             SpringSaLaD simulation trajectory outputs and plot data
+        progress_callback : Callable (optional)
+            Callback function that will be called at a given progress interval,
+            determined by num_progress_reports requested, providing the current
+            percent progress
+            Default: None
+        num_progress_reports : int (optional)
+            If a progress_callback was provided, number of updates to send
+            while converting data
+            Default: 4
         """
-        self._data = self._read(input_data)
+        self._data = self._read(input_data, progress_callback, num_progress_reports)
 
     @staticmethod
     def _parse_dimensions(
@@ -74,7 +88,10 @@ class SpringsaladConverter(TrajectoryConverter):
 
     @staticmethod
     def _parse_springsalad_data(
-        springsalad_data: List[str], input_data: SpringsaladData
+        springsalad_data: List[str],
+        input_data: SpringsaladData,
+        progress_callback: Callable,
+        reports_requested: int,
     ) -> Tuple[AgentData, np.ndarray]:
         """
         Parse SpringSaLaD SIM_VIEW txt file to get spatial data
@@ -88,6 +105,14 @@ class SpringsaladConverter(TrajectoryConverter):
         agent_index = 0
         max_uid = 0
         scene_agent_positions = {}
+        line_count = 0
+
+        # Create a numpy array for which lines to report on in order to send
+        # reports_requested evenly spaced reports (skipping line 0)
+        report_lines = np.linspace(
+            0, len(springsalad_data), reports_requested + 1, endpoint=False, dtype=int
+        )
+
         for line in springsalad_data:
             cols = line.split()
             if "xsize" in line:
@@ -158,11 +183,19 @@ class SpringsaladConverter(TrajectoryConverter):
                     VALUES_PER_3D_POINT : 2 * VALUES_PER_3D_POINT
                 ] = scene_agent_positions[particle2_id]
                 agent_index += 1
+            line_count += 1
+            if progress_callback and line_count in report_lines:
+                # send a progress update for % complete
+                progress_callback(line_count / len(springsalad_data))
         result.n_timesteps = time_index + 1
         return result, box_size
 
     @staticmethod
-    def _read(input_data: SpringsaladData) -> TrajectoryData:
+    def _read(
+        input_data: SpringsaladData,
+        progress_callback: Callable,
+        reports_requested: int,
+    ) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
@@ -172,7 +205,7 @@ class SpringsaladConverter(TrajectoryConverter):
         except Exception as e:
             raise InputDataError(f"Error reading input SpringSaLaD data: {e}")
         agent_data, box_size = SpringsaladConverter._parse_springsalad_data(
-            springsalad_data, input_data
+            springsalad_data, input_data, progress_callback, reports_requested
         )
         # get display data (geometry and color)
         for tid in input_data.display_data:

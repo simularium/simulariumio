@@ -3,7 +3,7 @@
 
 import logging
 import copy
-from typing import Set
+from typing import Set, Callable
 
 import numpy as np
 import pandas as pd
@@ -23,7 +23,12 @@ log = logging.getLogger(__name__)
 
 
 class MdConverter(TrajectoryConverter):
-    def __init__(self, input_data: MdData):
+    def __init__(
+        self,
+        input_data: MdData,
+        progress_callback: Callable = None,
+        num_progress_reports: int = 4,
+    ):
         """
         This object reads simulation trajectory outputs
         from molecular dynamics models
@@ -35,13 +40,22 @@ class MdConverter(TrajectoryConverter):
         input_data : MdData
             An object containing info for reading
             MD simulation trajectory outputs and plot data
+        progress_callback : Callable (optional)
+            Callback function that will be called at a given progress interval,
+            determined by num_progress_reports requested, providing the current
+            percent progress
+            Default: None
+        num_progress_reports : int (optional)
+            If a progress_callback was provided, number of updates to send
+            while converting data
+            Default: 4
         """
-        self._data = self._read(input_data)
+        self._data = self._read(input_data, progress_callback, num_progress_reports)
 
     @staticmethod
     def _read_universe_dimensions(
         input_data: MdData,
-    ) -> AgentData:
+    ) -> DimensionData:
         """
         Use a MD Universe to get the number of timesteps
         and maximum agents per timestep
@@ -150,6 +164,8 @@ class MdConverter(TrajectoryConverter):
     @staticmethod
     def _read_universe(
         input_data: MdData,
+        progress_callback: Callable,
+        reports_requested: int,
     ) -> AgentData:
         """
         Use a MD Universe to get AgentData
@@ -159,6 +175,14 @@ class MdConverter(TrajectoryConverter):
         get_type_name_func = np.frompyfunc(MdConverter._get_type_name, 2, 1)
         unique_raw_type_names = set([])
         time_index = 0
+
+        # Create a numpy array indicating which time indices to report
+        # on in order to send reports_requested evenly spaced reports
+        # (skipping time index 0)
+        report_indices = np.linspace(
+            0, dimensions.total_steps, reports_requested + 1, endpoint=False, dtype=int
+        )
+
         for frame in input_data.md_universe.trajectory[
             :: input_data.nth_timestep_to_read
         ]:
@@ -180,6 +204,10 @@ class MdConverter(TrajectoryConverter):
                 ]
             )
             time_index += 1
+            if progress_callback and time_index in report_indices:
+                # send a progress update for % complete
+                progress_callback(time_index / dimensions.total_steps)
+
         result.n_timesteps = dimensions.total_steps
         result.display_data = MdConverter._get_display_data_mapping(
             unique_raw_type_names, input_data
@@ -187,13 +215,17 @@ class MdConverter(TrajectoryConverter):
         return result
 
     @staticmethod
-    def _read(input_data: MdData) -> TrajectoryData:
+    def _read(
+        input_data: MdData, progress_callback: Callable, reports_requested: int
+    ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the MD data
         """
         print("Reading MD Data -------------")
         # get data from the MD Universe
-        agent_data = MdConverter._read_universe(input_data)
+        agent_data = MdConverter._read_universe(
+            input_data, progress_callback, reports_requested
+        )
         # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
         input_data.meta_data._set_box_size()
