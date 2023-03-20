@@ -3,6 +3,7 @@
 
 import numpy as np
 import pytest
+from unittest.mock import Mock
 
 from simulariumio.readdy import ReaddyConverter, ReaddyData
 from simulariumio import UnitData, MetaData, DisplayData, JsonWriter
@@ -443,3 +444,19 @@ def test_input_file_error():
     )
     with pytest.raises(InputDataError):
         ReaddyConverter(json_file)
+
+
+def test_callback_fn():
+    callback_fn_0 = Mock()
+    call_times = 1
+    ReaddyConverter(data, callback_fn_0, call_times)
+    assert callback_fn_0.call_count == call_times
+
+    callback_fn_1 = Mock()
+    call_times = 2
+    ReaddyConverter(data, callback_fn_1, call_times)
+    assert callback_fn_1.call_count == call_times
+
+    # this test file has 3 timesteps, so updates come at 33% and 67% complete
+    callback_fn_1.assert_any_call(1/3)
+    callback_fn_1.assert_any_call(2/3)

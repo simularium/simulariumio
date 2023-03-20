@@ -3,6 +3,7 @@
 
 import pytest
 import numpy as np
+from unittest.mock import Mock
 
 from simulariumio.smoldyn import (
     SmoldynConverter,
@@ -480,3 +481,23 @@ def test_input_file_error():
     )
     with pytest.raises(InputDataError):
         SmoldynConverter(wrong_file)
+
+
+def test_callback_fn():
+    data = SmoldynData(
+        smoldyn_file=InputFileData(
+            file_path="simulariumio/tests/data/smoldyn/example_2D.txt"
+        )
+    )
+    callback_fn_0 = Mock()
+    call_times = 3
+    SmoldynConverter(data, callback_fn_0, call_times)
+    assert callback_fn_0.call_count == call_times
+
+    callback_fn_1 = Mock()
+    call_times = 1
+    SmoldynConverter(data, callback_fn_1, call_times)
+    assert callback_fn_1.call_count == call_times
+
+    # with only one update, it'll be at 50% since this file has even line count
+    callback_fn_1.assert_called_once_with(0.5)

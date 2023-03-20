@@ -3,6 +3,7 @@
 
 import numpy as np
 import pytest
+from unittest.mock import Mock
 
 from simulariumio.medyan import MedyanConverter, MedyanData
 from simulariumio import MetaData, DisplayData, InputFileData, JsonWriter
@@ -499,3 +500,15 @@ def test_input_file_error():
     )
     with pytest.raises(InputDataError):
         MedyanConverter(invalid_traj)
+
+
+def test_callback_fn():
+    callback_fn_0 = Mock()
+    call_times = 2
+    MedyanConverter(data, callback_fn_0, call_times)
+    assert callback_fn_0.call_count == call_times
+
+    callback_fn_1 = Mock()
+    call_times = 8
+    MedyanConverter(data, callback_fn_1, call_times)
+    assert callback_fn_1.call_count == call_times

@@ -3,6 +3,7 @@
 
 import pytest
 import numpy as np
+from unittest.mock import Mock
 
 from simulariumio import JsonWriter
 from simulariumio.cytosim import (
@@ -372,3 +373,19 @@ def test_input_file_error():
     )
     with pytest.raises(InputDataError):
         CytosimConverter(wrong_file)
+
+
+def test_callback_fn():
+    callback_fn_0 = Mock()
+    call_times = 5
+    CytosimConverter(aster_pull3D_objects, callback_fn_0, call_times)
+    assert callback_fn_0.call_count == call_times
+
+    callback_fn_1 = Mock()
+    call_times = 2
+    CytosimConverter(data, callback_fn_1, call_times)
+    assert callback_fn_1.call_count == call_times
+
+    # this test file has 39 lines, so updates come at 33% and 67% complete
+    callback_fn_1.assert_any_call(1/3)
+    callback_fn_1.assert_any_call(2/3)

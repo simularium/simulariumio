@@ -3,6 +3,7 @@
 
 import pytest
 import numpy as np
+from unittest.mock import Mock
 from MDAnalysis import Universe
 
 from simulariumio.md import (
@@ -367,3 +368,19 @@ def test_bundleData(bundleData, expected_bundleData):
 def test_agent_ids():
     assert JsonWriter._check_agent_ids_are_unique_per_frame(results_display_data)
     assert JsonWriter._check_agent_ids_are_unique_per_frame(results_nth_timestep)
+
+
+def test_callback_fn():
+    callback_fn_0 = Mock()
+    call_times = 1
+    MdConverter(data, callback_fn_0, call_times)
+    assert callback_fn_0.call_count == call_times
+
+    callback_fn_1 = Mock()
+    call_times = 2
+    MdConverter(data, callback_fn_1, call_times)
+    assert callback_fn_1.call_count == call_times
+
+    # this test file has 3 timesteps, so updates come at 33% and 67% complete
+    callback_fn_1.assert_any_call(1/3)
+    callback_fn_1.assert_any_call(2/3)
