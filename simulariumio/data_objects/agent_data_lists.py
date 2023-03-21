@@ -42,7 +42,7 @@ class AgentDataLists:
         n_timesteps: int = -1,
     ):
         """
-        This object contains spatial simulation data
+        This object contains spatial simulation data as lists
 
         Parameters
         ----------
