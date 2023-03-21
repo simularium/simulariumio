@@ -169,11 +169,11 @@ def test_from_list_with_scale_factor():
 def test_jagged_data_subpoints():
     times = [0.0, 1.00001, 2.00001]
     n_agents = [3, 3, 3]
-    viz_types_array = 1001.0 * np.ones(shape=(3,3))
+    viz_types_array = 1001.0 * np.ones(shape=(3, 3))
     unique_ids = [[1.0, 2.0, 3.0], [1.0, 2.0, 3.0], [1.0, 2.0, 3.0]]
     types = [["H", "A", "C"], ["L", "D", "A"], ["K", "K", "A"]]
-    positions_array = np.zeros(shape=(3,3,3))
-    radii_array = np.ones(shape=(3,3))
+    positions_array = np.zeros(shape=(3, 3, 3))
+    radii_array = np.ones(shape=(3, 3))
     n_subpoints = [[9, 12, 6], [9, 9, 6], [9, 6, 6]]
     jagged_subpoints = [
         [
