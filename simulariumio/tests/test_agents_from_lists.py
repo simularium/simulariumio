@@ -1,7 +1,7 @@
 import numpy as np
 import copy
 
-from simulariumio import AgentData, AgentDataLists
+from simulariumio import AgentData
 
 
 def test_agent_data_jagged_list():
@@ -12,7 +12,7 @@ def test_agent_data_jagged_list():
         ["L", "D", "A", "U"],
         ["E", "Q", "K"],
     ]
-    list_data = AgentDataLists(
+    list_data = AgentData(
         times=times,
         n_agents=n_agents,
         viz_types=[
@@ -50,6 +50,7 @@ def test_agent_data_jagged_list():
             [8.91022619, 9.01379396, 1.0],
         ],
     )
+
     expected_results = AgentData(
         times=np.array(times),
         n_agents=np.array(n_agents),
@@ -98,8 +99,7 @@ def test_agent_data_jagged_list():
             ],
         ),
     )
-    result = AgentData.from_lists(list_data, 1.0)
-    assert expected_results == result
+    assert expected_results == list_data
 
 
 def test_from_list_with_scale_factor():
@@ -143,7 +143,7 @@ def test_from_list_with_scale_factor():
         [0.891022619, 0.901379396, 0.1],
     ]
 
-    list_data = AgentDataLists(
+    list_data = AgentData(
         times=times,
         n_agents=n_agents,
         viz_types=viz_types,
@@ -153,19 +153,17 @@ def test_from_list_with_scale_factor():
         radii=radii,
     )
 
-    scale_factor = 10.0
     expected_results = AgentData(
         times=np.array(times),
         n_agents=np.array(n_agents),
         viz_types=np.array(viz_types),
         unique_ids=np.array(unique_ids),
         types=types,
-        positions=scale_factor * np.array(positions),
-        radii=scale_factor * np.array(radii),
+        positions=np.array(positions),
+        radii=np.array(radii),
     )
 
-    result = AgentData.from_lists(list_data, scale_factor)
-    assert expected_results == result
+    assert expected_results == list_data
 
 
 def test_jagged_data_subpoints():
@@ -309,7 +307,7 @@ def test_jagged_data_subpoints():
         ],
     ]
 
-    list_data = AgentDataLists(
+    list_data = AgentData(
         times=times,
         n_agents=n_agents,
         viz_types=viz_types,
@@ -328,7 +326,7 @@ def test_jagged_data_subpoints():
     subpoints[1][1].extend([0.0, 0.0, 0.0])
     subpoints[2][2].extend([0.0, 0.0, 0.0, 0.0, 0.0])
 
-    agent_data = AgentData(
+    expected_results = AgentData(
         times=np.array(times),
         n_agents=np.array(n_agents),
         viz_types=np.array(viz_types),
@@ -336,9 +334,8 @@ def test_jagged_data_subpoints():
         types=types,
         positions=np.array(positions),
         radii=np.array(radii),
-        n_subpoints=np.array([[9, 12, 6], [9, 9, 6], [9, 6, 6]]),
+        n_subpoints=np.array(n_subpoints),
         subpoints=np.array(subpoints),
     )
 
-    result = AgentData.from_lists(list_data, 1.0)
-    assert agent_data == result
+    assert expected_results == list_data

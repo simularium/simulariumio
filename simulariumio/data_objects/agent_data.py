@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import copy
 import logging
-from typing import List, Tuple, Dict, Any
+from typing import List, Tuple, Dict, Any, Union
 
 import numpy as np
 import pandas as pd
@@ -20,7 +20,6 @@ from ..constants import (
 from ..exceptions import DataError
 from .dimension_data import DimensionData
 from .display_data import DisplayData
-from .agent_data_lists import AgentDataLists
 
 ###############################################################################
 
@@ -31,31 +30,31 @@ log = logging.getLogger(__name__)
 
 class AgentData:
     n_timesteps: int
-    times: np.ndarray
-    n_agents: np.ndarray
-    viz_types: np.ndarray
-    unique_ids: np.ndarray
+    times: Union[np.ndarray, List[float]]
+    n_agents: Union[np.ndarray, List[int]]
+    viz_types: Union[np.ndarray, List[List[float]]]
+    unique_ids: Union[np.ndarray, List[List[int]]]
     types: List[List[str]]
-    positions: np.ndarray
-    radii: np.ndarray
-    rotations: np.ndarray
-    n_subpoints: np.ndarray
-    subpoints: np.ndarray
+    positions: Union[np.ndarray, List[List[List[float]]]]
+    radii: Union[np.ndarray, List[List[float]]]
+    rotations: Union[np.ndarray, List[List[List[float]]]]
+    n_subpoints: Union[np.ndarray, List[List[float]]]
+    subpoints: Union[np.ndarray, List[List[List[float]]]]
     display_data: Dict[str, DisplayData]
     draw_fiber_points: bool
 
     def __init__(
         self,
-        times: np.ndarray,
-        n_agents: np.ndarray,
-        viz_types: np.ndarray,
-        unique_ids: np.ndarray,
+        times: Union[np.ndarray, List[float]],
+        n_agents: Union[np.ndarray, List[int]],
+        viz_types: Union[np.ndarray, List[List[float]]],
+        unique_ids: Union[np.ndarray, List[List[int]]],
         types: List[List[str]],
-        positions: np.ndarray,
-        radii: np.ndarray,
-        rotations: np.ndarray = None,
-        n_subpoints: np.ndarray = None,
-        subpoints: np.ndarray = None,
+        positions: Union[np.ndarray, List[List[List[float]]]],
+        radii: Union[np.ndarray, List[List[float]]],
+        rotations: Union[np.ndarray, List[List[List[float]]]] = None,
+        n_subpoints: Union[np.ndarray, List[List[int]]] = None,
+        subpoints: Union[np.ndarray, List[List[List[float]]]] = None,
         display_data: Dict[str, DisplayData] = None,
         draw_fiber_points: bool = False,
         n_timesteps: int = -1,
@@ -65,43 +64,46 @@ class AgentData:
 
         Parameters
         ----------
-        times : np.ndarray (shape = [timesteps])
-            A numpy ndarray containing the elapsed simulated time
-            at each timestep (in the units specified by
+        times : np.ndarray or List[float] (shape = [timesteps])
+            A numpy ndarray or list containing the elapsed simulated
+            time at each timestep (in the units specified by
             TrajectoryData.time_units)
-        n_agents : np.ndarray (shape = [timesteps])
-            A numpy ndarray containing the number of agents
+        n_agents : np.ndarray or List[int] (shape = [timesteps])
+            A numpy ndarray or list containing the number of agents
             that exist at each timestep
-        viz_types : np.ndarray (shape = [timesteps, agents])
-            A numpy ndarray containing the viz type
+        viz_types : np.ndarray or List[List[float]] (shape = [timesteps, agents])s
+            A numpy ndarray or list containing the viz type
             for each agent at each timestep. Current options:
                 1000 : default,
                 1001 : fiber (which will require subpoints)
-        unique_ids : np.ndarray (shape = [timesteps, agents])
-            A numpy ndarray containing the unique ID
+        unique_ids : np.ndarray or List[List[int]] (shape = [timesteps, agents])
+            A numpy ndarray or list containing the unique ID
             for each agent at each timestep
         types : List[List[str]] (list of shape [timesteps, agents])
             A list containing timesteps, for each a list of
             the string name for the type of each agent
-        positions : np.ndarray (shape = [timesteps, agents, 3])
-            A numpy ndarray containing the XYZ position
+        positions : np.ndarray or List[List[List[float]]]
+        (shape = [timesteps, agents, 3])
+            A numpy ndarray or list containing the XYZ position
             for each agent at each timestep (in the units
             specified by TrajectoryData.spatial_units)
-        radii : np.ndarray (shape = [timesteps, agents])
-            A numpy ndarray containing the radius
+        radii : np.ndarray or List[List[float]] (shape = [timesteps, agents])
+            A numpy ndarray or list containing the radius
             for each agent at each timestep
-        rotations : np.ndarray (shape = [timesteps, agents, 3]) (optional)
-            A numpy ndarray containing the XYZ euler angles representing
+        rotations : np.ndarray or List[List[List[float]]]
+        (shape = [timesteps, agents, 3]) (optional)
+            A numpy ndarray or list containing the XYZ euler angles representing
             the rotation for each agent at each timestep in degrees
             Default: [0, 0, 0] for each agent
-        n_subpoints : np.ndarray (shape = [timesteps, agents]) (optional)
-            A numpy ndarray containing the number of subpoints
+        n_subpoints : np.ndarray or List[List[int]]
+        (shape = [timesteps, agents]) (optional)
+            A numpy ndarray or list containing the number of subpoints
             belonging to each agent at each timestep. Required if
             subpoints are provided
             Default: None
-        subpoints : np.ndarray
+        subpoints : np.ndarray or List[List[List[float]]]
         (shape = [timesteps, agents, subpoints]) (optional)
-            A numpy ndarray containing a list of subpoint data
+            A numpy ndarray or list containing a list of subpoint data
             for each agent at each timestep. These values are
             currently used for fiber and sphere group agents
             Default: None
@@ -116,20 +118,44 @@ class AgentData:
             Use the first n_timesteps frames of data
             Default: -1 (use the full length of the buffer)
         """
-        self.times = times
-        self.n_agents = n_agents
-        self.viz_types = viz_types
-        self.unique_ids = unique_ids
+        self.times = np.array(times)
+        self.n_agents = np.array(n_agents)
+        self.viz_types = (
+            AgentData._fill_df(pd.DataFrame(viz_types), 1000.0).to_numpy(dtype=float)
+            if type(viz_types) is list
+            else viz_types
+        )
+        self.unique_ids = (
+            AgentData._fill_df(pd.DataFrame(unique_ids), 0).to_numpy(dtype=int)
+            if type(unique_ids) is list
+            else unique_ids
+        )
         self.types = types
-        self.positions = positions
-        self.radii = radii
+        self.positions = (
+            AgentData._jagged_3d_list_to_numpy_array(positions)
+            if type(positions) is list
+            else positions
+        )
+        self.radii = (
+            AgentData._fill_df(pd.DataFrame(radii), 0.0).to_numpy()
+            if type(radii) is list
+            else radii
+        )
         self.rotations = (
-            rotations if rotations is not None else np.zeros_like(positions)
+            AgentData._jagged_3d_list_to_numpy_array(rotations)
+            if rotations is not None
+            else np.zeros_like(self.positions)
         )
         self.n_subpoints = (
-            n_subpoints if n_subpoints is not None else np.zeros_like(radii)
+            AgentData._fill_df(pd.DataFrame(n_subpoints), 0.0).to_numpy(dtype=int)
+            if n_subpoints is not None
+            else np.zeros_like(self.radii)
         )
-        self.subpoints = subpoints if subpoints is not None else np.zeros_like(n_agents)
+        self.subpoints = (
+            AgentData._get_subpoints_numpy_array(subpoints)
+            if subpoints is not None
+            else np.zeros_like(n_agents)
+        )
         self.display_data = display_data if display_data is not None else {}
         self.draw_fiber_points = draw_fiber_points
         self.n_timesteps = n_timesteps
@@ -344,28 +370,36 @@ class AgentData:
         return df
 
     @staticmethod
-    def _jagged_3d_list_to_numpy_array(jagged_3d_list: np.ndarray) -> np.ndarray:
+    def _jagged_3d_list_to_numpy_array(
+        jagged_3d_list: Union[np.ndarray, List]
+    ) -> np.ndarray:
         """
         Shape a jagged list with 3 dimensions to a numpy array
         """
+        if type(jagged_3d_list) is np.ndarray:
+            return jagged_3d_list
+
         df = AgentData._fill_df(pd.DataFrame(jagged_3d_list), [0, 0, 0])
         df_t = df.transpose()
         exploded = [df_t[col].explode() for col in list(df_t.columns)]
-        return np.array(exploded, dtype=float).reshape((df.shape[0], df.shape[1], 3))
+        x = np.array(exploded, dtype=float).reshape((df.shape[0], df.shape[1], 3))
+        print(x)
+        return x
 
     @staticmethod
-    def _get_subpoints_numpy_array(list_data: AgentDataLists) -> np.ndarray:
+    def _get_subpoints_numpy_array(subpoints: Union[np.ndarray, List]) -> np.ndarray:
         """
         Shape a 3 dimensional jagged list for subpoints into a numpy array
         """
+        if type(subpoints) is np.ndarray:
+            return subpoints
+
         frame_arrays = []
         max_agents = 0
         max_subpoints = 0
-        total_steps = len(list_data.subpoints) if list_data.subpoints else 0
+        total_steps = len(subpoints) if subpoints else 0
         for time_index in range(total_steps):
-            filled_frame = AgentData._fill_df(
-                pd.DataFrame(list_data.subpoints[time_index]), 0.0
-            )
+            filled_frame = AgentData._fill_df(pd.DataFrame(subpoints[time_index]), 0.0)
             frame_array = np.array(filled_frame, dtype=float)
             if frame_array.shape[0] > max_agents:
                 max_agents = frame_array.shape[0]
@@ -383,38 +417,6 @@ class AgentData:
             start_index = time_index * values_per_frame
             result[start_index : start_index + flat_array.shape[0]] = flat_array
         return result.reshape(total_steps, max_agents, max_subpoints)
-
-    @classmethod
-    def from_lists(cls, list_data: AgentDataLists, scale_factor: float) -> AgentData:
-        """
-        Shape AgentDataLists object, which may contain jagged lists,
-        into an AgentData object
-        """
-        return cls(
-            times=np.array(list_data.times),
-            n_agents=np.array(list_data.n_agents),
-            viz_types=AgentData._fill_df(
-                pd.DataFrame(list_data.viz_types), 1000.0
-            ).to_numpy(dtype=float),
-            unique_ids=AgentData._fill_df(
-                pd.DataFrame(list_data.unique_ids), 0
-            ).to_numpy(dtype=int),
-            types=list_data.types,
-            positions=scale_factor
-            * AgentData._jagged_3d_list_to_numpy_array(list_data.positions),
-            radii=scale_factor
-            * AgentData._fill_df(pd.DataFrame(list_data.radii), 0.0).to_numpy(),
-            n_subpoints=AgentData._fill_df(
-                pd.DataFrame(list_data.n_subpoints), 0.0
-            ).to_numpy(dtype=int)
-            if list_data.n_subpoints
-            else None,
-            subpoints=scale_factor
-            * AgentData._get_subpoints_numpy_array(list_data)
-            if list_data.subpoints
-            else None,
-            rotations=None,
-        )
 
     @classmethod
     def from_dataframe(cls, traj: pd.DataFrame):
