@@ -169,19 +169,11 @@ def test_from_list_with_scale_factor():
 def test_jagged_data_subpoints():
     times = [0.0, 1.00001, 2.00001]
     n_agents = [3, 3, 3]
-    viz_types = [
-        [1001.0, 1001.0, 1001.0],
-        [1001.0, 1001.0, 1001.0],
-        [1001.0, 1001.0, 1001.0],
-    ]
+    viz_types_array = 1001.0 * np.ones(shape=(3,3))
     unique_ids = [[1.0, 2.0, 3.0], [1.0, 2.0, 3.0], [1.0, 2.0, 3.0]]
     types = [["H", "A", "C"], ["L", "D", "A"], ["K", "K", "A"]]
-    positions = [
-        [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]],
-        [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]],
-        [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]],
-    ]
-    radii = [[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]
+    positions_array = np.zeros(shape=(3,3,3))
+    radii_array = np.ones(shape=(3,3))
     n_subpoints = [[9, 12, 6], [9, 9, 6], [9, 6, 6]]
     jagged_subpoints = [
         [
@@ -310,11 +302,11 @@ def test_jagged_data_subpoints():
     list_data = AgentData(
         times=times,
         n_agents=n_agents,
-        viz_types=viz_types,
+        viz_types=viz_types_array.tolist(),
         unique_ids=unique_ids,
         types=types,
-        positions=positions,
-        radii=radii,
+        positions=positions_array.tolist(),
+        radii=radii_array.tolist(),
         n_subpoints=n_subpoints,
         subpoints=jagged_subpoints,
     )
@@ -329,11 +321,11 @@ def test_jagged_data_subpoints():
     expected_results = AgentData(
         times=np.array(times),
         n_agents=np.array(n_agents),
-        viz_types=np.array(viz_types),
+        viz_types=viz_types_array,
         unique_ids=np.array(unique_ids),
         types=types,
-        positions=np.array(positions),
-        radii=np.array(radii),
+        positions=positions_array,
+        radii=radii_array,
         n_subpoints=np.array(n_subpoints),
         subpoints=np.array(subpoints),
     )
