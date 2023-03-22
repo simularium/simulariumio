@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from unittest.mock import Mock
 
 from simulariumio.cellpack import CellpackConverter, HAND_TYPE, CellpackData
 from simulariumio import InputFileData, UnitData, DisplayData, JsonWriter
@@ -277,3 +278,22 @@ def test_input_file_error():
     )
     with pytest.raises(InputDataError):
         CellpackConverter(bad_file_type)
+
+
+def test_callback_fn():
+    data = CellpackData(
+        results_file=InputFileData(
+            file_path="simulariumio/tests/data/cellpack/two_ingredients_results.json"
+        ),
+        geometry_type=DISPLAY_TYPE.OBJ,
+        recipe_file_path="simulariumio/tests/data/cellpack/two_ingredients_recipe.json",
+        time_units=UnitData("ns"),
+        spatial_units=UnitData("nm"),
+        handedness=HAND_TYPE.LEFT,
+        geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/"
+    )
+    callback_fn = Mock()
+    call_times = 1
+    CellpackConverter(data, callback_fn, call_times)
+    assert callback_fn.call_count == call_times
+    callback_fn.assert_called_once_with(0.5)
