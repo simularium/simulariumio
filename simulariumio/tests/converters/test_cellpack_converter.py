@@ -290,10 +290,9 @@ def test_callback_fn():
         time_units=UnitData("ns"),
         spatial_units=UnitData("nm"),
         handedness=HAND_TYPE.LEFT,
-        geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/"
+        geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/",
     )
     callback_fn = Mock()
-    call_times = 1
+    call_times = 5
     CellpackConverter(data, callback_fn, call_times)
     assert callback_fn.call_count == call_times
-    callback_fn.assert_called_once_with(0.5)

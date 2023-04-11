@@ -288,14 +288,16 @@ class CellpackConverter(TrajectoryConverter):
         spatial_data = AgentData.from_dimensions(dimensions)
         display_data = {} if display_data is None else display_data
         agent_id_counter = 0
-        ingredient_count = 0
 
-        # Create a numpy array indicating which ingredients to report
-        # on in order to send reports_requested evenly spaced reports
-        # (skipping ingredient 0)
-        report_ingredients = np.linspace(
+        # Create a numpy array indicating which result position indices
+        # to report on in order to send reports_requested evenly spaced reports
+        total_agents = 0
+        for ingredient in all_ingredients:
+            total_agents += len(ingredient["results"].get("results", []))
+            total_agents += len(ingredient["results"].get("nbCurve", []))
+        report_counts = np.linspace(
             0,
-            len(all_ingredients),
+            total_agents,
             reports_requested + 1,
             endpoint=False,
             dtype=int
@@ -342,6 +344,8 @@ class CellpackConverter(TrajectoryConverter):
                         handedness,
                     )
                     agent_id_counter += 1
+                    if progress_callback and agent_id_counter in report_counts:
+                        progress_callback(agent_id_counter / total_agents)
             elif ingredient_results_data["nbCurve"] > 0:
                 for i in range(ingredient_results_data["nbCurve"]):
                     CellpackConverter._unpack_curve(
@@ -355,10 +359,8 @@ class CellpackConverter(TrajectoryConverter):
                         box_center,
                     )
                     agent_id_counter += 1
-            ingredient_count += 1
-            if progress_callback and ingredient_count in report_ingredients:
-                # send a progress update
-                progress_callback(ingredient_count / len(all_ingredients))
+                    if progress_callback and agent_id_counter in report_counts:
+                        progress_callback(agent_id_counter / total_agents)
 
         spatial_data.display_data = display_data
         return spatial_data
