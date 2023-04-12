@@ -37,7 +37,7 @@ class McellConverter(TrajectoryConverter):
         self,
         input_data: McellData,
         progress_callback: Callable[[float], None] = None,
-        num_progress_reports: int = 4,
+        num_progress_reports: int = 10,
     ):
         """
         This object reads simulation trajectory outputs
@@ -58,7 +58,7 @@ class McellConverter(TrajectoryConverter):
         num_progress_reports : int (optional)
             If a progress_callback was provided, number of updates to send
             while converting data
-            Default: 4
+            Default: 10
         """
         self._data = self._read(input_data, progress_callback, num_progress_reports)
 
