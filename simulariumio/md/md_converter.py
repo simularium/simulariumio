@@ -26,7 +26,7 @@ class MdConverter(TrajectoryConverter):
     def __init__(
         self,
         input_data: MdData,
-        progress_callback: Callable = None,
+        progress_callback: Callable[[float], None] = None,
         num_progress_reports: int = 4,
     ):
         """
@@ -40,10 +40,10 @@ class MdConverter(TrajectoryConverter):
         input_data : MdData
             An object containing info for reading
             MD simulation trajectory outputs and plot data
-        progress_callback : Callable (optional)
-            Callback function that will be called at a given progress interval,
-            determined by num_progress_reports requested, providing the current
-            percent progress
+        progress_callback : Callable[[float], None] (optional)
+            Callback function that accepts 1 float argument and returns None
+            which will be called at a given progress interval, determined by
+            num_progress_reports requested, providing the current percent progress
             Default: None
         num_progress_reports : int (optional)
             If a progress_callback was provided, number of updates to send
@@ -164,7 +164,7 @@ class MdConverter(TrajectoryConverter):
     @staticmethod
     def _read_universe(
         input_data: MdData,
-        progress_callback: Callable,
+        progress_callback: Callable[[float], None],
         reports_requested: int,
     ) -> AgentData:
         """
@@ -216,7 +216,9 @@ class MdConverter(TrajectoryConverter):
 
     @staticmethod
     def _read(
-        input_data: MdData, progress_callback: Callable, reports_requested: int
+        input_data: MdData,
+        progress_callback: Callable[[float], None],
+        reports_requested: int
     ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the MD data

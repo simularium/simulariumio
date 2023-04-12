@@ -30,7 +30,7 @@ class CytosimConverter(TrajectoryConverter):
     def __init__(
         self,
         input_data: CytosimData,
-        progress_callback: Callable = None,
+        progress_callback: Callable[[float], None] = None,
         num_progress_reports: int = 4,
     ):
         """
@@ -44,10 +44,10 @@ class CytosimConverter(TrajectoryConverter):
         input_data : CytosimData
             An object containing info for reading
             Cytosim simulation trajectory outputs and plot data
-        progress_callback : Callable (optional)
-            Callback function that will be called at a given progress interval,
-            determined by num_progress_reports requested, providing the current
-            percent progress
+        progress_callback : Callable[[float], None] (optional)
+            Callback function that accepts 1 float argument and returns None
+            which will be called at a given progress interval, determined by
+            num_progress_reports requested, providing the current percent progress
             Default: None
         num_progress_reports : int (optional)
             If a progress_callback was provided, number of updates to send
@@ -191,7 +191,7 @@ class CytosimConverter(TrajectoryConverter):
         object_info: CytosimObjectInfo,
         result: AgentData,
         used_unique_IDs: List[int],
-        progress_callback: Callable,
+        progress_callback: Callable[[float], None],
         report_lines: np.ndarray,
         overall_line: int,
         total_lines: int,
@@ -281,7 +281,9 @@ class CytosimConverter(TrajectoryConverter):
 
     @staticmethod
     def _read(
-        input_data: CytosimData, progress_callback: Callable, reports_requested: int
+        input_data: CytosimData,
+        progress_callback: Callable[[float], None],
+        reports_requested: int
     ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the CytoSim data

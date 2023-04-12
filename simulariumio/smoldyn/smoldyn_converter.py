@@ -22,7 +22,7 @@ class SmoldynConverter(TrajectoryConverter):
     def __init__(
         self,
         input_data: SmoldynData,
-        progress_callback: Callable = None,
+        progress_callback: Callable[[float], None] = None,
         num_progress_reports: int = 4,
     ):
         """
@@ -36,10 +36,10 @@ class SmoldynConverter(TrajectoryConverter):
         input_data : SmoldynData
             An object containing info for reading
             Smoldyn simulation trajectory outputs and plot data
-        progress_callback : Callable (optional)
-            Callback function that will be called at a given progress interval,
-            determined by num_progress_reports requested, providing the current
-            percent progress
+        progress_callback : Callable [[float], None] (optional)
+            Callback function that accepts 1 float argument and returns None
+            which will be called at a given progress interval, determined by
+            num_progress_reports requested, providing the current percent progress
             Default: None
         num_progress_reports : int (optional)
             If a progress_callback was provided, number of updates to send
@@ -73,7 +73,7 @@ class SmoldynConverter(TrajectoryConverter):
     def _parse_objects(
         smoldyn_data_lines: List[str],
         input_data: SmoldynData,
-        progress_callback: Callable,
+        progress_callback: Callable[[float], None],
         reports_requested: int,
     ) -> AgentData:
         """
@@ -152,7 +152,7 @@ class SmoldynConverter(TrajectoryConverter):
     @staticmethod
     def _read(
         input_data: SmoldynData,
-        progress_callback: Callable,
+        progress_callback: Callable[[float], None],
         reports_requested: int,
     ) -> TrajectoryData:
         """

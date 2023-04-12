@@ -24,7 +24,7 @@ class ReaddyConverter(TrajectoryConverter):
     def __init__(
         self,
         input_data: ReaddyData,
-        progress_callback: Callable = None,
+        progress_callback: Callable[[float], None] = None,
         num_progress_reports: int = 4,
     ):
         """
@@ -38,10 +38,10 @@ class ReaddyConverter(TrajectoryConverter):
         input_data : ReaddyData
             An object containing info for reading
             ReaDDy simulation trajectory outputs and plot data
-        progress_callback : Callable (optional)
-            Callback function that will be called at a given progress interval,
-            determined by num_progress_reports requested, providing the current
-            percent progress
+        progress_callback : Callable[[float], None] (optional)
+            Callback function that accepts 1 float argument and returns None
+            which will be called at a given progress interval, determined by
+            num_progress_reports requested, providing the current percent progress
             Default: None
         num_progress_reports : int (optional)
             If a progress_callback was provided, number of updates to send
@@ -65,7 +65,7 @@ class ReaddyConverter(TrajectoryConverter):
     @staticmethod
     def _get_agent_data(
         input_data: ReaddyData,
-        progress_callback: Callable,
+        progress_callback: Callable[[float], None],
         reports_requested: int,
     ) -> AgentData:
         """
@@ -139,7 +139,7 @@ class ReaddyConverter(TrajectoryConverter):
     @staticmethod
     def _read(
         input_data: ReaddyData,
-        progress_callback: Callable,
+        progress_callback: Callable[[float], None],
         reports_requested: int,
     ) -> TrajectoryData:
         """
