@@ -7,6 +7,7 @@ import numpy as np
 import json
 from scipy.spatial.transform import Rotation as R
 from typing import Callable
+import time
 
 from cellpack import RecipeLoader
 from ..constants import DISPLAY_TYPE, VIZ_TYPE, VALUES_PER_3D_POINT
@@ -38,7 +39,7 @@ class CellpackConverter(TrajectoryConverter):
         self,
         input_data: CellpackData,
         progress_callback: Callable[[float], None] = None,
-        num_progress_reports: int = 10,
+        callback_interval: float = 10,
     ):
         """
         This object reads packing results outputs
@@ -54,14 +55,14 @@ class CellpackConverter(TrajectoryConverter):
         progress_callback : Callable[[float], None] (optional)
             Callback function that accepts 1 float argument and returns None
             which will be called at a given progress interval, determined by
-            num_progress_reports requested, providing the current percent progress
+            callback_interval requested, providing the current percent progress
             Default: None
-        num_progress_reports : int (optional)
-            If a progress_callback was provided, number of updates to send
-            while converting data
+        callback_interval : float (optional)
+            If a progress_callback was provided, the period between updates
+            to be sent to the callback, in seconds
             Default: 10
         """
-        self._data = self._read(input_data, progress_callback, num_progress_reports)
+        self._data = self._read(input_data, progress_callback, callback_interval)
 
     @staticmethod
     def _get_box_center(recipe_data):
@@ -282,26 +283,18 @@ class CellpackConverter(TrajectoryConverter):
         geometry_url: str,
         display_data,
         progress_callback: Callable[[float], None],
-        reports_requested: int,
+        callback_interval: float,
     ) -> AgentData:
         dimensions = CellpackConverter._parse_dimensions(all_ingredients)
         spatial_data = AgentData.from_dimensions(dimensions)
         display_data = {} if display_data is None else display_data
         agent_id_counter = 0
 
-        # Create a numpy array indicating which result position indices
-        # to report on in order to send reports_requested evenly spaced reports
         total_agents = 0
         for ingredient in all_ingredients:
             total_agents += len(ingredient["results"].get("results", []))
             total_agents += len(ingredient["results"].get("nbCurve", []))
-        report_counts = np.linspace(
-            0,
-            total_agents,
-            reports_requested + 1,
-            endpoint=False,
-            dtype=int
-        )
+        last_report_time = time.time()
 
         for ingredient in all_ingredients:
             ingredient_data = ingredient["recipe_data"]
@@ -344,8 +337,9 @@ class CellpackConverter(TrajectoryConverter):
                         handedness,
                     )
                     agent_id_counter += 1
-                    if progress_callback and agent_id_counter in report_counts:
+                    if progress_callback and time.time() > last_report_time + callback_interval:
                         progress_callback(agent_id_counter / total_agents)
+                        last_report_time = time.time()
             elif ingredient_results_data["nbCurve"] > 0:
                 for i in range(ingredient_results_data["nbCurve"]):
                     CellpackConverter._unpack_curve(
@@ -359,8 +353,9 @@ class CellpackConverter(TrajectoryConverter):
                         box_center,
                     )
                     agent_id_counter += 1
-                    if progress_callback and agent_id_counter in report_counts:
+                    if progress_callback and time.time() > last_report_time + callback_interval:
                         progress_callback(agent_id_counter / total_agents)
+                        last_report_time = time.time()
 
         spatial_data.display_data = display_data
         return spatial_data
@@ -377,7 +372,7 @@ class CellpackConverter(TrajectoryConverter):
     def _read(
         input_data: CellpackData,
         progress_callback: Callable[[float], None],
-        reports_requested: int
+        callback_interval: float
     ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the Cellpack data
@@ -410,7 +405,7 @@ class CellpackConverter(TrajectoryConverter):
             input_data.geometry_url,
             input_data.display_data,
             progress_callback,
-            reports_requested
+            callback_interval
         )
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))

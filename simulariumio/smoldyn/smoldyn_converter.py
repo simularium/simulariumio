@@ -3,7 +3,7 @@
 
 import logging
 from typing import List, Callable
-
+import time
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
@@ -23,7 +23,7 @@ class SmoldynConverter(TrajectoryConverter):
         self,
         input_data: SmoldynData,
         progress_callback: Callable[[float], None] = None,
-        num_progress_reports: int = 10,
+        callback_interval: float = 10,
     ):
         """
         This object reads simulation trajectory outputs
@@ -39,14 +39,14 @@ class SmoldynConverter(TrajectoryConverter):
         progress_callback : Callable [[float], None] (optional)
             Callback function that accepts 1 float argument and returns None
             which will be called at a given progress interval, determined by
-            num_progress_reports requested, providing the current percent progress
+            callback_interval requested, providing the current percent progress
             Default: None
-        num_progress_reports : int (optional)
-            If a progress_callback was provided, number of updates to send
-            while converting data
+        callback_interval : float (optional)
+            If a progress_callback was provided, the period between updates
+            to be sent to the callback, in seconds
             Default: 10
         """
-        self._data = self._read(input_data, progress_callback, num_progress_reports)
+        self._data = self._read(input_data, progress_callback, callback_interval)
 
     @staticmethod
     def _parse_dimensions(smoldyn_data_lines: List[str]) -> DimensionData:
@@ -74,7 +74,7 @@ class SmoldynConverter(TrajectoryConverter):
         smoldyn_data_lines: List[str],
         input_data: SmoldynData,
         progress_callback: Callable[[float], None],
-        reports_requested: int,
+        callback_interval: float,
     ) -> AgentData:
         """
         Parse a Smoldyn output file to get AgentData
@@ -84,12 +84,7 @@ class SmoldynConverter(TrajectoryConverter):
         time_index = -1
         agent_index = 0
         line_count = 0
-
-        # Create a numpy array for which lines to report on in order to send
-        # reports_requested evenly spaced reports (skipping line 0)
-        report_lines = np.linspace(
-            0, len(smoldyn_data_lines), reports_requested + 1, endpoint=False, dtype=int
-        )
+        last_report_time = time.time()
 
         for line in smoldyn_data_lines:
             if len(line) < 1:
@@ -141,9 +136,11 @@ class SmoldynConverter(TrajectoryConverter):
                 )
                 agent_index += 1
             line_count += 1
-            if progress_callback and line_count in report_lines:
+            current_time = time.time()
+            if progress_callback and current_time > last_report_time + callback_interval:
                 # send a progress update for % complete
                 progress_callback(line_count / len(smoldyn_data_lines))
+                last_report_time = current_time
 
         result.n_agents[time_index] = agent_index
         result.n_timesteps = time_index + 1
@@ -153,7 +150,7 @@ class SmoldynConverter(TrajectoryConverter):
     def _read(
         input_data: SmoldynData,
         progress_callback: Callable[[float], None],
-        reports_requested: int,
+        callback_interval: float,
     ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the Smoldyn data
@@ -166,7 +163,7 @@ class SmoldynConverter(TrajectoryConverter):
             raise InputDataError(f"Error reading input smoldyn data: {e}")
         # parse
         agent_data = SmoldynConverter._parse_objects(
-            smoldyn_data, input_data, progress_callback, reports_requested
+            smoldyn_data, input_data, progress_callback, callback_interval
         )
         # get display data (geometry and color)
         for tid in input_data.display_data:

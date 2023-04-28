@@ -3,7 +3,7 @@
 
 import logging
 from typing import Any, Tuple, Callable
-
+import time
 import numpy as np
 import readdy
 
@@ -25,7 +25,7 @@ class ReaddyConverter(TrajectoryConverter):
         self,
         input_data: ReaddyData,
         progress_callback: Callable[[float], None] = None,
-        num_progress_reports: int = 10,
+        callback_interval: float = 10,
     ):
         """
         This object reads simulation trajectory outputs
@@ -41,14 +41,14 @@ class ReaddyConverter(TrajectoryConverter):
         progress_callback : Callable[[float], None] (optional)
             Callback function that accepts 1 float argument and returns None
             which will be called at a given progress interval, determined by
-            num_progress_reports requested, providing the current percent progress
+            callback_interval requested, providing the current percent progress
             Default: None
-        num_progress_reports : int (optional)
-            If a progress_callback was provided, number of updates to send
-            while converting data
+        callback_interval : float (optional)
+            If a progress_callback was provided, the period between updates
+            to be sent to the callback, in seconds
             Default: 10
         """
-        self._data = self._read(input_data, progress_callback, num_progress_reports)
+        self._data = self._read(input_data, progress_callback, callback_interval)
 
     @staticmethod
     def _get_raw_trajectory_data(
@@ -66,7 +66,7 @@ class ReaddyConverter(TrajectoryConverter):
     def _get_agent_data(
         input_data: ReaddyData,
         progress_callback: Callable[[float], None],
-        reports_requested: int,
+        callback_interval: float,
     ) -> AgentData:
         """
         Pack raw ReaDDy trajectory data into AgentData,
@@ -83,17 +83,7 @@ class ReaddyConverter(TrajectoryConverter):
             total_steps=n_agents.shape[0],
             max_agents=int(np.amax(n_agents)),
         )
-
-        # Create a numpy array indicating which time indices to report
-        # on in order to send reports_requested evenly spaced reports
-        # (skipping time index 0)
-        report_indices = np.linspace(
-            0,
-            data_dimensions.total_steps,
-            reports_requested + 1,
-            endpoint=False,
-            dtype=int,
-        )
+        last_report_time = time.time()
 
         result = AgentData.from_dimensions(data_dimensions)
         result.times = input_data.timestep * np.arange(data_dimensions.total_steps)
@@ -131,16 +121,18 @@ class ReaddyConverter(TrajectoryConverter):
                 )
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index
-            if progress_callback and time_index != 0 and time_index in report_indices:
+            current_time = time.time()
+            if progress_callback and current_time > last_report_time + callback_interval:
                 # send a progress update for % complete
                 progress_callback(time_index / data_dimensions.total_steps)
+                last_report_time = current_time
         return result
 
     @staticmethod
     def _read(
         input_data: ReaddyData,
         progress_callback: Callable[[float], None],
-        reports_requested: int,
+        callback_interval: float,
     ) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
@@ -148,7 +140,7 @@ class ReaddyConverter(TrajectoryConverter):
         print("Reading ReaDDy Data -------------")
         try:
             agent_data = ReaddyConverter._get_agent_data(
-                input_data, progress_callback, reports_requested
+                input_data, progress_callback, callback_interval
             )
         except Exception as e:
             raise InputDataError(f"Error reading input Readdy data: {e}")

@@ -6,7 +6,7 @@ from typing import Dict, Any, Callable
 import json
 import os
 import array
-
+import time
 import numpy as np
 import scipy.linalg as linalg
 from scipy.spatial.transform import Rotation
@@ -37,7 +37,7 @@ class McellConverter(TrajectoryConverter):
         self,
         input_data: McellData,
         progress_callback: Callable[[float], None] = None,
-        num_progress_reports: int = 10,
+        callback_interval: float = 10,
     ):
         """
         This object reads simulation trajectory outputs
@@ -53,14 +53,14 @@ class McellConverter(TrajectoryConverter):
         progress_callback : Callable[[float], None] (optional)
             Callback function that accepts 1 float argument and returns None
             which will be called at a given progress interval, determined by
-            num_progress_reports requested, providing the current percent progress
+            callback_interval requested, providing the current percent progress
             Default: None
-        num_progress_reports : int (optional)
-            If a progress_callback was provided, number of updates to send
-            while converting data
+        callback_interval : float (optional)
+            If a progress_callback was provided, the period between updates
+            to be sent to the callback, in seconds
             Default: 10
         """
-        self._data = self._read(input_data, progress_callback, num_progress_reports)
+        self._data = self._read(input_data, progress_callback, callback_interval)
 
     @staticmethod
     def _normalize(v: np.ndarray) -> np.ndarray:
@@ -304,7 +304,7 @@ class McellConverter(TrajectoryConverter):
         molecule_list: Dict[str, Any],
         input_data: McellData,
         progress_callback: Callable[[float], None],
-        reports_requested: int,
+        callback_interval: float,
     ) -> AgentData:
         """
         Parse cellblender binary files to get spatial data
@@ -320,13 +320,7 @@ class McellConverter(TrajectoryConverter):
         # get metadata for each agent type
         molecule_info = {}
         total_steps = 0
-
-        # Create a numpy array indicating which time indices to report
-        # on in order to send reports_requested evenly spaced reports
-        # (skipping time index 0)
-        report_indices = np.linspace(
-            0, dimensions.total_steps, reports_requested + 1, endpoint=False, dtype=int
-        )
+        last_report_time = time.time()
 
         for molecule in molecule_list:
             molecule_info[molecule["mol_name"]] = molecule
@@ -347,9 +341,11 @@ class McellConverter(TrajectoryConverter):
                 input_data,
                 result,
             )
-            if progress_callback and time_index in report_indices and time_index != 0:
+            current_time = time.time()
+            if progress_callback and current_time > last_report_time + callback_interval:
                 # send a progress update for % complete
                 progress_callback(time_index / dimensions.total_steps)
+                last_report_time = current_time
         result.n_timesteps = total_steps + 1
         return result
 
@@ -357,7 +353,7 @@ class McellConverter(TrajectoryConverter):
     def _read(
         input_data: McellData,
         progress_callback: Callable[[float], None],
-        reports_requested: int
+        callback_interval: float
     ) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
@@ -379,7 +375,7 @@ class McellConverter(TrajectoryConverter):
             data_model["mcell"]["define_molecules"]["molecule_list"],
             input_data,
             progress_callback,
-            reports_requested,
+            callback_interval,
         )
         time_units.magnitude = 1
         # get box size
