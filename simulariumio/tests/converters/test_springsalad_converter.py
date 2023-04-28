@@ -449,11 +449,16 @@ def test_input_file_error():
 
 def test_callback_fn():
     callback_fn_0 = Mock()
-    call_times = 1
-    SpringsaladConverter(data, callback_fn_0, call_times)
-    assert callback_fn_0.call_count == call_times
+    callback_interval = 0.0000001
+    SpringsaladConverter(data, callback_fn_0, callback_interval)
+    assert callback_fn_0.call_count > 1
 
-    callback_fn_1 = Mock()
-    call_times = 6
-    SpringsaladConverter(data, callback_fn_1, call_times)
-    assert callback_fn_1.call_count == call_times
+    # calls to the callback function should be strictly increasing
+    # and the value should never exceed 1.0 (100%)
+    call_list = callback_fn_0.call_args_list
+    last_call_val = 0.0
+    for call in call_list:
+        call_value = call.args[0]
+        assert call_value > last_call_val
+        assert call_value <= 1.0
+        last_call_val = call_value

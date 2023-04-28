@@ -490,14 +490,16 @@ def test_callback_fn():
         )
     )
     callback_fn_0 = Mock()
-    call_times = 3
-    SmoldynConverter(data, callback_fn_0, call_times)
-    assert callback_fn_0.call_count == call_times
+    call_interval = 0.000000001
+    SmoldynConverter(data, callback_fn_0, call_interval)
+    assert callback_fn_0.call_count > 1
 
-    callback_fn_1 = Mock()
-    call_times = 1
-    SmoldynConverter(data, callback_fn_1, call_times)
-    assert callback_fn_1.call_count == call_times
-
-    # with only one update, it'll be at 50% since this file has even line count
-    callback_fn_1.assert_called_once_with(0.5)
+    # calls to the callback function should be strictly increasing
+    # and the value should never exceed 1.0 (100%)
+    call_list = callback_fn_0.call_args_list
+    last_call_val = 0.0
+    for call in call_list:
+        call_value = call.args[0]
+        assert call_value > last_call_val
+        assert call_value <= 1.0
+        last_call_val = call_value

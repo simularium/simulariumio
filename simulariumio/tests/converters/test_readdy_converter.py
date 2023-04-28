@@ -448,15 +448,16 @@ def test_input_file_error():
 
 def test_callback_fn():
     callback_fn_0 = Mock()
-    call_times = 1
-    ReaddyConverter(data, callback_fn_0, call_times)
-    assert callback_fn_0.call_count == call_times
+    call_interval = 0.000000001
+    ReaddyConverter(data, callback_fn_0, call_interval)
+    assert callback_fn_0.call_count > 1
 
-    callback_fn_1 = Mock()
-    call_times = 2
-    ReaddyConverter(data, callback_fn_1, call_times)
-    assert callback_fn_1.call_count == call_times
-
-    # this test file has 3 timesteps, so updates come at 33% and 67% complete
-    callback_fn_1.assert_any_call(1/3)
-    callback_fn_1.assert_any_call(2/3)
+    # calls to the callback function should be strictly increasing
+    # and the value should never exceed 1.0 (100%)
+    call_list = callback_fn_0.call_args_list
+    last_call_val = -1.0
+    for call in call_list:
+        call_value = call.args[0]
+        assert call_value > last_call_val
+        assert call_value <= 1.0 and call_value >= 0.0
+        last_call_val = call_value

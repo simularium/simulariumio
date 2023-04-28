@@ -293,6 +293,16 @@ def test_callback_fn():
         geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/",
     )
     callback_fn = Mock()
-    call_times = 5
-    CellpackConverter(data, callback_fn, call_times)
-    assert callback_fn.call_count == call_times
+    call_interval = 0.000000001
+    CellpackConverter(data, callback_fn, call_interval)
+    assert callback_fn.call_count > 1
+
+    # calls to the callback function should be strictly increasing
+    # and the value should never exceed 1.0 (100%)
+    call_list = callback_fn.call_args_list
+    last_call_val = 0.0
+    for call in call_list:
+        call_value = call.args[0]
+        assert call_value > last_call_val
+        assert call_value <= 1.0
+        last_call_val = call_value
