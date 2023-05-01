@@ -280,18 +280,18 @@ def test_input_file_error():
         CellpackConverter(bad_file_type)
 
 
+data = CellpackData(
+    results_file=InputFileData(
+        file_path="simulariumio/tests/data/cellpack/two_ingredients_results.json"
+    ),
+    geometry_type=DISPLAY_TYPE.OBJ,
+    recipe_file_path="simulariumio/tests/data/cellpack/two_ingredients_recipe.json",
+    time_units=UnitData("ns"),
+    spatial_units=UnitData("nm"),
+    handedness=HAND_TYPE.LEFT,
+    geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/",
+)
 def test_callback_fn():
-    data = CellpackData(
-        results_file=InputFileData(
-            file_path="simulariumio/tests/data/cellpack/two_ingredients_results.json"
-        ),
-        geometry_type=DISPLAY_TYPE.OBJ,
-        recipe_file_path="simulariumio/tests/data/cellpack/two_ingredients_recipe.json",
-        time_units=UnitData("ns"),
-        spatial_units=UnitData("nm"),
-        handedness=HAND_TYPE.LEFT,
-        geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/",
-    )
     callback_fn = Mock()
     call_interval = 0.000000001
     CellpackConverter(data, callback_fn, call_interval)

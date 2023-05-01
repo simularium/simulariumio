@@ -282,7 +282,10 @@ class MedyanConverter(TrajectoryConverter):
                     result.n_agents[time_index] += 2
             line_count += 1
             current_time = time.time()
-            if progress_callback and current_time > last_report_time + callback_interval:
+            if (
+                progress_callback
+                and current_time > last_report_time + callback_interval
+            ):
                 # send a progress update for % complete
                 progress_callback(line_count / len(lines))
                 last_report_time = current_time
@@ -294,7 +297,7 @@ class MedyanConverter(TrajectoryConverter):
     def _read(
         input_data: MedyanData,
         progress_callback: Callable[[float], None],
-        callback_interval: float
+        callback_interval: float,
     ) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
