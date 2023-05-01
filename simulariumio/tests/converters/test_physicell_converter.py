@@ -11,7 +11,7 @@ from simulariumio.constants import (
     DEFAULT_BOX_SIZE,
     DEFAULT_COLORS,
     DISPLAY_TYPE,
-    VIZ_TYPE
+    VIZ_TYPE,
 )
 from simulariumio.exceptions import InputDataError
 

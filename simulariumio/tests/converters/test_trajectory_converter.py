@@ -76,7 +76,7 @@ sphere_group_data = JsonWriter.format_trajectory_data(sphere_group_converter._da
         (
             sphere_group_data["trajectoryInfo"]["version"],
             CURRENT_VERSION.TRAJECTORY_INFO,
-        )
+        ),
     ],
 )
 def test_versions_trajectory(trajectory_version, expected_version):
@@ -1343,7 +1343,7 @@ def test_bundle_data_fiber_agents(data, expected_data):
                 ],
             },
         ),
-    ]
+    ],
 )
 def test_bundle_data_sphere_group(data, expected_data):
     assert data == expected_data

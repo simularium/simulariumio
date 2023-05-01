@@ -274,7 +274,10 @@ class CytosimConverter(TrajectoryConverter):
                 )
                 result.n_agents[time_index] += 1
             current_time = time.time()
-            if progress_callback and current_time > last_report_time + callback_interval:
+            if (
+                progress_callback
+                and current_time > last_report_time + callback_interval
+            ):
                 # send a progress update for % complete
                 progress_callback(overall_line / total_lines)
                 last_report_time = current_time
@@ -286,7 +289,7 @@ class CytosimConverter(TrajectoryConverter):
     def _read(
         input_data: CytosimData,
         progress_callback: Callable[[float], None],
-        callback_interval: float
+        callback_interval: float,
     ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the CytoSim data
@@ -309,7 +312,9 @@ class CytosimConverter(TrajectoryConverter):
         agent_data = AgentData.from_dimensions(dimensions)
         agent_data.draw_fiber_points = input_data.draw_fiber_points
         overall_line = 0
-        total_lines = sum(len(cytosim_data[object_type]) for object_type in input_data.object_info)
+        total_lines = sum(
+            len(cytosim_data[object_type]) for object_type in input_data.object_info
+        )
         last_report_time = time.time()
 
         uids = []
@@ -319,8 +324,8 @@ class CytosimConverter(TrajectoryConverter):
                     agent_data,
                     uids,
                     overall_line,
-                    last_report_time
-                 ) = CytosimConverter._parse_objects(
+                    last_report_time,
+                ) = CytosimConverter._parse_objects(
                     object_type,
                     cytosim_data[object_type],
                     input_data.meta_data.scale_factor,

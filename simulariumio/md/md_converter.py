@@ -137,8 +137,7 @@ class MdConverter(TrajectoryConverter):
                 display_data.name = type_name
             else:
                 display_data = DisplayData(
-                    name=type_name,
-                    display_type=DISPLAY_TYPE.SPHERE
+                    name=type_name, display_type=DISPLAY_TYPE.SPHERE
                 )
         if display_data.color:
             return display_data
@@ -199,7 +198,10 @@ class MdConverter(TrajectoryConverter):
             )
             time_index += 1
             current_time = time.time()
-            if progress_callback and current_time > last_report_time + callback_interval:
+            if (
+                progress_callback
+                and current_time > last_report_time + callback_interval
+            ):
                 # send a progress update for % complete
                 progress_callback(time_index / dimensions.total_steps)
                 last_report_time = current_time
@@ -214,7 +216,7 @@ class MdConverter(TrajectoryConverter):
     def _read(
         input_data: MdData,
         progress_callback: Callable[[float], None],
-        callback_interval: float
+        callback_interval: float,
     ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the MD data

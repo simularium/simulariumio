@@ -342,7 +342,10 @@ class McellConverter(TrajectoryConverter):
                 result,
             )
             current_time = time.time()
-            if progress_callback and current_time > last_report_time + callback_interval:
+            if (
+                progress_callback
+                and current_time > last_report_time + callback_interval
+            ):
                 # send a progress update for % complete
                 progress_callback(time_index / dimensions.total_steps)
                 last_report_time = current_time
@@ -353,7 +356,7 @@ class McellConverter(TrajectoryConverter):
     def _read(
         input_data: McellData,
         progress_callback: Callable[[float], None],
-        callback_interval: float
+        callback_interval: float,
     ) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format

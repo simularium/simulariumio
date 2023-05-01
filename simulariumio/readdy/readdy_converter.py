@@ -122,7 +122,10 @@ class ReaddyConverter(TrajectoryConverter):
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index
             current_time = time.time()
-            if progress_callback and current_time > last_report_time + callback_interval:
+            if (
+                progress_callback
+                and current_time > last_report_time + callback_interval
+            ):
                 # send a progress update for % complete
                 progress_callback(time_index / data_dimensions.total_steps)
                 last_report_time = current_time

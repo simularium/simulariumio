@@ -337,7 +337,10 @@ class CellpackConverter(TrajectoryConverter):
                         handedness,
                     )
                     agent_id_counter += 1
-                    if progress_callback and time.time() > last_report_time + callback_interval:
+                    if (
+                        progress_callback
+                        and time.time() > last_report_time + callback_interval
+                    ):
                         progress_callback(agent_id_counter / total_agents)
                         last_report_time = time.time()
             elif ingredient_results_data["nbCurve"] > 0:
@@ -353,7 +356,10 @@ class CellpackConverter(TrajectoryConverter):
                         box_center,
                     )
                     agent_id_counter += 1
-                    if progress_callback and time.time() > last_report_time + callback_interval:
+                    if (
+                        progress_callback
+                        and time.time() > last_report_time + callback_interval
+                    ):
                         progress_callback(agent_id_counter / total_agents)
                         last_report_time = time.time()
 
@@ -372,7 +378,7 @@ class CellpackConverter(TrajectoryConverter):
     def _read(
         input_data: CellpackData,
         progress_callback: Callable[[float], None],
-        callback_interval: float
+        callback_interval: float,
     ) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the Cellpack data
@@ -405,7 +411,7 @@ class CellpackConverter(TrajectoryConverter):
             input_data.geometry_url,
             input_data.display_data,
             progress_callback,
-            callback_interval
+            callback_interval,
         )
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))

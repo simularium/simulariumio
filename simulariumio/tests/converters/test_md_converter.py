@@ -15,7 +15,7 @@ from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     DEFAULT_BOX_SIZE,
     VIZ_TYPE,
-    DISPLAY_TYPE
+    DISPLAY_TYPE,
 )
 
 data = MdData(md_universe=Universe("simulariumio/tests/data/md/example.xyz"))

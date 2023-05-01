@@ -180,7 +180,10 @@ class SpringsaladConverter(TrajectoryConverter):
                 agent_index += 1
             line_count += 1
             current_time = time.time()
-            if progress_callback and current_time > last_report_time + callback_interval:
+            if (
+                progress_callback
+                and current_time > last_report_time + callback_interval
+            ):
                 # send a progress update for % complete
                 progress_callback(line_count / len(springsalad_data))
                 last_report_time = current_time
