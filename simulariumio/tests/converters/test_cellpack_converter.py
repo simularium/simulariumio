@@ -291,6 +291,8 @@ data = CellpackData(
     handedness=HAND_TYPE.LEFT,
     geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/",
 )
+
+
 def test_callback_fn():
     callback_fn = Mock()
     call_interval = 0.000000001
