@@ -319,7 +319,6 @@ class McellConverter(TrajectoryConverter):
         # get metadata for each agent type
         molecule_info = {}
         total_steps = 0
-        last_report_time = time.time()
 
         for molecule in molecule_list:
             molecule_info[molecule["mol_name"]] = molecule
