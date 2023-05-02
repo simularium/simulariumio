@@ -60,7 +60,8 @@ class McellConverter(TrajectoryConverter):
             to be sent to the callback, in seconds
             Default: 10
         """
-        self._data = self._read(input_data, progress_callback, callback_interval)
+        super().__init__(input_data, progress_callback, callback_interval)
+        self._data = self._read(input_data)
 
     @staticmethod
     def _normalize(v: np.ndarray) -> np.ndarray:
@@ -298,13 +299,11 @@ class McellConverter(TrajectoryConverter):
                     break
         return result
 
-    @staticmethod
     def _read_cellblender_data(
+        self,
         timestep: float,
         molecule_list: Dict[str, Any],
         input_data: McellData,
-        progress_callback: Callable[[float], None],
-        callback_interval: float,
     ) -> AgentData:
         """
         Parse cellblender binary files to get spatial data
@@ -341,23 +340,11 @@ class McellConverter(TrajectoryConverter):
                 input_data,
                 result,
             )
-            current_time = time.time()
-            if (
-                progress_callback
-                and current_time > last_report_time + callback_interval
-            ):
-                # send a progress update for % complete
-                progress_callback(time_index / dimensions.total_steps)
-                last_report_time = current_time
+            super().check_report_progress(time_index / dimensions.total_steps)
         result.n_timesteps = total_steps + 1
         return result
 
-    @staticmethod
-    def _read(
-        input_data: McellData,
-        progress_callback: Callable[[float], None],
-        callback_interval: float,
-    ) -> TrajectoryData:
+    def _read(self, input_data: McellData) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
@@ -373,12 +360,10 @@ class McellConverter(TrajectoryConverter):
         time_units = UnitData(
             "s", float(data_model["mcell"]["initialization"]["time_step"])
         )
-        agent_data = McellConverter._read_cellblender_data(
+        agent_data = self._read_cellblender_data(
             time_units.magnitude,
             data_model["mcell"]["define_molecules"]["molecule_list"],
             input_data,
-            progress_callback,
-            callback_interval,
         )
         time_units.magnitude = 1
         # get box size

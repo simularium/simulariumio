@@ -3,7 +3,7 @@
 
 import logging
 from typing import Any, Tuple, Callable
-import time
+
 import numpy as np
 import readdy
 
@@ -48,7 +48,8 @@ class ReaddyConverter(TrajectoryConverter):
             to be sent to the callback, in seconds
             Default: 10
         """
-        self._data = self._read(input_data, progress_callback, callback_interval)
+        super().__init__(input_data, progress_callback, callback_interval)
+        self._data = self._read(input_data)
 
     @staticmethod
     def _get_raw_trajectory_data(
@@ -62,12 +63,7 @@ class ReaddyConverter(TrajectoryConverter):
         n_agents, positions, type_ids, ids = traj.to_numpy(start=0, stop=None)
         return (traj, n_agents, positions, type_ids, ids)
 
-    @staticmethod
-    def _get_agent_data(
-        input_data: ReaddyData,
-        progress_callback: Callable[[float], None],
-        callback_interval: float,
-    ) -> AgentData:
+    def _get_agent_data(self, input_data: ReaddyData) -> AgentData:
         """
         Pack raw ReaDDy trajectory data into AgentData,
         ignoring particles with type names in ignore_types
@@ -83,7 +79,6 @@ class ReaddyConverter(TrajectoryConverter):
             total_steps=n_agents.shape[0],
             max_agents=int(np.amax(n_agents)),
         )
-        last_report_time = time.time()
 
         result = AgentData.from_dimensions(data_dimensions)
         result.times = input_data.timestep * np.arange(data_dimensions.total_steps)
@@ -121,30 +116,19 @@ class ReaddyConverter(TrajectoryConverter):
                 )
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index
-            current_time = time.time()
-            if (
-                progress_callback
-                and current_time > last_report_time + callback_interval
-            ):
-                # send a progress update for % complete
-                progress_callback(time_index / data_dimensions.total_steps)
-                last_report_time = current_time
+            super().check_report_progress(time_index / data_dimensions.total_steps)
         return result
 
-    @staticmethod
     def _read(
+        self,
         input_data: ReaddyData,
-        progress_callback: Callable[[float], None],
-        callback_interval: float,
     ) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
         print("Reading ReaDDy Data -------------")
         try:
-            agent_data = ReaddyConverter._get_agent_data(
-                input_data, progress_callback, callback_interval
-            )
+            agent_data = self._get_agent_data(input_data)
         except Exception as e:
             raise InputDataError(f"Error reading input Readdy data: {e}")
 

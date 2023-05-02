@@ -4,7 +4,6 @@
 import logging
 from typing import List, Callable
 import math
-import time
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import (
@@ -58,7 +57,8 @@ class MedyanConverter(TrajectoryConverter):
             to be sent to the callback, in seconds
             Default: 10
         """
-        self._data = self._read(input_data, progress_callback, callback_interval)
+        super().__init__(input_data, progress_callback, callback_interval)
+        self._data = self._read(input_data)
 
     @staticmethod
     def _draw_endpoints(line: str, object_type: str, input_data: MedyanData) -> bool:
@@ -148,11 +148,9 @@ class MedyanConverter(TrajectoryConverter):
             result.max_agents = agents
         return result
 
-    @staticmethod
     def _get_trajectory_data(
+        self,
         input_data: MedyanData,
-        progress_callback: Callable[[float], None],
-        callback_interval: float,
     ) -> AgentData:
         """
         Parse a MEDYAN snapshot.traj output file to get agents
@@ -182,7 +180,6 @@ class MedyanConverter(TrajectoryConverter):
         object_type = ""
         draw_endpoints = False
         line_count = 0
-        last_report_time = time.time()
 
         for line in lines:
             if len(line) < 1:
@@ -281,31 +278,17 @@ class MedyanConverter(TrajectoryConverter):
                     agent_index += 2
                     result.n_agents[time_index] += 2
             line_count += 1
-            current_time = time.time()
-            if (
-                progress_callback
-                and current_time > last_report_time + callback_interval
-            ):
-                # send a progress update for % complete
-                progress_callback(line_count / len(lines))
-                last_report_time = current_time
+            super().check_report_progress(line_count / len(lines))
 
         result.n_timesteps = time_index + 1
         return result
 
-    @staticmethod
-    def _read(
-        input_data: MedyanData,
-        progress_callback: Callable[[float], None],
-        callback_interval: float,
-    ) -> TrajectoryData:
+    def _read(self, input_data: MedyanData) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
         print("Reading MEDYAN Data -------------")
-        agent_data = MedyanConverter._get_trajectory_data(
-            input_data, progress_callback, callback_interval
-        )
+        agent_data = self._get_trajectory_data(input_data)
         # get display data (geometry and color)
         for object_type in input_data.display_data:
             for tid in input_data.display_data[object_type]:

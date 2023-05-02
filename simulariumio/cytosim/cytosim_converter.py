@@ -3,7 +3,6 @@
 
 import logging
 from typing import Any, Dict, List, Tuple, Callable
-import time
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
@@ -54,7 +53,8 @@ class CytosimConverter(TrajectoryConverter):
             to be sent to the callback, in seconds
             Default: 10
         """
-        self._data = self._read(input_data, progress_callback, callback_interval)
+        super().__init__(input_data, progress_callback, callback_interval)
+        self._data = self._read(input_data)
 
     @staticmethod
     def _ignore_line(line: str) -> bool:
@@ -183,19 +183,16 @@ class CytosimConverter(TrajectoryConverter):
         )
         return (result, uids, used_unique_IDs)
 
-    @staticmethod
     def _parse_objects(
+        self,
         object_type: str,
         data_lines: List[str],
         scale_factor: float,
         object_info: CytosimObjectInfo,
         result: AgentData,
         used_unique_IDs: List[int],
-        progress_callback: Callable[[float], None],
         overall_line: int,
         total_lines: int,
-        last_report_time: float,
-        callback_interval: float,
     ) -> Tuple[Dict[str, Any], List[int], int]:
         """
         Parse a Cytosim output file containing objects
@@ -273,24 +270,12 @@ class CytosimConverter(TrajectoryConverter):
                     )
                 )
                 result.n_agents[time_index] += 1
-            current_time = time.time()
-            if (
-                progress_callback
-                and current_time > last_report_time + callback_interval
-            ):
-                # send a progress update for % complete
-                progress_callback(overall_line / total_lines)
-                last_report_time = current_time
+            super().check_report_progress(overall_line / total_lines)
 
         result.n_timesteps = time_index + 1
-        return (result, used_unique_IDs, overall_line, last_report_time)
+        return (result, used_unique_IDs, overall_line)
 
-    @staticmethod
-    def _read(
-        input_data: CytosimData,
-        progress_callback: Callable[[float], None],
-        callback_interval: float,
-    ) -> TrajectoryData:
+    def _read(self, input_data: CytosimData) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the CytoSim data
         """
@@ -315,28 +300,19 @@ class CytosimConverter(TrajectoryConverter):
         total_lines = sum(
             len(cytosim_data[object_type]) for object_type in input_data.object_info
         )
-        last_report_time = time.time()
 
         uids = []
         for object_type in input_data.object_info:
             try:
-                (
-                    agent_data,
-                    uids,
-                    overall_line,
-                    last_report_time,
-                ) = CytosimConverter._parse_objects(
+                (agent_data, uids, overall_line) = self._parse_objects(
                     object_type,
                     cytosim_data[object_type],
                     input_data.meta_data.scale_factor,
                     input_data.object_info[object_type],
                     agent_data,
                     uids,
-                    progress_callback,
                     overall_line,
                     total_lines,
-                    last_report_time,
-                    callback_interval,
                 )
             except Exception as e:
                 raise InputDataError(f"Error reading input cytosim data: {e}")

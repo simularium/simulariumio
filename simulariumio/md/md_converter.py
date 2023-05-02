@@ -4,7 +4,7 @@
 import logging
 import copy
 from typing import Set, Callable
-import time
+
 import numpy as np
 import pandas as pd
 from MDAnalysis.topology.core import guess_atom_element
@@ -50,7 +50,8 @@ class MdConverter(TrajectoryConverter):
             to be sent to the callback, in seconds
             Default: 10
         """
-        self._data = self._read(input_data, progress_callback, callback_interval)
+        super().__init__(input_data, progress_callback, callback_interval)
+        self._data = self._read(input_data)
 
     @staticmethod
     def _read_universe_dimensions(
@@ -160,12 +161,7 @@ class MdConverter(TrajectoryConverter):
             result[display_data.name] = display_data
         return result
 
-    @staticmethod
-    def _read_universe(
-        input_data: MdData,
-        progress_callback: Callable[[float], None],
-        callback_interval: float,
-    ) -> AgentData:
+    def _read_universe(self, input_data: MdData) -> AgentData:
         """
         Use a MD Universe to get AgentData
         """
@@ -174,7 +170,6 @@ class MdConverter(TrajectoryConverter):
         get_type_name_func = np.frompyfunc(MdConverter._get_type_name, 2, 1)
         unique_raw_type_names = set([])
         time_index = 0
-        last_report_time = time.time()
 
         for frame in input_data.md_universe.trajectory[
             :: input_data.nth_timestep_to_read
@@ -197,14 +192,7 @@ class MdConverter(TrajectoryConverter):
                 ]
             )
             time_index += 1
-            current_time = time.time()
-            if (
-                progress_callback
-                and current_time > last_report_time + callback_interval
-            ):
-                # send a progress update for % complete
-                progress_callback(time_index / dimensions.total_steps)
-                last_report_time = current_time
+            super().check_report_progress(time_index / dimensions.total_steps)
 
         result.n_timesteps = dimensions.total_steps
         result.display_data = MdConverter._get_display_data_mapping(
@@ -212,20 +200,13 @@ class MdConverter(TrajectoryConverter):
         )
         return result
 
-    @staticmethod
-    def _read(
-        input_data: MdData,
-        progress_callback: Callable[[float], None],
-        callback_interval: float,
-    ) -> TrajectoryData:
+    def _read(self, input_data: MdData) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the MD data
         """
         print("Reading MD Data -------------")
         # get data from the MD Universe
-        agent_data = MdConverter._read_universe(
-            input_data, progress_callback, callback_interval
-        )
+        agent_data = self._read_universe(input_data)
         # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
         input_data.meta_data._set_box_size()

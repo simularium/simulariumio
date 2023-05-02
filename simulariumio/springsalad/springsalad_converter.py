@@ -3,7 +3,6 @@
 
 import logging
 from typing import List, Tuple, Callable
-import time
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
@@ -58,7 +57,8 @@ class SpringsaladConverter(TrajectoryConverter):
             to be sent to the callback, in seconds
             Default: 10
         """
-        self._data = self._read(input_data, progress_callback, callback_interval)
+        super().__init__(input_data, progress_callback, callback_interval)
+        self._data = self._read(input_data)
 
     @staticmethod
     def _parse_dimensions(
@@ -86,12 +86,10 @@ class SpringsaladConverter(TrajectoryConverter):
             result.max_agents = agents
         return result
 
-    @staticmethod
     def _parse_springsalad_data(
+        self,
         springsalad_data: List[str],
         input_data: SpringsaladData,
-        progress_callback: Callable[[float], None],
-        callback_interval: float,
     ) -> Tuple[AgentData, np.ndarray]:
         """
         Parse SpringSaLaD SIM_VIEW txt file to get spatial data
@@ -106,7 +104,6 @@ class SpringsaladConverter(TrajectoryConverter):
         max_uid = 0
         scene_agent_positions = {}
         line_count = 0
-        last_report_time = time.time()
 
         for line in springsalad_data:
             cols = line.split()
@@ -179,23 +176,11 @@ class SpringsaladConverter(TrajectoryConverter):
                 ] = scene_agent_positions[particle2_id]
                 agent_index += 1
             line_count += 1
-            current_time = time.time()
-            if (
-                progress_callback
-                and current_time > last_report_time + callback_interval
-            ):
-                # send a progress update for % complete
-                progress_callback(line_count / len(springsalad_data))
-                last_report_time = current_time
+            super().check_report_progress(line_count / len(springsalad_data))
         result.n_timesteps = time_index + 1
         return result, box_size
 
-    @staticmethod
-    def _read(
-        input_data: SpringsaladData,
-        progress_callback: Callable[[float], None],
-        callback_interval: float,
-    ) -> TrajectoryData:
+    def _read(self, input_data: SpringsaladData) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
