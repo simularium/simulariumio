@@ -6,7 +6,6 @@ from typing import Dict, Any, Callable
 import json
 import os
 import array
-import time
 import numpy as np
 import scipy.linalg as linalg
 from scipy.spatial.transform import Rotation
@@ -319,6 +318,7 @@ class McellConverter(TrajectoryConverter):
         # get metadata for each agent type
         molecule_info = {}
         total_steps = 0
+        step_count = 0
 
         for molecule in molecule_list:
             molecule_info[molecule["mol_name"]] = molecule
@@ -339,7 +339,8 @@ class McellConverter(TrajectoryConverter):
                 input_data,
                 result,
             )
-            super().check_report_progress(time_index / dimensions.total_steps)
+            step_count += 1
+            super().check_report_progress(step_count / dimensions.total_steps)
         result.n_timesteps = total_steps + 1
         return result
 
