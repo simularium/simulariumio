@@ -192,7 +192,7 @@ class MdConverter(TrajectoryConverter):
                 ]
             )
             time_index += 1
-            super().check_report_progress(time_index / dimensions.total_steps)
+            self.check_report_progress(time_index / dimensions.total_steps)
 
         result.n_timesteps = dimensions.total_steps
         result.display_data = MdConverter._get_display_data_mapping(

@@ -176,7 +176,7 @@ class SpringsaladConverter(TrajectoryConverter):
                 ] = scene_agent_positions[particle2_id]
                 agent_index += 1
             line_count += 1
-            super().check_report_progress(line_count / len(springsalad_data))
+            self.check_report_progress(line_count / len(springsalad_data))
         result.n_timesteps = time_index + 1
         return result, box_size
 

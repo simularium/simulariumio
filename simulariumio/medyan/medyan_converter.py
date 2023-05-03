@@ -278,7 +278,7 @@ class MedyanConverter(TrajectoryConverter):
                     agent_index += 2
                     result.n_agents[time_index] += 2
             line_count += 1
-            super().check_report_progress(line_count / len(lines))
+            self.check_report_progress(line_count / len(lines))
 
         result.n_timesteps = time_index + 1
         return result

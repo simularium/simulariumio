@@ -196,7 +196,7 @@ class PhysicellConverter(TrajectoryConverter):
             n_cells = int(len(discrete_cells[time_index]["position_x"]))
             n_def_agents.append(0)
             subcells.append({})
-            super().check_report_progress(time_index / (dimensions.total_steps * 2))
+            self.check_report_progress(time_index / (dimensions.total_steps * 2))
             for cell_index in range(n_cells):
                 cell_type_id = int(discrete_cells[time_index]["cell_type"][cell_index])
                 if PhysicellConverter._cell_is_subcell(cell_type_id, input_data):
@@ -266,7 +266,7 @@ class PhysicellConverter(TrajectoryConverter):
         next_color_index = 0
         for time_index in range(dimensions.total_steps):
             agent_index = n_def_agents[time_index]
-            super().check_report_progress(
+            self.check_report_progress(
                 (time_index + dimensions.total_steps) / (dimensions.total_steps * 2)
             )
             for owner_id in subcells[time_index]:

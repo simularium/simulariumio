@@ -270,7 +270,7 @@ class CytosimConverter(TrajectoryConverter):
                     )
                 )
                 result.n_agents[time_index] += 1
-            super().check_report_progress(overall_line / total_lines)
+            self.check_report_progress(overall_line / total_lines)
 
         result.n_timesteps = time_index + 1
         return (result, used_unique_IDs, overall_line)

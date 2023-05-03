@@ -116,7 +116,7 @@ class ReaddyConverter(TrajectoryConverter):
                 )
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index
-            super().check_report_progress(time_index / data_dimensions.total_steps)
+            self.check_report_progress(time_index / data_dimensions.total_steps)
         return result
 
     def _read(

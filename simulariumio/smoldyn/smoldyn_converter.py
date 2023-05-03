@@ -133,7 +133,7 @@ class SmoldynConverter(TrajectoryConverter):
                 )
                 agent_index += 1
             line_count += 1
-            super().check_report_progress(line_count / len(smoldyn_data_lines))
+            self.check_report_progress(line_count / len(smoldyn_data_lines))
 
         result.n_agents[time_index] = agent_index
         result.n_timesteps = time_index + 1

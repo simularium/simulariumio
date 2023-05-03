@@ -334,7 +334,7 @@ class CellpackConverter(TrajectoryConverter):
                         handedness,
                     )
                     agent_id_counter += 1
-                    super().check_report_progress(agent_id_counter / total_agents)
+                    self.check_report_progress(agent_id_counter / total_agents)
             elif ingredient_results_data["nbCurve"] > 0:
                 for i in range(ingredient_results_data["nbCurve"]):
                     CellpackConverter._unpack_curve(
@@ -348,7 +348,7 @@ class CellpackConverter(TrajectoryConverter):
                         box_center,
                     )
                     agent_id_counter += 1
-                    super().check_report_progress(agent_id_counter / total_agents)
+                    self.check_report_progress(agent_id_counter / total_agents)
 
         spatial_data.display_data = display_data
         return spatial_data

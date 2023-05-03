@@ -340,7 +340,7 @@ class McellConverter(TrajectoryConverter):
                 result,
             )
             step_count += 1
-            super().check_report_progress(step_count / dimensions.total_steps)
+            self.check_report_progress(step_count / dimensions.total_steps)
         result.n_timesteps = total_steps + 1
         return result
 
