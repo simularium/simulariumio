@@ -81,7 +81,9 @@ class SmoldynData:
         self.plots = plots if plots is not None else []
 
     @classmethod
-    def from_dict(cls, smoldyn_info: Dict[str, Any]):
+    def from_dict(
+        cls, smoldyn_info: Dict[str, Any]
+    ):
         """
         Create SmoldynData from a simularium JSON dict
 
@@ -91,9 +93,10 @@ class SmoldynData:
             JSON dict containing values key value pairs representing the
             data to be turned into a SmoldynData object
         """
-        if "fileContents" not in smoldyn_info or (
-            "fileContents" not in smoldyn_info["fileContents"]
-            and "filePath" not in smoldyn_info["fileContents"]
+        if (
+            "fileContents" not in smoldyn_info
+            or ("fileContents" not in smoldyn_info["fileContents"]
+                and "filePath" not in smoldyn_info["fileContents"])
         ):
             raise DataError(
                 "File contents or file path must be provided "
@@ -107,21 +110,25 @@ class SmoldynData:
         if "spatialUnits" in smoldyn_info:
             # spatial units defaults to meter in the UI
             spatial_units = UnitData.from_dict(
-                smoldyn_info["spatialUnits"], default_name="meter", default_mag=1.0
+                smoldyn_info["spatialUnits"],
+                default_name="meter",
+                default_mag=1.0
             )
 
         time_units = None
         if "timeUnits" in smoldyn_info:
             # time units default to seconds on UI
             time_units = UnitData.from_dict(
-                smoldyn_info["timeUnits"], default_name="second", default_mag=1.0
+                smoldyn_info["timeUnits"],
+                default_name="second",
+                default_mag=1.0
             )
 
         return cls(
             meta_data=MetaData.from_dict(smoldyn_info.get("metaData")),
             smoldyn_file=InputFileData(
                 file_contents=smoldyn_info["fileContents"].get("fileContents"),
-                file_path=smoldyn_info["fileContents"].get("filePath"),
+                file_path=smoldyn_info["fileContents"].get("filePath")
             ),
             display_data=display_data,
             time_units=time_units,
