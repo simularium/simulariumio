@@ -79,6 +79,7 @@ class TrajectoryConverter:
             and current_time > self.last_report_time + self.callback_interval
         ):
             self.progress_callback(percent_complete)
+            self.last_report_time = current_time
 
     @staticmethod
     def _get_display_type_name_from_raw(
