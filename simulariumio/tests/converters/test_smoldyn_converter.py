@@ -15,6 +15,7 @@ from simulariumio.constants import (
     DISPLAY_TYPE,
     VIZ_TYPE,
 )
+from simulariumio.exceptions import InputDataError
 
 data = SmoldynData(
     smoldyn_file=InputFileData(
@@ -461,3 +462,21 @@ def test_typeMapping_with_3D_data(typeMapping, expected_typeMapping):
 )
 def test_bundleData_3D(bundleData, expected_bundleData):
     assert expected_bundleData == bundleData["data"]
+
+
+def test_input_file_error():
+    # malformed_smoldyn.txt is missing a column for some agents
+    malformed_data = SmoldynData(
+        smoldyn_file=InputFileData(
+            file_path="simulariumio/tests/data/malformed_data/malformed_smoldyn.txt"
+        )
+    )
+    with pytest.raises(InputDataError):
+        SmoldynConverter(malformed_data)
+
+    # also expect an error for a file of the wrong file type
+    wrong_file = SmoldynData(
+        smoldyn_file=InputFileData(file_path="simulariumio/tests/data/readdy/test.h5")
+    )
+    with pytest.raises(InputDataError):
+        SmoldynConverter(wrong_file)

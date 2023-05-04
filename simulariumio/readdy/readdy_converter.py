@@ -11,6 +11,7 @@ from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData, DisplayData
 from ..constants import DISPLAY_TYPE, VIZ_TYPE
 from .readdy_data import ReaddyData
+from ..exceptions import InputDataError
 
 ###############################################################################
 
@@ -109,7 +110,11 @@ class ReaddyConverter(TrajectoryConverter):
         Return an object containing the data shaped for Simularium format
         """
         print("Reading ReaDDy Data -------------")
-        agent_data = ReaddyConverter._get_agent_data(input_data)
+        try:
+            agent_data = ReaddyConverter._get_agent_data(input_data)
+        except Exception as e:
+            raise InputDataError(f"Error reading input Readdy data: {e}")
+
         # get display data (geometry and color)
         for tid in input_data.display_data:
             display_data = input_data.display_data[tid]

@@ -12,6 +12,7 @@ from simulariumio.constants import (
     DEFAULT_BOX_SIZE,
     VIZ_TYPE,
 )
+from simulariumio.exceptions import InputDataError
 
 
 data = SpringsaladData(
@@ -419,3 +420,27 @@ def test_bundleData_bonds(bundleData, expected_bundleData):
 
 def test_agent_ids_bonds():
     assert JsonWriter._check_agent_ids_are_unique_per_frame(results_display_data)
+
+
+def test_input_file_error():
+    # springsalad_broken_link.txt is makes a link with an agent that doesn't exist
+    data = SpringsaladData(
+        sim_view_txt_file=InputFileData(
+            file_path=(
+                "simulariumio/tests/data/malformed_data/springsalad_broken_link.txt"
+            )
+        ),
+        draw_bonds=True,
+    )
+    with pytest.raises(InputDataError):
+        SpringsaladConverter(data)
+
+    # also expect an error for a file of the wrong file type
+    wrong_file = SpringsaladData(
+        sim_view_txt_file=InputFileData(
+            file_path="simulariumio/tests/data/readdy/test.h5"
+        ),
+        draw_bonds=False,
+    )
+    with pytest.raises(InputDataError):
+        SpringsaladConverter(wrong_file)

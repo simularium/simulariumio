@@ -10,6 +10,7 @@ from simulariumio.constants import (
     DISPLAY_TYPE,
     VIZ_TYPE,
 )
+from simulariumio.exceptions import InputDataError
 
 
 data = CellpackData(
@@ -254,3 +255,25 @@ def test_get_rotation(quat, matrix):
     assert round(from_quat_left[0], 2) == round(from_matrix_left[0], 2)
     assert round(from_quat_left[1], 2) == round(from_matrix_left[1], 2)
     assert round(from_quat_left[2], 2) == round(from_matrix_left[2], 2)
+
+
+def test_input_file_error():
+    wrong_recipe_file = CellpackData(
+        results_file=InputFileData(
+            file_path="simulariumio/tests/data/cellpack/mock_results.json"
+        ),
+        geometry_type=DISPLAY_TYPE.SPHERE,
+        recipe_file_path="simulariumio/tests/data/cellpack/mock_results.json",
+    )
+    with pytest.raises(InputDataError):
+        CellpackConverter(wrong_recipe_file)
+
+    bad_file_type = CellpackData(
+        results_file=InputFileData(
+            file_path="simulariumio/tests/data/springsalad/broken_link.txt"
+        ),
+        geometry_type=DISPLAY_TYPE.SPHERE,
+        recipe_file_path="simulariumio/tests/data/cellpack/mock_recipe.json",
+    )
+    with pytest.raises(InputDataError):
+        CellpackConverter(bad_file_type)

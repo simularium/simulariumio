@@ -20,6 +20,7 @@ from ..data_objects import (
 )
 from .mcell_data import McellData
 from ..constants import VALUES_PER_3D_POINT
+from ..exceptions import InputDataError
 
 ###############################################################################
 
@@ -292,9 +293,13 @@ class McellConverter(TrajectoryConverter):
         """
         Parse cellblender binary files to get spatial data
         """
-        dimensions = McellConverter._get_dimensions_of_cellblender_data(
-            input_data.path_to_binary_files, input_data.nth_timestep_to_read
-        )
+        try:
+            dimensions = McellConverter._get_dimensions_of_cellblender_data(
+                input_data.path_to_binary_files, input_data.nth_timestep_to_read
+            )
+        except Exception as e:
+            raise InputDataError(f"Error reading Mcell binary files: {e}")
+
         result = AgentData.from_dimensions(dimensions)
         # get metadata for each agent type
         molecule_info = {}
@@ -328,8 +333,12 @@ class McellConverter(TrajectoryConverter):
         """
         print("Reading MCell Data -------------")
         # read data model json
-        with open(input_data.path_to_data_model_json) as data_model_file:
-            data_model = json.load(data_model_file)
+        try:
+            with open(input_data.path_to_data_model_json) as data_model_file:
+                data_model = json.load(data_model_file)
+        except Exception as e:
+            raise InputDataError(f"Error reading Mcell file: {e}")
+
         # read spatial data
         time_units = UnitData(
             "s", float(data_model["mcell"]["initialization"]["time_step"])

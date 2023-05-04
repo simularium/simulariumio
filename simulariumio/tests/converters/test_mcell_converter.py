@@ -12,6 +12,7 @@ from simulariumio.constants import (
     DISPLAY_TYPE,
     VIZ_TYPE,
 )
+from simulariumio.exceptions import InputDataError
 
 data = McellData(
     path_to_data_model_json="simulariumio/tests/data/mcell/"
@@ -271,3 +272,21 @@ def test_rotation_matrix(v1, v2, expected_result):
 def test_get_euler_angles(v1, expected_result):
     euler_angles = McellConverter._get_euler_angles(v1, 45)
     assert (euler_angles == expected_result).all()
+
+
+def test_input_file_error():
+    invalid_json = McellData(
+        path_to_data_model_json="simulariumio/tests/data/md/example.xyz",
+        path_to_binary_files="simulariumio/tests/data/mcell/organelle_model_viz_output",
+    )
+    with pytest.raises(InputDataError):
+        McellConverter(invalid_json)
+
+    wrong_bin = McellData(
+        path_to_data_model_json="simulariumio/tests/data/mcell/"
+        "organelle_model_viz_output/Scene.data_model.00.json",
+        path_to_binary_files="simulariumio/tests/data/mcell/"
+        "organelle_model_example_files/mcell/output_data/react_data/seed_00001",
+    )
+    with pytest.raises(InputDataError):
+        McellConverter(wrong_bin)

@@ -8,6 +8,7 @@ import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData
+from ..exceptions import InputDataError
 from .smoldyn_data import SmoldynData
 
 ###############################################################################
@@ -78,7 +79,7 @@ class SmoldynConverter(TrajectoryConverter):
                 result.times[time_index] = float(cols[0])
             else:
                 if len(cols) < 4:
-                    raise Exception(
+                    raise InputDataError(
                         "Smoldyn data is not formatted as expected, "
                         "please use the Smoldyn `listmols` command for output"
                     )
@@ -126,7 +127,10 @@ class SmoldynConverter(TrajectoryConverter):
         """
         print("Reading Smoldyn Data -------------")
         # load the data from Smoldyn output .txt file
-        smoldyn_data = input_data.smoldyn_file.get_contents().split("\n")
+        try:
+            smoldyn_data = input_data.smoldyn_file.get_contents().split("\n")
+        except Exception as e:
+            raise InputDataError(f"Error reading input smoldyn data: {e}")
         # parse
         agent_data = SmoldynConverter._parse_objects(smoldyn_data, input_data)
         # get display data (geometry and color)

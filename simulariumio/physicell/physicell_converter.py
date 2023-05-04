@@ -12,7 +12,7 @@ from .dep.pyMCDS import pyMCDS
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, UnitData, DisplayData
-from ..exceptions import MissingDataError, DataError
+from ..exceptions import MissingDataError, DataError, InputDataError
 from ..constants import (
     DISPLAY_TYPE,
     SUBPOINT_VALUES_PER_ITEM,
@@ -158,9 +158,13 @@ class PhysicellConverter(TrajectoryConverter):
         type_ids = {}
         last_id = 0
         type_mapping = {}
-        discrete_cells, units = PhysicellConverter._load_data(
-            input_data.path_to_output_dir, input_data.nth_timestep_to_read
-        )
+        try:
+            discrete_cells, units = PhysicellConverter._load_data(
+                input_data.path_to_output_dir, input_data.nth_timestep_to_read
+            )
+        except Exception as e:
+            raise InputDataError(f"Error reading from Physicell output directory: {e}")
+
         dimensions = PhysicellConverter._get_dimensions(discrete_cells)
         result = AgentData.from_dimensions(dimensions)
         result.times = (

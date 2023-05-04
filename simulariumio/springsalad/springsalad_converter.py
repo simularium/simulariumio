@@ -21,6 +21,7 @@ from ..constants import (
     VALUES_PER_3D_POINT,
     SUBPOINT_VALUES_PER_ITEM,
 )
+from ..exceptions import InputDataError
 
 ###############################################################################
 
@@ -137,7 +138,7 @@ class SpringsaladConverter(TrajectoryConverter):
                     particle1_id not in scene_agent_positions
                     or particle2_id not in scene_agent_positions
                 ):
-                    raise Exception(
+                    raise InputDataError(
                         "Could not find particle ID connected by Link "
                         f"at timepoint {time_index} in SpringSaLaD data, "
                         "try converting without drawing bonds"
@@ -166,7 +167,10 @@ class SpringsaladConverter(TrajectoryConverter):
         Return an object containing the data shaped for Simularium format
         """
         print("Reading SpringSaLaD Data -------------")
-        springsalad_data = input_data.sim_view_txt_file.get_contents().split("\n")
+        try:
+            springsalad_data = input_data.sim_view_txt_file.get_contents().split("\n")
+        except Exception as e:
+            raise InputDataError(f"Error reading input SpringSaLaD data: {e}")
         agent_data, box_size = SpringsaladConverter._parse_springsalad_data(
             springsalad_data, input_data
         )

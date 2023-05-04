@@ -10,8 +10,9 @@ from simulariumio.constants import (
     DEFAULT_BOX_SIZE,
     DEFAULT_CAMERA_SETTINGS,
     VIZ_TYPE,
-    DISPLAY_TYPE
+    DISPLAY_TYPE,
 )
+from simulariumio.exceptions import InputDataError
 
 data = MedyanData(
     snapshot_file=InputFileData(file_path="simulariumio/tests/data/medyan/test.traj"),
@@ -480,3 +481,21 @@ def test_bundleData_drawing_endpoints(bundleData, expected_bundleData):
 
 def test_agent_ids_drawing_endpoints():
     assert JsonWriter._check_agent_ids_are_unique_per_frame(results_drawing_endpoints)
+
+
+def test_input_file_error():
+    # path to a file of the wrong format
+    wrong_file = MedyanData(
+        snapshot_file=InputFileData(file_path="simulariumio/tests/data/md/example.xyz"),
+    )
+    with pytest.raises(InputDataError):
+        MedyanConverter(wrong_file)
+
+    # file missing first frame start
+    invalid_traj = MedyanData(
+        snapshot_file=InputFileData(
+            file_path="simulariumio/tests/data/malformed_data/malformed_medyan.traj"
+        ),
+    )
+    with pytest.raises(InputDataError):
+        MedyanConverter(invalid_traj)

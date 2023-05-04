@@ -19,6 +19,7 @@ from ..constants import (
     VALUES_PER_3D_POINT,
     SUBPOINT_VALUES_PER_ITEM,
 )
+from ..exceptions import InputDataError
 from .medyan_data import MedyanData
 
 ###############################################################################
@@ -137,8 +138,12 @@ class MedyanConverter(TrajectoryConverter):
         """
         Parse a MEDYAN snapshot.traj output file to get agents
         """
-        lines = input_data.snapshot_file.get_contents().split("\n")
-        dimensions = MedyanConverter._parse_data_dimensions(lines, input_data)
+        try:
+            lines = input_data.snapshot_file.get_contents().split("\n")
+            dimensions = MedyanConverter._parse_data_dimensions(lines, input_data)
+        except Exception as e:
+            raise InputDataError(f"Error reading input medyan data: {e}")
+
         result = AgentData.from_dimensions(dimensions)
         time_index = -1
         at_frame_start = True
