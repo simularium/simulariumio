@@ -647,7 +647,7 @@ class AgentData:
             1: DISPLAY_TYPE.SPHERE,
         }
         for values_per_item in default_display_types:
-            if n_subpoints % float(values_per_item) == 0:
+            if n_subpoints > 0 and n_subpoints % float(values_per_item) == 0:
                 return default_display_types[values_per_item]
         return DISPLAY_TYPE.SPHERE
 
