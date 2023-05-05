@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 6.2.1 and Furo 2023.03.27 -->
-        <title>simulariumio.md.md_converter - simulariumio 1.7.2.dev18+g305f1d2 documentation</title>
+        <title>simulariumio.md.md_converter - simulariumio 1.7.2.dev37+gb2ab7fe documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.7.2.dev18+g305f1d2 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.7.2.dev37+gb2ab7fe documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.7.2.dev18+g305f1d2 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.7.2.dev37+gb2ab7fe documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -220,7 +220,7 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Set</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Callable</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -240,7 +240,12 @@
 
 
 <div class="viewcode-block" id="MdConverter"><a class="viewcode-back" href="../../../simulariumio.md.html#simulariumio.md.md_converter.MdConverter">[docs]</a><span class="k">class</span> <span class="nc">MdConverter</span><span class="p">(</span><span class="n">TrajectoryConverter</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">,</span>
+        <span class="n">progress_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">callback_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object reads simulation trajectory outputs</span>
 <span class="sd">        from molecular dynamics models</span>
@@ -252,13 +257,23 @@
 <span class="sd">        input_data : MdData</span>
 <span class="sd">            An object containing info for reading</span>
 <span class="sd">            MD simulation trajectory outputs and plot data</span>
+<span class="sd">        progress_callback : Callable[[float], None] (optional)</span>
+<span class="sd">            Callback function that accepts 1 float argument and returns None</span>
+<span class="sd">            which will be called at a given progress interval, determined by</span>
+<span class="sd">            callback_interval requested, providing the current percent progress</span>
+<span class="sd">            Default: None</span>
+<span class="sd">        callback_interval : float (optional)</span>
+<span class="sd">            If a progress_callback was provided, the period between updates</span>
+<span class="sd">            to be sent to the callback, in seconds</span>
+<span class="sd">            Default: 10</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">progress_callback</span><span class="p">,</span> <span class="n">callback_interval</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_read_universe_dimensions</span><span class="p">(</span>
         <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DimensionData</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Use a MD Universe to get the number of timesteps</span>
 <span class="sd">        and maximum agents per timestep</span>
@@ -340,8 +355,7 @@
                 <span class="n">display_data</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">type_name</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">display_data</span> <span class="o">=</span> <span class="n">DisplayData</span><span class="p">(</span>
-                    <span class="n">name</span><span class="o">=</span><span class="n">type_name</span><span class="p">,</span>
-                    <span class="n">display_type</span><span class="o">=</span><span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">SPHERE</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">type_name</span><span class="p">,</span> <span class="n">display_type</span><span class="o">=</span><span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">SPHERE</span>
                 <span class="p">)</span>
         <span class="k">if</span> <span class="n">display_data</span><span class="o">.</span><span class="n">color</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">display_data</span>
@@ -364,10 +378,7 @@
             <span class="n">result</span><span class="p">[</span><span class="n">display_data</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_data</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_read_universe</span><span class="p">(</span>
-        <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_read_universe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Use a MD Universe to get AgentData</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -376,6 +387,7 @@
         <span class="n">get_type_name_func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frompyfunc</span><span class="p">(</span><span class="n">MdConverter</span><span class="o">.</span><span class="n">_get_type_name</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">unique_raw_type_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
         <span class="n">time_index</span> <span class="o">=</span> <span class="mi">0</span>
+
         <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">md_universe</span><span class="o">.</span><span class="n">trajectory</span><span class="p">[</span>
             <span class="p">::</span> <span class="n">input_data</span><span class="o">.</span><span class="n">nth_timestep_to_read</span>
         <span class="p">]:</span>
@@ -397,20 +409,21 @@
                 <span class="p">]</span>
             <span class="p">)</span>
             <span class="n">time_index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_report_progress</span><span class="p">(</span><span class="n">time_index</span> <span class="o">/</span> <span class="n">dimensions</span><span class="o">.</span><span class="n">total_steps</span><span class="p">)</span>
+
         <span class="n">result</span><span class="o">.</span><span class="n">n_timesteps</span> <span class="o">=</span> <span class="n">dimensions</span><span class="o">.</span><span class="n">total_steps</span>
         <span class="n">result</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">MdConverter</span><span class="o">.</span><span class="n">_get_display_data_mapping</span><span class="p">(</span>
             <span class="n">unique_raw_type_names</span><span class="p">,</span> <span class="n">input_data</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a TrajectoryData object containing the MD data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading MD Data -------------&quot;</span><span class="p">)</span>
         <span class="c1"># get data from the MD Universe</span>
-        <span class="n">agent_data</span> <span class="o">=</span> <span class="n">MdConverter</span><span class="o">.</span><span class="n">_read_universe</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="n">agent_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_universe</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
         <span class="c1"># create TrajectoryData</span>
         <span class="n">input_data</span><span class="o">.</span><span class="n">spatial_units</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">)</span>
         <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">_set_box_size</span><span class="p">()</span>

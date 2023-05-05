@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.springsalad package" href="simulariumio.springsalad.html" /><link rel="prev" title="simulariumio.readers package" href="simulariumio.readers.html" />
 
     <!-- Generated with Sphinx 6.2.1 and Furo 2023.03.27 -->
-        <title>simulariumio.smoldyn package - simulariumio 1.7.2.dev18+g305f1d2 documentation</title>
+        <title>simulariumio.smoldyn package - simulariumio 1.7.2.dev37+gb2ab7fe documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">simulariumio 1.7.2.dev18+g305f1d2 documentation</div></a>
+      <a href="index.html"><div class="brand">simulariumio 1.7.2.dev37+gb2ab7fe documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.7.2.dev18+g305f1d2 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.7.2.dev37+gb2ab7fe documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -225,7 +225,7 @@
 <span id="simulariumio-smoldyn-smoldyn-converter-module"></span><h2>simulariumio.smoldyn.smoldyn_converter module<a class="headerlink" href="#module-simulariumio.smoldyn.smoldyn_converter" title="Permalink to this heading">#</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.smoldyn.smoldyn_converter.SmoldynConverter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.smoldyn.smoldyn_converter.</span></span><span class="sig-name descname"><span class="pre">SmoldynConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData" title="simulariumio.smoldyn.smoldyn_data.SmoldynData"><span class="pre">SmoldynData</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/smoldyn/smoldyn_converter.html#SmoldynConverter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.smoldyn.smoldyn_converter.SmoldynConverter" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.smoldyn.smoldyn_converter.</span></span><span class="sig-name descname"><span class="pre">SmoldynConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#simulariumio.smoldyn.smoldyn_data.SmoldynData" title="simulariumio.smoldyn.smoldyn_data.SmoldynData"><span class="pre">SmoldynData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/smoldyn/smoldyn_converter.html#SmoldynConverter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.smoldyn.smoldyn_converter.SmoldynConverter" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter" title="simulariumio.trajectory_converter.TrajectoryConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrajectoryConverter</span></code></a></p>
 <p>This object reads simulation trajectory outputs
 from Smoldyn (<a class="reference external" href="http://www.smoldyn.org">http://www.smoldyn.org</a>)
@@ -236,6 +236,15 @@ by the Simularium viewer</p>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>input_data</strong><span class="classifier">SmoldynData</span></dt><dd><p>An object containing info for reading
 Smoldyn simulation trajectory outputs and plot data</p>
+</dd>
+<dt><strong>progress_callback</strong><span class="classifier">Callable [[float], None] (optional)</span></dt><dd><p>Callback function that accepts 1 float argument and returns None
+which will be called at a given progress interval, determined by
+callback_interval requested, providing the current percent progress
+Default: None</p>
+</dd>
+<dt><strong>callback_interval</strong><span class="classifier">float (optional)</span></dt><dd><p>If a progress_callback was provided, the period between updates
+to be sent to the callback, in seconds
+Default: 10</p>
 </dd>
 </dl>
 </dd>

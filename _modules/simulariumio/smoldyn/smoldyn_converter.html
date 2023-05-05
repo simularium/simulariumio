@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 6.2.1 and Furo 2023.03.27 -->
-        <title>simulariumio.smoldyn.smoldyn_converter - simulariumio 1.7.2.dev18+g305f1d2 documentation</title>
+        <title>simulariumio.smoldyn.smoldyn_converter - simulariumio 1.7.2.dev37+gb2ab7fe documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.7.2.dev18+g305f1d2 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.7.2.dev37+gb2ab7fe documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.7.2.dev18+g305f1d2 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.7.2.dev37+gb2ab7fe documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -219,8 +219,7 @@
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
-
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">..trajectory_converter</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span>
@@ -236,7 +235,12 @@
 
 
 <div class="viewcode-block" id="SmoldynConverter"><a class="viewcode-back" href="../../../simulariumio.smoldyn.html#simulariumio.smoldyn.smoldyn_converter.SmoldynConverter">[docs]</a><span class="k">class</span> <span class="nc">SmoldynConverter</span><span class="p">(</span><span class="n">TrajectoryConverter</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">SmoldynData</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_data</span><span class="p">:</span> <span class="n">SmoldynData</span><span class="p">,</span>
+        <span class="n">progress_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">callback_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object reads simulation trajectory outputs</span>
 <span class="sd">        from Smoldyn (http://www.smoldyn.org)</span>
@@ -248,7 +252,17 @@
 <span class="sd">        input_data : SmoldynData</span>
 <span class="sd">            An object containing info for reading</span>
 <span class="sd">            Smoldyn simulation trajectory outputs and plot data</span>
+<span class="sd">        progress_callback : Callable [[float], None] (optional)</span>
+<span class="sd">            Callback function that accepts 1 float argument and returns None</span>
+<span class="sd">            which will be called at a given progress interval, determined by</span>
+<span class="sd">            callback_interval requested, providing the current percent progress</span>
+<span class="sd">            Default: None</span>
+<span class="sd">        callback_interval : float (optional)</span>
+<span class="sd">            If a progress_callback was provided, the period between updates</span>
+<span class="sd">            to be sent to the callback, in seconds</span>
+<span class="sd">            Default: 10</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">progress_callback</span><span class="p">,</span> <span class="n">callback_interval</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
@@ -272,8 +286,8 @@
             <span class="n">result</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">=</span> <span class="n">agents</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_objects</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
         <span class="n">smoldyn_data_lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">input_data</span><span class="p">:</span> <span class="n">SmoldynData</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
@@ -284,6 +298,8 @@
         <span class="n">result</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">from_dimensions</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
         <span class="n">time_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">agent_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">line_count</span> <span class="o">=</span> <span class="mi">0</span>
+
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">smoldyn_data_lines</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">continue</span>
@@ -333,12 +349,14 @@
                     <span class="k">else</span> <span class="mf">1.0</span>
                 <span class="p">)</span>
                 <span class="n">agent_index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">line_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_report_progress</span><span class="p">(</span><span class="n">line_count</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">smoldyn_data_lines</span><span class="p">))</span>
+
         <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">agent_index</span>
         <span class="n">result</span><span class="o">.</span><span class="n">n_timesteps</span> <span class="o">=</span> <span class="n">time_index</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">result</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">:</span> <span class="n">SmoldynData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">SmoldynData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a TrajectoryData object containing the Smoldyn data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -349,7 +367,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading input smoldyn data: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># parse</span>
-        <span class="n">agent_data</span> <span class="o">=</span> <span class="n">SmoldynConverter</span><span class="o">.</span><span class="n">_parse_objects</span><span class="p">(</span><span class="n">smoldyn_data</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span>
+        <span class="n">agent_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_objects</span><span class="p">(</span><span class="n">smoldyn_data</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span>
         <span class="c1"># get display data (geometry and color)</span>
         <span class="k">for</span> <span class="n">tid</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">:</span>
             <span class="n">display_data</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">tid</span><span class="p">]</span>
