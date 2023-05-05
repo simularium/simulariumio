@@ -180,10 +180,6 @@ def three_default_agents() -> TrajectoryData:
                 ]
             ),
             display_data={
-                "C": DisplayData(
-                    name="C",
-                    display_type=DISPLAY_TYPE.SPHERE,
-                ),
                 "W": DisplayData(
                     name="W",
                     display_type=DISPLAY_TYPE.SPHERE,
