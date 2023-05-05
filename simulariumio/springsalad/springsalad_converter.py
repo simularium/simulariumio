@@ -189,8 +189,8 @@ class SpringsaladConverter(TrajectoryConverter):
             springsalad_data = input_data.sim_view_txt_file.get_contents().split("\n")
         except Exception as e:
             raise InputDataError(f"Error reading input SpringSaLaD data: {e}")
-        agent_data, box_size = SpringsaladConverter._parse_springsalad_data(
-            springsalad_data, input_data, progress_callback, callback_interval
+        agent_data, box_size = self._parse_springsalad_data(
+            springsalad_data, input_data
         )
         # get display data (geometry and color)
         for tid in input_data.display_data:
