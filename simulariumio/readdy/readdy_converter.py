@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Any, Tuple
+from typing import Any, Tuple, Callable
 
 import numpy as np
 import readdy
@@ -21,7 +21,12 @@ log = logging.getLogger(__name__)
 
 
 class ReaddyConverter(TrajectoryConverter):
-    def __init__(self, input_data: ReaddyData):
+    def __init__(
+        self,
+        input_data: ReaddyData,
+        progress_callback: Callable[[float], None] = None,
+        callback_interval: float = 10,
+    ):
         """
         This object reads simulation trajectory outputs
         from ReaDDy (https://readdy.github.io/)
@@ -33,7 +38,17 @@ class ReaddyConverter(TrajectoryConverter):
         input_data : ReaddyData
             An object containing info for reading
             ReaDDy simulation trajectory outputs and plot data
+        progress_callback : Callable[[float], None] (optional)
+            Callback function that accepts 1 float argument and returns None
+            which will be called at a given progress interval, determined by
+            callback_interval requested, providing the current percent progress
+            Default: None
+        callback_interval : float (optional)
+            If a progress_callback was provided, the period between updates
+            to be sent to the callback, in seconds
+            Default: 10
         """
+        super().__init__(input_data, progress_callback, callback_interval)
         self._data = self._read(input_data)
 
     @staticmethod
@@ -48,10 +63,7 @@ class ReaddyConverter(TrajectoryConverter):
         n_agents, positions, type_ids, ids = traj.to_numpy(start=0, stop=None)
         return (traj, n_agents, positions, type_ids, ids)
 
-    @staticmethod
-    def _get_agent_data(
-        input_data: ReaddyData,
-    ) -> AgentData:
+    def _get_agent_data(self, input_data: ReaddyData) -> AgentData:
         """
         Pack raw ReaDDy trajectory data into AgentData,
         ignoring particles with type names in ignore_types
@@ -67,6 +79,7 @@ class ReaddyConverter(TrajectoryConverter):
             total_steps=n_agents.shape[0],
             max_agents=int(np.amax(n_agents)),
         )
+
         result = AgentData.from_dimensions(data_dimensions)
         result.times = input_data.timestep * np.arange(data_dimensions.total_steps)
         result.viz_types = VIZ_TYPE.DEFAULT * np.ones(
@@ -83,7 +96,8 @@ class ReaddyConverter(TrajectoryConverter):
                     raw_type_name, input_data.display_data
                 )
                 display_data = (
-                    input_display_data if input_display_data is not None
+                    input_display_data
+                    if input_display_data is not None
                     else DisplayData(
                         name=raw_type_name, display_type=DISPLAY_TYPE.SPHERE
                     )
@@ -102,16 +116,19 @@ class ReaddyConverter(TrajectoryConverter):
                 )
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index
+            self.check_report_progress(time_index / data_dimensions.total_steps)
         return result
 
-    @staticmethod
-    def _read(input_data: ReaddyData) -> TrajectoryData:
+    def _read(
+        self,
+        input_data: ReaddyData,
+    ) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
         print("Reading ReaDDy Data -------------")
         try:
-            agent_data = ReaddyConverter._get_agent_data(input_data)
+            agent_data = self._get_agent_data(input_data)
         except Exception as e:
             raise InputDataError(f"Error reading input Readdy data: {e}")
 

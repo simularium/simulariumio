@@ -6,6 +6,7 @@ import os
 import numpy as np
 import json
 from scipy.spatial.transform import Rotation as R
+from typing import Callable
 
 from cellpack import RecipeLoader
 from ..constants import DISPLAY_TYPE, VIZ_TYPE, VALUES_PER_3D_POINT
@@ -33,7 +34,12 @@ DEFAULT_RADIUS = 10
 
 
 class CellpackConverter(TrajectoryConverter):
-    def __init__(self, input_data: CellpackData):
+    def __init__(
+        self,
+        input_data: CellpackData,
+        progress_callback: Callable[[float], None] = None,
+        callback_interval: float = 10,
+    ):
         """
         This object reads packing results outputs
         from Cellpack (http://www.cellpack.org)
@@ -45,7 +51,17 @@ class CellpackConverter(TrajectoryConverter):
         input_data : CellpackData
             An object containing info for reading
             Cellpack simulation trajectory outputs and plot data
+        progress_callback : Callable[[float], None] (optional)
+            Callback function that accepts 1 float argument and returns None
+            which will be called at a given progress interval, determined by
+            callback_interval requested, providing the current percent progress
+            Default: None
+        callback_interval : float (optional)
+            If a progress_callback was provided, the period between updates
+            to be sent to the callback, in seconds
+            Default: 10
         """
+        super().__init__(input_data, progress_callback, callback_interval)
         self._data = self._read(input_data)
 
     @staticmethod
@@ -256,8 +272,8 @@ class CellpackConverter(TrajectoryConverter):
             url = ""
         return {"display_type": display_type, "color": color, "url": url}
 
-    @staticmethod
     def _process_ingredients(
+        self,
         all_ingredients,
         time_step_index: int,
         scale_factor: float,
@@ -271,6 +287,12 @@ class CellpackConverter(TrajectoryConverter):
         spatial_data = AgentData.from_dimensions(dimensions)
         display_data = {} if display_data is None else display_data
         agent_id_counter = 0
+
+        total_agents = 0
+        for ingredient in all_ingredients:
+            total_agents += len(ingredient["results"].get("results", []))
+            total_agents += len(ingredient["results"].get("nbCurve", []))
+
         for ingredient in all_ingredients:
             ingredient_data = ingredient["recipe_data"]
             ingredient_key = ingredient_data["name"]
@@ -312,6 +334,7 @@ class CellpackConverter(TrajectoryConverter):
                         handedness,
                     )
                     agent_id_counter += 1
+                    self.check_report_progress(agent_id_counter / total_agents)
             elif ingredient_results_data["nbCurve"] > 0:
                 for i in range(ingredient_results_data["nbCurve"]):
                     CellpackConverter._unpack_curve(
@@ -325,6 +348,8 @@ class CellpackConverter(TrajectoryConverter):
                         box_center,
                     )
                     agent_id_counter += 1
+                    self.check_report_progress(agent_id_counter / total_agents)
+
         spatial_data.display_data = display_data
         return spatial_data
 
@@ -336,8 +361,7 @@ class CellpackConverter(TrajectoryConverter):
             look_at_position=np.array([10.0, 0.0, 0.0]),
         )
 
-    @staticmethod
-    def _read(input_data: CellpackData) -> TrajectoryData:
+    def _read(self, input_data: CellpackData) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the Cellpack data
         """
@@ -359,7 +383,7 @@ class CellpackConverter(TrajectoryConverter):
             raise InputDataError(f"Error reading cellpack input file: {e}")
 
         box_center = CellpackConverter._get_box_center(recipe_data)
-        agent_data = CellpackConverter._process_ingredients(
+        agent_data = self._process_ingredients(
             all_ingredients,
             time_step_index,
             input_data.meta_data.scale_factor,

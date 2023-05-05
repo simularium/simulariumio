@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Any, Dict, List, Tuple
-
+from typing import Any, Dict, List, Tuple, Callable
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
@@ -27,7 +26,12 @@ log = logging.getLogger(__name__)
 
 
 class CytosimConverter(TrajectoryConverter):
-    def __init__(self, input_data: CytosimData):
+    def __init__(
+        self,
+        input_data: CytosimData,
+        progress_callback: Callable[[float], None] = None,
+        callback_interval: float = 10,
+    ):
         """
         This object reads simulation trajectory outputs
         from CytoSim (https://gitlab.com/f.nedelec/cytosim)
@@ -39,7 +43,17 @@ class CytosimConverter(TrajectoryConverter):
         input_data : CytosimData
             An object containing info for reading
             Cytosim simulation trajectory outputs and plot data
+        progress_callback : Callable[[float], None] (optional)
+            Callback function that accepts 1 float argument and returns None
+            which will be called at a given progress interval, determined by
+            callback_interval requested, providing the current percent progress
+            Default: None
+        callback_interval : float (optional)
+            If a progress_callback was provided, the period between updates
+            to be sent to the callback, in seconds
+            Default: 10
         """
+        super().__init__(input_data, progress_callback, callback_interval)
         self._data = self._read(input_data)
 
     @staticmethod
@@ -169,15 +183,17 @@ class CytosimConverter(TrajectoryConverter):
         )
         return (result, uids, used_unique_IDs)
 
-    @staticmethod
     def _parse_objects(
+        self,
         object_type: str,
         data_lines: List[str],
         scale_factor: float,
         object_info: CytosimObjectInfo,
         result: AgentData,
         used_unique_IDs: List[int],
-    ) -> Tuple[Dict[str, Any], List[int]]:
+        overall_line: int,
+        total_lines: int,
+    ) -> Tuple[Dict[str, Any], List[int], int]:
         """
         Parse a Cytosim output file containing objects
         (fibers, solids, singles, or couples) to get agents
@@ -186,6 +202,7 @@ class CytosimConverter(TrajectoryConverter):
         uids = {}
         is_fiber = "fiber" in object_type
         for line in data_lines:
+            overall_line += 1
             if CytosimConverter._ignore_line(line):
                 continue
             columns = line.split()
@@ -253,11 +270,12 @@ class CytosimConverter(TrajectoryConverter):
                     )
                 )
                 result.n_agents[time_index] += 1
-        result.n_timesteps = time_index + 1
-        return (result, used_unique_IDs)
+            self.check_report_progress(overall_line / total_lines)
 
-    @staticmethod
-    def _read(input_data: CytosimData) -> TrajectoryData:
+        result.n_timesteps = time_index + 1
+        return (result, used_unique_IDs, overall_line)
+
+    def _read(self, input_data: CytosimData) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the CytoSim data
         """
@@ -278,16 +296,23 @@ class CytosimConverter(TrajectoryConverter):
         dimensions = CytosimConverter._parse_dimensions(cytosim_data)
         agent_data = AgentData.from_dimensions(dimensions)
         agent_data.draw_fiber_points = input_data.draw_fiber_points
+        overall_line = 0
+        total_lines = sum(
+            len(cytosim_data[object_type]) for object_type in input_data.object_info
+        )
+
         uids = []
         for object_type in input_data.object_info:
             try:
-                agent_data, uids = CytosimConverter._parse_objects(
+                (agent_data, uids, overall_line) = self._parse_objects(
                     object_type,
                     cytosim_data[object_type],
                     input_data.meta_data.scale_factor,
                     input_data.object_info[object_type],
                     agent_data,
                     uids,
+                    overall_line,
+                    total_lines,
                 )
             except Exception as e:
                 raise InputDataError(f"Error reading input cytosim data: {e}")

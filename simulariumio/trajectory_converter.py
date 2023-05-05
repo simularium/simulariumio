@@ -3,9 +3,9 @@
 
 import json
 import logging
-from typing import List, Dict
+from typing import List, Dict, Callable
 import copy
-
+import time
 import numpy as np
 
 from .plot_readers import (
@@ -41,7 +41,12 @@ SUPPORTED_PLOT_READERS = {
 class TrajectoryConverter:
     _data: TrajectoryData
 
-    def __init__(self, input_data: TrajectoryData):
+    def __init__(
+        self,
+        input_data: TrajectoryData,
+        progress_callback: Callable[[float], None] = None,
+        callback_interval: float = 10,
+    ):
         """
         This object reads simulation trajectory outputs
         and plot data and writes them in the JSON format used
@@ -52,8 +57,29 @@ class TrajectoryConverter:
         input_data : TrajectoryData
             An object containing simulation trajectory outputs
             and plot data
+        progress_callback : Callable[[float], None] (optional)
+            Callback function that accepts 1 float argument and returns None
+            which will be called at a given progress interval, determined by
+            callback_interval requested, providing the current percent progress
+            Default: None
+        callback_interval : float (optional)
+            If a progress_callback was provided, the period between updates
+            to be sent to the callback, in seconds
+            Default: 10
         """
         self._data = input_data
+        self.progress_callback = progress_callback
+        self.callback_interval = callback_interval
+        self.last_report_time = time.time()
+
+    def check_report_progress(self, percent_complete: float) -> None:
+        current_time = time.time()
+        if (
+            self.progress_callback
+            and current_time > self.last_report_time + self.callback_interval
+        ):
+            self.progress_callback(percent_complete)
+            self.last_report_time = current_time
 
     @staticmethod
     def _get_display_type_name_from_raw(
@@ -80,8 +106,7 @@ class TrajectoryConverter:
 
     @staticmethod
     def _get_display_data_for_agent(
-        raw_type_name: str,
-        display_data: Dict[str, DisplayData]
+        raw_type_name: str, display_data: Dict[str, DisplayData]
     ) -> DisplayData:
         """
         If the provided raw_type_name matches a key in the display data dict,

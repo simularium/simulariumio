@@ -3,7 +3,7 @@
 
 import logging
 import copy
-from typing import Set
+from typing import Set, Callable
 
 import numpy as np
 import pandas as pd
@@ -23,7 +23,12 @@ log = logging.getLogger(__name__)
 
 
 class MdConverter(TrajectoryConverter):
-    def __init__(self, input_data: MdData):
+    def __init__(
+        self,
+        input_data: MdData,
+        progress_callback: Callable[[float], None] = None,
+        callback_interval: float = 10,
+    ):
         """
         This object reads simulation trajectory outputs
         from molecular dynamics models
@@ -35,13 +40,23 @@ class MdConverter(TrajectoryConverter):
         input_data : MdData
             An object containing info for reading
             MD simulation trajectory outputs and plot data
+        progress_callback : Callable[[float], None] (optional)
+            Callback function that accepts 1 float argument and returns None
+            which will be called at a given progress interval, determined by
+            callback_interval requested, providing the current percent progress
+            Default: None
+        callback_interval : float (optional)
+            If a progress_callback was provided, the period between updates
+            to be sent to the callback, in seconds
+            Default: 10
         """
+        super().__init__(input_data, progress_callback, callback_interval)
         self._data = self._read(input_data)
 
     @staticmethod
     def _read_universe_dimensions(
         input_data: MdData,
-    ) -> AgentData:
+    ) -> DimensionData:
         """
         Use a MD Universe to get the number of timesteps
         and maximum agents per timestep
@@ -123,8 +138,7 @@ class MdConverter(TrajectoryConverter):
                 display_data.name = type_name
             else:
                 display_data = DisplayData(
-                    name=type_name,
-                    display_type=DISPLAY_TYPE.SPHERE
+                    name=type_name, display_type=DISPLAY_TYPE.SPHERE
                 )
         if display_data.color:
             return display_data
@@ -147,10 +161,7 @@ class MdConverter(TrajectoryConverter):
             result[display_data.name] = display_data
         return result
 
-    @staticmethod
-    def _read_universe(
-        input_data: MdData,
-    ) -> AgentData:
+    def _read_universe(self, input_data: MdData) -> AgentData:
         """
         Use a MD Universe to get AgentData
         """
@@ -159,6 +170,7 @@ class MdConverter(TrajectoryConverter):
         get_type_name_func = np.frompyfunc(MdConverter._get_type_name, 2, 1)
         unique_raw_type_names = set([])
         time_index = 0
+
         for frame in input_data.md_universe.trajectory[
             :: input_data.nth_timestep_to_read
         ]:
@@ -180,20 +192,21 @@ class MdConverter(TrajectoryConverter):
                 ]
             )
             time_index += 1
+            self.check_report_progress(time_index / dimensions.total_steps)
+
         result.n_timesteps = dimensions.total_steps
         result.display_data = MdConverter._get_display_data_mapping(
             unique_raw_type_names, input_data
         )
         return result
 
-    @staticmethod
-    def _read(input_data: MdData) -> TrajectoryData:
+    def _read(self, input_data: MdData) -> TrajectoryData:
         """
         Return a TrajectoryData object containing the MD data
         """
         print("Reading MD Data -------------")
         # get data from the MD Universe
-        agent_data = MdConverter._read_universe(input_data)
+        agent_data = self._read_universe(input_data)
         # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
         input_data.meta_data._set_box_size()

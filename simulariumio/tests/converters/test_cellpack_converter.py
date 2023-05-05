@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from unittest.mock import Mock
 
 from simulariumio.cellpack import CellpackConverter, HAND_TYPE, CellpackData
 from simulariumio import InputFileData, UnitData, DisplayData, JsonWriter
@@ -277,3 +278,33 @@ def test_input_file_error():
     )
     with pytest.raises(InputDataError):
         CellpackConverter(bad_file_type)
+
+
+data = CellpackData(
+    results_file=InputFileData(
+        file_path="simulariumio/tests/data/cellpack/two_ingredients_results.json"
+    ),
+    geometry_type=DISPLAY_TYPE.OBJ,
+    recipe_file_path="simulariumio/tests/data/cellpack/two_ingredients_recipe.json",
+    time_units=UnitData("ns"),
+    spatial_units=UnitData("nm"),
+    handedness=HAND_TYPE.LEFT,
+    geometry_url="https://aics-simularium-data.s3.us-east-2.amazonaws.com/meshes/obj/",
+)
+
+
+def test_callback_fn():
+    callback_fn = Mock()
+    call_interval = 0.000000001
+    CellpackConverter(data, callback_fn, call_interval)
+    assert callback_fn.call_count > 1
+
+    # calls to the callback function should be strictly increasing
+    # and the value should never exceed 1.0 (100%)
+    call_list = callback_fn.call_args_list
+    last_call_val = 0.0
+    for call in call_list:
+        call_value = call.args[0]
+        assert call_value > last_call_val
+        assert call_value <= 1.0
+        last_call_val = call_value

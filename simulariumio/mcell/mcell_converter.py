@@ -2,11 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Dict, Any
+from typing import Dict, Any, Callable
 import json
 import os
 import array
-
 import numpy as np
 import scipy.linalg as linalg
 from scipy.spatial.transform import Rotation
@@ -33,7 +32,12 @@ BLENDER_GEOMETRY_SCALE_FACTOR = 0.005
 
 
 class McellConverter(TrajectoryConverter):
-    def __init__(self, input_data: McellData):
+    def __init__(
+        self,
+        input_data: McellData,
+        progress_callback: Callable[[float], None] = None,
+        callback_interval: float = 10,
+    ):
         """
         This object reads simulation trajectory outputs
         from MCell (https://mcell.org/)
@@ -45,7 +49,17 @@ class McellConverter(TrajectoryConverter):
         input_data : McellData
             An object containing info for reading
             MCell simulation trajectory outputs and plot data
+        progress_callback : Callable[[float], None] (optional)
+            Callback function that accepts 1 float argument and returns None
+            which will be called at a given progress interval, determined by
+            callback_interval requested, providing the current percent progress
+            Default: None
+        callback_interval : float (optional)
+            If a progress_callback was provided, the period between updates
+            to be sent to the callback, in seconds
+            Default: 10
         """
+        super().__init__(input_data, progress_callback, callback_interval)
         self._data = self._read(input_data)
 
     @staticmethod
@@ -284,8 +298,8 @@ class McellConverter(TrajectoryConverter):
                     break
         return result
 
-    @staticmethod
     def _read_cellblender_data(
+        self,
         timestep: float,
         molecule_list: Dict[str, Any],
         input_data: McellData,
@@ -304,6 +318,8 @@ class McellConverter(TrajectoryConverter):
         # get metadata for each agent type
         molecule_info = {}
         total_steps = 0
+        step_count = 0
+
         for molecule in molecule_list:
             molecule_info[molecule["mol_name"]] = molecule
         for file_name in os.listdir(input_data.path_to_binary_files):
@@ -323,11 +339,12 @@ class McellConverter(TrajectoryConverter):
                 input_data,
                 result,
             )
+            step_count += 1
+            self.check_report_progress(step_count / dimensions.total_steps)
         result.n_timesteps = total_steps + 1
         return result
 
-    @staticmethod
-    def _read(input_data: McellData) -> TrajectoryData:
+    def _read(self, input_data: McellData) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
@@ -343,7 +360,7 @@ class McellConverter(TrajectoryConverter):
         time_units = UnitData(
             "s", float(data_model["mcell"]["initialization"]["time_step"])
         )
-        agent_data = McellConverter._read_cellblender_data(
+        agent_data = self._read_cellblender_data(
             time_units.magnitude,
             data_model["mcell"]["define_molecules"]["molecule_list"],
             input_data,
