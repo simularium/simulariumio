@@ -641,6 +641,8 @@ class AgentData:
         at the given time and agent indices
         """
         n_subpoints = self.n_subpoints[time_index][agent_index]
+        if n_subpoints < 1:
+            return DISPLAY_TYPE.SPHERE
         default_display_types = {
             4: DISPLAY_TYPE.SPHERE_GROUP,
             3: DISPLAY_TYPE.FIBER,
