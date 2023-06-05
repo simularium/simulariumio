@@ -113,8 +113,6 @@ class TrajectoryConverter:
             scale_factor = VIEWER_DIMENSION_RANGE.MAX / range
         elif range < VIEWER_DIMENSION_RANGE.MIN:
             scale_factor = VIEWER_DIMENSION_RANGE.MIN / range
-        print(f"range: {range}")
-        print(f"scale factor: {scale_factor}")
         return scale_factor
 
     @staticmethod

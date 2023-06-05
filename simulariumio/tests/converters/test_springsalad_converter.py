@@ -473,6 +473,7 @@ def test_scaling():
     converter = SpringsaladConverter(data)
     results = JsonWriter.format_trajectory_data(converter._data)
     scale_factor = VIEWER_DIMENSION_RANGE.MAX / 66.985562
+    assert scale_factor == 50.0 / 66.985562
     assert results["trajectoryInfo"]["size"] == {
         "x": DEFAULT_BOX_SIZE[0] * scale_factor,
         "y": DEFAULT_BOX_SIZE[1] * scale_factor,
