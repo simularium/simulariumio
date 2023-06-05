@@ -9,6 +9,7 @@ from simulariumio import InputFileData, UnitData, DisplayData, JsonWriter
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     DISPLAY_TYPE,
+    VIEWER_DIMENSION_RANGE,
     VIZ_TYPE,
 )
 from simulariumio.exceptions import InputDataError
@@ -27,7 +28,8 @@ data = CellpackData(
 
 converter = CellpackConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
-
+range = 200.0
+scale_factor = VIEWER_DIMENSION_RANGE.MAX / range
 
 @pytest.mark.parametrize(
     "typeMapping, expected_typeMapping",
@@ -124,10 +126,20 @@ def test_camera_setting(camera_settings, expected_camera_settings):
 
 @pytest.mark.parametrize(
     "box_size, expected_box_size",
-    [(results["trajectoryInfo"]["size"], {"x": 100.0, "y": 100.0, "z": 0.1})],
+    [
+        (
+            results["trajectoryInfo"]["size"],
+            {
+                "x": 1000.0 * scale_factor,
+                "y": 1000.0 * scale_factor,
+                "z": 1.0  * scale_factor
+            }
+        )
+    ],
 )
 def test_box_size(box_size, expected_box_size):
     # input data box was 1000, 1000, 1
+    print(box_size)
     assert box_size == expected_box_size
 
 
@@ -140,13 +152,13 @@ def test_box_size(box_size, expected_box_size):
                 VIZ_TYPE.DEFAULT,
                 0.0,  # id
                 0.0,  # type
-                25.0,  # x: 750 shifted by the bounding box and scaled down by 0.1
-                25.0,  # y
-                4.95,  # z: 50 shifted by 0.5 and scaled down by 0.1
+                250.0 * scale_factor,  # x: 750 shifted by the bounding box and scaled down by 0.1
+                250.0 * scale_factor,  # y
+                49.5 * scale_factor,  # z: 50 shifted by 0.5 and scaled down by 0.1
                 1.5707963267948966,  # xrot
                 0.6435011087932847,  # yrot
                 -1.5707963267948966,  # test data is left handed, negative Z
-                10.0,  # cr
+                100.0 * scale_factor,  # cr
                 0.0,  # number of subpoints
             ],
         )

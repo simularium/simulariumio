@@ -12,6 +12,7 @@ from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     VIZ_TYPE,
     DISPLAY_TYPE,
+    VIEWER_DIMENSION_RANGE,
 )
 from simulariumio.exceptions import InputDataError
 
@@ -21,6 +22,7 @@ data = MedyanData(
 converter = MedyanConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
 
+scale_factor = VIEWER_DIMENSION_RANGE.MAX / 839.44264461
 
 # test box data default
 @pytest.mark.parametrize(
@@ -129,7 +131,11 @@ results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
     [
         (
             results_meta_data["trajectoryInfo"]["size"],
-            {"x": x_size, "y": y_size, "z": z_size},
+            {
+                "x": x_size * scale_factor,
+                "y": y_size * scale_factor,
+                "z": z_size * scale_factor
+            },
         )
     ],
 )
@@ -224,14 +230,14 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                actin_radius,  # radius
+                actin_radius * scale_factor,  # radius
                 6.0,  # number of subpoints
-                454.3434234,
-                363.439226,
-                265.4405349,
-                519.7377041,
-                351.5737487,
-                180.312405,
+                454.3434234 * scale_factor,
+                363.439226 * scale_factor,
+                265.4405349 * scale_factor,
+                519.7377041 * scale_factor,
+                351.5737487 * scale_factor,
+                180.312405 * scale_factor,
                 VIZ_TYPE.FIBER,  # second agent
                 1.0,
                 0.0,
@@ -241,14 +247,14 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                actin_radius,
+                actin_radius * scale_factor,
                 6.0,
-                547.5943503,
-                280.3075619,
-                307.4127023,
-                535.194707,
-                173.0325428,
-                308.9355694,
+                547.5943503 * scale_factor,
+                280.3075619 * scale_factor,
+                307.4127023 * scale_factor,
+                535.194707 * scale_factor,
+                173.0325428 * scale_factor,
+                308.9355694 * scale_factor,
             ],
         )
     ],
@@ -353,26 +359,26 @@ def test_typeMapping_with_drawing_endpoints(typeMapping, expected_typeMapping):
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                actin_radius,  # radius
+                actin_radius * scale_factor,  # radius
                 18.0,  # number of subpoints (18)
-                443.3162276,  # subpoint 1 x
-                369.8644852,  # subpoint 1 y
-                293.1521372,  # subpoint 1 z
-                458.4600122,  # subpoint 2 x
-                366.5425284,  # ...
-                274.4414626,
-                525.5102849,
-                351.3129172,
-                191.1648549,
-                595.4174881,
-                336.6403217,
-                110.1741389,
-                672.5234407,
-                322.3132598,
-                35.94250437,
-                678.3129825,
-                321.2378855,
-                30.3779709,
+                443.3162276 * scale_factor,  # subpoint 1 x
+                369.8644852 * scale_factor,  # subpoint 1 y
+                293.1521372 * scale_factor,  # subpoint 1 z
+                458.4600122 * scale_factor,  # subpoint 2 x
+                366.5425284 * scale_factor,  # ...
+                274.4414626 * scale_factor,
+                525.5102849 * scale_factor,
+                351.3129172 * scale_factor,
+                191.1648549 * scale_factor,
+                595.4174881 * scale_factor,
+                336.6403217 * scale_factor,
+                110.1741389 * scale_factor,
+                672.5234407 * scale_factor,
+                322.3132598 * scale_factor,
+                35.94250437 * scale_factor,
+                678.3129825 * scale_factor,
+                321.2378855 * scale_factor,
+                30.3779709 * scale_factor,
                 VIZ_TYPE.FIBER,  # second agent
                 1.0,  # id
                 0.0,  # type - Actin
@@ -382,23 +388,23 @@ def test_typeMapping_with_drawing_endpoints(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                actin_radius,
+                actin_radius * scale_factor,
                 15.0,  # 15 subpoints
-                549.7619454,
-                310.7627687,
-                302.0296124,
-                547.773019,
-                286.5808386,
-                303.3456815,
-                537.9496947,
-                179.2424416,
-                309.5407552,
-                518.8214547,
-                73.12680239,
-                314.8723733,
-                509.9893907,
-                28.15495189,
-                317.0372613,
+                549.7619454 * scale_factor,
+                310.7627687 * scale_factor,
+                302.0296124 * scale_factor,
+                547.773019 * scale_factor,
+                286.5808386 * scale_factor,
+                303.3456815 * scale_factor,
+                537.9496947 * scale_factor,
+                179.2424416 * scale_factor,
+                309.5407552 * scale_factor,
+                518.8214547 * scale_factor,
+                73.12680239 * scale_factor,
+                314.8723733 * scale_factor,
+                509.9893907 * scale_factor,
+                28.15495189 * scale_factor,
+                317.0372613 * scale_factor,
                 VIZ_TYPE.FIBER,  # third agent
                 2.0,  # id
                 1.0,  # type - linker0
@@ -408,14 +414,14 @@ def test_typeMapping_with_drawing_endpoints(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                1.0,  # default radius
+                1.0 * scale_factor,  # default radius * scale_factor
                 6.0,  # 6 subpoints
-                216.8006048,
-                854.8097767,
-                302.9108981,
-                191.2656514,
-                867.5975965,
-                281.4725825,
+                216.8006048 * scale_factor,
+                854.8097767 * scale_factor,
+                302.9108981 * scale_factor,
+                191.2656514 * scale_factor,
+                867.5975965 * scale_factor,
+                281.4725825 * scale_factor,
                 VIZ_TYPE.FIBER,  # 4th agent
                 3.0,  # id
                 2.0,  # type - Xlink
@@ -425,35 +431,35 @@ def test_typeMapping_with_drawing_endpoints(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                linker_radius,
+                linker_radius * scale_factor,
                 6.0,
-                657.3317212,
-                421.4935263,
-                212.7250047,
-                662.1669685,
-                436.2944039,
-                182.6128889,
+                657.3317212 * scale_factor,
+                421.4935263 * scale_factor,
+                212.7250047 * scale_factor,
+                662.1669685 * scale_factor,
+                436.2944039 * scale_factor,
+                182.6128889 * scale_factor,
                 VIZ_TYPE.DEFAULT,  # 5th agent
                 4.0,  # id
                 3.0,  # type - Xlink End
-                657.3317212,
-                421.4935263,
-                212.7250047,
+                657.3317212 * scale_factor,
+                421.4935263 * scale_factor,
+                212.7250047 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                1.0,  # default radius
+                1.0 * scale_factor,  # default radius
                 0.0,
                 VIZ_TYPE.DEFAULT,  # 6th agent
                 5.0,  # id
                 3.0,  # type - Xlink End
-                662.1669685,
-                436.2944039,
-                182.6128889,
+                662.1669685 * scale_factor,
+                436.2944039 * scale_factor,
+                182.6128889 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                1.0,  # default radius
+                1.0 * scale_factor,  # default radius
                 0.0,
                 VIZ_TYPE.FIBER,  # 7th agent
                 6.0,  # id
@@ -464,14 +470,14 @@ def test_typeMapping_with_drawing_endpoints(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                1.0,  # default radius
+                1.0 * scale_factor,  # default radius
                 6.0,
-                541.3878582,
-                216.8108805,
-                307.3724794,
-                584.5992533,
-                412.7637236,
-                381.2579975,
+                541.3878582 * scale_factor,
+                216.8108805 * scale_factor,
+                307.3724794 * scale_factor,
+                584.5992533 * scale_factor,
+                412.7637236 * scale_factor,
+                381.2579975 * scale_factor,
             ],
         )
     ],
