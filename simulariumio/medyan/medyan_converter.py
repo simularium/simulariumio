@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Callable
+from typing import List, Callable, Tuple
 import math
+import sys
+import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import (
@@ -151,7 +153,7 @@ class MedyanConverter(TrajectoryConverter):
     def _get_trajectory_data(
         self,
         input_data: MedyanData,
-    ) -> AgentData:
+    ) -> Tuple[AgentData, float]:
         """
         Parse a MEDYAN snapshot.traj output file to get agents
         """
@@ -180,6 +182,8 @@ class MedyanConverter(TrajectoryConverter):
         object_type = ""
         draw_endpoints = False
         line_count = 0
+        max_dimensions = sys.float_info.min * np.ones(3)
+        min_dimensions = sys.float_info.max * np.ones(3)
 
         for line in lines:
             if len(line) < 1:
@@ -229,9 +233,7 @@ class MedyanConverter(TrajectoryConverter):
                     and input_data.display_data[object_type][raw_tid].radius is not None
                     else 1.0
                 )
-                result.radii[time_index][agent_index] = (
-                    input_data.meta_data.scale_factor * radius
-                )
+                result.radii[time_index][agent_index] = radius
                 if object_type == "filament":
                     result.n_subpoints[time_index][agent_index] = int(
                         cols[3]
@@ -256,22 +258,28 @@ class MedyanConverter(TrajectoryConverter):
                                 name=end_type,
                                 display_type=DISPLAY_TYPE.SPHERE,
                             )
-                        result.radii[time_index][agent_index + i + 1] = (
-                            2 * input_data.meta_data.scale_factor * radius
-                        )
+                        result.radii[time_index][agent_index + i + 1] = 2 * radius
                 parsing_object = True
             elif parsing_object:
                 # object coordinates
                 for i in range(len(cols)):
-                    result.subpoints[time_index][agent_index][
-                        i
-                    ] = input_data.meta_data.scale_factor * float(cols[i])
+                    result.subpoints[time_index][agent_index][i] = float(cols[i])
                     if draw_endpoints:
                         endpoint_index = math.floor(i / float(VALUES_PER_3D_POINT))
                         dim_index = i % VALUES_PER_3D_POINT
                         result.positions[time_index][agent_index + endpoint_index + 1][
                             dim_index
-                        ] = input_data.meta_data.scale_factor * float(cols[i])
+                        ] = float(cols[i])
+
+                for i in range(math.floor(len(cols) / VALUES_PER_3D_POINT)):
+                    start_index = i * VALUES_PER_3D_POINT
+                    end_index = (i + 1) * VALUES_PER_3D_POINT
+                    TrajectoryConverter.check_max_min_coordinates(
+                        max_dimensions,
+                        min_dimensions,
+                        result.subpoints[time_index][agent_index][start_index : end_index]
+                    )
+
                 parsing_object = False
                 agent_index += 1
                 if draw_endpoints:
@@ -281,14 +289,22 @@ class MedyanConverter(TrajectoryConverter):
             self.check_report_progress(line_count / len(lines))
 
         result.n_timesteps = time_index + 1
-        return result
+
+        scale_factor = TrajectoryConverter.calculate_scale_factor(
+            max_dimensions, min_dimensions
+        )
+        result.radii = scale_factor * result.radii
+        result.positions = scale_factor * result.positions
+        result.subpoints = scale_factor * result.subpoints
+
+        return result, scale_factor
 
     def _read(self, input_data: MedyanData) -> TrajectoryData:
         """
         Return an object containing the data shaped for Simularium format
         """
         print("Reading MEDYAN Data -------------")
-        agent_data = self._get_trajectory_data(input_data)
+        agent_data, scale_factor = self._get_trajectory_data(input_data)
         # get display data (geometry and color)
         for object_type in input_data.display_data:
             for tid in input_data.display_data[object_type]:
@@ -303,11 +319,12 @@ class MedyanConverter(TrajectoryConverter):
                         f"{display_data.display_type.value} was changed to FIBER"
                     )
                 agent_data.display_data[display_data.name] = display_data
+        input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size()
         return TrajectoryData(
             meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=UnitData("s"),
-            spatial_units=UnitData("nm", 1.0 / input_data.meta_data.scale_factor),
+            spatial_units=UnitData("nm", 1.0 / scale_factor),
             plots=input_data.plots,
         )

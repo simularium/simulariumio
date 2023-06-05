@@ -3,7 +3,8 @@
 
 import logging
 import copy
-from typing import Set, Callable
+import sys
+from typing import Set, Callable, Tuple
 
 import numpy as np
 import pandas as pd
@@ -161,7 +162,7 @@ class MdConverter(TrajectoryConverter):
             result[display_data.name] = display_data
         return result
 
-    def _read_universe(self, input_data: MdData) -> AgentData:
+    def _read_universe(self, input_data: MdData) -> Tuple[AgentData, float]:
         """
         Use a MD Universe to get AgentData
         """
@@ -170,6 +171,8 @@ class MdConverter(TrajectoryConverter):
         get_type_name_func = np.frompyfunc(MdConverter._get_type_name, 2, 1)
         unique_raw_type_names = set([])
         time_index = 0
+        max_dimensions = sys.float_info.min * np.ones(3)
+        min_dimensions = sys.float_info.max * np.ones(3)
 
         for frame in input_data.md_universe.trajectory[
             :: input_data.nth_timestep_to_read
@@ -182,10 +185,14 @@ class MdConverter(TrajectoryConverter):
             result.types[time_index] = get_type_name_func(
                 input_data.md_universe.atoms.names, input_data
             )
-            result.positions[time_index] = (
-                input_data.meta_data.scale_factor * atom_positions
-            )
-            result.radii[time_index] = input_data.meta_data.scale_factor * np.array(
+            result.positions[time_index] = atom_positions
+            for agent in atom_positions:
+                TrajectoryConverter.check_max_min_coordinates(
+                    max_dimensions,
+                    min_dimensions,
+                    agent
+                )
+            result.radii[time_index] = np.array(
                 [
                     MdConverter._get_radius(type_name, input_data)
                     for type_name in input_data.md_universe.atoms.names
@@ -198,7 +205,12 @@ class MdConverter(TrajectoryConverter):
         result.display_data = MdConverter._get_display_data_mapping(
             unique_raw_type_names, input_data
         )
-        return result
+        scale_factor = TrajectoryConverter.calculate_scale_factor(
+            max_dimensions, min_dimensions
+        )
+        result.radii = scale_factor * result.radii
+        result.positions = scale_factor * result.positions
+        return result, scale_factor
 
     def _read(self, input_data: MdData) -> TrajectoryData:
         """
@@ -206,9 +218,10 @@ class MdConverter(TrajectoryConverter):
         """
         print("Reading MD Data -------------")
         # get data from the MD Universe
-        agent_data = self._read_universe(input_data)
+        agent_data, scale_factor = self._read_universe(input_data)
         # create TrajectoryData
-        input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
+        input_data.spatial_units.multiply(1.0 / scale_factor)
+        input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size()
         return TrajectoryData(
             meta_data=input_data.meta_data,

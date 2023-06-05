@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import sys
 from typing import Any, Dict, List, Tuple, Callable
 import numpy as np
 
@@ -140,12 +141,11 @@ class CytosimConverter(TrajectoryConverter):
         object_type: str,
         data_columns: List[str],
         time_index: int,
-        scale_factor: float,
         object_info: CytosimObjectInfo,
         result: AgentData,
         uids: Dict[int, int],
         used_unique_IDs: List[int],
-    ) -> Tuple[AgentData, Dict[int, int], List[int]]:
+    ) -> Tuple[AgentData, Dict[int, int], List[int], float]:
         """
         Parse an object from Cytosim
         """
@@ -175,7 +175,7 @@ class CytosimConverter(TrajectoryConverter):
             )
         )
         # radius
-        result.radii[time_index][agent_index] = scale_factor * (
+        result.radii[time_index][agent_index] = (
             float(object_info.display_data[raw_tid].radius)
             if raw_tid in object_info.display_data
             and object_info.display_data[raw_tid].radius is not None
@@ -187,7 +187,6 @@ class CytosimConverter(TrajectoryConverter):
         self,
         object_type: str,
         data_lines: List[str],
-        scale_factor: float,
         object_info: CytosimObjectInfo,
         result: AgentData,
         used_unique_IDs: List[int],
@@ -200,6 +199,8 @@ class CytosimConverter(TrajectoryConverter):
         """
         time_index = -1
         uids = {}
+        max_dimensions = sys.float_info.min * np.ones(3)
+        min_dimensions = sys.float_info.max * np.ones(3)
         is_fiber = "fiber" in object_type
         for line in data_lines:
             overall_line += 1
@@ -219,7 +220,6 @@ class CytosimConverter(TrajectoryConverter):
                         object_type,
                         columns,
                         time_index,
-                        scale_factor,
                         object_info,
                         result,
                         uids,
@@ -235,12 +235,17 @@ class CytosimConverter(TrajectoryConverter):
                 result.subpoints[time_index][agent_index][
                     subpoint_index : subpoint_index
                     + SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
-                ] = scale_factor * np.array(
+                ] = np.array(
                     [
                         float(columns[1].strip("+,")),
                         float(columns[2].strip("+,")),
                         float(columns[3].strip("+,")),
                     ]
+                )
+                TrajectoryConverter.check_max_min_coordinates(
+                    max_dimensions,
+                    min_dimensions,
+                    result.subpoints[time_index][agent_index][subpoint_index : subpoint_index + 3]
                 )
                 result.n_subpoints[time_index][agent_index] += SUBPOINT_VALUES_PER_ITEM(
                     DISPLAY_TYPE.FIBER
@@ -251,7 +256,6 @@ class CytosimConverter(TrajectoryConverter):
                     object_type,
                     columns,
                     time_index,
-                    scale_factor,
                     object_info,
                     result,
                     uids,
@@ -260,20 +264,29 @@ class CytosimConverter(TrajectoryConverter):
                 # position
                 result.positions[time_index][
                     int(result.n_agents[time_index])
-                ] = scale_factor * (
-                    np.array(
-                        [
-                            float(columns[object_info.position_indices[0]].strip("+,")),
-                            float(columns[object_info.position_indices[1]].strip("+,")),
-                            float(columns[object_info.position_indices[2]].strip("+,")),
-                        ]
-                    )
+                ] = np.array(
+                    [
+                        float(columns[object_info.position_indices[0]].strip("+,")),
+                        float(columns[object_info.position_indices[1]].strip("+,")),
+                        float(columns[object_info.position_indices[2]].strip("+,")),
+                    ]
+                )
+                TrajectoryConverter.check_max_min_coordinates(
+                    max_dimensions,
+                    min_dimensions,
+                    result.positions[time_index][int(result.n_agents[time_index])]
                 )
                 result.n_agents[time_index] += 1
             self.check_report_progress(overall_line / total_lines)
 
+        scale_factor = TrajectoryConverter.calculate_scale_factor(
+            max_dimensions, min_dimensions
+        )
+        result.radii = scale_factor * result.radii
+        result.positions = scale_factor * result.positions
+        result.subpoints = scale_factor * result.subpoints
         result.n_timesteps = time_index + 1
-        return (result, used_unique_IDs, overall_line)
+        return (result, used_unique_IDs, overall_line, scale_factor)
 
     def _read(self, input_data: CytosimData) -> TrajectoryData:
         """
@@ -304,10 +317,9 @@ class CytosimConverter(TrajectoryConverter):
         uids = []
         for object_type in input_data.object_info:
             try:
-                (agent_data, uids, overall_line) = self._parse_objects(
+                (agent_data, uids, overall_line, scale_factor) = self._parse_objects(
                     object_type,
                     cytosim_data[object_type],
-                    input_data.meta_data.scale_factor,
                     input_data.object_info[object_type],
                     agent_data,
                     uids,
@@ -331,11 +343,12 @@ class CytosimConverter(TrajectoryConverter):
                     )
                 agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
+        input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size()
         return TrajectoryData(
             meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=UnitData("s"),
-            spatial_units=UnitData("µm", 1.0 / input_data.meta_data.scale_factor),
+            spatial_units=UnitData("µm", 1.0 / scale_factor),
             plots=input_data.plots,
         )
