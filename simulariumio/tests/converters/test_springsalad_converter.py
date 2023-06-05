@@ -115,7 +115,6 @@ def test_typeMapping_default(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
 
 
-scale_factor = 0.1
 size_x = 100.0
 size_y = 100.0
 size_z = 10.0
@@ -139,9 +138,9 @@ results_metadata = JsonWriter.format_trajectory_data(converter_metadata._data)
         (
             results_metadata["trajectoryInfo"]["size"],
             {
-                "x": size_x * scale_factor,
-                "y": size_y * scale_factor,
-                "z": size_z * scale_factor,
+                "x": size_x,
+                "y": size_y,
+                "z": size_z,
             },
         )
     ],
@@ -219,7 +218,6 @@ results_display_data = JsonWriter.format_trajectory_data(converter_display_data.
 def test_typeMapping_provided(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
 
-
 @pytest.mark.parametrize(
     "bundleData, expected_bundleData",
     [
@@ -235,7 +233,7 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                radius_0 * scale_factor,  # radius
+                radius_0,  # radius
                 0.0,  # subpoints
                 VIZ_TYPE.DEFAULT,  # second agent
                 100010000.0,
