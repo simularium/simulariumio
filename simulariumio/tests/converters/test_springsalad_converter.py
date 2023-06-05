@@ -211,6 +211,7 @@ results_display_data = JsonWriter.format_trajectory_data(converter_display_data.
 def test_typeMapping_provided(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
 
+
 @pytest.mark.parametrize(
     "bundleData, expected_bundleData",
     [
@@ -461,7 +462,7 @@ def test_callback_fn():
         last_call_val = call_value
 
 
-@mock.patch('simulariumio.constants.VIEWER_DIMENSION_RANGE.MAX', 50)
+@mock.patch("simulariumio.constants.VIEWER_DIMENSION_RANGE.MAX", 50)
 def test_scaling():
     data = SpringsaladData(
         sim_view_txt_file=InputFileData(

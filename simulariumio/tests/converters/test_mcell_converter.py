@@ -95,8 +95,8 @@ def test_camera_setting_default(camera_settings, expected_camera_settings):
             {
                 "x": 1.28 * scale_factor,
                 "y": 1.28 * scale_factor,
-                "z": 1.28 * scale_factor
-            }
+                "z": 1.28 * scale_factor,
+            },
         )
     ],
 )
@@ -180,7 +180,7 @@ def test_typeMapping(typeMapping, expected_typeMapping):
             {
                 "x": box_size * scale_factor,
                 "y": box_size * scale_factor,
-                "z": box_size * scale_factor
+                "z": box_size * scale_factor,
             },
         )
     ],

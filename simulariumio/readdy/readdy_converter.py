@@ -109,9 +109,9 @@ class ReaddyConverter(TrajectoryConverter):
                 ]
                 result.types[time_index].append(display_data.name)
                 result.display_data[display_data.name] = display_data
-                result.positions[time_index][new_agent_index] = (
-                    positions[time_index][agent_index]
-                )
+                result.positions[time_index][new_agent_index] = positions[time_index][
+                    agent_index
+                ]
                 TrajectoryConverter.check_max_min_coordinates(
                     max_dimensions, min_dimensions, positions[time_index][agent_index]
                 )
@@ -124,7 +124,9 @@ class ReaddyConverter(TrajectoryConverter):
         scale_factor = TrajectoryConverter.calculate_scale_factor(
             max_dimensions, min_dimensions
         )
-        result.radii = scale_factor * result.radii # TBD if we need this or not for readdy...
+        result.radii = (
+            scale_factor * result.radii
+        )  # TBD if we need this or not for readdy...
         result.positions = scale_factor * result.positions
         return result, scale_factor
 

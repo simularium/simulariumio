@@ -173,7 +173,7 @@ class CellpackConverter(TrajectoryConverter):
         box_center: np.array,
         handedness: HAND_TYPE,
         max_dimensions: np.array,
-        min_dimensions:np.array,
+        min_dimensions: np.array,
         comp_id=0,
     ):
         position = data["results"][index][0]
@@ -205,7 +205,7 @@ class CellpackConverter(TrajectoryConverter):
             max_dimensions,
             min_dimensions,
             result.positions[time_step_index][agent_id],
-            result.radii[time_step_index][agent_id]
+            result.radii[time_step_index][agent_id],
         )
         result.n_subpoints[time_step_index][agent_id] = 0
 
@@ -389,7 +389,7 @@ class CellpackConverter(TrajectoryConverter):
         # default scale for cellpack => simularium
         # user is supposed to send in the cellPACK scale factor
         # if they send one in at all.
-        input_data.meta_data.scale_factor *= 0.1 # what do we do here...
+        input_data.meta_data.scale_factor *= 0.1  # TODO: Do we need this?
 
         try:
             # load the data from Cellpack output JSON file

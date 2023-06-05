@@ -243,7 +243,7 @@ class PhysicellConverter(TrajectoryConverter):
                 TrajectoryConverter.check_max_min_coordinates(
                     max_dimensions,
                     min_dimensions,
-                    result.positions[time_index][n_def_agents[time_index]]
+                    result.positions[time_index][n_def_agents[time_index]],
                 )
 
                 result.radii[time_index][n_def_agents[time_index]] = (
@@ -324,10 +324,8 @@ class PhysicellConverter(TrajectoryConverter):
                     ] = (subcell_positions[subcell_index] - center)
                     result.subpoints[time_index][agent_index][
                         sp_index + VALUES_PER_3D_POINT
-                    ] = (
-                        PhysicellConverter._radius_for_volume(
-                            discrete_cells[time_index]["total_volume"][cell_index]
-                        )
+                    ] = PhysicellConverter._radius_for_volume(
+                        discrete_cells[time_index]["total_volume"][cell_index]
                     )
                 agent_index += 1
             result.n_agents[time_index] = agent_index
@@ -353,7 +351,9 @@ class PhysicellConverter(TrajectoryConverter):
         Return a TrajectoryData object containing the PhysiCell data
         """
         print("Reading PhysiCell Data -------------")
-        agent_data, spatial_units, type_ids, scale_factor = self._get_trajectory_data(input_data)
+        agent_data, spatial_units, type_ids, scale_factor = self._get_trajectory_data(
+            input_data
+        )
         # get display data (geometry and color)
         for cell_id in input_data.display_data:
             display_data = input_data.display_data[cell_id]

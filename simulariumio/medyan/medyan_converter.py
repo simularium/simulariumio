@@ -277,7 +277,9 @@ class MedyanConverter(TrajectoryConverter):
                     TrajectoryConverter.check_max_min_coordinates(
                         max_dimensions,
                         min_dimensions,
-                        result.subpoints[time_index][agent_index][start_index : end_index]
+                        result.subpoints[time_index][agent_index][
+                            start_index:end_index
+                        ],
                     )
 
                 parsing_object = False

@@ -135,9 +135,7 @@ class SpringsaladConverter(TrajectoryConverter):
                         raw_type_name, input_data.display_data
                     )
                 )
-                position = np.array(
-                    [float(cols[4]), float(cols[5]), float(cols[6])]
-                )
+                position = np.array([float(cols[4]), float(cols[5]), float(cols[6])])
                 scene_agent_positions[int(cols[1])] = position
                 result.positions[time_index][agent_index] = position
                 input_display_data = TrajectoryConverter._get_display_data_for_agent(

@@ -245,7 +245,9 @@ class CytosimConverter(TrajectoryConverter):
                 TrajectoryConverter.check_max_min_coordinates(
                     max_dimensions,
                     min_dimensions,
-                    result.subpoints[time_index][agent_index][subpoint_index : subpoint_index + 3]
+                    result.subpoints[time_index][agent_index][
+                        subpoint_index : subpoint_index + 3
+                    ],
                 )
                 result.n_subpoints[time_index][agent_index] += SUBPOINT_VALUES_PER_ITEM(
                     DISPLAY_TYPE.FIBER
@@ -274,7 +276,7 @@ class CytosimConverter(TrajectoryConverter):
                 TrajectoryConverter.check_max_min_coordinates(
                     max_dimensions,
                     min_dimensions,
-                    result.positions[time_index][int(result.n_agents[time_index])]
+                    result.positions[time_index][int(result.n_agents[time_index])],
                 )
                 result.n_agents[time_index] += 1
             self.check_report_progress(overall_line / total_lines)
