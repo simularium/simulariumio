@@ -186,7 +186,6 @@ class SpringsaladConverter(TrajectoryConverter):
         scale_factor = TrajectoryConverter.calculate_scale_factor(
             max_dimensions, min_dimensions
         )
-        print(f"this is the scale factor: {scale_factor}")
         result.radii = scale_factor * result.radii
         result.positions = scale_factor * result.positions
 
