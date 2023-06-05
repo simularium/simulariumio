@@ -174,7 +174,7 @@ class SmoldynConverter(TrajectoryConverter):
             agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / scale_factor)
-        input_data.meta_data.scale_factor = scale_factor  # this feels weird, should we remove scale_factor from meta data?
+        input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size()
         return TrajectoryData(
             meta_data=input_data.meta_data,
