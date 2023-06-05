@@ -14,6 +14,7 @@ from simulariumio.constants import (
     DEFAULT_BOX_SIZE,
     DEFAULT_CAMERA_SETTINGS,
     DISPLAY_TYPE,
+    VIEWER_DIMENSION_RANGE,
     VIZ_TYPE,
 )
 from simulariumio.exceptions import InputDataError
@@ -25,6 +26,7 @@ data = SmoldynData(
 )
 converter = SmoldynConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
+scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.844989 + 0.8748)
 
 
 # test box data default
@@ -127,14 +129,15 @@ def test_timeUnits_default(timeUnits, expected_timeUnits):
 
 
 # test spatial units default
+expected_spatial_units = UnitData("m", 1.0 / scale_factor)
 @pytest.mark.parametrize(
     "spatialUnits, expected_spatialUnits",
     [
         (
             results["trajectoryInfo"]["spatialUnits"],
             {
-                "magnitude": 1.0,
-                "name": "m",
+                "magnitude": expected_spatial_units.magnitude,
+                "name": expected_spatial_units.name,
             },
         )
     ],
@@ -146,11 +149,9 @@ def test_spatialUnits_default(spatialUnits, expected_spatialUnits):
 x_size = 2.0
 y_size = 2.0
 z_size = 0.1
-scale_factor = 100
 data_with_meta_data = SmoldynData(
     meta_data=MetaData(
         box_size=np.array([x_size, y_size, z_size]),
-        scale_factor=scale_factor,
     ),
     smoldyn_file=InputFileData(
         file_path="simulariumio/tests/data/smoldyn/example_data.txt"
@@ -211,14 +212,15 @@ def test_timeUnits_provided(timeUnits, expected_timeUnits):
 
 
 # test spatial units provided
+expected_spatial_units = UnitData(spatial_unit_name, 1.0 / scale_factor)
 @pytest.mark.parametrize(
     "spatialUnits, expected_spatialUnits",
     [
         (
             results_unit_data["trajectoryInfo"]["spatialUnits"],
             {
-                "magnitude": 1.0,
-                "name": spatial_unit_name,
+                "magnitude": expected_spatial_units.magnitude,
+                "name": expected_spatial_units.name,
             },
         )
     ],
@@ -235,7 +237,6 @@ e_color = "#0080ff"
 data_with_display_data = SmoldynData(
     meta_data=MetaData(
         box_size=np.array([x_size, y_size, z_size]),
-        scale_factor=scale_factor,
     ),
     smoldyn_file=InputFileData(
         file_path="simulariumio/tests/data/smoldyn/example_data.txt"
@@ -310,8 +311,8 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # first agent
                 500.0,  # id
                 0.0,  # type
-                -87.48,  # x
-                -45.101200000000006,  # y
+                -2.5433352579880437,  # x
+                -1.3112422512296567,  # y
                 0.0,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
@@ -321,8 +322,8 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # second agent
                 600.0,
                 1.0,
-                84.49889999999999,
-                -53.4784,
+                2.4566647420119563,
+                -1.554795384782668,
                 0.0,
                 0.0,
                 0.0,
@@ -332,13 +333,13 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # third agent
                 606.0,
                 2.0,
-                66.6775,
-                74.52590000000001,
+                1.938537227531982,
+                2.1667163820678,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                scale_factor,  # default radius = 1.0
+                scale_factor,  # default radius = 1.0 * scale factor
                 0.0,
             ],
         )

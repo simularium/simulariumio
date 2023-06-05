@@ -4,6 +4,7 @@
 import numpy as np
 import pytest
 from unittest.mock import Mock
+from unittest import mock
 
 from simulariumio.springsalad import SpringsaladConverter, SpringsaladData
 from simulariumio import DisplayData, MetaData, InputFileData, JsonWriter
@@ -11,6 +12,7 @@ from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     DISPLAY_TYPE,
     DEFAULT_BOX_SIZE,
+    VIEWER_DIMENSION_RANGE,
     VIZ_TYPE,
 )
 from simulariumio.exceptions import InputDataError
@@ -108,7 +110,6 @@ def test_typeMapping_default(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
 
 
-scale_factor = 0.1
 size_x = 100.0
 size_y = 100.0
 size_z = 10.0
@@ -117,7 +118,6 @@ data_with_metadata = SpringsaladData(
         file_path=("simulariumio/tests/data/springsalad/" "test.txt"),
     ),
     meta_data=MetaData(
-        scale_factor=scale_factor,
         box_size=np.array([size_x, size_y, size_z]),
     ),
 )
@@ -132,9 +132,9 @@ results_metadata = JsonWriter.format_trajectory_data(converter_metadata._data)
         (
             results_metadata["trajectoryInfo"]["size"],
             {
-                "x": size_x * scale_factor,
-                "y": size_y * scale_factor,
-                "z": size_z * scale_factor,
+                "x": size_x,
+                "y": size_y,
+                "z": size_z,
             },
         )
     ],
@@ -154,7 +154,6 @@ data_with_display_data = SpringsaladData(
         file_path=("simulariumio/tests/data/springsalad/" "test.txt"),
     ),
     meta_data=MetaData(
-        scale_factor=scale_factor,
         box_size=np.array([size_x, size_y, size_z]),
     ),
     display_data={
@@ -212,7 +211,6 @@ results_display_data = JsonWriter.format_trajectory_data(converter_display_data.
 def test_typeMapping_provided(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
 
-
 @pytest.mark.parametrize(
     "bundleData, expected_bundleData",
     [
@@ -222,46 +220,46 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # first agent
                 100000000.0,  # id
                 0.0,  # type index
-                -2.3515194000000004,  # x
-                4.1677663,  # y
-                -0.2872943,  # z
+                -23.515194,  # x
+                41.677663,  # y
+                -2.872943,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                radius_0 * scale_factor,  # radius
+                radius_0,  # radius
                 0.0,  # subpoints
                 VIZ_TYPE.DEFAULT,  # second agent
                 100010000.0,
                 0.0,
-                -1.1726563,
-                3.7363461000000004,
-                -0.47181300000000004,
+                -11.726563,
+                37.363461000000004,
+                -4.7181300000000004,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                10.0,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # third agent
                 100200001.0,
                 1.0,
-                -0.3749313,
-                0.6674895000000001,
-                -0.5000000,
+                -3.749313,
+                6.674895,
+                -5.000000,
                 0.0,
                 0.0,
                 0.0,
-                0.2,
+                2.0,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # fourth agent
                 100200000.0,
                 2.0,
-                -0.3749313,
-                0.6674895000000001,
+                -3.749313,
+                6.674895,
                 0.000000,
                 0.0,
                 0.0,
                 0.0,
-                0.2,
+                2.0,
                 0.0,
             ],
         )
@@ -280,7 +278,6 @@ data_draw_bonds = SpringsaladData(
         file_path=("simulariumio/tests/data/springsalad/" "test.txt"),
     ),
     meta_data=MetaData(
-        scale_factor=scale_factor,
         box_size=np.array([size_x, size_y, size_z]),
     ),
     display_data={
@@ -353,46 +350,46 @@ def test_typeMapping_bonds(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # first agent
                 100000000.0,  # id
                 0.0,  # type index
-                -2.3515194000000004,  # x
-                4.1677663,  # y
-                -0.2872943,  # z
+                -23.515194,  # x
+                41.677663,  # y
+                -2.872943,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                radius_0 * scale_factor,  # radius
+                radius_0,  # radius
                 0.0,  # subpoints
                 VIZ_TYPE.DEFAULT,  # second agent
                 100010000.0,
                 0.0,
-                -1.1726563,
-                3.7363461000000004,
-                -0.47181300000000004,
+                -11.726563,
+                37.363461000000004,
+                -4.7181300000000004,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                10.0,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # third agent
                 100200001.0,
                 1.0,
-                -0.3749313,
-                0.6674895000000001,
-                -0.5000000,
+                -3.749313,
+                6.674895,
+                -5.000000,
                 0.0,
                 0.0,
                 0.0,
-                0.2,
+                2.0,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # fourth agent
                 100200000.0,
                 2.0,
-                -0.3749313,
-                0.6674895000000001,
+                -3.749313,
+                6.674895,
                 0.000000,
                 0.0,
                 0.0,
                 0.0,
-                0.2,
+                2.0,
                 0.0,
                 VIZ_TYPE.FIBER,  # fifth agent (fiber)
                 0.0,
@@ -405,12 +402,12 @@ def test_typeMapping_bonds(typeMapping, expected_typeMapping):
                 0.0,
                 1.0,
                 6.0,
-                -0.3749313,
-                0.6674895000000001,
+                -3.749313,
+                6.674895,
                 0.000000,
-                -0.3749313,
-                0.6674895000000001,
-                -0.5000000,
+                -3.749313,
+                6.674895,
+                -5.000000,
             ],
         )
     ],
@@ -462,3 +459,67 @@ def test_callback_fn():
         assert call_value > last_call_val
         assert call_value <= 1.0
         last_call_val = call_value
+
+
+@mock.patch('simulariumio.constants.VIEWER_DIMENSION_RANGE.MAX', 50)
+def test_scaling():
+    data = SpringsaladData(
+        sim_view_txt_file=InputFileData(
+            file_path=("simulariumio/tests/data/springsalad/test.txt"),
+        ),
+        draw_bonds=False,
+    )
+    converter = SpringsaladConverter(data)
+    results = JsonWriter.format_trajectory_data(converter._data)
+    scale_factor = VIEWER_DIMENSION_RANGE.MAX / 66.985562
+    assert results["trajectoryInfo"]["size"] == {
+        "x": DEFAULT_BOX_SIZE[0] * scale_factor,
+        "y": DEFAULT_BOX_SIZE[1] * scale_factor,
+        "z": DEFAULT_BOX_SIZE[2] * scale_factor,
+    }
+    assert results["spatialData"]["bundleData"][0]["data"] == [
+        VIZ_TYPE.DEFAULT,  # first agent
+        100000000.0,  # id
+        0.0,  # type index
+        -23.515194 * scale_factor,  # x
+        41.677663 * scale_factor,  # y
+        -2.872943 * scale_factor,  # z
+        0.0,  # x rotation
+        0.0,  # y rotation
+        0.0,  # z rotation
+        2.0 * scale_factor,  # radius
+        0.0,  # subpoints
+        VIZ_TYPE.DEFAULT,  # second agent
+        100010000.0,
+        0.0,
+        -11.726563 * scale_factor,
+        37.363461 * scale_factor,
+        -4.71813 * scale_factor,
+        0.0,
+        0.0,
+        0.0,
+        2.0 * scale_factor,
+        0.0,
+        VIZ_TYPE.DEFAULT,  # third agent
+        100200001.0,
+        1.0,
+        -3.749313 * scale_factor,
+        6.674895 * scale_factor,
+        -5.0 * scale_factor,
+        0.0,
+        0.0,
+        0.0,
+        2.0 * scale_factor,
+        0.0,
+        VIZ_TYPE.DEFAULT,  # fourth agent
+        100200000.0,
+        2.0,
+        -3.749313 * scale_factor,
+        6.674895 * scale_factor,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.0 * scale_factor,
+        0.0,
+    ]

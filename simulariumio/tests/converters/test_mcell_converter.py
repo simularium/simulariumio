@@ -10,6 +10,7 @@ from simulariumio import DisplayData, MetaData, JsonWriter
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     DISPLAY_TYPE,
+    VIEWER_DIMENSION_RANGE,
     VIZ_TYPE,
 )
 from simulariumio.exceptions import InputDataError
@@ -21,6 +22,7 @@ data = McellData(
 )
 converter = McellConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
+scale_factor = VIEWER_DIMENSION_RANGE.MIN / 0.5016988515853882
 
 
 @pytest.mark.parametrize(
@@ -87,7 +89,16 @@ def test_camera_setting_default(camera_settings, expected_camera_settings):
 
 @pytest.mark.parametrize(
     "box_size, expected_box_size",
-    [(results["trajectoryInfo"]["size"], {"x": 1.28, "y": 1.28, "z": 1.28})],
+    [
+        (
+            results["trajectoryInfo"]["size"],
+            {
+                "x": 1.28 * scale_factor,
+                "y": 1.28 * scale_factor,
+                "z": 1.28 * scale_factor
+            }
+        )
+    ],
 )
 def test_box_size_default(box_size, expected_box_size):
     assert box_size == expected_box_size
@@ -166,7 +177,11 @@ def test_typeMapping(typeMapping, expected_typeMapping):
     [
         (
             results_display_data["trajectoryInfo"]["size"],
-            {"x": box_size, "y": box_size, "z": box_size},
+            {
+                "x": box_size * scale_factor,
+                "y": box_size * scale_factor,
+                "z": box_size * scale_factor
+            },
         )
     ],
 )
@@ -185,35 +200,35 @@ def test_box_size_provided(box_size, expected_box_size):
                 VIZ_TYPE.DEFAULT,  # first agent
                 0.0,  # id
                 0.0,  # type
-                0.12416012585163116,  # x
-                -0.1974048614501953,  # y
-                -0.10042950510978699,  # z
+                0.12416012585163116 * scale_factor,  # x
+                -0.1974048614501953 * scale_factor,  # y
+                -0.10042950510978699 * scale_factor,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                0.005,  # radius
+                0.005 * scale_factor,  # radius
                 0.0,  # number of subpoints
                 VIZ_TYPE.DEFAULT,  # second agent
                 1.0,
                 1.0,
-                -0.027653440833091736,
-                0.1265464723110199,
-                -0.07352104783058167,
+                -0.027653440833091736 * scale_factor,
+                0.1265464723110199 * scale_factor,
+                -0.07352104783058167 * scale_factor,
                 -160.8765121025542,
                 0.0,
                 -9.231996800714258,
-                0.005,
+                0.005 * scale_factor,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # third agent
                 2.0,
                 2.0,
-                0.3647538423538208,
-                0.1595117300748825,
-                0.3979622721672058,
+                0.3647538423538208 * scale_factor,
+                0.1595117300748825 * scale_factor,
+                0.3979622721672058 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                0.00015,
+                0.00015 * scale_factor,
                 0.0,
             ],
         )

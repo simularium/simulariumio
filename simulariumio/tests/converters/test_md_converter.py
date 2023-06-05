@@ -14,6 +14,7 @@ from simulariumio import MetaData, UnitData, DisplayData, JsonWriter
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     DEFAULT_BOX_SIZE,
+    VIEWER_DIMENSION_RANGE,
     VIZ_TYPE,
     DISPLAY_TYPE,
 )
@@ -21,6 +22,7 @@ from simulariumio.constants import (
 data = MdData(md_universe=Universe("simulariumio/tests/data/md/example.xyz"))
 converter = MdConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
+scale_factor = VIEWER_DIMENSION_RANGE.MAX / 153.6779327392578
 
 
 # test box data default
@@ -96,7 +98,7 @@ def test_timeUnits_default(timeUnits, expected_timeUnits):
         (
             results["trajectoryInfo"]["spatialUnits"],
             {
-                "magnitude": 1.0,
+                "magnitude": float("%.4g" % (1.0 / scale_factor)),
                 "name": "m",
             },
         )
@@ -171,7 +173,7 @@ def test_timeUnits_provided(timeUnits, expected_timeUnits):
         (
             results_unit_data["trajectoryInfo"]["spatialUnits"],
             {
-                "magnitude": spatial_unit_value,
+                "magnitude": float("%.4g" % (spatial_unit_value / scale_factor)),
                 "name": spatial_unit_name,
             },
         )
@@ -198,7 +200,11 @@ results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
     [
         (
             results_meta_data["trajectoryInfo"]["size"],
-            {"x": size_x, "y": size_y, "z": size_z},
+            {
+                "x": size_x * scale_factor,
+                "y": size_y * scale_factor,
+                "z": size_z * scale_factor
+            },
         )
     ],
 )
@@ -282,13 +288,13 @@ first_frame_data = [
     VIZ_TYPE.DEFAULT,  # agent 1
     0.0,  # id
     0.0,  # type
-    42.51536560058594,  # x
-    -22.60795783996582,  # y
-    61.29037857055664,  # z
+    42.5153656 * scale_factor,  # x
+    -22.60795784 * scale_factor,  # y
+    61.2903785 * scale_factor,  # z
     0.0,  # x rotation
     0.0,  # y rotation
     0.0,  # z rotation
-    type_27_radius,  # radius
+    type_27_radius * scale_factor,  # radius
     0.0,  # subpoints
     VIZ_TYPE.DEFAULT,  # agent 2
     1.0,
@@ -299,18 +305,18 @@ first_frame_data = [
     0.0,
     0.0,
     0.0,
-    type_27_radius,
+    type_27_radius * scale_factor,
     0.0,
     VIZ_TYPE.DEFAULT,  # agent 3
     2.0,
     1.0,
-    -50.82551574707031,
-    74.92604064941406,
-    15.793620109558105,
+    -50.82551575 * scale_factor,
+    77.530733 * scale_factor,
+    15.79362011 * scale_factor,
     0.0,
     0.0,
     0.0,
-    1.1,
+    1.1 * scale_factor,
     0.0,
 ]
 
@@ -318,13 +324,13 @@ third_frame_data = [
     VIZ_TYPE.DEFAULT,  # first agent
     0.0,  # id
     0.0,  # type
-    46.473079681396484,  # x
-    -19.95725440979004,  # y
-    62.311668395996094,  # z
+    46.47307968 * scale_factor,  # x
+    -19.95725441 * scale_factor,  # y
+    62.3116684 * scale_factor,  # z
     0.0,  # x rotation
     0.0,  # y rotation
     0.0,  # z rotation
-    type_27_radius,  # radius
+    type_27_radius * scale_factor,  # radius
     0.0,  # subpoints
     VIZ_TYPE.DEFAULT,
     1.0,
@@ -335,18 +341,18 @@ third_frame_data = [
     0.0,
     0.0,
     0.0,
-    type_27_radius,
+    type_27_radius * scale_factor,
     0.0,
     VIZ_TYPE.DEFAULT,
     2.0,
     1.0,
-    -21.319805145263672,
-    -76.14720153808594,
-    -13.58427906036377,
+    -21.31980515 * scale_factor,
+    -76.14720154 * scale_factor,
+    -13.58427906 * scale_factor,
     0.0,
     0.0,
     0.0,
-    1.1,
+    1.1 * scale_factor,
     0.0,
 ]
 
