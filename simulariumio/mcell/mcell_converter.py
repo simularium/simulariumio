@@ -278,7 +278,9 @@ class McellConverter(TrajectoryConverter):
                         time_index, total_mols : total_mols + n_mols, :
                     ] = positions
                     for agent in positions:
-                        TrajectoryConverter.check_max_min_coordinates(max_dimensions, min_dimensions, agent)
+                        TrajectoryConverter.check_max_min_coordinates(
+                            max_dimensions, min_dimensions, agent
+                        )
                     agent_display_data = (
                         TrajectoryConverter._get_display_data_for_agent(
                             raw_type_name, input_data.display_data
@@ -350,7 +352,9 @@ class McellConverter(TrajectoryConverter):
             )
             step_count += 1
             self.check_report_progress(step_count / dimensions.total_steps)
-        scale_factor = TrajectoryConverter.calculate_scale_factor(max_dimensions, min_dimensions)
+        scale_factor = TrajectoryConverter.calculate_scale_factor(
+            max_dimensions, min_dimensions
+        )
         result.radii = scale_factor * result.radii
         result.positions = scale_factor * result.positions
         result.n_timesteps = total_steps + 1

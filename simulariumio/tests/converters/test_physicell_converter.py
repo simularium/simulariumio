@@ -499,7 +499,7 @@ def test_typeMapping_subcells(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                1.0  * scale_factor_subcells,
+                1.0 * scale_factor_subcells,
                 44.0,
                 -51.0149945454546 * scale_factor_subcells,
                 -12.90147545454552 * scale_factor_subcells,
@@ -722,7 +722,7 @@ def test_input_file_error():
         timestep=360.0,
         path_to_output_dir=(
             "simulariumio/tests/data/physicell/default_output/output00000000.xml",
-        )
+        ),
     )
     with pytest.raises(InputDataError):
         PhysicellConverter(invalid_data_0)

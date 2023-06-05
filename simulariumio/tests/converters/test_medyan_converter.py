@@ -24,6 +24,7 @@ results = JsonWriter.format_trajectory_data(converter._data)
 
 scale_factor = VIEWER_DIMENSION_RANGE.MAX / 839.44264461
 
+
 # test box data default
 @pytest.mark.parametrize(
     "box_size, expected_box_size",
@@ -134,7 +135,7 @@ results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
             {
                 "x": x_size * scale_factor,
                 "y": y_size * scale_factor,
-                "z": z_size * scale_factor
+                "z": z_size * scale_factor,
             },
         )
     ],

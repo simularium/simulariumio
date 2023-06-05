@@ -130,6 +130,8 @@ def test_timeUnits_default(timeUnits, expected_timeUnits):
 
 # test spatial units default
 expected_spatial_units = UnitData("m", 1.0 / scale_factor)
+
+
 @pytest.mark.parametrize(
     "spatialUnits, expected_spatialUnits",
     [
@@ -213,6 +215,8 @@ def test_timeUnits_provided(timeUnits, expected_timeUnits):
 
 # test spatial units provided
 expected_spatial_units = UnitData(spatial_unit_name, 1.0 / scale_factor)
+
+
 @pytest.mark.parametrize(
     "spatialUnits, expected_spatialUnits",
     [

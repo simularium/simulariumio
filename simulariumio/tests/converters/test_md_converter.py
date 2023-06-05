@@ -203,7 +203,7 @@ results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
             {
                 "x": size_x * scale_factor,
                 "y": size_y * scale_factor,
-                "z": size_z * scale_factor
+                "z": size_z * scale_factor,
             },
         )
     ],

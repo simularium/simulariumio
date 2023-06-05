@@ -188,9 +188,7 @@ class MdConverter(TrajectoryConverter):
             result.positions[time_index] = atom_positions
             for agent in atom_positions:
                 TrajectoryConverter.check_max_min_coordinates(
-                    max_dimensions,
-                    min_dimensions,
-                    agent
+                    max_dimensions, min_dimensions, agent
                 )
             result.radii[time_index] = np.array(
                 [
