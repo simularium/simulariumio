@@ -22,7 +22,7 @@ from .data_objects import (
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
 from .writers import JsonWriter, BinaryWriter
-from .constants import DISPLAY_TYPE
+from .constants import DISPLAY_TYPE, VIEWER_DIMENSION_RANGE
 
 ###############################################################################
 
@@ -80,6 +80,42 @@ class TrajectoryConverter:
         ):
             self.progress_callback(percent_complete)
             self.last_report_time = current_time
+
+    @staticmethod
+    def check_max_min_coordinates(
+        max_dimensions: np.array,
+        min_dimensions: np.array,
+        current_position: np.array,
+        radius: float = 0.0,
+    ):
+        for i in range(len(current_position)):
+            curr_val = float(current_position[i])
+            if curr_val - radius < min_dimensions[i]:
+                min_dimensions[i] = curr_val - radius
+            if curr_val + radius > max_dimensions[i]:
+                max_dimensions[i] = curr_val + radius
+
+    @staticmethod
+    def calculate_scale_factor(
+        max_dimensions: np.array,
+        min_dimensions: np.array,
+    ) -> float:
+        """
+        Return a scale factor, using the given min and max
+        dimensions, so that the final range of agent locations
+        is within the dimensions defined by VIEWER_DIMENSION_RANGE
+        """
+        range = max(max_dimensions - min_dimensions)
+        scale_factor = 1
+        if range == 0:
+            return scale_factor
+        if range > VIEWER_DIMENSION_RANGE.MAX:
+            scale_factor = VIEWER_DIMENSION_RANGE.MAX / range
+        elif range < VIEWER_DIMENSION_RANGE.MIN:
+            scale_factor = VIEWER_DIMENSION_RANGE.MIN / range
+        print(f"range: {range}")
+        print(f"scale factor: {scale_factor}")
+        return scale_factor
 
     @staticmethod
     def _get_display_type_name_from_raw(

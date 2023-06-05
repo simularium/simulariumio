@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Callable
+import sys
+from typing import List, Callable, Tuple
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
@@ -73,7 +74,7 @@ class SmoldynConverter(TrajectoryConverter):
         self,
         smoldyn_data_lines: List[str],
         input_data: SmoldynData,
-    ) -> AgentData:
+    ) -> Tuple[AgentData, int]:
         """
         Parse a Smoldyn output file to get AgentData
         """
@@ -82,6 +83,9 @@ class SmoldynConverter(TrajectoryConverter):
         time_index = -1
         agent_index = 0
         line_count = 0
+
+        max_dimensions = sys.float_info.min * np.ones(3)
+        min_dimensions = sys.float_info.max * np.ones(3)
 
         for line in smoldyn_data_lines:
             if len(line) < 1:
@@ -109,9 +113,8 @@ class SmoldynConverter(TrajectoryConverter):
                         raw_type_name, input_data.display_data
                     )
                 )
-                result.positions[time_index][
-                    agent_index
-                ] = input_data.meta_data.scale_factor * np.array(
+
+                result.positions[time_index][agent_index] = np.array(
                     [
                         float(cols[1]),
                         float(cols[2]),
@@ -119,14 +122,18 @@ class SmoldynConverter(TrajectoryConverter):
                     ]
                 )
 
+                TrajectoryConverter.check_max_min_coordinates(
+                    max_dimensions,
+                    min_dimensions,
+                    result.positions[time_index][agent_index]
+                )
+
                 # Get the user provided display data for this raw_type_name
                 input_display_data = TrajectoryConverter._get_display_data_for_agent(
                     raw_type_name, input_data.display_data
                 )
 
-                result.radii[time_index][
-                    agent_index
-                ] = input_data.meta_data.scale_factor * (
+                result.radii[time_index][agent_index] = (
                     input_display_data.radius
                     if input_display_data and input_display_data.radius is not None
                     else 1.0
@@ -135,9 +142,19 @@ class SmoldynConverter(TrajectoryConverter):
             line_count += 1
             self.check_report_progress(line_count / len(smoldyn_data_lines))
 
+        if not is_3D:
+            max_dimensions = max_dimensions[:2]
+            min_dimensions = min_dimensions[:2]
+
+        scale_factor = TrajectoryConverter.calculate_scale_factor(
+            max_dimensions, min_dimensions
+        )
+        result.radii = scale_factor * result.radii
+        result.positions = scale_factor * result.positions
+
         result.n_agents[time_index] = agent_index
         result.n_timesteps = time_index + 1
-        return result
+        return result, scale_factor
 
     def _read(self, input_data: SmoldynData) -> TrajectoryData:
         """
@@ -150,13 +167,14 @@ class SmoldynConverter(TrajectoryConverter):
         except Exception as e:
             raise InputDataError(f"Error reading input smoldyn data: {e}")
         # parse
-        agent_data = self._parse_objects(smoldyn_data, input_data)
+        agent_data, scale_factor = self._parse_objects(smoldyn_data, input_data)
         # get display data (geometry and color)
         for tid in input_data.display_data:
             display_data = input_data.display_data[tid]
             agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
-        input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
+        input_data.spatial_units.multiply(1.0 / scale_factor)
+        input_data.meta_data.scale_factor = scale_factor  # this feels weird, should we remove scale_factor from meta data?
         input_data.meta_data._set_box_size()
         return TrajectoryData(
             meta_data=input_data.meta_data,

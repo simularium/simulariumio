@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Dict, Any, Callable
+import sys
+from typing import Dict, Any, Callable, Tuple
 import json
 import os
 import array
@@ -214,6 +215,8 @@ class McellConverter(TrajectoryConverter):
         molecule_info: Dict[str, Dict[str, Any]],
         input_data: McellData,
         result: AgentData,
+        max_dimensions: np.array,
+        min_dimensions: np.array,
     ) -> AgentData:
         """
         Read MCell binary visualization files
@@ -248,8 +251,9 @@ class McellConverter(TrajectoryConverter):
                     n_mols = int(n_data / 3.0)
                     positions = array.array("f")
                     positions.fromfile(mol_file, n_data)
-                    positions = input_data.meta_data.scale_factor * np.array(positions)
+                    positions = np.array(positions)
                     positions = positions.reshape(n_mols, VALUES_PER_3D_POINT)
+                    print(f"positions: {positions}")
                     if is_surface_mol:
                         normals = array.array("f")
                         normals.fromfile(mol_file, n_data)
@@ -273,14 +277,15 @@ class McellConverter(TrajectoryConverter):
                     result.positions[
                         time_index, total_mols : total_mols + n_mols, :
                     ] = positions
+                    for agent in positions:
+                        TrajectoryConverter.check_max_min_coordinates(max_dimensions, min_dimensions, agent)
                     agent_display_data = (
                         TrajectoryConverter._get_display_data_for_agent(
                             raw_type_name, input_data.display_data
                         )
                     )
                     result.radii[time_index, total_mols : total_mols + n_mols] = (
-                        input_data.meta_data.scale_factor
-                        * BLENDER_GEOMETRY_SCALE_FACTOR
+                        BLENDER_GEOMETRY_SCALE_FACTOR
                         * (
                             agent_display_data.radius
                             if agent_display_data
@@ -303,7 +308,7 @@ class McellConverter(TrajectoryConverter):
         timestep: float,
         molecule_list: Dict[str, Any],
         input_data: McellData,
-    ) -> AgentData:
+    ) -> Tuple[AgentData, float]:
         """
         Parse cellblender binary files to get spatial data
         """
@@ -319,6 +324,8 @@ class McellConverter(TrajectoryConverter):
         molecule_info = {}
         total_steps = 0
         step_count = 0
+        max_dimensions = sys.float_info.min * np.ones(3)
+        min_dimensions = sys.float_info.max * np.ones(3)
 
         for molecule in molecule_list:
             molecule_info[molecule["mol_name"]] = molecule
@@ -338,11 +345,16 @@ class McellConverter(TrajectoryConverter):
                 molecule_info,
                 input_data,
                 result,
+                max_dimensions,
+                min_dimensions,
             )
             step_count += 1
             self.check_report_progress(step_count / dimensions.total_steps)
+        scale_factor = TrajectoryConverter.calculate_scale_factor(max_dimensions, min_dimensions)
+        result.radii = scale_factor * result.radii
+        result.positions = scale_factor * result.positions
         result.n_timesteps = total_steps + 1
-        return result
+        return result, scale_factor
 
     def _read(self, input_data: McellData) -> TrajectoryData:
         """
@@ -360,7 +372,7 @@ class McellConverter(TrajectoryConverter):
         time_units = UnitData(
             "s", float(data_model["mcell"]["initialization"]["time_step"])
         )
-        agent_data = self._read_cellblender_data(
+        agent_data, scale_factor = self._read_cellblender_data(
             time_units.magnitude,
             data_model["mcell"]["define_molecules"]["molecule_list"],
             input_data,
@@ -379,11 +391,12 @@ class McellConverter(TrajectoryConverter):
         for type_name in input_data.display_data:
             display_data = input_data.display_data[type_name]
             agent_data.display_data[display_data.name] = display_data
+        input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size(box_size)
         return TrajectoryData(
             meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=time_units,
-            spatial_units=UnitData("µm", 1.0 / input_data.meta_data.scale_factor),
+            spatial_units=UnitData("µm", 1.0 / scale_factor),
             plots=input_data.plots,
         )
