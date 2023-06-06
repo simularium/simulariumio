@@ -121,12 +121,13 @@ class ReaddyConverter(TrajectoryConverter):
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index
             self.check_report_progress(time_index / data_dimensions.total_steps)
-        scale_factor = TrajectoryConverter.calculate_scale_factor(
-            max_dimensions, min_dimensions
-        )
-        result.radii = (
-            scale_factor * result.radii
-        )  # TBD if we need this or not for readdy...
+        if input_data.meta_data.scale_factor is None:
+            scale_factor = TrajectoryConverter.calculate_scale_factor(
+                max_dimensions, min_dimensions
+            )
+        else:
+            scale_factor = input_data.meta_data.scale_factor
+        result.radii = scale_factor * result.radii
         result.positions = scale_factor * result.positions
         return result, scale_factor
 

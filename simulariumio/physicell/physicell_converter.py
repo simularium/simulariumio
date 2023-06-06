@@ -330,9 +330,12 @@ class PhysicellConverter(TrajectoryConverter):
                 agent_index += 1
             result.n_agents[time_index] = agent_index
 
-        scale_factor = TrajectoryConverter.calculate_scale_factor(
-            max_dimensions, min_dimensions
-        )
+        if input_data.meta_data.scale_factor is None:
+            scale_factor = TrajectoryConverter.calculate_scale_factor(
+                max_dimensions, min_dimensions
+            )
+        else:
+            scale_factor = input_data.meta_data.scale_factor
         result.radii = scale_factor * result.radii
         result.positions = scale_factor * result.positions
         result.subpoints = scale_factor * result.subpoints

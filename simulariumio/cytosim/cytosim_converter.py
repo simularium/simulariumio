@@ -3,7 +3,7 @@
 
 import logging
 import sys
-from typing import Any, Dict, List, Tuple, Callable
+from typing import Any, Dict, List, Tuple, Callable, Union
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
@@ -188,6 +188,7 @@ class CytosimConverter(TrajectoryConverter):
         object_type: str,
         data_lines: List[str],
         object_info: CytosimObjectInfo,
+        scale_factor: Union[float, None],
         result: AgentData,
         used_unique_IDs: List[int],
         overall_line: int,
@@ -281,9 +282,10 @@ class CytosimConverter(TrajectoryConverter):
                 result.n_agents[time_index] += 1
             self.check_report_progress(overall_line / total_lines)
 
-        scale_factor = TrajectoryConverter.calculate_scale_factor(
-            max_dimensions, min_dimensions
-        )
+        if scale_factor is None:
+            scale_factor = TrajectoryConverter.calculate_scale_factor(
+                max_dimensions, min_dimensions
+            )
         result.radii = scale_factor * result.radii
         result.positions = scale_factor * result.positions
         result.subpoints = scale_factor * result.subpoints
@@ -323,6 +325,7 @@ class CytosimConverter(TrajectoryConverter):
                     object_type,
                     cytosim_data[object_type],
                     input_data.object_info[object_type],
+                    input_data.meta_data.scale_factor,
                     agent_data,
                     uids,
                     overall_line,

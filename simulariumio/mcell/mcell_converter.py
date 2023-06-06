@@ -352,9 +352,12 @@ class McellConverter(TrajectoryConverter):
             )
             step_count += 1
             self.check_report_progress(step_count / dimensions.total_steps)
-        scale_factor = TrajectoryConverter.calculate_scale_factor(
-            max_dimensions, min_dimensions
-        )
+        if input_data.meta_data.scale_factor is not None:
+            scale_factor = input_data.meta_data.scale_factor
+        else:
+            scale_factor = TrajectoryConverter.calculate_scale_factor(
+                max_dimensions, min_dimensions
+            )
         result.radii = scale_factor * result.radii
         result.positions = scale_factor * result.positions
         result.n_timesteps = total_steps + 1

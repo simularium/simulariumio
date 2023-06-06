@@ -146,9 +146,12 @@ class SmoldynConverter(TrajectoryConverter):
             max_dimensions = max_dimensions[:2]
             min_dimensions = min_dimensions[:2]
 
-        scale_factor = TrajectoryConverter.calculate_scale_factor(
-            max_dimensions, min_dimensions
-        )
+        if input_data.meta_data.scale_factor is None:
+            scale_factor = TrajectoryConverter.calculate_scale_factor(
+                max_dimensions, min_dimensions
+            )
+        else:
+            scale_factor = input_data.meta_data.scale_factor
         result.radii = scale_factor * result.radii
         result.positions = scale_factor * result.positions
 

@@ -203,9 +203,12 @@ class MdConverter(TrajectoryConverter):
         result.display_data = MdConverter._get_display_data_mapping(
             unique_raw_type_names, input_data
         )
-        scale_factor = TrajectoryConverter.calculate_scale_factor(
-            max_dimensions, min_dimensions
-        )
+        if input_data.meta_data.scale_factor is None:
+            scale_factor = TrajectoryConverter.calculate_scale_factor(
+                max_dimensions, min_dimensions
+            )
+        else:
+            scale_factor = input_data.meta_data.scale_factor
         result.radii = scale_factor * result.radii
         result.positions = scale_factor * result.positions
         return result, scale_factor
