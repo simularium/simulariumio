@@ -22,6 +22,7 @@ log = logging.getLogger(__name__)
 class MetaData:
     box_size: np.ndarray
     camera_defaults: CameraData
+    scale_factor: float
     trajectory_title: str
     model_meta_data: ModelMetaData
 
@@ -29,6 +30,7 @@ class MetaData:
         self,
         box_size: np.ndarray = None,
         camera_defaults: CameraData = None,
+        scale_factor: float = 1.0,
         trajectory_title: str = "",
         model_meta_data: ModelMetaData = None,
     ):
@@ -45,6 +47,10 @@ class MetaData:
             camera's initial settings
             which it also returns to when reset
             Default: CameraData()
+        scale_factor : float (optional)
+            A multiplier for the scene, use if
+            visualization is too large or small
+            Default: 1.0
         trajectory_title : str (optional)
             A title for this run of the model
         model_meta_data: ModelMetaData (optional)
@@ -57,6 +63,7 @@ class MetaData:
         self.camera_defaults = (
             camera_defaults if camera_defaults is not None else CameraData()
         )
+        self.scale_factor = scale_factor
         self.trajectory_title = trajectory_title
         self.model_meta_data = (
             model_meta_data if model_meta_data is not None else ModelMetaData()
@@ -70,13 +77,16 @@ class MetaData:
         if meta_info is None or meta_info == {}:
             return cls()
         return cls(
-            box_size=unpack_position_vector(meta_info.get("size"), DEFAULT_BOX_SIZE),
+            box_size=unpack_position_vector(
+                meta_info.get("size"), DEFAULT_BOX_SIZE
+            ),
             camera_defaults=CameraData.from_dict(meta_info.get("cameraDefault")),
             trajectory_title=meta_info.get("trajectoryTitle", ""),
             model_meta_data=ModelMetaData.from_dict(meta_info.get("modelInfo")),
+            scale_factor=float(meta_info.get("scaleFactor", 1.0))
         )
 
-    def _set_box_size(self, box_size: np.ndarray = None, scale_factor: float = 1.0):
+    def _set_box_size(self, box_size: np.ndarray = None):
         """
         Set the box_size to the optional provided override value,
         or to the default value if it is currently None.
@@ -84,16 +94,17 @@ class MetaData:
         """
         if self.box_size is None:
             if box_size is not None:
-                self.box_size = box_size * scale_factor
+                self.box_size = box_size * self.scale_factor
             else:
                 self.box_size = DEFAULT_BOX_SIZE
         else:
-            self.box_size *= scale_factor
+            self.box_size *= self.scale_factor
 
     def __deepcopy__(self, memo):
         result = type(self)(
             box_size=np.copy(self.box_size),
             camera_defaults=copy.deepcopy(self.camera_defaults, memo),
+            scale_factor=self.scale_factor,
             trajectory_title=self.trajectory_title,
             model_meta_data=copy.copy(self.model_meta_data),
         )
@@ -104,6 +115,7 @@ class MetaData:
             return (
                 np.array_equal(self.box_size, other.box_size)
                 and self.camera_defaults == other.camera_defaults
+                and np.isclose(self.scale_factor, other.scale_factor)
                 and self.trajectory_title == other.trajectory_title
                 and self.model_meta_data == other.model_meta_data
             )

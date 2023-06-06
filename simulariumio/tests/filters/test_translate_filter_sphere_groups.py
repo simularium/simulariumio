@@ -21,6 +21,7 @@ scale_factor_subcells = VIEWER_DIMENSION_RANGE.MAX / 530.8317
             PhysicellData(
                 meta_data=MetaData(
                     box_size=np.array([960, 640, 300.0]),
+                    scale_factor=0.01,
                 ),
                 timestep=36,
                 path_to_output_dir="simulariumio/tests/data/physicell/subcell_output/",
