@@ -219,8 +219,7 @@ class MdConverter(TrajectoryConverter):
         agent_data, scale_factor = self._read_universe(input_data)
         # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / scale_factor)
-        input_data.meta_data.scale_factor = scale_factor
-        input_data.meta_data._set_box_size()
+        input_data.meta_data._set_box_size(scale_factor=scale_factor)
         return TrajectoryData(
             meta_data=input_data.meta_data,
             agent_data=agent_data,

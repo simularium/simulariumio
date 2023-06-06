@@ -389,7 +389,6 @@ class CellpackConverter(TrajectoryConverter):
         # default scale for cellpack => simularium
         # user is supposed to send in the cellPACK scale factor
         # if they send one in at all.
-        input_data.meta_data.scale_factor *= 0.1  # TODO: Do we need this?
 
         try:
             # load the data from Cellpack output JSON file
@@ -412,8 +411,7 @@ class CellpackConverter(TrajectoryConverter):
         )
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))
-        input_data.meta_data.scale_factor = scale_factor
-        input_data.meta_data._set_box_size(box_size)
+        input_data.meta_data._set_box_size(box_size, scale_factor)
         # set camera position based on bounding box
         CellpackConverter._update_meta_data(input_data.meta_data, box_size)
         # # create TrajectoryData
