@@ -345,7 +345,8 @@ class CytosimConverter(TrajectoryConverter):
                     )
                 agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
-        input_data.meta_data._set_box_size(scale_factor=scale_factor)
+        input_data.meta_data.scale_factor = scale_factor
+        input_data.meta_data._set_box_size()
         return TrajectoryData(
             meta_data=input_data.meta_data,
             agent_data=agent_data,
