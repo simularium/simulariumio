@@ -236,7 +236,6 @@ def test_model_data_from_dict(model_meta_data_dict, model_meta_data):
 size_x = 10.0
 size_y = 11.0
 size_z = 12.0
-scale_factor = 2.0
 full_metadata = {
     "size": {
         "x": size_x,
@@ -246,12 +245,10 @@ full_metadata = {
     "cameraDefault": full_camera_data,
     "trajectoryTitle": title,
     "modelInfo": full_model_meta_data,
-    "scaleFactor": scale_factor
 }
 full_metadata_obj = MetaData(
     box_size=np.array([size_x, size_y, size_z]),
     camera_defaults=full_camera_data_obj,
-    scale_factor=scale_factor,
     trajectory_title=title,
     model_meta_data=full_model_meta_data_obj
 )
