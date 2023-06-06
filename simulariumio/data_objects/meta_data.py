@@ -3,7 +3,7 @@
 
 import copy
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 import numpy as np
 
@@ -30,7 +30,7 @@ class MetaData:
         self,
         box_size: np.ndarray = None,
         camera_defaults: CameraData = None,
-        scale_factor: float = 1.0,
+        scale_factor: Union[float, None] = None,
         trajectory_title: str = "",
         model_meta_data: ModelMetaData = None,
     ):
@@ -48,9 +48,10 @@ class MetaData:
             which it also returns to when reset
             Default: CameraData()
         scale_factor : float (optional)
-            A multiplier for the scene, use if
-            visualization is too large or small
-            Default: 1.0
+            A multiplier for the scene, use if visualization is
+            too large or small. If none is provided, one will
+            be calculated based on the position data.
+            Default: None
         trajectory_title : str (optional)
             A title for this run of the model
         model_meta_data: ModelMetaData (optional)

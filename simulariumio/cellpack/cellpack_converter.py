@@ -7,7 +7,7 @@ import sys
 import numpy as np
 import json
 from scipy.spatial.transform import Rotation as R
-from typing import Callable, Tuple
+from typing import Callable, Tuple, Union
 
 from cellpack import RecipeLoader
 from ..constants import DISPLAY_TYPE, VIZ_TYPE, VALUES_PER_3D_POINT
@@ -286,6 +286,7 @@ class CellpackConverter(TrajectoryConverter):
         all_ingredients,
         time_step_index: int,
         box_center: np.array,
+        scale_factor: Union[float, None],
         geo_type: DISPLAY_TYPE,
         handedness: HAND_TYPE,
         geometry_url: str,
@@ -363,9 +364,11 @@ class CellpackConverter(TrajectoryConverter):
                     self.check_report_progress(agent_id_counter / total_agents)
 
         spatial_data.display_data = display_data
-        scale_factor = TrajectoryConverter.calculate_scale_factor(
-            max_dimensions, min_dimensions
-        )
+        if scale_factor is None:
+            # If scale factor wasn't provided, use the calculated one
+            scale_factor = TrajectoryConverter.calculate_scale_factor(
+                max_dimensions, min_dimensions
+            )
         spatial_data.radii = scale_factor * spatial_data.radii
         spatial_data.positions = scale_factor * spatial_data.positions
         spatial_data.subpoints = scale_factor * spatial_data.subpoints
@@ -389,7 +392,8 @@ class CellpackConverter(TrajectoryConverter):
         # default scale for cellpack => simularium
         # user is supposed to send in the cellPACK scale factor
         # if they send one in at all.
-        input_data.meta_data.scale_factor *= 0.1  # TODO: Do we need this?
+        if input_data.meta_data.scale_factor is not None:
+            input_data.meta_data.scale_factor *= 0.1
 
         try:
             # load the data from Cellpack output JSON file
@@ -405,6 +409,7 @@ class CellpackConverter(TrajectoryConverter):
             all_ingredients,
             time_step_index,
             box_center,
+            input_data.meta_data.scale_factor,
             input_data.geometry_type,
             input_data.handedness,
             input_data.geometry_url,
@@ -416,7 +421,7 @@ class CellpackConverter(TrajectoryConverter):
         input_data.meta_data._set_box_size(box_size)
         # set camera position based on bounding box
         CellpackConverter._update_meta_data(input_data.meta_data, box_size)
-        # # create TrajectoryData
+        # create TrajectoryData
         input_data.spatial_units.multiply(1.0 / scale_factor)
         return TrajectoryData(
             meta_data=input_data.meta_data,
