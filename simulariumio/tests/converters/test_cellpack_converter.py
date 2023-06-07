@@ -177,7 +177,7 @@ def test_box_size(box_size, expected_box_size):
                 VIZ_TYPE.DEFAULT,
                 0.0,  # id
                 0.0,  # type
-                250.0 * auto_scale_factor,  # x: 750 shifted by the bounding box and scaled
+                250.0 * auto_scale_factor,  # x: 750 shifted by the box size and scaled
                 250.0 * auto_scale_factor,  # y
                 49.5 * auto_scale_factor,  # z: 50 shifted by 0.5 and scaled
                 1.5707963267948966,  # xrot

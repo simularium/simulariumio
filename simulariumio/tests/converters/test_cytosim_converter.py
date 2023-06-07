@@ -115,6 +115,7 @@ results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
 def test_box_size_provided(box_size, expected_box_size):
     assert box_size == expected_box_size
 
+
 auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / 0.400052
 name_0 = "fiber"
 radius_0 = 0.001
