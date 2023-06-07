@@ -110,6 +110,7 @@ def test_typeMapping_default(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
 
 
+scale_factor = 0.1
 size_x = 100.0
 size_y = 100.0
 size_z = 10.0
@@ -119,6 +120,7 @@ data_with_metadata = SpringsaladData(
     ),
     meta_data=MetaData(
         box_size=np.array([size_x, size_y, size_z]),
+        scale_factor=scale_factor,
     ),
 )
 converter_metadata = SpringsaladConverter(data_with_metadata)
@@ -132,9 +134,9 @@ results_metadata = JsonWriter.format_trajectory_data(converter_metadata._data)
         (
             results_metadata["trajectoryInfo"]["size"],
             {
-                "x": size_x,
-                "y": size_y,
-                "z": size_z,
+                "x": size_x * scale_factor,
+                "y": size_y * scale_factor,
+                "z": size_z * scale_factor,
             },
         )
     ],
@@ -155,6 +157,7 @@ data_with_display_data = SpringsaladData(
     ),
     meta_data=MetaData(
         box_size=np.array([size_x, size_y, size_z]),
+        scale_factor=scale_factor,
     ),
     display_data={
         "GREEN": DisplayData(
@@ -221,46 +224,46 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # first agent
                 100000000.0,  # id
                 0.0,  # type index
-                -23.515194,  # x
-                41.677663,  # y
-                -2.872943,  # z
+                -23.515194 * scale_factor,  # x
+                41.677663 * scale_factor,  # y
+                -2.872943 * scale_factor,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                radius_0,  # radius
+                radius_0 * scale_factor,  # radius
                 0.0,  # subpoints
                 VIZ_TYPE.DEFAULT,  # second agent
                 100010000.0,
                 0.0,
-                -11.726563,
-                37.363461000000004,
-                -4.7181300000000004,
+                -11.726563 * scale_factor,
+                37.363461000000004 * scale_factor,
+                -4.7181300000000004 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                10.0,
+                10.0 * scale_factor,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # third agent
                 100200001.0,
                 1.0,
-                -3.749313,
-                6.674895,
-                -5.000000,
+                -3.749313 * scale_factor,
+                6.674895 * scale_factor,
+                -5.000000 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                2.0,
+                2.0 * scale_factor,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # fourth agent
                 100200000.0,
                 2.0,
-                -3.749313,
-                6.674895,
-                0.000000,
+                -3.749313 * scale_factor,
+                6.674895 * scale_factor,
+                0.000000 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                2.0,
+                2.0 * scale_factor,
                 0.0,
             ],
         )
@@ -472,55 +475,55 @@ def test_scaling():
     )
     converter = SpringsaladConverter(data)
     results = JsonWriter.format_trajectory_data(converter._data)
-    scale_factor = VIEWER_DIMENSION_RANGE.MAX / 66.985562
+    auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / 66.985562
     assert results["trajectoryInfo"]["size"] == {
-        "x": 100.0 * scale_factor,
-        "y": 100.0 * scale_factor,
-        "z": 100.0 * scale_factor,
+        "x": 100.0 * auto_scale_factor,
+        "y": 100.0 * auto_scale_factor,
+        "z": 100.0 * auto_scale_factor,
     }
     assert results["spatialData"]["bundleData"][0]["data"] == [
         VIZ_TYPE.DEFAULT,  # first agent
         100000000.0,  # id
         0.0,  # type index
-        -23.515194 * scale_factor,  # x
-        41.677663 * scale_factor,  # y
-        -2.872943 * scale_factor,  # z
+        -23.515194 * auto_scale_factor,  # x
+        41.677663 * auto_scale_factor,  # y
+        -2.872943 * auto_scale_factor,  # z
         0.0,  # x rotation
         0.0,  # y rotation
         0.0,  # z rotation
-        2.0 * scale_factor,  # radius
+        2.0 * auto_scale_factor,  # radius
         0.0,  # subpoints
         VIZ_TYPE.DEFAULT,  # second agent
         100010000.0,
         0.0,
-        -11.726563 * scale_factor,
-        37.363461 * scale_factor,
-        -4.71813 * scale_factor,
+        -11.726563 * auto_scale_factor,
+        37.363461 * auto_scale_factor,
+        -4.71813 * auto_scale_factor,
         0.0,
         0.0,
         0.0,
-        2.0 * scale_factor,
+        2.0 * auto_scale_factor,
         0.0,
         VIZ_TYPE.DEFAULT,  # third agent
         100200001.0,
         1.0,
-        -3.749313 * scale_factor,
-        6.674895 * scale_factor,
-        -5.0 * scale_factor,
+        -3.749313 * auto_scale_factor,
+        6.674895 * auto_scale_factor,
+        -5.0 * auto_scale_factor,
         0.0,
         0.0,
         0.0,
-        2.0 * scale_factor,
+        2.0 * auto_scale_factor,
         0.0,
         VIZ_TYPE.DEFAULT,  # fourth agent
         100200000.0,
         2.0,
-        -3.749313 * scale_factor,
-        6.674895 * scale_factor,
+        -3.749313 * auto_scale_factor,
+        6.674895 * auto_scale_factor,
         0.0,
         0.0,
         0.0,
         0.0,
-        2.0 * scale_factor,
+        2.0 * auto_scale_factor,
         0.0,
     ]

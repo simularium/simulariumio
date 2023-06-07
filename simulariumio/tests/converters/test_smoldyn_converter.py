@@ -26,7 +26,7 @@ data = SmoldynData(
 )
 converter = SmoldynConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
-scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.844989 + 0.8748)
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.844989 + 0.8748)
 
 
 # test box data default
@@ -129,7 +129,7 @@ def test_timeUnits_default(timeUnits, expected_timeUnits):
 
 
 # test spatial units default
-expected_spatial_units = UnitData("m", 1.0 / scale_factor)
+expected_spatial_units = UnitData("m", 1.0 / auto_scale_factor)
 
 
 @pytest.mark.parametrize(
@@ -170,9 +170,9 @@ results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
         (
             results_meta_data["trajectoryInfo"]["size"],
             {
-                "x": x_size * scale_factor,
-                "y": y_size * scale_factor,
-                "z": z_size * scale_factor,
+                "x": x_size * auto_scale_factor,
+                "y": y_size * auto_scale_factor,
+                "z": z_size * auto_scale_factor,
             },
         )
     ],
@@ -214,7 +214,7 @@ def test_timeUnits_provided(timeUnits, expected_timeUnits):
 
 
 # test spatial units provided
-expected_spatial_units = UnitData(spatial_unit_name, 1.0 / scale_factor)
+expected_spatial_units = UnitData(spatial_unit_name, 1.0 / auto_scale_factor)
 
 
 @pytest.mark.parametrize(
@@ -321,7 +321,7 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                s_radius * scale_factor,  # radius
+                s_radius * auto_scale_factor,  # radius
                 0.0,  # number of subpoints
                 VIZ_TYPE.DEFAULT,  # second agent
                 600.0,
@@ -332,7 +332,7 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                e_radius * scale_factor,
+                e_radius * auto_scale_factor,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # third agent
                 606.0,
@@ -343,7 +343,7 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                scale_factor,  # default radius = 1.0 * scale factor
+                auto_scale_factor,  # default radius = 1.0 * scale factor
                 0.0,
             ],
         )
@@ -362,9 +362,11 @@ size = 100.0
 green_name = "Green"
 green_radius = 2.0
 green_color = "#dfdacd"
+scale_factor = 1.5
 data_3D = SmoldynData(
     meta_data=MetaData(
         box_size=np.array([size, size, size]),
+        scale_factor=scale_factor,
     ),
     smoldyn_file=InputFileData(
         file_path="simulariumio/tests/data/smoldyn/example_3D.txt"
@@ -411,6 +413,25 @@ def test_typeMapping_with_3D_data(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
 
 
+# test box size provided
+@pytest.mark.parametrize(
+    "box_size, expected_box_size",
+    [
+        (
+            results_3D_data["trajectoryInfo"]["size"],
+            {
+                "x": size * scale_factor,
+                "y": size * scale_factor,
+                "z": size * scale_factor,
+            },
+        )
+    ],
+)
+def test_box_size_provided_scaled(box_size, expected_box_size):
+    # should be scaled by the scale factor provided
+    assert box_size == expected_box_size
+
+
 @pytest.mark.parametrize(
     "bundleData, expected_bundleData",
     [
@@ -421,46 +442,46 @@ def test_typeMapping_with_3D_data(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # first agent
                 130.0,  # id
                 0.0,  # type
-                23.4545,  # x
-                49.2404,  # y
-                12.29,  # z
+                23.4545 * scale_factor,  # x
+                49.2404 * scale_factor,  # y
+                12.29 * scale_factor,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                green_radius,  # radius
+                green_radius * scale_factor,  # radius
                 0.0,  # subpoints
                 VIZ_TYPE.DEFAULT,  # second agent
                 129.0,
                 0.0,
-                83.9871,
-                56.5501,
-                33.9238,
+                83.9871 * scale_factor,
+                56.5501 * scale_factor,
+                33.9238 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                green_radius,
+                green_radius * scale_factor,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # third agent
                 100.0,
                 1.0,
-                20,
-                30,
-                20,
+                20 * scale_factor,
+                30 * scale_factor,
+                20 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                1.0 * scale_factor,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # fourth agent
                 99.0,
                 1.0,
-                20,
-                30,
-                20,
+                20 * scale_factor,
+                30 * scale_factor,
+                20 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                1.0 * scale_factor,
                 0.0,
             ],
         )
