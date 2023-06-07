@@ -16,6 +16,7 @@ from simulariumio.constants import (
     DISPLAY_TYPE,
     DEFAULT_BOX_SIZE,
     VIZ_TYPE,
+    VIEWER_DIMENSION_RANGE,
 )
 from simulariumio.exceptions import InputDataError
 
@@ -74,13 +75,14 @@ def test_typeMapping_default(typeMapping, expected_typeMapping):
 
 
 # xyz dimensions represented as array
-box_x = 0.5
+box_x = 0.
 box_y = 0.3
 box_z = 0.4
-scale_factor = 12.498375211222541  # TODO: calculate this instead of having a constant
+scale_factor = 1000
 data_with_metadata = CytosimData(
     meta_data=MetaData(
         box_size=np.array([box_x, box_y, box_z]),
+        scale_factor=scale_factor,
     ),
     object_info={
         "fibers": CytosimObjectInfo(
@@ -113,7 +115,7 @@ results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
 def test_box_size_provided(box_size, expected_box_size):
     assert box_size == expected_box_size
 
-
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / 0.400052
 name_0 = "fiber"
 radius_0 = 0.001
 color_0 = "#d71f5f"
@@ -180,17 +182,17 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                radius_0 * scale_factor,  # radius
+                radius_0 * auto_scale_factor,  # radius
                 9.0,  # subpoints
-                -0.00370929 * scale_factor,
-                0.110164 * scale_factor,
-                -0.400052 * scale_factor,
-                -0.00970537 * scale_factor,
-                0.110184 * scale_factor,
-                -0.391947 * scale_factor,
-                -0.0157378 * scale_factor,
-                0.110304 * scale_factor,
-                -0.38387 * scale_factor,
+                -0.00370929 * auto_scale_factor,
+                0.110164 * auto_scale_factor,
+                -0.400052 * auto_scale_factor,
+                -0.00970537 * auto_scale_factor,
+                0.110184 * auto_scale_factor,
+                -0.391947 * auto_scale_factor,
+                -0.0157378 * auto_scale_factor,
+                0.110304 * auto_scale_factor,
+                -0.38387 * auto_scale_factor,
                 VIZ_TYPE.FIBER,  # agent 2
                 2.0,
                 0.0,
@@ -200,26 +202,26 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                radius_0 * scale_factor,
+                radius_0 * auto_scale_factor,
                 18.0,
-                0.03944 * scale_factor,
-                -0.0604351 * scale_factor,
-                -0.344994 * scale_factor,
-                0.0378824 * scale_factor,
-                -0.05056 * scale_factor,
-                -0.347361 * scale_factor,
-                0.0363195 * scale_factor,
-                -0.0406802 * scale_factor,
-                -0.349704 * scale_factor,
-                0.0347773 * scale_factor,
-                -0.030804 * scale_factor,
-                -0.352077 * scale_factor,
-                0.033265 * scale_factor,
-                -0.0209349 * scale_factor,
-                -0.354497 * scale_factor,
-                0.0318441 * scale_factor,
-                -0.0110556 * scale_factor,
-                -0.356932 * scale_factor,
+                0.03944 * auto_scale_factor,
+                -0.0604351 * auto_scale_factor,
+                -0.344994 * auto_scale_factor,
+                0.0378824 * auto_scale_factor,
+                -0.05056 * auto_scale_factor,
+                -0.347361 * auto_scale_factor,
+                0.0363195 * auto_scale_factor,
+                -0.0406802 * auto_scale_factor,
+                -0.349704 * auto_scale_factor,
+                0.0347773 * auto_scale_factor,
+                -0.030804 * auto_scale_factor,
+                -0.352077 * auto_scale_factor,
+                0.033265 * auto_scale_factor,
+                -0.0209349 * auto_scale_factor,
+                -0.354497 * auto_scale_factor,
+                0.0318441 * auto_scale_factor,
+                -0.0110556 * auto_scale_factor,
+                -0.356932 * auto_scale_factor,
             ],
         ),
         (
@@ -234,17 +236,17 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                radius_0 * scale_factor,
+                radius_0 * auto_scale_factor,
                 9.0,
-                -0.00569782 * scale_factor,
-                0.129971 * scale_factor,
-                -0.393008 * scale_factor,
-                -0.0152907 * scale_factor,
-                0.127437 * scale_factor,
-                -0.394796 * scale_factor,
-                -0.0248686 * scale_factor,
-                0.124766 * scale_factor,
-                -0.396463 * scale_factor,
+                -0.00569782 * auto_scale_factor,
+                0.129971 * auto_scale_factor,
+                -0.393008 * auto_scale_factor,
+                -0.0152907 * auto_scale_factor,
+                0.127437 * auto_scale_factor,
+                -0.394796 * auto_scale_factor,
+                -0.0248686 * auto_scale_factor,
+                0.124766 * auto_scale_factor,
+                -0.396463 * auto_scale_factor,
                 VIZ_TYPE.FIBER,
                 2.0,
                 0.0,
@@ -254,26 +256,26 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                radius_0 * scale_factor,
+                radius_0 * auto_scale_factor,
                 18.0,
-                0.0190975 * scale_factor,
-                -0.0446282 * scale_factor,
-                -0.345032 * scale_factor,
-                0.0287449 * scale_factor,
-                -0.0412174 * scale_factor,
-                -0.345948 * scale_factor,
-                0.0384093 * scale_factor,
-                -0.0378622 * scale_factor,
-                -0.346891 * scale_factor,
-                0.0480874 * scale_factor,
-                -0.0345692 * scale_factor,
-                -0.347909 * scale_factor,
-                0.0577825 * scale_factor,
-                -0.0313358 * scale_factor,
-                -0.348956 * scale_factor,
-                0.0674886 * scale_factor,
-                -0.0281453 * scale_factor,
-                -0.350033 * scale_factor,
+                0.0190975 * auto_scale_factor,
+                -0.0446282 * auto_scale_factor,
+                -0.345032 * auto_scale_factor,
+                0.0287449 * auto_scale_factor,
+                -0.0412174 * auto_scale_factor,
+                -0.345948 * auto_scale_factor,
+                0.0384093 * auto_scale_factor,
+                -0.0378622 * auto_scale_factor,
+                -0.346891 * auto_scale_factor,
+                0.0480874 * auto_scale_factor,
+                -0.0345692 * auto_scale_factor,
+                -0.347909 * auto_scale_factor,
+                0.0577825 * auto_scale_factor,
+                -0.0313358 * auto_scale_factor,
+                -0.348956 * auto_scale_factor,
+                0.0674886 * auto_scale_factor,
+                -0.0281453 * auto_scale_factor,
+                -0.350033 * auto_scale_factor,
             ],
         ),
     ],

@@ -22,7 +22,7 @@ data = MedyanData(
 converter = MedyanConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
 
-scale_factor = VIEWER_DIMENSION_RANGE.MAX / 839.44264461
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / 839.44264461
 
 
 # test box data default
@@ -133,9 +133,9 @@ results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
         (
             results_meta_data["trajectoryInfo"]["size"],
             {
-                "x": x_size * scale_factor,
-                "y": y_size * scale_factor,
-                "z": z_size * scale_factor,
+                "x": x_size * auto_scale_factor,
+                "y": y_size * auto_scale_factor,
+                "z": z_size * auto_scale_factor,
             },
         )
     ],
@@ -231,14 +231,14 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                actin_radius * scale_factor,  # radius
+                actin_radius * auto_scale_factor,  # radius
                 6.0,  # number of subpoints
-                454.3434234 * scale_factor,
-                363.439226 * scale_factor,
-                265.4405349 * scale_factor,
-                519.7377041 * scale_factor,
-                351.5737487 * scale_factor,
-                180.312405 * scale_factor,
+                454.3434234 * auto_scale_factor,
+                363.439226 * auto_scale_factor,
+                265.4405349 * auto_scale_factor,
+                519.7377041 * auto_scale_factor,
+                351.5737487 * auto_scale_factor,
+                180.312405 * auto_scale_factor,
                 VIZ_TYPE.FIBER,  # second agent
                 1.0,
                 0.0,
@@ -248,14 +248,14 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                actin_radius * scale_factor,
+                actin_radius * auto_scale_factor,
                 6.0,
-                547.5943503 * scale_factor,
-                280.3075619 * scale_factor,
-                307.4127023 * scale_factor,
-                535.194707 * scale_factor,
-                173.0325428 * scale_factor,
-                308.9355694 * scale_factor,
+                547.5943503 * auto_scale_factor,
+                280.3075619 * auto_scale_factor,
+                307.4127023 * auto_scale_factor,
+                535.194707 * auto_scale_factor,
+                173.0325428 * auto_scale_factor,
+                308.9355694 * auto_scale_factor,
             ],
         )
     ],
@@ -269,9 +269,11 @@ def test_agent_ids():
 
 
 # add in drawing endpoints
+scale_factor = 0.1
 data_with_drawing_endpoints = MedyanData(
     meta_data=MetaData(
         box_size=np.array([x_size, y_size, z_size]),
+        scale_factor=scale_factor,
     ),
     snapshot_file=InputFileData(file_path="simulariumio/tests/data/medyan/test.traj"),
     filament_display_data={
