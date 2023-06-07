@@ -205,6 +205,7 @@ scale_factor = 0.01
 data_subcells = PhysicellData(
     meta_data=MetaData(
         box_size=np.array([960.0, 640.0, 300.0]),
+        scale_factor=scale_factor,
     ),
     timestep=36.0,
     path_to_output_dir="simulariumio/tests/data/physicell/subcell_output/",
@@ -222,7 +223,7 @@ data_subcells = PhysicellData(
 )
 converter_subcells = PhysicellConverter(data_subcells)
 results_subcells = JsonWriter.format_trajectory_data(converter_subcells._data)
-scale_factor_subcells = VIEWER_DIMENSION_RANGE.MAX / 530.8317
+# scale_factor = VIEWER_DIMENSION_RANGE.MAX / 530.8317
 
 
 # test type mapping provided

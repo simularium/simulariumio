@@ -275,9 +275,12 @@ def test_agent_ids():
     assert JsonWriter._check_agent_ids_are_unique_per_frame(results_display_data)
 
 
-data_centered = MedyanData(
+# add in drawing endpoints
+scale_factor = 0.1
+data_with_drawing_endpoints = MedyanData(
     meta_data=MetaData(
         box_size=np.array([x_size, y_size, z_size]),
+        scale_factor=scale_factor,
     ),
     snapshot_file=InputFileData(file_path="simulariumio/tests/data/medyan/test.traj"),
     filament_display_data={

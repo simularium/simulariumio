@@ -22,7 +22,7 @@ data = McellData(
 )
 converter = McellConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
-scale_factor = VIEWER_DIMENSION_RANGE.MIN / 0.5016988515853882
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / 0.5016988515853882
 
 # value of automatically generated scale factor, so that position
 # data fits within VIEWER_DIMENSION_RANGE

@@ -168,7 +168,6 @@ def test_camera_setting(camera_settings, expected_camera_settings):
 )
 def test_box_size(box_size, expected_box_size):
     # input data box was 1000, 1000, 1
-    print(box_size)
     assert box_size == expected_box_size
 
 
