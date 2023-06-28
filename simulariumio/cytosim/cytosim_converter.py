@@ -274,7 +274,8 @@ class CytosimConverter(TrajectoryConverter):
             max_subpoints = TrajectoryConverter.get_xyz_max(xyz_subpoints)
             min_subpoints = TrajectoryConverter.get_xyz_min(xyz_subpoints)
             scale_factor = TrajectoryConverter.calculate_scale_factor(
-                np.amax([max_positions, max_subpoints], 0), np.amin([min_positions, min_subpoints], 0)
+                np.amax([max_positions, max_subpoints], 0),
+                np.amin([min_positions, min_subpoints], 0),
             )
 
         result.radii = scale_factor * result.radii

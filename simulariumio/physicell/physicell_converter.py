@@ -328,8 +328,8 @@ class PhysicellConverter(TrajectoryConverter):
             scale_factor = input_data.meta_data.scale_factor
         for index in range(dimensions.total_steps):
             # do not scale radii for subcells
-            result.radii[index][0:n_def_agents[index]] = (
-                scale_factor * result.radii[index][0:n_def_agents[index]]
+            result.radii[index][0 : n_def_agents[index]] = (
+                scale_factor * result.radii[index][0 : n_def_agents[index]]
             )
         result.positions = scale_factor * result.positions
         result.subpoints = scale_factor * result.subpoints

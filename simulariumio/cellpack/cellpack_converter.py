@@ -341,17 +341,24 @@ class CellpackConverter(TrajectoryConverter):
         spatial_data.display_data = display_data
         if scale_factor is None:
             # If scale factor wasn't provided, use the calculated one
-            max_positions = TrajectoryConverter.get_xyz_max(spatial_data.positions + spatial_data.radii[:,:,np.newaxis])
-            min_positions = TrajectoryConverter.get_xyz_min(spatial_data.positions - spatial_data.radii[:,:,np.newaxis])
+            max_positions = TrajectoryConverter.get_xyz_max(
+                spatial_data.positions + spatial_data.radii[:, :, np.newaxis]
+            )
+            min_positions = TrajectoryConverter.get_xyz_min(
+                spatial_data.positions - spatial_data.radii[:, :, np.newaxis]
+            )
             if spatial_data.subpoints.size > 0:
                 xyz_subpoints = spatial_data.subpoints.reshape(1, -1, 3)
                 max_subpoints = TrajectoryConverter.get_xyz_max(xyz_subpoints)
                 min_subpoints = TrajectoryConverter.get_xyz_min(xyz_subpoints)
                 scale_factor = TrajectoryConverter.calculate_scale_factor(
-                    np.amax([max_positions, max_subpoints], 0), np.amin([min_positions, min_subpoints], 0)
+                    np.amax([max_positions, max_subpoints], 0),
+                    np.amin([min_positions, min_subpoints], 0),
                 )
             else:
-                scale_factor = TrajectoryConverter.calculate_scale_factor(max_positions, min_positions)
+                scale_factor = TrajectoryConverter.calculate_scale_factor(
+                    max_positions, min_positions
+                )
         spatial_data.radii = scale_factor * spatial_data.radii
         spatial_data.positions = scale_factor * spatial_data.positions
         spatial_data.subpoints = scale_factor * spatial_data.subpoints

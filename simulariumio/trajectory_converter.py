@@ -83,16 +83,16 @@ class TrajectoryConverter:
 
     @staticmethod
     def get_xyz_max(data: np.array) -> np.array:
-        x_max = max(data[:,:,0].flatten())
-        y_max = max(data[:,:,1].flatten())
-        z_max = max(data[:,:,2].flatten())
+        x_max = max(data[:, :, 0].flatten())
+        y_max = max(data[:, :, 1].flatten())
+        z_max = max(data[:, :, 2].flatten())
         return np.array([x_max, y_max, z_max])
 
     @staticmethod
     def get_xyz_min(data: np.array) -> np.array:
-        x_max = min(data[:,:,0].flatten())
-        y_max = min(data[:,:,1].flatten())
-        z_max = min(data[:,:,2].flatten())
+        x_max = min(data[:, :, 0].flatten())
+        y_max = min(data[:, :, 1].flatten())
+        z_max = min(data[:, :, 2].flatten())
         return np.array([x_max, y_max, z_max])
 
     @staticmethod
