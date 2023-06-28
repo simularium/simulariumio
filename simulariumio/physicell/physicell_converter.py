@@ -7,7 +7,6 @@ from typing import Dict, Tuple, List, Callable
 from pathlib import Path
 import numpy as np
 import pandas as pd
-import sys
 from .dep.pyMCDS import pyMCDS
 
 from ..trajectory_converter import TrajectoryConverter
@@ -192,8 +191,6 @@ class PhysicellConverter(TrajectoryConverter):
         values_per_subcell = SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.SPHERE_GROUP)
         n_def_agents = []
         subcells = []
-        max_dimensions = sys.float_info.min * np.ones(3)
-        min_dimensions = sys.float_info.max * np.ones(3)
 
         for time_index in range(dimensions.total_steps):
             n_cells = int(len(discrete_cells[time_index]["position_x"]))
@@ -238,12 +235,6 @@ class PhysicellConverter(TrajectoryConverter):
                         discrete_cells[time_index]["position_y"][cell_index],
                         discrete_cells[time_index]["position_z"][cell_index],
                     ]
-                )
-
-                TrajectoryConverter.check_max_min_coordinates(
-                    max_dimensions,
-                    min_dimensions,
-                    result.positions[time_index][n_def_agents[time_index]],
                 )
 
                 result.radii[time_index][n_def_agents[time_index]] = (
@@ -312,9 +303,6 @@ class PhysicellConverter(TrajectoryConverter):
                     )
                 center = np.mean(np.array(subcell_positions), axis=0)
                 result.positions[time_index][agent_index] = center
-                TrajectoryConverter.check_max_min_coordinates(
-                    max_dimensions, min_dimensions, center
-                )
                 # subpoints
                 for subcell_index in range(n_subcells):
                     cell_index = subcells[time_index][owner_id][subcell_index]
@@ -331,6 +319,8 @@ class PhysicellConverter(TrajectoryConverter):
             result.n_agents[time_index] = agent_index
 
         if input_data.meta_data.scale_factor is None:
+            max_dimensions = TrajectoryConverter.get_xyz_max(result.positions)
+            min_dimensions = TrajectoryConverter.get_xyz_min(result.positions)
             scale_factor = TrajectoryConverter.calculate_scale_factor(
                 max_dimensions, min_dimensions
             )

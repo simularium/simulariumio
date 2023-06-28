@@ -82,18 +82,18 @@ class TrajectoryConverter:
             self.last_report_time = current_time
 
     @staticmethod
-    def check_max_min_coordinates(
-        max_dimensions: np.array,
-        min_dimensions: np.array,
-        current_position: np.array,
-        radius: float = 0.0,
-    ):
-        for i in range(len(current_position)):
-            curr_val = float(current_position[i])
-            if curr_val - radius < min_dimensions[i]:
-                min_dimensions[i] = curr_val - radius
-            if curr_val + radius > max_dimensions[i]:
-                max_dimensions[i] = curr_val + radius
+    def get_xyz_max(data: np.array) -> np.array:
+        x_max = max(data[:,:,0].flatten())
+        y_max = max(data[:,:,1].flatten())
+        z_max = max(data[:,:,2].flatten())
+        return np.array([x_max, y_max, z_max])
+
+    @staticmethod
+    def get_xyz_min(data: np.array) -> np.array:
+        x_max = min(data[:,:,0].flatten())
+        y_max = min(data[:,:,1].flatten())
+        z_max = min(data[:,:,2].flatten())
+        return np.array([x_max, y_max, z_max])
 
     @staticmethod
     def calculate_scale_factor(

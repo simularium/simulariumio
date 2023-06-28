@@ -3,7 +3,6 @@
 
 import logging
 import os
-import sys
 import numpy as np
 import json
 from scipy.spatial.transform import Rotation as R
@@ -135,8 +134,6 @@ class CellpackConverter(TrajectoryConverter):
         agent_id: int,
         result: AgentData,
         box_center: np.array,
-        max_dimensions: np.array,
-        min_dimensions: np.array,
     ):
         curve = "curve" + str(index)
         result.positions[time_step_index][agent_id] = [0, 0, 0]
@@ -155,12 +152,6 @@ class CellpackConverter(TrajectoryConverter):
         scaled_control_points = np.array(data[curve]) - np.array(box_center)
         for i in range(len(scaled_control_points)):
             result.subpoints[time_step_index][agent_id][i] = scaled_control_points[i]
-            TrajectoryConverter.check_max_min_coordinates(
-                max_dimensions,
-                min_dimensions,
-                scaled_control_points[i],
-                r,
-            )
 
     @staticmethod
     def _unpack_positions(
@@ -172,8 +163,6 @@ class CellpackConverter(TrajectoryConverter):
         result: AgentData,
         box_center: np.array,
         handedness: HAND_TYPE,
-        max_dimensions: np.array,
-        min_dimensions: np.array,
         comp_id=0,
     ):
         position = data["results"][index][0]
@@ -200,13 +189,6 @@ class CellpackConverter(TrajectoryConverter):
 
         else:
             result.radii[time_step_index][agent_id] = DEFAULT_RADIUS
-
-        TrajectoryConverter.check_max_min_coordinates(
-            max_dimensions,
-            min_dimensions,
-            result.positions[time_step_index][agent_id],
-            result.radii[time_step_index][agent_id],
-        )
         result.n_subpoints[time_step_index][agent_id] = 0
 
     @staticmethod
@@ -296,9 +278,6 @@ class CellpackConverter(TrajectoryConverter):
         spatial_data = AgentData.from_dimensions(dimensions)
         display_data = {} if display_data is None else display_data
         agent_id_counter = 0
-        max_dimensions = sys.float_info.min * np.ones(3)
-        min_dimensions = sys.float_info.max * np.ones(3)
-
         total_agents = 0
         for ingredient in all_ingredients:
             total_agents += len(ingredient["results"].get("results", []))
@@ -342,8 +321,6 @@ class CellpackConverter(TrajectoryConverter):
                         spatial_data,
                         box_center,
                         handedness,
-                        max_dimensions,
-                        min_dimensions,
                     )
                     agent_id_counter += 1
                     self.check_report_progress(agent_id_counter / total_agents)
@@ -357,8 +334,6 @@ class CellpackConverter(TrajectoryConverter):
                         agent_id_counter,
                         spatial_data,
                         box_center,
-                        max_dimensions,
-                        min_dimensions,
                     )
                     agent_id_counter += 1
                     self.check_report_progress(agent_id_counter / total_agents)
@@ -366,9 +341,17 @@ class CellpackConverter(TrajectoryConverter):
         spatial_data.display_data = display_data
         if scale_factor is None:
             # If scale factor wasn't provided, use the calculated one
-            scale_factor = TrajectoryConverter.calculate_scale_factor(
-                max_dimensions, min_dimensions
-            )
+            max_positions = TrajectoryConverter.get_xyz_max(spatial_data.positions + spatial_data.radii[:,:,np.newaxis])
+            min_positions = TrajectoryConverter.get_xyz_min(spatial_data.positions - spatial_data.radii[:,:,np.newaxis])
+            if spatial_data.subpoints.size > 0:
+                xyz_subpoints = spatial_data.subpoints.reshape(1, -1, 3)
+                max_subpoints = TrajectoryConverter.get_xyz_max(xyz_subpoints)
+                min_subpoints = TrajectoryConverter.get_xyz_min(xyz_subpoints)
+                scale_factor = TrajectoryConverter.calculate_scale_factor(
+                    np.amax([max_positions, max_subpoints], 0), np.amin([min_positions, min_subpoints], 0)
+                )
+            else:
+                scale_factor = TrajectoryConverter.calculate_scale_factor(max_positions, min_positions)
         spatial_data.radii = scale_factor * spatial_data.radii
         spatial_data.positions = scale_factor * spatial_data.positions
         spatial_data.subpoints = scale_factor * spatial_data.subpoints

@@ -4,7 +4,6 @@
 import logging
 from typing import List, Tuple, Callable
 import numpy as np
-import sys
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import (
@@ -105,8 +104,6 @@ class SpringsaladConverter(TrajectoryConverter):
         max_uid = 0
         scene_agent_positions = {}
         line_count = 0
-        max_dimensions = sys.float_info.min * np.ones(3)
-        min_dimensions = sys.float_info.max * np.ones(3)
 
         for line in springsalad_data:
             cols = line.split()
@@ -146,11 +143,6 @@ class SpringsaladConverter(TrajectoryConverter):
                     if input_display_data and input_display_data.radius is not None
                     else float(cols[2])
                 )
-
-                TrajectoryConverter.check_max_min_coordinates(
-                    max_dimensions, min_dimensions, position
-                )
-
                 agent_index += 1
             if input_data.draw_bonds and "Link" in line:  # line has data for a bond
                 particle1_id = int(cols[1])
@@ -184,6 +176,8 @@ class SpringsaladConverter(TrajectoryConverter):
         result.n_timesteps = time_index + 1
 
         if input_data.meta_data.scale_factor is None:
+            max_dimensions = TrajectoryConverter.get_xyz_max(result.positions)
+            min_dimensions = TrajectoryConverter.get_xyz_min(result.positions)
             scale_factor = TrajectoryConverter.calculate_scale_factor(
                 max_dimensions, min_dimensions
             )

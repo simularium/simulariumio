@@ -6,7 +6,6 @@ from typing import Any, Tuple, Callable
 
 import numpy as np
 import readdy
-import sys
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData, DisplayData
@@ -85,8 +84,6 @@ class ReaddyConverter(TrajectoryConverter):
         result.viz_types = VIZ_TYPE.DEFAULT * np.ones(
             shape=(data_dimensions.total_steps, data_dimensions.max_agents)
         )
-        max_dimensions = sys.float_info.min * np.ones(3)
-        min_dimensions = sys.float_info.max * np.ones(3)
         for time_index in range(data_dimensions.total_steps):
             new_agent_index = 0
             for agent_index in range(int(n_agents[time_index])):
@@ -112,9 +109,6 @@ class ReaddyConverter(TrajectoryConverter):
                 result.positions[time_index][new_agent_index] = positions[time_index][
                     agent_index
                 ]
-                TrajectoryConverter.check_max_min_coordinates(
-                    max_dimensions, min_dimensions, positions[time_index][agent_index]
-                )
                 result.radii[time_index][new_agent_index] = (
                     display_data.radius if display_data.radius is not None else 1.0
                 )
@@ -122,6 +116,8 @@ class ReaddyConverter(TrajectoryConverter):
             result.n_agents[time_index] = new_agent_index
             self.check_report_progress(time_index / data_dimensions.total_steps)
         if input_data.meta_data.scale_factor is None:
+            max_dimensions = TrajectoryConverter.get_xyz_max(result.positions)
+            min_dimensions = TrajectoryConverter.get_xyz_min(result.positions)
             scale_factor = TrajectoryConverter.calculate_scale_factor(
                 max_dimensions, min_dimensions
             )

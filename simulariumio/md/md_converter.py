@@ -3,7 +3,6 @@
 
 import logging
 import copy
-import sys
 from typing import Set, Callable, Tuple
 
 import numpy as np
@@ -171,8 +170,6 @@ class MdConverter(TrajectoryConverter):
         get_type_name_func = np.frompyfunc(MdConverter._get_type_name, 2, 1)
         unique_raw_type_names = set([])
         time_index = 0
-        max_dimensions = sys.float_info.min * np.ones(3)
-        min_dimensions = sys.float_info.max * np.ones(3)
 
         for frame in input_data.md_universe.trajectory[
             :: input_data.nth_timestep_to_read
@@ -186,10 +183,6 @@ class MdConverter(TrajectoryConverter):
                 input_data.md_universe.atoms.names, input_data
             )
             result.positions[time_index] = atom_positions
-            for agent in atom_positions:
-                TrajectoryConverter.check_max_min_coordinates(
-                    max_dimensions, min_dimensions, agent
-                )
             result.radii[time_index] = np.array(
                 [
                     MdConverter._get_radius(type_name, input_data)
@@ -204,6 +197,8 @@ class MdConverter(TrajectoryConverter):
             unique_raw_type_names, input_data
         )
         if input_data.meta_data.scale_factor is None:
+            max_dimensions = TrajectoryConverter.get_xyz_max(result.positions)
+            min_dimensions = TrajectoryConverter.get_xyz_min(result.positions)
             scale_factor = TrajectoryConverter.calculate_scale_factor(
                 max_dimensions, min_dimensions
             )

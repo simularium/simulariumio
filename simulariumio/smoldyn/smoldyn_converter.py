@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import sys
 from typing import List, Callable, Tuple
 import numpy as np
 
@@ -84,9 +83,6 @@ class SmoldynConverter(TrajectoryConverter):
         agent_index = 0
         line_count = 0
 
-        max_dimensions = sys.float_info.min * np.ones(3)
-        min_dimensions = sys.float_info.max * np.ones(3)
-
         for line in smoldyn_data_lines:
             if len(line) < 1:
                 continue
@@ -122,12 +118,6 @@ class SmoldynConverter(TrajectoryConverter):
                     ]
                 )
 
-                TrajectoryConverter.check_max_min_coordinates(
-                    max_dimensions,
-                    min_dimensions,
-                    result.positions[time_index][agent_index]
-                )
-
                 # Get the user provided display data for this raw_type_name
                 input_display_data = TrajectoryConverter._get_display_data_for_agent(
                     raw_type_name, input_data.display_data
@@ -142,11 +132,12 @@ class SmoldynConverter(TrajectoryConverter):
             line_count += 1
             self.check_report_progress(line_count / len(smoldyn_data_lines))
 
-        if not is_3D:
-            max_dimensions = max_dimensions[:2]
-            min_dimensions = min_dimensions[:2]
-
         if input_data.meta_data.scale_factor is None:
+            max_dimensions = TrajectoryConverter.get_xyz_max(result.positions)
+            min_dimensions = TrajectoryConverter.get_xyz_min(result.positions)
+            if not is_3D:
+                max_dimensions = max_dimensions[:2]
+                min_dimensions = min_dimensions[:2]
             scale_factor = TrajectoryConverter.calculate_scale_factor(
                 max_dimensions, min_dimensions
             )

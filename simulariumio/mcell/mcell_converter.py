@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import sys
 from typing import Dict, Any, Callable, Tuple
 import json
 import os
@@ -215,8 +214,6 @@ class McellConverter(TrajectoryConverter):
         molecule_info: Dict[str, Dict[str, Any]],
         input_data: McellData,
         result: AgentData,
-        max_dimensions: np.array,
-        min_dimensions: np.array,
     ) -> AgentData:
         """
         Read MCell binary visualization files
@@ -277,10 +274,6 @@ class McellConverter(TrajectoryConverter):
                     result.positions[
                         time_index, total_mols : total_mols + n_mols, :
                     ] = positions
-                    for agent in positions:
-                        TrajectoryConverter.check_max_min_coordinates(
-                            max_dimensions, min_dimensions, agent
-                        )
                     agent_display_data = (
                         TrajectoryConverter._get_display_data_for_agent(
                             raw_type_name, input_data.display_data
@@ -326,8 +319,6 @@ class McellConverter(TrajectoryConverter):
         molecule_info = {}
         total_steps = 0
         step_count = 0
-        max_dimensions = sys.float_info.min * np.ones(3)
-        min_dimensions = sys.float_info.max * np.ones(3)
 
         for molecule in molecule_list:
             molecule_info[molecule["mol_name"]] = molecule
@@ -347,14 +338,14 @@ class McellConverter(TrajectoryConverter):
                 molecule_info,
                 input_data,
                 result,
-                max_dimensions,
-                min_dimensions,
             )
             step_count += 1
             self.check_report_progress(step_count / dimensions.total_steps)
         if input_data.meta_data.scale_factor is not None:
             scale_factor = input_data.meta_data.scale_factor
         else:
+            max_dimensions = TrajectoryConverter.get_xyz_max(result.positions)
+            min_dimensions = TrajectoryConverter.get_xyz_min(result.positions)
             scale_factor = TrajectoryConverter.calculate_scale_factor(
                 max_dimensions, min_dimensions
             )

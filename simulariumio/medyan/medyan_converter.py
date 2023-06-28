@@ -4,8 +4,6 @@
 import logging
 from typing import List, Callable, Tuple
 import math
-import sys
-import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import (
@@ -182,8 +180,6 @@ class MedyanConverter(TrajectoryConverter):
         object_type = ""
         draw_endpoints = False
         line_count = 0
-        max_dimensions = sys.float_info.min * np.ones(3)
-        min_dimensions = sys.float_info.max * np.ones(3)
 
         for line in lines:
             if len(line) < 1:
@@ -271,17 +267,6 @@ class MedyanConverter(TrajectoryConverter):
                             dim_index
                         ] = float(cols[i])
 
-                for i in range(math.floor(len(cols) / VALUES_PER_3D_POINT)):
-                    start_index = i * VALUES_PER_3D_POINT
-                    end_index = (i + 1) * VALUES_PER_3D_POINT
-                    TrajectoryConverter.check_max_min_coordinates(
-                        max_dimensions,
-                        min_dimensions,
-                        result.subpoints[time_index][agent_index][
-                            start_index:end_index
-                        ],
-                    )
-
                 parsing_object = False
                 agent_index += 1
                 if draw_endpoints:
@@ -293,6 +278,9 @@ class MedyanConverter(TrajectoryConverter):
         result.n_timesteps = time_index + 1
 
         if input_data.meta_data.scale_factor is None:
+            xyz_subpoints = result.subpoints.reshape(1, -1, 3)
+            max_dimensions = TrajectoryConverter.get_xyz_max(xyz_subpoints)
+            min_dimensions = TrajectoryConverter.get_xyz_min(xyz_subpoints)
             scale_factor = TrajectoryConverter.calculate_scale_factor(
                 max_dimensions, min_dimensions
             )
