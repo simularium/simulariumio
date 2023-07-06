@@ -23,7 +23,7 @@ from .data_objects import (
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
 from .writers import JsonWriter, BinaryWriter
-from .constants import DISPLAY_TYPE, VIEWER_DIMENSION_RANGE
+from .constants import DISPLAY_TYPE, VIEWER_DIMENSION_RANGE, VALUES_PER_3D_POINT
 
 ###############################################################################
 
@@ -156,7 +156,43 @@ class TrajectoryConverter:
         return xyz_subpoints.reshape(1, -1, 3)
 
     @staticmethod
-    def calculate_scale_factor(agent_data: AgentData) -> float:
+    def translate_positions(data: AgentData, translation: np.ndarray) -> AgentData:
+        total_steps = data.times.size
+        max_subpoints = int(np.amax(data.n_subpoints))
+        for time_index in range(total_steps):
+            for agent_index in range(int(data.n_agents[time_index])):
+                display_type = data.display_type_for_agent(time_index, agent_index)
+                translate_subpoints = (
+                    max_subpoints > 0 and display_type != DISPLAY_TYPE.SPHERE_GROUP
+                )
+                if translate_subpoints:
+                    sp_items = Filter.get_items_from_subpoints(
+                        data, time_index, agent_index
+                    )
+                    if sp_items is None:
+                        translate_subpoints = False
+                    else:
+                        # translate subpoints for fibers
+                        n_items = sp_items.shape[0]
+                        for item_index in range(n_items):
+                            sp_items[item_index][:VALUES_PER_3D_POINT] += translation
+                        n_sp = int(data.n_subpoints[time_index][agent_index])
+                        data.subpoints[time_index][agent_index][
+                            :n_sp
+                        ] = sp_items.reshape(n_sp)
+                if not translate_subpoints:
+                    data.positions[time_index][agent_index] += translation
+        return data
+
+    @staticmethod
+    def calculate_scale_factor(
+        positions: np.array,
+        radii: np.array,
+        n_agents: np.array,
+        is_2D: bool = False,
+        subpoints: np.array = None,
+        n_subpoints: np.array = None,
+    ) -> float:
         """
         Return a scale factor, using the given AgentData's position, radii,
         and subpoints numpy arrays from AgentData, so that the final range of

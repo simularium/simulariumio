@@ -276,6 +276,15 @@ class MedyanConverter(TrajectoryConverter):
             self.check_report_progress(line_count / len(lines))
 
         result.n_timesteps = time_index + 1
+        xyz_subpoints = TrajectoryConverter.get_subpoints_xyz(
+            result.subpoints, result.n_subpoints
+        )
+        max_dimensions = TrajectoryConverter.get_xyz_max(xyz_subpoints)
+        min_dimensions = TrajectoryConverter.get_xyz_min(xyz_subpoints)
+        if input_data.center:
+            # center position data
+            translation = -0.5 * (max_dimensions + min_dimensions)
+            result = TrajectoryConverter.translate_positions(result, translation)
 
         return TrajectoryConverter.scale_agent_data(
             result, input_data.meta_data.scale_factor

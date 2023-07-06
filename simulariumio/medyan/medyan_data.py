@@ -20,6 +20,7 @@ class MedyanData:
     agents_with_endpoints: List[str]
     draw_fiber_points: bool
     plots: List[Dict[str, Any]]
+    center: bool
 
     def __init__(
         self,
@@ -31,6 +32,7 @@ class MedyanData:
         agents_with_endpoints: List[str] = None,
         draw_fiber_points: bool = False,
         plots: List[Dict[str, Any]] = None,
+        center: bool = True,
     ):
         """
         This object holds simulation trajectory outputs
@@ -78,6 +80,10 @@ class MedyanData:
         plots : List[Dict[str, Any]] (optional)
             An object containing plot data already
             in Simularium format
+        center : bool (optional)
+            If true, the spatial values of the data are centered
+            around the origin (0, 0, 0) during conversion
+            Default: True
         """
         self.snapshot_file = snapshot_file
         self.meta_data = meta_data if meta_data is not None else MetaData()
@@ -93,3 +99,4 @@ class MedyanData:
         )
         self.draw_fiber_points = draw_fiber_points
         self.plots = plots if plots is not None else []
+        self.center = center
