@@ -279,13 +279,10 @@ class MedyanConverter(TrajectoryConverter):
         result.n_timesteps = time_index + 1
 
         if input_data.meta_data.scale_factor is None:
-            subpoints = np.array([])
-            for i in range(len(result.n_subpoints)):
-                for j in range(len(result.n_subpoints[i])):
-                    n = result.n_subpoints[i][j]
-                    if n != 0:
-                        subpoints = np.append(subpoints, result.subpoints[i][j][0:n])
-            xyz_subpoints = subpoints.reshape(1, -1, 3)
+            # If scale factor wasn't provided, calculate one
+            xyz_subpoints = TrajectoryConverter.get_subpoints_xyz(
+                result.subpoints, result.n_subpoints
+            )
             max_dimensions = TrajectoryConverter.get_xyz_max(xyz_subpoints)
             min_dimensions = TrajectoryConverter.get_xyz_min(xyz_subpoints)
             scale_factor = TrajectoryConverter.calculate_scale_factor(

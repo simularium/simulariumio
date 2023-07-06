@@ -132,9 +132,17 @@ class SmoldynConverter(TrajectoryConverter):
             line_count += 1
             self.check_report_progress(line_count / len(smoldyn_data_lines))
 
+        result.n_agents[time_index] = agent_index
+        result.n_timesteps = time_index + 1
+
         if input_data.meta_data.scale_factor is None:
-            max_dimensions = TrajectoryConverter.get_xyz_max(result.positions)
-            min_dimensions = TrajectoryConverter.get_xyz_min(result.positions)
+            # If scale factor wasn't provided, calculate one
+            max_dimensions = TrajectoryConverter.get_xyz_max(
+                result.positions + result.radii[:, :, np.newaxis], result.n_agents
+            )
+            min_dimensions = TrajectoryConverter.get_xyz_min(
+                result.positions - result.radii[:, :, np.newaxis], result.n_agents
+            )
             if not is_3D:
                 max_dimensions = max_dimensions[:2]
                 min_dimensions = min_dimensions[:2]
@@ -146,8 +154,6 @@ class SmoldynConverter(TrajectoryConverter):
         result.radii = scale_factor * result.radii
         result.positions = scale_factor * result.positions
 
-        result.n_agents[time_index] = agent_index
-        result.n_timesteps = time_index + 1
         return result, scale_factor
 
     def _read(self, input_data: SmoldynData) -> TrajectoryData:

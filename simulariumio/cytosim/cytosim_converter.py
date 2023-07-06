@@ -214,7 +214,11 @@ class CytosimConverter(TrajectoryConverter):
                     result.times[time_index] = float(columns[2])
                 elif "fiber" in columns[1]:
                     # start of fiber object
-                    (result, uids, used_unique_IDs,) = CytosimConverter._parse_object(
+                    (
+                        result,
+                        uids,
+                        used_unique_IDs,
+                    ) = CytosimConverter._parse_object(
                         object_type,
                         columns,
                         time_index,
@@ -245,7 +249,11 @@ class CytosimConverter(TrajectoryConverter):
                 )
             else:
                 # each non-fiber object
-                (result, uids, used_unique_IDs,) = CytosimConverter._parse_object(
+                (
+                    result,
+                    uids,
+                    used_unique_IDs,
+                ) = CytosimConverter._parse_object(
                     object_type,
                     columns,
                     time_index,
@@ -268,11 +276,20 @@ class CytosimConverter(TrajectoryConverter):
             self.check_report_progress(overall_line / total_lines)
 
         if scale_factor is None:
-            max_positions = TrajectoryConverter.get_xyz_max(result.positions)
-            min_positions = TrajectoryConverter.get_xyz_min(result.positions)
-            xyz_subpoints = result.subpoints.reshape(1, -1, 3)
+            # If scale factor wasn't provided, calculate one
+            max_positions = TrajectoryConverter.get_xyz_max(
+                result.positions + result.radii[:, :, np.newaxis], result.n_agents
+            )
+            min_positions = TrajectoryConverter.get_xyz_min(
+                result.positions - result.radii[:, :, np.newaxis], result.n_agents
+            )
+
+            xyz_subpoints = TrajectoryConverter.get_subpoints_xyz(
+                result.subpoints, result.n_subpoints
+            )
             max_subpoints = TrajectoryConverter.get_xyz_max(xyz_subpoints)
             min_subpoints = TrajectoryConverter.get_xyz_min(xyz_subpoints)
+
             scale_factor = TrajectoryConverter.calculate_scale_factor(
                 np.amax([max_positions, max_subpoints], 0),
                 np.amin([min_positions, min_subpoints], 0),

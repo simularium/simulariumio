@@ -176,8 +176,13 @@ class SpringsaladConverter(TrajectoryConverter):
         result.n_timesteps = time_index + 1
 
         if input_data.meta_data.scale_factor is None:
-            max_dimensions = TrajectoryConverter.get_xyz_max(result.positions)
-            min_dimensions = TrajectoryConverter.get_xyz_min(result.positions)
+            # If scale factor wasn't provided, calculate one
+            max_dimensions = TrajectoryConverter.get_xyz_max(
+                result.positions + result.radii[:, :, np.newaxis], result.n_agents
+            )
+            min_dimensions = TrajectoryConverter.get_xyz_min(
+                result.positions - result.radii[:, :, np.newaxis], result.n_agents
+            )
             scale_factor = TrajectoryConverter.calculate_scale_factor(
                 max_dimensions, min_dimensions
             )
@@ -185,6 +190,7 @@ class SpringsaladConverter(TrajectoryConverter):
             scale_factor = input_data.meta_data.scale_factor
         result.radii = scale_factor * result.radii
         result.positions = scale_factor * result.positions
+        result.subpoints = scale_factor * result.subpoints
 
         return result, box_size, scale_factor
 

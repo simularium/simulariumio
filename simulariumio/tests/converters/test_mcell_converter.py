@@ -22,7 +22,7 @@ data = McellData(
 )
 converter = McellConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
-auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / 0.5016988515853882
+default_scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.5016988515853882 + 0.02)
 
 
 @pytest.mark.parametrize(
@@ -93,9 +93,9 @@ def test_camera_setting_default(camera_settings, expected_camera_settings):
         (
             results["trajectoryInfo"]["size"],
             {
-                "x": 1.28 * auto_scale_factor,
-                "y": 1.28 * auto_scale_factor,
-                "z": 1.28 * auto_scale_factor,
+                "x": 1.28 * default_scale_factor,
+                "y": 1.28 * default_scale_factor,
+                "z": 1.28 * default_scale_factor,
             },
         )
     ],
@@ -167,6 +167,7 @@ data_with_display_data = McellData(
 
 converter_display_data = McellConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.5016988515853882 + 0.005 + 0.00015)
 
 
 @pytest.mark.parametrize(

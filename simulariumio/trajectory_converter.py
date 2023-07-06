@@ -81,19 +81,73 @@ class TrajectoryConverter:
             self.progress_callback(percent_complete)
             self.last_report_time = current_time
 
-    @staticmethod
-    def get_xyz_max(data: np.array) -> np.array:
-        x_max = max(data[:, :, 0].flatten())
-        y_max = max(data[:, :, 1].flatten())
-        z_max = max(data[:, :, 2].flatten())
-        return np.array([x_max, y_max, z_max])
+    def _filter_agent_data(data: np.array, n_agents: np.array):
+        x_data = np.array([])
+        y_data = np.array([])
+        z_data = np.array([])
+        x = data[:, :, 0]
+        y = data[:, :, 1]
+        z = data[:, :, 2]
+        for i in range(len(n_agents)):
+            x_data = np.append(x_data, x[i][0 : int(n_agents[i])])
+            y_data = np.append(y_data, y[i][0 : int(n_agents[i])])
+            z_data = np.append(z_data, z[i][0 : int(n_agents[i])])
+        return (x_data, y_data, z_data)
 
     @staticmethod
-    def get_xyz_min(data: np.array) -> np.array:
-        x_max = min(data[:, :, 0].flatten())
-        y_max = min(data[:, :, 1].flatten())
-        z_max = min(data[:, :, 2].flatten())
-        return np.array([x_max, y_max, z_max])
+    def get_xyz_max(data: np.array, n_agents: np.array = None) -> np.array:
+        """
+        Given AgentData position data (shape = [timesteps, agents, 3]), and
+        corresponding n_agents data, indicating agents per timestamp, extract
+        all position data, skipping the zeros that represent no data. Provide
+        maximum X, Y, and Z values from remaining data
+        """
+        if n_agents is not None:
+            (x_data, y_data, z_data) = TrajectoryConverter._filter_agent_data(
+                data, n_agents
+            )
+        else:
+            x_data = data[:, :, 0].flatten()
+            y_data = data[:, :, 1].flatten()
+            z_data = data[:, :, 2].flatten()
+
+        return np.array([max(x_data), max(y_data), max(z_data)])
+
+    @staticmethod
+    def get_xyz_min(data: np.array, n_agents: np.array = None) -> np.array:
+        """
+        Given AgentData position data (shape = [timesteps, agents, 3]), and
+        corresponding n_agents data, indicating agents per timestamp, extract
+        all position data, skipping the zeros that represent no data. Provide
+        minimum X, Y, and Z values from remaining data
+        """
+        if n_agents is not None:
+            (x_data, y_data, z_data) = TrajectoryConverter._filter_agent_data(
+                data, n_agents
+            )
+        else:
+            x_data = data[:, :, 0].flatten()
+            y_data = data[:, :, 1].flatten()
+            z_data = data[:, :, 2].flatten()
+
+        return np.array([min(x_data), min(y_data), min(z_data)])
+
+    @staticmethod
+    def get_subpoints_xyz(subpoints: np.array, n_subpoints: np.array) -> np.array:
+        """
+        Given AgentData subpoints (shape = [timesteps, agents, subpoints]), and a
+        list of n_subpoints per agent per timestep (shape = [timesteps, agents])
+        extract all subpoint data, skipping the zeros which represent no data.
+        Reshape resulting subpoint data into a 2D array of XYZ coordinate data
+        """
+        xyz_subpoints = np.array([])
+        for time in range(len(n_subpoints)):
+            for agent in range(len(n_subpoints[time])):
+                xyz_subpoints = np.append(
+                    xyz_subpoints,
+                    subpoints[time][agent][0 : int(n_subpoints[time][agent])],
+                )
+        return xyz_subpoints.reshape(1, -1, 3)
 
     @staticmethod
     def calculate_scale_factor(

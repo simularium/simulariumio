@@ -26,7 +26,8 @@ data = SmoldynData(
 )
 converter = SmoldynConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
-auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.844989 + 0.8748)
+# scale max distance between coordinates + radii to make it to VIEWER_DIMENSION_RANGE
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.844989 + 1.0 - (-0.8748 - 1.0))
 
 
 # test box data default
@@ -268,6 +269,8 @@ data_with_display_data = SmoldynData(
 converter_display_data = SmoldynConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
 
+# scale max distance between coordinates + radii to make it to VIEWER_DIMENSION_RANGE
+scale_factor_display = VIEWER_DIMENSION_RANGE.MIN / (0.666775 + 1 - (-0.8748 - s_radius))
 
 # test type mapping with display data provided
 @pytest.mark.parametrize(
@@ -315,35 +318,35 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # first agent
                 500.0,  # id
                 0.0,  # type
-                -2.5433352579880437,  # x
-                -1.3112422512296567,  # y
+                -1.7142353252402929,  # x
+                -0.8837913837531722,  # y
                 0.0,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                s_radius * auto_scale_factor,  # radius
+                s_radius * scale_factor_display,  # radius
                 0.0,  # number of subpoints
                 VIZ_TYPE.DEFAULT,  # second agent
                 600.0,
                 1.0,
-                2.4566647420119563,
-                -1.554795384782668,
+                1.6558184650656949,
+                -1.0479488159274175,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                e_radius * auto_scale_factor,
+                e_radius * scale_factor_display,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # third agent
                 606.0,
                 2.0,
-                1.938537227531982,
-                2.1667163820678,
+                1.3065949462586834,
+                1.4603901511811335,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                auto_scale_factor,  # default radius = 1.0 * scale factor
+                scale_factor_display,  # default radius = 1.0 * scale factor
                 0.0,
             ],
         )

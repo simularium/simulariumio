@@ -89,7 +89,7 @@ def test_timeUnits_default(timeUnits, expected_timeUnits):
 size_x = 1000.0
 size_y = 1000.0
 size_z = 100.0
-auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / 850.0
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / (866.8254210959085)
 time_unit = "ms"
 data_with_meta_data = PhysicellData(
     meta_data=MetaData(
@@ -163,7 +163,7 @@ data_with_display_data = PhysicellData(
 )
 converter_display_data = PhysicellConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
-
+scale_factor_display_data = VIEWER_DIMENSION_RANGE.MAX / (888.4127105479544)
 
 # test type mapping provided
 @pytest.mark.parametrize(
@@ -219,7 +219,6 @@ data_subcells = PhysicellData(
 )
 converter_subcells = PhysicellConverter(data_subcells)
 results_subcells = JsonWriter.format_trajectory_data(converter_subcells._data)
-# scale_factor = VIEWER_DIMENSION_RANGE.MAX / 530.8317
 
 
 # test type mapping provided
@@ -281,35 +280,35 @@ def test_typeMapping_subcells(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # first agent
                 0.0,  # id
                 0.0,  # type
-                -427.0 * auto_scale_factor,  # x
-                -251.0 * auto_scale_factor,  # y
+                -427.0 * scale_factor_display_data,  # x
+                -251.0 * scale_factor_display_data,  # y
                 0.0,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                8.412710547954229 * auto_scale_factor,
+                8.412710547954229 * scale_factor_display_data,
                 0.0,
                 VIZ_TYPE.DEFAULT,
                 1.0,
                 1.0,
-                -228.0 * auto_scale_factor,
-                430.0 * auto_scale_factor,
+                -228.0 * scale_factor_display_data,
+                430.0 * scale_factor_display_data,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                test_radius * auto_scale_factor,
+                test_radius * scale_factor_display_data,
                 0.0,
                 VIZ_TYPE.DEFAULT,
                 2.0,
                 1.0,
-                423.0 * auto_scale_factor,
-                378.0 * auto_scale_factor,
+                423.0 * scale_factor_display_data,
+                378.0 * scale_factor_display_data,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                test_radius * auto_scale_factor,
+                test_radius * scale_factor_display_data,
                 0.0,
             ],
         ),
