@@ -275,6 +275,83 @@ def test_agent_ids():
     assert JsonWriter._check_agent_ids_are_unique_per_frame(results_display_data)
 
 
+data_centered = MedyanData(
+    meta_data=MetaData(
+        box_size=np.array([x_size, y_size, z_size]),
+    ),
+    snapshot_file=InputFileData(file_path="simulariumio/tests/data/medyan/test.traj"),
+    filament_display_data={
+        0: DisplayData(
+            name="Actin",
+            display_type=DISPLAY_TYPE.FIBER,
+            radius=actin_radius,
+            color=actin_color,
+        ),
+    },
+    linker_display_data={
+        1: DisplayData(
+            name="Xlink",
+            display_type=DISPLAY_TYPE.FIBER,
+            radius=linker_radius,
+            color=linker_color,
+        ),
+    },
+    center=True,
+)
+converter_centered = MedyanConverter(data_centered)
+results_centered = JsonWriter.format_trajectory_data(converter_centered._data)
+translation = [-434.78931695, -447.8762742, -205.8179842]
+
+
+@pytest.mark.parametrize(
+    "bundleData, expected_bundleData",
+    [
+        (
+            # just testing the first frame
+            results_centered["spatialData"]["bundleData"][0],
+            [
+                VIZ_TYPE.FIBER,  # first agent
+                0.0,  # id
+                0.0,  # type
+                0.0,  # x
+                0.0,  # y
+                0.0,  # z
+                0.0,  # x rotation
+                0.0,  # y rotation
+                0.0,  # z rotation
+                actin_radius * auto_scale_factor,  # radius
+                6.0,  # number of subpoints
+                (454.3434234 + translation[0]) * auto_scale_factor,
+                (363.439226 + translation[1]) * auto_scale_factor,
+                (265.4405349 + translation[2]) * auto_scale_factor,
+                (519.7377041 + translation[0]) * auto_scale_factor,
+                (351.5737487 + translation[1]) * auto_scale_factor,
+                (180.312405 + translation[2]) * auto_scale_factor,
+                VIZ_TYPE.FIBER,  # second agent
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                actin_radius * auto_scale_factor,
+                6.0,
+                (547.5943503 + translation[0]) * auto_scale_factor,
+                (280.3075619 + translation[1]) * auto_scale_factor,
+                (307.4127023 + translation[2]) * auto_scale_factor,
+                (535.194707 + translation[0]) * auto_scale_factor,
+                (173.0325428 + translation[1]) * auto_scale_factor,
+                (308.9355694 + translation[2]) * auto_scale_factor,
+            ],
+        )
+    ],
+)
+def test_centered_data(bundleData, expected_bundleData):
+    assert False not in np.isclose(expected_bundleData, bundleData["data"])
+
+
 # add in drawing endpoints
 scale_factor = 0.1
 data_with_drawing_endpoints = MedyanData(
