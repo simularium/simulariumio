@@ -110,7 +110,6 @@ class TrajectoryConverter:
             x_data = data[:, :, 0].flatten()
             y_data = data[:, :, 1].flatten()
             z_data = data[:, :, 2].flatten()
-
         return np.array([max(x_data), max(y_data), max(z_data)])
 
     @staticmethod
@@ -141,11 +140,11 @@ class TrajectoryConverter:
         Reshape resulting subpoint data into a 2D array of XYZ coordinate data
         """
         xyz_subpoints = np.array([])
-        for time in range(len(n_subpoints)):
-            for agent in range(len(n_subpoints[time])):
+        for timestep in range(len(n_subpoints)):
+            for agent in range(len(n_subpoints[timestep])):
                 xyz_subpoints = np.append(
                     xyz_subpoints,
-                    subpoints[time][agent][0 : int(n_subpoints[time][agent])],
+                    subpoints[timestep][agent][0 : int(n_subpoints[timestep][agent])],
                 )
         return xyz_subpoints.reshape(1, -1, 3)
 

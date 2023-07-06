@@ -165,6 +165,7 @@ converter_display_data = PhysicellConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
 scale_factor_display_data = VIEWER_DIMENSION_RANGE.MAX / (888.4127105479544)
 
+
 # test type mapping provided
 @pytest.mark.parametrize(
     "typeMapping, expected_typeMapping",

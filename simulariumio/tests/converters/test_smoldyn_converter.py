@@ -270,7 +270,8 @@ converter_display_data = SmoldynConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
 
 # scale max distance between coordinates + radii to make it to VIEWER_DIMENSION_RANGE
-scale_factor_display = VIEWER_DIMENSION_RANGE.MIN / (0.666775 + 1 - (-0.8748 - s_radius))
+scale_factor_display = VIEWER_DIMENSION_RANGE.MIN / (0.666775 + 1 + 0.8748 + s_radius)
+
 
 # test type mapping with display data provided
 @pytest.mark.parametrize(

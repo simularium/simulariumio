@@ -28,6 +28,7 @@ converter = SpringsaladConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
 auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / 70.985562
 
+
 # test box data default
 @pytest.mark.parametrize(
     "box_size, expected_box_size",
@@ -302,6 +303,7 @@ data_draw_bonds = SpringsaladData(
 converter_draw_bonds = SpringsaladConverter(data_draw_bonds)
 results_draw_bonds = JsonWriter.format_trajectory_data(converter_draw_bonds._data)
 auto_scale_factor_bonds = VIEWER_DIMENSION_RANGE.MAX / 78.985562
+
 
 # test type mapping drawing bonds
 @pytest.mark.parametrize(
