@@ -281,7 +281,7 @@ class CellpackConverter(TrajectoryConverter):
         total_agents = 0
         for ingredient in all_ingredients:
             total_agents += len(ingredient["results"].get("results", []))
-            total_agents += len(ingredient["results"].get("nbCurve", []))
+            total_agents += ingredient["results"].get("nbCurve", 0)
 
         for ingredient in all_ingredients:
             ingredient_data = ingredient["recipe_data"]
