@@ -148,10 +148,10 @@ class CellpackConverter(TrajectoryConverter):
             else DEFAULT_RADIUS
         )
         result.radii[time_step_index][agent_id] = r
-        result.n_subpoints[time_step_index][agent_id] = len(data[curve])
-        scaled_control_points = np.array(data[curve]) - np.array(box_center)
-        for i in range(len(scaled_control_points)):
-            result.subpoints[time_step_index][agent_id][i] = scaled_control_points[i]
+        subpoints = (np.array(data[curve]) - np.array(box_center)).flatten()
+        result.n_subpoints[time_step_index][agent_id] = len(subpoints)
+        for i in range(len(subpoints)):
+            result.subpoints[time_step_index][agent_id][i] = subpoints[i]
 
     @staticmethod
     def _unpack_positions(
@@ -206,8 +206,13 @@ class CellpackConverter(TrajectoryConverter):
 
                 for i in range(ingredient_results_data["nbCurve"]):
                     curve = "curve" + str(i)
-                    if len(ingredient_results_data[curve]) > result.max_subpoints:
-                        result.max_subpoints = len(ingredient_results_data[curve])
+                    if (
+                        len(ingredient_results_data[curve]) * VALUES_PER_3D_POINT
+                        > result.max_subpoints
+                    ):
+                        result.max_subpoints = (
+                            len(ingredient_results_data[curve]) * VALUES_PER_3D_POINT
+                        )
         result.total_steps = total_steps
         return result
 
