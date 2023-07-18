@@ -81,7 +81,13 @@ class TrajectoryConverter:
             self.progress_callback(percent_complete)
             self.last_report_time = current_time
 
-    def _filter_agent_data(data: np.array, n_agents: np.array):
+    def _get_valid_agents(data: np.array, n_agents: np.array):
+        """
+        Given position data (shape = [timesteps, agents, 3]), and
+        corresponding n_agents data, indicating agents per timestamp,
+        return arrays of X, Y, and Z values from data, skipping values
+        that do not correspond with agents, as specified by n_agents.
+        """
         x_data = np.array([])
         y_data = np.array([])
         z_data = np.array([])
@@ -103,7 +109,7 @@ class TrajectoryConverter:
         maximum X, Y, and Z values from remaining data
         """
         if n_agents is not None:
-            (x_data, y_data, z_data) = TrajectoryConverter._filter_agent_data(
+            (x_data, y_data, z_data) = TrajectoryConverter._get_valid_agents(
                 data, n_agents
             )
         else:
@@ -121,7 +127,7 @@ class TrajectoryConverter:
         minimum X, Y, and Z values from remaining data
         """
         if n_agents is not None:
-            (x_data, y_data, z_data) = TrajectoryConverter._filter_agent_data(
+            (x_data, y_data, z_data) = TrajectoryConverter._get_valid_agents(
                 data, n_agents
             )
         else:
