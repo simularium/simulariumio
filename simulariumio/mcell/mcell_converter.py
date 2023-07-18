@@ -250,7 +250,6 @@ class McellConverter(TrajectoryConverter):
                     positions.fromfile(mol_file, n_data)
                     positions = np.array(positions)
                     positions = positions.reshape(n_mols, VALUES_PER_3D_POINT)
-                    print(f"positions: {positions}")
                     if is_surface_mol:
                         normals = array.array("f")
                         normals.fromfile(mol_file, n_data)
