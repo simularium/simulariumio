@@ -32,6 +32,7 @@ lint:
 # run tests
 test:
 	pytest --cov-report xml --cov-report html --cov=simulariumio simulariumio/tests
+	pytest --nbmake "./examples"
 
 # run lint and then run tests
 build:
