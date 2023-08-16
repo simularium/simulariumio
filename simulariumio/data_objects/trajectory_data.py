@@ -11,6 +11,7 @@ from .agent_data import AgentData
 from .unit_data import UnitData
 from .meta_data import MetaData
 from .display_data import DisplayData
+from .dimension_data import DimensionData
 
 ###############################################################################
 
@@ -18,6 +19,11 @@ log = logging.getLogger(__name__)
 
 ###############################################################################
 
+BUFFER_SIZE_INC: DimensionData = DimensionData(
+            total_steps=1,
+            max_agents=1,
+            max_subpoints=1,
+        )
 
 class TrajectoryData:
     meta_data: MetaData
@@ -95,7 +101,7 @@ class TrajectoryData:
         added_dimensions = new_agents.get_dimensions()
         new_dimensions = current_dimensions.add(added_dimensions, axis=1)
         result = self.agent_data.check_increase_buffer_size(
-            new_dimensions.max_agents - 1, axis=1
+            new_dimensions.max_agents - 1, axis=1, buffer_size_inc=BUFFER_SIZE_INC
         )
         # add new agents
         result.n_agents = np.add(result.n_agents, new_agents.n_agents)
@@ -109,13 +115,13 @@ class TrajectoryData:
         if len(new_agents.subpoints.shape) > 2:
             result.subpoints[:, start_i:end_i] = new_agents.subpoints[:]
         # generate new unique IDs and type IDs so they don't overlap
-        used_uids = list(np.unique(self.agent_data.unique_ids))
+        used_uids = list(np.unique(self.agent_data.unique_ids).astype(int))
         new_uids = {}
         for time_index in range(new_dimensions.total_steps):
-            new_agent_index = self.agent_data.n_agents[time_index]
+            new_agent_index = int(self.agent_data.n_agents[time_index])
             n_a = int(new_agents.n_agents[time_index])
             for agent_index in range(n_a):
-                raw_uid = new_agents.unique_ids[time_index][agent_index]
+                raw_uid = int(new_agents.unique_ids[time_index][agent_index])
                 if raw_uid not in new_uids:
                     uid = raw_uid
                     while uid in used_uids:
@@ -127,6 +133,7 @@ class TrajectoryData:
                     new_agents.types[time_index][agent_index]
                 )
                 new_agent_index += 1
+        result.display_data.update(new_agents.display_data)
         self.agent_data = result
 
     def __deepcopy__(self, memo):
