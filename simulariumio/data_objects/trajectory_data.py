@@ -20,10 +20,11 @@ log = logging.getLogger(__name__)
 ###############################################################################
 
 BUFFER_SIZE_INC: DimensionData = DimensionData(
-            total_steps=1,
-            max_agents=1,
-            max_subpoints=1,
-        )
+    total_steps=1,
+    max_agents=1,
+    max_subpoints=1,
+)
+
 
 class TrajectoryData:
     meta_data: MetaData
