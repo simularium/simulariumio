@@ -154,7 +154,7 @@ def test_box_size(box_size, expected_box_size):
     ],
 )
 def test_bundleData(bundleData, expected_bundleData_data):
-    assert np.isclose(expected_bundleData_data, bundleData["data"])
+    assert np.isclose(expected_bundleData_data, bundleData["data"]).all()
 
 
 @pytest.mark.parametrize(
