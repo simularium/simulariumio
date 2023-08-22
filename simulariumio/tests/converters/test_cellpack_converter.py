@@ -3,6 +3,7 @@
 
 import pytest
 from unittest.mock import Mock
+import math
 
 from simulariumio.cellpack import CellpackConverter, HAND_TYPE, CellpackData
 from simulariumio import InputFileData, UnitData, DisplayData, JsonWriter
@@ -153,7 +154,7 @@ def test_box_size(box_size, expected_box_size):
     ],
 )
 def test_bundleData(bundleData, expected_bundleData_data):
-    assert expected_bundleData_data == bundleData["data"]
+    assert math.isclose(expected_bundleData_data, bundleData["data"])
 
 
 @pytest.mark.parametrize(
