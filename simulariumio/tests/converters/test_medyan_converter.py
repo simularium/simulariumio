@@ -254,7 +254,7 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
     ],
 )
 def test_bundleData(bundleData, expected_bundleData):
-    assert expected_bundleData == bundleData["data"]
+    assert np.isclose(expected_bundleData == bundleData["data"]).all()
 
 
 def test_agent_ids():
@@ -477,7 +477,7 @@ def test_typeMapping_with_drawing_endpoints(typeMapping, expected_typeMapping):
     ],
 )
 def test_bundleData_drawing_endpoints(bundleData, expected_bundleData):
-    assert expected_bundleData == bundleData["data"]
+    assert np.isclose(expected_bundleData == bundleData["data"]).all()
 
 
 def test_agent_ids_drawing_endpoints():

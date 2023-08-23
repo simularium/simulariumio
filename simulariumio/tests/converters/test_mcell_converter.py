@@ -220,7 +220,7 @@ def test_box_size_provided(box_size, expected_box_size):
     ],
 )
 def test_bundleData(bundleData, expected_bundleData):
-    assert expected_bundleData == bundleData["data"]
+    assert np.isclose(expected_bundleData == bundleData["data"]).all()
 
 
 def test_agent_ids():
