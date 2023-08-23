@@ -359,7 +359,7 @@ results_ignore_types = JsonWriter.format_trajectory_data(converter_ignore_type._
     ],
 )
 def test_bundleData(bundleData, expected_bundleData):
-    assert np.isclose(expected_bundleData == bundleData["data"]).all()
+    assert np.isclose(expected_bundleData, bundleData["data"]).all()
 
 
 def test_agent_ids():
@@ -421,7 +421,7 @@ def test_typeMapping_ignore_types(typeMapping, expected_typeMapping):
     ],
 )
 def test_bundleData_ignored_types(bundleData, expected_bundleData):
-    assert np.isclose(expected_bundleData == bundleData["data"]).all()
+    assert np.isclose(expected_bundleData, bundleData["data"]).all()
 
 
 def test_agent_ids_ignored_types():
