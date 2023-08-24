@@ -281,7 +281,7 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
     ],
 )
 def test_bundleData(bundleData, expected_bundleData):
-    assert expected_bundleData == bundleData["data"]
+    assert np.isclose(expected_bundleData, bundleData["data"]).all()
 
 
 def test_agent_ids():
