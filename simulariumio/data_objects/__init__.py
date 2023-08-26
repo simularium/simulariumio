@@ -12,3 +12,7 @@ from .input_file_data import InputFileData  # noqa: F401
 from .model_meta_data import ModelMetaData  # noqa: F401
 from .histogram_plot_data import HistogramPlotData  # noqa: F401
 from .scatter_plot_data import ScatterPlotData  # noqa: F401
+from .json_data import JsonData  # noqa: F401
+from .binary_data import BinaryData  # noqa: F401
+from .simularium_file_data import SimulariumFileData  # noqa: F401
+from .frame_data import FrameData  # noqa: F401
