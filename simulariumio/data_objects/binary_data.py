@@ -2,9 +2,7 @@ from typing import Dict, List
 import json
 import numpy as np
 
-from .data_indices import DataIndices
-from .frame_data import FrameData
-from .frame_metadata import FrameMetadata
+from .frame_data import DataIndices, FrameData, FrameMetadata
 from .input_file_data import InputFileData
 from .trajectory_data import TrajectoryData
 from .simularium_file_data import SimulariumFileData
