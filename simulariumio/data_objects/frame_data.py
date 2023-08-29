@@ -17,7 +17,7 @@ class DataIndices:
         """
         Return the start and end indicies for the data block
         """
-        end = self.offset + self.length - 1
+        end = self.offset + self.length
         return self.offset, end
 
 
@@ -40,7 +40,7 @@ class FrameMetadata:
         """
         Return the start and end indicies for the frame
         """
-        end = self.offset + self.length - 1
+        end = self.offset + self.length
         return self.offset, end
 
 
