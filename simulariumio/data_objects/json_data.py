@@ -30,6 +30,10 @@ class JsonData(SimulariumFileData):
         self.n_agents = AgentData.from_buffer_data(self.data).n_agents
 
     def get_frame_at_index(self, frame_number: int) -> FrameData:
+        if frame_number < 0 or frame_number >= len(self.data["spatialData"]["bundleData"]):
+            # invalid frame number requested
+            return None
+
         frame_data = self.data["spatialData"]["bundleData"][frame_number]
         return FrameData(
             frame_number=frame_number,

@@ -74,6 +74,10 @@ class BinaryData(SimulariumFileData):
             current_frame_offset += int(length / BINARY_SETTINGS.BYTES_PER_VALUE)
 
     def get_frame_at_index(self, frame_number: int) -> FrameData:
+        if frame_number < 0 or frame_number >= len(self.frame_metadata):
+            # invalid frame number requested
+            return None
+
         metadata: FrameMetadata = self.frame_metadata[frame_number]
         start, end = metadata.get_start_end_indices()
         data = self.file_data.byte_view[start:end]
