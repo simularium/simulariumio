@@ -14,7 +14,7 @@ class BinaryData(SimulariumFileData):
     file_contents: InputFileData
     file_data: BinaryFileData
     file_name: str
-    block_indices: Dict[int, DataIndices] = {}
+    block_indices: Dict[int, DataIndices]
     frame_metadata: List[FrameMetadata]
 
     def __init__(self, file_name: str, file_contents: bytes):
@@ -34,6 +34,8 @@ class BinaryData(SimulariumFileData):
         self.file_data = SimulariumBinaryReader._binary_data_from_source(
             self.file_contents
         )
+        self.frame_metadata = []
+        self.block_indices = {}
         self._parse_file()
 
     def _parse_file(self):
@@ -60,7 +62,6 @@ class BinaryData(SimulariumFileData):
         )
         n_frames = self.file_data.int_view[spatial_block_offset + 1]
         current_frame_offset = spatial_block_offset + 2 + 2 * n_frames
-        self.frame_metadata = []
         for i in range(n_frames):
             offset = (
                 self.file_data.int_view[spatial_block_offset + 2 + (2 * i)]
