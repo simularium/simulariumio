@@ -7,7 +7,7 @@ from .input_file_data import InputFileData
 from .trajectory_data import TrajectoryData
 from .simularium_file_data import SimulariumFileData
 from ..constants import BINARY_BLOCK_TYPE, BINARY_SETTINGS
-from ..readers import BinaryBlockInfo, BinaryFileData, SimulariumBinaryReader
+from ..readers import BinaryBlockInfo, SimulariumBinaryReader
 
 
 class BinaryData(SimulariumFileData):
