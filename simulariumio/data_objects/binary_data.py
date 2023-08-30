@@ -33,7 +33,7 @@ class BinaryData(SimulariumFileData):
         self._parse_file()
 
     def _parse_file(self):
-        # Read offset / length for each data block
+        # Read offset and length for each data block
         block_info: BinaryBlockInfo = SimulariumBinaryReader._parse_binary_header(
             self.file_data.byte_view
         )
