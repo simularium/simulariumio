@@ -15,7 +15,7 @@ class BinaryData(SimulariumFileData):
     file_data: BinaryFileData
     file_name: str
     block_indices: Dict[int, DataIndices] = {}
-    frame_metadata: List[FrameMetadata] = []
+    frame_metadata: List[FrameMetadata]
 
     def __init__(self, file_name: str, file_contents: bytes):
         """
@@ -58,12 +58,9 @@ class BinaryData(SimulariumFileData):
             int(spatial_indices.offset / BINARY_SETTINGS.BYTES_PER_VALUE)
             + BINARY_SETTINGS.BLOCK_HEADER_N_VALUES
         )
-        print(f"spatial block offset: {spatial_block_offset}")
         n_frames = self.file_data.int_view[spatial_block_offset + 1]
-        print(f"n_frames: {n_frames}")
         current_frame_offset = spatial_block_offset + 2 + 2 * n_frames
-        print(f"current frame offset: {current_frame_offset}")
-        print(f"self.frame_metadata (should be empty): {self.frame_metadata}")
+        self.frame_metadata = []
         for i in range(n_frames):
             offset = (
                 self.file_data.int_view[spatial_block_offset + 2 + (2 * i)]
