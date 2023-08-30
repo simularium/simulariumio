@@ -2,9 +2,6 @@ from typing import Dict, Union, Tuple
 
 
 class DataIndices:
-    offset: int
-    length: int
-
     def __init__(self, offset: int, length: int):
         """
         This object holds offset and length data for a binary
@@ -22,11 +19,6 @@ class DataIndices:
 
 
 class FrameMetadata:
-    offset: int
-    length: int
-    frame_number: int
-    time: float
-
     def __init__(self, offset: int, length: int, frame_number: int, time: float):
         """
         This object holds metadata for a single frame of simularium data
@@ -45,11 +37,6 @@ class FrameMetadata:
 
 
 class FrameData:
-    frame_number: int
-    n_agents: int
-    time: float
-    data: Union[Dict, bytes]
-
     def __init__(
         self,
         frame_number: int,

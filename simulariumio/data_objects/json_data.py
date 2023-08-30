@@ -9,10 +9,6 @@ from .trajectory_data import TrajectoryData
 
 
 class JsonData(SimulariumFileData):
-    data: Dict[str, Any]
-    file_name: str
-    n_agents: int
-
     def __init__(self, file_name: str, file_contents: str):
         """
         This object holds JSON encoded simulation trajectory file's

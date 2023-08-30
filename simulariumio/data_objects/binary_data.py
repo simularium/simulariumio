@@ -11,12 +11,6 @@ from ..readers import BinaryBlockInfo, BinaryFileData, SimulariumBinaryReader
 
 
 class BinaryData(SimulariumFileData):
-    file_contents: InputFileData
-    file_data: BinaryFileData
-    file_name: str
-    block_indices: Dict[int, DataIndices]
-    frame_metadata: List[FrameMetadata]
-
     def __init__(self, file_name: str, file_contents: bytes):
         """
         This object holds binary encoded simulation trajectory file's
@@ -34,8 +28,8 @@ class BinaryData(SimulariumFileData):
         self.file_data = SimulariumBinaryReader._binary_data_from_source(
             self.file_contents
         )
-        self.frame_metadata = []
-        self.block_indices = {}
+        self.frame_metadata: List[FrameMetadata] = []
+        self.block_indices: Dict[int, DataIndices] = {}
         self._parse_file()
 
     def _parse_file(self):
