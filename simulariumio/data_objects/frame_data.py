@@ -38,11 +38,7 @@ class FrameMetadata:
 
 class FrameData:
     def __init__(
-        self,
-        frame_number: int,
-        n_agents: int,
-        time: float,
-        data: Union[bytes, Dict]
+        self, frame_number: int, n_agents: int, time: float, data: Union[bytes, Dict]
     ):
         """
         This object holds frame data for a single frame of simularium data
