@@ -157,20 +157,33 @@ class TrajectoryConverter:
 
     @staticmethod
     def translate_positions(data: AgentData, translation: np.ndarray) -> AgentData:
+        """
+        Translate all spatial data for each frame of simularium trajectory data
+
+        Parameters
+        ----------
+        data : AgentData
+            Trajectory data, containing the spatial data to be traslated
+        translation : np.ndarray (shape = [3])
+            XYZ translation
+        """
         total_steps = data.times.size
         max_subpoints = int(np.amax(data.n_subpoints))
         for time_index in range(total_steps):
             for agent_index in range(int(data.n_agents[time_index])):
                 display_type = data.display_type_for_agent(time_index, agent_index)
-                translate_subpoints = (
-                    max_subpoints > 0 and display_type != DISPLAY_TYPE.SPHERE_GROUP
+                # only translate subpoints for fibers, since sphere group
+                # subpoint positions are relative to agent's position, and no
+                # other display types have subpoints currently
+                has_fiber_subpoints = (
+                    max_subpoints > 0 and display_type == DISPLAY_TYPE.FIBER
                 )
-                if translate_subpoints:
+                if has_fiber_subpoints:
                     sp_items = Filter.get_items_from_subpoints(
                         data, time_index, agent_index
                     )
                     if sp_items is None:
-                        translate_subpoints = False
+                        has_fiber_subpoints = False
                     else:
                         # translate subpoints for fibers
                         n_items = sp_items.shape[0]
@@ -180,7 +193,9 @@ class TrajectoryConverter:
                         data.subpoints[time_index][agent_index][
                             :n_sp
                         ] = sp_items.reshape(n_sp)
-                if not translate_subpoints:
+                if not has_fiber_subpoints:
+                    # agents for fibers don't have their own position data, so only
+                    # translate agents without fiber subpoints
                     data.positions[time_index][agent_index] += translation
         return data
 
