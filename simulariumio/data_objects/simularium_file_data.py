@@ -4,7 +4,7 @@ from .frame_data import FrameData
 
 
 class SimulariumFileData:
-    def __init__(self, file_name: str, file_contents: Union[str, bytes]):
+    def __init__(self, file_contents: Union[str, bytes]):
         pass
 
     def get_frame_at_index(self, frame_number: int) -> Union[FrameData, None]:

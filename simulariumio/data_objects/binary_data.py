@@ -11,19 +11,16 @@ from ..readers import BinaryBlockInfo, SimulariumBinaryReader
 
 
 class BinaryData(SimulariumFileData):
-    def __init__(self, file_name: str, file_contents: bytes):
+    def __init__(self, file_contents: bytes):
         """
         This object holds binary encoded simulation trajectory file's
         data while staying close to the original file format
 
         Parameters
         ----------
-        file_name : str
-            Name of the file
         file_contents : bytes
             A byte array containing the data of an open .simularium file
         """
-        self.file_name = file_name
         self.file_contents = InputFileData(file_contents=file_contents)
         self.file_data = SimulariumBinaryReader._binary_data_from_source(
             self.file_contents
@@ -126,6 +123,3 @@ class BinaryData(SimulariumFileData):
 
     def get_num_frames(self) -> int:
         return len(self.frame_metadata)
-
-    def get_file_name(self) -> str:
-        return self.file_name

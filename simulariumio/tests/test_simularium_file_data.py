@@ -20,12 +20,6 @@ json_data_object = JsonData(test_name, json_file_data)
 
 test_data_objects = [binary_data_object, json_data_object]
 
-
-@pytest.mark.parametrize("data_object", test_data_objects)
-def test_get_file_name(data_object):
-    assert data_object.get_file_name() == test_name
-
-
 expected_traj_info = {
     "version": 3,
     "timeUnits": {"magnitude": 1.0, "name": "s"},

@@ -9,19 +9,16 @@ from .trajectory_data import TrajectoryData
 
 
 class JsonData(SimulariumFileData):
-    def __init__(self, file_name: str, file_contents: str):
+    def __init__(self, file_contents: str):
         """
         This object holds JSON encoded simulation trajectory file's
         data while staying close to the original file format
 
         Parameters
         ----------
-        file_name : str
-            Name of the file
         file_contents : str
             A string of the data of an open .simularium file
         """
-        self.file_name = file_name
         self.data = json.loads(file_contents)
         self.n_agents = AgentData.from_buffer_data(self.data).n_agents
 
@@ -69,6 +66,3 @@ class JsonData(SimulariumFileData):
 
     def get_num_frames(self) -> int:
         return len(self.data["spatialData"]["bundleData"])
-
-    def get_file_name(self) -> str:
-        return self.file_name
