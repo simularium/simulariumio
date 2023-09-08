@@ -52,13 +52,26 @@ class BinaryData(SimulariumFileData):
             + BINARY_SETTINGS.BLOCK_HEADER_N_VALUES
         )
         n_frames = self.file_data.int_view[spatial_block_offset + 1]
-        current_frame_offset = spatial_block_offset + 2 + 2 * n_frames
+        current_frame_offset = (
+            spatial_block_offset
+            + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_CONSTANT_N_VALUES
+            + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_N_VALUES_PER_FRAME * n_frames
+        )
         for i in range(n_frames):
             offset = (
-                self.file_data.int_view[spatial_block_offset + 2 + (2 * i)]
+                self.file_data.int_view[
+                    spatial_block_offset
+                    + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_CONSTANT_N_VALUES
+                    + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_N_VALUES_PER_FRAME * i
+                ]
                 + spatial_indices.offset
             )
-            length = self.file_data.int_view[spatial_block_offset + 3 + 2 * i]
+            length = self.file_data.int_view[
+                spatial_block_offset
+                + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_CONSTANT_N_VALUES
+                + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_N_VALUES_PER_FRAME * i
+                + 1
+            ]
             frame_number = self.file_data.int_view[current_frame_offset]
             time = self.file_data.float_view[current_frame_offset + 1]
             self.frame_metadata.append(
