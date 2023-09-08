@@ -6,17 +6,16 @@ from simulariumio.data_objects import JsonData, BinaryData, SimulariumFileData
 from simulariumio import FileConverter, InputFileData, JsonWriter
 
 
-test_name = "test.simularium"
 bin_path = "simulariumio/tests/data/binary/binary_test.binary"
 binary_file_data = open(bin_path, "rb").read()
-binary_data_object = BinaryData(test_name, binary_file_data)
+binary_data_object = BinaryData(binary_file_data)
 
 # convert to JSON
 traj_data_obj = FileConverter(input_file=InputFileData(file_path=bin_path))._data
 json_path = "simulariumio/tests/data/binary/json_test"
 JsonWriter.save(traj_data_obj, json_path, False)
 json_file_data = open(json_path + ".simularium", "r").read()
-json_data_object = JsonData(test_name, json_file_data)
+json_data_object = JsonData(json_file_data)
 
 test_data_objects = [binary_data_object, json_data_object]
 
