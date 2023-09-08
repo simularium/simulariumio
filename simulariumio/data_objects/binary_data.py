@@ -1,8 +1,8 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import json
 import numpy as np
 
-from .frame_data import DataIndices, FrameData, FrameMetadata
+from .frame_data import FrameData
 from .input_file_data import InputFileData
 from .trajectory_data import TrajectoryData
 from .simularium_file_data import SimulariumFileData
@@ -72,7 +72,7 @@ class BinaryData(SimulariumFileData):
             return None
 
         metadata: FrameMetadata = self.frame_metadata[frame_number]
-        start, end = metadata.get_start_end_indices()
+        start, end = metadata.data_indices.get_start_end_indices()
         data = self.file_data.byte_view[start:end]
         return FrameData(
             frame_number=frame_number,
@@ -123,3 +123,48 @@ class BinaryData(SimulariumFileData):
 
     def get_num_frames(self) -> int:
         return len(self.frame_metadata)
+
+
+class DataIndices:
+    def __init__(self, offset: int, length: int):
+        """
+        This object holds offset and length data for a binary
+        simularium data block
+
+        Parameters
+        ----------
+        offset : int
+            Number of bytes the block is offset from the start of the byte array
+        length : int
+            Number of bytes in the block
+        """
+        self.offset = offset
+        self.length = length
+
+    def get_start_end_indices(self) -> Tuple[int, int]:
+        """
+        Return the start and end indicies for the data block
+        """
+        end = self.offset + self.length
+        return self.offset, end
+
+
+class FrameMetadata:
+    def __init__(self, offset: int, length: int, frame_number: int, time: float):
+        """
+        This object holds metadata for a single frame of simularium data
+
+        Parameters
+        ----------
+        offset : int
+            Number of bytes the block is offset from the start of the byte array
+        length : int
+            Number of bytes in the block
+        frame_number : int
+            Index of frame in the simulation
+        time : float
+            Elapsed simulation time of the frame
+        """
+        self.data_indices = DataIndices(offset, length)
+        self.frame_number = frame_number
+        self.time = time
