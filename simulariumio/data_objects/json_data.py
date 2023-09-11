@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 import json
 import numpy as np
 
@@ -6,6 +6,7 @@ from .agent_data import AgentData
 from .frame_data import FrameData
 from .simularium_file_data import SimulariumFileData
 from .trajectory_data import TrajectoryData
+from ..constants import V1_SPATIAL_BUFFER_STRUCT
 
 
 class JsonData(SimulariumFileData):
@@ -20,7 +21,25 @@ class JsonData(SimulariumFileData):
             A string of the data of an open .simularium file
         """
         self.data = json.loads(file_contents)
-        self.n_agents = AgentData.from_buffer_data(self.data).n_agents
+        self.n_agents = JsonData._get_n_agents(self.data)
+
+    def _get_n_agents(data: Dict) -> List[int]:
+        # return number of agents in each timestamp as a list
+        n_agents = []
+        bundle_data = data["spatialData"]["bundleData"]
+        for time_index in range(data["trajectoryInfo"]["totalSteps"]):
+            frame_data = bundle_data[time_index]["data"]
+            agent_index = 0
+            buffer_index = 0
+            while buffer_index + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX < len(frame_data):
+                n_subpoints = int(
+                    frame_data[buffer_index + V1_SPATIAL_BUFFER_STRUCT.NSP_INDEX]
+                )
+                # length of one agents spatial data = SP_INDEX + n_subpoints
+                buffer_index += n_subpoints + V1_SPATIAL_BUFFER_STRUCT.SP_INDEX
+                agent_index += 1
+            n_agents.append(agent_index)
+        return n_agents
 
     def get_frame_at_index(self, frame_number: int) -> FrameData:
         if frame_number < 0 or frame_number >= len(
