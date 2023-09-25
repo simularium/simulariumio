@@ -4,6 +4,7 @@
 import logging
 from typing import List, Callable, Tuple
 import math
+import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import (
@@ -278,14 +279,13 @@ class MedyanConverter(TrajectoryConverter):
         result.n_timesteps = time_index + 1
 
         if input_data.meta_data.scale_factor is None:
-            # If scale factor wasn't provided, calculate one
-            xyz_subpoints = TrajectoryConverter.get_subpoints_xyz(
-                result.subpoints, result.n_subpoints
-            )
-            max_dimensions = TrajectoryConverter.get_xyz_max(xyz_subpoints)
-            min_dimensions = TrajectoryConverter.get_xyz_min(xyz_subpoints)
+            # If scale factor wasn't provided, calculate one similiar, with subpoints
             scale_factor = TrajectoryConverter.calculate_scale_factor(
-                max_dimensions, min_dimensions
+                result.positions,
+                result.radii,
+                result.n_agents,
+                subpoints=result.subpoints,
+                n_subpoints=result.n_subpoints,
             )
         else:
             scale_factor = input_data.meta_data.scale_factor

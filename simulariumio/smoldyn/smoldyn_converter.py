@@ -137,17 +137,8 @@ class SmoldynConverter(TrajectoryConverter):
 
         if input_data.meta_data.scale_factor is None:
             # If scale factor wasn't provided, calculate one
-            max_dimensions = TrajectoryConverter.get_xyz_max(
-                result.positions + result.radii[:, :, np.newaxis], result.n_agents
-            )
-            min_dimensions = TrajectoryConverter.get_xyz_min(
-                result.positions - result.radii[:, :, np.newaxis], result.n_agents
-            )
-            if not is_3D:
-                max_dimensions = max_dimensions[:2]
-                min_dimensions = min_dimensions[:2]
             scale_factor = TrajectoryConverter.calculate_scale_factor(
-                max_dimensions, min_dimensions
+                result.positions, result.radii, result.n_agents, is_2D=(not is_3D)
             )
         else:
             scale_factor = input_data.meta_data.scale_factor

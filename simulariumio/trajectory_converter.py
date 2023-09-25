@@ -156,14 +156,41 @@ class TrajectoryConverter:
 
     @staticmethod
     def calculate_scale_factor(
-        max_dimensions: np.array,
-        min_dimensions: np.array,
+        positions: np.array,
+        radii: np.array,
+        n_agents: np.array,
+        is_2D: bool = False,
+        subpoints: np.array = None,
+        n_subpoints: np.array = None,
     ) -> float:
         """
-        Return a scale factor, using the given min and max
-        dimensions, so that the final range of agent locations
-        is within the dimensions defined by VIEWER_DIMENSION_RANGE
+        Return a scale factor, using the given position, radii, n_agents
+        subpoints, and n_subpoints numpy arrays from AgentData, so that
+        the final range of agent locations is within the dimensions defined
+        by VIEWER_DIMENSION_RANGE. Include is_2D = True if position data only
+        has XY coordinates, otherwise will assume XYZ coordinates
         """
+        max_dimensions = TrajectoryConverter.get_xyz_max(
+            positions + radii[:, :, np.newaxis], n_agents
+        )
+        min_dimensions = TrajectoryConverter.get_xyz_min(
+            positions - radii[:, :, np.newaxis], n_agents
+        )
+
+        if is_2D:
+            # If the data is 2D, ignore the 3rd position in max/min dims
+            max_dimensions = max_dimensions[:2]
+            min_dimensions = min_dimensions[:2]
+
+        if subpoints is not None and n_subpoints is not None and subpoints.size > 0:
+            xyz_subpoints = TrajectoryConverter.get_subpoints_xyz(
+                subpoints, n_subpoints
+            )
+            max_subpoints = TrajectoryConverter.get_xyz_max(xyz_subpoints)
+            min_subpoints = TrajectoryConverter.get_xyz_min(xyz_subpoints)
+            max_dimensions = np.amax([max_dimensions, max_subpoints], 0)
+            min_dimensions = np.amin([min_dimensions, min_subpoints], 0)
+
         range = max(max_dimensions - min_dimensions)
         scale_factor = 1
         if range == 0:

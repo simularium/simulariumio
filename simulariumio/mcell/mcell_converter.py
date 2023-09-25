@@ -344,14 +344,8 @@ class McellConverter(TrajectoryConverter):
             scale_factor = input_data.meta_data.scale_factor
         else:
             # If scale factor wasn't provided, calculate one
-            max_dimensions = TrajectoryConverter.get_xyz_max(
-                result.positions + result.radii[:, :, np.newaxis], result.n_agents
-            )
-            min_dimensions = TrajectoryConverter.get_xyz_min(
-                result.positions - result.radii[:, :, np.newaxis], result.n_agents
-            )
             scale_factor = TrajectoryConverter.calculate_scale_factor(
-                max_dimensions, min_dimensions
+                result.positions, result.radii, result.n_agents
             )
         result.radii = scale_factor * result.radii
         result.positions = scale_factor * result.positions

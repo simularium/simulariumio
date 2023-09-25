@@ -22,7 +22,8 @@ data = MedyanData(
 converter = MedyanConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
 
-auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / 839.44264461
+max_range = 868.5975965
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / max_range
 
 
 # test box data default
@@ -172,6 +173,7 @@ data_with_display_data = MedyanData(
 )
 converter_display_data = MedyanConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
+scale_factor_display_data = VIEWER_DIMENSION_RANGE.MAX / (max_range + 2 * linker_radius)
 
 
 # test type mapping with display data provided
@@ -231,14 +233,14 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                actin_radius * auto_scale_factor,  # radius
+                actin_radius * scale_factor_display_data,  # radius
                 6.0,  # number of subpoints
-                454.3434234 * auto_scale_factor,
-                363.439226 * auto_scale_factor,
-                265.4405349 * auto_scale_factor,
-                519.7377041 * auto_scale_factor,
-                351.5737487 * auto_scale_factor,
-                180.312405 * auto_scale_factor,
+                454.3434234 * scale_factor_display_data,
+                363.439226 * scale_factor_display_data,
+                265.4405349 * scale_factor_display_data,
+                519.7377041 * scale_factor_display_data,
+                351.5737487 * scale_factor_display_data,
+                180.312405 * scale_factor_display_data,
                 VIZ_TYPE.FIBER,  # second agent
                 1.0,
                 0.0,
@@ -248,14 +250,14 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                actin_radius * auto_scale_factor,
+                actin_radius * scale_factor_display_data,
                 6.0,
-                547.5943503 * auto_scale_factor,
-                280.3075619 * auto_scale_factor,
-                307.4127023 * auto_scale_factor,
-                535.194707 * auto_scale_factor,
-                173.0325428 * auto_scale_factor,
-                308.9355694 * auto_scale_factor,
+                547.5943503 * scale_factor_display_data,
+                280.3075619 * scale_factor_display_data,
+                307.4127023 * scale_factor_display_data,
+                535.194707 * scale_factor_display_data,
+                173.0325428 * scale_factor_display_data,
+                308.9355694 * scale_factor_display_data,
             ],
         )
     ],
