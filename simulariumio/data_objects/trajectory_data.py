@@ -11,6 +11,8 @@ from .agent_data import AgentData
 from .unit_data import UnitData
 from .meta_data import MetaData
 from .display_data import DisplayData
+from .model_meta_data import ModelMetaData
+from .camera_data import CameraData
 
 ###############################################################################
 
@@ -129,6 +131,196 @@ class TrajectoryData:
                 new_agent_index += 1
         self.agent_data = result
 
+    def update_agent_data(
+        self,
+        times: np.ndarray = None,
+        n_agents: np.ndarray = None,
+        viz_types: np.ndarray = None,
+        unique_ids: np.ndarray = None,
+        types: List = None,
+        positions: np.ndarray = None,
+        radii: np.ndarray = None,
+        rotations: np.ndarray = None,
+        n_subpoints: np.ndarray = None,
+        subpoints: np.ndarray = None,
+        display_data: Dict[str, DisplayData] = None,
+    ):
+        """
+        Update AgentData, overwriting original values with those
+        provided as parameters. Parameters that are not provided
+        will retain their previous value.
+        """
+        new_agent_data = AgentData(
+            times=times if times is not None else self.agent_data.times,
+            n_agents=(n_agents if n_agents is not None else self.agent_data.n_agents),
+            viz_types=(
+                viz_types if viz_types is not None else self.agent_data.viz_types
+            ),
+            unique_ids=(
+                unique_ids if unique_ids is not None else self.agent_data.unique_ids
+            ),
+            types=types if types is not None else self.agent_data.types,
+            positions=(
+                positions if positions is not None else self.agent_data.positions
+            ),
+            radii=radii if radii is not None else self.agent_data.radii,
+            rotations=(
+                rotations if rotations is not None else self.agent_data.rotations
+            ),
+            n_subpoints=(
+                n_subpoints if n_subpoints is not None else self.agent_data.n_subpoints
+            ),
+            subpoints=(
+                subpoints if subpoints is not None else self.agent_data.subpoints
+            ),
+            display_data=(
+                display_data
+                if display_data is not None
+                else self.agent_data.display_data
+            ),
+        )
+        self.agent_data = new_agent_data
+
+    def add_display_data(self, display_data: Dict[str, DisplayData]):
+        """
+        Add DisplayData objects to the current display_data dict,
+        overwriting entries of the same agent type name, while
+        preserving all other previous entries
+        """
+        self.agent_data.display_data.update(display_data)
+
+    def update_meta_data(
+        self,
+        box_size: np.ndarray = None,
+        camera_position: np.ndarray = None,
+        camera_look_at_position: np.ndarray = None,
+        camera_up_vector: np.ndarray = None,
+        camera_fov_degrees: float = None,
+        scale_factor: float = None,
+        trajectory_title: str = None,
+        title: str = None,
+        version: str = None,
+        authors: str = None,
+        description: str = None,
+        source_code_url: str = None,
+        input_data_url: str = None,
+        raw_output_data_url: str = None,
+    ):
+        """
+        Update MetaData, overwriting original values with those
+        provided as parameters. Parameters that are not provided
+        will retain their previous value.
+        """
+        new_camera_defaults = CameraData(
+            position=(
+                camera_position
+                if camera_position is not None
+                else self.meta_data.camera_defaults.position
+            ),
+            look_at_position=(
+                camera_look_at_position
+                if camera_look_at_position is not None
+                else self.meta_data.camera_defaults.look_at_position
+            ),
+            up_vector=(
+                camera_up_vector
+                if camera_up_vector is not None
+                else self.meta_data.camera_defaults.up_vector
+            ),
+            fov_degrees=(
+                camera_fov_degrees
+                if camera_fov_degrees is not None
+                else self.meta_data.camera_defaults.fov_degrees
+            ),
+        )
+        new_model_metadata = ModelMetaData(
+            title=(
+                title if title is not None else self.meta_data.model_meta_data.title
+            ),
+            version=(
+                version
+                if version is not None
+                else self.meta_data.model_meta_data.version
+            ),
+            authors=(
+                authors
+                if authors is not None
+                else self.meta_data.model_meta_data.authors
+            ),
+            description=(
+                description
+                if description is not None
+                else self.meta_data.model_meta_data.description
+            ),
+            source_code_url=(
+                source_code_url
+                if source_code_url is not None
+                else self.meta_data.model_meta_data.source_code_url
+            ),
+            input_data_url=(
+                input_data_url
+                if input_data_url is not None
+                else self.meta_data.model_meta_data.input_data_url
+            ),
+            raw_output_data_url=(
+                raw_output_data_url
+                if raw_output_data_url is not None
+                else self.meta_data.model_meta_data.raw_output_data_url
+            ),
+        )
+        new_metadata = MetaData(
+            box_size=(box_size if box_size is not None else self.meta_data.box_size),
+            camera_defaults=new_camera_defaults,
+            scale_factor=(
+                scale_factor
+                if scale_factor is not None
+                else self.meta_data.scale_factor
+            ),
+            trajectory_title=(
+                trajectory_title
+                if trajectory_title is not None
+                else self.meta_data.trajectory_title
+            ),
+            model_meta_data=new_model_metadata,
+        )
+        self.meta_data = new_metadata
+
+    def update_time_units(
+        self,
+        name: str = None,
+        magnitude: float = None,
+    ):
+        """
+        Update the time_units UnitData object, overwriting original
+        values with those provided as parameters. Parameters that are
+        not provided will retain their previous value.
+        """
+        new_time_units = UnitData(
+            name=name if name is not None else self.time_units.name,
+            magnitude=(
+                magnitude if magnitude is not None else self.time_units.magnitude
+            ),
+        )
+        self.time_units = new_time_units
+
+    def update_spatial_units(
+        self,
+        name: str = None,
+        magnitude: float = None,
+    ):
+        """
+        Update the spatial_units UnitData object, overwriting original
+        values with those provided as parameters. Parameters that are
+        not provided will retain their previous value.
+        """
+        new_spatial_units = UnitData(
+            name=name if name is not None else self.spatial_units.name,
+            magnitude=(
+                magnitude if magnitude is not None else self.spatial_units.magnitude
+            ),
+        )
+        self.spatial_units = new_spatial_units
+
     def __deepcopy__(self, memo):
         result = type(self)(
             meta_data=copy.deepcopy(self.meta_data, memo),
@@ -138,3 +330,13 @@ class TrajectoryData:
             plots=copy.deepcopy(self.plots, memo),
         )
         return result
+
+    def __eq__(self, other):
+        if isinstance(other, TrajectoryData):
+            return (
+                self.meta_data == other.meta_data
+                and self.agent_data == other.agent_data
+                and self.time_units == other.time_units
+                and self.spatial_units == other.spatial_units
+                and self.plots == other.plots
+            )
