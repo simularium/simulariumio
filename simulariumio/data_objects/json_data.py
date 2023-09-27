@@ -2,7 +2,6 @@ from typing import Dict, List
 import json
 import numpy as np
 
-from .agent_data import AgentData
 from .frame_data import FrameData
 from .simularium_file_data import SimulariumFileData
 from .trajectory_data import TrajectoryData
