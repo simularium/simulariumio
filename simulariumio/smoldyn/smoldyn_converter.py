@@ -135,15 +135,9 @@ class SmoldynConverter(TrajectoryConverter):
         result.n_agents[time_index] = agent_index
         result.n_timesteps = time_index + 1
 
-        if input_data.meta_data.scale_factor is None:
-            # If scale factor wasn't provided, calculate one
-            scale_factor = TrajectoryConverter.calculate_scale_factor(
-                result.positions, result.radii, result.n_agents, is_2D=(not is_3D)
-            )
-        else:
-            scale_factor = input_data.meta_data.scale_factor
-        result.radii = scale_factor * result.radii
-        result.positions = scale_factor * result.positions
+        result, scale_factor = TrajectoryConverter.scale_agent_data(
+            result, input_data.meta_data.scale_factor, is_2D=(not is_3D)
+        )
 
         return result, scale_factor
 

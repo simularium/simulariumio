@@ -339,19 +339,7 @@ class CellpackConverter(TrajectoryConverter):
                     self.check_report_progress(agent_id_counter / total_agents)
 
         spatial_data.display_data = display_data
-        if scale_factor is None:
-            # If scale factor wasn't provided, calculate one
-            scale_factor = TrajectoryConverter.calculate_scale_factor(
-                spatial_data.positions,
-                spatial_data.radii,
-                spatial_data.n_agents,
-                subpoints=spatial_data.subpoints,
-                n_subpoints=spatial_data.n_subpoints,
-            )
-        spatial_data.radii = scale_factor * spatial_data.radii
-        spatial_data.positions = scale_factor * spatial_data.positions
-        spatial_data.subpoints = scale_factor * spatial_data.subpoints
-        return spatial_data, scale_factor
+        return TrajectoryConverter.scale_agent_data(spatial_data, scale_factor)
 
     @staticmethod
     def _update_meta_data(meta_data: MetaData, box_size: np.array) -> MetaData:

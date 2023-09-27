@@ -274,20 +274,9 @@ class CytosimConverter(TrajectoryConverter):
                 )
                 result.n_agents[time_index] += 1
             self.check_report_progress(overall_line / total_lines)
-
-        if scale_factor is None:
-            # If scale factor wasn't provided, calculate one
-            scale_factor = TrajectoryConverter.calculate_scale_factor(
-                result.positions,
-                result.radii,
-                result.n_agents,
-                subpoints=result.subpoints,
-                n_subpoints=result.n_subpoints,
-            )
-
-        result.radii = scale_factor * result.radii
-        result.positions = scale_factor * result.positions
-        result.subpoints = scale_factor * result.subpoints
+        result, scale_factor = TrajectoryConverter.scale_agent_data(
+            result, scale_factor
+        )
         result.n_timesteps = time_index + 1
         return (result, used_unique_IDs, overall_line, scale_factor)
 

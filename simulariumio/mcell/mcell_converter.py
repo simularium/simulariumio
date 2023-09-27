@@ -340,17 +340,10 @@ class McellConverter(TrajectoryConverter):
             )
             step_count += 1
             self.check_report_progress(step_count / dimensions.total_steps)
-        if input_data.meta_data.scale_factor is not None:
-            scale_factor = input_data.meta_data.scale_factor
-        else:
-            # If scale factor wasn't provided, calculate one
-            scale_factor = TrajectoryConverter.calculate_scale_factor(
-                result.positions, result.radii, result.n_agents
-            )
-        result.radii = scale_factor * result.radii
-        result.positions = scale_factor * result.positions
         result.n_timesteps = total_steps + 1
-        return result, scale_factor
+        return TrajectoryConverter.scale_agent_data(
+            result, input_data.meta_data.scale_factor
+        )
 
     def _read(self, input_data: McellData) -> TrajectoryData:
         """

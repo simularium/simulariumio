@@ -3,7 +3,7 @@
 
 import json
 import logging
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Tuple
 import copy
 import time
 import numpy as np
@@ -18,6 +18,7 @@ from .data_objects import (
     ScatterPlotData,
     TrajectoryData,
     DisplayData,
+    AgentData,
 )
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
@@ -200,6 +201,37 @@ class TrajectoryConverter:
         elif range < VIEWER_DIMENSION_RANGE.MIN:
             scale_factor = VIEWER_DIMENSION_RANGE.MIN / range
         return scale_factor
+
+    @staticmethod
+    def scale_agent_data(
+        agent_data: AgentData,
+        input_scale_factor: float = None,
+        is_2D: bool = False,
+    ) -> Tuple[AgentData, float]:
+        """
+        Return a scaled AgentData object, either using a provided scale
+        factor if input_scale_factor is given, or using a calculated scale
+        factor using calculate_scale_factor() with the provided agent data.
+        Also returns the scale factor that was used on the AgentData object.
+        Include is_2D = True if AgentData's position data only has XY
+        coordinates, otherwise will assume XYZ coordinates
+        """
+        if input_scale_factor is None:
+            # If scale factor wasn't provided, calculate one
+            scale_factor = TrajectoryConverter.calculate_scale_factor(
+                agent_data.positions,
+                agent_data.radii,
+                agent_data.n_agents,
+                is_2D,
+                agent_data.subpoints,
+                agent_data.n_subpoints,
+            )
+        else:
+            scale_factor = input_scale_factor
+        agent_data.radii *= scale_factor
+        agent_data.positions *= scale_factor
+        agent_data.subpoints *= scale_factor
+        return agent_data, scale_factor
 
     @staticmethod
     def _get_display_type_name_from_raw(
