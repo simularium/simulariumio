@@ -135,11 +135,9 @@ class SmoldynConverter(TrajectoryConverter):
         result.n_agents[time_index] = agent_index
         result.n_timesteps = time_index + 1
 
-        result, scale_factor = TrajectoryConverter.scale_agent_data(
+        return TrajectoryConverter.scale_agent_data(
             result, input_data.meta_data.scale_factor, is_2D=(not is_3D)
         )
-
-        return result, scale_factor
 
     def _read(self, input_data: SmoldynData) -> TrajectoryData:
         """
