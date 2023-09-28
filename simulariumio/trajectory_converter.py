@@ -186,7 +186,7 @@ class TrajectoryConverter:
 
         range = max(max_dimensions - min_dimensions)
         scale_factor = 1
-        if range == 0:
+        if np.isclose(range, 0):
             return scale_factor
         if range > VIEWER_DIMENSION_RANGE.MAX:
             scale_factor = VIEWER_DIMENSION_RANGE.MAX / range
