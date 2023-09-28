@@ -300,7 +300,8 @@ data_centered = MedyanData(
 )
 converter_centered = MedyanConverter(data_centered)
 results_centered = JsonWriter.format_trajectory_data(converter_centered._data)
-translation = [-434.78931695, -447.8762742, -205.8179842]
+translation = [-338.15649125, -432.79879825, -189.62899875]
+centered_scale_factor = VIEWER_DIMENSION_RANGE.MAX / (max_range + 1)
 
 
 @pytest.mark.parametrize(
@@ -313,37 +314,37 @@ translation = [-434.78931695, -447.8762742, -205.8179842]
                 VIZ_TYPE.FIBER,  # first agent
                 0.0,  # id
                 0.0,  # type
-                0.0,  # x
-                0.0,  # y
-                0.0,  # z
+                translation[0] * centered_scale_factor,  # x
+                translation[1] * centered_scale_factor,  # y
+                translation[2] * centered_scale_factor,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                actin_radius * auto_scale_factor,  # radius
+                actin_radius * centered_scale_factor,  # radius
                 6.0,  # number of subpoints
-                (454.3434234 + translation[0]) * auto_scale_factor,
-                (363.439226 + translation[1]) * auto_scale_factor,
-                (265.4405349 + translation[2]) * auto_scale_factor,
-                (519.7377041 + translation[0]) * auto_scale_factor,
-                (351.5737487 + translation[1]) * auto_scale_factor,
-                (180.312405 + translation[2]) * auto_scale_factor,
+                (454.3434234 + translation[0]) * centered_scale_factor,
+                (363.439226 + translation[1]) * centered_scale_factor,
+                (265.4405349 + translation[2]) * centered_scale_factor,
+                (519.7377041 + translation[0]) * centered_scale_factor,
+                (351.5737487 + translation[1]) * centered_scale_factor,
+                (180.312405 + translation[2]) * centered_scale_factor,
                 VIZ_TYPE.FIBER,  # second agent
                 1.0,
                 0.0,
+                translation[0] * centered_scale_factor,
+                translation[1] * centered_scale_factor,
+                translation[2] * centered_scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                0.0,
-                0.0,
-                0.0,
-                actin_radius * auto_scale_factor,
+                actin_radius * centered_scale_factor,
                 6.0,
-                (547.5943503 + translation[0]) * auto_scale_factor,
-                (280.3075619 + translation[1]) * auto_scale_factor,
-                (307.4127023 + translation[2]) * auto_scale_factor,
-                (535.194707 + translation[0]) * auto_scale_factor,
-                (173.0325428 + translation[1]) * auto_scale_factor,
-                (308.9355694 + translation[2]) * auto_scale_factor,
+                (547.5943503 + translation[0]) * centered_scale_factor,
+                (280.3075619 + translation[1]) * centered_scale_factor,
+                (307.4127023 + translation[2]) * centered_scale_factor,
+                (535.194707 + translation[0]) * centered_scale_factor,
+                (173.0325428 + translation[1]) * centered_scale_factor,
+                (308.9355694 + translation[2]) * centered_scale_factor,
             ],
         )
     ],

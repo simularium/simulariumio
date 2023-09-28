@@ -171,20 +171,16 @@ class TrajectoryConverter:
         max_subpoints = int(np.amax(data.n_subpoints))
         for time_index in range(total_steps):
             for agent_index in range(int(data.n_agents[time_index])):
+                data.positions[time_index][agent_index] += translation
                 display_type = data.display_type_for_agent(time_index, agent_index)
-                # only translate subpoints for fibers, since sphere group
-                # subpoint positions are relative to agent's position, and no
-                # other display types have subpoints currently
-                has_fiber_subpoints = (
-                    max_subpoints > 0 and display_type == DISPLAY_TYPE.FIBER
-                )
-                if has_fiber_subpoints:
+                if max_subpoints > 0 and display_type == DISPLAY_TYPE.FIBER:
+                    # only translate subpoints for fibers, since sphere group
+                    # subpoint positions are relative to agent's position, and no
+                    # other display types have subpoints currently
                     sp_items = Filter.get_items_from_subpoints(
                         data, time_index, agent_index
                     )
-                    if sp_items is None:
-                        has_fiber_subpoints = False
-                    else:
+                    if sp_items is not None:
                         # translate subpoints for fibers
                         n_items = sp_items.shape[0]
                         for item_index in range(n_items):
@@ -193,26 +189,12 @@ class TrajectoryConverter:
                         data.subpoints[time_index][agent_index][
                             :n_sp
                         ] = sp_items.reshape(n_sp)
-                if not has_fiber_subpoints:
-                    # agents for fibers don't have their own position data, so only
-                    # translate agents without fiber subpoints
-                    data.positions[time_index][agent_index] += translation
         return data
 
     @staticmethod
-    def calculate_scale_factor(
-        positions: np.array,
-        radii: np.array,
-        n_agents: np.array,
-        is_2D: bool = False,
-        subpoints: np.array = None,
-        n_subpoints: np.array = None,
-    ) -> float:
-        """
-        Return a scale factor, using the given AgentData's position, radii,
-        and subpoints numpy arrays from AgentData, so that the final range of
-        agent locations is within the dimensions defined by VIEWER_DIMENSION_RANGE.
-        """
+    def get_min_max_positions(
+        agent_data: AgentData,
+    ) -> Tuple[np.array, np.array]:
         max_dimensions = TrajectoryConverter.get_xyz_max(
             agent_data.positions + agent_data.radii[:, :, np.newaxis],
             agent_data.n_agents,
@@ -234,8 +216,12 @@ class TrajectoryConverter:
             min_subpoints = TrajectoryConverter.get_xyz_min(xyz_subpoints)
             max_dimensions = np.amax([max_dimensions, max_subpoints], 0)
             min_dimensions = np.amin([min_dimensions, min_subpoints], 0)
+        return (min_dimensions, max_dimensions)
 
-        range = max(max_dimensions - min_dimensions)
+    def _get_scale_factor_with_min_max(
+        min_dimensions: np.array,
+        max_dimensions: np.array,
+    ) -> float:
         scale_factor = 1
         if np.isclose(range, 0):
             return scale_factor
@@ -244,6 +230,22 @@ class TrajectoryConverter:
         elif range < VIEWER_DIMENSION_RANGE.MIN:
             scale_factor = VIEWER_DIMENSION_RANGE.MIN / range
         return scale_factor
+
+    @staticmethod
+    def calculate_scale_factor(
+        agent_data: AgentData,
+    ) -> float:
+        """
+        Return a scale factor, using the given position, radii,
+        and subpoints, data from AgentData, so that the final range of agent
+        locations is within the dimensions defined by VIEWER_DIMENSION_RANGE.
+        """
+        min_dimensions, max_dimensions = TrajectoryConverter.get_min_max_positions(
+            agent_data
+        )
+        return TrajectoryConverter._get_scale_factor_with_min_max(
+            min_dimensions, max_dimensions
+        )
 
     @staticmethod
     def scale_agent_data(
@@ -265,6 +267,34 @@ class TrajectoryConverter:
         agent_data.positions *= scale_factor
         agent_data.subpoints *= scale_factor
         return agent_data, scale_factor
+
+    def center_and_scale_agent_data(
+        agent_data: AgentData,
+        input_scale_factor: float = None,
+    ) -> Tuple[AgentData, float]:
+        """
+        Center the provided agent_data at the origin, based on the range of
+        XYZ position data and subpoint data. In addition, scale position
+        and radii data based on the input_scale_factor if provided, otherwise
+        calculate the scale factor using calculate_scale_factor(). Returns the
+        centered and scaled AgentData, and the scale factor that was applied
+        """
+        min_dimensions, max_dimensions = TrajectoryConverter.get_min_max_positions(
+            agent_data
+        )
+        translation = -0.5 * (max_dimensions + min_dimensions)
+
+        translated_data = TrajectoryConverter.translate_positions(
+            agent_data, translation
+        )
+        if input_scale_factor is None:
+            # If scale factor wasn't provided, calculate one
+            scale_factor = TrajectoryConverter._get_scale_factor_with_min_max(
+                min_dimensions, max_dimensions
+            )
+        else:
+            scale_factor = input_scale_factor
+        return TrajectoryConverter.scale_agent_data(translated_data, scale_factor)
 
     @staticmethod
     def _get_display_type_name_from_raw(
