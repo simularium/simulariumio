@@ -173,5 +173,5 @@ MAX_AGENT_ID = 0x80000000  # Agent IDs should fit in a 32 bit signed int
 
 
 class VIEWER_DIMENSION_RANGE:
-    MIN = 5
-    MAX = 70
+    MIN = 4
+    MAX = 64

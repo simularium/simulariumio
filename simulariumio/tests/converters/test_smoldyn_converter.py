@@ -319,8 +319,8 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # first agent
                 500.0,  # id
                 0.0,  # type
-                -1.7142353252402929,  # x
-                -0.8837913837531722,  # y
+                -0.8748 * scale_factor_display,  # x
+                -0.451012 * scale_factor_display,  # y
                 0.0,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
@@ -330,8 +330,8 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # second agent
                 600.0,
                 1.0,
-                1.6558184650656949,
-                -1.0479488159274175,
+                0.844989 * scale_factor_display,
+                -0.534784 * scale_factor_display,
                 0.0,
                 0.0,
                 0.0,
@@ -341,8 +341,8 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # third agent
                 606.0,
                 2.0,
-                1.3065949462586834,
-                1.4603901511811335,
+                0.666775 * scale_factor_display,
+                0.745259 * scale_factor_display,
                 0.0,
                 0.0,
                 0.0,
