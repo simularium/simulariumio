@@ -156,36 +156,28 @@ class TrajectoryConverter:
         return xyz_subpoints.reshape(1, -1, 3)
 
     @staticmethod
-    def calculate_scale_factor(
-        positions: np.array,
-        radii: np.array,
-        n_agents: np.array,
-        is_2D: bool = False,
-        subpoints: np.array = None,
-        n_subpoints: np.array = None,
-    ) -> float:
+    def calculate_scale_factor(agent_data: AgentData) -> float:
         """
-        Return a scale factor, using the given position, radii, n_agents
-        subpoints, and n_subpoints numpy arrays from AgentData, so that
-        the final range of agent locations is within the dimensions defined
-        by VIEWER_DIMENSION_RANGE. Include is_2D = True if position data only
-        has XY coordinates, otherwise will assume XYZ coordinates
+        Return a scale factor, using the given AgentData's position, radii,
+        and subpoints numpy arrays from AgentData, so that the final range of
+        agent locations is within the dimensions defined by VIEWER_DIMENSION_RANGE.
         """
         max_dimensions = TrajectoryConverter.get_xyz_max(
-            positions + radii[:, :, np.newaxis], n_agents
+            agent_data.positions + agent_data.radii[:, :, np.newaxis],
+            agent_data.n_agents,
         )
         min_dimensions = TrajectoryConverter.get_xyz_min(
-            positions - radii[:, :, np.newaxis], n_agents
+            agent_data.positions - agent_data.radii[:, :, np.newaxis],
+            agent_data.n_agents,
         )
 
-        if is_2D:
-            # If the data is 2D, ignore the 3rd position in max/min dims
-            max_dimensions = max_dimensions[:2]
-            min_dimensions = min_dimensions[:2]
-
-        if subpoints is not None and n_subpoints is not None and subpoints.size > 0:
+        if (
+            agent_data.subpoints is not None
+            and agent_data.n_subpoints is not None
+            and agent_data.subpoints.size > 0
+        ):
             xyz_subpoints = TrajectoryConverter.get_subpoints_xyz(
-                subpoints, n_subpoints
+                agent_data.subpoints, agent_data.n_subpoints
             )
             max_subpoints = TrajectoryConverter.get_xyz_max(xyz_subpoints)
             min_subpoints = TrajectoryConverter.get_xyz_min(xyz_subpoints)
@@ -206,26 +198,16 @@ class TrajectoryConverter:
     def scale_agent_data(
         agent_data: AgentData,
         input_scale_factor: float = None,
-        is_2D: bool = False,
     ) -> Tuple[AgentData, float]:
         """
         Return a scaled AgentData object, either using a provided scale
         factor if input_scale_factor is given, or using a calculated scale
         factor using calculate_scale_factor() with the provided agent data.
         Also returns the scale factor that was used on the AgentData object.
-        Include is_2D = True if AgentData's position data only has XY
-        coordinates, otherwise will assume XYZ coordinates
         """
         if input_scale_factor is None:
             # If scale factor wasn't provided, calculate one
-            scale_factor = TrajectoryConverter.calculate_scale_factor(
-                agent_data.positions,
-                agent_data.radii,
-                agent_data.n_agents,
-                is_2D,
-                agent_data.subpoints,
-                agent_data.n_subpoints,
-            )
+            scale_factor = TrajectoryConverter.calculate_scale_factor(agent_data)
         else:
             scale_factor = input_scale_factor
         agent_data.radii *= scale_factor

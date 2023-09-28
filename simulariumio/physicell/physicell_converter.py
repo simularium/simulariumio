@@ -320,9 +320,7 @@ class PhysicellConverter(TrajectoryConverter):
 
         if input_data.meta_data.scale_factor is None:
             # If scale factor wasn't provided, calculate one
-            scale_factor = TrajectoryConverter.calculate_scale_factor(
-                result.positions, result.radii, result.n_agents
-            )
+            scale_factor = TrajectoryConverter.calculate_scale_factor(result)
         else:
             scale_factor = input_data.meta_data.scale_factor
         for index in range(dimensions.total_steps):
