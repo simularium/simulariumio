@@ -4,7 +4,6 @@
 import logging
 from typing import List, Callable, Tuple
 import math
-import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import (
