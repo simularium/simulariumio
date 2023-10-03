@@ -82,7 +82,7 @@ class TrajectoryConverter:
             self.progress_callback(percent_complete)
             self.last_report_time = current_time
 
-    def _get_valid_agents(data: np.array, n_agents: np.array):
+    def _get_valid_agents(data: np.array, n_agents: np.array) -> np.array:
         """
         Given position data (shape = [timesteps, agents, 3]), and
         corresponding n_agents data, indicating agents per timestamp,
@@ -99,7 +99,7 @@ class TrajectoryConverter:
             x_data = np.append(x_data, x[i][0 : int(n_agents[i])])
             y_data = np.append(y_data, y[i][0 : int(n_agents[i])])
             z_data = np.append(z_data, z[i][0 : int(n_agents[i])])
-        return (x_data, y_data, z_data)
+        return np.array([x_data, y_data, z_data])
 
     @staticmethod
     def get_xyz_max(data: np.array, n_agents: np.array = None) -> np.array:
@@ -110,7 +110,7 @@ class TrajectoryConverter:
         maximum X, Y, and Z values from remaining data
         """
         if n_agents is not None:
-            (x_data, y_data, z_data) = TrajectoryConverter._get_valid_agents(
+            [x_data, y_data, z_data] = TrajectoryConverter._get_valid_agents(
                 data, n_agents
             )
         else:
@@ -128,7 +128,7 @@ class TrajectoryConverter:
         minimum X, Y, and Z values from remaining data
         """
         if n_agents is not None:
-            (x_data, y_data, z_data) = TrajectoryConverter._get_valid_agents(
+            [x_data, y_data, z_data] = TrajectoryConverter._get_valid_agents(
                 data, n_agents
             )
         else:
