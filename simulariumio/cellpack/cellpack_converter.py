@@ -6,7 +6,7 @@ import os
 import numpy as np
 import json
 from scipy.spatial.transform import Rotation as R
-from typing import Callable, Tuple, Union
+from typing import Callable, Tuple
 
 from cellpack import RecipeLoader
 from ..constants import DISPLAY_TYPE, VIZ_TYPE, VALUES_PER_3D_POINT
@@ -268,11 +268,11 @@ class CellpackConverter(TrajectoryConverter):
         all_ingredients,
         time_step_index: int,
         box_center: np.array,
-        scale_factor: Union[float, None],
         geo_type: DISPLAY_TYPE,
         handedness: HAND_TYPE,
         geometry_url: str,
         display_data,
+        scale_factor: float = None,
     ) -> Tuple[AgentData, float]:
         dimensions = CellpackConverter._parse_dimensions(all_ingredients)
         spatial_data = AgentData.from_dimensions(dimensions)
@@ -376,11 +376,11 @@ class CellpackConverter(TrajectoryConverter):
             all_ingredients,
             time_step_index,
             box_center,
-            input_data.meta_data.scale_factor,
             input_data.geometry_type,
             input_data.handedness,
             input_data.geometry_url,
             input_data.display_data,
+            input_data.meta_data.scale_factor,
         )
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))

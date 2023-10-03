@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Any, Dict, List, Tuple, Callable, Union
+from typing import Any, Dict, List, Tuple, Callable
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
@@ -187,11 +187,11 @@ class CytosimConverter(TrajectoryConverter):
         object_type: str,
         data_lines: List[str],
         object_info: CytosimObjectInfo,
-        scale_factor: Union[float, None],
         result: AgentData,
         used_unique_IDs: List[int],
         overall_line: int,
         total_lines: int,
+        scale_factor: float = None,
     ) -> Tuple[Dict[str, Any], List[int], int]:
         """
         Parse a Cytosim output file containing objects
@@ -313,11 +313,11 @@ class CytosimConverter(TrajectoryConverter):
                     object_type,
                     cytosim_data[object_type],
                     input_data.object_info[object_type],
-                    input_data.meta_data.scale_factor,
                     agent_data,
                     uids,
                     overall_line,
                     total_lines,
+                    input_data.meta_data.scale_factor,
                 )
             except Exception as e:
                 raise InputDataError(f"Error reading input cytosim data: {e}")
