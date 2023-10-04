@@ -171,16 +171,20 @@ class TrajectoryConverter:
         max_subpoints = int(np.amax(data.n_subpoints))
         for time_index in range(total_steps):
             for agent_index in range(int(data.n_agents[time_index])):
-                data.positions[time_index][agent_index] += translation
                 display_type = data.display_type_for_agent(time_index, agent_index)
-                if max_subpoints > 0 and display_type == DISPLAY_TYPE.FIBER:
+                has_fiber_subpoints = (
+                    max_subpoints > 0 and display_type == DISPLAY_TYPE.FIBER
+                )
+                if has_fiber_subpoints:
                     # only translate subpoints for fibers, since sphere group
                     # subpoint positions are relative to agent's position, and no
                     # other display types have subpoints currently
                     sp_items = Filter.get_items_from_subpoints(
                         data, time_index, agent_index
                     )
-                    if sp_items is not None:
+                    if sp_items is None:
+                        has_fiber_subpoints = False
+                    else:
                         # translate subpoints for fibers
                         n_items = sp_items.shape[0]
                         for item_index in range(n_items):
@@ -189,6 +193,13 @@ class TrajectoryConverter:
                         data.subpoints[time_index][agent_index][
                             :n_sp
                         ] = sp_items.reshape(n_sp)
+                if not has_fiber_subpoints:
+                    # agents for fibers don't have their own position data, so only
+                    # translate agents without fiber subpoints. eventually, if fiber
+                    # subpoints are relative to agent position, we can just translate
+                    # the agent position and leave the subpoints as is
+                    data.positions[time_index][agent_index] += translation
+
         return data
 
     @staticmethod
