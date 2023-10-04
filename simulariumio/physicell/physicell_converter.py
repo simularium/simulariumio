@@ -324,7 +324,11 @@ class PhysicellConverter(TrajectoryConverter):
         else:
             scale_factor = input_data.meta_data.scale_factor
         for index in range(dimensions.total_steps):
-            # do not scale radii for subcells
+            # subcells are represented as sphere groups, and the agent radii
+            # doesn't mean anything for that, so we'll leave that at 1 rather
+            # than scaling it. The radii for the subcells is included in
+            # subpoint data. It could be cool if agent radii for sphere groups
+            # eventually means something, in which case we'd want to scale it
             result.radii[index][0 : n_def_agents[index]] = (
                 scale_factor * result.radii[index][0 : n_def_agents[index]]
             )
