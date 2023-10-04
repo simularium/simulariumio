@@ -22,6 +22,8 @@ data = MedyanData(
 converter = MedyanConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
 
+# value of automatically generated scale factor, so that position
+# data fits within VIEWER_DIMENSION_RANGE
 max_range = 868.5975965
 auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / max_range
 

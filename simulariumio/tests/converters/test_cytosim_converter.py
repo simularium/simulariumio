@@ -116,7 +116,10 @@ def test_box_size_provided(box_size, expected_box_size):
     assert box_size == expected_box_size
 
 
-auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.400052 + 0.001)
+# value of automatically generated scale factor, so that position
+# data fits within VIEWER_DIMENSION_RANGE
+range = 0.400052 - -0.001
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / range
 name_0 = "fiber"
 radius_0 = 0.001
 color_0 = "#d71f5f"

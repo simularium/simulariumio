@@ -26,7 +26,11 @@ data = SpringsaladData(
 )
 converter = SpringsaladConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
-auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / 70.985562
+
+# value of automatically generated scale factor, so that position
+# data fits within VIEWER_DIMENSION_RANGE
+range = 70.985562
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / range
 
 
 # test box data default

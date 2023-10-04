@@ -29,6 +29,9 @@ data = CellpackData(
 
 converter = CellpackConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
+
+# value of automatically generated scale factor, so that position
+# data fits within VIEWER_DIMENSION_RANGE
 range = 200.0
 auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / range
 

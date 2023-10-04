@@ -24,7 +24,8 @@ converter = MdConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
 
 # automatically scaled based on data's max range plus radii
-auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / (77.630733 - -76.247199 + 2)
+range = 77.630733 - -76.247199 + 2
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / range
 
 
 # test box data default

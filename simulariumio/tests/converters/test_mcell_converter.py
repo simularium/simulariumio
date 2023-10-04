@@ -22,7 +22,11 @@ data = McellData(
 )
 converter = McellConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
-default_scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.5016988515853882 + 0.02)
+
+# value of automatically generated scale factor, so that position
+# data fits within VIEWER_DIMENSION_RANGE
+range = 0.5016988515853882 - -0.02
+default_scale_factor = VIEWER_DIMENSION_RANGE.MIN / range
 
 
 @pytest.mark.parametrize(
@@ -167,7 +171,8 @@ data_with_display_data = McellData(
 
 converter_display_data = McellConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
-auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.5016988515853882 + 0.005 + 0.00015)
+range = 0.5016988515853882 + 0.005 + 0.00015
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / range
 
 
 @pytest.mark.parametrize(

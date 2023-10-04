@@ -89,7 +89,10 @@ def test_timeUnits_default(timeUnits, expected_timeUnits):
 size_x = 1000.0
 size_y = 1000.0
 size_z = 100.0
-auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / (866.8254210959085)
+range = 866.8254210959085
+# value of automatically generated scale factor, so that position
+# data fits within VIEWER_DIMENSION_RANGE
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / range
 time_unit = "ms"
 data_with_meta_data = PhysicellData(
     meta_data=MetaData(
