@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.3 and Furo 2023.08.19 -->
-        <title>simulariumio.cellpack.cellpack_converter - simulariumio 1.8.1.dev2+g983c99b documentation</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>simulariumio.cellpack.cellpack_converter - simulariumio 1.8.1.dev43+g8abae38 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.8.1.dev2+g983c99b documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.8.1.dev43+g8abae38 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.8.1.dev2+g983c99b documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.8.1.dev43+g8abae38 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -223,7 +223,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">scipy.spatial.transform</span> <span class="kn">import</span> <span class="n">Rotation</span> <span class="k">as</span> <span class="n">R</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">from</span> <span class="nn">cellpack</span> <span class="kn">import</span> <span class="n">RecipeLoader</span>
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">DISPLAY_TYPE</span><span class="p">,</span> <span class="n">VIZ_TYPE</span><span class="p">,</span> <span class="n">VALUES_PER_3D_POINT</span>
@@ -352,7 +352,6 @@
         <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">agent_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">result</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
-        <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">box_center</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">curve</span> <span class="o">=</span> <span class="s2">&quot;curve&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
@@ -366,12 +365,10 @@
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;encapsulatingRadius&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;encapsulatingRadius&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">)</span>
             <span class="k">else</span> <span class="n">DEFAULT_RADIUS</span>
-        <span class="p">)</span> <span class="o">*</span> <span class="n">scale_factor</span>
+        <span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span>
         <span class="n">result</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">curve</span><span class="p">])</span>
-        <span class="n">scaled_control_points</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">curve</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">box_center</span><span class="p">)</span>
-        <span class="p">)</span> <span class="o">*</span> <span class="n">scale_factor</span>
+        <span class="n">scaled_control_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">curve</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">box_center</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scaled_control_points</span><span class="p">)):</span>
             <span class="n">result</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaled_control_points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
@@ -383,7 +380,6 @@
         <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">agent_id</span><span class="p">,</span>
         <span class="n">result</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
-        <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">box_center</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
         <span class="n">handedness</span><span class="p">:</span> <span class="n">HAND_TYPE</span><span class="p">,</span>
         <span class="n">comp_id</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -394,9 +390,9 @@
         <span class="k">if</span> <span class="n">comp_id</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">(</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">box_center</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">scale_factor</span><span class="p">,</span>
-            <span class="p">(</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">box_center</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">scale_factor</span><span class="p">,</span>
-            <span class="p">(</span><span class="n">position</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">box_center</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">scale_factor</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">box_center</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="p">(</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">box_center</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">(</span><span class="n">position</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">box_center</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
         <span class="p">]</span>
         <span class="n">rotation</span> <span class="o">=</span> <span class="n">CellpackConverter</span><span class="o">.</span><span class="n">_get_euler</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">handedness</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">rotations</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">rotation</span>
@@ -405,18 +401,13 @@
         <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ingredient_name</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">agent_id</span>
         <span class="k">if</span> <span class="s2">&quot;radii&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;radii&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;radii&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_factor</span>
-            <span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;radii&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;radii&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">elif</span> <span class="s2">&quot;encapsulatingRadius&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;encapsulatingRadius&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_factor</span>
-            <span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;encapsulatingRadius&quot;</span><span class="p">]</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_RADIUS</span> <span class="o">*</span> <span class="n">scale_factor</span>
-
+            <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">DEFAULT_RADIUS</span>
         <span class="n">result</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_step_index</span><span class="p">][</span><span class="n">agent_id</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="nd">@staticmethod</span>
@@ -495,18 +486,17 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">all_ingredients</span><span class="p">,</span>
         <span class="n">time_step_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">box_center</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
         <span class="n">geo_type</span><span class="p">:</span> <span class="n">DISPLAY_TYPE</span><span class="p">,</span>
         <span class="n">handedness</span><span class="p">:</span> <span class="n">HAND_TYPE</span><span class="p">,</span>
         <span class="n">geometry_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">display_data</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
+        <span class="n">scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
         <span class="n">dimensions</span> <span class="o">=</span> <span class="n">CellpackConverter</span><span class="o">.</span><span class="n">_parse_dimensions</span><span class="p">(</span><span class="n">all_ingredients</span><span class="p">)</span>
         <span class="n">spatial_data</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">from_dimensions</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
         <span class="n">display_data</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">display_data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">display_data</span>
         <span class="n">agent_id_counter</span> <span class="o">=</span> <span class="mi">0</span>
-
         <span class="n">total_agents</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">ingredient</span> <span class="ow">in</span> <span class="n">all_ingredients</span><span class="p">:</span>
             <span class="n">total_agents</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ingredient</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="p">[]))</span>
@@ -548,7 +538,6 @@
                         <span class="n">j</span><span class="p">,</span>
                         <span class="n">agent_id_counter</span><span class="p">,</span>
                         <span class="n">spatial_data</span><span class="p">,</span>
-                        <span class="n">scale_factor</span><span class="p">,</span>
                         <span class="n">box_center</span><span class="p">,</span>
                         <span class="n">handedness</span><span class="p">,</span>
                     <span class="p">)</span>
@@ -563,14 +552,13 @@
                         <span class="n">i</span><span class="p">,</span>
                         <span class="n">agent_id_counter</span><span class="p">,</span>
                         <span class="n">spatial_data</span><span class="p">,</span>
-                        <span class="n">scale_factor</span><span class="p">,</span>
                         <span class="n">box_center</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">agent_id_counter</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">check_report_progress</span><span class="p">(</span><span class="n">agent_id_counter</span> <span class="o">/</span> <span class="n">total_agents</span><span class="p">)</span>
 
         <span class="n">spatial_data</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">display_data</span>
-        <span class="k">return</span> <span class="n">spatial_data</span>
+        <span class="k">return</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">scale_agent_data</span><span class="p">(</span><span class="n">spatial_data</span><span class="p">,</span> <span class="n">scale_factor</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_update_meta_data</span><span class="p">(</span><span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">box_size</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MetaData</span><span class="p">:</span>
@@ -590,7 +578,8 @@
         <span class="c1"># default scale for cellpack =&gt; simularium</span>
         <span class="c1"># user is supposed to send in the cellPACK scale factor</span>
         <span class="c1"># if they send one in at all.</span>
-        <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*=</span> <span class="mf">0.1</span>
+        <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*=</span> <span class="mf">0.1</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># load the data from Cellpack output JSON file</span>
@@ -602,24 +591,24 @@
             <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading cellpack input file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">box_center</span> <span class="o">=</span> <span class="n">CellpackConverter</span><span class="o">.</span><span class="n">_get_box_center</span><span class="p">(</span><span class="n">recipe_data</span><span class="p">)</span>
-        <span class="n">agent_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_ingredients</span><span class="p">(</span>
+        <span class="n">agent_data</span><span class="p">,</span> <span class="n">scale_factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_ingredients</span><span class="p">(</span>
             <span class="n">all_ingredients</span><span class="p">,</span>
             <span class="n">time_step_index</span><span class="p">,</span>
-            <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">,</span>
             <span class="n">box_center</span><span class="p">,</span>
             <span class="n">input_data</span><span class="o">.</span><span class="n">geometry_type</span><span class="p">,</span>
             <span class="n">input_data</span><span class="o">.</span><span class="n">handedness</span><span class="p">,</span>
             <span class="n">input_data</span><span class="o">.</span><span class="n">geometry_url</span><span class="p">,</span>
             <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">,</span>
+            <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># parse</span>
         <span class="n">box_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">CellpackConverter</span><span class="o">.</span><span class="n">_get_boxsize</span><span class="p">(</span><span class="n">recipe_data</span><span class="p">))</span>
+        <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">=</span> <span class="n">scale_factor</span>
         <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">_set_box_size</span><span class="p">(</span><span class="n">box_size</span><span class="p">)</span>
         <span class="c1"># set camera position based on bounding box</span>
         <span class="n">CellpackConverter</span><span class="o">.</span><span class="n">_update_meta_data</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="p">,</span> <span class="n">box_size</span><span class="p">)</span>
-
-        <span class="c1"># # create TrajectoryData</span>
-        <span class="n">input_data</span><span class="o">.</span><span class="n">spatial_units</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">)</span>
+        <span class="c1"># create TrajectoryData</span>
+        <span class="n">input_data</span><span class="o">.</span><span class="n">spatial_units</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">scale_factor</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">TrajectoryData</span><span class="p">(</span>
             <span class="n">meta_data</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="p">,</span>
             <span class="n">agent_data</span><span class="o">=</span><span class="n">agent_data</span><span class="p">,</span>
@@ -660,7 +649,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=4ab1c781"></script>
+</div><script src="../../../_static/documentation_options.js?v=5de85410"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>

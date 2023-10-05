@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.mcell package" href="simulariumio.mcell.html" /><link rel="prev" title="simulariumio.data_objects package" href="simulariumio.data_objects.html" />
 
-    <!-- Generated with Sphinx 7.2.3 and Furo 2023.08.19 -->
-        <title>simulariumio.filters package - simulariumio 1.8.1.dev2+g983c99b documentation</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>simulariumio.filters package - simulariumio 1.8.1.dev43+g8abae38 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">simulariumio 1.8.1.dev2+g983c99b documentation</div></a>
+      <a href="index.html"><div class="brand">simulariumio 1.8.1.dev43+g8abae38 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.8.1.dev2+g983c99b documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.8.1.dev43+g8abae38 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -221,9 +221,9 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
 </section>
-<section id="simulariumio-filters-add-agents-filter-module">
-<h2>simulariumio.filters.add_agents_filter module<a class="headerlink" href="#simulariumio-filters-add-agents-filter-module" title="Link to this heading">#</a></h2>
-<span class="target" id="module-simulariumio.filters.add_agents_filter"></span><dl class="py class">
+<section id="module-simulariumio.filters.add_agents_filter">
+<span id="simulariumio-filters-add-agents-filter-module"></span><h2>simulariumio.filters.add_agents_filter module<a class="headerlink" href="#module-simulariumio.filters.add_agents_filter" title="Link to this heading">#</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.filters.add_agents_filter.AddAgentsFilter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.add_agents_filter.</span></span><span class="sig-name descname"><span class="pre">AddAgentsFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_agent_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData" title="simulariumio.data_objects.agent_data.AgentData"><span class="pre">AgentData</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/add_agents_filter.html#AddAgentsFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
@@ -251,9 +251,9 @@ to each frame of the simulation</p>
 </dd></dl>
 
 </section>
-<section id="simulariumio-filters-every-nth-agent-filter-module">
-<h2>simulariumio.filters.every_nth_agent_filter module<a class="headerlink" href="#simulariumio-filters-every-nth-agent-filter-module" title="Link to this heading">#</a></h2>
-<span class="target" id="module-simulariumio.filters.every_nth_agent_filter"></span><dl class="py class">
+<section id="module-simulariumio.filters.every_nth_agent_filter">
+<span id="simulariumio-filters-every-nth-agent-filter-module"></span><h2>simulariumio.filters.every_nth_agent_filter module<a class="headerlink" href="#module-simulariumio.filters.every_nth_agent_filter" title="Link to this heading">#</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.every_nth_agent_filter.</span></span><span class="sig-name descname"><span class="pre">EveryNthAgentFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_per_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/every_nth_agent_filter.html#EveryNthAgentFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
@@ -291,9 +291,9 @@ data by filtering out all but every nth agent</p>
 </dd></dl>
 
 </section>
-<section id="simulariumio-filters-every-nth-subpoint-filter-module">
-<h2>simulariumio.filters.every_nth_subpoint_filter module<a class="headerlink" href="#simulariumio-filters-every-nth-subpoint-filter-module" title="Link to this heading">#</a></h2>
-<span class="target" id="module-simulariumio.filters.every_nth_subpoint_filter"></span><dl class="py class">
+<section id="module-simulariumio.filters.every_nth_subpoint_filter">
+<span id="simulariumio-filters-every-nth-subpoint-filter-module"></span><h2>simulariumio.filters.every_nth_subpoint_filter module<a class="headerlink" href="#module-simulariumio.filters.every_nth_subpoint_filter" title="Link to this heading">#</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.every_nth_subpoint_filter.</span></span><span class="sig-name descname"><span class="pre">EveryNthSubpointFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_per_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/every_nth_subpoint_filter.html#EveryNthSubpointFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
@@ -332,9 +332,9 @@ data by filtering out all but every nth subpoint</p>
 </dd></dl>
 
 </section>
-<section id="simulariumio-filters-every-nth-timestep-filter-module">
-<h2>simulariumio.filters.every_nth_timestep_filter module<a class="headerlink" href="#simulariumio-filters-every-nth-timestep-filter-module" title="Link to this heading">#</a></h2>
-<span class="target" id="module-simulariumio.filters.every_nth_timestep_filter"></span><dl class="py class">
+<section id="module-simulariumio.filters.every_nth_timestep_filter">
+<span id="simulariumio-filters-every-nth-timestep-filter-module"></span><h2>simulariumio.filters.every_nth_timestep_filter module<a class="headerlink" href="#module-simulariumio.filters.every_nth_timestep_filter" title="Link to this heading">#</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.every_nth_timestep_filter.</span></span><span class="sig-name descname"><span class="pre">EveryNthTimestepFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/every_nth_timestep_filter.html#EveryNthTimestepFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
@@ -363,9 +363,9 @@ data by filtering out all but every nth timestep</p>
 </dd></dl>
 
 </section>
-<section id="simulariumio-filters-filter-module">
-<h2>simulariumio.filters.filter module<a class="headerlink" href="#simulariumio-filters-filter-module" title="Link to this heading">#</a></h2>
-<span class="target" id="module-simulariumio.filters.filter"></span><dl class="py class">
+<section id="module-simulariumio.filters.filter">
+<span id="simulariumio-filters-filter-module"></span><h2>simulariumio.filters.filter module<a class="headerlink" href="#module-simulariumio.filters.filter" title="Link to this heading">#</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.filters.filter.Filter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.filter.</span></span><span class="sig-name descname"><span class="pre">Filter</span></span><a class="reference internal" href="_modules/simulariumio/filters/filter.html#Filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.filter.Filter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
@@ -383,9 +383,9 @@ data by filtering out all but every nth timestep</p>
 </dd></dl>
 
 </section>
-<section id="simulariumio-filters-multiply-space-filter-module">
-<h2>simulariumio.filters.multiply_space_filter module<a class="headerlink" href="#simulariumio-filters-multiply-space-filter-module" title="Link to this heading">#</a></h2>
-<span class="target" id="module-simulariumio.filters.multiply_space_filter"></span><dl class="py class">
+<section id="module-simulariumio.filters.multiply_space_filter">
+<span id="simulariumio-filters-multiply-space-filter-module"></span><h2>simulariumio.filters.multiply_space_filter module<a class="headerlink" href="#module-simulariumio.filters.multiply_space_filter" title="Link to this heading">#</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.filters.multiply_space_filter.MultiplySpaceFilter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.multiply_space_filter.</span></span><span class="sig-name descname"><span class="pre">MultiplySpaceFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/multiply_space_filter.html#MultiplySpaceFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
@@ -412,9 +412,9 @@ data by filtering out all but every nth timestep</p>
 </dd></dl>
 
 </section>
-<section id="simulariumio-filters-multiply-time-filter-module">
-<h2>simulariumio.filters.multiply_time_filter module<a class="headerlink" href="#simulariumio-filters-multiply-time-filter-module" title="Link to this heading">#</a></h2>
-<span class="target" id="module-simulariumio.filters.multiply_time_filter"></span><dl class="py class">
+<section id="module-simulariumio.filters.multiply_time_filter">
+<span id="simulariumio-filters-multiply-time-filter-module"></span><h2>simulariumio.filters.multiply_time_filter module<a class="headerlink" href="#module-simulariumio.filters.multiply_time_filter" title="Link to this heading">#</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.filters.multiply_time_filter.MultiplyTimeFilter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.multiply_time_filter.</span></span><span class="sig-name descname"><span class="pre">MultiplyTimeFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multiplier</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_to_plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/multiply_time_filter.html#MultiplyTimeFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
@@ -450,9 +450,9 @@ Default = True</p>
 </dd></dl>
 
 </section>
-<section id="simulariumio-filters-transform-spatial-axes-filter-module">
-<h2>simulariumio.filters.transform_spatial_axes_filter module<a class="headerlink" href="#simulariumio-filters-transform-spatial-axes-filter-module" title="Link to this heading">#</a></h2>
-<span class="target" id="module-simulariumio.filters.transform_spatial_axes_filter"></span><dl class="py class">
+<section id="module-simulariumio.filters.transform_spatial_axes_filter">
+<span id="simulariumio-filters-transform-spatial-axes-filter-module"></span><h2>simulariumio.filters.transform_spatial_axes_filter module<a class="headerlink" href="#module-simulariumio.filters.transform_spatial_axes_filter" title="Link to this heading">#</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.transform_spatial_axes_filter.</span></span><span class="sig-name descname"><span class="pre">TransformSpatialAxesFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axes_mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/transform_spatial_axes_filter.html#TransformSpatialAxesFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
@@ -483,9 +483,9 @@ e.g. [“-Z”, “-Y”, “+X”] for [+X, +Y, +Z] -&gt; [-Z, -Y, +X]</p>
 </dd></dl>
 
 </section>
-<section id="simulariumio-filters-translate-filter-module">
-<h2>simulariumio.filters.translate_filter module<a class="headerlink" href="#simulariumio-filters-translate-filter-module" title="Link to this heading">#</a></h2>
-<span class="target" id="module-simulariumio.filters.translate_filter"></span><dl class="py class">
+<section id="module-simulariumio.filters.translate_filter">
+<span id="simulariumio-filters-translate-filter-module"></span><h2>simulariumio.filters.translate_filter module<a class="headerlink" href="#module-simulariumio.filters.translate_filter" title="Link to this heading">#</a></h2>
+<dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.filters.translate_filter.TranslateFilter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.filters.translate_filter.</span></span><span class="sig-name descname"><span class="pre">TranslateFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">translation_per_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_translation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">0.,</span> <span class="pre">0.])</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/filters/translate_filter.html#TranslateFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.filters.translate_filter.TranslateFilter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#simulariumio.filters.filter.Filter" title="simulariumio.filters.filter.Filter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Filter</span></code></a></p>
@@ -523,9 +523,9 @@ Default: np.zeros(3)</p>
 </dd></dl>
 
 </section>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
-<span class="target" id="module-simulariumio.filters"></span></section>
+<section id="module-simulariumio.filters">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.filters" title="Link to this heading">#</a></h2>
+</section>
 </section>
 
         </article>
@@ -585,7 +585,7 @@ Default: np.zeros(3)</p>
             <ul>
 <li><a class="reference internal" href="#">simulariumio.filters package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#simulariumio-filters-add-agents-filter-module">simulariumio.filters.add_agents_filter module</a><ul>
+<li><a class="reference internal" href="#module-simulariumio.filters.add_agents_filter">simulariumio.filters.add_agents_filter module</a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter"><code class="docutils literal notranslate"><span class="pre">AddAgentsFilter</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter.apply"><code class="docutils literal notranslate"><span class="pre">AddAgentsFilter.apply()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.filters.add_agents_filter.AddAgentsFilter.new_agent_data"><code class="docutils literal notranslate"><span class="pre">AddAgentsFilter.new_agent_data</span></code></a></li>
@@ -593,7 +593,7 @@ Default: np.zeros(3)</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#simulariumio-filters-every-nth-agent-filter-module">simulariumio.filters.every_nth_agent_filter module</a><ul>
+<li><a class="reference internal" href="#module-simulariumio.filters.every_nth_agent_filter">simulariumio.filters.every_nth_agent_filter module</a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter"><code class="docutils literal notranslate"><span class="pre">EveryNthAgentFilter</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.apply"><code class="docutils literal notranslate"><span class="pre">EveryNthAgentFilter.apply()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.filters.every_nth_agent_filter.EveryNthAgentFilter.default_n"><code class="docutils literal notranslate"><span class="pre">EveryNthAgentFilter.default_n</span></code></a></li>
@@ -602,7 +602,7 @@ Default: np.zeros(3)</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#simulariumio-filters-every-nth-subpoint-filter-module">simulariumio.filters.every_nth_subpoint_filter module</a><ul>
+<li><a class="reference internal" href="#module-simulariumio.filters.every_nth_subpoint_filter">simulariumio.filters.every_nth_subpoint_filter module</a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter"><code class="docutils literal notranslate"><span class="pre">EveryNthSubpointFilter</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.apply"><code class="docutils literal notranslate"><span class="pre">EveryNthSubpointFilter.apply()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.filters.every_nth_subpoint_filter.EveryNthSubpointFilter.default_n"><code class="docutils literal notranslate"><span class="pre">EveryNthSubpointFilter.default_n</span></code></a></li>
@@ -611,7 +611,7 @@ Default: np.zeros(3)</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#simulariumio-filters-every-nth-timestep-filter-module">simulariumio.filters.every_nth_timestep_filter module</a><ul>
+<li><a class="reference internal" href="#module-simulariumio.filters.every_nth_timestep_filter">simulariumio.filters.every_nth_timestep_filter module</a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter"><code class="docutils literal notranslate"><span class="pre">EveryNthTimestepFilter</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.apply"><code class="docutils literal notranslate"><span class="pre">EveryNthTimestepFilter.apply()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.filters.every_nth_timestep_filter.EveryNthTimestepFilter.n"><code class="docutils literal notranslate"><span class="pre">EveryNthTimestepFilter.n</span></code></a></li>
@@ -619,7 +619,7 @@ Default: np.zeros(3)</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#simulariumio-filters-filter-module">simulariumio.filters.filter module</a><ul>
+<li><a class="reference internal" href="#module-simulariumio.filters.filter">simulariumio.filters.filter module</a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.filter.Filter"><code class="docutils literal notranslate"><span class="pre">Filter</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.filter.Filter.apply"><code class="docutils literal notranslate"><span class="pre">Filter.apply()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.filters.filter.Filter.get_items_from_subpoints"><code class="docutils literal notranslate"><span class="pre">Filter.get_items_from_subpoints()</span></code></a></li>
@@ -627,7 +627,7 @@ Default: np.zeros(3)</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#simulariumio-filters-multiply-space-filter-module">simulariumio.filters.multiply_space_filter module</a><ul>
+<li><a class="reference internal" href="#module-simulariumio.filters.multiply_space_filter">simulariumio.filters.multiply_space_filter module</a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter"><code class="docutils literal notranslate"><span class="pre">MultiplySpaceFilter</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.apply"><code class="docutils literal notranslate"><span class="pre">MultiplySpaceFilter.apply()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.filters.multiply_space_filter.MultiplySpaceFilter.multiplier"><code class="docutils literal notranslate"><span class="pre">MultiplySpaceFilter.multiplier</span></code></a></li>
@@ -635,7 +635,7 @@ Default: np.zeros(3)</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#simulariumio-filters-multiply-time-filter-module">simulariumio.filters.multiply_time_filter module</a><ul>
+<li><a class="reference internal" href="#module-simulariumio.filters.multiply_time_filter">simulariumio.filters.multiply_time_filter module</a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter"><code class="docutils literal notranslate"><span class="pre">MultiplyTimeFilter</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply"><code class="docutils literal notranslate"><span class="pre">MultiplyTimeFilter.apply()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.filters.multiply_time_filter.MultiplyTimeFilter.apply_to_plots"><code class="docutils literal notranslate"><span class="pre">MultiplyTimeFilter.apply_to_plots</span></code></a></li>
@@ -644,7 +644,7 @@ Default: np.zeros(3)</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#simulariumio-filters-transform-spatial-axes-filter-module">simulariumio.filters.transform_spatial_axes_filter module</a><ul>
+<li><a class="reference internal" href="#module-simulariumio.filters.transform_spatial_axes_filter">simulariumio.filters.transform_spatial_axes_filter module</a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter"><code class="docutils literal notranslate"><span class="pre">TransformSpatialAxesFilter</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.apply"><code class="docutils literal notranslate"><span class="pre">TransformSpatialAxesFilter.apply()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.filters.transform_spatial_axes_filter.TransformSpatialAxesFilter.axes_mapping"><code class="docutils literal notranslate"><span class="pre">TransformSpatialAxesFilter.axes_mapping</span></code></a></li>
@@ -652,7 +652,7 @@ Default: np.zeros(3)</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#simulariumio-filters-translate-filter-module">simulariumio.filters.translate_filter module</a><ul>
+<li><a class="reference internal" href="#module-simulariumio.filters.translate_filter">simulariumio.filters.translate_filter module</a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.translate_filter.TranslateFilter"><code class="docutils literal notranslate"><span class="pre">TranslateFilter</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.filters.translate_filter.TranslateFilter.apply"><code class="docutils literal notranslate"><span class="pre">TranslateFilter.apply()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.filters.translate_filter.TranslateFilter.default_translation"><code class="docutils literal notranslate"><span class="pre">TranslateFilter.default_translation</span></code></a></li>
@@ -661,7 +661,7 @@ Default: np.zeros(3)</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li><a class="reference internal" href="#module-simulariumio.filters">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -673,7 +673,7 @@ Default: np.zeros(3)</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=4ab1c781"></script>
+</div><script src="_static/documentation_options.js?v=5de85410"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>

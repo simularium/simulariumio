@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.3 and Furo 2023.08.19 -->
-        <title>simulariumio.physicell.physicell_converter - simulariumio 1.8.1.dev2+g983c99b documentation</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>simulariumio.physicell.physicell_converter - simulariumio 1.8.1.dev43+g8abae38 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.8.1.dev2+g983c99b documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.8.1.dev43+g8abae38 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.8.1.dev2+g983c99b documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.8.1.dev43+g8abae38 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -384,7 +384,7 @@
     <span class="k">def</span> <span class="nf">_get_trajectory_data</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">input_data</span><span class="p">:</span> <span class="n">PhysicellData</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="n">UnitData</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get data in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -448,18 +448,15 @@
                         <span class="n">display_type</span><span class="o">=</span><span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">SPHERE</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">type_mapping</span><span class="p">[</span><span class="n">tid</span><span class="p">])</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span>
-                    <span class="n">n_def_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">n_def_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                     <span class="p">[</span>
                         <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;position_x&quot;</span><span class="p">][</span><span class="n">cell_index</span><span class="p">],</span>
                         <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;position_y&quot;</span><span class="p">][</span><span class="n">cell_index</span><span class="p">],</span>
                         <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;position_z&quot;</span><span class="p">][</span><span class="n">cell_index</span><span class="p">],</span>
                     <span class="p">]</span>
                 <span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span>
-                    <span class="n">n_def_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">*</span> <span class="p">(</span>
+
+                <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">n_def_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">cell_type_id</span><span class="p">]</span><span class="o">.</span><span class="n">radius</span>
                     <span class="k">if</span> <span class="n">cell_type_id</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span>
                     <span class="ow">and</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">cell_type_id</span><span class="p">]</span><span class="o">.</span><span class="n">radius</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -515,8 +512,7 @@
                 <span class="k">for</span> <span class="n">subcell_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_subcells</span><span class="p">):</span>
                     <span class="n">cell_index</span> <span class="o">=</span> <span class="n">subcells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">owner_id</span><span class="p">][</span><span class="n">subcell_index</span><span class="p">]</span>
                     <span class="n">subcell_positions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span>
-                        <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                             <span class="p">[</span>
                                 <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;position_x&quot;</span><span class="p">][</span><span class="n">cell_index</span><span class="p">],</span>
                                 <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;position_y&quot;</span><span class="p">][</span><span class="n">cell_index</span><span class="p">],</span>
@@ -535,20 +531,34 @@
                     <span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">subcell_positions</span><span class="p">[</span><span class="n">subcell_index</span><span class="p">]</span> <span class="o">-</span> <span class="n">center</span><span class="p">)</span>
                     <span class="n">result</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">][</span>
                         <span class="n">sp_index</span> <span class="o">+</span> <span class="n">VALUES_PER_3D_POINT</span>
-                    <span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span>
-                        <span class="o">*</span> <span class="n">PhysicellConverter</span><span class="o">.</span><span class="n">_radius_for_volume</span><span class="p">(</span>
-                            <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;total_volume&quot;</span><span class="p">][</span><span class="n">cell_index</span><span class="p">]</span>
-                        <span class="p">)</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">PhysicellConverter</span><span class="o">.</span><span class="n">_radius_for_volume</span><span class="p">(</span>
+                        <span class="n">discrete_cells</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;total_volume&quot;</span><span class="p">][</span><span class="n">cell_index</span><span class="p">]</span>
                     <span class="p">)</span>
                 <span class="n">agent_index</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">agent_index</span>
+
+        <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># If scale factor wasn&#39;t provided, calculate one</span>
+            <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">calculate_scale_factor</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dimensions</span><span class="o">.</span><span class="n">total_steps</span><span class="p">):</span>
+            <span class="c1"># subcells are represented as sphere groups, and the agent radii</span>
+            <span class="c1"># doesn&#39;t mean anything for that, so we&#39;ll leave that at 1 rather</span>
+            <span class="c1"># than scaling it. The radii for the subcells is included in</span>
+            <span class="c1"># subpoint data. It could be cool if agent radii for sphere groups</span>
+            <span class="c1"># eventually means something, in which case we&#39;d want to scale it</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span> <span class="p">:</span> <span class="n">n_def_agents</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span> <span class="p">:</span> <span class="n">n_def_agents</span><span class="p">[</span><span class="n">index</span><span class="p">]]</span>
+            <span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">result</span><span class="o">.</span><span class="n">positions</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">=</span> <span class="n">scale_factor</span> <span class="o">*</span> <span class="n">result</span><span class="o">.</span><span class="n">subpoints</span>
         <span class="n">spatial_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span>
             <span class="n">units</span><span class="p">,</span>
-            <span class="mf">1.0</span> <span class="o">/</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span><span class="p">,</span>
+            <span class="mf">1.0</span> <span class="o">/</span> <span class="n">scale_factor</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">n_timesteps</span> <span class="o">=</span> <span class="n">dimensions</span><span class="o">.</span><span class="n">total_steps</span>
-        <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">spatial_units</span><span class="p">,</span> <span class="n">type_ids</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">spatial_units</span><span class="p">,</span> <span class="n">type_ids</span><span class="p">,</span> <span class="n">scale_factor</span>
 
     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -558,7 +568,9 @@
 <span class="sd">        Return a TrajectoryData object containing the PhysiCell data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading PhysiCell Data -------------&quot;</span><span class="p">)</span>
-        <span class="n">agent_data</span><span class="p">,</span> <span class="n">spatial_units</span><span class="p">,</span> <span class="n">type_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_trajectory_data</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="n">agent_data</span><span class="p">,</span> <span class="n">spatial_units</span><span class="p">,</span> <span class="n">type_ids</span><span class="p">,</span> <span class="n">scale_factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_trajectory_data</span><span class="p">(</span>
+            <span class="n">input_data</span>
+        <span class="p">)</span>
         <span class="c1"># get display data (geometry and color)</span>
         <span class="k">for</span> <span class="n">cell_id</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">:</span>
             <span class="n">display_data</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">cell_id</span><span class="p">]</span>
@@ -583,6 +595,7 @@
                             <span class="n">phase_id</span>
                         <span class="p">)</span>
                     <span class="n">agent_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_data</span>
+        <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">=</span> <span class="n">scale_factor</span>
         <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">_set_box_size</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">TrajectoryData</span><span class="p">(</span>
             <span class="n">meta_data</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="p">,</span>
@@ -624,7 +637,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=4ab1c781"></script>
+</div><script src="../../../_static/documentation_options.js?v=5de85410"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>

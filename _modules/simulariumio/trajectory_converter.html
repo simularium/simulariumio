@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.3 and Furo 2023.08.19 -->
-        <title>simulariumio.trajectory_converter - simulariumio 1.8.1.dev2+g983c99b documentation</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>simulariumio.trajectory_converter - simulariumio 1.8.1.dev43+g8abae38 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">simulariumio 1.8.1.dev2+g983c99b documentation</div></a>
+      <a href="../../index.html"><div class="brand">simulariumio 1.8.1.dev43+g8abae38 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.8.1.dev2+g983c99b documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.8.1.dev43+g8abae38 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -220,7 +220,7 @@
 
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -235,11 +235,12 @@
     <span class="n">ScatterPlotData</span><span class="p">,</span>
     <span class="n">TrajectoryData</span><span class="p">,</span>
     <span class="n">DisplayData</span><span class="p">,</span>
+    <span class="n">AgentData</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.filters</span> <span class="kn">import</span> <span class="n">Filter</span>
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">UnsupportedPlotTypeError</span>
 <span class="kn">from</span> <span class="nn">.writers</span> <span class="kn">import</span> <span class="n">JsonWriter</span><span class="p">,</span> <span class="n">BinaryWriter</span>
-<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">DISPLAY_TYPE</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">DISPLAY_TYPE</span><span class="p">,</span> <span class="n">VIEWER_DIMENSION_RANGE</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -301,6 +302,154 @@
         <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">progress_callback</span><span class="p">(</span><span class="n">percent_complete</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">last_report_time</span> <span class="o">=</span> <span class="n">current_time</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_get_valid_agents</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given position data (shape = [timesteps, agents, 3]), and</span>
+<span class="sd">        corresponding n_agents data, indicating agents per timestamp,</span>
+<span class="sd">        return arrays of X, Y, and Z values from data, skipping values</span>
+<span class="sd">        that do not correspond with agents, as specified by n_agents.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="n">y_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="n">z_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_agents</span><span class="p">)):</span>
+            <span class="n">x_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_agents</span><span class="p">[</span><span class="n">i</span><span class="p">])])</span>
+            <span class="n">y_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_data</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_agents</span><span class="p">[</span><span class="n">i</span><span class="p">])])</span>
+            <span class="n">z_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z_data</span><span class="p">,</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_agents</span><span class="p">[</span><span class="n">i</span><span class="p">])])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">z_data</span><span class="p">])</span>
+
+<div class="viewcode-block" id="TrajectoryConverter.get_xyz_max">
+<a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.get_xyz_max">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_xyz_max</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given AgentData position data (shape = [timesteps, agents, 3]), and</span>
+<span class="sd">        corresponding n_agents data, indicating agents per timestamp, extract</span>
+<span class="sd">        all position data, skipping the zeros that represent no data. Provide</span>
+<span class="sd">        maximum X, Y, and Z values from remaining data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">n_agents</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="p">[</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">z_data</span><span class="p">]</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">_get_valid_agents</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">,</span> <span class="n">n_agents</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">y_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">z_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="n">x_data</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">y_data</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">z_data</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryConverter.get_xyz_min">
+<a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.get_xyz_min">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_xyz_min</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given AgentData position data (shape = [timesteps, agents, 3]), and</span>
+<span class="sd">        corresponding n_agents data, indicating agents per timestamp, extract</span>
+<span class="sd">        all position data, skipping the zeros that represent no data. Provide</span>
+<span class="sd">        minimum X, Y, and Z values from remaining data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">n_agents</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="p">[</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">z_data</span><span class="p">]</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">_get_valid_agents</span><span class="p">(</span>
+                <span class="n">data</span><span class="p">,</span> <span class="n">n_agents</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">y_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">z_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">min</span><span class="p">(</span><span class="n">x_data</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">y_data</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">z_data</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryConverter.get_subpoints_xyz">
+<a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.get_subpoints_xyz">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_subpoints_xyz</span><span class="p">(</span><span class="n">subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">n_subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given AgentData subpoints (shape = [timesteps, agents, subpoints]), and a</span>
+<span class="sd">        list of n_subpoints per agent per timestep (shape = [timesteps, agents])</span>
+<span class="sd">        extract all subpoint data, skipping the zeros which represent no data.</span>
+<span class="sd">        Reshape resulting subpoint data into a 2D array of XYZ coordinate data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xyz_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="k">for</span> <span class="n">timestep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_subpoints</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">timestep</span><span class="p">])):</span>
+                <span class="n">xyz_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">xyz_subpoints</span><span class="p">,</span>
+                    <span class="n">subpoints</span><span class="p">[</span><span class="n">timestep</span><span class="p">][</span><span class="n">agent</span><span class="p">][</span><span class="mi">0</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">timestep</span><span class="p">][</span><span class="n">agent</span><span class="p">])],</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">xyz_subpoints</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryConverter.calculate_scale_factor">
+<a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.calculate_scale_factor">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">calculate_scale_factor</span><span class="p">(</span><span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a scale factor, using the given AgentData&#39;s position, radii,</span>
+<span class="sd">        and subpoints numpy arrays from AgentData, so that the final range of</span>
+<span class="sd">        agent locations is within the dimensions defined by VIEWER_DIMENSION_RANGE.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">max_dimensions</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">get_xyz_max</span><span class="p">(</span>
+            <span class="n">agent_data</span><span class="o">.</span><span class="n">positions</span> <span class="o">+</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">radii</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span>
+            <span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">min_dimensions</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">get_xyz_min</span><span class="p">(</span>
+            <span class="n">agent_data</span><span class="o">.</span><span class="n">positions</span> <span class="o">-</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">radii</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span>
+            <span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">):</span>
+            <span class="n">xyz_subpoints</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">get_subpoints_xyz</span><span class="p">(</span>
+                <span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span><span class="p">,</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span>
+            <span class="p">)</span>
+            <span class="n">max_subpoints</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">get_xyz_max</span><span class="p">(</span><span class="n">xyz_subpoints</span><span class="p">)</span>
+            <span class="n">min_subpoints</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">get_xyz_min</span><span class="p">(</span><span class="n">xyz_subpoints</span><span class="p">)</span>
+            <span class="n">max_dimensions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">([</span><span class="n">max_dimensions</span><span class="p">,</span> <span class="n">max_subpoints</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">min_dimensions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">([</span><span class="n">min_dimensions</span><span class="p">,</span> <span class="n">min_subpoints</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="nb">range</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_dimensions</span> <span class="o">-</span> <span class="n">min_dimensions</span><span class="p">)</span>
+        <span class="n">scale_factor</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="nb">range</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">scale_factor</span>
+        <span class="k">if</span> <span class="nb">range</span> <span class="o">&gt;</span> <span class="n">VIEWER_DIMENSION_RANGE</span><span class="o">.</span><span class="n">MAX</span><span class="p">:</span>
+            <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">VIEWER_DIMENSION_RANGE</span><span class="o">.</span><span class="n">MAX</span> <span class="o">/</span> <span class="nb">range</span>
+        <span class="k">elif</span> <span class="nb">range</span> <span class="o">&lt;</span> <span class="n">VIEWER_DIMENSION_RANGE</span><span class="o">.</span><span class="n">MIN</span><span class="p">:</span>
+            <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">VIEWER_DIMENSION_RANGE</span><span class="o">.</span><span class="n">MIN</span> <span class="o">/</span> <span class="nb">range</span>
+        <span class="k">return</span> <span class="n">scale_factor</span></div>
+
+
+<div class="viewcode-block" id="TrajectoryConverter.scale_agent_data">
+<a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.scale_agent_data">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">scale_agent_data</span><span class="p">(</span>
+        <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
+        <span class="n">input_scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a scaled AgentData object, either using a provided scale</span>
+<span class="sd">        factor if input_scale_factor is given, or using a calculated scale</span>
+<span class="sd">        factor using calculate_scale_factor() with the provided agent data.</span>
+<span class="sd">        Also returns the scale factor that was used on the AgentData object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">input_scale_factor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># If scale factor wasn&#39;t provided, calculate one</span>
+            <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">calculate_scale_factor</span><span class="p">(</span><span class="n">agent_data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">input_scale_factor</span>
+        <span class="n">agent_data</span><span class="o">.</span><span class="n">radii</span> <span class="o">*=</span> <span class="n">scale_factor</span>
+        <span class="n">agent_data</span><span class="o">.</span><span class="n">positions</span> <span class="o">*=</span> <span class="n">scale_factor</span>
+        <span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span> <span class="o">*=</span> <span class="n">scale_factor</span>
+        <span class="k">return</span> <span class="n">agent_data</span><span class="p">,</span> <span class="n">scale_factor</span></div>
 
 
     <span class="nd">@staticmethod</span>
@@ -512,7 +661,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=4ab1c781"></script>
+</div><script src="../../_static/documentation_options.js?v=5de85410"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
