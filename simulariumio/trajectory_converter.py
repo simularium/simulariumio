@@ -233,6 +233,7 @@ class TrajectoryConverter:
         min_dimensions: np.array,
         max_dimensions: np.array,
     ) -> float:
+        range = max(max_dimensions - min_dimensions)
         scale_factor = 1
         if np.isclose(range, 0):
             return scale_factor
