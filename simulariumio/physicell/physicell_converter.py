@@ -165,7 +165,7 @@ class PhysicellConverter(TrajectoryConverter):
     def _get_trajectory_data(
         self,
         input_data: PhysicellData,
-    ) -> Tuple[AgentData, UnitData, Dict[int, Dict[int, int]]]:
+    ) -> Tuple[AgentData, UnitData, Dict[int, Dict[int, int]], int]:
         """
         Get data in Simularium format
         """
@@ -229,18 +229,15 @@ class PhysicellConverter(TrajectoryConverter):
                         display_type=DISPLAY_TYPE.SPHERE,
                     )
                 result.types[time_index].append(type_mapping[tid])
-                result.positions[time_index][
-                    n_def_agents[time_index]
-                ] = input_data.meta_data.scale_factor * np.array(
+                result.positions[time_index][n_def_agents[time_index]] = np.array(
                     [
                         discrete_cells[time_index]["position_x"][cell_index],
                         discrete_cells[time_index]["position_y"][cell_index],
                         discrete_cells[time_index]["position_z"][cell_index],
                     ]
                 )
-                result.radii[time_index][
-                    n_def_agents[time_index]
-                ] = input_data.meta_data.scale_factor * (
+
+                result.radii[time_index][n_def_agents[time_index]] = (
                     input_data.display_data[cell_type_id].radius
                     if cell_type_id in input_data.display_data
                     and input_data.display_data[cell_type_id].radius is not None
@@ -296,8 +293,7 @@ class PhysicellConverter(TrajectoryConverter):
                 for subcell_index in range(n_subcells):
                     cell_index = subcells[time_index][owner_id][subcell_index]
                     subcell_positions.append(
-                        input_data.meta_data.scale_factor
-                        * np.array(
+                        np.array(
                             [
                                 discrete_cells[time_index]["position_x"][cell_index],
                                 discrete_cells[time_index]["position_y"][cell_index],
@@ -316,20 +312,34 @@ class PhysicellConverter(TrajectoryConverter):
                     ] = (subcell_positions[subcell_index] - center)
                     result.subpoints[time_index][agent_index][
                         sp_index + VALUES_PER_3D_POINT
-                    ] = (
-                        input_data.meta_data.scale_factor
-                        * PhysicellConverter._radius_for_volume(
-                            discrete_cells[time_index]["total_volume"][cell_index]
-                        )
+                    ] = PhysicellConverter._radius_for_volume(
+                        discrete_cells[time_index]["total_volume"][cell_index]
                     )
                 agent_index += 1
             result.n_agents[time_index] = agent_index
+
+        if input_data.meta_data.scale_factor is None:
+            # If scale factor wasn't provided, calculate one
+            scale_factor = TrajectoryConverter.calculate_scale_factor(result)
+        else:
+            scale_factor = input_data.meta_data.scale_factor
+        for index in range(dimensions.total_steps):
+            # subcells are represented as sphere groups, and the agent radii
+            # doesn't mean anything for that, so we'll leave that at 1 rather
+            # than scaling it. The radii for the subcells is included in
+            # subpoint data. It could be cool if agent radii for sphere groups
+            # eventually means something, in which case we'd want to scale it
+            result.radii[index][0 : n_def_agents[index]] = (
+                scale_factor * result.radii[index][0 : n_def_agents[index]]
+            )
+        result.positions = scale_factor * result.positions
+        result.subpoints = scale_factor * result.subpoints
         spatial_units = UnitData(
             units,
-            1.0 / input_data.meta_data.scale_factor,
+            1.0 / scale_factor,
         )
         result.n_timesteps = dimensions.total_steps
-        return result, spatial_units, type_ids
+        return result, spatial_units, type_ids, scale_factor
 
     def _read(
         self,
@@ -339,7 +349,9 @@ class PhysicellConverter(TrajectoryConverter):
         Return a TrajectoryData object containing the PhysiCell data
         """
         print("Reading PhysiCell Data -------------")
-        agent_data, spatial_units, type_ids = self._get_trajectory_data(input_data)
+        agent_data, spatial_units, type_ids, scale_factor = self._get_trajectory_data(
+            input_data
+        )
         # get display data (geometry and color)
         for cell_id in input_data.display_data:
             display_data = input_data.display_data[cell_id]
@@ -364,6 +376,7 @@ class PhysicellConverter(TrajectoryConverter):
                             phase_id
                         )
                     agent_data.display_data[type_name] = display_data
+        input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size()
         return TrajectoryData(
             meta_data=input_data.meta_data,

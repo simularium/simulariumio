@@ -90,7 +90,7 @@ class SpringsaladConverter(TrajectoryConverter):
         self,
         springsalad_data: List[str],
         input_data: SpringsaladData,
-    ) -> Tuple[AgentData, np.ndarray]:
+    ) -> Tuple[AgentData, np.ndarray, float]:
         """
         Parse SpringSaLaD SIM_VIEW txt file to get spatial data
         """
@@ -132,17 +132,13 @@ class SpringsaladConverter(TrajectoryConverter):
                         raw_type_name, input_data.display_data
                     )
                 )
-                position = input_data.meta_data.scale_factor * np.array(
-                    [float(cols[4]), float(cols[5]), float(cols[6])]
-                )
+                position = np.array([float(cols[4]), float(cols[5]), float(cols[6])])
                 scene_agent_positions[int(cols[1])] = position
                 result.positions[time_index][agent_index] = position
                 input_display_data = TrajectoryConverter._get_display_data_for_agent(
                     raw_type_name, input_data.display_data
                 )
-                result.radii[time_index][
-                    agent_index
-                ] = input_data.meta_data.scale_factor * (
+                result.radii[time_index][agent_index] = (
                     input_display_data.radius
                     if input_display_data and input_display_data.radius is not None
                     else float(cols[2])
@@ -178,7 +174,12 @@ class SpringsaladConverter(TrajectoryConverter):
             line_count += 1
             self.check_report_progress(line_count / len(springsalad_data))
         result.n_timesteps = time_index + 1
-        return result, box_size
+
+        result, scale_factor = TrajectoryConverter.scale_agent_data(
+            result, input_data.meta_data.scale_factor
+        )
+
+        return result, box_size, scale_factor
 
     def _read(self, input_data: SpringsaladData) -> TrajectoryData:
         """
@@ -189,7 +190,7 @@ class SpringsaladConverter(TrajectoryConverter):
             springsalad_data = input_data.sim_view_txt_file.get_contents().split("\n")
         except Exception as e:
             raise InputDataError(f"Error reading input SpringSaLaD data: {e}")
-        agent_data, box_size = self._parse_springsalad_data(
+        agent_data, box_size, scale_factor = self._parse_springsalad_data(
             springsalad_data, input_data
         )
         # get display data (geometry and color)
@@ -201,11 +202,12 @@ class SpringsaladConverter(TrajectoryConverter):
                 name="Link",
                 display_type=DISPLAY_TYPE.FIBER,
             )
+        input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size(box_size)
         return TrajectoryData(
             meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=UnitData("s"),
-            spatial_units=UnitData("nm", 1.0 / input_data.meta_data.scale_factor),
+            spatial_units=UnitData("nm", 1.0 / scale_factor),
             plots=input_data.plots,
         )

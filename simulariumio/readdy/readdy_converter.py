@@ -79,7 +79,6 @@ class ReaddyConverter(TrajectoryConverter):
             total_steps=n_agents.shape[0],
             max_agents=int(np.amax(n_agents)),
         )
-
         result = AgentData.from_dimensions(data_dimensions)
         result.times = input_data.timestep * np.arange(data_dimensions.total_steps)
         result.viz_types = VIZ_TYPE.DEFAULT * np.ones(
@@ -107,17 +106,18 @@ class ReaddyConverter(TrajectoryConverter):
                 ]
                 result.types[time_index].append(display_data.name)
                 result.display_data[display_data.name] = display_data
-                result.positions[time_index][new_agent_index] = (
-                    input_data.meta_data.scale_factor
-                    * positions[time_index][agent_index]
-                )
+                result.positions[time_index][new_agent_index] = positions[time_index][
+                    agent_index
+                ]
                 result.radii[time_index][new_agent_index] = (
                     display_data.radius if display_data.radius is not None else 1.0
                 )
                 new_agent_index += 1
             result.n_agents[time_index] = new_agent_index
             self.check_report_progress(time_index / data_dimensions.total_steps)
-        return result
+        return TrajectoryConverter.scale_agent_data(
+            result, input_data.meta_data.scale_factor
+        )
 
     def _read(
         self,
@@ -128,7 +128,7 @@ class ReaddyConverter(TrajectoryConverter):
         """
         print("Reading ReaDDy Data -------------")
         try:
-            agent_data = self._get_agent_data(input_data)
+            agent_data, scale_factor = self._get_agent_data(input_data)
         except Exception as e:
             raise InputDataError(f"Error reading input Readdy data: {e}")
 
@@ -136,7 +136,8 @@ class ReaddyConverter(TrajectoryConverter):
         for tid in input_data.display_data:
             display_data = input_data.display_data[tid]
             agent_data.display_data[display_data.name] = display_data
-        input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
+        input_data.spatial_units.multiply(1.0 / scale_factor)
+        input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size()
         return TrajectoryData(
             meta_data=input_data.meta_data,

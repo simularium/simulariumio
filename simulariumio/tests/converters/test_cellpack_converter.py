@@ -6,10 +6,11 @@ from unittest.mock import Mock
 import numpy as np
 
 from simulariumio.cellpack import CellpackConverter, HAND_TYPE, CellpackData
-from simulariumio import InputFileData, UnitData, DisplayData, JsonWriter
+from simulariumio import InputFileData, UnitData, DisplayData, JsonWriter, MetaData
 from simulariumio.constants import (
     DEFAULT_CAMERA_SETTINGS,
     DISPLAY_TYPE,
+    VIEWER_DIMENSION_RANGE,
     VIZ_TYPE,
 )
 from simulariumio.exceptions import InputDataError
@@ -28,6 +29,11 @@ data = CellpackData(
 
 converter = CellpackConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
+
+# value of automatically generated scale factor, so that position
+# data fits within VIEWER_DIMENSION_RANGE
+range = 200.0
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / range
 
 
 @pytest.mark.parametrize(
@@ -51,6 +57,7 @@ def test_typeMapping(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
 
 
+scale_factor = 100
 data_with_display_data = CellpackData(
     results_file=InputFileData(
         file_path="simulariumio/tests/data/cellpack/mock_results.json"
@@ -65,10 +72,33 @@ data_with_display_data = CellpackData(
             name="New_name", display_type=DISPLAY_TYPE.PDB, url="pdbid", color="#ff4741"
         ),
     },
+    meta_data=MetaData(
+        scale_factor=scale_factor,
+    )
 )
 
 converter_display_data = CellpackConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
+
+
+@pytest.mark.parametrize(
+    "box_size, expected_box_size",
+    [
+        (
+            results_display_data["trajectoryInfo"]["size"],
+            {
+                "x": 1000.0 * scale_factor * 0.1,
+                "y": 1000.0 * scale_factor * 0.1,
+                "z": 1.0 * scale_factor * 0.1,
+            },
+        )
+    ],
+)
+def test_box_size_scale_factor(box_size, expected_box_size):
+    # input data box was 1000, 1000, 1. should be scaled by
+    # scale factor and then *0.1 for default cellpack to
+    # simularium scaling
+    assert box_size == expected_box_size
 
 
 @pytest.mark.parametrize(
@@ -125,7 +155,16 @@ def test_camera_setting(camera_settings, expected_camera_settings):
 
 @pytest.mark.parametrize(
     "box_size, expected_box_size",
-    [(results["trajectoryInfo"]["size"], {"x": 100.0, "y": 100.0, "z": 0.1})],
+    [
+        (
+            results["trajectoryInfo"]["size"],
+            {
+                "x": 1000.0 * auto_scale_factor,
+                "y": 1000.0 * auto_scale_factor,
+                "z": 1.0 * auto_scale_factor,
+            },
+        )
+    ],
 )
 def test_box_size(box_size, expected_box_size):
     # input data box was 1000, 1000, 1
@@ -141,13 +180,13 @@ def test_box_size(box_size, expected_box_size):
                 VIZ_TYPE.DEFAULT,
                 0.0,  # id
                 0.0,  # type
-                25.0,  # x: 750 shifted by the bounding box and scaled down by 0.1
-                25.0,  # y
-                4.95,  # z: 50 shifted by 0.5 and scaled down by 0.1
+                250.0 * auto_scale_factor,  # x: 750 shifted by the box size and scaled
+                250.0 * auto_scale_factor,  # y
+                49.5 * auto_scale_factor,  # z: 50 shifted by 0.5 and scaled
                 1.5707963267948966,  # xrot
                 0.6435011087932847,  # yrot
                 -1.5707963267948966,  # test data is left handed, negative Z
-                10.0,  # cr
+                100.0 * auto_scale_factor,  # cr
                 0.0,  # number of subpoints
             ],
         )

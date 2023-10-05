@@ -14,6 +14,7 @@ from simulariumio.constants import (
     DEFAULT_BOX_SIZE,
     DEFAULT_CAMERA_SETTINGS,
     DISPLAY_TYPE,
+    VIEWER_DIMENSION_RANGE,
     VIZ_TYPE,
 )
 from simulariumio.exceptions import InputDataError
@@ -25,6 +26,8 @@ data = SmoldynData(
 )
 converter = SmoldynConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
+# scale max distance between coordinates + radii to make it to VIEWER_DIMENSION_RANGE
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.844989 + 1.0 - (-0.8748 - 1.0))
 
 
 # test box data default
@@ -127,14 +130,17 @@ def test_timeUnits_default(timeUnits, expected_timeUnits):
 
 
 # test spatial units default
+expected_spatial_units = UnitData("m", 1.0 / auto_scale_factor)
+
+
 @pytest.mark.parametrize(
     "spatialUnits, expected_spatialUnits",
     [
         (
             results["trajectoryInfo"]["spatialUnits"],
             {
-                "magnitude": 1.0,
-                "name": "m",
+                "magnitude": expected_spatial_units.magnitude,
+                "name": expected_spatial_units.name,
             },
         )
     ],
@@ -146,11 +152,9 @@ def test_spatialUnits_default(spatialUnits, expected_spatialUnits):
 x_size = 2.0
 y_size = 2.0
 z_size = 0.1
-scale_factor = 100
 data_with_meta_data = SmoldynData(
     meta_data=MetaData(
         box_size=np.array([x_size, y_size, z_size]),
-        scale_factor=scale_factor,
     ),
     smoldyn_file=InputFileData(
         file_path="simulariumio/tests/data/smoldyn/example_data.txt"
@@ -167,9 +171,9 @@ results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
         (
             results_meta_data["trajectoryInfo"]["size"],
             {
-                "x": x_size * scale_factor,
-                "y": y_size * scale_factor,
-                "z": z_size * scale_factor,
+                "x": x_size * auto_scale_factor,
+                "y": y_size * auto_scale_factor,
+                "z": z_size * auto_scale_factor,
             },
         )
     ],
@@ -211,14 +215,17 @@ def test_timeUnits_provided(timeUnits, expected_timeUnits):
 
 
 # test spatial units provided
+expected_spatial_units = UnitData(spatial_unit_name, 1.0 / auto_scale_factor)
+
+
 @pytest.mark.parametrize(
     "spatialUnits, expected_spatialUnits",
     [
         (
             results_unit_data["trajectoryInfo"]["spatialUnits"],
             {
-                "magnitude": 1.0,
-                "name": spatial_unit_name,
+                "magnitude": expected_spatial_units.magnitude,
+                "name": expected_spatial_units.name,
             },
         )
     ],
@@ -235,7 +242,6 @@ e_color = "#0080ff"
 data_with_display_data = SmoldynData(
     meta_data=MetaData(
         box_size=np.array([x_size, y_size, z_size]),
-        scale_factor=scale_factor,
     ),
     smoldyn_file=InputFileData(
         file_path="simulariumio/tests/data/smoldyn/example_data.txt"
@@ -262,6 +268,9 @@ data_with_display_data = SmoldynData(
 )
 converter_display_data = SmoldynConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
+
+# scale max distance between coordinates + radii to make it to VIEWER_DIMENSION_RANGE
+scale_factor_display = VIEWER_DIMENSION_RANGE.MIN / (0.666775 + 1 + 0.8748 + s_radius)
 
 
 # test type mapping with display data provided
@@ -310,35 +319,35 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # first agent
                 500.0,  # id
                 0.0,  # type
-                -87.48,  # x
-                -45.101200000000006,  # y
+                -0.8748 * scale_factor_display,  # x
+                -0.451012 * scale_factor_display,  # y
                 0.0,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                s_radius * scale_factor,  # radius
+                s_radius * scale_factor_display,  # radius
                 0.0,  # number of subpoints
                 VIZ_TYPE.DEFAULT,  # second agent
                 600.0,
                 1.0,
-                84.49889999999999,
-                -53.4784,
+                0.844989 * scale_factor_display,
+                -0.534784 * scale_factor_display,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                e_radius * scale_factor,
+                e_radius * scale_factor_display,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # third agent
                 606.0,
                 2.0,
-                66.6775,
-                74.52590000000001,
+                0.666775 * scale_factor_display,
+                0.745259 * scale_factor_display,
                 0.0,
                 0.0,
                 0.0,
                 0.0,
-                scale_factor,  # default radius = 1.0
+                scale_factor_display,  # default radius = 1.0 * scale factor
                 0.0,
             ],
         )
@@ -357,9 +366,11 @@ size = 100.0
 green_name = "Green"
 green_radius = 2.0
 green_color = "#dfdacd"
+scale_factor = 1.5
 data_3D = SmoldynData(
     meta_data=MetaData(
         box_size=np.array([size, size, size]),
+        scale_factor=scale_factor,
     ),
     smoldyn_file=InputFileData(
         file_path="simulariumio/tests/data/smoldyn/example_3D.txt"
@@ -406,6 +417,25 @@ def test_typeMapping_with_3D_data(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
 
 
+# test box size provided
+@pytest.mark.parametrize(
+    "box_size, expected_box_size",
+    [
+        (
+            results_3D_data["trajectoryInfo"]["size"],
+            {
+                "x": size * scale_factor,
+                "y": size * scale_factor,
+                "z": size * scale_factor,
+            },
+        )
+    ],
+)
+def test_box_size_provided_scaled(box_size, expected_box_size):
+    # should be scaled by the scale factor provided
+    assert box_size == expected_box_size
+
+
 @pytest.mark.parametrize(
     "bundleData, expected_bundleData",
     [
@@ -416,46 +446,46 @@ def test_typeMapping_with_3D_data(typeMapping, expected_typeMapping):
                 VIZ_TYPE.DEFAULT,  # first agent
                 130.0,  # id
                 0.0,  # type
-                23.4545,  # x
-                49.2404,  # y
-                12.29,  # z
+                23.4545 * scale_factor,  # x
+                49.2404 * scale_factor,  # y
+                12.29 * scale_factor,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                green_radius,  # radius
+                green_radius * scale_factor,  # radius
                 0.0,  # subpoints
                 VIZ_TYPE.DEFAULT,  # second agent
                 129.0,
                 0.0,
-                83.9871,
-                56.5501,
-                33.9238,
+                83.9871 * scale_factor,
+                56.5501 * scale_factor,
+                33.9238 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                green_radius,
+                green_radius * scale_factor,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # third agent
                 100.0,
                 1.0,
-                20,
-                30,
-                20,
+                20 * scale_factor,
+                30 * scale_factor,
+                20 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                1.0 * scale_factor,
                 0.0,
                 VIZ_TYPE.DEFAULT,  # fourth agent
                 99.0,
                 1.0,
-                20,
-                30,
-                20,
+                20 * scale_factor,
+                30 * scale_factor,
+                20 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
-                1.0,
+                1.0 * scale_factor,
                 0.0,
             ],
         )

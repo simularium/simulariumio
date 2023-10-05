@@ -16,6 +16,7 @@ from simulariumio.constants import (
     DISPLAY_TYPE,
     DEFAULT_BOX_SIZE,
     VIZ_TYPE,
+    VIEWER_DIMENSION_RANGE,
 )
 from simulariumio.exceptions import InputDataError
 
@@ -74,7 +75,7 @@ def test_typeMapping_default(typeMapping, expected_typeMapping):
 
 
 # xyz dimensions represented as array
-box_x = 0.5
+box_x = 0.
 box_y = 0.3
 box_z = 0.4
 scale_factor = 1000
@@ -115,13 +116,16 @@ def test_box_size_provided(box_size, expected_box_size):
     assert box_size == expected_box_size
 
 
+# value of automatically generated scale factor, so that position
+# data fits within VIEWER_DIMENSION_RANGE
+range = 0.400052 - -0.001
+auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / range
 name_0 = "fiber"
 radius_0 = 0.001
 color_0 = "#d71f5f"
 data_with_display_data = CytosimData(
     meta_data=MetaData(
         box_size=np.array([box_x, box_y, box_z]),
-        scale_factor=scale_factor,
     ),
     object_info={
         "fibers": CytosimObjectInfo(
@@ -182,17 +186,17 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
-                radius_0 * scale_factor,  # radius
+                radius_0 * auto_scale_factor,  # radius
                 9.0,  # subpoints
-                -3.70929,
-                110.164,
-                -400.052,
-                -009.70537,
-                110.184,
-                -391.947,
-                -15.7378,
-                110.304,
-                -383.87,
+                -0.00370929 * auto_scale_factor,
+                0.110164 * auto_scale_factor,
+                -0.400052 * auto_scale_factor,
+                -0.00970537 * auto_scale_factor,
+                0.110184 * auto_scale_factor,
+                -0.391947 * auto_scale_factor,
+                -0.0157378 * auto_scale_factor,
+                0.110304 * auto_scale_factor,
+                -0.38387 * auto_scale_factor,
                 VIZ_TYPE.FIBER,  # agent 2
                 2.0,
                 0.0,
@@ -202,26 +206,26 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                radius_0 * scale_factor,
+                radius_0 * auto_scale_factor,
                 18.0,
-                39.440000000000005,
-                -60.4351,
-                -344.994,
-                37.8824,
-                -50.56,
-                -347.361,
-                36.3195,
-                -40.6802,
-                -349.704,
-                34.7773,
-                -30.804000000000002,
-                -352.077,
-                33.265,
-                -20.9349,
-                -354.497,
-                31.8441,
-                -11.0556,
-                -356.932,
+                0.03944 * auto_scale_factor,
+                -0.0604351 * auto_scale_factor,
+                -0.344994 * auto_scale_factor,
+                0.0378824 * auto_scale_factor,
+                -0.05056 * auto_scale_factor,
+                -0.347361 * auto_scale_factor,
+                0.0363195 * auto_scale_factor,
+                -0.0406802 * auto_scale_factor,
+                -0.349704 * auto_scale_factor,
+                0.0347773 * auto_scale_factor,
+                -0.030804 * auto_scale_factor,
+                -0.352077 * auto_scale_factor,
+                0.033265 * auto_scale_factor,
+                -0.0209349 * auto_scale_factor,
+                -0.354497 * auto_scale_factor,
+                0.0318441 * auto_scale_factor,
+                -0.0110556 * auto_scale_factor,
+                -0.356932 * auto_scale_factor,
             ],
         ),
         (
@@ -236,17 +240,17 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                radius_0 * scale_factor,
+                radius_0 * auto_scale_factor,
                 9.0,
-                -5.69782,
-                129.971,
-                -393.00800000000004,
-                -15.290700000000001,
-                127.437,
-                -394.796,
-                -24.8686,
-                124.766,
-                -396.463,
+                -0.00569782 * auto_scale_factor,
+                0.129971 * auto_scale_factor,
+                -0.393008 * auto_scale_factor,
+                -0.0152907 * auto_scale_factor,
+                0.127437 * auto_scale_factor,
+                -0.394796 * auto_scale_factor,
+                -0.0248686 * auto_scale_factor,
+                0.124766 * auto_scale_factor,
+                -0.396463 * auto_scale_factor,
                 VIZ_TYPE.FIBER,
                 2.0,
                 0.0,
@@ -256,26 +260,26 @@ def test_typeMapping_provided(typeMapping, expected_typeMapping):
                 0.0,
                 0.0,
                 0.0,
-                radius_0 * scale_factor,
+                radius_0 * auto_scale_factor,
                 18.0,
-                19.0975,
-                -44.6282,
-                -345.032,
-                028.7449,
-                -41.2174,
-                -345.948,
-                38.4093,
-                -37.8622,
-                -346.891,
-                48.0874,
-                -34.5692,
-                -347.90900000000005,
-                57.7825,
-                -31.335799999999995,
-                -348.95599999999996,
-                67.48859999999999,
-                -28.145300000000002,
-                -350.03299999999996,
+                0.0190975 * auto_scale_factor,
+                -0.0446282 * auto_scale_factor,
+                -0.345032 * auto_scale_factor,
+                0.0287449 * auto_scale_factor,
+                -0.0412174 * auto_scale_factor,
+                -0.345948 * auto_scale_factor,
+                0.0384093 * auto_scale_factor,
+                -0.0378622 * auto_scale_factor,
+                -0.346891 * auto_scale_factor,
+                0.0480874 * auto_scale_factor,
+                -0.0345692 * auto_scale_factor,
+                -0.347909 * auto_scale_factor,
+                0.0577825 * auto_scale_factor,
+                -0.0313358 * auto_scale_factor,
+                -0.348956 * auto_scale_factor,
+                0.0674886 * auto_scale_factor,
+                -0.0281453 * auto_scale_factor,
+                -0.350033 * auto_scale_factor,
             ],
         ),
     ],

@@ -6,7 +6,7 @@ import os
 import numpy as np
 import json
 from scipy.spatial.transform import Rotation as R
-from typing import Callable
+from typing import Callable, Tuple
 
 from cellpack import RecipeLoader
 from ..constants import DISPLAY_TYPE, VIZ_TYPE, VALUES_PER_3D_POINT
@@ -133,7 +133,6 @@ class CellpackConverter(TrajectoryConverter):
         index: int,
         agent_id: int,
         result: AgentData,
-        scale_factor: float,
         box_center: np.array,
     ):
         curve = "curve" + str(index)
@@ -147,12 +146,10 @@ class CellpackConverter(TrajectoryConverter):
             data["encapsulatingRadius"]
             if ("encapsulatingRadius" in data)
             else DEFAULT_RADIUS
-        ) * scale_factor
+        )
         result.radii[time_step_index][agent_id] = r
         result.n_subpoints[time_step_index][agent_id] = len(data[curve])
-        scaled_control_points = (
-            np.array(data[curve]) - np.array(box_center)
-        ) * scale_factor
+        scaled_control_points = np.array(data[curve]) - np.array(box_center)
         for i in range(len(scaled_control_points)):
             result.subpoints[time_step_index][agent_id][i] = scaled_control_points[i]
 
@@ -164,7 +161,6 @@ class CellpackConverter(TrajectoryConverter):
         index: int,
         agent_id,
         result: AgentData,
-        scale_factor: float,
         box_center: np.array,
         handedness: HAND_TYPE,
         comp_id=0,
@@ -175,9 +171,9 @@ class CellpackConverter(TrajectoryConverter):
         if comp_id <= 0:
             offset = offset * -1
         result.positions[time_step_index][agent_id] = [
-            (position[0] + offset[0] - box_center[0]) * scale_factor,
-            (position[1] + offset[1] - box_center[1]) * scale_factor,
-            (position[2] + offset[2] - box_center[2]) * scale_factor,
+            (position[0] + offset[0] - box_center[0]),
+            (position[1] + offset[1] - box_center[1]),
+            (position[2] + offset[2] - box_center[2]),
         ]
         rotation = CellpackConverter._get_euler(data["results"][index][1], handedness)
         result.rotations[time_step_index][agent_id] = rotation
@@ -186,18 +182,13 @@ class CellpackConverter(TrajectoryConverter):
         result.types[time_step_index].append(ingredient_name)
         result.unique_ids[time_step_index][agent_id] = agent_id
         if "radii" in data:
-            result.radii[time_step_index][agent_id] = (
-                data["radii"][0]["radii"][0] * scale_factor
-            )
+            result.radii[time_step_index][agent_id] = data["radii"][0]["radii"][0]
 
         elif "encapsulatingRadius" in data:
-            result.radii[time_step_index][agent_id] = (
-                data["encapsulatingRadius"] * scale_factor
-            )
+            result.radii[time_step_index][agent_id] = data["encapsulatingRadius"]
 
         else:
-            result.radii[time_step_index][agent_id] = DEFAULT_RADIUS * scale_factor
-
+            result.radii[time_step_index][agent_id] = DEFAULT_RADIUS
         result.n_subpoints[time_step_index][agent_id] = 0
 
     @staticmethod
@@ -276,18 +267,17 @@ class CellpackConverter(TrajectoryConverter):
         self,
         all_ingredients,
         time_step_index: int,
-        scale_factor: float,
         box_center: np.array,
         geo_type: DISPLAY_TYPE,
         handedness: HAND_TYPE,
         geometry_url: str,
         display_data,
-    ) -> AgentData:
+        scale_factor: float = None,
+    ) -> Tuple[AgentData, float]:
         dimensions = CellpackConverter._parse_dimensions(all_ingredients)
         spatial_data = AgentData.from_dimensions(dimensions)
         display_data = {} if display_data is None else display_data
         agent_id_counter = 0
-
         total_agents = 0
         for ingredient in all_ingredients:
             total_agents += len(ingredient["results"].get("results", []))
@@ -329,7 +319,6 @@ class CellpackConverter(TrajectoryConverter):
                         j,
                         agent_id_counter,
                         spatial_data,
-                        scale_factor,
                         box_center,
                         handedness,
                     )
@@ -344,14 +333,13 @@ class CellpackConverter(TrajectoryConverter):
                         i,
                         agent_id_counter,
                         spatial_data,
-                        scale_factor,
                         box_center,
                     )
                     agent_id_counter += 1
                     self.check_report_progress(agent_id_counter / total_agents)
 
         spatial_data.display_data = display_data
-        return spatial_data
+        return TrajectoryConverter.scale_agent_data(spatial_data, scale_factor)
 
     @staticmethod
     def _update_meta_data(meta_data: MetaData, box_size: np.array) -> MetaData:
@@ -371,7 +359,8 @@ class CellpackConverter(TrajectoryConverter):
         # default scale for cellpack => simularium
         # user is supposed to send in the cellPACK scale factor
         # if they send one in at all.
-        input_data.meta_data.scale_factor *= 0.1
+        if input_data.meta_data.scale_factor is not None:
+            input_data.meta_data.scale_factor *= 0.1
 
         try:
             # load the data from Cellpack output JSON file
@@ -383,24 +372,24 @@ class CellpackConverter(TrajectoryConverter):
             raise InputDataError(f"Error reading cellpack input file: {e}")
 
         box_center = CellpackConverter._get_box_center(recipe_data)
-        agent_data = self._process_ingredients(
+        agent_data, scale_factor = self._process_ingredients(
             all_ingredients,
             time_step_index,
-            input_data.meta_data.scale_factor,
             box_center,
             input_data.geometry_type,
             input_data.handedness,
             input_data.geometry_url,
             input_data.display_data,
+            input_data.meta_data.scale_factor,
         )
         # parse
         box_size = np.array(CellpackConverter._get_boxsize(recipe_data))
+        input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size(box_size)
         # set camera position based on bounding box
         CellpackConverter._update_meta_data(input_data.meta_data, box_size)
-
-        # # create TrajectoryData
-        input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
+        # create TrajectoryData
+        input_data.spatial_units.multiply(1.0 / scale_factor)
         return TrajectoryData(
             meta_data=input_data.meta_data,
             agent_data=agent_data,

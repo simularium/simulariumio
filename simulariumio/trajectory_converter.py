@@ -3,7 +3,7 @@
 
 import json
 import logging
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Tuple
 import copy
 import time
 import numpy as np
@@ -18,11 +18,12 @@ from .data_objects import (
     ScatterPlotData,
     TrajectoryData,
     DisplayData,
+    AgentData,
 )
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
 from .writers import JsonWriter, BinaryWriter
-from .constants import DISPLAY_TYPE
+from .constants import DISPLAY_TYPE, VIEWER_DIMENSION_RANGE
 
 ###############################################################################
 
@@ -80,6 +81,139 @@ class TrajectoryConverter:
         ):
             self.progress_callback(percent_complete)
             self.last_report_time = current_time
+
+    def _get_valid_agents(data: np.array, n_agents: np.array) -> np.array:
+        """
+        Given position data (shape = [timesteps, agents, 3]), and
+        corresponding n_agents data, indicating agents per timestamp,
+        return arrays of X, Y, and Z values from data, skipping values
+        that do not correspond with agents, as specified by n_agents.
+        """
+        x_data = np.array([])
+        y_data = np.array([])
+        z_data = np.array([])
+        x = data[:, :, 0]
+        y = data[:, :, 1]
+        z = data[:, :, 2]
+        for i in range(len(n_agents)):
+            x_data = np.append(x_data, x[i][0 : int(n_agents[i])])
+            y_data = np.append(y_data, y[i][0 : int(n_agents[i])])
+            z_data = np.append(z_data, z[i][0 : int(n_agents[i])])
+        return np.array([x_data, y_data, z_data])
+
+    @staticmethod
+    def get_xyz_max(data: np.array, n_agents: np.array = None) -> np.array:
+        """
+        Given AgentData position data (shape = [timesteps, agents, 3]), and
+        corresponding n_agents data, indicating agents per timestamp, extract
+        all position data, skipping the zeros that represent no data. Provide
+        maximum X, Y, and Z values from remaining data
+        """
+        if n_agents is not None:
+            [x_data, y_data, z_data] = TrajectoryConverter._get_valid_agents(
+                data, n_agents
+            )
+        else:
+            x_data = data[:, :, 0].flatten()
+            y_data = data[:, :, 1].flatten()
+            z_data = data[:, :, 2].flatten()
+        return np.array([max(x_data), max(y_data), max(z_data)])
+
+    @staticmethod
+    def get_xyz_min(data: np.array, n_agents: np.array = None) -> np.array:
+        """
+        Given AgentData position data (shape = [timesteps, agents, 3]), and
+        corresponding n_agents data, indicating agents per timestamp, extract
+        all position data, skipping the zeros that represent no data. Provide
+        minimum X, Y, and Z values from remaining data
+        """
+        if n_agents is not None:
+            [x_data, y_data, z_data] = TrajectoryConverter._get_valid_agents(
+                data, n_agents
+            )
+        else:
+            x_data = data[:, :, 0].flatten()
+            y_data = data[:, :, 1].flatten()
+            z_data = data[:, :, 2].flatten()
+
+        return np.array([min(x_data), min(y_data), min(z_data)])
+
+    @staticmethod
+    def get_subpoints_xyz(subpoints: np.array, n_subpoints: np.array) -> np.array:
+        """
+        Given AgentData subpoints (shape = [timesteps, agents, subpoints]), and a
+        list of n_subpoints per agent per timestep (shape = [timesteps, agents])
+        extract all subpoint data, skipping the zeros which represent no data.
+        Reshape resulting subpoint data into a 2D array of XYZ coordinate data
+        """
+        xyz_subpoints = np.array([])
+        for timestep in range(len(n_subpoints)):
+            for agent in range(len(n_subpoints[timestep])):
+                xyz_subpoints = np.append(
+                    xyz_subpoints,
+                    subpoints[timestep][agent][0 : int(n_subpoints[timestep][agent])],
+                )
+        return xyz_subpoints.reshape(1, -1, 3)
+
+    @staticmethod
+    def calculate_scale_factor(agent_data: AgentData) -> float:
+        """
+        Return a scale factor, using the given AgentData's position, radii,
+        and subpoints numpy arrays from AgentData, so that the final range of
+        agent locations is within the dimensions defined by VIEWER_DIMENSION_RANGE.
+        """
+        max_dimensions = TrajectoryConverter.get_xyz_max(
+            agent_data.positions + agent_data.radii[:, :, np.newaxis],
+            agent_data.n_agents,
+        )
+        min_dimensions = TrajectoryConverter.get_xyz_min(
+            agent_data.positions - agent_data.radii[:, :, np.newaxis],
+            agent_data.n_agents,
+        )
+
+        if (
+            agent_data.subpoints is not None
+            and agent_data.n_subpoints is not None
+            and agent_data.subpoints.size > 0
+        ):
+            xyz_subpoints = TrajectoryConverter.get_subpoints_xyz(
+                agent_data.subpoints, agent_data.n_subpoints
+            )
+            max_subpoints = TrajectoryConverter.get_xyz_max(xyz_subpoints)
+            min_subpoints = TrajectoryConverter.get_xyz_min(xyz_subpoints)
+            max_dimensions = np.amax([max_dimensions, max_subpoints], 0)
+            min_dimensions = np.amin([min_dimensions, min_subpoints], 0)
+
+        range = max(max_dimensions - min_dimensions)
+        scale_factor = 1
+        if np.isclose(range, 0):
+            return scale_factor
+        if range > VIEWER_DIMENSION_RANGE.MAX:
+            scale_factor = VIEWER_DIMENSION_RANGE.MAX / range
+        elif range < VIEWER_DIMENSION_RANGE.MIN:
+            scale_factor = VIEWER_DIMENSION_RANGE.MIN / range
+        return scale_factor
+
+    @staticmethod
+    def scale_agent_data(
+        agent_data: AgentData,
+        input_scale_factor: float = None,
+    ) -> Tuple[AgentData, float]:
+        """
+        Return a scaled AgentData object, either using a provided scale
+        factor if input_scale_factor is given, or using a calculated scale
+        factor using calculate_scale_factor() with the provided agent data.
+        Also returns the scale factor that was used on the AgentData object.
+        """
+        if input_scale_factor is None:
+            # If scale factor wasn't provided, calculate one
+            scale_factor = TrajectoryConverter.calculate_scale_factor(agent_data)
+        else:
+            scale_factor = input_scale_factor
+        agent_data.radii *= scale_factor
+        agent_data.positions *= scale_factor
+        agent_data.subpoints *= scale_factor
+        return agent_data, scale_factor
 
     @staticmethod
     def _get_display_type_name_from_raw(

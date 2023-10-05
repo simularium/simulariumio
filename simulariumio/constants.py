@@ -170,3 +170,8 @@ DEFAULT_COLORS = [
 ]
 
 MAX_AGENT_ID = 0x80000000  # Agent IDs should fit in a 32 bit signed int
+
+
+class VIEWER_DIMENSION_RANGE:
+    MIN = 4
+    MAX = 64

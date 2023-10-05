@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Dict, Any, Callable
+from typing import Dict, Any, Callable, Tuple
 import json
 import os
 import array
@@ -248,7 +248,7 @@ class McellConverter(TrajectoryConverter):
                     n_mols = int(n_data / 3.0)
                     positions = array.array("f")
                     positions.fromfile(mol_file, n_data)
-                    positions = input_data.meta_data.scale_factor * np.array(positions)
+                    positions = np.array(positions)
                     positions = positions.reshape(n_mols, VALUES_PER_3D_POINT)
                     if is_surface_mol:
                         normals = array.array("f")
@@ -279,8 +279,7 @@ class McellConverter(TrajectoryConverter):
                         )
                     )
                     result.radii[time_index, total_mols : total_mols + n_mols] = (
-                        input_data.meta_data.scale_factor
-                        * BLENDER_GEOMETRY_SCALE_FACTOR
+                        BLENDER_GEOMETRY_SCALE_FACTOR
                         * (
                             agent_display_data.radius
                             if agent_display_data
@@ -303,7 +302,7 @@ class McellConverter(TrajectoryConverter):
         timestep: float,
         molecule_list: Dict[str, Any],
         input_data: McellData,
-    ) -> AgentData:
+    ) -> Tuple[AgentData, float]:
         """
         Parse cellblender binary files to get spatial data
         """
@@ -342,7 +341,9 @@ class McellConverter(TrajectoryConverter):
             step_count += 1
             self.check_report_progress(step_count / dimensions.total_steps)
         result.n_timesteps = total_steps + 1
-        return result
+        return TrajectoryConverter.scale_agent_data(
+            result, input_data.meta_data.scale_factor
+        )
 
     def _read(self, input_data: McellData) -> TrajectoryData:
         """
@@ -360,7 +361,7 @@ class McellConverter(TrajectoryConverter):
         time_units = UnitData(
             "s", float(data_model["mcell"]["initialization"]["time_step"])
         )
-        agent_data = self._read_cellblender_data(
+        agent_data, scale_factor = self._read_cellblender_data(
             time_units.magnitude,
             data_model["mcell"]["define_molecules"]["molecule_list"],
             input_data,
@@ -379,11 +380,12 @@ class McellConverter(TrajectoryConverter):
         for type_name in input_data.display_data:
             display_data = input_data.display_data[type_name]
             agent_data.display_data[display_data.name] = display_data
+        input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size(box_size)
         return TrajectoryData(
             meta_data=input_data.meta_data,
             agent_data=agent_data,
             time_units=time_units,
-            spatial_units=UnitData("µm", 1.0 / input_data.meta_data.scale_factor),
+            spatial_units=UnitData("µm", 1.0 / scale_factor),
             plots=input_data.plots,
         )

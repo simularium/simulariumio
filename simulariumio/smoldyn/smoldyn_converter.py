@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Callable
+from typing import List, Callable, Tuple
 import numpy as np
 
 from ..trajectory_converter import TrajectoryConverter
@@ -73,7 +73,7 @@ class SmoldynConverter(TrajectoryConverter):
         self,
         smoldyn_data_lines: List[str],
         input_data: SmoldynData,
-    ) -> AgentData:
+    ) -> Tuple[AgentData, int]:
         """
         Parse a Smoldyn output file to get AgentData
         """
@@ -109,9 +109,8 @@ class SmoldynConverter(TrajectoryConverter):
                         raw_type_name, input_data.display_data
                     )
                 )
-                result.positions[time_index][
-                    agent_index
-                ] = input_data.meta_data.scale_factor * np.array(
+
+                result.positions[time_index][agent_index] = np.array(
                     [
                         float(cols[1]),
                         float(cols[2]),
@@ -124,9 +123,7 @@ class SmoldynConverter(TrajectoryConverter):
                     raw_type_name, input_data.display_data
                 )
 
-                result.radii[time_index][
-                    agent_index
-                ] = input_data.meta_data.scale_factor * (
+                result.radii[time_index][agent_index] = (
                     input_display_data.radius
                     if input_display_data and input_display_data.radius is not None
                     else 1.0
@@ -137,7 +134,10 @@ class SmoldynConverter(TrajectoryConverter):
 
         result.n_agents[time_index] = agent_index
         result.n_timesteps = time_index + 1
-        return result
+
+        return TrajectoryConverter.scale_agent_data(
+            result, input_data.meta_data.scale_factor
+        )
 
     def _read(self, input_data: SmoldynData) -> TrajectoryData:
         """
@@ -150,13 +150,14 @@ class SmoldynConverter(TrajectoryConverter):
         except Exception as e:
             raise InputDataError(f"Error reading input smoldyn data: {e}")
         # parse
-        agent_data = self._parse_objects(smoldyn_data, input_data)
+        agent_data, scale_factor = self._parse_objects(smoldyn_data, input_data)
         # get display data (geometry and color)
         for tid in input_data.display_data:
             display_data = input_data.display_data[tid]
             agent_data.display_data[display_data.name] = display_data
         # create TrajectoryData
-        input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
+        input_data.spatial_units.multiply(1.0 / scale_factor)
+        input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size()
         return TrajectoryData(
             meta_data=input_data.meta_data,
