@@ -28,6 +28,7 @@ class SmoldynData:
     time_units: UnitData
     spatial_units: UnitData
     plots: List[Dict[str, Any]]
+    center: bool
 
     def __init__(
         self,
@@ -37,6 +38,7 @@ class SmoldynData:
         time_units: UnitData = None,
         spatial_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
+        center: bool = True,
     ):
         """
         This object holds simulation trajectory outputs
@@ -70,6 +72,10 @@ class SmoldynData:
         plots : List[Dict[str, Any]] (optional)
             An object containing plot data already
             in Simularium format
+        center : bool (optional)
+            If true, the spatial values of the data are centered
+            around the origin (0, 0, 0) during conversion
+            Default: True
         """
         self.smoldyn_file = smoldyn_file
         self.meta_data = meta_data if meta_data is not None else MetaData()
@@ -79,6 +85,7 @@ class SmoldynData:
             spatial_units if spatial_units is not None else UnitData("m")
         )
         self.plots = plots if plots is not None else []
+        self.center = center
 
     @classmethod
     def from_dict(

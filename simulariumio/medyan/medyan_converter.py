@@ -277,6 +277,11 @@ class MedyanConverter(TrajectoryConverter):
 
         result.n_timesteps = time_index + 1
 
+        if input_data.center:
+            return TrajectoryConverter.center_and_scale_agent_data(
+                result, input_data.meta_data.scale_factor
+            )
+
         return TrajectoryConverter.scale_agent_data(
             result, input_data.meta_data.scale_factor
         )

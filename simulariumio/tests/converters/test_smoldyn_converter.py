@@ -22,7 +22,8 @@ from simulariumio.exceptions import InputDataError
 data = SmoldynData(
     smoldyn_file=InputFileData(
         file_path="simulariumio/tests/data/smoldyn/example_data.txt"
-    )
+    ),
+    center=False,
 )
 converter = SmoldynConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
@@ -265,6 +266,7 @@ data_with_display_data = SmoldynData(
             display_type=DISPLAY_TYPE.SPHERE,
         ),
     },
+    center=False,
 )
 converter_display_data = SmoldynConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
@@ -384,6 +386,7 @@ data_3D = SmoldynData(
         ),
     },
     spatial_units=UnitData("m"),
+    center=False,
 )
 converter_3D_data = SmoldynConverter(data_3D)
 results_3D_data = JsonWriter.format_trajectory_data(converter_3D_data._data)
@@ -493,6 +496,89 @@ def test_box_size_provided_scaled(box_size, expected_box_size):
 )
 def test_bundleData_3D(bundleData, expected_bundleData):
     assert np.isclose(expected_bundleData, bundleData["data"]).all()
+
+
+# test centering data
+centered_data = SmoldynData(
+    meta_data=MetaData(
+        box_size=np.array([size, size, size]),
+        scale_factor=scale_factor,
+    ),
+    smoldyn_file=InputFileData(
+        file_path="simulariumio/tests/data/smoldyn/example_3D.txt"
+    ),
+    display_data={
+        "green(solution)": DisplayData(
+            name=green_name,
+            display_type=DISPLAY_TYPE.SPHERE,
+            radius=green_radius,
+            color=green_color,
+        ),
+    },
+    spatial_units=UnitData("m"),
+    center=True,
+)
+converter_centered = SmoldynConverter(centered_data)
+results_centered = JsonWriter.format_trajectory_data(converter_centered._data)
+translation = [-52.49355, -43.73305, -23.1069]
+
+
+@pytest.mark.parametrize(
+    "bundleData, expected_bundleData",
+    [
+        (
+            results_centered["spatialData"]["bundleData"][0],
+            [
+                VIZ_TYPE.DEFAULT,  # first agent
+                130.0,  # id
+                0.0,  # type
+                (23.4545 + translation[0]) * scale_factor,  # x
+                (49.2404 + translation[1]) * scale_factor,  # y
+                (12.29 + translation[2]) * scale_factor,  # z
+                0.0,  # x rotation
+                0.0,  # y rotation
+                0.0,  # z rotation
+                green_radius * scale_factor,  # radius
+                0.0,  # subpoints
+                VIZ_TYPE.DEFAULT,  # second agent
+                129.0,
+                0.0,
+                (83.9871 + translation[0]) * scale_factor,
+                (56.5501 + translation[1]) * scale_factor,
+                (33.9238 + translation[2]) * scale_factor,
+                0.0,
+                0.0,
+                0.0,
+                green_radius * scale_factor,
+                0.0,
+                VIZ_TYPE.DEFAULT,  # third agent
+                100.0,
+                1.0,
+                (20 + translation[0]) * scale_factor,
+                (30 + translation[1]) * scale_factor,
+                (20 + translation[2]) * scale_factor,
+                0.0,
+                0.0,
+                0.0,
+                1.0 * scale_factor,
+                0.0,
+                VIZ_TYPE.DEFAULT,  # fourth agent
+                99.0,
+                1.0,
+                (20 + translation[0]) * scale_factor,
+                (30 + translation[1]) * scale_factor,
+                (20 + translation[2]) * scale_factor,
+                0.0,
+                0.0,
+                0.0,
+                1.0 * scale_factor,
+                0.0,
+            ],
+        )
+    ],
+)
+def test_centered_data(bundleData, expected_bundleData):
+    assert bundleData["data"] == expected_bundleData
 
 
 def test_input_file_error():
