@@ -75,7 +75,7 @@ def test_typeMapping_default(typeMapping, expected_typeMapping):
 
 
 # xyz dimensions represented as array
-box_x = 0.
+box_x = 0.5
 box_y = 0.3
 box_z = 0.4
 scale_factor = 1000
