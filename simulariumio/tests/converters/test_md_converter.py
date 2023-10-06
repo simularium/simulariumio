@@ -22,7 +22,6 @@ from simulariumio.constants import (
 data = MdData(md_universe=Universe("simulariumio/tests/data/md/example.xyz"))
 converter = MdConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
-auto_scale_factor = VIEWER_DIMENSION_RANGE.MAX / 153.6779327392578
 
 # automatically scaled based on data's max range plus radii
 range = 77.630733 - -76.247199 + 2
@@ -376,10 +375,7 @@ third_frame_data = [
     ],
 )
 def test_bundleData(bundleData, expected_bundleData):
-    assert False not in np.isclose(
-        np.array(expected_bundleData),
-        np.array(bundleData["data"]),
-    )
+    assert np.isclose(expected_bundleData, bundleData["data"]).all()
 
 
 def test_agent_ids():
