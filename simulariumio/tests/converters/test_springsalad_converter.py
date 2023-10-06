@@ -219,6 +219,7 @@ results_display_data = JsonWriter.format_trajectory_data(converter_display_data.
 def test_typeMapping_provided(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
 
+
 @pytest.mark.parametrize(
     "bundleData, expected_bundleData",
     [

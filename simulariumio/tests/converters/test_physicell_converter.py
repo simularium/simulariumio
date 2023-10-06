@@ -223,7 +223,6 @@ data_subcells = PhysicellData(
 )
 converter_subcells = PhysicellConverter(data_subcells)
 results_subcells = JsonWriter.format_trajectory_data(converter_subcells._data)
-# scale_factor = VIEWER_DIMENSION_RANGE.MAX / 530.8317
 
 
 # test type mapping provided
