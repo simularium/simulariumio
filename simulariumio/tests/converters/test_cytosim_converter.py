@@ -75,7 +75,7 @@ def test_typeMapping_default(typeMapping, expected_typeMapping):
 
 
 # xyz dimensions represented as array
-box_x = 0.
+box_x = 0.5
 box_y = 0.3
 box_z = 0.4
 scale_factor = 1000
@@ -115,15 +115,11 @@ results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
 def test_box_size_provided(box_size, expected_box_size):
     assert box_size == expected_box_size
 
-<<<<<<< HEAD
 
 # value of automatically generated scale factor, so that position
 # data fits within VIEWER_DIMENSION_RANGE
 range = 0.400052 - -0.001
 auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / range
-=======
-auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / 0.400052
->>>>>>> 2ce8e41 (ensure converter tests conver case where scale factor is provided and where its auto calculated)
 name_0 = "fiber"
 radius_0 = 0.001
 color_0 = "#d71f5f"
