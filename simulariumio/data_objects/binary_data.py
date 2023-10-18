@@ -26,29 +26,29 @@ class BinaryData(SimulariumFileData):
             self.file_contents
         )
         self.frame_metadata: List[FrameMetadata] = []
-        self.block_indices: Dict[int, DataIndices] = {}
+        self.block_info: BinaryBlockInfo = None
+        # Maps block type id to block index
+        self.block_indices: Dict[int, int] = {}
         self._parse_file()
 
     def _parse_file(self):
         # Read offset and length for each data block
-        block_info: BinaryBlockInfo = SimulariumBinaryReader._parse_binary_header(
+        self.block_info = SimulariumBinaryReader._parse_binary_header(
             self.file_data.byte_view
         )
-        for block_index in range(block_info.n_blocks):
+        for block_index in range(self.block_info.n_blocks):
             block_type_id = SimulariumBinaryReader._binary_block_type(
-                block_index, block_info, self.file_data.int_view
+                block_index, self.block_info, self.file_data.int_view
             )
-            self.block_indices[block_type_id] = DataIndices(
-                offset=block_info.block_offsets[block_index],
-                length=block_info.block_lengths[block_index],
-            )
+            self.block_indices[block_type_id] = block_index
 
         # Extract each frame's metadata
-        spatial_indices: DataIndices = self.block_indices[
+        spatial_block_index = self.block_indices[
             BINARY_BLOCK_TYPE.SPATIAL_DATA_BINARY.value
         ]
+        block_offset = self.block_info.block_offsets[spatial_block_index]
         spatial_block_offset = (
-            int(spatial_indices.offset / BINARY_SETTINGS.BYTES_PER_VALUE)
+            int(block_offset / BINARY_SETTINGS.BYTES_PER_VALUE)
             + BINARY_SETTINGS.BLOCK_HEADER_N_VALUES
         )
         n_frames = self.file_data.int_view[spatial_block_offset + 1]
@@ -64,7 +64,7 @@ class BinaryData(SimulariumFileData):
                     + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_CONSTANT_N_VALUES
                     + BINARY_SETTINGS.SPATIAL_BLOCK_HEADER_N_VALUES_PER_FRAME * i
                 ]
-                + spatial_indices.offset
+                + block_offset
             )
             length = self.file_data.int_view[
                 spatial_block_offset
@@ -85,7 +85,7 @@ class BinaryData(SimulariumFileData):
             return None
 
         metadata: FrameMetadata = self.frame_metadata[frame_number]
-        start, end = metadata.data_indices.get_start_end_indices()
+        start, end = metadata.get_start_end_indices()
         data = self.file_data.byte_view[start:end]
         return FrameData(
             frame_number=frame_number,
@@ -112,20 +112,16 @@ class BinaryData(SimulariumFileData):
         return min(closest_frame, self.get_num_frames() - 1)
 
     def get_trajectory_info(self) -> Dict:
-        start, end = self.block_indices[
-            BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value
-        ].get_start_end_indices()
-        start += BINARY_SETTINGS.BLOCK_HEADER_N_VALUES * BINARY_SETTINGS.BYTES_PER_VALUE
-        traj_info_bytes = self.file_data.byte_view[start:end]
-        return json.loads(traj_info_bytes.decode("utf-8").strip("\x00"))
+        block_index = self.block_indices[BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value]
+        return SimulariumBinaryReader._binary_block_json(
+            block_index, self.block_info, self.file_data.byte_view
+        )
 
     def get_plot_data(self) -> Dict:
-        start, end = self.block_indices[
-            BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value
-        ].get_start_end_indices()
-        start += BINARY_SETTINGS.BLOCK_HEADER_N_VALUES * BINARY_SETTINGS.BYTES_PER_VALUE
-        traj_info_bytes = self.file_data.byte_view[start:end]
-        return json.loads(traj_info_bytes.decode("utf-8").strip("\x00"))
+        block_index = self.block_indices[BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value]
+        return SimulariumBinaryReader._binary_block_json(
+            block_index, self.block_info, self.file_data.byte_view
+        )
 
     def get_trajectory_data_object(self) -> TrajectoryData:
         trajectory_dict = SimulariumBinaryReader.load_binary(self.file_contents)
@@ -136,30 +132,6 @@ class BinaryData(SimulariumFileData):
 
     def get_num_frames(self) -> int:
         return len(self.frame_metadata)
-
-
-class DataIndices:
-    def __init__(self, offset: int, length: int):
-        """
-        This object holds offset and length data for a binary
-        simularium data block
-
-        Parameters
-        ----------
-        offset : int
-            Number of bytes the block is offset from the start of the byte array
-        length : int
-            Number of bytes in the block
-        """
-        self.offset = offset
-        self.length = length
-
-    def get_start_end_indices(self) -> Tuple[int, int]:
-        """
-        Return the start and end indicies for the data block
-        """
-        end = self.offset + self.length
-        return self.offset, end
 
 
 class FrameMetadata:
@@ -178,6 +150,14 @@ class FrameMetadata:
         time : float
             Elapsed simulation time of the frame
         """
-        self.data_indices = DataIndices(offset, length)
+        self.offset = offset
+        self.length = length
         self.frame_number = frame_number
         self.time = time
+
+    def get_start_end_indices(self) -> Tuple[int, int]:
+        """
+        Return the start and end indicies for the data block
+        """
+        end = self.offset + self.length
+        return self.offset, end
