@@ -1,5 +1,4 @@
 from typing import Dict, List, Tuple
-import json
 import numpy as np
 
 from .frame_data import FrameData
