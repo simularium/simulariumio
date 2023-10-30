@@ -41,6 +41,10 @@ class JsonData(SimulariumFileData):
         return n_agents
 
     def get_frame_at_index(self, frame_number: int) -> FrameData:
+        """
+        Return frame data for frame at index. If there is no frame at the index,
+        return None.
+        """
         if frame_number < 0 or frame_number >= len(
             self.data["spatialData"]["bundleData"]
         ):
@@ -56,6 +60,9 @@ class JsonData(SimulariumFileData):
         )
 
     def get_index_for_time(self, time: float) -> int:
+        """
+        Return index for frame closest to a given timestamp
+        """
         closest_frame = -1
         min_dist = np.inf
         for frame in self.data["spatialData"]["bundleData"]:
@@ -71,16 +78,31 @@ class JsonData(SimulariumFileData):
         return min(closest_frame, self.get_num_frames() - 1)
 
     def get_trajectory_info(self) -> Dict:
+        """
+        Return trajectory info block for trajectory, as dict
+        """
         return self.data["trajectoryInfo"]
 
     def get_plot_data(self) -> Dict:
+        """
+        Return plot data block for trajectory, as dict
+        """
         return self.data["plotData"]
 
     def get_trajectory_data_object(self) -> TrajectoryData:
+        """
+        Return the data of the trajectory, as a TrajectoryData object
+        """
         return TrajectoryData.from_buffer_data(self.data)
 
     def get_file_contents(self) -> Dict:
+        """
+        Return raw file data, as a dict
+        """
         return self.data
 
     def get_num_frames(self) -> int:
+        """
+        Return number of frames in the trajectory
+        """
         return len(self.data["spatialData"]["bundleData"])

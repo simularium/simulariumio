@@ -79,6 +79,10 @@ class BinaryData(SimulariumFileData):
             current_frame_offset += int(length / BINARY_SETTINGS.BYTES_PER_VALUE)
 
     def get_frame_at_index(self, frame_number: int) -> FrameData:
+        """
+        Return frame data for frame at index. If there is no frame at the index,
+        return None.
+        """
         if frame_number < 0 or frame_number >= len(self.frame_metadata):
             # invalid frame number requested
             return None
@@ -96,6 +100,9 @@ class BinaryData(SimulariumFileData):
         )
 
     def get_index_for_time(self, time: float) -> int:
+        """
+        Return index for frame closest to a given timestamp
+        """
         closest_frame = -1
         min_dist = np.inf
         for frame in self.frame_metadata:
@@ -111,25 +118,40 @@ class BinaryData(SimulariumFileData):
         return min(closest_frame, self.get_num_frames() - 1)
 
     def get_trajectory_info(self) -> Dict:
+        """
+        Return trajectory info block for trajectory, as dict
+        """
         block_index = self.block_indices[BINARY_BLOCK_TYPE.TRAJ_INFO_JSON.value]
         return SimulariumBinaryReader._binary_block_json(
             block_index, self.block_info, self.file_data.byte_view
         )
 
     def get_plot_data(self) -> Dict:
+        """
+        Return plot data block for trajectory, as dict
+        """
         block_index = self.block_indices[BINARY_BLOCK_TYPE.PLOT_DATA_JSON.value]
         return SimulariumBinaryReader._binary_block_json(
             block_index, self.block_info, self.file_data.byte_view
         )
 
     def get_trajectory_data_object(self) -> TrajectoryData:
+        """
+        Return the data of the trajectory, as a TrajectoryData object
+        """
         trajectory_dict = SimulariumBinaryReader.load_binary(self.file_contents)
         return TrajectoryData.from_buffer_data(trajectory_dict)
 
     def get_file_contents(self) -> bytes:
+        """
+        Return raw file data, as bytes
+        """
         return self.file_contents.get_contents()
 
     def get_num_frames(self) -> int:
+        """
+        Return number of frames in the trajectory
+        """
         return len(self.frame_metadata)
 
 
