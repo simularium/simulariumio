@@ -146,3 +146,14 @@ class TrajectoryData:
             plots=copy.deepcopy(self.plots, memo),
         )
         return result
+
+    def __eq__(self, other):
+        if isinstance(other, TrajectoryData):
+            return (
+                self.meta_data == other.meta_data
+                and self.agent_data == other.agent_data
+                and self.time_units == other.time_units
+                and self.spatial_units == other.spatial_units
+                and self.plots == other.plots
+            )
+        return False
