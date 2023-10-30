@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.filters package" href="simulariumio.filters.html" /><link rel="prev" title="simulariumio.cytosim package" href="simulariumio.cytosim.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>simulariumio.data_objects package - simulariumio 1.8.1.dev62+gcdc9339 documentation</title>
+        <title>simulariumio.data_objects package - simulariumio 1.8.2.dev1+g5d482f1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">simulariumio 1.8.1.dev62+gcdc9339 documentation</div></a>
+      <a href="index.html"><div class="brand">simulariumio 1.8.2.dev1+g5d482f1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.8.1.dev62+gcdc9339 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.8.2.dev1+g5d482f1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -430,6 +430,95 @@ Use n_timesteps to limit times if it has been provided</p>
 </dd></dl>
 
 </section>
+<section id="module-simulariumio.data_objects.binary_data">
+<span id="simulariumio-data-objects-binary-data-module"></span><h2>simulariumio.data_objects.binary_data module<a class="headerlink" href="#module-simulariumio.data_objects.binary_data" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.data_objects.binary_data.BinaryData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.data_objects.binary_data.</span></span><span class="sig-name descname"><span class="pre">BinaryData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_contents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/binary_data.html#BinaryData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.binary_data.BinaryData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData" title="simulariumio.data_objects.simularium_file_data.SimulariumFileData"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulariumFileData</span></code></a></p>
+<p>This object holds binary encoded simulation trajectory file’s
+data while staying close to the original file format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_contents</strong><span class="classifier">bytes</span></dt><dd><p>A byte array containing the data of an open .simularium file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.binary_data.BinaryData.get_file_contents">
+<span class="sig-name descname"><span class="pre">get_file_contents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/binary_data.html#BinaryData.get_file_contents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.binary_data.BinaryData.get_file_contents" title="Link to this definition">#</a></dt>
+<dd><p>Return raw file data, as bytes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.binary_data.BinaryData.get_frame_at_index">
+<span class="sig-name descname"><span class="pre">get_frame_at_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#simulariumio.data_objects.frame_data.FrameData" title="simulariumio.data_objects.frame_data.FrameData"><span class="pre">FrameData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/binary_data.html#BinaryData.get_frame_at_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.binary_data.BinaryData.get_frame_at_index" title="Link to this definition">#</a></dt>
+<dd><p>Return frame data for frame at index. If there is no frame at the index,
+return None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.binary_data.BinaryData.get_index_for_time">
+<span class="sig-name descname"><span class="pre">get_index_for_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/binary_data.html#BinaryData.get_index_for_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.binary_data.BinaryData.get_index_for_time" title="Link to this definition">#</a></dt>
+<dd><p>Return index for frame closest to a given timestamp</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.binary_data.BinaryData.get_num_frames">
+<span class="sig-name descname"><span class="pre">get_num_frames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/binary_data.html#BinaryData.get_num_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.binary_data.BinaryData.get_num_frames" title="Link to this definition">#</a></dt>
+<dd><p>Return number of frames in the trajectory</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.binary_data.BinaryData.get_plot_data">
+<span class="sig-name descname"><span class="pre">get_plot_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/binary_data.html#BinaryData.get_plot_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.binary_data.BinaryData.get_plot_data" title="Link to this definition">#</a></dt>
+<dd><p>Return plot data block for trajectory, as dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.binary_data.BinaryData.get_trajectory_data_object">
+<span class="sig-name descname"><span class="pre">get_trajectory_data_object</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/binary_data.html#BinaryData.get_trajectory_data_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.binary_data.BinaryData.get_trajectory_data_object" title="Link to this definition">#</a></dt>
+<dd><p>Return the data of the trajectory, as a TrajectoryData object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.binary_data.BinaryData.get_trajectory_info">
+<span class="sig-name descname"><span class="pre">get_trajectory_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/binary_data.html#BinaryData.get_trajectory_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.binary_data.BinaryData.get_trajectory_info" title="Link to this definition">#</a></dt>
+<dd><p>Return trajectory info block for trajectory, as dict</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.data_objects.binary_data.FrameMetadata">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.data_objects.binary_data.</span></span><span class="sig-name descname"><span class="pre">FrameMetadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/binary_data.html#FrameMetadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.binary_data.FrameMetadata" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object holds metadata for a single frame of simularium data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>offset</strong><span class="classifier">int</span></dt><dd><p>Number of bytes the block is offset from the start of the byte array</p>
+</dd>
+<dt><strong>length</strong><span class="classifier">int</span></dt><dd><p>Number of bytes in the block</p>
+</dd>
+<dt><strong>frame_number</strong><span class="classifier">int</span></dt><dd><p>Index of frame in the simulation</p>
+</dd>
+<dt><strong>time</strong><span class="classifier">float</span></dt><dd><p>Elapsed simulation time of the frame</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.binary_data.FrameMetadata.get_start_end_indices">
+<span class="sig-name descname"><span class="pre">get_start_end_indices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/binary_data.html#FrameMetadata.get_start_end_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.binary_data.FrameMetadata.get_start_end_indices" title="Link to this definition">#</a></dt>
+<dd><p>Return the start and end indicies for the data block</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-simulariumio.data_objects.camera_data">
 <span id="simulariumio-data-objects-camera-data-module"></span><h2>simulariumio.data_objects.camera_data module<a class="headerlink" href="#module-simulariumio.data_objects.camera_data" title="Link to this heading">#</a></h2>
 <dl class="py class">
@@ -598,6 +687,31 @@ Default: Use default colors from Simularium Viewer</p>
 </dd></dl>
 
 </section>
+<section id="module-simulariumio.data_objects.frame_data">
+<span id="simulariumio-data-objects-frame-data-module"></span><h2>simulariumio.data_objects.frame_data module<a class="headerlink" href="#module-simulariumio.data_objects.frame_data" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.data_objects.frame_data.FrameData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.data_objects.frame_data.</span></span><span class="sig-name descname"><span class="pre">FrameData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_agents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/frame_data.html#FrameData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.frame_data.FrameData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This object holds frame data for a single frame of simularium data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>frame_number</strong><span class="classifier">int</span></dt><dd><p>Index of frame in the simulation</p>
+</dd>
+<dt><strong>n_agents</strong><span class="classifier">int</span></dt><dd><p>Number of agents included in the frame</p>
+</dd>
+<dt><strong>time</strong><span class="classifier">float</span></dt><dd><p>Elapsed simulation time of the frame</p>
+</dd>
+<dt><strong>data</strong><span class="classifier">bytes or dict</span></dt><dd><p>Spatial data for the frame, as a byte array for binary encoded
+.simularium files or as a dict for JSON .simularium files</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-simulariumio.data_objects.histogram_plot_data">
 <span id="simulariumio-data-objects-histogram-plot-data-module"></span><h2>simulariumio.data_objects.histogram_plot_data module<a class="headerlink" href="#module-simulariumio.data_objects.histogram_plot_data" title="Link to this heading">#</a></h2>
 <dl class="py class">
@@ -678,6 +792,68 @@ Default: use file_path instead</p>
 Otherwise try to open the file at file_path
 and return the data inside as a string or as
 bytes, for binary files.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-simulariumio.data_objects.json_data">
+<span id="simulariumio-data-objects-json-data-module"></span><h2>simulariumio.data_objects.json_data module<a class="headerlink" href="#module-simulariumio.data_objects.json_data" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.data_objects.json_data.JsonData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.data_objects.json_data.</span></span><span class="sig-name descname"><span class="pre">JsonData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_contents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/json_data.html#JsonData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.json_data.JsonData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData" title="simulariumio.data_objects.simularium_file_data.SimulariumFileData"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulariumFileData</span></code></a></p>
+<p>This object holds JSON encoded simulation trajectory file’s
+data while staying close to the original file format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>file_contents</strong><span class="classifier">str</span></dt><dd><p>A string of the data of an open .simularium file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.json_data.JsonData.get_file_contents">
+<span class="sig-name descname"><span class="pre">get_file_contents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/json_data.html#JsonData.get_file_contents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.json_data.JsonData.get_file_contents" title="Link to this definition">#</a></dt>
+<dd><p>Return raw file data, as a dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.json_data.JsonData.get_frame_at_index">
+<span class="sig-name descname"><span class="pre">get_frame_at_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#simulariumio.data_objects.frame_data.FrameData" title="simulariumio.data_objects.frame_data.FrameData"><span class="pre">FrameData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/json_data.html#JsonData.get_frame_at_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.json_data.JsonData.get_frame_at_index" title="Link to this definition">#</a></dt>
+<dd><p>Return frame data for frame at index. If there is no frame at the index,
+return None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.json_data.JsonData.get_index_for_time">
+<span class="sig-name descname"><span class="pre">get_index_for_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/json_data.html#JsonData.get_index_for_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.json_data.JsonData.get_index_for_time" title="Link to this definition">#</a></dt>
+<dd><p>Return index for frame closest to a given timestamp</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.json_data.JsonData.get_num_frames">
+<span class="sig-name descname"><span class="pre">get_num_frames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/json_data.html#JsonData.get_num_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.json_data.JsonData.get_num_frames" title="Link to this definition">#</a></dt>
+<dd><p>Return number of frames in the trajectory</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.json_data.JsonData.get_plot_data">
+<span class="sig-name descname"><span class="pre">get_plot_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/json_data.html#JsonData.get_plot_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.json_data.JsonData.get_plot_data" title="Link to this definition">#</a></dt>
+<dd><p>Return plot data block for trajectory, as dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.json_data.JsonData.get_trajectory_data_object">
+<span class="sig-name descname"><span class="pre">get_trajectory_data_object</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/json_data.html#JsonData.get_trajectory_data_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.json_data.JsonData.get_trajectory_data_object" title="Link to this definition">#</a></dt>
+<dd><p>Return the data of the trajectory, as a TrajectoryData object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.json_data.JsonData.get_trajectory_info">
+<span class="sig-name descname"><span class="pre">get_trajectory_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/json_data.html#JsonData.get_trajectory_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.json_data.JsonData.get_trajectory_info" title="Link to this definition">#</a></dt>
+<dd><p>Return trajectory info block for trajectory, as dict</p>
 </dd></dl>
 
 </dd></dl>
@@ -910,6 +1086,50 @@ Options:</p>
 </dd></dl>
 
 </section>
+<section id="module-simulariumio.data_objects.simularium_file_data">
+<span id="simulariumio-data-objects-simularium-file-data-module"></span><h2>simulariumio.data_objects.simularium_file_data module<a class="headerlink" href="#module-simulariumio.data_objects.simularium_file_data" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.data_objects.simularium_file_data.SimulariumFileData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.data_objects.simularium_file_data.</span></span><span class="sig-name descname"><span class="pre">SimulariumFileData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_contents</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/data_objects/simularium_file_data.html#SimulariumFileData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_file_contents">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_file_contents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/simularium_file_data.html#SimulariumFileData.get_file_contents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_file_contents" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_frame_at_index">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_frame_at_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#simulariumio.data_objects.frame_data.FrameData" title="simulariumio.data_objects.frame_data.FrameData"><span class="pre">FrameData</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/simularium_file_data.html#SimulariumFileData.get_frame_at_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_frame_at_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_index_for_time">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_index_for_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/simularium_file_data.html#SimulariumFileData.get_index_for_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_index_for_time" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_num_frames">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_num_frames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/simularium_file_data.html#SimulariumFileData.get_num_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_num_frames" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_plot_data">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_plot_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/simularium_file_data.html#SimulariumFileData.get_plot_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_plot_data" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_trajectory_data_object">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_trajectory_data_object</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/simularium_file_data.html#SimulariumFileData.get_trajectory_data_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_trajectory_data_object" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_trajectory_info">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_trajectory_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="_modules/simulariumio/data_objects/simularium_file_data.html#SimulariumFileData.get_trajectory_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_trajectory_info" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-simulariumio.data_objects.trajectory_data">
 <span id="simulariumio-data-objects-trajectory-data-module"></span><h2>simulariumio.data_objects.trajectory_data module<a class="headerlink" href="#module-simulariumio.data_objects.trajectory_data" title="Link to this heading">#</a></h2>
 <dl class="py class">
@@ -1116,6 +1336,23 @@ Default: 1.0</p>
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-simulariumio.data_objects.binary_data">simulariumio.data_objects.binary_data module</a><ul>
+<li><a class="reference internal" href="#simulariumio.data_objects.binary_data.BinaryData"><code class="docutils literal notranslate"><span class="pre">BinaryData</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.data_objects.binary_data.BinaryData.get_file_contents"><code class="docutils literal notranslate"><span class="pre">BinaryData.get_file_contents()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.binary_data.BinaryData.get_frame_at_index"><code class="docutils literal notranslate"><span class="pre">BinaryData.get_frame_at_index()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.binary_data.BinaryData.get_index_for_time"><code class="docutils literal notranslate"><span class="pre">BinaryData.get_index_for_time()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.binary_data.BinaryData.get_num_frames"><code class="docutils literal notranslate"><span class="pre">BinaryData.get_num_frames()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.binary_data.BinaryData.get_plot_data"><code class="docutils literal notranslate"><span class="pre">BinaryData.get_plot_data()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.binary_data.BinaryData.get_trajectory_data_object"><code class="docutils literal notranslate"><span class="pre">BinaryData.get_trajectory_data_object()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.binary_data.BinaryData.get_trajectory_info"><code class="docutils literal notranslate"><span class="pre">BinaryData.get_trajectory_info()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#simulariumio.data_objects.binary_data.FrameMetadata"><code class="docutils literal notranslate"><span class="pre">FrameMetadata</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.data_objects.binary_data.FrameMetadata.get_start_end_indices"><code class="docutils literal notranslate"><span class="pre">FrameMetadata.get_start_end_indices()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-simulariumio.data_objects.camera_data">simulariumio.data_objects.camera_data module</a><ul>
 <li><a class="reference internal" href="#simulariumio.data_objects.camera_data.CameraData"><code class="docutils literal notranslate"><span class="pre">CameraData</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.data_objects.camera_data.CameraData.fov_degrees"><code class="docutils literal notranslate"><span class="pre">CameraData.fov_degrees</span></code></a></li>
@@ -1149,6 +1386,10 @@ Default: 1.0</p>
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-simulariumio.data_objects.frame_data">simulariumio.data_objects.frame_data module</a><ul>
+<li><a class="reference internal" href="#simulariumio.data_objects.frame_data.FrameData"><code class="docutils literal notranslate"><span class="pre">FrameData</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-simulariumio.data_objects.histogram_plot_data">simulariumio.data_objects.histogram_plot_data module</a><ul>
 <li><a class="reference internal" href="#simulariumio.data_objects.histogram_plot_data.HistogramPlotData"><code class="docutils literal notranslate"><span class="pre">HistogramPlotData</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.data_objects.histogram_plot_data.HistogramPlotData.title"><code class="docutils literal notranslate"><span class="pre">HistogramPlotData.title</span></code></a></li>
@@ -1164,6 +1405,19 @@ Default: 1.0</p>
 <li><a class="reference internal" href="#simulariumio.data_objects.input_file_data.InputFileData.file_contents"><code class="docutils literal notranslate"><span class="pre">InputFileData.file_contents</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.input_file_data.InputFileData.file_path"><code class="docutils literal notranslate"><span class="pre">InputFileData.file_path</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.data_objects.input_file_data.InputFileData.get_contents"><code class="docutils literal notranslate"><span class="pre">InputFileData.get_contents()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.data_objects.json_data">simulariumio.data_objects.json_data module</a><ul>
+<li><a class="reference internal" href="#simulariumio.data_objects.json_data.JsonData"><code class="docutils literal notranslate"><span class="pre">JsonData</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.data_objects.json_data.JsonData.get_file_contents"><code class="docutils literal notranslate"><span class="pre">JsonData.get_file_contents()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.json_data.JsonData.get_frame_at_index"><code class="docutils literal notranslate"><span class="pre">JsonData.get_frame_at_index()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.json_data.JsonData.get_index_for_time"><code class="docutils literal notranslate"><span class="pre">JsonData.get_index_for_time()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.json_data.JsonData.get_num_frames"><code class="docutils literal notranslate"><span class="pre">JsonData.get_num_frames()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.json_data.JsonData.get_plot_data"><code class="docutils literal notranslate"><span class="pre">JsonData.get_plot_data()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.json_data.JsonData.get_trajectory_data_object"><code class="docutils literal notranslate"><span class="pre">JsonData.get_trajectory_data_object()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.json_data.JsonData.get_trajectory_info"><code class="docutils literal notranslate"><span class="pre">JsonData.get_trajectory_info()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1209,6 +1463,19 @@ Default: 1.0</p>
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-simulariumio.data_objects.simularium_file_data">simulariumio.data_objects.simularium_file_data module</a><ul>
+<li><a class="reference internal" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData"><code class="docutils literal notranslate"><span class="pre">SimulariumFileData</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_file_contents"><code class="docutils literal notranslate"><span class="pre">SimulariumFileData.get_file_contents()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_frame_at_index"><code class="docutils literal notranslate"><span class="pre">SimulariumFileData.get_frame_at_index()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_index_for_time"><code class="docutils literal notranslate"><span class="pre">SimulariumFileData.get_index_for_time()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_num_frames"><code class="docutils literal notranslate"><span class="pre">SimulariumFileData.get_num_frames()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_plot_data"><code class="docutils literal notranslate"><span class="pre">SimulariumFileData.get_plot_data()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_trajectory_data_object"><code class="docutils literal notranslate"><span class="pre">SimulariumFileData.get_trajectory_data_object()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_trajectory_info"><code class="docutils literal notranslate"><span class="pre">SimulariumFileData.get_trajectory_info()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-simulariumio.data_objects.trajectory_data">simulariumio.data_objects.trajectory_data module</a><ul>
 <li><a class="reference internal" href="#simulariumio.data_objects.trajectory_data.TrajectoryData"><code class="docutils literal notranslate"><span class="pre">TrajectoryData</span></code></a><ul>
 <li><a class="reference internal" href="#simulariumio.data_objects.trajectory_data.TrajectoryData.agent_data"><code class="docutils literal notranslate"><span class="pre">TrajectoryData.agent_data</span></code></a></li>
@@ -1244,7 +1511,7 @@ Default: 1.0</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=638f7912"></script>
+</div><script src="_static/documentation_options.js?v=84fb1254"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>

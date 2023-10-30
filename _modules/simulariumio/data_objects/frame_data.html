@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>simulariumio.writers.binary_values - simulariumio 1.8.2.dev1+g5d482f1 documentation</title>
+        <title>simulariumio.data_objects.frame_data - simulariumio 1.8.2.dev1+g5d482f1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -214,44 +214,35 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for simulariumio.writers.binary_values</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1"># -*- coding: utf-8 -*-</span>
-
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span>
-
-<span class="c1">###############################################################################</span>
-
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-
-<span class="c1">###############################################################################</span>
+          <h1>Source code for simulariumio.data_objects.frame_data</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
 
 
-<div class="viewcode-block" id="BinaryValues">
-<a class="viewcode-back" href="../../../simulariumio.writers.html#simulariumio.writers.binary_values.BinaryValues">[docs]</a>
-<span class="k">class</span> <span class="nc">BinaryValues</span><span class="p">:</span>
-    <span class="n">values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
-    <span class="n">format_string</span><span class="p">:</span> <span class="nb">str</span>
-
+<div class="viewcode-block" id="FrameData">
+<a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.frame_data.FrameData">[docs]</a>
+<span class="k">class</span> <span class="nc">FrameData</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
-        <span class="n">format_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">frame_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This object contains value(s) to be written in binary</span>
-<span class="sd">        and the format string to use when packing</span>
+<span class="sd">        This object holds frame data for a single frame of simularium data</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        values: List[Any]</span>
-<span class="sd">            A list of value(s) that will be written to binary</span>
-<span class="sd">        format_string: str</span>
-<span class="sd">            A format string for packing into binary</span>
+<span class="sd">        frame_number : int</span>
+<span class="sd">            Index of frame in the simulation</span>
+<span class="sd">        n_agents : int</span>
+<span class="sd">            Number of agents included in the frame</span>
+<span class="sd">        time : float</span>
+<span class="sd">            Elapsed simulation time of the frame</span>
+<span class="sd">        data : bytes or dict</span>
+<span class="sd">            Spatial data for the frame, as a byte array for binary encoded</span>
+<span class="sd">            .simularium files or as a dict for JSON .simularium files</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">format_string</span> <span class="o">=</span> <span class="n">format_string</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_number</span> <span class="o">=</span> <span class="n">frame_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span> <span class="o">=</span> <span class="n">n_agents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span></div>
 
 </pre></div>
         </article>

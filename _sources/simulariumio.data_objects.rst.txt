@@ -12,6 +12,14 @@ simulariumio.data\_objects.agent\_data module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.data\_objects.binary\_data module
+----------------------------------------------
+
+.. automodule:: simulariumio.data_objects.binary_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.data\_objects.camera\_data module
 ----------------------------------------------
 
@@ -36,6 +44,14 @@ simulariumio.data\_objects.display\_data module
    :undoc-members:
    :show-inheritance:
 
+simulariumio.data\_objects.frame\_data module
+---------------------------------------------
+
+.. automodule:: simulariumio.data_objects.frame_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 simulariumio.data\_objects.histogram\_plot\_data module
 -------------------------------------------------------
 
@@ -48,6 +64,14 @@ simulariumio.data\_objects.input\_file\_data module
 ---------------------------------------------------
 
 .. automodule:: simulariumio.data_objects.input_file_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.data\_objects.json\_data module
+--------------------------------------------
+
+.. automodule:: simulariumio.data_objects.json_data
    :members:
    :undoc-members:
    :show-inheritance:
@@ -72,6 +96,14 @@ simulariumio.data\_objects.scatter\_plot\_data module
 -----------------------------------------------------
 
 .. automodule:: simulariumio.data_objects.scatter_plot_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.data\_objects.simularium\_file\_data module
+--------------------------------------------------------
+
+.. automodule:: simulariumio.data_objects.simularium_file_data
    :members:
    :undoc-members:
    :show-inheritance:

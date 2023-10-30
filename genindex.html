@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 --><title>Index - simulariumio 1.8.1.dev62+gcdc9339 documentation</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 --><title>Index - simulariumio 1.8.2.dev1+g5d482f1 documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">simulariumio 1.8.1.dev62+gcdc9339 documentation</div></a>
+      <a href="index.html"><div class="brand">simulariumio 1.8.2.dev1+g5d482f1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.8.1.dev62+gcdc9339 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.8.2.dev1+g5d482f1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -281,6 +281,8 @@
         <li><a href="simulariumio.readers.html#simulariumio.readers.binary_info.BinaryBlockInfo">BinaryBlockInfo (class in simulariumio.readers.binary_info)</a>
 </li>
         <li><a href="simulariumio.writers.html#simulariumio.writers.binary_chunk.BinaryChunk">BinaryChunk (class in simulariumio.writers.binary_chunk)</a>
+</li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData">BinaryData (class in simulariumio.data_objects.binary_data)</a>
 </li>
         <li><a href="simulariumio.readers.html#simulariumio.readers.binary_info.BinaryFileData">BinaryFileData (class in simulariumio.readers.binary_info)</a>
 </li>
@@ -478,15 +480,19 @@
           <li><a href="simulariumio.writers.html#simulariumio.writers.writer.Writer.format_trajectory_data">(simulariumio.writers.writer.Writer static method)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="simulariumio.html#simulariumio.constants.DEFAULT_CAMERA_SETTINGS.FOV_DEGREES">FOV_DEGREES (simulariumio.constants.DEFAULT_CAMERA_SETTINGS attribute)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.camera_data.CameraData.fov_degrees">fov_degrees (simulariumio.data_objects.camera_data.CameraData attribute)</a>
 </li>
         <li><a href="simulariumio.html#simulariumio.constants.BINARY_SETTINGS.FRAME_HEADER_N_VALUES">FRAME_HEADER_N_VALUES (simulariumio.constants.BINARY_SETTINGS attribute)</a>
 </li>
         <li><a href="simulariumio.writers.html#simulariumio.writers.binary_chunk.BinaryChunk.frame_n_values">frame_n_values (simulariumio.writers.binary_chunk.BinaryChunk attribute)</a>
+</li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.frame_data.FrameData">FrameData (class in simulariumio.data_objects.frame_data)</a>
+</li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.binary_data.FrameMetadata">FrameMetadata (class in simulariumio.data_objects.binary_data)</a>
 </li>
         <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.from_buffer_data">from_buffer_data() (simulariumio.data_objects.agent_data.AgentData class method)</a>
 
@@ -546,12 +552,36 @@
 </li>
         <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.get_display_data">get_display_data() (simulariumio.data_objects.agent_data.AgentData static method)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_file_contents">get_file_contents() (simulariumio.data_objects.binary_data.BinaryData method)</a>
+
+        <ul>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_file_contents">(simulariumio.data_objects.json_data.JsonData method)</a>
+</li>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_file_contents">(simulariumio.data_objects.simularium_file_data.SimulariumFileData method)</a>
+</li>
+        </ul></li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_frame_at_index">get_frame_at_index() (simulariumio.data_objects.binary_data.BinaryData method)</a>
+
+        <ul>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_frame_at_index">(simulariumio.data_objects.json_data.JsonData method)</a>
+</li>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_frame_at_index">(simulariumio.data_objects.simularium_file_data.SimulariumFileData method)</a>
+</li>
+        </ul></li>
         <li><a href="simulariumio.writers.html#simulariumio.writers.binary_chunk.BinaryChunk.get_global_index">get_global_index() (simulariumio.writers.binary_chunk.BinaryChunk method)</a>
 </li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_index_for_time">get_index_for_time() (simulariumio.data_objects.binary_data.BinaryData method)</a>
+
+        <ul>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_index_for_time">(simulariumio.data_objects.json_data.JsonData method)</a>
+</li>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_index_for_time">(simulariumio.data_objects.simularium_file_data.SimulariumFileData method)</a>
+</li>
+        </ul></li>
         <li><a href="simulariumio.filters.html#simulariumio.filters.filter.Filter.get_items_from_subpoints">get_items_from_subpoints() (simulariumio.filters.filter.Filter static method)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_linear_voxels">get_linear_voxels() (simulariumio.physicell.dep.pyMCDS.pyMCDS method)</a>
 </li>
         <li><a href="simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_mesh">get_mesh() (simulariumio.physicell.dep.pyMCDS.pyMCDS method)</a>
@@ -560,12 +590,46 @@
 </li>
         <li><a href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.get_min_max_positions">get_min_max_positions() (simulariumio.trajectory_converter.TrajectoryConverter static method)</a>
 </li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_num_frames">get_num_frames() (simulariumio.data_objects.binary_data.BinaryData method)</a>
+
+        <ul>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_num_frames">(simulariumio.data_objects.json_data.JsonData method)</a>
+</li>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_num_frames">(simulariumio.data_objects.simularium_file_data.SimulariumFileData method)</a>
+</li>
+        </ul></li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_plot_data">get_plot_data() (simulariumio.data_objects.binary_data.BinaryData method)</a>
+
+        <ul>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_plot_data">(simulariumio.data_objects.json_data.JsonData method)</a>
+</li>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_plot_data">(simulariumio.data_objects.simularium_file_data.SimulariumFileData method)</a>
+</li>
+        </ul></li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.binary_data.FrameMetadata.get_start_end_indices">get_start_end_indices() (simulariumio.data_objects.binary_data.FrameMetadata method)</a>
+</li>
         <li><a href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.get_subpoints_xyz">get_subpoints_xyz() (simulariumio.trajectory_converter.TrajectoryConverter static method)</a>
 </li>
         <li><a href="simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_substrate_names">get_substrate_names() (simulariumio.physicell.dep.pyMCDS.pyMCDS method)</a>
 </li>
         <li><a href="simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_time">get_time() (simulariumio.physicell.dep.pyMCDS.pyMCDS method)</a>
 </li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_trajectory_data_object">get_trajectory_data_object() (simulariumio.data_objects.binary_data.BinaryData method)</a>
+
+        <ul>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_trajectory_data_object">(simulariumio.data_objects.json_data.JsonData method)</a>
+</li>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_trajectory_data_object">(simulariumio.data_objects.simularium_file_data.SimulariumFileData method)</a>
+</li>
+        </ul></li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_trajectory_info">get_trajectory_info() (simulariumio.data_objects.binary_data.BinaryData method)</a>
+
+        <ul>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_trajectory_info">(simulariumio.data_objects.json_data.JsonData method)</a>
+</li>
+          <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.simularium_file_data.SimulariumFileData.get_trajectory_info">(simulariumio.data_objects.simularium_file_data.SimulariumFileData method)</a>
+</li>
+        </ul></li>
         <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.get_type_ids_and_mapping">get_type_ids_and_mapping() (simulariumio.data_objects.agent_data.AgentData method)</a>
 </li>
         <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData.get_type_names">get_type_names() (simulariumio.data_objects.agent_data.AgentData static method)</a>
@@ -630,6 +694,8 @@
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData">JsonData (class in simulariumio.data_objects.json_data)</a>
+</li>
         <li><a href="simulariumio.writers.html#simulariumio.writers.json_writer.JsonWriter">JsonWriter (class in simulariumio.writers.json_writer)</a>
 </li>
     </ul></td>
@@ -742,21 +808,29 @@
 </li>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.agent_data">simulariumio.data_objects.agent_data</a>
 </li>
+          <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.binary_data">simulariumio.data_objects.binary_data</a>
+</li>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.camera_data">simulariumio.data_objects.camera_data</a>
 </li>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.dimension_data">simulariumio.data_objects.dimension_data</a>
 </li>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.display_data">simulariumio.data_objects.display_data</a>
 </li>
+          <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.frame_data">simulariumio.data_objects.frame_data</a>
+</li>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.histogram_plot_data">simulariumio.data_objects.histogram_plot_data</a>
 </li>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.input_file_data">simulariumio.data_objects.input_file_data</a>
+</li>
+          <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.json_data">simulariumio.data_objects.json_data</a>
 </li>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.meta_data">simulariumio.data_objects.meta_data</a>
 </li>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.model_meta_data">simulariumio.data_objects.model_meta_data</a>
 </li>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.scatter_plot_data">simulariumio.data_objects.scatter_plot_data</a>
+</li>
+          <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.simularium_file_data">simulariumio.data_objects.simularium_file_data</a>
 </li>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.trajectory_data">simulariumio.data_objects.trajectory_data</a>
 </li>
@@ -1083,6 +1157,8 @@
 </li>
         <li><a href="simulariumio.readers.html#simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader">SimulariumBinaryReader (class in simulariumio.readers.simularium_binary_reader)</a>
 </li>
+        <li><a href="simulariumio.data_objects.html#simulariumio.data_objects.simularium_file_data.SimulariumFileData">SimulariumFileData (class in simulariumio.data_objects.simularium_file_data)</a>
+</li>
         <li>
     simulariumio
 
@@ -1161,6 +1237,13 @@
 </li>
         </ul></li>
         <li>
+    simulariumio.data_objects.binary_data
+
+        <ul>
+          <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.binary_data">module</a>
+</li>
+        </ul></li>
+        <li>
     simulariumio.data_objects.camera_data
 
         <ul>
@@ -1182,6 +1265,13 @@
 </li>
         </ul></li>
         <li>
+    simulariumio.data_objects.frame_data
+
+        <ul>
+          <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.frame_data">module</a>
+</li>
+        </ul></li>
+        <li>
     simulariumio.data_objects.histogram_plot_data
 
         <ul>
@@ -1193,6 +1283,13 @@
 
         <ul>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.input_file_data">module</a>
+</li>
+        </ul></li>
+        <li>
+    simulariumio.data_objects.json_data
+
+        <ul>
+          <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.json_data">module</a>
 </li>
         </ul></li>
         <li>
@@ -1214,6 +1311,13 @@
 
         <ul>
           <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.scatter_plot_data">module</a>
+</li>
+        </ul></li>
+        <li>
+    simulariumio.data_objects.simularium_file_data
+
+        <ul>
+          <li><a href="simulariumio.data_objects.html#module-simulariumio.data_objects.simularium_file_data">module</a>
 </li>
         </ul></li>
         <li>
@@ -1328,6 +1432,8 @@
           <li><a href="simulariumio.mcell.html#module-simulariumio.mcell.mcell_converter">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     simulariumio.mcell.mcell_data
 
@@ -1342,8 +1448,6 @@
           <li><a href="simulariumio.md.html#module-simulariumio.md">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     simulariumio.md.md_converter
 
@@ -1811,7 +1915,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=638f7912"></script>
+</div><script src="_static/documentation_options.js?v=84fb1254"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
