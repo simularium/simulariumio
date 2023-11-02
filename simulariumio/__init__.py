@@ -22,9 +22,13 @@ from .data_objects import (  # noqa: F401
     ScatterPlotData,
     TrajectoryData,
     UnitData,
+    FrameData,
+    SimulariumFileData,
+    JsonData,
+    BinaryData,
 )
 # DO NOT ISORT DISPLAY_TYPE, CAUSES CIRCULAR DEP
-from .constants import DISPLAY_TYPE  # noqa: F401
+from .constants import BINARY_SETTINGS, DISPLAY_TYPE  # noqa: F401
 from .file_converter import FileConverter  # noqa: F401
 from .trajectory_converter import TrajectoryConverter  # noqa: F401
 from .writers import BinaryWriter, JsonWriter  # noqa: F401
