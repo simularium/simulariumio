@@ -6,7 +6,7 @@
 
 Both JSON and binary contain the following data structured like:
 * **trajectory info**
-  * version - 2.0
+  * version - 3.0
   * trajectoryTitle (optional) - a name for this run of the model
   * modelInfo (optional) - metadata about the model that produced this trajectory
     * title - display title for this model
