@@ -27,7 +27,7 @@ This repository is part of the Simularium project ([simularium.allencell.org](ht
 <br/>
 
 # 1. Convert your data
-Save your data as a .simularium file (see Jupyter notebook [examples](examples/)):
+Save your data as a [.simularium file (click to see full file format](https://github.com/simularium/simulariumio/blob/main/file_format.md) (see Jupyter notebook [examples](examples/)):
 
 ```python
 import numpy as np
