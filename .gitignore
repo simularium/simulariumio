@@ -155,3 +155,6 @@ settings.json
 # Ignore benchmark data
 benchmarks/resources/
 benchmarks/upload_manifest.jsonl
+
+# Maya
+*.mb
