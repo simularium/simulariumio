@@ -20,7 +20,7 @@ INSTRUCTIONS:
     
 """   
 
-# edit these parameter values
+# edit these parameter values *******************************************************************
 
 geometry_urls = {
      "Antigen1" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
@@ -65,7 +65,7 @@ camera_look_at_position=[0.0, 0.0, 0.0]
 camera_fov_degrees=60.0
 save_objs = False
 
-# don't edit below
+# don't edit below ******************************************************************************
 
 import maya.cmds as cmds
 import numpy as np
@@ -74,6 +74,7 @@ from simulariumio import (
     TrajectoryConverter, 
     TrajectoryData, 
     AgentData, 
+    DimensionData,
     UnitData, 
     MetaData, 
     ModelMetaData,
@@ -83,115 +84,68 @@ from simulariumio import (
 )
 from simulariumio.constants import VIZ_TYPE
 
+
 min_time = int(cmds.playbackOptions(query=True, min=True))
 max_time = int(cmds.playbackOptions(query=True, max=True))
 total_steps = max_time - min_time + 1
 type_names = cmds.ls(selection=True)
 max_agents = len(type_names)
-positions = []
-rotations = []
-radii = []
-
-
 if max_agents < 1:
     raise Exception("Select one or more objects to export.")
-
-# TODO
-# to group agents by type (but couldn't find how to use it later)  
-def getClass(x):
-    word=(f"{x}")
-    if (word[4]=="g"):
-        return ("Antigen")
-    elif (word[4]=="b"):
-        return ("Antibody")
-    else:
-        return ("Complex")
-
-agent_types=set ()    
-type_names = cmds.ls(selection=True)
-for type_name in type_names:
-    agent_type=getClass(type_name)
-    agent_types.add(agent_type)
-
-
-# TODO
-# convert shader colors to hex codes
-def num_to_letter(x):
-    if (x==10):
-         return ("a")
-    elif (x==11):
-         return ("b")
-    elif (x==12):
-         return ("c")
-    elif (x==13):
-         return ("d")
-    elif (x==14):
-         return ("e")
-    elif (x==15):
-         return ("f")
-    else:
-        return (x)
-        
-def color_to_hex(color):
-    rgb_color = (
-        int(255 * color[0][0]), 
-        int(255 * color[0][1]), 
-        int(255 * color[0][2])
+agent_data = AgentData.from_dimensions(
+    DimensionData(
+        total_steps=total_steps, 
+        max_agents=max_agents
     )
-    a=int((rgb_color[0])/16)
-    b=int((((rgb_color[0])/16)-a)*16)
-    c=int((rgb_color[1])/16)
-    d=int((((rgb_color[1])/16)-c)*16)
-    e=int((rgb_color[2])/16)
-    f=int((((rgb_color[2])/16)-e)*16)        
-    return ("#"+f"{num_to_letter(a)}{num_to_letter(b)}{num_to_letter(c)}{num_to_letter(d)}{num_to_letter(e)}{num_to_letter(f)}")
+)
+agent_data.times = timestep * np.array(list(range(min_time, max_time + 1)))
 
-
-def rotation_matrix_to_euler_angles(rotation_matrix):
-    return -1 * Rotation.from_matrix(rotation_matrix).as_euler("xyz", degrees=False)
 
 # get display information
-display_data={}
+def rgb_to_hex(material_color):
+    rgb = (
+        int(255 * material_color[0][0]), 
+        int(255 * material_color[0][1]), 
+        int(255 * material_color[0][2])
+    )
+    return "#%02x%02x%02x" % rgb
+
+def get_base_type_name(type_name):
+    name = type_name
+    while len(name) > 0 and name[-1].isdigit():
+        name = name[0:-1]
+    return name
+
 for type_name in type_names:
-#for agent_type in agent_types:
     # get color 
     shaders = cmds.listConnections(cmds.listHistory(type_name))
     materials = [x for x in cmds.ls(cmds.listConnections(shaders), materials=1)]   
-    colorRGB= cmds.getAttr (f"{materials[0]}.color")
-    color_hex = color_to_hex(colorRGB)
+    color_rgb = cmds.getAttr(f"{materials[0]}.color")
+    color_hex = rgb_to_hex(color_rgb)
+    base_type = get_base_type_name(type_name)
     # create display data
-    display_data[type_name] = DisplayData(
-        name=type_name,
-        display_type=DISPLAY_TYPE.OBJ,
-        url=geometry_urls[type_name],
-        color=color_hex,
-    )
-    
-# get display information - one by agent type, but not sure how to use it later
-#display_data={}
-#for agent_type in agent_types:
-    # get color
-   # shaders = cmds.listConnections(cmds.listHistory(f"{agent_type}.1"))
-   # materials = [x for x in cmds.ls(cmds.listConnections(shaders), materials=1)]   
-   # colorRGB= cmds.getAttr (f"{materials[0]}.color")
-   # color_hex = color_to_hex(colorRGB)
-    # create display data
-   # display_data[agent_type] = DisplayData(
-        #name=agent_type,
-        #display_type=DISPLAY_TYPE.OBJ,
-        #url=geometry_urls[agent_type],
-       # color=color_hex,
-    #)
+    if base_type not in agent_data.display_data:
+        agent_data.display_data[base_type] = DisplayData(
+            name=base_type,
+            display_type=DISPLAY_TYPE.OBJ,
+            url=geometry_urls[type_name],
+            color=color_hex,
+        )
 
 
 # get trajectory
+def rotation_matrix_to_euler_angles(rotation_matrix):
+    return -1 * Rotation.from_matrix(rotation_matrix).as_euler("xyz", degrees=False)
+
 for time_ix, time in enumerate(range(min_time, max_time + 1)):
     cmds.currentTime(time)
-    positions.append([])
-    rotations.append([])
-    radii.append([])
-    for type_name in type_names:
-        vis=cmds.getAttr (f"{type_name}.v")
+    agent_ix = 0
+    for type_ix, type_name in enumerate(type_names):
+        # check visibility
+        visible = cmds.getAttr(f"{type_name}.v")
+        if not visible:
+            continue
+        # get transform
         position = cmds.xform(type_name, query=True, rotatePivot=True, worldSpace=True)
         transform = cmds.getAttr(f"{type_name}.worldMatrix", time=time)
         scale = [
@@ -204,16 +158,14 @@ for time_ix, time in enumerate(range(min_time, max_time + 1)):
             [transform[4] / scale[1], transform[5] / scale[1], transform[6] / scale[1]], 
             [transform[8] / scale[2], transform[9] / scale[2], transform[10] / scale[2]]
         ])
-        # TODO
-        if vis==True:
-            positions[time_ix].append(position)
-            rotations[time_ix].append(rotation_matrix_to_euler_angles(rotation_matrix))
-            radii[time_ix].append(scale[0])
-            # might exist a more elegant way! I'm just sending the object far away when they are supposed to not be visible (can we just "skip" timepoints if objects are not visible in Maya?)
-        else:
-            positions[time_ix].append([2000,2000,2000])
-            rotations[time_ix].append(rotation_matrix_to_euler_angles(rotation_matrix))
-            radii[time_ix].append(scale[0])
+        # save agent data
+        agent_data.unique_ids[time_ix][agent_ix] = type_ix
+        agent_data.types[time_ix].append(get_base_type_name(type_name))
+        agent_data.positions[time_ix][agent_ix] = position
+        agent_data.rotations[time_ix][agent_ix] = rotation_matrix_to_euler_angles(rotation_matrix)
+        agent_data.radii[time_ix][agent_ix] = scale[0]
+        agent_ix += 1
+    agent_data.n_agents[time_ix] = agent_ix
 cmds.currentTime(min_time)
 
 # export OBJs TODO
@@ -268,17 +220,7 @@ trajectory_data = TrajectoryData(
             description=animation_description,
         ),
     ),
-    agent_data=AgentData(
-        times=timestep * np.array(list(range(min_time, max_time + 1))),
-        n_agents=total_steps * [max_agents],
-        viz_types=total_steps * [max_agents * [VIZ_TYPE.DEFAULT]],
-        unique_ids=total_steps * [list(range(max_agents))],
-        types=total_steps * [type_names],
-        positions=positions,
-        rotations=rotations,
-        radii=radii,
-        display_data=display_data,
-    ),
+    agent_data=agent_data,
     time_units=UnitData(time_units),
     spatial_units=UnitData(spatial_units),
 )
