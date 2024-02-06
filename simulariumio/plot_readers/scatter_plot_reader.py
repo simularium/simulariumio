@@ -6,6 +6,7 @@ from typing import Dict, Any
 
 from ..exceptions import DataError
 from .plot_reader import PlotReader
+from ..data_objects import ScatterPlotData
 
 ###############################################################################
 
@@ -15,7 +16,7 @@ log = logging.getLogger(__name__)
 
 
 class ScatterPlotReader(PlotReader):
-    def read(self, data: Dict[str, Any]) -> Dict[str, Any]:
+    def read(self, data: ScatterPlotData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """

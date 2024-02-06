@@ -5,6 +5,7 @@ import logging
 from typing import Dict, Any
 
 from .plot_reader import PlotReader
+from ..data_objects import HistogramPlotData
 
 ###############################################################################
 
@@ -14,7 +15,7 @@ log = logging.getLogger(__name__)
 
 
 class HistogramPlotReader(PlotReader):
-    def read(self, data: Dict[str, Any]) -> Dict[str, Any]:
+    def read(self, data: HistogramPlotData) -> Dict[str, Any]:
         """
         Return an object containing the data shaped for Simularium format
         """

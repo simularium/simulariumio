@@ -5,6 +5,8 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Dict, Any
 
+from ..data_objects import ScatterPlotData, HistogramPlotData
+
 ###############################################################################
 
 log = logging.getLogger(__name__)
@@ -14,5 +16,5 @@ log = logging.getLogger(__name__)
 
 class PlotReader(ABC):
     @abstractmethod
-    def read(self, data: Dict[str, Any]) -> Dict[str, Any]:
+    def read(self, data: ScatterPlotData or HistogramPlotData) -> Dict[str, Any]:
         pass
