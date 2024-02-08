@@ -8,7 +8,7 @@ import numpy as np
 
 from .filter import Filter
 from ..data_objects import TrajectoryData
-from ..constants import DISPLAY_TYPE, VALUES_PER_3D_POINT
+from ..constants import VALUES_PER_3D_POINT
 
 ###############################################################################
 
@@ -52,7 +52,6 @@ class TranslateFilter(Filter):
         print("Filtering: translation -------------")
         # get dimensions
         total_steps = data.agent_data.times.size
-        max_subpoints = int(np.amax(data.agent_data.n_subpoints))
         # get filtered data
         for time_index in range(total_steps):
             for agent_index in range(int(data.agent_data.n_agents[time_index])):
@@ -67,28 +66,5 @@ class TranslateFilter(Filter):
                 else:
                     translation = self.default_translation
                 # apply translation
-                display_type = data.agent_data.display_type_for_agent(
-                    time_index, agent_index
-                )
-                translate_subpoints = (
-                    max_subpoints > 0 and display_type != DISPLAY_TYPE.SPHERE_GROUP
-                )
-                if translate_subpoints:
-                    sp_items = self.get_items_from_subpoints(
-                        data.agent_data, time_index, agent_index
-                    )
-                    if sp_items is None:
-                        translate_subpoints = False
-                    else:
-                        # translate subpoints for fibers
-                        n_items = sp_items.shape[0]
-                        for item_index in range(n_items):
-                            sp_items[item_index][:VALUES_PER_3D_POINT] += translation
-                        n_sp = int(data.agent_data.n_subpoints[time_index][agent_index])
-                        data.agent_data.subpoints[time_index][agent_index][
-                            :n_sp
-                        ] = sp_items.reshape(n_sp)
-                if not translate_subpoints:
-                    # translate agent position for non-fibers
-                    data.agent_data.positions[time_index][agent_index] += translation
+                data.agent_data.positions[time_index][agent_index] += translation
         return data
