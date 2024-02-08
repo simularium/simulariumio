@@ -22,6 +22,8 @@ INSTRUCTIONS:
 
 # edit these parameter values *******************************************************************
 
+set_id_by_complex = True
+complex_components = ["Antibody", "Antigen"]
 geometry_urls = {
      "Antigen1" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
      "Antigen2" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
@@ -52,7 +54,7 @@ timestep = 2.0  # time that passes each step
 time_units = "us"  # microseconds
 
 # this file path must be absolute
-output_path = "/Users/blairl/Dropbox/ForBlair_20231002/"
+output_path = "/Users/blairl/Documents/Dev/simulariumio/simulariumio/maya/output/"
 # output_path = "/Users/margotriggi/Documents/SpringSaladTutorial/TestAgAb/TestSimulariumExport"
 
 trajectory_name = "AgAb_animation" #.simularium
@@ -110,19 +112,26 @@ def rgb_to_hex(material_color):
     )
     return "#%02x%02x%02x" % rgb
 
-def get_base_type_name(type_name):
+def get_base_type_name_and_uid(type_name):
+    number = ""
     name = type_name
     while len(name) > 0 and name[-1].isdigit():
+        number = name[-1] + number
         name = name[0:-1]
-    return name
+    number = int(number)
+    if name == complex_components[1]:
+        number *= 10
+    print(f"{type_name} -> {name}, uid = {number}")
+    return name, number
 
 for type_name in type_names:
+    print(type_name)
     # get color 
     shaders = cmds.listConnections(cmds.listHistory(type_name))
     materials = [x for x in cmds.ls(cmds.listConnections(shaders), materials=1)]   
     color_rgb = cmds.getAttr(f"{materials[0]}.color")
     color_hex = rgb_to_hex(color_rgb)
-    base_type = get_base_type_name(type_name)
+    base_type = get_base_type_name_and_uid(type_name)[0]
     # create display data
     if base_type not in agent_data.display_data:
         agent_data.display_data[base_type] = DisplayData(
@@ -159,8 +168,9 @@ for time_ix, time in enumerate(range(min_time, max_time + 1)):
             [transform[8] / scale[2], transform[9] / scale[2], transform[10] / scale[2]]
         ])
         # save agent data
-        agent_data.unique_ids[time_ix][agent_ix] = type_ix
-        agent_data.types[time_ix].append(get_base_type_name(type_name))
+        base_type_name, uid = get_base_type_name_and_uid(type_name)
+        agent_data.unique_ids[time_ix][agent_ix] = uid if set_id_by_complex else type_ix
+        agent_data.types[time_ix].append(base_type_name)
         agent_data.positions[time_ix][agent_ix] = position
         agent_data.rotations[time_ix][agent_ix] = rotation_matrix_to_euler_angles(rotation_matrix)
         agent_data.radii[time_ix][agent_ix] = scale[0]
