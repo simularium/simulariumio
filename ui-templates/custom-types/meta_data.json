@@ -18,19 +18,49 @@
                 "default": 1.0,
                 "help": "If not provided, defaults to 1.0"
             },
-            "cameraDefault": {
-                "name": "Camera defaults",
-                "data_type": "camera_data",
-                "description": "Provide the default view of the 3D scene",
+            "cameraPosition": {
+                "name": "Camera position",
+                "data_type": "coordinates_xyz",
+                "description": "position of the camera",
                 "required": false,
-                "help": "If not provided, defaults to camera position = [0, 0, 120], look at position = [0, 0, 0], up vector = [0, 1, 0] and field of view = 75 degrees"
+                "default": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 120.0
+                },
+                "help": "If not provided, defaults to [0, 0, 120]"
             },
-            "modelInfo": {
-                "name": "Model metadata",
-                "data_type": "model_meta_data",
-                "description": "provide metadata for the model that was used to calculate this trajectory",
+            "lookAtPosition": {
+                "name": "Camera look at position",
+                "data_type": "coordinates_xyz",
+                "description": "target position to look at",
                 "required": false,
-                "help": "If not provided, don't include metadata about the model"
+                "default": {
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "help": "If not provided, defaults to [0, 0, 0]"
+            },
+            "upVector": {
+                "name": "Camera up vector",
+                "data_type": "coordinates_xyz",
+                "description": "up direction",
+                "required": false,
+                "default": {
+                    "x": 0.0,
+                    "y": 1.0,
+                    "z": 0.0
+                },
+                "help": "If not provided, defaults to [0, 1, 0]"
+            },
+            "fovDegrees": {
+                "name": "FOV (degrees)",
+                "data_type": "float",
+                "description": "field of view in degrees",
+                "required": false,
+                "default": 75.0,
+                "help": "If not provided, defaults to 75"
             }
         }
     }
