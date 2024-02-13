@@ -66,7 +66,7 @@ class CameraData:
             return cls()
         return cls(
             position=unpack_position_vector(
-                camera_info.get("position"),
+                camera_info.get("cameraPosition"),
                 DEFAULT_CAMERA_SETTINGS.CAMERA_POSITION
             ),
             look_at_position=unpack_position_vector(
