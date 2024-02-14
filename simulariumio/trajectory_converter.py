@@ -23,7 +23,7 @@ from .data_objects import (
 from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
 from .writers import JsonWriter, BinaryWriter
-from .constants import DISPLAY_TYPE, VIEWER_DIMENSION_RANGE, VALUES_PER_3D_POINT
+from .constants import DISPLAY_TYPE, VIEWER_DIMENSION_RANGE
 
 ###############################################################################
 
