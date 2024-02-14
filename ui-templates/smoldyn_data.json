@@ -4,7 +4,7 @@
         "python::object": "SmoldynData",
         "parameters": {
             "fileContents": {
-                "name": "File",
+                "name": "Select file",
                 "data_type": "file",
                 "description": "A Smoldyn file",
                 "required": true,
@@ -21,7 +21,7 @@
             "displayData": {
                 "name": "Particle display specification (recommended)",
                 "data_type": "collection",
-                "description": "Provide display information for each particle type from Smoldyn",
+                "description": "Particle names must exactly match the particle names in your Smoldyn trajectory to be recognized.",
                 "required": false,
                 "help": "If not provided, defaults to display name from Smoldyn, and draws agent as a sphere with radius = 1.0 and default colors",
                 "length": 1,
