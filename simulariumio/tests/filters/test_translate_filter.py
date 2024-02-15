@@ -51,7 +51,7 @@ from simulariumio.constants import (
                 ),
             },
             TranslateFilter(
-                translation_per_type={"microtubule": np.array([-50, 0, 0])}
+                translation_per_type={"microtubule": np.array([10, 0, 50])}
             ),
             {
                 "trajectoryInfo": {
