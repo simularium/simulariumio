@@ -19,7 +19,7 @@ from simulariumio.constants import (
         # translate agents
         (
             "simulariumio/tests/data/cytosim/aster_pull3D_couples_actin_solid_3_frames"
-            "/test_rotation.json",
+            "/aster_pull3D_couples_actin_solid_3_frames_small.json",
             {
                 1: DisplayData(
                     name="microtubule",
@@ -252,6 +252,4 @@ def test_translate_filter(input_path, display_data, _filter, expected_data):
     )
     filtered_data = converter.filter_data([_filter])
     buffer_data = JsonWriter.format_trajectory_data(filtered_data)
-    JsonWriter.save(filtered_data, "./test-new", False)
-    print(f"buffer data: \n {buffer_data} \n\n")
     assert expected_data == buffer_data
