@@ -313,37 +313,37 @@ translation = [-338.15649125, -432.79879825, -189.62899875]
                 VIZ_TYPE.FIBER,  # first agent
                 0.0,  # id
                 0.0,  # type
-                0,  # x
-                0,  # y
-                0,  # z
+                translation[0] * scale_factor_display_data,  # x
+                translation[1] * scale_factor_display_data,  # y
+                translation[2] * scale_factor_display_data,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
                 actin_radius * scale_factor_display_data,  # radius
                 6.0,  # number of subpoints
-                (454.3434234 + translation[0]) * scale_factor_display_data,
-                (363.439226 + translation[1]) * scale_factor_display_data,
-                (265.4405349 + translation[2]) * scale_factor_display_data,
-                (519.7377041 + translation[0]) * scale_factor_display_data,
-                (351.5737487 + translation[1]) * scale_factor_display_data,
-                (180.312405 + translation[2]) * scale_factor_display_data,
+                454.3434234 * scale_factor_display_data,
+                363.439226 * scale_factor_display_data,
+                265.4405349 * scale_factor_display_data,
+                519.7377041 * scale_factor_display_data,
+                351.5737487 * scale_factor_display_data,
+                180.312405 * scale_factor_display_data,
                 VIZ_TYPE.FIBER,  # second agent
                 1.0,
                 0.0,
-                0,
-                0,
-                0,
+                translation[0] * scale_factor_display_data,
+                translation[1] * scale_factor_display_data,
+                translation[2] * scale_factor_display_data,
                 0.0,
                 0.0,
                 0.0,
                 actin_radius * scale_factor_display_data,
                 6.0,
-                (547.5943503 + translation[0]) * scale_factor_display_data,
-                (280.3075619 + translation[1]) * scale_factor_display_data,
-                (307.4127023 + translation[2]) * scale_factor_display_data,
-                (535.194707 + translation[0]) * scale_factor_display_data,
-                (173.0325428 + translation[1]) * scale_factor_display_data,
-                (308.9355694 + translation[2]) * scale_factor_display_data,
+                547.5943503 * scale_factor_display_data,
+                280.3075619 * scale_factor_display_data,
+                307.4127023 * scale_factor_display_data,
+                535.194707 * scale_factor_display_data,
+                173.0325428 * scale_factor_display_data,
+                308.9355694 * scale_factor_display_data,
             ],
         )
     ],
