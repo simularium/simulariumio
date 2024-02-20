@@ -232,37 +232,37 @@ def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
                 VIZ_TYPE.FIBER,  # first agent
                 0.0,  # id
                 0.0,  # type
-                0.0,  # x
-                0.0,  # y
-                0.0,  # z
+                487.04056375 * scale_factor_display_data,  # x
+                357.50648735 * scale_factor_display_data,  # y
+                222.87646995 * scale_factor_display_data,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
                 actin_radius * scale_factor_display_data,  # radius
                 6.0,  # number of subpoints
-                454.3434234 * scale_factor_display_data,
-                363.439226 * scale_factor_display_data,
-                265.4405349 * scale_factor_display_data,
-                519.7377041 * scale_factor_display_data,
-                351.5737487 * scale_factor_display_data,
-                180.312405 * scale_factor_display_data,
+                -32.69714035 * scale_factor_display_data,
+                5.93273865 * scale_factor_display_data,
+                42.56406495 * scale_factor_display_data,
+                32.69714035 * scale_factor_display_data,
+                -5.93273865 * scale_factor_display_data,
+                -42.56406495 * scale_factor_display_data,
                 VIZ_TYPE.FIBER,  # second agent
                 1.0,
                 0.0,
-                0.0,
-                0.0,
-                0.0,
+                541.39452865 * scale_factor_display_data,
+                226.67005235 * scale_factor_display_data,
+                308.17413585 * scale_factor_display_data,
                 0.0,
                 0.0,
                 0.0,
                 actin_radius * scale_factor_display_data,
                 6.0,
-                547.5943503 * scale_factor_display_data,
-                280.3075619 * scale_factor_display_data,
-                307.4127023 * scale_factor_display_data,
-                535.194707 * scale_factor_display_data,
-                173.0325428 * scale_factor_display_data,
-                308.9355694 * scale_factor_display_data,
+                6.19982165 * scale_factor_display_data,
+                53.63750955 * scale_factor_display_data,
+                -0.76143355 * scale_factor_display_data,
+                -6.19982165 * scale_factor_display_data,
+                -53.63750955 * scale_factor_display_data,
+                0.76143355 * scale_factor_display_data,
             ],
         )
     ],
@@ -313,37 +313,37 @@ translation = [-338.15649125, -432.79879825, -189.62899875]
                 VIZ_TYPE.FIBER,  # first agent
                 0.0,  # id
                 0.0,  # type
-                translation[0] * scale_factor_display_data,  # x
-                translation[1] * scale_factor_display_data,  # y
-                translation[2] * scale_factor_display_data,  # z
+                (487.04056375 + translation[0]) * scale_factor_display_data,  # x
+                (357.50648735 + translation[1]) * scale_factor_display_data,  # y
+                (222.87646995 + translation[2]) * scale_factor_display_data,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
                 actin_radius * scale_factor_display_data,  # radius
                 6.0,  # number of subpoints
-                454.3434234 * scale_factor_display_data,
-                363.439226 * scale_factor_display_data,
-                265.4405349 * scale_factor_display_data,
-                519.7377041 * scale_factor_display_data,
-                351.5737487 * scale_factor_display_data,
-                180.312405 * scale_factor_display_data,
+                -32.69714035 * scale_factor_display_data,
+                5.93273865 * scale_factor_display_data,
+                42.56406495 * scale_factor_display_data,
+                32.69714035 * scale_factor_display_data,
+                -5.93273865 * scale_factor_display_data,
+                -42.56406495 * scale_factor_display_data,
                 VIZ_TYPE.FIBER,  # second agent
                 1.0,
                 0.0,
-                translation[0] * scale_factor_display_data,
-                translation[1] * scale_factor_display_data,
-                translation[2] * scale_factor_display_data,
+                (541.39452865 + translation[0]) * scale_factor_display_data,
+                (226.67005235 + translation[1]) * scale_factor_display_data,
+                (308.17413585 + translation[2]) * scale_factor_display_data,
                 0.0,
                 0.0,
                 0.0,
                 actin_radius * scale_factor_display_data,
                 6.0,
-                547.5943503 * scale_factor_display_data,
-                280.3075619 * scale_factor_display_data,
-                307.4127023 * scale_factor_display_data,
-                535.194707 * scale_factor_display_data,
-                173.0325428 * scale_factor_display_data,
-                308.9355694 * scale_factor_display_data,
+                6.19982165 * scale_factor_display_data,
+                53.63750955 * scale_factor_display_data,
+                -0.76143355 * scale_factor_display_data,
+                -6.19982165 * scale_factor_display_data,
+                -53.63750955 * scale_factor_display_data,
+                0.76143355 * scale_factor_display_data,
             ],
         )
     ],
@@ -441,92 +441,92 @@ def test_typeMapping_with_drawing_endpoints(typeMapping, expected_typeMapping):
                 VIZ_TYPE.FIBER,  # first agent
                 0.0,  # id
                 0.0,  # type - Actin
-                0.0,  # x
-                0.0,  # y
-                0.0,  # z
+                562.256739333 * scale_factor,  # x
+                344.651899633 * scale_factor,  # y
+                155.875511478 * scale_factor,  # z
                 0.0,  # x rotation
                 0.0,  # y rotation
                 0.0,  # z rotation
                 actin_radius * scale_factor,  # radius
                 18.0,  # number of subpoints (18)
-                443.3162276 * scale_factor,  # subpoint 1 x
-                369.8644852 * scale_factor,  # subpoint 1 y
-                293.1521372 * scale_factor,  # subpoint 1 z
-                458.4600122 * scale_factor,  # subpoint 2 x
-                366.5425284 * scale_factor,  # ...
-                274.4414626 * scale_factor,
-                525.5102849 * scale_factor,
-                351.3129172 * scale_factor,
-                191.1648549 * scale_factor,
-                595.4174881 * scale_factor,
-                336.6403217 * scale_factor,
-                110.1741389 * scale_factor,
-                672.5234407 * scale_factor,
-                322.3132598 * scale_factor,
-                35.94250437 * scale_factor,
-                678.3129825 * scale_factor,
-                321.2378855 * scale_factor,
-                30.3779709 * scale_factor,
+                -118.940511733 * scale_factor,  # subpoint 1 x
+                25.2125855667 * scale_factor,  # subpoint 1 y
+                137.276625722 * scale_factor,  # subpoint 1 z
+                -103.796727133 * scale_factor,  # subpoint 2 x
+                21.8906287667 * scale_factor,  # ...
+                118.565951122 * scale_factor,
+                -36.7464544333 * scale_factor,
+                6.66101756667 * scale_factor,
+                35.2893434217 * scale_factor,
+                33.1607487667 * scale_factor,
+                -8.01157793333 * scale_factor,
+                -45.7013725783 * scale_factor,
+                110.266701367 * scale_factor,
+                -22.3386398333 * scale_factor,
+                -119.933007108 * scale_factor,
+                116.056243167 * scale_factor,
+                -23.4140141333 * scale_factor,
+                -125.497540578 * scale_factor,
                 VIZ_TYPE.FIBER,  # second agent
                 1.0,  # id
                 0.0,  # type - Actin
-                0.0,
-                0.0,
-                0.0,
+                532.8591009 * scale_factor,
+                175.573560636 * scale_factor,
+                309.36513674 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
                 actin_radius * scale_factor,
                 15.0,  # 15 subpoints
-                549.7619454 * scale_factor,
-                310.7627687 * scale_factor,
-                302.0296124 * scale_factor,
-                547.773019 * scale_factor,
-                286.5808386 * scale_factor,
-                303.3456815 * scale_factor,
-                537.9496947 * scale_factor,
-                179.2424416 * scale_factor,
-                309.5407552 * scale_factor,
-                518.8214547 * scale_factor,
-                73.12680239 * scale_factor,
-                314.8723733 * scale_factor,
-                509.9893907 * scale_factor,
-                28.15495189 * scale_factor,
-                317.0372613 * scale_factor,
+                16.9028445 * scale_factor,
+                135.189208064 * scale_factor,
+                -7.33552434 * scale_factor,
+                14.9139181 * scale_factor,
+                111.007277964 * scale_factor,
+                -6.01945524 * scale_factor,
+                5.0905938 * scale_factor,
+                3.668880964 * scale_factor,
+                0.17561846 * scale_factor,
+                -14.0376462 * scale_factor,
+                -102.446758246 * scale_factor,
+                5.50723656 * scale_factor,
+                -22.8697102 * scale_factor,
+                -147.418608746 * scale_factor,
+                7.67212456 * scale_factor,
                 VIZ_TYPE.FIBER,  # third agent
                 2.0,  # id
                 1.0,  # type - linker0
-                0.0,
-                0.0,
-                0.0,
+                204.0331281 * scale_factor,
+                861.2036866 * scale_factor,
+                292.1917403 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
                 1.0 * scale_factor,  # default radius * scale_factor
                 6.0,  # 6 subpoints
-                216.8006048 * scale_factor,
-                854.8097767 * scale_factor,
-                302.9108981 * scale_factor,
-                191.2656514 * scale_factor,
-                867.5975965 * scale_factor,
-                281.4725825 * scale_factor,
+                12.7674767 * scale_factor,
+                -6.3939099 * scale_factor,
+                10.7191578 * scale_factor,
+                -12.7674767 * scale_factor,
+                6.3939099 * scale_factor,
+                -10.7191578 * scale_factor,
                 VIZ_TYPE.FIBER,  # 4th agent
                 3.0,  # id
                 2.0,  # type - Xlink
-                0.0,
-                0.0,
-                0.0,
+                659.74934485 * scale_factor,
+                428.8939651 * scale_factor,
+                197.6689468 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
                 linker_radius * scale_factor,
                 6.0,
-                657.3317212 * scale_factor,
-                421.4935263 * scale_factor,
-                212.7250047 * scale_factor,
-                662.1669685 * scale_factor,
-                436.2944039 * scale_factor,
-                182.6128889 * scale_factor,
+                -2.41762365 * scale_factor,
+                -7.4004388 * scale_factor,
+                15.0560579 * scale_factor,
+                2.41762365 * scale_factor,
+                7.4004388 * scale_factor,
+                -15.0560579 * scale_factor,
                 VIZ_TYPE.DEFAULT,  # 5th agent
                 4.0,  # id
                 3.0,  # type - Xlink End
@@ -552,20 +552,20 @@ def test_typeMapping_with_drawing_endpoints(typeMapping, expected_typeMapping):
                 VIZ_TYPE.FIBER,  # 7th agent
                 6.0,  # id
                 4.0,  # motor1
-                0.0,
-                0.0,
-                0.0,
+                562.99355575 * scale_factor,
+                314.78730205 * scale_factor,
+                344.31523845 * scale_factor,
                 0.0,
                 0.0,
                 0.0,
                 1.0 * scale_factor,  # default radius
                 6.0,
-                541.3878582 * scale_factor,
-                216.8108805 * scale_factor,
-                307.3724794 * scale_factor,
-                584.5992533 * scale_factor,
-                412.7637236 * scale_factor,
-                381.2579975 * scale_factor,
+                -21.60569755 * scale_factor,
+                -97.97642155 * scale_factor,
+                -36.94275905 * scale_factor,
+                21.60569755 * scale_factor,
+                97.97642155 * scale_factor,
+                36.94275905 * scale_factor,
             ],
         )
     ],
