@@ -280,6 +280,43 @@ class TrajectoryConverter:
         return TrajectoryConverter.scale_agent_data(translated_data, scale_factor)
 
     @staticmethod
+    def center_fiber_positions(agent_data: AgentData) -> AgentData:
+        """
+        For each agent with fiber subpoints, calculate the center of
+        the fiber positions, and adjust the agent position to be at
+        the center. Adjust the subpoint positions accordingly. Returns
+        an AgentData object with updates reflected.
+        """
+        if (
+            agent_data.subpoints is None
+            or agent_data.n_subpoints is None
+            or agent_data.subpoints.size == 0
+        ):
+            # if there are no subpoints, don't do anything
+            return agent_data
+        for timestep in range(len(agent_data.n_subpoints)):
+            for agent in range(len(agent_data.n_subpoints[timestep])):
+                # calculate center of fiber (defined by subpoint positions)
+                n_subpoints = agent_data.n_subpoints[timestep][agent]
+                if n_subpoints > 0:
+                    subpoints = agent_data.subpoints[timestep][agent][0:n_subpoints]
+                    center = np.array([
+                        np.mean(subpoints[0::3]),
+                        np.mean(subpoints[1::3]),
+                        np.mean(subpoints[2::3])
+                    ])
+
+                    # move agent position to center of subpoints
+                    agent_data.positions[timestep][agent] += center
+
+                    # shift subpoints back to compensate for change to position
+                    subpoints[0::3] -= center[0]
+                    subpoints[1::3] -= center[1]
+                    subpoints[2::3] -= center[2]
+                    agent_data.subpoints[timestep][agent][0:n_subpoints] = subpoints
+        return agent_data
+
+    @staticmethod
     def _get_display_type_name_from_raw(
         raw_type_name: str, display_data: Dict[str, DisplayData]
     ) -> str:

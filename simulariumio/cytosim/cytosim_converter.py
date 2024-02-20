@@ -277,6 +277,7 @@ class CytosimConverter(TrajectoryConverter):
         result, scale_factor = TrajectoryConverter.scale_agent_data(
             result, scale_factor
         )
+        result = TrajectoryConverter.center_fiber_positions(result)
         result.n_timesteps = time_index + 1
         return (result, used_unique_IDs, overall_line, scale_factor)
 
