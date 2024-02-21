@@ -4,23 +4,24 @@
         "python::object": "SmoldynData",
         "parameters": {
             "fileContents": {
-                "name": "File",
+                "name": "Select file",
                 "data_type": "file",
                 "description": "A Smoldyn file",
                 "required": true,
                 "match": ".*\\\\.txt$"
             },
-            "metaData": {
-                "name": "Metadata",
-                "data_type": "meta_data",
-                "description": "Provide metadata for this trajectory",
+            "trajectoryTitle": {
+                "name": "Trajectory title",
+                "data_type": "text",
+                "description": "Provide a title for this trajectory, possibly describing parameters",
                 "required": false,
-                "help": "If not provided, defaults to box size = [100, 100, 100], scale = 1.0, and no metadata about the trajectory or model"
+                "default": "",
+                "help": "If not provided, defaults to have no title"
             },
             "displayData": {
-                "name": "Display data",
+                "name": "Particle display specification (recommended)",
                 "data_type": "collection",
-                "description": "Provide display information for each particle type from Smoldyn",
+                "description": "Particle names must exactly match the particle names in your Smoldyn trajectory to be recognized.",
                 "required": false,
                 "help": "If not provided, defaults to display name from Smoldyn, and draws agent as a sphere with radius = 1.0 and default colors",
                 "length": 1,
@@ -37,6 +38,13 @@
                     "description": "Provide information about how to display this particle",
                     "required": true
                 }
+            },
+            "metaData": {
+                "name": "Viewport settings",
+                "data_type": "meta_data",
+                "description": "Provide viewport settings for this trajectory",
+                "required": false,
+                "help": "If not provided, defaults to box size = [100, 100, 100], scale = 1.0, and no metadata about the trajectory or model"
             },
             "timeUnits": {
                 "name": "Time units",

@@ -4,7 +4,7 @@
         "python::object": "UnitData",
         "parameters": {
             "name": {
-                "name": "Name",
+                "name": "Spatial units",
                 "data_type": "enum",
                 "description": "spatial unit name",
                 "required": true,
