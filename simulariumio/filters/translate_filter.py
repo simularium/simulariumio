@@ -9,6 +9,7 @@ import numpy as np
 from .filter import Filter
 from ..data_objects import TrajectoryData
 from ..constants import VALUES_PER_3D_POINT
+from ..utils import translate_agent_positions
 
 ###############################################################################
 
@@ -50,21 +51,9 @@ class TranslateFilter(Filter):
         Add the XYZ translation to all spatial coordinates
         """
         print("Filtering: translation -------------")
-        # get dimensions
-        total_steps = data.agent_data.times.size
-        # get filtered data
-        for time_index in range(total_steps):
-            for agent_index in range(int(data.agent_data.n_agents[time_index])):
-                # get translation for this agent
-                if (
-                    data.agent_data.types[time_index][agent_index]
-                    in self.translation_per_type
-                ):
-                    translation = self.translation_per_type[
-                        data.agent_data.types[time_index][agent_index]
-                    ]
-                else:
-                    translation = self.default_translation
-                # apply translation
-                data.agent_data.positions[time_index][agent_index] += translation
+        data.agent_data = translate_agent_positions(
+            data.agent_data,
+            self.default_translation,
+            self.translation_per_type
+        )
         return data

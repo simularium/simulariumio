@@ -24,6 +24,7 @@ from .filters import Filter
 from .exceptions import UnsupportedPlotTypeError
 from .writers import JsonWriter, BinaryWriter
 from .constants import DISPLAY_TYPE, VIEWER_DIMENSION_RANGE
+from .utils import translate_agent_positions
 
 ###############################################################################
 
@@ -156,24 +157,6 @@ class TrajectoryConverter:
         return xyz_subpoints.reshape(1, -1, 3)
 
     @staticmethod
-    def translate_positions(data: AgentData, translation: np.ndarray) -> AgentData:
-        """
-        Translate all spatial data for each frame of simularium trajectory data
-
-        Parameters
-        ----------
-        data : AgentData
-            Trajectory data, containing the spatial data to be traslated
-        translation : np.ndarray (shape = [3])
-            XYZ translation
-        """
-        total_steps = data.times.size
-        for time_index in range(total_steps):
-            for agent_index in range(int(data.n_agents[time_index])):
-                data.positions[time_index][agent_index] += translation
-        return data
-
-    @staticmethod
     def get_min_max_positions(
         agent_data: AgentData,
     ) -> Tuple[np.array, np.array]:
@@ -267,9 +250,7 @@ class TrajectoryConverter:
         )
         translation = -0.5 * (max_dimensions + min_dimensions)
 
-        translated_data = TrajectoryConverter.translate_positions(
-            agent_data, translation
-        )
+        translated_data = translate_agent_positions(agent_data, translation)
         if input_scale_factor is None:
             # If scale factor wasn't provided, calculate one
             scale_factor = TrajectoryConverter._get_scale_factor_with_min_max(
