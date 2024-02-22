@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.cellpack package" href="simulariumio.cellpack.html" /><link rel="prev" title="simulariumio" href="modules.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
-        <title>simulariumio package - simulariumio 1.9.2.dev5+g512499a documentation</title>
+        <title>simulariumio package - simulariumio 1.9.2.dev6+g23080dc documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">simulariumio 1.9.2.dev5+g512499a documentation</div></a>
+      <a href="index.html"><div class="brand">simulariumio 1.9.2.dev6+g23080dc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.9.2.dev5+g512499a documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.9.2.dev6+g23080dc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -1264,6 +1264,15 @@ centered and scaled AgentData, and the scale factor that was applied</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.trajectory_converter.TrajectoryConverter.center_fiber_positions">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">center_fiber_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData" title="simulariumio.data_objects.agent_data.AgentData"><span class="pre">AgentData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData" title="simulariumio.data_objects.agent_data.AgentData"><span class="pre">AgentData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/trajectory_converter.html#TrajectoryConverter.center_fiber_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.trajectory_converter.TrajectoryConverter.center_fiber_positions" title="Link to this definition">#</a></dt>
+<dd><p>For each agent with fiber subpoints, calculate the center of
+the fiber positions, and adjust the agent position to be at
+the center. Adjust the subpoint positions accordingly. Returns
+an AgentData object with updates reflected.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="simulariumio.trajectory_converter.TrajectoryConverter.check_report_progress">
 <span class="sig-name descname"><span class="pre">check_report_progress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">percent_complete</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/simulariumio/trajectory_converter.html#TrajectoryConverter.check_report_progress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.trajectory_converter.TrajectoryConverter.check_report_progress" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -1357,27 +1366,30 @@ Also returns the scale factor that was used on the AgentData object.</p>
 <dd><p>Return the current simularium data in JSON format</p>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="simulariumio.trajectory_converter.TrajectoryConverter.translate_positions">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">translate_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData" title="simulariumio.data_objects.agent_data.AgentData"><span class="pre">AgentData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData" title="simulariumio.data_objects.agent_data.AgentData"><span class="pre">AgentData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/trajectory_converter.html#TrajectoryConverter.translate_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.trajectory_converter.TrajectoryConverter.translate_positions" title="Link to this definition">#</a></dt>
+</dd></dl>
+
+</section>
+<section id="module-simulariumio.utils">
+<span id="simulariumio-utils-module"></span><h2>simulariumio.utils module<a class="headerlink" href="#module-simulariumio.utils" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="simulariumio.utils.translate_agent_positions">
+<span class="sig-prename descclassname"><span class="pre">simulariumio.utils.</span></span><span class="sig-name descname"><span class="pre">translate_agent_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData" title="simulariumio.data_objects.agent_data.AgentData"><span class="pre">AgentData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_translation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation_per_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.agent_data.AgentData" title="simulariumio.data_objects.agent_data.AgentData"><span class="pre">AgentData</span></a></span></span><a class="reference internal" href="_modules/simulariumio/utils.html#translate_agent_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.utils.translate_agent_positions" title="Link to this definition">#</a></dt>
 <dd><p>Translate all spatial data for each frame of simularium trajectory data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>data</strong><span class="classifier">AgentData</span></dt><dd><p>Trajectory data, containing the spatial data to be traslated</p>
 </dd>
-<dt><strong>translation</strong><span class="classifier">np.ndarray (shape = [3])</span></dt><dd><p>XYZ translation</p>
+<dt><strong>default_translation</strong><span class="classifier">np.ndarray (shape = [3])</span></dt><dd><p>XYZ translation for all agents not specified in translation_per_type</p>
+</dd>
+<dt><strong>translation_per_type</strong><span class="classifier">Dict[str, int]</span></dt><dd><p>translation for agents of each type
+Default: {}</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-</section>
-<section id="module-simulariumio.utils">
-<span id="simulariumio-utils-module"></span><h2>simulariumio.utils module<a class="headerlink" href="#module-simulariumio.utils" title="Link to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="simulariumio.utils.unpack_display_data">
 <span class="sig-prename descclassname"><span class="pre">simulariumio.utils.</span></span><span class="sig-name descname"><span class="pre">unpack_display_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.display_data.DisplayData" title="simulariumio.data_objects.display_data.DisplayData"><span class="pre">DisplayData</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/simulariumio/utils.html#unpack_display_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.utils.unpack_display_data" title="Link to this definition">#</a></dt>
@@ -1567,6 +1579,7 @@ result vector</p>
 <li><a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter.add_plot"><code class="docutils literal notranslate"><span class="pre">TrajectoryConverter.add_plot()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter.calculate_scale_factor"><code class="docutils literal notranslate"><span class="pre">TrajectoryConverter.calculate_scale_factor()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter.center_and_scale_agent_data"><code class="docutils literal notranslate"><span class="pre">TrajectoryConverter.center_and_scale_agent_data()</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter.center_fiber_positions"><code class="docutils literal notranslate"><span class="pre">TrajectoryConverter.center_fiber_positions()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter.check_report_progress"><code class="docutils literal notranslate"><span class="pre">TrajectoryConverter.check_report_progress()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter.filter_data"><code class="docutils literal notranslate"><span class="pre">TrajectoryConverter.filter_data()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter.get_min_max_positions"><code class="docutils literal notranslate"><span class="pre">TrajectoryConverter.get_min_max_positions()</span></code></a></li>
@@ -1577,12 +1590,12 @@ result vector</p>
 <li><a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter.save_plot_data"><code class="docutils literal notranslate"><span class="pre">TrajectoryConverter.save_plot_data()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter.scale_agent_data"><code class="docutils literal notranslate"><span class="pre">TrajectoryConverter.scale_agent_data()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter.to_JSON"><code class="docutils literal notranslate"><span class="pre">TrajectoryConverter.to_JSON()</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.trajectory_converter.TrajectoryConverter.translate_positions"><code class="docutils literal notranslate"><span class="pre">TrajectoryConverter.translate_positions()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-simulariumio.utils">simulariumio.utils module</a><ul>
+<li><a class="reference internal" href="#simulariumio.utils.translate_agent_positions"><code class="docutils literal notranslate"><span class="pre">translate_agent_positions()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.utils.unpack_display_data"><code class="docutils literal notranslate"><span class="pre">unpack_display_data()</span></code></a></li>
 <li><a class="reference internal" href="#simulariumio.utils.unpack_position_vector"><code class="docutils literal notranslate"><span class="pre">unpack_position_vector()</span></code></a></li>
 </ul>
@@ -1599,7 +1612,7 @@ result vector</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=6e07df59"></script>
+</div><script src="_static/documentation_options.js?v=80429bf4"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>

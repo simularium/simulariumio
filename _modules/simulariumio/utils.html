@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
-        <title>simulariumio.utils - simulariumio 1.9.2.dev5+g512499a documentation</title>
+        <title>simulariumio.utils - simulariumio 1.9.2.dev6+g23080dc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">simulariumio 1.9.2.dev5+g512499a documentation</div></a>
+      <a href="../../index.html"><div class="brand">simulariumio 1.9.2.dev6+g23080dc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.9.2.dev5+g512499a documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.9.2.dev6+g23080dc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -218,7 +218,7 @@
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">.data_objects</span> <span class="kn">import</span> <span class="n">DisplayData</span>
+<span class="kn">from</span> <span class="nn">.data_objects</span> <span class="kn">import</span> <span class="n">DisplayData</span><span class="p">,</span> <span class="n">AgentData</span>
 
 
 <div class="viewcode-block" id="unpack_position_vector">
@@ -272,6 +272,43 @@
             <span class="n">display_data</span><span class="p">[</span><span class="n">agent_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">DisplayData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">agent_data</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">display_data</span></div>
 
+
+
+<div class="viewcode-block" id="translate_agent_positions">
+<a class="viewcode-back" href="../../simulariumio.html#simulariumio.utils.translate_agent_positions">[docs]</a>
+<span class="k">def</span> <span class="nf">translate_agent_positions</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
+    <span class="n">default_translation</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">translation_per_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Translate all spatial data for each frame of simularium trajectory data</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : AgentData</span>
+<span class="sd">        Trajectory data, containing the spatial data to be traslated</span>
+<span class="sd">    default_translation : np.ndarray (shape = [3])</span>
+<span class="sd">        XYZ translation for all agents not specified in translation_per_type</span>
+<span class="sd">    translation_per_type : Dict[str, int]</span>
+<span class="sd">        translation for agents of each type</span>
+<span class="sd">        Default: {}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">total_steps</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">size</span>
+    <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">agent_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">])):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span>
+                <span class="ow">in</span> <span class="n">translation_per_type</span>
+            <span class="p">):</span>
+                <span class="n">translation</span> <span class="o">=</span> <span class="n">translation_per_type</span><span class="p">[</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">translation</span> <span class="o">=</span> <span class="n">default_translation</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">+=</span> <span class="n">translation</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -304,7 +341,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=6e07df59"></script>
+</div><script src="../../_static/documentation_options.js?v=80429bf4"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>

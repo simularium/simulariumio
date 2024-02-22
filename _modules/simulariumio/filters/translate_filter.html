@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
-        <title>simulariumio.filters.translate_filter - simulariumio 1.9.2.dev5+g512499a documentation</title>
+        <title>simulariumio.filters.translate_filter - simulariumio 1.9.2.dev6+g23080dc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.9.2.dev5+g512499a documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.9.2.dev6+g23080dc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.9.2.dev5+g512499a documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.9.2.dev6+g23080dc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -225,7 +225,8 @@
 
 <span class="kn">from</span> <span class="nn">.filter</span> <span class="kn">import</span> <span class="n">Filter</span>
 <span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span>
-<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">DISPLAY_TYPE</span><span class="p">,</span> <span class="n">VALUES_PER_3D_POINT</span>
+<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">VALUES_PER_3D_POINT</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">translate_agent_positions</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -271,47 +272,11 @@
 <span class="sd">        Add the XYZ translation to all spatial coordinates</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Filtering: translation -------------&quot;</span><span class="p">)</span>
-        <span class="c1"># get dimensions</span>
-        <span class="n">total_steps</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">size</span>
-        <span class="n">max_subpoints</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">))</span>
-        <span class="c1"># get filtered data</span>
-        <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">agent_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">])):</span>
-                <span class="c1"># get translation for this agent</span>
-                <span class="k">if</span> <span class="p">(</span>
-                    <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span>
-                    <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">translation_per_type</span>
-                <span class="p">):</span>
-                    <span class="n">translation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">translation_per_type</span><span class="p">[</span>
-                        <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span>
-                    <span class="p">]</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">translation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_translation</span>
-                <span class="c1"># apply translation</span>
-                <span class="n">display_type</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">display_type_for_agent</span><span class="p">(</span>
-                    <span class="n">time_index</span><span class="p">,</span> <span class="n">agent_index</span>
-                <span class="p">)</span>
-                <span class="n">translate_subpoints</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">max_subpoints</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">display_type</span> <span class="o">!=</span> <span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">SPHERE_GROUP</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">translate_subpoints</span><span class="p">:</span>
-                    <span class="n">sp_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_items_from_subpoints</span><span class="p">(</span>
-                        <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="p">,</span> <span class="n">time_index</span><span class="p">,</span> <span class="n">agent_index</span>
-                    <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">sp_items</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">translate_subpoints</span> <span class="o">=</span> <span class="kc">False</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="c1"># translate subpoints for fibers</span>
-                        <span class="n">n_items</span> <span class="o">=</span> <span class="n">sp_items</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                        <span class="k">for</span> <span class="n">item_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_items</span><span class="p">):</span>
-                            <span class="n">sp_items</span><span class="p">[</span><span class="n">item_index</span><span class="p">][:</span><span class="n">VALUES_PER_3D_POINT</span><span class="p">]</span> <span class="o">+=</span> <span class="n">translation</span>
-                        <span class="n">n_sp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">])</span>
-                        <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">][</span>
-                            <span class="p">:</span><span class="n">n_sp</span>
-                        <span class="p">]</span> <span class="o">=</span> <span class="n">sp_items</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_sp</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">translate_subpoints</span><span class="p">:</span>
-                    <span class="c1"># translate agent position for non-fibers</span>
-                    <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">+=</span> <span class="n">translation</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span> <span class="o">=</span> <span class="n">translate_agent_positions</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">agent_data</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">default_translation</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">translation_per_type</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span></div>
 </div>
 
@@ -347,7 +312,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=6e07df59"></script>
+</div><script src="../../../_static/documentation_options.js?v=80429bf4"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
