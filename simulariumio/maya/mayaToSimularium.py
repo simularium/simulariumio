@@ -54,8 +54,8 @@ timestep = 2.0  # time that passes each step
 time_units = "us"  # microseconds
 
 # this file path must be absolute
-output_path = "/Users/blairl/Documents/Dev/simulariumio/simulariumio/maya/output/"
-# output_path = "/Users/margotriggi/Documents/SpringSaladTutorial/TestAgAb/TestSimulariumExport"
+# output_path = "/Users/blairl/Documents/Dev/simulariumio/simulariumio/maya/output/"
+output_path = "/Users/margotriggi/Documents/SpringSaladTutorial/TestAgAb/TestSimulariumExport"
 
 trajectory_name = "AgAb_animation" #.simularium
 display_title = "Antibody-Antigen animation"
@@ -121,6 +121,7 @@ def get_base_type_name_and_uid(type_name):
     number = int(number)
     if name == complex_components[1]:
         number *= 10
+    name = name.replace("_", " ")
     print(f"{type_name} -> {name}, uid = {number}")
     return name, number
 
