@@ -2,7 +2,8 @@ from ..data_objects import MetaData, DisplayData, UnitData
 from .bond_data import BondData
 from typing import List, Dict, Any
 
-class PDBData:
+
+class NerdssData:
     path_to_pdb_files: str
     meta_data: MetaData
     display_data: Dict[str, DisplayData]
@@ -33,6 +34,10 @@ class PDBData:
             spatial_units if spatial_units is not None else UnitData("m")
         )
         self.plots = plots if plots is not None else []
-        self.inter_molecular_bonds = inter_molecular_bonds if inter_molecular_bonds is not None else []
-        self.intra_molecular_bonds = intra_molecular_bonds if inter_molecular_bonds is not None else []
+        self.inter_molecular_bonds = (
+            inter_molecular_bonds if inter_molecular_bonds is not None else []
+        )
+        self.intra_molecular_bonds = (
+            intra_molecular_bonds if inter_molecular_bonds is not None else []
+        )
         self.time_step = time_step if time_step is not None else self.time_units
