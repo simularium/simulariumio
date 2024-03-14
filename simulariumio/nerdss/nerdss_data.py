@@ -26,6 +26,46 @@ class NerdssData:
         intra_molecular_bonds: List[BondData] = None,
         time_step: UnitData = None,
     ):
+        """
+        Parameters
+        ----------
+        path_to_pdb_files : str
+            A path to the folder of PDB files for the trajectory.
+            For this converter, it is expected that the frame numbers
+            are the names of the file (plus the file extention). At this
+            time, the frame numbers must be at consistent intervals
+        meta_data : MetaData
+            An object containing metadata for the trajectory
+            including box size, scale factor, and camera defaults
+        display_data: Dict[str, DisplayData] (optional)
+            The particle type name from NERDSS data mapped
+            to display names and rendering info for that type,
+            Default: for names, use NERDSS name,
+                for radius, use 1.0,
+                for rendering, use default representations and colors
+        time_units: UnitData (optional)
+            multiplier and unit name for time values
+            Default: 1.0 second
+        spatial_units: UnitData (optional)
+            multiplier and unit name for spatial values
+            (including positions, radii, and box size)
+            Default: 1.0 meter
+        plots : List[Dict[str, Any]] (optional)
+            An object containing plot data already
+            in Simularium format
+        inter_molecular_bonds : List[BondData] (optional)
+            List of BondData objects for bonds that exist between any atoms
+            of different residues
+            Default: None
+        intra_molecular_bonds : List[BondData] (optional)
+            List of BondData objects for bonds that can only exist between
+            atoms of a single residue
+            Default: None
+        time_step : UnitData (optional)
+            Time step between each frame, where the frame numbers are represented
+            as the names of the .pdb files in path_to_pdb_files
+            Default: 1.0 second
+        """
         self.path_to_pdb_files = path_to_pdb_files
         self.meta_data = meta_data if meta_data is not None else MetaData()
         self.display_data = display_data if display_data is not None else {}
