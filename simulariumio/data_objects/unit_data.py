@@ -70,7 +70,7 @@ class UnitData:
         cls,
         unit_data: Dict[str, Any],
         default_name: str = None,
-        default_mag: float = 1.0
+        default_mag: float = 1.0,
     ):
         """
         Create UnitData object from a simularium JSON dict
@@ -104,7 +104,15 @@ class UnitData:
     def __eq__(self, other):
         if isinstance(other, UnitData):
             return (
-                np.isclose(self.magnitude, other.magnitude)
-                and self.name == other.name
+                np.isclose(self.magnitude, other.magnitude) and self.name == other.name
             )
         return False
+
+    def __le__(self, other):
+        if isinstance(other, UnitData):
+            self_base = self._quantity.to_base_units()
+            other_base = other._quantity.to_base_units()
+            return (
+                self_base._units == other_base._units
+                and self_base._magnitude <= other_base._magnitude
+            )
