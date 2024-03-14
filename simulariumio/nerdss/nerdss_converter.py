@@ -93,6 +93,10 @@ class NerdssConverter(TrajectoryConverter):
                 for atom in residue.atoms:
                     name = atom.name
                     atom_index = atom.index
+                    # Currently representing agent names as residue_name#atom_name, which
+                    # are directly extracted from the pdb files. If there is a better naming
+                    # scheme, feel free to change. In this current code, the input agent names
+                    # in BondData would also need to match this
                     full_name = resname + "#" + name
                     position = atom.position
                     if self._is_intra_molecular_bond_site(input_data, full_name):

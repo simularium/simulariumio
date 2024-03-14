@@ -14,6 +14,18 @@ class BondData:
         agent_name_b: str,
         max_length: UnitData,
     ):
+        """
+        Parameters
+        ----------
+        agent_name_a: str
+            Name of the first agent of this bond. This must match the
+            name in the input file data
+        agent_name_b: str
+            Name of the second agent of this bond. This must match the
+            name in the input file data
+        max_length: UnitData
+            The max distance at which this bond can exist
+        """
         self.agent_name_a = agent_name_a
         self.agent_name_b = agent_name_b
         self.max_length = max_length
