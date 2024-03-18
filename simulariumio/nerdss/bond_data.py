@@ -1,5 +1,4 @@
 from ..data_objects import UnitData
-from typing import List
 import numpy as np
 
 

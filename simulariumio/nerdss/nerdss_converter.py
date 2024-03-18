@@ -86,17 +86,17 @@ class NerdssConverter(TrajectoryConverter):
             # bonds, when appropriate
             for residue in universe.residues:
                 resname = residue.resname
-                # list of potential intra bond sites, represented as a dict where the key
-                # is the name and the value is a list of XYZ position coordinates of
+                # list of potential intra bond sites, represented as a dict where the
+                # key is the name and the value is a list of XYZ position coordinates of
                 # agents of this type
                 intra_bond_sites = Dict[str, List]
                 for atom in residue.atoms:
                     name = atom.name
                     atom_index = atom.index
-                    # Currently representing agent names as residue_name#atom_name, which
-                    # are directly extracted from the pdb files. If there is a better naming
-                    # scheme, feel free to change. In this current code, the input agent names
-                    # in BondData would also need to match this
+                    # Currently representing agent names as residue_name#atom_name,
+                    # which are directly extracted from the pdb files. If there is a
+                    # better naming scheme, feel free to change. In this current code,
+                    # the input agent names in BondData would also need to match this
                     full_name = resname + "#" + name
                     position = atom.position
                     if self._is_intra_molecular_bond_site(input_data, full_name):
@@ -130,24 +130,24 @@ class NerdssConverter(TrajectoryConverter):
                     )
 
                 # TODO: loop through the list of potential bond sites, intra_bond_sites,
-                # for this residue, checking if any pair of the atoms should have a bond based
-                # on the bond threshold specified in input_data.inter_molecular_bonds
+                # for this residue, checking if any pair of the atoms should have a bond
+                # based on the thresholds specified in input_data.inter_molecular_bonds
                 #
-                # BondData.is_valid_bond(...) can be used to determine if a bond should be
-                # drawn
+                # BondData.is_valid_bond(...) can be used to determine if a bond should
+                # be drawn
                 #
-                # Append a list of 6 position points (XYZ coordinates for each of the two bond site)
-                # to fiber_positions[time_index]
+                # Append a list of 6 position points (XYZ coordinates for each of the
+                # two bond site) to fiber_positions[time_index]
 
-            # TODO: loop through the list of potential bond sites, inter_bond_sites, for this timestep,
-            # checking if any pair of atoms should have a bond based on the thresholds specified in
-            # input_data.intra_molecular_bonds
+            # TODO: loop through the list of potential bond sites, inter_bond_sites, for
+            # this timestep, checking if any pair of atoms should have a bond based on
+            # the thresholds specified in input_data.intra_molecular_bonds
             #
             # BondData.is_valid_bond(...) can be used to determine if a bond should be
             # drawn
             #
-            # Append a list of 6 position points (XYZ coordinates for each of the two bond site)
-            # to fiber_positions[time_index]
+            # Append a list of 6 position points (XYZ coordinates for each of the two
+            # bond site) to fiber_positions[time_index]
 
         # build AgentData object for fiber data
         fiber_dimensions = DimensionData(
