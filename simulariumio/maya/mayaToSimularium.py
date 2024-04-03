@@ -22,46 +22,39 @@ INSTRUCTIONS:
 
 # edit these parameter values *******************************************************************
 
-set_id_by_complex = True
-complex_components = ["Antibody", "Antigen"]
+set_id_by_complex = False
+complex_components = [
+    "Unbound_Subunit_AlphaOne",
+    "Unbound_Subunit_AlphaTwo",
+    "Unbound_Subunit_BetaOne",
+    "Unbound_Subunit_BetaTwo",
+    "Oxygen",
+    "Carbon_Monoxyde",
+]
 geometry_urls = {
-     "Antigen1" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antigen2" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antigen3" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antigen4" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antigen5" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antigen6" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antigen7" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antigen8" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antigen9" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antigen10" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antigen11" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antibody1" : "https://www.dropbox.com/scl/fi/sp9nb0udohs3fe7nwzlrh/Antibody.obj?rlkey=t0jy5wdkx9039x6waeynjtn9c&dl=0",
-     "Antibody2" : "https://www.dropbox.com/scl/fi/sp9nb0udohs3fe7nwzlrh/Antibody.obj?rlkey=t0jy5wdkx9039x6waeynjtn9c&dl=0",
-     "Antibody3" : "https://www.dropbox.com/scl/fi/sp9nb0udohs3fe7nwzlrh/Antibody.obj?rlkey=t0jy5wdkx9039x6waeynjtn9c&dl=0",
-     "Antibody4" : "https://www.dropbox.com/scl/fi/sp9nb0udohs3fe7nwzlrh/Antibody.obj?rlkey=t0jy5wdkx9039x6waeynjtn9c&dl=0",
-     "Complex1": "https://www.dropbox.com/scl/fi/gaa670l67pi6bc4h0j9d9/Complex.obj?rlkey=d6vhexhgh1kibr39kzvxzp7s2&dl=0",
-     "Complex2": "https://www.dropbox.com/scl/fi/gaa670l67pi6bc4h0j9d9/Complex.obj?rlkey=d6vhexhgh1kibr39kzvxzp7s2&dl=0",
-     "Complex3": "https://www.dropbox.com/scl/fi/gaa670l67pi6bc4h0j9d9/Complex.obj?rlkey=d6vhexhgh1kibr39kzvxzp7s2&dl=0",
-     "Complex4": "https://www.dropbox.com/scl/fi/gaa670l67pi6bc4h0j9d9/Complex.obj?rlkey=d6vhexhgh1kibr39kzvxzp7s2&dl=0",
-     "Antigen" : "https://www.dropbox.com/scl/fi/e77e7cyhx7kukrkk6fry8/Antigen.obj?rlkey=kpq7inxd4pkn0gs98f2c0quun&dl=0",
-     "Antibody" : "https://www.dropbox.com/scl/fi/sp9nb0udohs3fe7nwzlrh/Antibody.obj?rlkey=t0jy5wdkx9039x6waeynjtn9c&dl=0",
-     "Complex": "https://www.dropbox.com/scl/fi/gaa670l67pi6bc4h0j9d9/Complex.obj?rlkey=d6vhexhgh1kibr39kzvxzp7s2&dl=0",
-     
+    "Oxygen": "https://www.dropbox.com/scl/fi/yjr4szttp70q9z5wfd1bc/O2.obj?rlkey=j2oshr5gwxtjku3j44e5vmrvx&dl=0",
+    "Unbound_AlphaOne" : "https://www.dropbox.com/scl/fi/0i2pqtfmco7ypae97j7lm/Alpha1.obj?rlkey=rmiqbqbgbpqeo6dgg7en43cl3&dl=0",
+    "Bound_AlphaOne" : "https://www.dropbox.com/scl/fi/0i2pqtfmco7ypae97j7lm/Alpha1.obj?rlkey=rmiqbqbgbpqeo6dgg7en43cl3&dl=0",
+    "Unbound_AlphaTwo" : "https://www.dropbox.com/scl/fi/6vgyrtszp0z57sb3vxtkl/Alpha2.obj?rlkey=als8pwcevjlbnycgit7bkx4qj&dl=0",
+    "Bound_AlphaTwo" : "https://www.dropbox.com/scl/fi/6vgyrtszp0z57sb3vxtkl/Alpha2.obj?rlkey=als8pwcevjlbnycgit7bkx4qj&dl=0",
+    "Unbound_BetaTwo" : "https://www.dropbox.com/scl/fi/3tlfc0hm4wwpqkeuxlffv/Beta2.obj?rlkey=2fq8wt2j169go2wu2qe7axmjy&dl=0",
+    "Bound_BetaTwo" : "https://www.dropbox.com/scl/fi/3tlfc0hm4wwpqkeuxlffv/Beta2.obj?rlkey=2fq8wt2j169go2wu2qe7axmjy&dl=0",
+    "Unbound_BetaOne" : "https://www.dropbox.com/scl/fi/scpblondcj06w459vuofr/Beta1.obj?rlkey=cy1us3gqe9yhanuosx9wapzn2&dl=0",
+    "Bound_BetaOne" : "https://www.dropbox.com/scl/fi/scpblondcj06w459vuofr/Beta1.obj?rlkey=cy1us3gqe9yhanuosx9wapzn2&dl=0"
 }
 spatial_units = "nm"  # nanometers
-timestep = 2.0  # time that passes each step
-time_units = "us"  # microseconds
+timestep = 0.033  # time that passes each step
+time_units = "ms"  # microseconds
 
 # this file path must be absolute
 # output_path = "/Users/blairl/Documents/Dev/simulariumio/simulariumio/maya/output/"
-output_path = "/Users/margotriggi/Documents/SpringSaladTutorial/TestAgAb/TestSimulariumExport"
+output_path = "/Users/margotriggi/Documents/Postdoc/Hb/"
 
-trajectory_name = "AgAb_animation" #.simularium
-display_title = "Antibody-Antigen animation"
+trajectory_name = "Haemoglobin_oxygen_CO_animation" #.simularium
+display_title = "Haemoglobin_O2_CO animation"
 author_names = "Margot Riggi, Janet Iwasa"
-animation_description = "An animation of an antibody binding an antigen."
-box_dimensions = [300.0, 300.0, 300.0] # box will be centered at [0, 0, 0]
+animation_description = "An animation of O2 interactions with haemoglobin in red blood cells"
+box_dimensions = [15.0, 15.0, 15.0] # box will be centered at [0, 0, 0]
 camera_position=[0.0, 0.0, 200.0]
 camera_look_at_position=[0.0, 0.0, 0.0]
 camera_fov_degrees=60.0
@@ -117,7 +110,7 @@ def get_base_type_name_and_uid(type_name):
     name = type_name
     while len(name) > 0 and name[-1].isdigit():
         number = name[-1] + number
-        name = name[0:-1]
+        name = name.split("__")[0]
     number = int(number)
     if name == complex_components[1]:
         number *= 10
@@ -138,7 +131,7 @@ for type_name in type_names:
         agent_data.display_data[base_type] = DisplayData(
             name=base_type,
             display_type=DISPLAY_TYPE.OBJ,
-            url=geometry_urls[type_name],
+            url=geometry_urls[base_type],
             color=color_hex,
         )
 
