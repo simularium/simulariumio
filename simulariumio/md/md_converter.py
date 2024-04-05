@@ -12,7 +12,7 @@ from MDAnalysis.topology.tables import vdwradii
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData, DisplayData
-from ..constants import DISPLAY_TYPE, JMOL_COLORS
+from ..constants import DISPLAY_TYPE, JMOL_COLORS, SUBPOINT_VALUES_PER_ITEM, VIZ_TYPE
 from .md_data import MdData
 
 ###############################################################################
@@ -54,8 +54,8 @@ class MdConverter(TrajectoryConverter):
             Default: False
         """
         super().__init__(input_data, progress_callback, callback_interval)
-        self._data = self._read(input_data)
         self.draw_bonds = draw_bonds
+        self._data = self._read(input_data)
 
     @staticmethod
     def _read_universe_dimensions(
@@ -178,7 +178,11 @@ class MdConverter(TrajectoryConverter):
             bond_indices = np.array([])
             n_bonds = 0
             n_max_subpoints = 0
-        dimensions = DimensionData(dimensions.total_steps, dimensions.max_agents + n_bonds, n_max_subpoints)
+        dimensions = DimensionData(
+            dimensions.total_steps, 
+            dimensions.max_agents + n_bonds, 
+            n_max_subpoints
+        )
         result = AgentData.from_dimensions(dimensions)
         get_type_name_func = np.frompyfunc(MdConverter._get_type_name, 2, 1)
         unique_raw_type_names = set([])
@@ -190,13 +194,17 @@ class MdConverter(TrajectoryConverter):
             result.times[time_index] = input_data.md_universe.trajectory.time
             atom_positions = input_data.md_universe.atoms.positions
             if self.draw_bonds:
-                bond_subpoints = np.array([
-                        np.concatenate([
-                            atom_positions[bond_indices[i][0]],
-                            atom_positions[bond_indices[i][1]],
-                        ])
-                    for i in range(bond_indices.shape[0])
-                ])
+                bond_subpoints = np.array(
+                    [
+                        np.concatenate(
+                            [
+                                atom_positions[bond_indices[i][0]],
+                                atom_positions[bond_indices[i][1]],
+                            ]
+                        )
+                        for i in range(bond_indices.shape[0])
+                    ]
+                )
             else:
                 bond_subpoints = np.array([])
             n_agents = atom_positions.shape[0] + n_bonds
@@ -213,9 +221,9 @@ class MdConverter(TrajectoryConverter):
                 result.types[time_index][atom_positions.shape[0]:] = ['bond'] * n_bonds
             result.positions[time_index][:atom_positions.shape[0]] = atom_positions
             radii_list = [
-                    MdConverter._get_radius(type_name, input_data)
-                    for type_name in input_data.md_universe.atoms.names
-                ] 
+                MdConverter._get_radius(type_name, input_data)
+                for type_name in input_data.md_universe.atoms.names
+            ] 
             if self.draw_bonds:
                 radii_list += [
                     MdConverter._get_radius(type_name, input_data)
@@ -225,11 +233,14 @@ class MdConverter(TrajectoryConverter):
 
             if self.draw_bonds:
                 result.n_subpoints[time_index] = np.array(
-                    [0] * atom_positions.shape[0] + [2 * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)] * n_bonds
+                    [0] * atom_positions.shape[0]
+                    + [2 * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)] * n_bonds
                 )
-            
+
                 result.subpoints[time_index][atom_positions.shape[0]:] = bond_subpoints
-                result.viz_types[time_index][atom_positions.shape[0]:] = [VIZ_TYPE.FIBER] * n_bonds
+                result.viz_types[time_index][
+                    atom_positions.shape[0]:
+                ] = [VIZ_TYPE.FIBER] * n_bonds
 
             time_index += 1
             self.check_report_progress(time_index / dimensions.total_steps)
