@@ -24,23 +24,25 @@ INSTRUCTIONS:
 
 set_id_by_complex = False
 complex_components = [
-    "Unbound_Subunit_AlphaOne",
-    "Unbound_Subunit_AlphaTwo",
-    "Unbound_Subunit_BetaOne",
-    "Unbound_Subunit_BetaTwo",
+    "Unbound_Subunit",
     "Oxygen",
     "Carbon_Monoxyde",
 ]
 geometry_urls = {
-    "Oxygen": "https://www.dropbox.com/scl/fi/yjr4szttp70q9z5wfd1bc/O2.obj?rlkey=j2oshr5gwxtjku3j44e5vmrvx&dl=0",
-    "Unbound_AlphaOne" : "https://www.dropbox.com/scl/fi/0i2pqtfmco7ypae97j7lm/Alpha1.obj?rlkey=rmiqbqbgbpqeo6dgg7en43cl3&dl=0",
-    "Bound_AlphaOne" : "https://www.dropbox.com/scl/fi/0i2pqtfmco7ypae97j7lm/Alpha1.obj?rlkey=rmiqbqbgbpqeo6dgg7en43cl3&dl=0",
-    "Unbound_AlphaTwo" : "https://www.dropbox.com/scl/fi/6vgyrtszp0z57sb3vxtkl/Alpha2.obj?rlkey=als8pwcevjlbnycgit7bkx4qj&dl=0",
-    "Bound_AlphaTwo" : "https://www.dropbox.com/scl/fi/6vgyrtszp0z57sb3vxtkl/Alpha2.obj?rlkey=als8pwcevjlbnycgit7bkx4qj&dl=0",
-    "Unbound_BetaTwo" : "https://www.dropbox.com/scl/fi/3tlfc0hm4wwpqkeuxlffv/Beta2.obj?rlkey=2fq8wt2j169go2wu2qe7axmjy&dl=0",
-    "Bound_BetaTwo" : "https://www.dropbox.com/scl/fi/3tlfc0hm4wwpqkeuxlffv/Beta2.obj?rlkey=2fq8wt2j169go2wu2qe7axmjy&dl=0",
-    "Unbound_BetaOne" : "https://www.dropbox.com/scl/fi/scpblondcj06w459vuofr/Beta1.obj?rlkey=cy1us3gqe9yhanuosx9wapzn2&dl=0",
-    "Bound_BetaOne" : "https://www.dropbox.com/scl/fi/scpblondcj06w459vuofr/Beta1.obj?rlkey=cy1us3gqe9yhanuosx9wapzn2&dl=0"
+    "Unbound_Subunit__AlphaOne" : "https://www.dropbox.com/scl/fi/0i2pqtfmco7ypae97j7lm/Alpha1.obj?rlkey=rmiqbqbgbpqeo6dgg7en43cl3&dl=0",
+    "Unbound_Subunit__AlphaTwo" : "https://www.dropbox.com/scl/fi/6vgyrtszp0z57sb3vxtkl/Alpha2.obj?rlkey=als8pwcevjlbnycgit7bkx4qj&dl=0",
+    "Unbound_Subunit__BetaOne" : "https://www.dropbox.com/scl/fi/scpblondcj06w459vuofr/Beta1.obj?rlkey=cy1us3gqe9yhanuosx9wapzn2&dl=0",
+    "Unbound_Subunit__BetaTwo" : "https://www.dropbox.com/scl/fi/3tlfc0hm4wwpqkeuxlffv/Beta2.obj?rlkey=2fq8wt2j169go2wu2qe7axmjy&dl=0",
+    "Bound_To_O2_Subunit__AlphaOne" : "https://www.dropbox.com/scl/fi/0i2pqtfmco7ypae97j7lm/Alpha1.obj?rlkey=rmiqbqbgbpqeo6dgg7en43cl3&dl=0",
+    "Bound_To_O2_Subunit__AlphaTwo" : "https://www.dropbox.com/scl/fi/6vgyrtszp0z57sb3vxtkl/Alpha2.obj?rlkey=als8pwcevjlbnycgit7bkx4qj&dl=0",
+    "Bound_To_O2_Subunit__BetaOne" : "https://www.dropbox.com/scl/fi/scpblondcj06w459vuofr/Beta1.obj?rlkey=cy1us3gqe9yhanuosx9wapzn2&dl=0",
+    "Bound_To_O2_Subunit__BetaTwo" : "https://www.dropbox.com/scl/fi/3tlfc0hm4wwpqkeuxlffv/Beta2.obj?rlkey=2fq8wt2j169go2wu2qe7axmjy&dl=0",
+    "Bound_To_CO_Subunit__AlphaOne" : "https://www.dropbox.com/scl/fi/0i2pqtfmco7ypae97j7lm/Alpha1.obj?rlkey=rmiqbqbgbpqeo6dgg7en43cl3&dl=0",
+    "Bound_To_CO_Subunit__AlphaTwo" : "https://www.dropbox.com/scl/fi/6vgyrtszp0z57sb3vxtkl/Alpha2.obj?rlkey=als8pwcevjlbnycgit7bkx4qj&dl=0",
+    "Bound_To_CO_Subunit__BetaOne" : "https://www.dropbox.com/scl/fi/scpblondcj06w459vuofr/Beta1.obj?rlkey=cy1us3gqe9yhanuosx9wapzn2&dl=0",
+    "Bound_To_CO_Subunit__BetaTwo" : "https://www.dropbox.com/scl/fi/3tlfc0hm4wwpqkeuxlffv/Beta2.obj?rlkey=2fq8wt2j169go2wu2qe7axmjy&dl=0",
+    "Oxygen" : "https://www.dropbox.com/scl/fi/yjr4szttp70q9z5wfd1bc/O2.obj?rlkey=j2oshr5gwxtjku3j44e5vmrvx&dl=0",
+    "Carbon_Monoxyde" : "https://www.dropbox.com/scl/fi/yjr4szttp70q9z5wfd1bc/O2.obj?rlkey=j2oshr5gwxtjku3j44e5vmrvx&dl=0",
 }
 spatial_units = "nm"  # nanometers
 timestep = 0.033  # time that passes each step
@@ -105,33 +107,33 @@ def rgb_to_hex(material_color):
     )
     return "#%02x%02x%02x" % rgb
 
-def get_base_type_name_and_uid(type_name):
-    number = ""
-    name = type_name
-    while len(name) > 0 and name[-1].isdigit():
-        number = name[-1] + number
-        name = name.split("__")[0]
-    number = int(number)
-    if name == complex_components[1]:
-        number *= 10
-    name = name.replace("_", " ")
-    print(f"{type_name} -> {name}, uid = {number}")
-    return name, number
+def get_raw_and_display_type_names_and_uid(type_name):
+    uid = ""
+    raw_name = type_name
+    while len(raw_name) > 0 and raw_name[-1].isdigit():
+        uid = raw_name[-1] + uid
+        raw_name = raw_name[0:-1]
+    display_name = raw_name.split("__")[0]
+    uid = int(uid)
+    if display_name != complex_components[0] and display_name in complex_components:
+        uid *= 10
+    display_name = display_name.replace("_", " ")
+    print(f"{type_name} -> {display_name}, uid = {uid}")
+    return raw_name, display_name, uid
 
 for type_name in type_names:
-    print(type_name)
     # get color 
     shaders = cmds.listConnections(cmds.listHistory(type_name))
     materials = [x for x in cmds.ls(cmds.listConnections(shaders), materials=1)]   
     color_rgb = cmds.getAttr(f"{materials[0]}.color")
     color_hex = rgb_to_hex(color_rgb)
-    base_type = get_base_type_name_and_uid(type_name)[0]
+    raw_name, display_name, _ = get_raw_and_display_type_names_and_uid(type_name)
     # create display data
-    if base_type not in agent_data.display_data:
-        agent_data.display_data[base_type] = DisplayData(
-            name=base_type,
+    if raw_name not in agent_data.display_data:
+        agent_data.display_data[raw_name] = DisplayData(
+            name=display_name,
             display_type=DISPLAY_TYPE.OBJ,
-            url=geometry_urls[base_type],
+            url=geometry_urls[raw_name],
             color=color_hex,
         )
 
@@ -162,9 +164,9 @@ for time_ix, time in enumerate(range(min_time, max_time + 1)):
             [transform[8] / scale[2], transform[9] / scale[2], transform[10] / scale[2]]
         ])
         # save agent data
-        base_type_name, uid = get_base_type_name_and_uid(type_name)
+        raw_name, _, uid = get_raw_and_display_type_names_and_uid(type_name)
         agent_data.unique_ids[time_ix][agent_ix] = uid if set_id_by_complex else type_ix
-        agent_data.types[time_ix].append(base_type_name)
+        agent_data.types[time_ix].append(raw_name)
         agent_data.positions[time_ix][agent_ix] = position
         agent_data.rotations[time_ix][agent_ix] = rotation_matrix_to_euler_angles(rotation_matrix)
         agent_data.radii[time_ix][agent_ix] = scale[0]
