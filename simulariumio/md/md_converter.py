@@ -12,7 +12,7 @@ from MDAnalysis.topology.tables import vdwradii
 
 from ..trajectory_converter import TrajectoryConverter
 from ..data_objects import TrajectoryData, AgentData, DimensionData, DisplayData
-from ..constants import DISPLAY_TYPE, JMOL_COLORS
+from ..constants import DISPLAY_TYPE, JMOL_COLORS, VIZ_TYPE, SUBPOINT_VALUES_PER_ITEM
 from .md_data import MdData
 
 ###############################################################################
@@ -28,7 +28,6 @@ class MdConverter(TrajectoryConverter):
         input_data: MdData,
         progress_callback: Callable[[float], None] = None,
         callback_interval: float = 10,
-        draw_bonds: bool = False,
     ):
         """
         This object reads simulation trajectory outputs
@@ -50,12 +49,9 @@ class MdConverter(TrajectoryConverter):
             If a progress_callback was provided, the period between updates
             to be sent to the callback, in seconds
             Default: 10
-        draw_bonds: bool (optional)
-            Default: False
         """
         super().__init__(input_data, progress_callback, callback_interval)
         self._data = self._read(input_data)
-        self.draw_bonds = draw_bonds
 
     @staticmethod
     def _read_universe_dimensions(
@@ -170,7 +166,7 @@ class MdConverter(TrajectoryConverter):
         Use a MD Universe to get AgentData
         """
         dimensions = MdConverter._read_universe_dimensions(input_data)
-        if self.draw_bonds:
+        if input_data.draw_bonds:
             bond_indices = input_data.md_universe.bonds.indices
             n_bonds = bond_indices.shape[0]
             n_max_subpoints = 2 * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)
@@ -178,7 +174,11 @@ class MdConverter(TrajectoryConverter):
             bond_indices = np.array([])
             n_bonds = 0
             n_max_subpoints = 0
-        dimensions = DimensionData(dimensions.total_steps, dimensions.max_agents + n_bonds, n_max_subpoints)
+        dimensions = DimensionData(
+            dimensions.total_steps, 
+            dimensions.max_agents + n_bonds, 
+            n_max_subpoints,
+        )
         result = AgentData.from_dimensions(dimensions)
         get_type_name_func = np.frompyfunc(MdConverter._get_type_name, 2, 1)
         unique_raw_type_names = set([])
@@ -189,13 +189,12 @@ class MdConverter(TrajectoryConverter):
         ]:
             result.times[time_index] = input_data.md_universe.trajectory.time
             atom_positions = input_data.md_universe.atoms.positions
-            if self.draw_bonds:
+            if input_data.draw_bonds:
                 bond_subpoints = np.array([
-                        np.concatenate([
-                            atom_positions[bond_indices[i][0]],
-                            atom_positions[bond_indices[i][1]],
-                        ])
-                    for i in range(bond_indices.shape[0])
+                    np.concatenate([
+                        atom_positions[bond_indices[i][0]],
+                        atom_positions[bond_indices[i][1]],
+                    ]) for i in range(bond_indices.shape[0])
                 ])
             else:
                 bond_subpoints = np.array([])
@@ -203,33 +202,36 @@ class MdConverter(TrajectoryConverter):
             result.n_agents[time_index] = n_agents
             result.unique_ids[time_index] = np.arange(n_agents)
             type_name_list = list(input_data.md_universe.atoms.names) 
-            if self.draw_bonds:
+            if input_data.draw_bonds:
                 type_name_list += ['bond']
             unique_raw_type_names.update(type_name_list)
             result.types[time_index][:atom_positions.shape[0]] = get_type_name_func(
                 input_data.md_universe.atoms.names, input_data
             )
-            if self.draw_bonds:
+            if input_data.draw_bonds:
                 result.types[time_index][atom_positions.shape[0]:] = ['bond'] * n_bonds
             result.positions[time_index][:atom_positions.shape[0]] = atom_positions
             radii_list = [
-                    MdConverter._get_radius(type_name, input_data)
-                    for type_name in input_data.md_universe.atoms.names
-                ] 
-            if self.draw_bonds:
+                MdConverter._get_radius(type_name, input_data)
+                for type_name in input_data.md_universe.atoms.names
+            ]
+            if input_data.draw_bonds:
                 radii_list += [
                     MdConverter._get_radius(type_name, input_data)
                     for type_name in ['bond'] * n_bonds
                 ]
             result.radii[time_index] = np.array(radii_list)
 
-            if self.draw_bonds:
+            if input_data.draw_bonds:
                 result.n_subpoints[time_index] = np.array(
-                    [0] * atom_positions.shape[0] + [2 * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)] * n_bonds
+                    [0] * atom_positions.shape[0]
+                    + [2 * SUBPOINT_VALUES_PER_ITEM(DISPLAY_TYPE.FIBER)] * n_bonds
                 )
-            
-                result.subpoints[time_index][atom_positions.shape[0]:] = bond_subpoints
-                result.viz_types[time_index][atom_positions.shape[0]:] = [VIZ_TYPE.FIBER] * n_bonds
+
+                result.subpoints[time_index][
+                    atom_positions.shape[0]:] = bond_subpoints
+                result.viz_types[time_index][
+                    atom_positions.shape[0]:] = [VIZ_TYPE.FIBER] * n_bonds
 
             time_index += 1
             self.check_report_progress(time_index / dimensions.total_steps)
