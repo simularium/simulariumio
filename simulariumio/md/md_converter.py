@@ -28,6 +28,7 @@ class MdConverter(TrajectoryConverter):
         input_data: MdData,
         progress_callback: Callable[[float], None] = None,
         callback_interval: float = 10,
+        draw_bonds: bool = False,
     ):
         """
         This object reads simulation trajectory outputs
@@ -49,8 +50,11 @@ class MdConverter(TrajectoryConverter):
             If a progress_callback was provided, the period between updates
             to be sent to the callback, in seconds
             Default: 10
+        draw_bonds: bool (optional)
+            Default: False
         """
         super().__init__(input_data, progress_callback, callback_interval)
+        self.draw_bonds = draw_bonds
         self._data = self._read(input_data)
 
     @staticmethod
@@ -190,12 +194,17 @@ class MdConverter(TrajectoryConverter):
             result.times[time_index] = input_data.md_universe.trajectory.time
             atom_positions = input_data.md_universe.atoms.positions
             if input_data.draw_bonds:
-                bond_subpoints = np.array([
-                    np.concatenate([
-                        atom_positions[bond_indices[i][0]],
-                        atom_positions[bond_indices[i][1]],
-                    ]) for i in range(bond_indices.shape[0])
-                ])
+                bond_subpoints = np.array(
+                    [
+                        np.concatenate(
+                            [
+                                atom_positions[bond_indices[i][0]],
+                                atom_positions[bond_indices[i][1]],
+                            ]
+                        )
+                        for i in range(bond_indices.shape[0])
+                    ]
+                )
             else:
                 bond_subpoints = np.array([])
             n_agents = atom_positions.shape[0] + n_bonds
