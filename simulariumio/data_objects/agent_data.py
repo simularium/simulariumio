@@ -214,14 +214,14 @@ class AgentData:
                     tid = last_tid
                     last_tid += 1
                     type_id_mapping[type_name] = tid
-                    type_name_mapping[str(tid)] = {"name": type_name}
                     if type_name not in self.display_data:
                         raise DataError(
                             f"Please provide DisplayData for agent type {type_name}"
                         )
-                    type_name_mapping[str(tid)]["geometry"] = dict(
-                        self.display_data[type_name]
-                    )
+                    type_name_mapping[str(tid)] = {
+                        "name": self.display_data[type_name].name,
+                        "geometry" : dict(self.display_data[type_name])
+                    }
                 type_ids[time_index][agent_index] = type_id_mapping[type_name]
         return type_ids, type_name_mapping
 
