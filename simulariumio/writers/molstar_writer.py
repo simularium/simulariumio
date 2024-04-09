@@ -40,11 +40,34 @@ class MolstarWriter(Writer):
         output_path: str
             where to save the file
         """
-        # get BioPython PDB structure
+        # build BioPython PDB structure
+        scale = 1.
         builder = StructureBuilder()
-        # TODO build structure with a model for each timestep
-        
+        builder.init_structure(f"simularium_{trajectory_data.meta_data.trajectory_title}")
+        for time_ix in range(trajectory_data.agent_data.times.shape[0]):
+            builder.init_model(time_ix)
+            builder.init_seg("0")
+            builder.init_chain("0")
+            n_agents = int(trajectory_data.agent_data.n_agents[time_ix])
+            for agent_ix in range(n_agents):
+                if trajectory_data.agent_data.n_subpoints[time_ix][agent_ix] > 0:
+                    continue
+                builder.init_residue(
+                    resname="R", 
+                    field="_", 
+                    resseq=agent_ix, 
+                    icode="_",
+                )
+                builder.init_atom(
+                    "H",
+                    scale * trajectory_data.agent_data.positions[time_ix][agent_ix],
+                    b_factor=0.0,
+                    occupancy=0.0,
+                    altloc="_",
+                    fullname="Hydrogen",
+                    element="H",
+                )
         # save CIF file (TODO: binary version)
         io = MMCIFIO()
-        io.set_structure(s)
+        io.set_structure(builder.get_structure())
         io.save(f"{output_path}.cif")

@@ -31,4 +31,4 @@ from .data_objects import (  # noqa: F401
 from .constants import BINARY_SETTINGS, DISPLAY_TYPE  # noqa: F401
 from .file_converter import FileConverter  # noqa: F401
 from .trajectory_converter import TrajectoryConverter  # noqa: F401
-from .writers import BinaryWriter, JsonWriter  # noqa: F401
+from .writers import BinaryWriter, JsonWriter, MolstarWriter  # noqa: F401
