@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
-        <title>simulariumio.md.md_converter - simulariumio 1.9.2.dev14+g1494d22 documentation</title>
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.04.27 -->
+        <title>simulariumio.md.md_converter - simulariumio 1.10.1.dev1+gbfa14fd documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
     
@@ -112,6 +112,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -123,7 +125,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.9.2.dev14+g1494d22 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.10.1.dev1+gbfa14fd documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +148,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.9.2.dev14+g1494d22 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.10.1.dev1+gbfa14fd documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -213,7 +215,7 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for simulariumio.md.md_converter</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
@@ -229,7 +231,7 @@
 
 <span class="kn">from</span> <span class="nn">..trajectory_converter</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span>
 <span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">DimensionData</span><span class="p">,</span> <span class="n">DisplayData</span>
-<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">DISPLAY_TYPE</span><span class="p">,</span> <span class="n">JMOL_COLORS</span>
+<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">DISPLAY_TYPE</span><span class="p">,</span> <span class="n">JMOL_COLORS</span><span class="p">,</span> <span class="n">VIZ_TYPE</span><span class="p">,</span> <span class="n">SUBPOINT_VALUES_PER_ITEM</span>
 <span class="kn">from</span> <span class="nn">.md_data</span> <span class="kn">import</span> <span class="n">MdData</span>
 
 <span class="c1">###############################################################################</span>
@@ -247,6 +249,7 @@
         <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">,</span>
         <span class="n">progress_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">callback_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">draw_bonds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object reads simulation trajectory outputs</span>
@@ -268,8 +271,11 @@
 <span class="sd">            If a progress_callback was provided, the period between updates</span>
 <span class="sd">            to be sent to the callback, in seconds</span>
 <span class="sd">            Default: 10</span>
+<span class="sd">        draw_bonds: bool (optional)</span>
+<span class="sd">            Default: False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">progress_callback</span><span class="p">,</span> <span class="n">callback_interval</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_bonds</span> <span class="o">=</span> <span class="n">draw_bonds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
@@ -385,6 +391,19 @@
 <span class="sd">        Use a MD Universe to get AgentData</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dimensions</span> <span class="o">=</span> <span class="n">MdConverter</span><span class="o">.</span><span class="n">_read_universe_dimensions</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">draw_bonds</span><span class="p">:</span>
+            <span class="n">bond_indices</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">md_universe</span><span class="o">.</span><span class="n">bonds</span><span class="o">.</span><span class="n">indices</span>
+            <span class="n">n_bonds</span> <span class="o">=</span> <span class="n">bond_indices</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">n_max_subpoints</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">SUBPOINT_VALUES_PER_ITEM</span><span class="p">(</span><span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">FIBER</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bond_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+            <span class="n">n_bonds</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">n_max_subpoints</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">dimensions</span> <span class="o">=</span> <span class="n">DimensionData</span><span class="p">(</span>
+            <span class="n">dimensions</span><span class="o">.</span><span class="n">total_steps</span><span class="p">,</span> 
+            <span class="n">dimensions</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">+</span> <span class="n">n_bonds</span><span class="p">,</span> 
+            <span class="n">n_max_subpoints</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">from_dimensions</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
         <span class="n">get_type_name_func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frompyfunc</span><span class="p">(</span><span class="n">MdConverter</span><span class="o">.</span><span class="n">_get_type_name</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">unique_raw_type_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
@@ -395,19 +414,55 @@
         <span class="p">]:</span>
             <span class="n">result</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">md_universe</span><span class="o">.</span><span class="n">trajectory</span><span class="o">.</span><span class="n">time</span>
             <span class="n">atom_positions</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">md_universe</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">positions</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">atom_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="n">unique_raw_type_names</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">md_universe</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">names</span><span class="p">))</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_type_name_func</span><span class="p">(</span>
+            <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">draw_bonds</span><span class="p">:</span>
+                <span class="n">bond_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                            <span class="p">[</span>
+                                <span class="n">atom_positions</span><span class="p">[</span><span class="n">bond_indices</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span>
+                                <span class="n">atom_positions</span><span class="p">[</span><span class="n">bond_indices</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]],</span>
+                            <span class="p">]</span>
+                        <span class="p">)</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">bond_indices</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bond_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+            <span class="n">n_agents</span> <span class="o">=</span> <span class="n">atom_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">n_bonds</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_agents</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_agents</span><span class="p">)</span>
+            <span class="n">type_name_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">md_universe</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">names</span><span class="p">)</span> 
+            <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">draw_bonds</span><span class="p">:</span>
+                <span class="n">type_name_list</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;bond&#39;</span><span class="p">]</span>
+            <span class="n">unique_raw_type_names</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">type_name_list</span><span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][:</span><span class="n">atom_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">get_type_name_func</span><span class="p">(</span>
                 <span class="n">input_data</span><span class="o">.</span><span class="n">md_universe</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="n">input_data</span>
             <span class="p">)</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">atom_positions</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                <span class="p">[</span>
+            <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">draw_bonds</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">atom_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bond&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_bonds</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">][:</span><span class="n">atom_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">atom_positions</span>
+            <span class="n">radii_list</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">MdConverter</span><span class="o">.</span><span class="n">_get_radius</span><span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">md_universe</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">names</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">draw_bonds</span><span class="p">:</span>
+                <span class="n">radii_list</span> <span class="o">+=</span> <span class="p">[</span>
                     <span class="n">MdConverter</span><span class="o">.</span><span class="n">_get_radius</span><span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">md_universe</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">names</span>
+                    <span class="k">for</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bond&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_bonds</span>
                 <span class="p">]</span>
-            <span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">radii_list</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">draw_bonds</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">atom_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="o">+</span> <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">SUBPOINT_VALUES_PER_ITEM</span><span class="p">(</span><span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">FIBER</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n_bonds</span>
+                <span class="p">)</span>
+
+                <span class="n">result</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span>
+                    <span class="n">atom_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:]</span> <span class="o">=</span> <span class="n">bond_subpoints</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">viz_types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span>
+                    <span class="n">atom_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:]</span> <span class="o">=</span> <span class="p">[</span><span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">FIBER</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_bonds</span>
+
             <span class="n">time_index</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">check_report_progress</span><span class="p">(</span><span class="n">time_index</span> <span class="o">/</span> <span class="n">dimensions</span><span class="o">.</span><span class="n">total_steps</span><span class="p">)</span>
 
@@ -415,9 +470,12 @@
         <span class="n">result</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">MdConverter</span><span class="o">.</span><span class="n">_get_display_data_mapping</span><span class="p">(</span>
             <span class="n">unique_raw_type_names</span><span class="p">,</span> <span class="n">input_data</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">scale_agent_data</span><span class="p">(</span>
+
+        <span class="n">result</span><span class="p">,</span> <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">scale_agent_data</span><span class="p">(</span>
             <span class="n">result</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span>
         <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">center_fiber_positions</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">scale_factor</span>
 
     <span class="k">def</span> <span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MdData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -470,10 +528,10 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=7c4d3ac3"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+</div><script src="../../../_static/documentation_options.js?v=e6e200b9"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=30646c52"></script>
     </body>

@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Installation" href="installation.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
-        <title>simulariumio 1.9.2.dev14+g1494d22 documentation</title>
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.04.27 -->
+        <title>simulariumio 1.10.1.dev1+gbfa14fd documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
@@ -113,6 +113,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -124,7 +126,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="#"><div class="brand">simulariumio 1.9.2.dev14+g1494d22 documentation</div></a>
+      <a href="#"><div class="brand">simulariumio 1.10.1.dev1+gbfa14fd documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +149,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.9.2.dev14+g1494d22 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.10.1.dev1+gbfa14fd documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -215,13 +217,13 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="welcome-to-simulariumio-s-documentation">
-<h1>Welcome to simulariumio’s documentation!<a class="headerlink" href="#welcome-to-simulariumio-s-documentation" title="Link to this heading">#</a></h1>
+<h1>Welcome to simulariumio’s documentation!<a class="headerlink" href="#welcome-to-simulariumio-s-documentation" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <section id="simularium-repositories">
-<h2>Simularium repositories<a class="headerlink" href="#simularium-repositories" title="Link to this heading">#</a></h2>
+<h2>Simularium repositories<a class="headerlink" href="#simularium-repositories" title="Link to this heading">¶</a></h2>
 <p>This repository is part of the Simularium project (<a class="reference external" href="https://simularium.allencell.org">simularium.allencell.org</a>), which includes repositories:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/simularium/simulariumio">simulariumIO</a> - Python package that converts simulation outputs to the format consumed by the Simularium viewer website</p></li>
@@ -236,7 +238,7 @@
 </section>
 </section>
 <section id="id1">
-<h1>SimulariumIO<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<h1>SimulariumIO<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <a class="reference external image-reference" href="https://github.com/simularium/simulariumio/actions"><img alt="Build Status" src="https://github.com/simularium/simulariumio/workflows/CI/badge.svg" /></a>
 <a class="reference external image-reference" href="https://simularium.github.io/simulariumio"><img alt="Documentation" src="https://github.com/simularium/simulariumio/workflows/Documentation/badge.svg" /></a>
 <a class="reference external image-reference" href="https://codecov.io/gh/simularium/simulariumio"><img alt="Code Coverage" src="https://codecov.io/gh/simularium/simulariumio/branch/master/graph/badge.svg" /></a>
@@ -244,12 +246,12 @@
 <hr class="docutils" />
 <p><span class="raw-html-m2r"><br/></span></p>
 <section id="convert-simulation-outputs-so-they-can-be-visualized-in-the-simularium-viewer">
-<h2>Convert simulation outputs so they can be visualized in the <a class="reference external" href="https://simularium.allencell.org/">Simularium Viewer</a>.<a class="headerlink" href="#convert-simulation-outputs-so-they-can-be-visualized-in-the-simularium-viewer" title="Link to this heading">#</a></h2>
+<h2>Convert simulation outputs so they can be visualized in the <a class="reference external" href="https://simularium.allencell.org/">Simularium Viewer</a>.<a class="headerlink" href="#convert-simulation-outputs-so-they-can-be-visualized-in-the-simularium-viewer" title="Link to this heading">¶</a></h2>
 <p><span class="raw-html-m2r"><br/></span></p>
 </section>
 </section>
 <section id="convert-your-data">
-<h1>1. Convert your data<a class="headerlink" href="#convert-your-data" title="Link to this heading">#</a></h1>
+<h1>1. Convert your data<a class="headerlink" href="#convert-your-data" title="Link to this heading">¶</a></h1>
 <p>Save your data as a <a class="reference external" href="https://github.com/simularium/simulariumio/blob/main/file_format.md">.simularium file (click to see full file format</a> (see Jupyter notebook <a class="reference external" href="examples/">examples</a>):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">simulariumio</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span><span class="p">,</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">AgentData</span><span class="p">,</span> <span class="n">ScatterPlotData</span>
@@ -283,14 +285,14 @@
 <p><span class="raw-html-m2r"><br/></span></p>
 </section>
 <section id="load-in-the-simularium-viewer">
-<h1>2. Load in the <a class="reference external" href="https://simularium.allencell.org/viewer">Simularium Viewer</a><a class="headerlink" href="#load-in-the-simularium-viewer" title="Link to this heading">#</a></h1>
+<h1>2. Load in the <a class="reference external" href="https://simularium.allencell.org/viewer">Simularium Viewer</a><a class="headerlink" href="#load-in-the-simularium-viewer" title="Link to this heading">¶</a></h1>
 <p>Load your file in the Simularium Viewer at <a class="reference external" href="https://simularium.allencell.org/viewer">https://simularium.allencell.org/viewer</a> to interactively rotate and play back your data:</p>
 <a class="reference external image-reference" href="/examples/img/drag_drop.gif"><img alt="Loading a file in the Simularium Viewer" src="examples/img/drag_drop.gif" /></a>
 <p><a class="reference external" href="#visualize-results">See more details</a></p>
 <p><span class="raw-html-m2r"><br/></span></p>
 </section>
 <section id="share-by-url">
-<h1>3. Share by URL<a class="headerlink" href="#share-by-url" title="Link to this heading">#</a></h1>
+<h1>3. Share by URL<a class="headerlink" href="#share-by-url" title="Link to this heading">¶</a></h1>
 <p>Upload your file to a public Dropbox or Google Drive folder or an AWS S3 bucket, and use the URL <a class="reference external" href="https://simularium.allencell.org/viewer?trajUrl=LINK_TO_YOUR_FILE">https://simularium.allencell.org/viewer?trajUrl=LINK_TO_YOUR_FILE</a>. For example, <a class="reference external" href="https://simularium.allencell.org/viewer?trajUrl=https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/endocytosis.simularium">https://simularium.allencell.org/viewer?trajUrl=https://aics-simularium-data.s3.us-east-2.amazonaws.com/trajectory/endocytosis.simularium</a>.</p>
 <p><a class="reference external" href="#share-link-to-results">See more details</a></p>
 <p><span class="raw-html-m2r"><br/></span></p>
@@ -298,7 +300,7 @@
 <hr class="docutils" />
 <p><span class="raw-html-m2r"><br/></span></p>
 <section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Converts 3D spatiotemporal trajectories to .simularium JSON format</p></li>
 <li><p>Accepts spatial trajectories from the following biological simulation engines:</p>
@@ -334,7 +336,7 @@
 <p><span class="raw-html-m2r"><br/></span></p>
 </section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
 <p><strong>Install Requires:</strong></p>
 <ul class="simple">
 <li><p>Requires Python 3.7, 3.8, or 3.9</p></li>
@@ -351,9 +353,9 @@
 <p><span class="raw-html-m2r"><br/></span></p>
 </section>
 <section id="quick-start">
-<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">¶</a></h2>
 <section id="convert-spatial-trajectory-from-a-supported-engine">
-<h3>Convert spatial trajectory from a supported engine<a class="headerlink" href="#convert-spatial-trajectory-from-a-supported-engine" title="Link to this heading">#</a></h3>
+<h3>Convert spatial trajectory from a supported engine<a class="headerlink" href="#convert-spatial-trajectory-from-a-supported-engine" title="Link to this heading">¶</a></h3>
 <p>See the Tutorial for the simulation engine you’re using for details:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="examples/Tutorial_cytosim.ipynb">Cytosim Tutorial</a></p></li>
@@ -382,7 +384,7 @@
 </div>
 </section>
 <section id="convert-spatial-trajectory-from-a-custom-engine">
-<h3>Convert spatial trajectory from a custom engine<a class="headerlink" href="#convert-spatial-trajectory-from-a-custom-engine" title="Link to this heading">#</a></h3>
+<h3>Convert spatial trajectory from a custom engine<a class="headerlink" href="#convert-spatial-trajectory-from-a-custom-engine" title="Link to this heading">¶</a></h3>
 <p>See the <a class="reference external" href="examples/Tutorial_custom.ipynb">Custom Data Tutorial</a> for details. An overview:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">simulariumio</span> <span class="kn">import</span> <span class="n">TrajectoryConverter</span><span class="p">,</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">AgentData</span>
@@ -408,7 +410,7 @@
 </div>
 </section>
 <section id="add-metrics-data-to-plot">
-<h3>Add metrics data to plot<a class="headerlink" href="#add-metrics-data-to-plot" title="Link to this heading">#</a></h3>
+<h3>Add metrics data to plot<a class="headerlink" href="#add-metrics-data-to-plot" title="Link to this heading">¶</a></h3>
 <p>See the <a class="reference external" href="examples/Tutorial_plots.ipynb">Plots Tutorial</a> for details. An overview:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">simulariumio</span> <span class="kn">import</span> <span class="n">ScatterPlotData</span>
@@ -431,7 +433,7 @@
 </div>
 </section>
 <section id="render-with-meshes-or-pdb-files">
-<h3>Render with meshes or PDB files<a class="headerlink" href="#render-with-meshes-or-pdb-files" title="Link to this heading">#</a></h3>
+<h3>Render with meshes or PDB files<a class="headerlink" href="#render-with-meshes-or-pdb-files" title="Link to this heading">¶</a></h3>
 <p>If you’d like to render agents as meshes instead of spheres, add a <code class="docutils literal notranslate"><span class="pre">DisplayData</span></code> for each agent type you’d like to be rendered with the mesh, and specify an OBJ mesh file. Alternately, you can provide a Protein Databank (PDB) file to render atoms for a molecule.</p>
 <p>See the example notebook for the converter you are using to see how to add display data for that converter.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">display_data</span><span class="o">=</span><span class="p">{</span>
@@ -457,7 +459,7 @@
 </section>
 </section>
 <section id="visualize-results">
-<h2>Visualize results<a class="headerlink" href="#visualize-results" title="Link to this heading">#</a></h2>
+<h2>Visualize results<a class="headerlink" href="#visualize-results" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>In a supported browser (Firefox, Chrome, or Edge), navigate to <a class="reference external" href="https://simularium.allencell.org/viewer">https://simularium.allencell.org/viewer</a>.</p></li>
 <li><p>Drag the file output from SimulariumIO from your file browser onto the window or choose Load model &gt; From your device, and select your file from the file upload dialogue.</p></li>
@@ -471,7 +473,7 @@
 <p><span class="raw-html-m2r"><br/></span></p>
 </section>
 <section id="share-link-to-results">
-<h2>Share link to results<a class="headerlink" href="#share-link-to-results" title="Link to this heading">#</a></h2>
+<h2>Share link to results<a class="headerlink" href="#share-link-to-results" title="Link to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Upload your Simularium file to one of the supported public cloud providers, including Dropbox, Google Drive, or Amazon S3, and get a publicly accessible link to the file.</p></li>
 <li><p>In a supported browser (Firefox, Chrome, or Edge), navigate to <a class="reference external" href="https://simularium.allencell.org">https://simularium.allencell.org</a>.</p></li>
@@ -488,14 +490,14 @@
 <p><span class="raw-html-m2r"><br/></span></p>
 </section>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
 <p>For full package documentation please visit <a class="reference external" href="https://simularium.github.io/simulariumio">simularium.github.io/simulariumio</a>.</p>
 <p><span class="raw-html-m2r"><br/></span></p>
 <hr class="docutils" />
 <p><span class="raw-html-m2r"><br/></span></p>
 </section>
 <section id="development">
-<h2>Development<a class="headerlink" href="#development" title="Link to this heading">#</a></h2>
+<h2>Development<a class="headerlink" href="#development" title="Link to this heading">¶</a></h2>
 <p>See <a class="reference external" href="CONTRIBUTING.md">CONTRIBUTING.md</a> for information related to developing the code.</p>
 </section>
 </section>
@@ -580,10 +582,10 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=7c4d3ac3"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+</div><script src="_static/documentation_options.js?v=e6e200b9"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=30646c52"></script>
     </body>

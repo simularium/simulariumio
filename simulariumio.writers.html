@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Contributing" href="contributing.html" /><link rel="prev" title="simulariumio.springsalad package" href="simulariumio.springsalad.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
-        <title>simulariumio.writers package - simulariumio 1.9.2.dev14+g1494d22 documentation</title>
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.04.27 -->
+        <title>simulariumio.writers package - simulariumio 1.10.1.dev1+gbfa14fd documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
@@ -113,6 +113,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -124,7 +126,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">simulariumio 1.9.2.dev14+g1494d22 documentation</div></a>
+      <a href="index.html"><div class="brand">simulariumio 1.10.1.dev1+gbfa14fd documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +149,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.9.2.dev14+g1494d22 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.10.1.dev1+gbfa14fd documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -215,17 +217,17 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="simulariumio-writers-package">
-<h1>simulariumio.writers package<a class="headerlink" href="#simulariumio-writers-package" title="Link to this heading">#</a></h1>
+<h1>simulariumio.writers package<a class="headerlink" href="#simulariumio-writers-package" title="Link to this heading">¶</a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 </section>
 <section id="module-simulariumio.writers.binary_chunk">
-<span id="simulariumio-writers-binary-chunk-module"></span><h2>simulariumio.writers.binary_chunk module<a class="headerlink" href="#module-simulariumio.writers.binary_chunk" title="Link to this heading">#</a></h2>
+<span id="simulariumio-writers-binary-chunk-module"></span><h2>simulariumio.writers.binary_chunk module<a class="headerlink" href="#module-simulariumio.writers.binary_chunk" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_chunk.BinaryChunk">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.writers.binary_chunk.</span></span><span class="sig-name descname"><span class="pre">BinaryChunk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_frame_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/writers/binary_chunk.html#BinaryChunk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.writers.binary_chunk.</span></span><span class="sig-name descname"><span class="pre">BinaryChunk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_frame_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/writers/binary_chunk.html#BinaryChunk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Object to store size info for a binary file.
 BinaryChunk is used to determine how many files to save
@@ -244,17 +246,17 @@ if the data is larger than the max file size.</p>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_chunk.BinaryChunk.first_frame_index">
-<span class="sig-name descname"><span class="pre">first_frame_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.first_frame_index" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">first_frame_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.first_frame_index" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_chunk.BinaryChunk.frame_n_values">
-<span class="sig-name descname"><span class="pre">frame_n_values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.frame_n_values" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">frame_n_values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.frame_n_values" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_chunk.BinaryChunk.get_global_index">
-<span class="sig-name descname"><span class="pre">get_global_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/simulariumio/writers/binary_chunk.html#BinaryChunk.get_global_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.get_global_index" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_global_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/simulariumio/writers/binary_chunk.html#BinaryChunk.get_global_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.get_global_index" title="Link to this definition">¶</a></dt>
 <dd><p>Get the index in the entire trajectory for the index within this chunk</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -268,27 +270,27 @@ if the data is larger than the max file size.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_chunk.BinaryChunk.n_bytes">
-<span class="sig-name descname"><span class="pre">n_bytes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.n_bytes" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">n_bytes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.n_bytes" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_chunk.BinaryChunk.n_frames">
-<span class="sig-name descname"><span class="pre">n_frames</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.n_frames" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">n_frames</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.n_frames" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_chunk.BinaryChunk.n_values">
-<span class="sig-name descname"><span class="pre">n_values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.n_values" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">n_values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.writers.binary_chunk.BinaryChunk.n_values" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-simulariumio.writers.binary_values">
-<span id="simulariumio-writers-binary-values-module"></span><h2>simulariumio.writers.binary_values module<a class="headerlink" href="#module-simulariumio.writers.binary_values" title="Link to this heading">#</a></h2>
+<span id="simulariumio-writers-binary-values-module"></span><h2>simulariumio.writers.binary_values module<a class="headerlink" href="#module-simulariumio.writers.binary_values" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_values.BinaryValues">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.writers.binary_values.</span></span><span class="sig-name descname"><span class="pre">BinaryValues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/writers/binary_values.html#BinaryValues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_values.BinaryValues" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.writers.binary_values.</span></span><span class="sig-name descname"><span class="pre">BinaryValues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/writers/binary_values.html#BinaryValues"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_values.BinaryValues" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object contains value(s) to be written in binary
 and the format string to use when packing</p>
@@ -304,26 +306,26 @@ and the format string to use when packing</p>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_values.BinaryValues.format_string">
-<span class="sig-name descname"><span class="pre">format_string</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simulariumio.writers.binary_values.BinaryValues.format_string" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">format_string</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simulariumio.writers.binary_values.BinaryValues.format_string" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_values.BinaryValues.values">
-<span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.writers.binary_values.BinaryValues.values" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.writers.binary_values.BinaryValues.values" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-simulariumio.writers.binary_writer">
-<span id="simulariumio-writers-binary-writer-module"></span><h2>simulariumio.writers.binary_writer module<a class="headerlink" href="#module-simulariumio.writers.binary_writer" title="Link to this heading">#</a></h2>
+<span id="simulariumio-writers-binary-writer-module"></span><h2>simulariumio.writers.binary_writer module<a class="headerlink" href="#module-simulariumio.writers.binary_writer" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_writer.BinaryWriter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.writers.binary_writer.</span></span><span class="sig-name descname"><span class="pre">BinaryWriter</span></span><a class="reference internal" href="_modules/simulariumio/writers/binary_writer.html#BinaryWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_writer.BinaryWriter" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.writers.binary_writer.</span></span><span class="sig-name descname"><span class="pre">BinaryWriter</span></span><a class="reference internal" href="_modules/simulariumio/writers/binary_writer.html#BinaryWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_writer.BinaryWriter" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#simulariumio.writers.writer.Writer" title="simulariumio.writers.writer.Writer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Writer</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_writer.BinaryWriter.format_trajectory_data">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_trajectory_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_bytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4000000000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#simulariumio.writers.binary_values.BinaryValues" title="simulariumio.writers.binary_values.BinaryValues"><span class="pre">BinaryValues</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#simulariumio.writers.binary_values.BinaryValues" title="simulariumio.writers.binary_values.BinaryValues"><span class="pre">BinaryValues</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/simulariumio/writers/binary_writer.html#BinaryWriter.format_trajectory_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_writer.BinaryWriter.format_trajectory_data" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_trajectory_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_bytes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4000000000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#simulariumio.writers.binary_values.BinaryValues" title="simulariumio.writers.binary_values.BinaryValues"><span class="pre">BinaryValues</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#simulariumio.writers.binary_values.BinaryValues" title="simulariumio.writers.binary_values.BinaryValues"><span class="pre">BinaryValues</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/simulariumio/writers/binary_writer.html#BinaryWriter.format_trajectory_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_writer.BinaryWriter.format_trajectory_data" title="Link to this definition">¶</a></dt>
 <dd><p>Return the data shaped for Simularium binary
 Parameters
 ———-
@@ -335,7 +337,7 @@ trajectory_data: TrajectoryData</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulariumio.writers.binary_writer.BinaryWriter.save">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/simulariumio/writers/binary_writer.html#BinaryWriter.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_writer.BinaryWriter.save" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/simulariumio/writers/binary_writer.html#BinaryWriter.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.binary_writer.BinaryWriter.save" title="Link to this definition">¶</a></dt>
 <dd><p>Save the simularium data in .simularium binary format
 at the output path
 Parameters
@@ -356,14 +358,14 @@ trajectory_data: TrajectoryData</p>
 
 </section>
 <section id="module-simulariumio.writers.json_writer">
-<span id="simulariumio-writers-json-writer-module"></span><h2>simulariumio.writers.json_writer module<a class="headerlink" href="#module-simulariumio.writers.json_writer" title="Link to this heading">#</a></h2>
+<span id="simulariumio-writers-json-writer-module"></span><h2>simulariumio.writers.json_writer module<a class="headerlink" href="#module-simulariumio.writers.json_writer" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.writers.json_writer.JsonWriter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.writers.json_writer.</span></span><span class="sig-name descname"><span class="pre">JsonWriter</span></span><a class="reference internal" href="_modules/simulariumio/writers/json_writer.html#JsonWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.json_writer.JsonWriter" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.writers.json_writer.</span></span><span class="sig-name descname"><span class="pre">JsonWriter</span></span><a class="reference internal" href="_modules/simulariumio/writers/json_writer.html#JsonWriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.json_writer.JsonWriter" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#simulariumio.writers.writer.Writer" title="simulariumio.writers.writer.Writer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Writer</span></code></a></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="simulariumio.writers.json_writer.JsonWriter.format_trajectory_data">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_trajectory_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/simulariumio/writers/json_writer.html#JsonWriter.format_trajectory_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.json_writer.JsonWriter.format_trajectory_data" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_trajectory_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/simulariumio/writers/json_writer.html#JsonWriter.format_trajectory_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.json_writer.JsonWriter.format_trajectory_data" title="Link to this definition">¶</a></dt>
 <dd><p>Return the data shaped for Simularium JSON
 Parameters
 ———-
@@ -375,7 +377,7 @@ trajectory_data: TrajectoryData</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulariumio.writers.json_writer.JsonWriter.save">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/simulariumio/writers/json_writer.html#JsonWriter.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.json_writer.JsonWriter.save" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/simulariumio/writers/json_writer.html#JsonWriter.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.json_writer.JsonWriter.save" title="Link to this definition">¶</a></dt>
 <dd><p>Save the simularium data in .simularium JSON format
 at the output path
 Parameters
@@ -394,7 +396,7 @@ trajectory_data: TrajectoryData</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulariumio.writers.json_writer.JsonWriter.save_plot_data">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save_plot_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/writers/json_writer.html#JsonWriter.save_plot_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.json_writer.JsonWriter.save_plot_data" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save_plot_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plot_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/writers/json_writer.html#JsonWriter.save_plot_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.json_writer.JsonWriter.save_plot_data" title="Link to this definition">¶</a></dt>
 <dd><p>Save the current plot data in JSON format
 at the output path
 Parameters
@@ -413,26 +415,26 @@ plot_data: List[Dict[str, Any]]</p>
 
 </section>
 <section id="module-simulariumio.writers.writer">
-<span id="simulariumio-writers-writer-module"></span><h2>simulariumio.writers.writer module<a class="headerlink" href="#module-simulariumio.writers.writer" title="Link to this heading">#</a></h2>
+<span id="simulariumio-writers-writer-module"></span><h2>simulariumio.writers.writer module<a class="headerlink" href="#module-simulariumio.writers.writer" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.writers.writer.Writer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.writers.writer.</span></span><span class="sig-name descname"><span class="pre">Writer</span></span><a class="reference internal" href="_modules/simulariumio/writers/writer.html#Writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.writer.Writer" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.writers.writer.</span></span><span class="sig-name descname"><span class="pre">Writer</span></span><a class="reference internal" href="_modules/simulariumio/writers/writer.html#Writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.writer.Writer" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="simulariumio.writers.writer.Writer.format_trajectory_data">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_trajectory_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/simulariumio/writers/writer.html#Writer.format_trajectory_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.writer.Writer.format_trajectory_data" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_trajectory_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/simulariumio/writers/writer.html#Writer.format_trajectory_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.writer.Writer.format_trajectory_data" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="simulariumio.writers.writer.Writer.save">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/simulariumio/writers/writer.html#Writer.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.writer.Writer.save" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData" title="simulariumio.data_objects.trajectory_data.TrajectoryData"><span class="pre">TrajectoryData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/simulariumio/writers/writer.html#Writer.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.writers.writer.Writer.save" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-simulariumio.writers">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.writers" title="Link to this heading">#</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.writers" title="Link to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -550,10 +552,10 @@ plot_data: List[Dict[str, Any]]</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=7c4d3ac3"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+</div><script src="_static/documentation_options.js?v=e6e200b9"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=30646c52"></script>
     </body>

@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.smoldyn package" href="simulariumio.smoldyn.html" /><link rel="prev" title="simulariumio.readdy package" href="simulariumio.readdy.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
-        <title>simulariumio.readers package - simulariumio 1.9.2.dev14+g1494d22 documentation</title>
+    <!-- Generated with Sphinx 7.3.7 and Furo 2024.04.27 -->
+        <title>simulariumio.readers package - simulariumio 1.10.1.dev1+gbfa14fd documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
@@ -113,6 +113,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -124,7 +126,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">simulariumio 1.9.2.dev14+g1494d22 documentation</div></a>
+      <a href="index.html"><div class="brand">simulariumio 1.10.1.dev1+gbfa14fd documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +149,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.9.2.dev14+g1494d22 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.10.1.dev1+gbfa14fd documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -215,71 +217,71 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="simulariumio-readers-package">
-<h1>simulariumio.readers package<a class="headerlink" href="#simulariumio-readers-package" title="Link to this heading">#</a></h1>
+<h1>simulariumio.readers package<a class="headerlink" href="#simulariumio-readers-package" title="Link to this heading">¶</a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 </section>
 <section id="module-simulariumio.readers.binary_info">
-<span id="simulariumio-readers-binary-info-module"></span><h2>simulariumio.readers.binary_info module<a class="headerlink" href="#module-simulariumio.readers.binary_info" title="Link to this heading">#</a></h2>
+<span id="simulariumio-readers-binary-info-module"></span><h2>simulariumio.readers.binary_info module<a class="headerlink" href="#module-simulariumio.readers.binary_info" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryBlockInfo">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.readers.binary_info.</span></span><span class="sig-name descname"><span class="pre">BinaryBlockInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_offsets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_lengths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/readers/binary_info.html#BinaryBlockInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.readers.binary_info.</span></span><span class="sig-name descname"><span class="pre">BinaryBlockInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_offsets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_lengths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/readers/binary_info.html#BinaryBlockInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryBlockInfo.block_lengths">
-<span class="sig-name descname"><span class="pre">block_lengths</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_lengths" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">block_lengths</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_lengths" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryBlockInfo.block_offsets">
-<span class="sig-name descname"><span class="pre">block_offsets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_offsets" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">block_offsets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_offsets" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryBlockInfo.block_types">
-<span class="sig-name descname"><span class="pre">block_types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_types" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">block_types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_types" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryBlockInfo.n_blocks">
-<span class="sig-name descname"><span class="pre">n_blocks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.n_blocks" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">n_blocks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.n_blocks" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryFileData">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.readers.binary_info.</span></span><span class="sig-name descname"><span class="pre">BinaryFileData</span></span><a class="reference internal" href="_modules/simulariumio/readers/binary_info.html#BinaryFileData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.readers.binary_info.</span></span><span class="sig-name descname"><span class="pre">BinaryFileData</span></span><a class="reference internal" href="_modules/simulariumio/readers/binary_info.html#BinaryFileData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryFileData.byte_view">
-<span class="sig-name descname"><span class="pre">byte_view</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData.byte_view" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">byte_view</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData.byte_view" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryFileData.float_view">
-<span class="sig-name descname"><span class="pre">float_view</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData.float_view" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">float_view</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData.float_view" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryFileData.int_view">
-<span class="sig-name descname"><span class="pre">int_view</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData.int_view" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">int_view</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData.int_view" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-simulariumio.readers.simularium_binary_reader">
-<span id="simulariumio-readers-simularium-binary-reader-module"></span><h2>simulariumio.readers.simularium_binary_reader module<a class="headerlink" href="#module-simulariumio.readers.simularium_binary_reader" title="Link to this heading">#</a></h2>
+<span id="simulariumio-readers-simularium-binary-reader-module"></span><h2>simulariumio.readers.simularium_binary_reader module<a class="headerlink" href="#module-simulariumio.readers.simularium_binary_reader" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.readers.simularium_binary_reader.</span></span><span class="sig-name descname"><span class="pre">SimulariumBinaryReader</span></span><a class="reference internal" href="_modules/simulariumio/readers/simularium_binary_reader.html#SimulariumBinaryReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.readers.simularium_binary_reader.</span></span><span class="sig-name descname"><span class="pre">SimulariumBinaryReader</span></span><a class="reference internal" href="_modules/simulariumio/readers/simularium_binary_reader.html#SimulariumBinaryReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader.load_binary">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.input_file_data.InputFileData" title="simulariumio.data_objects.input_file_data.InputFileData"><span class="pre">InputFileData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_spatial_data_as_binary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/simulariumio/readers/simularium_binary_reader.html#SimulariumBinaryReader.load_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader.load_binary" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.input_file_data.InputFileData" title="simulariumio.data_objects.input_file_data.InputFileData"><span class="pre">InputFileData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_spatial_data_as_binary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/simulariumio/readers/simularium_binary_reader.html#SimulariumBinaryReader.load_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader.load_binary" title="Link to this definition">¶</a></dt>
 <dd><p>Load data from the input file in .simularium binary format and update it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -298,7 +300,7 @@ Default = False</p>
 
 </section>
 <section id="module-simulariumio.readers">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.readers" title="Link to this heading">#</a></h2>
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.readers" title="Link to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -394,10 +396,10 @@ Default = False</p>
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=7c4d3ac3"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+</div><script src="_static/documentation_options.js?v=e6e200b9"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=30646c52"></script>
     </body>
