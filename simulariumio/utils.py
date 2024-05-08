@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Dict, Any
 
-from .data_objects import DisplayData
+from .data_objects import DisplayData, AgentData
 
 
 def unpack_position_vector(
@@ -49,3 +49,37 @@ def unpack_display_data(
             agent_data = agent_info[agent_name]
             display_data[agent_name] = DisplayData.from_dict(agent_data)
     return display_data
+
+
+def translate_agent_positions(
+    data: AgentData,
+    default_translation: np.ndarray,
+    translation_per_type: Dict[str, np.ndarray] = {}
+) -> AgentData:
+    """
+    Translate all spatial data for each frame of simularium trajectory data
+
+    Parameters
+    ----------
+    data : AgentData
+        Trajectory data, containing the spatial data to be traslated
+    default_translation : np.ndarray (shape = [3])
+        XYZ translation for all agents not specified in translation_per_type
+    translation_per_type : Dict[str, int]
+        translation for agents of each type
+        Default: {}
+    """
+    total_steps = data.times.size
+    for time_index in range(total_steps):
+        for agent_index in range(int(data.n_agents[time_index])):
+            if (
+                data.types[time_index][agent_index]
+                in translation_per_type
+            ):
+                translation = translation_per_type[
+                    data.types[time_index][agent_index]
+                ]
+            else:
+                translation = default_translation
+            data.positions[time_index][agent_index] += translation
+    return data

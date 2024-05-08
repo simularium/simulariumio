@@ -398,3 +398,84 @@ def test_callback_fn():
         assert call_value > last_call_val
         assert call_value <= 1.0
         last_call_val = call_value
+
+
+results_with_bonds = JsonWriter.format_trajectory_data(
+    MdConverter(
+        MdData(
+            md_universe=Universe(
+                "simulariumio/tests/data/md/example.xyz", 
+                guess_bonds=True, 
+                vdwradii={"T": 90.0},
+            ),
+            draw_bonds=True,
+        )
+    )._data
+)
+
+first_frame_data_with_bond = [
+    VIZ_TYPE.DEFAULT,  # first atom
+    0.0,
+    0.0,
+    17.455860176109592,  # x
+    -9.282322881315764,  # y
+    25.164461444822095,  # z
+    0.0,
+    0.0,
+    0.0,
+    0.410577680081599,
+    0.0,
+    VIZ_TYPE.DEFAULT,  # second atom
+    1.0,
+    0.0,
+    0.0,  # x
+    0.0,  # y
+    0.0,  # z
+    0.0,
+    0.0,
+    0.0,
+    0.410577680081599,
+    0.0,
+    VIZ_TYPE.DEFAULT,  # third atom
+    2.0,
+    1.0,
+    -20.86782234438291,  # x
+    31.832387751607193,  # y
+    6.484507904672457,   # z
+    0.0,
+    0.0,
+    0.0,
+    0.4516354480897589,
+    0.0,
+    VIZ_TYPE.FIBER,  # bond agent
+    3.0,
+    2.0,
+    8.727930088054796,   # x
+    -4.641161440657882,  # y
+    12.582230722411047,  # z
+    0.0,
+    0.0,
+    0.0,
+    0.7883091457566701,
+    6.0,
+    8.727930088054796,    # start x (first atom)
+    -4.641161440657882,   # start y
+    12.582230722411047,   # start z
+    -8.727930088054796,   # end x (second atom)
+    4.641161440657882,    # end y
+    -12.582230722411047,  # end z
+]
+
+
+# test draw bonds
+@pytest.mark.parametrize(
+    "bundleData, expected_bundleData",
+    [
+        (
+            results_with_bonds["spatialData"]["bundleData"][0],
+            first_frame_data_with_bond,
+        )
+    ],
+)
+def test_draw_bonds(bundleData, expected_bundleData):
+    assert np.isclose(expected_bundleData, bundleData["data"]).all()

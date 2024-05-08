@@ -223,7 +223,7 @@ class PhysicellConverter(TrajectoryConverter):
                     last_id=last_id,
                     type_mapping=type_mapping,
                 )
-                if type_mapping[tid] not in input_data.display_data:
+                if type_mapping[tid] not in result.display_data:
                     result.display_data[type_mapping[tid]] = DisplayData(
                         name=type_mapping[tid],
                         display_type=DISPLAY_TYPE.SPHERE,
@@ -376,6 +376,7 @@ class PhysicellConverter(TrajectoryConverter):
                             phase_id
                         )
                     agent_data.display_data[type_name] = display_data
+                    agent_data.display_data[type_name].name = type_name
         input_data.meta_data.scale_factor = scale_factor
         input_data.meta_data._set_box_size()
         return TrajectoryData(
