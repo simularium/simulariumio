@@ -25,7 +25,7 @@ INSTRUCTIONS:
 set_id_by_complex = False
 complex_components = [
     "Unbound_Subunit",
-    "Oxygen",
+    "Dioxygen",
     "Carbon_Monoxyde",
 ]
 geometry_urls = {
@@ -41,8 +41,8 @@ geometry_urls = {
     "Bound_To_CO_Subunit__AlphaTwo" : "https://www.dropbox.com/scl/fi/6vgyrtszp0z57sb3vxtkl/Alpha2.obj?rlkey=als8pwcevjlbnycgit7bkx4qj&dl=0",
     "Bound_To_CO_Subunit__BetaOne" : "https://www.dropbox.com/scl/fi/scpblondcj06w459vuofr/Beta1.obj?rlkey=cy1us3gqe9yhanuosx9wapzn2&dl=0",
     "Bound_To_CO_Subunit__BetaTwo" : "https://www.dropbox.com/scl/fi/3tlfc0hm4wwpqkeuxlffv/Beta2.obj?rlkey=2fq8wt2j169go2wu2qe7axmjy&dl=0",
-    "Oxygen" : "https://www.dropbox.com/scl/fi/yjr4szttp70q9z5wfd1bc/O2.obj?rlkey=j2oshr5gwxtjku3j44e5vmrvx&dl=0",
-    "Carbon_Monoxyde" : "https://www.dropbox.com/scl/fi/yjr4szttp70q9z5wfd1bc/O2.obj?rlkey=j2oshr5gwxtjku3j44e5vmrvx&dl=0",
+    "Dioxygen" : "https://www.dropbox.com/scl/fi/imq5v6hpjmrvawyvcc92b/Dioxygen.obj?rlkey=sieohllmlmpfli713fl7m7q4r&dl=0",
+    "Carbon_Monoxyde" : "https://www.dropbox.com/scl/fi/r1z6pdyk8g7s3x1uoxoup/CarbonMonoxyde.obj?rlkey=8zuy9tk7er5rszdu6pzvwr24g&dl=0",
 }
 spatial_units = "nm"  # nanometers
 timestep = 0.033  # time that passes each step
@@ -52,10 +52,10 @@ time_units = "ms"  # microseconds
 # output_path = "/Users/blairl/Documents/Dev/simulariumio/simulariumio/maya/output/"
 output_path = "/Users/margotriggi/Documents/Postdoc/Hb/"
 
-trajectory_name = "Haemoglobin_oxygen_CO_animation" #.simularium
+trajectory_name = "Haemoglobin_oxygen_CO_animation_20240419_test" #.simularium
 display_title = "Haemoglobin_O2_CO animation"
 author_names = "Margot Riggi, Janet Iwasa"
-animation_description = "An animation of O2 interactions with haemoglobin in red blood cells"
+animation_description = "An animation of O2 and CO interactions with haemoglobin in red blood cells"
 box_dimensions = [15.0, 15.0, 15.0] # box will be centered at [0, 0, 0]
 camera_position=[0.0, 0.0, 200.0]
 camera_look_at_position=[0.0, 0.0, 0.0]
