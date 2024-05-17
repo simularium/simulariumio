@@ -1,16 +1,19 @@
 """
 
 INSTRUCTIONS:
- (TODO what about multiple instances of geometry?)
- (TODO different states at different times)
 
  1. Install simulariumio: in terminal on Mac run 
     `/Applications/Autodesk/maya2024/Maya.app/Contents/bin/mayapy 
     -m pip install simulariumio`. Restart Maya. (More help here:
     https://help.autodesk.com/view/MAYAUL/2022/ENU/
     ?guid=GUID-72A245EC-CDB4-46AB-BEE0-4BBBF9791627)
- 1. Name objects in the hierarchy with the name you want 
-    to display in Simularium viewer.
+ 1. Name objects in the hierarchy: "[A]__[B][C]"
+    A = The name you want to display in Simularium viewer.
+    B = If you want to have the same display name but different mesh geometry for some agents, 
+        add unique names for each geometry here. Otherwise you can skip this.
+    C = If you want to manually set IDs, add digits to the end of each object's name. 
+        IDs determine unique objects in Simularium. When one is clicked, all the objects 
+        with the same ID will highlight and draw trails together.
  2. Set the main color of each object's first shader to the color 
     you want to display in the viewer.
  3. Save the OBJs in the cloud somewhere and provide the url 
@@ -22,13 +25,20 @@ INSTRUCTIONS:
 
 # edit these parameter values *******************************************************************
 
-set_id_by_complex = False
-complex_components = [
-    "Unbound_Subunit",
-    "Dioxygen",
-    "Carbon_Monoxyde",
-]
+logging = False
+"""
+IDs determine unique objects in Simularium.
+When one is clicked, all the objects with the same ID will highlight and draw trails together.
+There are two options to set IDs:
+- manually_set_IDs = False : Each selected object will get it's own ID automatically
+- manually_set_IDs = True : The script will use the digits at the end of each object's name as the ID
+"""
+manually_set_IDs = False
 geometry_urls = {
+    """
+    Map Maya names to geometry URLs.
+    - If manually setting IDs, you can leave the ID number off the name here.
+    """
     "Unbound_Subunit__AlphaOne" : "https://www.dropbox.com/scl/fi/0i2pqtfmco7ypae97j7lm/Alpha1.obj?rlkey=rmiqbqbgbpqeo6dgg7en43cl3&dl=0",
     "Unbound_Subunit__AlphaTwo" : "https://www.dropbox.com/scl/fi/6vgyrtszp0z57sb3vxtkl/Alpha2.obj?rlkey=als8pwcevjlbnycgit7bkx4qj&dl=0",
     "Unbound_Subunit__BetaOne" : "https://www.dropbox.com/scl/fi/scpblondcj06w459vuofr/Beta1.obj?rlkey=cy1us3gqe9yhanuosx9wapzn2&dl=0",
@@ -49,7 +59,6 @@ timestep = 0.033  # time that passes each step
 time_units = "ms"  # microseconds
 
 # this file path must be absolute
-# output_path = "/Users/blairl/Documents/Dev/simulariumio/simulariumio/maya/output/"
 output_path = "/Users/margotriggi/Documents/Postdoc/Hb/"
 
 trajectory_name = "Haemoglobin_oxygen_CO_animation_20240419_test" #.simularium
@@ -107,27 +116,28 @@ def rgb_to_hex(material_color):
     )
     return "#%02x%02x%02x" % rgb
 
-def get_raw_and_display_type_names_and_uid(type_name):
-    uid = ""
+def get_raw_and_display_type_names_and_uid(type_name, type_ix):
+    uid = type_ix
     raw_name = type_name
-    while len(raw_name) > 0 and raw_name[-1].isdigit():
-        uid = raw_name[-1] + uid
-        raw_name = raw_name[0:-1]
+    if manually_set_IDs:
+        uid = ""
+        while len(raw_name) > 0 and raw_name[-1].isdigit():
+            uid = raw_name[-1] + uid
+            raw_name = raw_name[0:-1]
+        uid = int(uid)
     display_name = raw_name.split("__")[0]
-    uid = int(uid)
-    if display_name != complex_components[0] and display_name in complex_components:
-        uid *= 10
     display_name = display_name.replace("_", " ")
-    print(f"{type_name} -> {display_name}, uid = {uid}")
+    if logging:
+        print(f"{type_name} -> display name = {display_name}, uid = {uid}")
     return raw_name, display_name, uid
 
-for type_name in type_names:
+for type_ix, type_name in enumerate(type_names):
     # get color 
     shaders = cmds.listConnections(cmds.listHistory(type_name))
     materials = [x for x in cmds.ls(cmds.listConnections(shaders), materials=1)]   
     color_rgb = cmds.getAttr(f"{materials[0]}.color")
     color_hex = rgb_to_hex(color_rgb)
-    raw_name, display_name, _ = get_raw_and_display_type_names_and_uid(type_name)
+    raw_name, display_name, _ = get_raw_and_display_type_names_and_uid(type_name, type_ix)
     # create display data
     if raw_name not in agent_data.display_data:
         agent_data.display_data[raw_name] = DisplayData(
@@ -164,8 +174,8 @@ for time_ix, time in enumerate(range(min_time, max_time + 1)):
             [transform[8] / scale[2], transform[9] / scale[2], transform[10] / scale[2]]
         ])
         # save agent data
-        raw_name, _, uid = get_raw_and_display_type_names_and_uid(type_name)
-        agent_data.unique_ids[time_ix][agent_ix] = uid if set_id_by_complex else type_ix
+        raw_name, _, uid = get_raw_and_display_type_names_and_uid(type_name, type_ix)
+        agent_data.unique_ids[time_ix][agent_ix] = uid
         agent_data.types[time_ix].append(raw_name)
         agent_data.positions[time_ix][agent_ix] = position
         agent_data.rotations[time_ix][agent_ix] = rotation_matrix_to_euler_angles(rotation_matrix)
