@@ -37,7 +37,7 @@ manually_set_IDs = False
 geometry_urls = {
     """
     Map Maya names to geometry URLs.
-    - If manually setting IDs, you can leave the ID number off the name here.
+    - you can leave the digits at the end off the name here.
     """
     "Unbound_Subunit__AlphaOne" : "https://www.dropbox.com/scl/fi/0i2pqtfmco7ypae97j7lm/Alpha1.obj?rlkey=rmiqbqbgbpqeo6dgg7en43cl3&dl=0",
     "Unbound_Subunit__AlphaTwo" : "https://www.dropbox.com/scl/fi/6vgyrtszp0z57sb3vxtkl/Alpha2.obj?rlkey=als8pwcevjlbnycgit7bkx4qj&dl=0",
@@ -117,18 +117,28 @@ def rgb_to_hex(material_color):
     return "#%02x%02x%02x" % rgb
 
 def get_raw_and_display_type_names_and_uid(type_name, type_ix):
-    uid = type_ix
+    uid = ""
     raw_name = type_name
-    if manually_set_IDs:
-        uid = ""
-        while len(raw_name) > 0 and raw_name[-1].isdigit():
-            uid = raw_name[-1] + uid
-            raw_name = raw_name[0:-1]
-        uid = int(uid)
+    while len(raw_name) > 0 and raw_name[-1].isdigit():
+        uid = raw_name[-1] + uid
+        raw_name = raw_name[0:-1]
+    if not manually_set_IDs:
+        uid = type_ix
+    else:
+        try:
+            uid = int(uid)
+        except ValueError:
+            raise Exception(
+                "Please add digits to the end of each object's "
+                "name in Maya in order to manually set IDs"
+            )
     display_name = raw_name.split("__")[0]
     display_name = display_name.replace("_", " ")
     if logging:
-        print(f"{type_name} -> display name = {display_name}, uid = {uid}")
+        print(
+            f"{type_name} -> raw_name = {raw_name}, "
+            f"display name = {display_name}, uid = {uid}"
+        )
     return raw_name, display_name, uid
 
 for type_ix, type_name in enumerate(type_names):
