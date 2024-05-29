@@ -3,7 +3,7 @@
 
 import json
 import logging
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 
@@ -116,7 +116,11 @@ class JsonWriter(Writer):
         return bundle_data
 
     @staticmethod
-    def format_trajectory_data(trajectory_data: TrajectoryData) -> Dict[str, Any]:
+    def format_trajectory_data(
+        trajectory_data: TrajectoryData,
+        type_ids: Optional[np.ndarray] = None, 
+        type_mapping: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
         """
         Return the data shaped for Simularium JSON
         Parameters
@@ -133,7 +137,8 @@ class JsonWriter(Writer):
             if trajectory_data.agent_data.n_timesteps >= 0
             else len(trajectory_data.agent_data.times)
         )
-        type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
+        if type_ids is None or type_mapping is None:
+            type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
         simularium_data["trajectoryInfo"] = Writer._get_trajectory_info(
             trajectory_data, total_steps, type_mapping
         )
@@ -164,7 +169,11 @@ class JsonWriter(Writer):
 
     @staticmethod
     def save(
-        trajectory_data: TrajectoryData, output_path: str, validate_ids: bool
+        trajectory_data: TrajectoryData, 
+        output_path: str, 
+        validate_ids: bool,
+        type_ids: Optional[np.ndarray] = None, 
+        type_mapping: Optional[Dict[str, Any]] = None,
     ) -> None:
         """
         Save the simularium data in .simularium JSON format

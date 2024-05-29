@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import List, Tuple, Any, Dict, Union
+from typing import List, Tuple, Any, Dict, Union, Optional
 import struct
 import json
 
@@ -274,6 +274,8 @@ class BinaryWriter(Writer):
     @staticmethod
     def format_trajectory_data(
         trajectory_data: TrajectoryData,
+        type_ids: Optional[np.ndarray] = None, 
+        type_mapping: Optional[Dict[str, Any]] = None,
         max_bytes: int = BINARY_SETTINGS.MAX_BYTES,
     ) -> Tuple[List[BinaryValues], List[Dict[str, Any]], List[List[BinaryValues]]]:
         """
@@ -286,7 +288,8 @@ class BinaryWriter(Writer):
         print("Converting Trajectory Data to Binary -------------")
         trajectory_data.agent_data._check_subpoints_match_display_type()
         frame_buffers_n_values = BinaryWriter._frame_buffers_n_values(trajectory_data)
-        type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
+        if type_ids is None or type_mapping is None:
+            type_ids, type_mapping = trajectory_data.agent_data.get_type_ids_and_mapping()
         file_chunks, traj_info_n_bytes, plot_data_n_bytes = BinaryWriter._chunk_files(
             trajectory_data, type_mapping, frame_buffers_n_values, max_bytes
         )
@@ -378,7 +381,11 @@ class BinaryWriter(Writer):
 
     @staticmethod
     def save(
-        trajectory_data: TrajectoryData, output_path: str, validate_ids: bool
+        trajectory_data: TrajectoryData, 
+        output_path: str, 
+        validate_ids: bool,
+        type_ids: Optional[np.ndarray] = None, 
+        type_mapping: Optional[Dict[str, Any]] = None,
     ) -> None:
         """
         Save the simularium data in .simularium binary format

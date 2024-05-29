@@ -3,7 +3,7 @@
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Any, List, Dict, Tuple
+from typing import Any, List, Dict, Tuple, Optional
 import math
 
 import numpy as np
@@ -35,12 +35,24 @@ log = logging.getLogger(__name__)
 class Writer(ABC):
     @staticmethod
     @abstractmethod
-    def format_trajectory_data(self, trajectory_data: TrajectoryData) -> Any:
+    def format_trajectory_data(
+        self, 
+        trajectory_data: TrajectoryData,
+        type_ids: Optional[np.ndarray] = None, 
+        type_mapping: Optional[Dict[str, Any]] = None,
+    ) -> Any:
         pass
 
     @staticmethod
     @abstractmethod
-    def save(self, trajectory_data: TrajectoryData, validate_ids: bool) -> None:
+    def save(
+        self, 
+        trajectory_data: TrajectoryData, 
+        output_path: str, 
+        validate_ids: bool,
+        type_ids: Optional[np.ndarray] = None, 
+        type_mapping: Optional[Dict[str, Any]] = None,
+    ) -> None:
         pass
 
     @staticmethod
