@@ -2,5 +2,5 @@ name: anaconda-client-env
 channels:
   - conda-forge
 dependencies:
-  - readdy==2.0.9
+  - readdy
   - numpy>=1.20
