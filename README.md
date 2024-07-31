@@ -119,7 +119,7 @@ Rendering capabilities planned for future:
 ## Installation
 **Install Requires:** 
 
-* Requires Python 3.7, 3.8, or 3.9
+* Requires Python 3.9 or 3.10
 
 * If ReaDDy trajectories will be converted, the ReaDDy python package must be installed:
 (add conda forge channel if it's not already: `conda config --add channels conda-forge`)
