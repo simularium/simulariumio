@@ -19,6 +19,7 @@ class CytosimData:
     meta_data: MetaData
     draw_fiber_points: bool
     plots: List[Dict[str, Any]]
+    center_fibers: bool
 
     def __init__(
         self,
@@ -26,6 +27,7 @@ class CytosimData:
         meta_data: MetaData = None,
         draw_fiber_points: bool = False,
         plots: List[Dict[str, Any]] = None,
+        center_fibers: bool = False,
     ):
         """
         This object holds simulation trajectory outputs
@@ -50,8 +52,12 @@ class CytosimData:
         plots : List[Dict[str, Any]] (optional)
             An object containing plot data already
             in Simularium format
+        center_fibers : bool
+            Set the position of each fiber as the center of its points?
+            Otherwise set it to zero.
         """
         self.object_info = object_info
         self.meta_data = meta_data if meta_data is not None else MetaData()
         self.draw_fiber_points = draw_fiber_points
         self.plots = plots if plots is not None else []
+        self.center_fibers = center_fibers
