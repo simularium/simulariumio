@@ -192,6 +192,7 @@ class CytosimConverter(TrajectoryConverter):
         overall_line: int,
         total_lines: int,
         scale_factor: float = None,
+        center_fibers: bool = False,
     ) -> Tuple[Dict[str, Any], List[int], int]:
         """
         Parse a Cytosim output file containing objects
@@ -277,7 +278,8 @@ class CytosimConverter(TrajectoryConverter):
         result, scale_factor = TrajectoryConverter.scale_agent_data(
             result, scale_factor
         )
-        result = TrajectoryConverter.center_fiber_positions(result)
+        if center_fibers:
+            result = TrajectoryConverter.center_fiber_positions(result)
         result.n_timesteps = time_index + 1
         return (result, used_unique_IDs, overall_line, scale_factor)
 
@@ -319,6 +321,7 @@ class CytosimConverter(TrajectoryConverter):
                     overall_line,
                     total_lines,
                     input_data.meta_data.scale_factor,
+                    input_data.center_fibers,
                 )
             except Exception as e:
                 raise InputDataError(f"Error reading input cytosim data: {e}")
