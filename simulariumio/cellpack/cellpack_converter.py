@@ -344,11 +344,7 @@ class CellpackConverter(TrajectoryConverter):
                     self.check_report_progress(agent_id_counter / total_agents)
 
         spatial_data.display_data = display_data
-        result, scale_factor = TrajectoryConverter.scale_agent_data(
-            spatial_data, scale_factor
-        )
-        result = TrajectoryConverter.center_fiber_positions(result)
-        return result, scale_factor
+        return TrajectoryConverter.scale_agent_data(spatial_data, scale_factor)
 
     @staticmethod
     def _update_meta_data(meta_data: MetaData, box_size: np.array) -> MetaData:

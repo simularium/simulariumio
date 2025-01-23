@@ -274,15 +274,6 @@ def test_camera_defaults(camera, expected_camera):
 
 
 # test type mapping
-test_display_name = "Test display name"
-default_agents_converter._data.agent_data.display_data["C"].name = test_display_name
-default_agents_data_display_name = JsonWriter.format_trajectory_data(
-    default_agents_converter._data
-)
-display_name_type_mapping = minimal_custom_type_mappings()
-display_name_type_mapping["0"]["name"] = test_display_name
-
-
 @pytest.mark.parametrize(
     "typeMapping, expected_typeMapping",
     [
@@ -314,10 +305,6 @@ display_name_type_mapping["0"]["name"] = test_display_name
                     },
                 },
             },
-        ),
-        (
-            default_agents_data_display_name["trajectoryInfo"]["typeMapping"],
-            display_name_type_mapping,
         ),
     ],
 )

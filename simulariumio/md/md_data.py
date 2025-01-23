@@ -22,7 +22,6 @@ class MdData:
     display_data: Dict[str, DisplayData]
     time_units: UnitData
     spatial_units: UnitData
-    draw_bonds: bool
     plots: List[Dict[str, Any]]
 
     def __init__(
@@ -33,7 +32,6 @@ class MdData:
         display_data: Dict[str, DisplayData] = None,
         time_units: UnitData = None,
         spatial_units: UnitData = None,
-        draw_bonds: bool = False,
         plots: List[Dict[str, Any]] = None,
     ):
         """
@@ -68,9 +66,6 @@ class MdData:
             multiplier and unit name for spatial values
             (including positions, radii, and box size)
             Default: 1.0 meter
-        draw_bonds: bool (optional)
-            Draw bonds between atoms?
-            Default: False
         plots : List[Dict[str, Any]] (optional)
             An object containing plot data already
             in Simularium format
@@ -83,5 +78,4 @@ class MdData:
         self.spatial_units = (
             spatial_units if spatial_units is not None else UnitData("m")
         )
-        self.draw_bonds = draw_bonds
         self.plots = plots if plots is not None else []

@@ -278,14 +278,13 @@ class MedyanConverter(TrajectoryConverter):
         result.n_timesteps = time_index + 1
 
         if input_data.center:
-            result, scale_factor = TrajectoryConverter.center_and_scale_agent_data(
+            return TrajectoryConverter.center_and_scale_agent_data(
                 result, input_data.meta_data.scale_factor
             )
-        else:
-            result, scale_factor = TrajectoryConverter.scale_agent_data(
-                result, input_data.meta_data.scale_factor
-            )
-        return (TrajectoryConverter.center_fiber_positions(result), scale_factor)
+
+        return TrajectoryConverter.scale_agent_data(
+            result, input_data.meta_data.scale_factor
+        )
 
     def _read(self, input_data: MedyanData) -> TrajectoryData:
         """

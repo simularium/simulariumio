@@ -98,8 +98,7 @@ class SmoldynData:
         ----------
         smoldyn_info: Dict[str, Any]
             JSON dict containing values key value pairs representing the
-            data to be turned into a SmoldynData object. JSON representation
-            will be as defined in ui-templates/smoldyn_data.json
+            data to be turned into a SmoldynData object
         """
         if (
             "fileContents" not in smoldyn_info
@@ -132,11 +131,8 @@ class SmoldynData:
                 default_mag=1.0
             )
 
-        meta_data = MetaData.from_dict(smoldyn_info.get("metaData"))
-        meta_data.trajectory_title = smoldyn_info.get("trajectoryTitle", "")
-
         return cls(
-            meta_data=meta_data,
+            meta_data=MetaData.from_dict(smoldyn_info.get("metaData")),
             smoldyn_file=InputFileData(
                 file_contents=smoldyn_info["fileContents"].get("fileContents"),
                 file_path=smoldyn_info["fileContents"].get("filePath")

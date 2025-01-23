@@ -4,7 +4,7 @@
         "python::object": "UnitData",
         "parameters": {
             "name": {
-                "name": "Time units",
+                "name": "Name",
                 "data_type": "enum",
                 "description": "time unit name",
                 "required": true,

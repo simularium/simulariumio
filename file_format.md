@@ -64,7 +64,7 @@ Both JSON and binary contain the following data structured like:
       * subpoints - the number of proceeding values that are extra data belonging to this agent, followed by a list of numerical data
         * for default type (1000), this is not used
           * ex: subpoints = 0
-        * for fiber type (1001), this is the list of positions XYZ of the points along the fiber, relative to agent's position specified above
+        * for fiber type (1001), this is the list of positions XYZ of the points along the fiber
           * ex: subpoints = 9, pos1 X, pos1 Y, pos1 Z, pos2 X, pos2 Y, pos2 Z, pos3 X, pos3 Y, pos3 Z 
 * **plot data** - a list of plots, either scatterplots or histograms, for each:
   * version - 1.0

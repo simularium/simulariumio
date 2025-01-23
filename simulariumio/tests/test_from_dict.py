@@ -106,7 +106,7 @@ position_1 = 1.0
 position_2 = 9.0
 position_3 = 111.9
 full_camera_data = {
-    "cameraPosition": {
+    "position": {
         "x": str(position_1),
         "y": str(position_0)
     },
@@ -137,7 +137,7 @@ full_camera_data_obj = CameraData(
     fov_degrees=position_0
 )
 partial_camera_data = {
-    "cameraPosition": {
+    "position": {
         "z": position_0
     }
 }
@@ -243,15 +243,17 @@ full_metadata = {
         "y": size_y,
         "z": size_z
     },
+    "cameraDefault": full_camera_data,
     "trajectoryTitle": title,
-    "scaleFactor": scale_factor,
-    **full_camera_data,
+    "modelInfo": full_model_meta_data,
+    "scaleFactor": scale_factor
 }
 full_metadata_obj = MetaData(
     box_size=np.array([size_x, size_y, size_z]),
     camera_defaults=full_camera_data_obj,
     scale_factor=scale_factor,
     trajectory_title=title,
+    model_meta_data=full_model_meta_data_obj
 )
 
 
@@ -387,7 +389,6 @@ file_contents_str = """0 0\nS(solution) -0.8748 -0.451012 500\nS(solution) 0.636
 500\nE(front) 0.844989 -0.534784 600\nES(front) 0.262632 -0.964896 602\n"""
 
 full_smoldyn_dict = {
-    "trajectoryTitle": title,
     "fileContents": {
         "fileContents": file_contents_str
     },

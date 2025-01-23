@@ -178,7 +178,7 @@ class SpringsaladConverter(TrajectoryConverter):
         result, scale_factor = TrajectoryConverter.scale_agent_data(
             result, input_data.meta_data.scale_factor
         )
-        result = TrajectoryConverter.center_fiber_positions(result)
+
         return result, box_size, scale_factor
 
     def _read(self, input_data: SpringsaladData) -> TrajectoryData:

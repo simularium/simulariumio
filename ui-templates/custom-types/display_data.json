@@ -4,10 +4,17 @@
         "python::object": "DisplayData",
         "parameters": {
             "name": {
-                "name": "Display Name",
+                "name": "Name",
                 "data_type": "text",
                 "description": "Provide display name (separate type and state with '#')",
                 "required": true
+            },
+            "radius": {
+                "name": "Radius",
+                "data_type": "float",
+                "description": "Provide the scale for geometry or thickness of fiber",
+                "required": false,
+                "help": "If not provided, uses value from the simulation engine or defaults to 1.0"
             },
             "displayType": {
                 "name": "Display type",
@@ -23,13 +30,6 @@
                     "FIBER",
                     "SPHERE_GROUP"
                 ]
-            },
-            "radius": {
-                "name": "Radius",
-                "data_type": "float",
-                "description": "Provide the scale for geometry or thickness of fiber",
-                "required": false,
-                "help": "If not provided, uses value from the simulation engine or defaults to 1.0"
             },
             "url": {
                 "name": "Geometry URL",
