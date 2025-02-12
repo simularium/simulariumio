@@ -1,5 +1,4 @@
 from ..data_objects import MetaData, DisplayData, UnitData
-from .bond_data import BondData
 from typing import List, Dict, Any
 
 
@@ -10,8 +9,6 @@ class NerdssData:
     time_units: UnitData
     spatial_units: UnitData
     plots: List[Dict[str, Any]]
-    inter_molecular_bonds: List[BondData]
-    intra_molecular_bonds: List[BondData]
     time_step: UnitData
 
     def __init__(
@@ -22,8 +19,6 @@ class NerdssData:
         time_units: UnitData = None,
         spatial_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
-        inter_molecular_bonds: List[BondData] = None,
-        intra_molecular_bonds: List[BondData] = None,
         time_step: UnitData = None,
     ):
         """
@@ -53,14 +48,6 @@ class NerdssData:
         plots : List[Dict[str, Any]] (optional)
             An object containing plot data already
             in Simularium format
-        inter_molecular_bonds : List[BondData] (optional)
-            List of BondData objects for bonds that exist between any atoms
-            of different residues
-            Default: None
-        intra_molecular_bonds : List[BondData] (optional)
-            List of BondData objects for bonds that can only exist between
-            atoms of a single residue
-            Default: None
         time_step : UnitData (optional)
             Time step between each frame, where the frame numbers are represented
             as the names of the .pdb files in path_to_pdb_files
@@ -74,10 +61,4 @@ class NerdssData:
             spatial_units if spatial_units is not None else UnitData("m")
         )
         self.plots = plots if plots is not None else []
-        self.inter_molecular_bonds = (
-            inter_molecular_bonds if inter_molecular_bonds is not None else []
-        )
-        self.intra_molecular_bonds = (
-            intra_molecular_bonds if inter_molecular_bonds is not None else []
-        )
         self.time_step = time_step if time_step is not None else self.time_units

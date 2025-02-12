@@ -3,4 +3,3 @@
 
 from .nerdss_converter import NerdssConverter  # noqa: F401
 from .nerdss_data import NerdssData  # noqa: F401
-from .bond_data import BondData  # noqa: F401

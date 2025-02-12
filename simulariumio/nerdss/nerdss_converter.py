@@ -21,18 +21,6 @@ class NerdssConverter(TrajectoryConverter):
         """
         self._data = self._read(input_data)
 
-    def _is_intra_molecular_bond_site(self, input_data: NerdssData, name: str) -> bool:
-        for bond in input_data.intra_molecular_bonds:
-            if bond.agent_name_a == name or bond.agent_name_b == name:
-                return True
-        return False
-
-    def _is_inter_molecular_bond_site(self, input_data: NerdssData, name: str) -> bool:
-        for bond in input_data.inter_molecular_bonds:
-            if bond.agent_name_a == name or bond.agent_name_b == name:
-                return True
-        return False
-
     def _read_pdb_files(self, input_data: NerdssData) -> AgentData:
         file_list = os.listdir(input_data.path_to_pdb_files)
         file_list.sort()
@@ -45,17 +33,15 @@ class NerdssConverter(TrajectoryConverter):
             u = Universe(os.path.join(input_data.path_to_pdb_files, file))
             n_agents = len(u.atoms.positions)
             if n_agents * 2 > dimensions.max_agents:
-                dimensions.max_agents = n_agents*2
+                # each "atom" will be represented by 1 sphere agent and up
+                # to 1 fiber agent, representing a bond
+                dimensions.max_agents = n_agents * 2
             time_steps.append(os.path.splitext(file)[0])
         time_steps.sort(key=int)
         agent_data = AgentData.from_dimensions(dimensions)
         agent_data.n_timesteps = n_timesteps
 
         # keep track of fiber positions for bonds as we go
-        # as this is populated, it will be a List[List[float]]
-        # with shape [timesteps, agents, 6], as every bond will
-        # be represented as a fiber with 6 positional data points,
-        # the XYZ coords of one bond site + the XYZ coords of the other bond site
         fiber_positions = [[] for i in range(n_timesteps)]
 
         for time_index in range(n_timesteps):
@@ -75,35 +61,18 @@ class NerdssConverter(TrajectoryConverter):
 
             agent_data.n_agents[time_index] = len(atoms)
             if input_data.display_data.get("bonds") == None:
-                input_data.display_data["bonds"] = DisplayData(name="bonds", display_type=DISPLAY_TYPE.FIBER)
+                input_data.display_data["bonds"] = DisplayData(name="bonds", display_type=DISPLAY_TYPE.FIBER, radius=0.5)
 
-            # Loop through the atoms, set each as a new agent and set their position
-            # determine type based on resname and name. Create fiber agents to represent
-            # bonds, when appropriate
             for residue in universe.residues:
-                com_true = 0
+                com_pos = None
+                bond_site_pos = []
                 resname = residue.resname
-                # list of potential intra bond sites, represented as a dict where the
-                # key is the name and the value is a list of XYZ position coordinates of
-                # agents of this type
+
                 for atom in residue.atoms:
                     name = atom.name
                     atom_index = atom.index
-                    # Currently representing agent names as residue_name#atom_name,
-                    # which are directly extracted from the pdb files. If there is a
-                    # better naming scheme, feel free to change. In this current code,
-                    # the input agent names in BondData would also need to match this
                     full_name = resname + "#" + name
                     position = atom.position
-                    if name != "ref":
-                        if name == "COM":
-                            com_coord = position
-                            com_true = 1
-                        elif com_true == 1:
-                            bond_site_coord = position
-                            bond_coords = list(com_coord) + list(bond_site_coord)
-                            fiber_positions[time_index].append(bond_coords)
-
                     agent_data.types[time_index].append(
                         TrajectoryConverter._get_display_type_name_from_raw(
                             full_name, input_data.display_data
@@ -124,27 +93,46 @@ class NerdssConverter(TrajectoryConverter):
                         else 1.0
                     )
 
-        last_uid = agent_data.unique_ids.max()
+                    # Draw intra-molecular bonds as a fiber between COM (center of mass) and
+                    # binding sites each residue
+                    if name != "ref":
+                        if name == "COM":
+                            # Found the center of mass!
+                            com_pos = list(position)
+                            for bond_site in bond_site_pos:
+                                # Make a fiber to connect COM with bond sites found already
+                                bond_coords = com_pos + bond_site
+                                fiber_positions[time_index].append(bond_coords)
+                        elif com_pos:
+                            # Already found COM, so make a fiber to connect it to this bond site
+                            bond_coords = com_pos + list(position)
+                            fiber_positions[time_index].append(bond_coords)
+                        else:
+                            # Haven't found COM, so keep track of this bond site to connect to COM
+                            # when we find it
+                            bond_site_pos.append(list(position))
+
+        # Add bond data into agent_data
+        bonds_display_data = (
+            TrajectoryConverter._get_display_data_for_agent(
+                "bonds", input_data.display_data
+            )
+        )
+        next_uid = agent_data.unique_ids.max() + 1
         for timestep in range(n_timesteps):
             n_fibers = len(fiber_positions[timestep])
             n_atoms = int(agent_data.n_agents[timestep])
             agent_data.n_agents[timestep] = n_fibers + n_atoms
             for agent_index in range(n_fibers):
-                agent_data.subpoints[timestep][agent_index+n_atoms] = fiber_positions[timestep][
+                agent_data.subpoints[timestep][agent_index + n_atoms] = fiber_positions[timestep][
                     agent_index
                 ]
-                agent_data.n_subpoints[timestep][agent_index+n_atoms] = VALUES_PER_3D_POINT * 2
-                agent_data.viz_types[timestep][agent_index+n_atoms] = VIZ_TYPE.FIBER
-                agent_data.radii[timestep][agent_index+n_atoms] = .3
-                agent_data.types[timestep].append(
-                    TrajectoryConverter._get_display_type_name_from_raw(
-                        "bonds", input_data.display_data
-                    )
-                )
-                last_uid += 1
-                agent_data.unique_ids[timestep][agent_index+n_atoms] = last_uid
-        agent_data.types[timestep][agent_index+n_atoms] = TrajectoryConverter._get_display_type_name_from_raw("bonds", input_data.display_data)
-
+                agent_data.n_subpoints[timestep][agent_index + n_atoms] = VALUES_PER_3D_POINT * 2
+                agent_data.viz_types[timestep][agent_index + n_atoms] = VIZ_TYPE.FIBER
+                agent_data.radii[timestep][agent_index + n_atoms] = bonds_display_data.radius
+                agent_data.types[timestep].append(bonds_display_data.name)
+                agent_data.unique_ids[timestep][agent_index + n_atoms] = next_uid
+                next_uid += 1
         return agent_data
 
     def _read(self, input_data: NerdssData) -> TrajectoryData:
@@ -157,7 +145,7 @@ class NerdssConverter(TrajectoryConverter):
         for tid in input_data.display_data:
             display_data = input_data.display_data[tid]
             agent_data.display_data[display_data.name] = display_data
-        input_data.meta_data.scale_factor = 1.0 # TODO: actually calculate
+        input_data.meta_data.scale_factor = 1.0
         input_data.meta_data._set_box_size()
         result = TrajectoryData(
             meta_data=input_data.meta_data,
