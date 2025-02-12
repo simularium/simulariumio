@@ -21,7 +21,7 @@ class UnitData:
     def __init__(
         self,
         name: str,
-        magnitude: float = 1.0
+        magnitude: float = 1.0,
     ):
         """
         This object contains data for units
@@ -70,7 +70,7 @@ class UnitData:
         cls,
         unit_data: Dict[str, Any],
         default_name: str = None,
-        default_mag: float = 1.0,
+        default_mag: float = 1.0
     ):
         """
         Create UnitData object from a simularium JSON dict
