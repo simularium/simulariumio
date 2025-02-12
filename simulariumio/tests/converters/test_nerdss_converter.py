@@ -16,9 +16,7 @@ from simulariumio.constants import (
     VIZ_TYPE,
 )
 
-data = NerdssData(
-    path_to_pdb_files="simulariumio/tests/data/nerdss/virus_pdb"
-)
+data = NerdssData(path_to_pdb_files="simulariumio/tests/data/nerdss/virus_pdb")
 converter = NerdssConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
 
@@ -50,35 +48,51 @@ def test_box_size_default(box_size, expected_box_size):
             {
                 "0": {
                     "name": "IL#COM",
-                    "geometry": { "displayType": "SPHERE", },
+                    "geometry": {
+                        "displayType": "SPHERE",
+                    },
                 },
                 "1": {
                     "name": "gag#COM",
-                    "geometry": { "displayType": "SPHERE", },
+                    "geometry": {
+                        "displayType": "SPHERE",
+                    },
                 },
                 "2": {
                     "name": "gag#mem",
-                    "geometry": { "displayType": "SPHERE", },
+                    "geometry": {
+                        "displayType": "SPHERE",
+                    },
                 },
                 "3": {
                     "name": "gag#hom",
-                    "geometry": { "displayType": "SPHERE", },
+                    "geometry": {
+                        "displayType": "SPHERE",
+                    },
                 },
                 "4": {
                     "name": "gag#hx1",
-                    "geometry": { "displayType": "SPHERE", },
+                    "geometry": {
+                        "displayType": "SPHERE",
+                    },
                 },
                 "5": {
                     "name": "gag#hx2",
-                    "geometry": { "displayType": "SPHERE", },
+                    "geometry": {
+                        "displayType": "SPHERE",
+                    },
                 },
                 "6": {
                     "name": "gag#ref",
-                    "geometry": { "displayType": "SPHERE", },
+                    "geometry": {
+                        "displayType": "SPHERE",
+                    },
                 },
                 "7": {
                     "name": "bonds",
-                    "geometry": { "displayType": "FIBER", },
+                    "geometry": {
+                        "displayType": "FIBER",
+                    },
                 },
             },
         )
@@ -265,6 +279,7 @@ data_with_display_data = NerdssData(
 converter_display_data = NerdssConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
 
+
 # test type mapping with display data provided
 @pytest.mark.parametrize(
     "typeMapping, expected_typeMapping",
@@ -278,7 +293,8 @@ results_display_data = JsonWriter.format_trajectory_data(converter_display_data.
                     "color": g_color,
                 },
             },
-        ), (
+        ),
+        (
             results_display_data["trajectoryInfo"]["typeMapping"]["2"],
             {
                 "name": "GAG - mem",
@@ -287,7 +303,8 @@ results_display_data = JsonWriter.format_trajectory_data(converter_display_data.
                     "color": gag_mem_color,
                 },
             },
-        ), (
+        ),
+        (
             results_display_data["trajectoryInfo"]["typeMapping"]["7"],
             {
                 "name": "Bond",
@@ -295,11 +312,12 @@ results_display_data = JsonWriter.format_trajectory_data(converter_display_data.
                     "displayType": "FIBER",
                 },
             },
-        )
+        ),
     ],
 )
 def test_typeMapping_with_display_data(typeMapping, expected_typeMapping):
     assert expected_typeMapping == typeMapping
+
 
 def test_agent_ids():
     assert JsonWriter._check_agent_ids_are_unique_per_frame(results_display_data)
@@ -362,4 +380,3 @@ def test_agent_ids():
 )
 def test_bundleData(bundleData, expected_bundleData):
     assert np.isclose(expected_bundleData, bundleData["data"][0:44]).all()
-

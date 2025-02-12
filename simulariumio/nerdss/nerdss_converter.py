@@ -2,7 +2,13 @@ from MDAnalysis import Universe
 import os
 
 from ..trajectory_converter import TrajectoryConverter
-from ..data_objects import AgentData, TrajectoryData, DimensionData, UnitData, DisplayData
+from ..data_objects import (
+    AgentData,
+    TrajectoryData,
+    DimensionData,
+    UnitData,
+    DisplayData,
+)
 from ..constants import DISPLAY_TYPE, VALUES_PER_3D_POINT, VIZ_TYPE
 from .nerdss_data import NerdssData
 
@@ -61,7 +67,9 @@ class NerdssConverter(TrajectoryConverter):
 
             agent_data.n_agents[time_index] = len(atoms)
             if input_data.display_data.get("bonds") == None:
-                input_data.display_data["bonds"] = DisplayData(name="bonds", display_type=DISPLAY_TYPE.FIBER, radius=0.5)
+                input_data.display_data["bonds"] = DisplayData(
+                    name="bonds", display_type=DISPLAY_TYPE.FIBER, radius=0.5
+                )
 
             for residue in universe.residues:
                 com_pos = None
@@ -113,10 +121,8 @@ class NerdssConverter(TrajectoryConverter):
                             bond_site_pos.append(list(position))
 
         # Add bond data into agent_data
-        bonds_display_data = (
-            TrajectoryConverter._get_display_data_for_agent(
-                "bonds", input_data.display_data
-            )
+        bonds_display_data = TrajectoryConverter._get_display_data_for_agent(
+            "bonds", input_data.display_data
         )
         next_uid = agent_data.unique_ids.max() + 1
         for timestep in range(n_timesteps):
@@ -124,12 +130,16 @@ class NerdssConverter(TrajectoryConverter):
             n_atoms = int(agent_data.n_agents[timestep])
             agent_data.n_agents[timestep] = n_fibers + n_atoms
             for agent_index in range(n_fibers):
-                agent_data.subpoints[timestep][agent_index + n_atoms] = fiber_positions[timestep][
-                    agent_index
-                ]
-                agent_data.n_subpoints[timestep][agent_index + n_atoms] = VALUES_PER_3D_POINT * 2
+                agent_data.subpoints[timestep][agent_index + n_atoms] = fiber_positions[
+                    timestep
+                ][agent_index]
+                agent_data.n_subpoints[timestep][agent_index + n_atoms] = (
+                    VALUES_PER_3D_POINT * 2
+                )
                 agent_data.viz_types[timestep][agent_index + n_atoms] = VIZ_TYPE.FIBER
-                agent_data.radii[timestep][agent_index + n_atoms] = bonds_display_data.radius
+                agent_data.radii[timestep][
+                    agent_index + n_atoms
+                ] = bonds_display_data.radius
                 agent_data.types[timestep].append(bonds_display_data.name)
                 agent_data.unique_ids[timestep][agent_index + n_atoms] = next_uid
                 next_uid += 1
