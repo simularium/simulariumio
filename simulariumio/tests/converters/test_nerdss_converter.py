@@ -13,23 +13,14 @@ from simulariumio.constants import (
     DEFAULT_BOX_SIZE,
     DEFAULT_CAMERA_SETTINGS,
     DISPLAY_TYPE,
-    VIEWER_DIMENSION_RANGE,
     VIZ_TYPE,
 )
-from simulariumio.exceptions import InputDataError
 
 data = NerdssData(
     path_to_pdb_files="simulariumio/tests/data/nerdss/virus_pdb"
 )
 converter = NerdssConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
-
-
-# scale max distance between coordinates + radii to make it to VIEWER_DIMENSION_RANGE
-# TODO... do we autoscale for NERDSS?
-# auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / (0.844989 + 1.0 - (-0.8748 - 1.0))
-auto_scale_factor = 1.0
-
 
 
 # test box data default
@@ -146,7 +137,7 @@ def test_timeUnits_default(timeUnits, expected_timeUnits):
 
 
 # test spatial units default
-expected_spatial_units = UnitData("m", 1.0 / auto_scale_factor)
+expected_spatial_units = UnitData("m", 1.0)
 
 
 @pytest.mark.parametrize(
@@ -183,9 +174,9 @@ results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
         (
             results_meta_data["trajectoryInfo"]["size"],
             {
-                "x": box_size * auto_scale_factor,
-                "y": box_size * auto_scale_factor,
-                "z": box_size * auto_scale_factor,
+                "x": box_size,
+                "y": box_size,
+                "z": box_size,
             },
         )
     ],
@@ -225,7 +216,7 @@ def test_timeUnits_provided(timeUnits, expected_timeUnits):
 
 
 # test spatial units provided
-expected_spatial_units = UnitData(spatial_unit_name, 1.0 / auto_scale_factor)
+expected_spatial_units = UnitData(spatial_unit_name, 1.0)
 
 
 @pytest.mark.parametrize(
