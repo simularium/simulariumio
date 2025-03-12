@@ -72,7 +72,7 @@ class NerdssConverter(TrajectoryConverter):
             )
 
             agent_data.n_agents[time_index] = len(atoms)
-            if input_data.display_data.get("bonds") == None:
+            if input_data.display_data.get("bonds") is None:
                 input_data.display_data["bonds"] = DisplayData(
                     name="bonds", display_type=DISPLAY_TYPE.FIBER, radius=0.5
                 )
@@ -107,23 +107,23 @@ class NerdssConverter(TrajectoryConverter):
                         else 1.0
                     )
 
-                    # Draw intra-molecular bonds as a fiber between COM (center of mass) and
-                    # binding sites each residue
+                    # Draw intra-molecular bonds as a fiber between COM (center of
+                    # mass) and binding sites each residue
                     if name != "ref":
                         if name == "COM":
                             # Found the center of mass!
                             com_pos = list(position)
                             for bond_site in bond_site_pos:
-                                # Make a fiber to connect COM with bond sites found already
+                                # Add a fiber to connect COM with bond sites
                                 bond_coords = com_pos + bond_site
                                 fiber_positions[time_index].append(bond_coords)
                         elif com_pos:
-                            # Already found COM, so make a fiber to connect it to this bond site
+                            # Already have COM, so add fiber to connect it to this site
                             bond_coords = com_pos + list(position)
                             fiber_positions[time_index].append(bond_coords)
                         else:
-                            # Haven't found COM, so keep track of this bond site to connect to COM
-                            # when we find it
+                            # Haven't found COM, so keep track of this bond site to
+                            # connect to COM when we find it
                             bond_site_pos.append(list(position))
 
         # Add bond data into agent_data
