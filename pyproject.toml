@@ -54,6 +54,9 @@ md = [
 cellpack = [
   "cellpack==1.0.3",
 ]
+nerdss = [
+  "MDAnalysis>=2.0.0",
+]
 tutorial = [
   "jupyter",
   "scipy>=1.5.2",
