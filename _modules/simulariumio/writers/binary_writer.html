@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.08.06 -->
-        <title>simulariumio.writers.binary_writer - simulariumio 1.11.1.dev3+g1bbc0d7 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+        <title>simulariumio.writers.binary_writer - simulariumio 1.11.1.dev4+gc017633 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.11.1.dev3+g1bbc0d7 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.11.1.dev4+gc017633 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.11.1.dev3+g1bbc0d7 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.11.1.dev4+gc017633 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -263,21 +263,21 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">struct</span>
-<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">struct</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data_objects</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AgentData</span><span class="p">,</span>
     <span class="n">TrajectoryData</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">BINARY_SETTINGS</span><span class="p">,</span> <span class="n">BINARY_BLOCK_TYPE</span><span class="p">,</span> <span class="n">CURRENT_VERSION</span>
-<span class="kn">from</span> <span class="nn">.writer</span> <span class="kn">import</span> <span class="n">Writer</span>
-<span class="kn">from</span> <span class="nn">.binary_chunk</span> <span class="kn">import</span> <span class="n">BinaryChunk</span>
-<span class="kn">from</span> <span class="nn">.binary_values</span> <span class="kn">import</span> <span class="n">BinaryValues</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">BINARY_SETTINGS</span><span class="p">,</span> <span class="n">BINARY_BLOCK_TYPE</span><span class="p">,</span> <span class="n">CURRENT_VERSION</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.writer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Writer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.binary_chunk</span><span class="w"> </span><span class="kn">import</span> <span class="n">BinaryChunk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.binary_values</span><span class="w"> </span><span class="kn">import</span> <span class="n">BinaryValues</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -288,9 +288,9 @@
 
 <div class="viewcode-block" id="BinaryWriter">
 <a class="viewcode-back" href="../../../simulariumio.writers.html#simulariumio.writers.binary_writer.BinaryWriter">[docs]</a>
-<span class="k">class</span> <span class="nc">BinaryWriter</span><span class="p">(</span><span class="n">Writer</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BinaryWriter</span><span class="p">(</span><span class="n">Writer</span><span class="p">):</span>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_padding</span><span class="p">(</span><span class="n">n_bytes</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_padding</span><span class="p">(</span><span class="n">n_bytes</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the number of bytes to pad, given the desired number.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -301,7 +301,7 @@
             <span class="k">return</span> <span class="mi">0</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_frame_buffers_n_values</span><span class="p">(</span><span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_frame_buffers_n_values</span><span class="p">(</span><span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the number of values in the bundle data buffer for each frame</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -314,7 +314,7 @@
         <span class="k">return</span> <span class="n">result</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_header_n_bytes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_header_n_bytes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get length of binary header in bytes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -324,7 +324,7 @@
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_trajectory_info_length</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_trajectory_info_length</span><span class="p">(</span>
         <span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">,</span>
         <span class="n">type_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -343,7 +343,7 @@
         <span class="k">return</span> <span class="n">traj_info_n_bytes</span> <span class="o">+</span> <span class="n">BinaryWriter</span><span class="o">.</span><span class="n">_padding</span><span class="p">(</span><span class="n">traj_info_n_bytes</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_plot_data_length</span><span class="p">(</span><span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_plot_data_length</span><span class="p">(</span><span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get length of plot data in JSON</span>
 <span class="sd">        (n_bytes = n_values)</span>
@@ -362,7 +362,7 @@
         <span class="k">return</span> <span class="n">plot_data_n_bytes</span> <span class="o">+</span> <span class="n">BinaryWriter</span><span class="o">.</span><span class="n">_padding</span><span class="p">(</span><span class="n">plot_data_n_bytes</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_chunk_files</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_chunk_files</span><span class="p">(</span>
         <span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">,</span>
         <span class="n">type_mapping</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">frame_buffers_n_values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
@@ -421,7 +421,7 @@
         <span class="k">return</span> <span class="n">file_chunks</span><span class="p">,</span> <span class="n">traj_info_n_bytes</span><span class="p">,</span> <span class="n">plot_data_n_bytes</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_binary_header</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_binary_header</span><span class="p">(</span>
         <span class="n">traj_info_n_bytes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">spatial_data_n_bytes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">plot_data_n_bytes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -455,7 +455,7 @@
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_spatial_data_header</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_spatial_data_header</span><span class="p">(</span>
         <span class="n">chunk</span><span class="p">:</span> <span class="n">BinaryChunk</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BinaryValues</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -484,7 +484,7 @@
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_formatted_frame</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_formatted_frame</span><span class="p">(</span>
         <span class="n">global_time_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">chunk_time_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
@@ -513,7 +513,7 @@
         <span class="p">]</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_binary_spatial_data</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_binary_spatial_data</span><span class="p">(</span>
         <span class="n">chunk</span><span class="p">:</span> <span class="n">BinaryChunk</span><span class="p">,</span>
         <span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">,</span>
         <span class="n">type_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -538,7 +538,7 @@
 <div class="viewcode-block" id="BinaryWriter.format_trajectory_data">
 <a class="viewcode-back" href="../../../simulariumio.writers.html#simulariumio.writers.binary_writer.BinaryWriter.format_trajectory_data">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">format_trajectory_data</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_trajectory_data</span><span class="p">(</span>
         <span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">,</span>
         <span class="n">max_bytes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">MAX_BYTES</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">BinaryValues</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">BinaryValues</span><span class="p">]]]:</span>
@@ -590,7 +590,7 @@
 
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_data_buffer_with_format</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_data_buffer_with_format</span><span class="p">(</span>
         <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">binary_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BinaryValues</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -606,7 +606,7 @@
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_write_block</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_write_block</span><span class="p">(</span>
         <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
         <span class="n">block_type</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -646,7 +646,7 @@
 <div class="viewcode-block" id="BinaryWriter.save">
 <a class="viewcode-back" href="../../../simulariumio.writers.html#simulariumio.writers.binary_writer.BinaryWriter.save">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span>
         <span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">validate_ids</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -744,7 +744,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=efd9c4fd"></script>
+</div><script src="../../../_static/documentation_options.js?v=d81f8b63"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>

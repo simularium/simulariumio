@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.08.06 -->
-        <title>simulariumio.writers.json_writer - simulariumio 1.11.1.dev3+g1bbc0d7 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+        <title>simulariumio.writers.json_writer - simulariumio 1.11.1.dev4+gc017633 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.11.1.dev3+g1bbc0d7 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.11.1.dev4+gc017633 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.11.1.dev3+g1bbc0d7 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.11.1.dev4+gc017633 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -263,18 +263,18 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">..data_objects</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data_objects</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AgentData</span><span class="p">,</span>
     <span class="n">TrajectoryData</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="p">,</span> <span class="n">CURRENT_VERSION</span><span class="p">,</span> <span class="n">VALUES_PER_3D_POINT</span>
-<span class="kn">from</span> <span class="nn">.writer</span> <span class="kn">import</span> <span class="n">Writer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="p">,</span> <span class="n">CURRENT_VERSION</span><span class="p">,</span> <span class="n">VALUES_PER_3D_POINT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.writer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Writer</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -285,9 +285,9 @@
 
 <div class="viewcode-block" id="JsonWriter">
 <a class="viewcode-back" href="../../../simulariumio.writers.html#simulariumio.writers.json_writer.JsonWriter">[docs]</a>
-<span class="k">class</span> <span class="nc">JsonWriter</span><span class="p">(</span><span class="n">Writer</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">JsonWriter</span><span class="p">(</span><span class="n">Writer</span><span class="p">):</span>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_get_spatial_bundle_data_subpoints</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_spatial_bundle_data_subpoints</span><span class="p">(</span>
         <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
         <span class="n">type_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -315,7 +315,7 @@
         <span class="k">return</span> <span class="n">bundle_data</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_get_spatial_bundle_data_no_subpoints</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_spatial_bundle_data_no_subpoints</span><span class="p">(</span>
         <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
         <span class="n">type_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -382,7 +382,7 @@
 <div class="viewcode-block" id="JsonWriter.format_trajectory_data">
 <a class="viewcode-back" href="../../../simulariumio.writers.html#simulariumio.writers.json_writer.JsonWriter.format_trajectory_data">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">format_trajectory_data</span><span class="p">(</span><span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_trajectory_data</span><span class="p">(</span><span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the data shaped for Simularium JSON</span>
 <span class="sd">        Parameters</span>
@@ -432,7 +432,7 @@
 <div class="viewcode-block" id="JsonWriter.save">
 <a class="viewcode-back" href="../../../simulariumio.writers.html#simulariumio.writers.json_writer.JsonWriter.save">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span>
         <span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">validate_ids</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -459,7 +459,7 @@
 <div class="viewcode-block" id="JsonWriter.save_plot_data">
 <a class="viewcode-back" href="../../../simulariumio.writers.html#simulariumio.writers.json_writer.JsonWriter.save_plot_data">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">save_plot_data</span><span class="p">(</span><span class="n">plot_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_plot_data</span><span class="p">(</span><span class="n">plot_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Save the current plot data in JSON format</span>
 <span class="sd">        at the output path</span>
@@ -512,7 +512,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=efd9c4fd"></script>
+</div><script src="../../../_static/documentation_options.js?v=d81f8b63"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>

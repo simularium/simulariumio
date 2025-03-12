@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.08.06 -->
-        <title>simulariumio.data_objects.binary_data - simulariumio 1.11.1.dev3+g1bbc0d7 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+        <title>simulariumio.data_objects.binary_data - simulariumio 1.11.1.dev4+gc017633 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.11.1.dev3+g1bbc0d7 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.11.1.dev4+gc017633 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.11.1.dev3+g1bbc0d7 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.11.1.dev4+gc017633 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -260,21 +260,21 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for simulariumio.data_objects.binary_data</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.frame_data</span> <span class="kn">import</span> <span class="n">FrameData</span>
-<span class="kn">from</span> <span class="nn">.input_file_data</span> <span class="kn">import</span> <span class="n">InputFileData</span>
-<span class="kn">from</span> <span class="nn">.trajectory_data</span> <span class="kn">import</span> <span class="n">TrajectoryData</span>
-<span class="kn">from</span> <span class="nn">.simularium_file_data</span> <span class="kn">import</span> <span class="n">SimulariumFileData</span>
-<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">BINARY_BLOCK_TYPE</span><span class="p">,</span> <span class="n">BINARY_SETTINGS</span>
-<span class="kn">from</span> <span class="nn">..readers</span> <span class="kn">import</span> <span class="n">BinaryBlockInfo</span><span class="p">,</span> <span class="n">SimulariumBinaryReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.frame_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">FrameData</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.input_file_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">InputFileData</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.trajectory_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">TrajectoryData</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.simularium_file_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimulariumFileData</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">BINARY_BLOCK_TYPE</span><span class="p">,</span> <span class="n">BINARY_SETTINGS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">BinaryBlockInfo</span><span class="p">,</span> <span class="n">SimulariumBinaryReader</span>
 
 
 <div class="viewcode-block" id="BinaryData">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData">[docs]</a>
-<span class="k">class</span> <span class="nc">BinaryData</span><span class="p">(</span><span class="n">SimulariumFileData</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_contents</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BinaryData</span><span class="p">(</span><span class="n">SimulariumFileData</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_contents</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object holds binary encoded simulation trajectory file&#39;s</span>
 <span class="sd">        data while staying close to the original file format</span>
@@ -294,7 +294,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">block_indices</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parse_file</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_parse_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Read offset and length for each data block</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">block_info</span> <span class="o">=</span> <span class="n">SimulariumBinaryReader</span><span class="o">.</span><span class="n">_parse_binary_header</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">file_data</span><span class="o">.</span><span class="n">byte_view</span>
@@ -344,7 +344,7 @@
 
 <div class="viewcode-block" id="BinaryData.get_frame_at_index">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_frame_at_index">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_frame_at_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FrameData</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_frame_at_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FrameData</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return frame data for frame at index. If there is no frame at the index,</span>
 <span class="sd">        return None.</span>
@@ -368,7 +368,7 @@
 
 <div class="viewcode-block" id="BinaryData.get_index_for_time">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_index_for_time">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_index_for_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_index_for_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return index for frame closest to a given timestamp</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -389,7 +389,7 @@
 
 <div class="viewcode-block" id="BinaryData.get_trajectory_info">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_trajectory_info">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_trajectory_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_trajectory_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return trajectory info block for trajectory, as dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -401,7 +401,7 @@
 
 <div class="viewcode-block" id="BinaryData.get_plot_data">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_plot_data">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return plot data block for trajectory, as dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -413,7 +413,7 @@
 
 <div class="viewcode-block" id="BinaryData.get_trajectory_data_object">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_trajectory_data_object">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_trajectory_data_object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_trajectory_data_object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the data of the trajectory, as a TrajectoryData object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -423,7 +423,7 @@
 
 <div class="viewcode-block" id="BinaryData.get_file_contents">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_file_contents">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_file_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_file_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return raw file data, as bytes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -432,7 +432,7 @@
 
 <div class="viewcode-block" id="BinaryData.get_num_frames">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.binary_data.BinaryData.get_num_frames">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_num_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_num_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return number of frames in the trajectory</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -443,8 +443,8 @@
 
 <div class="viewcode-block" id="FrameMetadata">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.binary_data.FrameMetadata">[docs]</a>
-<span class="k">class</span> <span class="nc">FrameMetadata</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">frame_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FrameMetadata</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">frame_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This object holds metadata for a single frame of simularium data</span>
 
@@ -466,7 +466,7 @@
 
 <div class="viewcode-block" id="FrameMetadata.get_start_end_indices">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.binary_data.FrameMetadata.get_start_end_indices">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_start_end_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_start_end_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the start and end indicies for the data block</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -506,7 +506,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=efd9c4fd"></script>
+</div><script src="../../../_static/documentation_options.js?v=d81f8b63"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>

@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.08.06 -->
-        <title>simulariumio.utils - simulariumio 1.11.1.dev3+g1bbc0d7 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+        <title>simulariumio.utils - simulariumio 1.11.1.dev4+gc017633 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">simulariumio 1.11.1.dev3+g1bbc0d7 documentation</div></a>
+      <a href="../../index.html"><div class="brand">simulariumio 1.11.1.dev4+gc017633 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">simulariumio 1.11.1.dev3+g1bbc0d7 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.11.1.dev4+gc017633 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -260,15 +260,15 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for simulariumio.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">.data_objects</span> <span class="kn">import</span> <span class="n">DisplayData</span><span class="p">,</span> <span class="n">AgentData</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.data_objects</span><span class="w"> </span><span class="kn">import</span> <span class="n">DisplayData</span><span class="p">,</span> <span class="n">AgentData</span>
 
 
 <div class="viewcode-block" id="unpack_position_vector">
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.utils.unpack_position_vector">[docs]</a>
-<span class="k">def</span> <span class="nf">unpack_position_vector</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">unpack_position_vector</span><span class="p">(</span>
     <span class="n">vector_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">defaults</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -302,7 +302,7 @@
 
 <div class="viewcode-block" id="unpack_display_data">
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.utils.unpack_display_data">[docs]</a>
-<span class="k">def</span> <span class="nf">unpack_display_data</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">unpack_display_data</span><span class="p">(</span>
     <span class="n">data_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -321,7 +321,7 @@
 
 <div class="viewcode-block" id="translate_agent_positions">
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.utils.translate_agent_positions">[docs]</a>
-<span class="k">def</span> <span class="nf">translate_agent_positions</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">translate_agent_positions</span><span class="p">(</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
     <span class="n">default_translation</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">translation_per_type</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -386,7 +386,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=efd9c4fd"></script>
+</div><script src="../../_static/documentation_options.js?v=d81f8b63"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
