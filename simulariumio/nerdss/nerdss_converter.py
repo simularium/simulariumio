@@ -10,6 +10,7 @@ from ..data_objects import (
     DisplayData,
 )
 from ..constants import DISPLAY_TYPE, VALUES_PER_3D_POINT, VIZ_TYPE
+from ..exceptions import InputDataError
 from .nerdss_data import NerdssData
 
 
@@ -42,7 +43,12 @@ class NerdssConverter(TrajectoryConverter):
                 # each "atom" will be represented by 1 sphere agent and up
                 # to 1 fiber agent, representing a bond
                 dimensions.max_agents = n_agents * 2
-            time_steps.append(os.path.splitext(file)[0])
+            file_name = os.path.splitext(file)[0]
+            if not file_name.isdigit():
+                raise InputDataError(
+                    f"File name is expected to be the timestep, {file_name} is invalid"
+                )
+            time_steps.append(file_name)
         time_steps.sort(key=int)
         agent_data = AgentData.from_dimensions(dimensions)
         agent_data.n_timesteps = n_timesteps
@@ -164,5 +170,4 @@ class NerdssConverter(TrajectoryConverter):
             spatial_units=input_data.spatial_units,
             plots=input_data.plots,
         )
-        # add the fiber agents, representing bonds, into the trajectory
         return result
