@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.smoldyn package" href="simulariumio.smoldyn.html" /><link rel="prev" title="simulariumio.readdy package" href="simulariumio.readdy.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.physicell package" href="simulariumio.physicell.html" /><link rel="prev" title="simulariumio.medyan package" href="simulariumio.medyan.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.08.06 -->
-        <title>simulariumio.readers package - simulariumio 1.11.1.dev5+gff85180 documentation</title>
+        <title>simulariumio.nerdss package - simulariumio 1.11.1.dev5+gff85180 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -211,14 +211,14 @@
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.filters.html">simulariumio.filters package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.mcell.html">simulariumio.mcell package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.medyan.html">simulariumio.medyan package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.nerdss.html">simulariumio.nerdss package</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">simulariumio.nerdss package</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of simulariumio.physicell package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.physicell.dep.html">simulariumio.physicell.dep package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.plot_readers.html">simulariumio.plot_readers package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.readdy.html">simulariumio.readdy package</a></li>
-<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">simulariumio.readers package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.readers.html">simulariumio.readers package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.smoldyn.html">simulariumio.smoldyn package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.springsalad.html">simulariumio.springsalad package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.writers.html">simulariumio.writers package</a></li>
@@ -247,7 +247,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="_sources/simulariumio.readers.rst.txt" title="View this page">
+  <a class="muted-link" href="_sources/simulariumio.nerdss.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -267,89 +267,111 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="simulariumio-readers-package">
-<h1>simulariumio.readers package<a class="headerlink" href="#simulariumio-readers-package" title="Link to this heading">¶</a></h1>
+          <section id="simulariumio-nerdss-package">
+<h1>simulariumio.nerdss package<a class="headerlink" href="#simulariumio-nerdss-package" title="Link to this heading">¶</a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 </section>
-<section id="module-simulariumio.readers.binary_info">
-<span id="simulariumio-readers-binary-info-module"></span><h2>simulariumio.readers.binary_info module<a class="headerlink" href="#module-simulariumio.readers.binary_info" title="Link to this heading">¶</a></h2>
+<section id="module-simulariumio.nerdss.nerdss_converter">
+<span id="simulariumio-nerdss-nerdss-converter-module"></span><h2>simulariumio.nerdss.nerdss_converter module<a class="headerlink" href="#module-simulariumio.nerdss.nerdss_converter" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryBlockInfo">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.readers.binary_info.</span></span><span class="sig-name descname"><span class="pre">BinaryBlockInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_offsets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">block_lengths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/readers/binary_info.html#BinaryBlockInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryBlockInfo.block_lengths">
-<span class="sig-name descname"><span class="pre">block_lengths</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_lengths" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryBlockInfo.block_offsets">
-<span class="sig-name descname"><span class="pre">block_offsets</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_offsets" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryBlockInfo.block_types">
-<span class="sig-name descname"><span class="pre">block_types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_types" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryBlockInfo.n_blocks">
-<span class="sig-name descname"><span class="pre">n_blocks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryBlockInfo.n_blocks" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryFileData">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.readers.binary_info.</span></span><span class="sig-name descname"><span class="pre">BinaryFileData</span></span><a class="reference internal" href="_modules/simulariumio/readers/binary_info.html#BinaryFileData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryFileData.byte_view">
-<span class="sig-name descname"><span class="pre">byte_view</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bytes</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData.byte_view" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryFileData.float_view">
-<span class="sig-name descname"><span class="pre">float_view</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData.float_view" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.readers.binary_info.BinaryFileData.int_view">
-<span class="sig-name descname"><span class="pre">int_view</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#simulariumio.readers.binary_info.BinaryFileData.int_view" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
-<section id="module-simulariumio.readers.simularium_binary_reader">
-<span id="simulariumio-readers-simularium-binary-reader-module"></span><h2>simulariumio.readers.simularium_binary_reader module<a class="headerlink" href="#module-simulariumio.readers.simularium_binary_reader" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.readers.simularium_binary_reader.</span></span><span class="sig-name descname"><span class="pre">SimulariumBinaryReader</span></span><a class="reference internal" href="_modules/simulariumio/readers/simularium_binary_reader.html#SimulariumBinaryReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader.load_binary">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.input_file_data.InputFileData" title="simulariumio.data_objects.input_file_data.InputFileData"><span class="pre">InputFileData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_spatial_data_as_binary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/simulariumio/readers/simularium_binary_reader.html#SimulariumBinaryReader.load_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader.load_binary" title="Link to this definition">¶</a></dt>
-<dd><p>Load data from the input file in .simularium binary format and update it.</p>
+<dt class="sig sig-object py" id="simulariumio.nerdss.nerdss_converter.NerdssConverter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.nerdss.nerdss_converter.</span></span><span class="sig-name descname"><span class="pre">NerdssConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#simulariumio.nerdss.nerdss_data.NerdssData" title="simulariumio.nerdss.nerdss_data.NerdssData"><span class="pre">NerdssData</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/nerdss/nerdss_converter.html#NerdssConverter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.nerdss.nerdss_converter.NerdssConverter" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter" title="simulariumio.trajectory_converter.TrajectoryConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrajectoryConverter</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>input_file: InputFileData</strong></dt><dd><p>A InputFileData object containing binary .simularium data to load</p>
-</dd>
-<dt><strong>parse_spatial_data_as_binary: bool (optional)</strong></dt><dd><p>Leave spatial data binary encoded in returned dict?
-Default = False</p>
+<dt><strong>input_data</strong><span class="classifier">NerdssData</span></dt><dd><p>An object containing info for reading
+NERDSS simulation trajectory outputs and plot data</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </dd></dl>
+
+</section>
+<section id="module-simulariumio.nerdss.nerdss_data">
+<span id="simulariumio-nerdss-nerdss-data-module"></span><h2>simulariumio.nerdss.nerdss_data module<a class="headerlink" href="#module-simulariumio.nerdss.nerdss_data" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="simulariumio.nerdss.nerdss_data.NerdssData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.nerdss.nerdss_data.</span></span><span class="sig-name descname"><span class="pre">NerdssData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_pdb_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.meta_data.MetaData" title="simulariumio.data_objects.meta_data.MetaData"><span class="pre">MetaData</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.display_data.DisplayData" title="simulariumio.data_objects.display_data.DisplayData"><span class="pre">DisplayData</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData" title="simulariumio.data_objects.unit_data.UnitData"><span class="pre">UnitData</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spatial_units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData" title="simulariumio.data_objects.unit_data.UnitData"><span class="pre">UnitData</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData" title="simulariumio.data_objects.unit_data.UnitData"><span class="pre">UnitData</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/nerdss/nerdss_data.html#NerdssData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.nerdss.nerdss_data.NerdssData" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>path_to_pdb_files</strong><span class="classifier">str</span></dt><dd><p>A path to the folder of PDB files for the trajectory.
+For this converter, it is expected that the frame numbers
+are the names of the file (plus the file extention). At this
+time, the frame numbers must be at consistent intervals</p>
+</dd>
+<dt><strong>meta_data</strong><span class="classifier">MetaData</span></dt><dd><p>An object containing metadata for the trajectory
+including box size, scale factor, and camera defaults</p>
+</dd>
+<dt><strong>display_data: Dict[str, DisplayData] (optional)</strong></dt><dd><p>The particle type name from NERDSS data mapped
+to display names and rendering info for that type,
+Default: for names, use NERDSS name,</p>
+<blockquote>
+<div><p>for radius, use 1.0,
+for rendering, use default representations and colors</p>
+</div></blockquote>
+</dd>
+<dt><strong>time_units: UnitData (optional)</strong></dt><dd><p>multiplier and unit name for time values
+Default: 1.0 second</p>
+</dd>
+<dt><strong>spatial_units: UnitData (optional)</strong></dt><dd><p>multiplier and unit name for spatial values
+(including positions, radii, and box size)
+Default: 1.0 meter</p>
+</dd>
+<dt><strong>plots</strong><span class="classifier">List[Dict[str, Any]] (optional)</span></dt><dd><p>An object containing plot data already
+in Simularium format</p>
+</dd>
+<dt><strong>time_step</strong><span class="classifier">UnitData (optional)</span></dt><dd><p>Time step between each frame, where the frame numbers are represented
+as the names of the .pdb files in path_to_pdb_files
+Default: 1.0 second</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.nerdss.nerdss_data.NerdssData.display_data">
+<span class="sig-name descname"><span class="pre">display_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.display_data.DisplayData" title="simulariumio.data_objects.display_data.DisplayData"><span class="pre">DisplayData</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.nerdss.nerdss_data.NerdssData.display_data" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.nerdss.nerdss_data.NerdssData.meta_data">
+<span class="sig-name descname"><span class="pre">meta_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.meta_data.MetaData" title="simulariumio.data_objects.meta_data.MetaData"><span class="pre">MetaData</span></a></em><a class="headerlink" href="#simulariumio.nerdss.nerdss_data.NerdssData.meta_data" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.nerdss.nerdss_data.NerdssData.path_to_pdb_files">
+<span class="sig-name descname"><span class="pre">path_to_pdb_files</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simulariumio.nerdss.nerdss_data.NerdssData.path_to_pdb_files" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.nerdss.nerdss_data.NerdssData.plots">
+<span class="sig-name descname"><span class="pre">plots</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.nerdss.nerdss_data.NerdssData.plots" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.nerdss.nerdss_data.NerdssData.spatial_units">
+<span class="sig-name descname"><span class="pre">spatial_units</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData" title="simulariumio.data_objects.unit_data.UnitData"><span class="pre">UnitData</span></a></em><a class="headerlink" href="#simulariumio.nerdss.nerdss_data.NerdssData.spatial_units" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.nerdss.nerdss_data.NerdssData.time_step">
+<span class="sig-name descname"><span class="pre">time_step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData" title="simulariumio.data_objects.unit_data.UnitData"><span class="pre">UnitData</span></a></em><a class="headerlink" href="#simulariumio.nerdss.nerdss_data.NerdssData.time_step" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.nerdss.nerdss_data.NerdssData.time_units">
+<span class="sig-name descname"><span class="pre">time_units</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData" title="simulariumio.data_objects.unit_data.UnitData"><span class="pre">UnitData</span></a></em><a class="headerlink" href="#simulariumio.nerdss.nerdss_data.NerdssData.time_units" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 </section>
-<section id="module-simulariumio.readers">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.readers" title="Link to this heading">¶</a></h2>
+<section id="module-simulariumio.nerdss">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.nerdss" title="Link to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -358,23 +380,23 @@ Default = False</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="simulariumio.smoldyn.html">
+          <a class="next-page" href="simulariumio.physicell.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">simulariumio.smoldyn package</div>
+                <div class="title">simulariumio.physicell package</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="simulariumio.readdy.html">
+          <a class="prev-page" href="simulariumio.medyan.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">simulariumio.readdy package</div>
+                <div class="title">simulariumio.medyan package</div>
                 
               </div>
             </a>
@@ -408,32 +430,26 @@ Default = False</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">simulariumio.readers package</a><ul>
+<li><a class="reference internal" href="#">simulariumio.nerdss package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-simulariumio.readers.binary_info">simulariumio.readers.binary_info module</a><ul>
-<li><a class="reference internal" href="#simulariumio.readers.binary_info.BinaryBlockInfo"><code class="docutils literal notranslate"><span class="pre">BinaryBlockInfo</span></code></a><ul>
-<li><a class="reference internal" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_lengths"><code class="docutils literal notranslate"><span class="pre">BinaryBlockInfo.block_lengths</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_offsets"><code class="docutils literal notranslate"><span class="pre">BinaryBlockInfo.block_offsets</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.readers.binary_info.BinaryBlockInfo.block_types"><code class="docutils literal notranslate"><span class="pre">BinaryBlockInfo.block_types</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.readers.binary_info.BinaryBlockInfo.n_blocks"><code class="docutils literal notranslate"><span class="pre">BinaryBlockInfo.n_blocks</span></code></a></li>
+<li><a class="reference internal" href="#module-simulariumio.nerdss.nerdss_converter">simulariumio.nerdss.nerdss_converter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.nerdss.nerdss_converter.NerdssConverter"><code class="docutils literal notranslate"><span class="pre">NerdssConverter</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#simulariumio.readers.binary_info.BinaryFileData"><code class="docutils literal notranslate"><span class="pre">BinaryFileData</span></code></a><ul>
-<li><a class="reference internal" href="#simulariumio.readers.binary_info.BinaryFileData.byte_view"><code class="docutils literal notranslate"><span class="pre">BinaryFileData.byte_view</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.readers.binary_info.BinaryFileData.float_view"><code class="docutils literal notranslate"><span class="pre">BinaryFileData.float_view</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.readers.binary_info.BinaryFileData.int_view"><code class="docutils literal notranslate"><span class="pre">BinaryFileData.int_view</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-simulariumio.readers.simularium_binary_reader">simulariumio.readers.simularium_binary_reader module</a><ul>
-<li><a class="reference internal" href="#simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader"><code class="docutils literal notranslate"><span class="pre">SimulariumBinaryReader</span></code></a><ul>
-<li><a class="reference internal" href="#simulariumio.readers.simularium_binary_reader.SimulariumBinaryReader.load_binary"><code class="docutils literal notranslate"><span class="pre">SimulariumBinaryReader.load_binary()</span></code></a></li>
+<li><a class="reference internal" href="#module-simulariumio.nerdss.nerdss_data">simulariumio.nerdss.nerdss_data module</a><ul>
+<li><a class="reference internal" href="#simulariumio.nerdss.nerdss_data.NerdssData"><code class="docutils literal notranslate"><span class="pre">NerdssData</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.nerdss.nerdss_data.NerdssData.display_data"><code class="docutils literal notranslate"><span class="pre">NerdssData.display_data</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.nerdss.nerdss_data.NerdssData.meta_data"><code class="docutils literal notranslate"><span class="pre">NerdssData.meta_data</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.nerdss.nerdss_data.NerdssData.path_to_pdb_files"><code class="docutils literal notranslate"><span class="pre">NerdssData.path_to_pdb_files</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.nerdss.nerdss_data.NerdssData.plots"><code class="docutils literal notranslate"><span class="pre">NerdssData.plots</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.nerdss.nerdss_data.NerdssData.spatial_units"><code class="docutils literal notranslate"><span class="pre">NerdssData.spatial_units</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.nerdss.nerdss_data.NerdssData.time_step"><code class="docutils literal notranslate"><span class="pre">NerdssData.time_step</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.nerdss.nerdss_data.NerdssData.time_units"><code class="docutils literal notranslate"><span class="pre">NerdssData.time_units</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-simulariumio.readers">Module contents</a></li>
+<li><a class="reference internal" href="#module-simulariumio.nerdss">Module contents</a></li>
 </ul>
 </li>
 </ul>

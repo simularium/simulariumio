@@ -1,0 +1,29 @@
+simulariumio.nerdss package
+===========================
+
+Submodules
+----------
+
+simulariumio.nerdss.nerdss\_converter module
+--------------------------------------------
+
+.. automodule:: simulariumio.nerdss.nerdss_converter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.nerdss.nerdss\_data module
+---------------------------------------
+
+.. automodule:: simulariumio.nerdss.nerdss_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: simulariumio.nerdss
+   :members:
+   :undoc-members:
+   :show-inheritance:
