@@ -30,6 +30,7 @@ data = CytosimData(
             ),
         )
     },
+    center_fibers=True,
 )
 converter = CytosimConverter(data)
 results = JsonWriter.format_trajectory_data(converter._data)
@@ -93,6 +94,7 @@ data_with_metadata = CytosimData(
             ),
         )
     },
+    center_fibers=True,
 )
 converter_meta_data = CytosimConverter(data_with_metadata)
 results_meta_data = JsonWriter.format_trajectory_data(converter_meta_data._data)
@@ -144,6 +146,7 @@ data_with_display_data = CytosimData(
             },
         )
     },
+    center_fibers=True,
 )
 converter_display_data = CytosimConverter(data_with_display_data)
 results_display_data = JsonWriter.format_trajectory_data(converter_display_data._data)
@@ -328,6 +331,7 @@ aster_pull3D_objects = CytosimData(
             ),
         ),
     },
+    center_fibers=True,
 )
 # load the data from Cytosim output .txt files
 cytosim_data = {}
@@ -358,6 +362,7 @@ def test_input_file_error():
                 ),
             )
         },
+        center_fibers=True,
     )
     with pytest.raises(InputDataError):
         CytosimConverter(malformed_data)
@@ -374,6 +379,7 @@ def test_input_file_error():
                 ),
             )
         },
+        center_fibers=True,
     )
     with pytest.raises(InputDataError):
         CytosimConverter(wrong_file)
