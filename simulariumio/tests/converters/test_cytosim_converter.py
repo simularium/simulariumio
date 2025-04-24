@@ -118,7 +118,7 @@ def test_box_size_provided(box_size, expected_box_size):
 
 # value of automatically generated scale factor, so that position
 # data fits within VIEWER_DIMENSION_RANGE
-range = 0.400052 - -0.001
+range = 0.00808633 - -0.39575567
 auto_scale_factor = VIEWER_DIMENSION_RANGE.MIN / range
 name_0 = "fiber"
 radius_0 = 0.001
@@ -292,8 +292,12 @@ def test_agent_ids():
     assert JsonWriter._check_agent_ids_are_unique_per_frame(results_display_data)
 
 
+scale_factor_aster = 10
 # test data extraction from aster_pull3D example
 aster_pull3D_objects = CytosimData(
+    meta_data=MetaData(
+        scale_factor=scale_factor_aster
+    ),
     object_info={
         "fibers": CytosimObjectInfo(
             cytosim_file=InputFileData(
@@ -345,6 +349,125 @@ def test_parse_dimensions():
     assert dimension_data.max_agents == 19
     assert dimension_data.max_subpoints == 18
 
+
+converter_aster = CytosimConverter(aster_pull3D_objects)
+results_aster = JsonWriter.format_trajectory_data(converter_aster._data)
+
+@pytest.mark.parametrize(
+    "asterData, expected_asterData",
+    [
+        (
+            results_aster["spatialData"]["bundleData"][0]["data"][0:49],
+            [
+                VIZ_TYPE.FIBER,  # agent 1
+                1.0,  # id
+                0.0,  # type
+                0.24166 * scale_factor_aster,
+                0.50934 * scale_factor_aster,
+                0.22896 * scale_factor_aster,
+                0.0,
+                0.0,
+                0.0,
+                1.0 * scale_factor_aster,
+                15.0,
+                0.12764 * scale_factor_aster,
+                -0.14133999999999997 * scale_factor_aster,
+                -0.061160000000000006 * scale_factor_aster,
+                0.06384 * scale_factor_aster,
+                -0.07064000000000001 * scale_factor_aster,
+                -0.03056000000000001 * scale_factor_aster,
+                4.000000000000669e-05 * scale_factor_aster,
+                -4.000000000000114e-05 * scale_factor_aster,
+                4.0000000000005316e-05 * scale_factor_aster,
+                -0.06385999999999999 * scale_factor_aster,
+                0.07065999999999997 * scale_factor_aster,
+                0.030540000000000005 * scale_factor_aster,
+                -0.12766000000000002 * scale_factor_aster,
+                0.14135999999999999 * scale_factor_aster,
+                0.061140000000000014 * scale_factor_aster,
+                VIZ_TYPE.FIBER,  # agent 2
+                2.0,
+                0.0,
+                0.3733 * scale_factor_aster,
+                0.2226 * scale_factor_aster,
+                0.2044 * scale_factor_aster,
+                0.0,
+                0.0,
+                0.0,
+                1.0 * scale_factor_aster,
+                12.0,
+                -0.00399999999999999 * scale_factor_aster,
+                0.1454 * scale_factor_aster,
+                -0.036599999999999994 * scale_factor_aster,
+                -0.0013000000000000095 * scale_factor_aster,
+                0.048499999999999995 * scale_factor_aster,
+                -0.012199999999999989 * scale_factor_aster,
+                0.0012999999999999817 * scale_factor_aster,
+                -0.04850000000000001 * scale_factor_aster,
+                0.012199999999999989 * scale_factor_aster,
+                0.004000000000000017 * scale_factor_aster,
+                -0.1454 * scale_factor_aster,
+                0.036599999999999994 * scale_factor_aster,
+            ],
+        ),
+        (
+            results_aster["spatialData"]["bundleData"][1]["data"][0:49],
+            [
+                VIZ_TYPE.FIBER,
+                1.0,
+                0.0,
+                0.26803333333333335 * scale_factor_aster,
+                0.48285 * scale_factor_aster,
+                0.010500000000000002 * scale_factor_aster,
+                0.0,
+                0.0,
+                0.0,
+                1.0 * scale_factor_aster,
+                18.0,
+                0.17746666666666666 * scale_factor_aster,
+                -0.14315 * scale_factor_aster,
+                0.0781 * scale_factor_aster,
+                0.09826666666666667 * scale_factor_aster,
+                -0.10015000000000002 * scale_factor_aster,
+                0.034600000000000006 * scale_factor_aster,
+                0.02156666666666669 * scale_factor_aster,
+                -0.05004999999999998 * scale_factor_aster,
+                -0.005500000000000001 * scale_factor_aster,
+                -0.04973333333333333 * scale_factor_aster,
+                0.013249999999999984 * scale_factor_aster,
+                -0.035699999999999996 * scale_factor_aster,
+                -0.10803333333333334 * scale_factor_aster,
+                0.09375 * scale_factor_aster,
+                -0.046299999999999994 * scale_factor_aster,
+                -0.13953333333333334 * scale_factor_aster,
+                0.18635000000000002 * scale_factor_aster,
+                -0.0252 * scale_factor_aster,
+                VIZ_TYPE.FIBER,
+                2.0,
+                0.0,
+                0.4225666666666667 * scale_factor_aster,
+                0.23976666666666668 * scale_factor_aster,
+                0.07003333333333334 * scale_factor_aster,
+                0.0,
+                0.0,
+                0.0,
+                1.0 * scale_factor_aster,
+                9.0,
+                0.019733333333333342 * scale_factor_aster,
+                0.09583333333333334 * scale_factor_aster,
+                0.02036666666666666 * scale_factor_aster,
+                -0.0023666666666666636 * scale_factor_aster,
+                0.0006333333333333236 * scale_factor_aster,
+                -0.0008333333333333328 * scale_factor_aster,
+                -0.01736666666666668 * scale_factor_aster,
+                -0.09646666666666666 * scale_factor_aster,
+                -0.01953333333333333 * scale_factor_aster,
+            ],
+        ),
+    ],
+)
+def test_aster_data(asterData, expected_asterData):
+    assert np.isclose(expected_asterData, asterData).all()
 
 def test_input_file_error():
     # throws an error when the file is the right type, but is malformed
