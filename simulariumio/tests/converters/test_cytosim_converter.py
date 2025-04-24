@@ -353,6 +353,7 @@ def test_parse_dimensions():
 converter_aster = CytosimConverter(aster_pull3D_objects)
 results_aster = JsonWriter.format_trajectory_data(converter_aster._data)
 
+
 @pytest.mark.parametrize(
     "asterData, expected_asterData",
     [
@@ -468,6 +469,7 @@ results_aster = JsonWriter.format_trajectory_data(converter_aster._data)
 )
 def test_aster_data(asterData, expected_asterData):
     assert np.isclose(expected_asterData, asterData).all()
+
 
 def test_input_file_error():
     # throws an error when the file is the right type, but is malformed
