@@ -191,7 +191,6 @@ class CytosimConverter(TrajectoryConverter):
         used_unique_IDs: List[int],
         overall_line: int,
         total_lines: int,
-        scale_factor: float = None,
     ) -> Tuple[Dict[str, Any], List[int], int]:
         """
         Parse a Cytosim output file containing objects
@@ -274,12 +273,9 @@ class CytosimConverter(TrajectoryConverter):
                 )
                 result.n_agents[time_index] += 1
             self.check_report_progress(overall_line / total_lines)
-        result, scale_factor = TrajectoryConverter.scale_agent_data(
-            result, scale_factor
-        )
         result = TrajectoryConverter.center_fiber_positions(result)
         result.n_timesteps = time_index + 1
-        return (result, used_unique_IDs, overall_line, scale_factor)
+        return (result, used_unique_IDs, overall_line)
 
     def _read(self, input_data: CytosimData) -> TrajectoryData:
         """
@@ -310,7 +306,7 @@ class CytosimConverter(TrajectoryConverter):
         uids = []
         for object_type in input_data.object_info:
             try:
-                (agent_data, uids, overall_line, scale_factor) = self._parse_objects(
+                (agent_data, uids, overall_line) = self._parse_objects(
                     object_type,
                     cytosim_data[object_type],
                     input_data.object_info[object_type],
@@ -318,10 +314,15 @@ class CytosimConverter(TrajectoryConverter):
                     uids,
                     overall_line,
                     total_lines,
-                    input_data.meta_data.scale_factor,
                 )
             except Exception as e:
                 raise InputDataError(f"Error reading input cytosim data: {e}")
+
+        # scale agent data
+        agent_data, scale_factor = TrajectoryConverter.scale_agent_data(
+            agent_data, input_data.meta_data.scale_factor
+        )
+
         # get display data (geometry and color)
         for object_type in input_data.object_info:
             for tid in input_data.object_info[object_type].display_data:
