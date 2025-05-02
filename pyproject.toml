@@ -57,6 +57,9 @@ cellpack = [
 nerdss = [
   "MDAnalysis>=2.0.0",
 ]
+mem3dg = [
+  "netCDF4",
+]
 tutorial = [
   "jupyter",
   "scipy>=1.5.2",
