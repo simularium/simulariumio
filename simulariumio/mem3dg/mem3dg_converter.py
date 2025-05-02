@@ -86,6 +86,8 @@ class Mem3dgConverter(TrajectoryConverter):
         Return a TrajectoryData object containing the Mem3DG data
         """
         print("Reading Mem3DG Data -------------")
+        if input_data.meta_data.scale_factor is None:
+            input_data.meta_data.scale_factor = 1.0
         agent_data = self._read_traj_data(input_data)
         input_data.spatial_units.multiply(1.0 / input_data.meta_data.scale_factor)
         input_data.meta_data._set_box_size()
