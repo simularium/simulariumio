@@ -49,84 +49,84 @@ def test_box_size_default(box_size, expected_box_size):
                     "name": "object#frame0",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '0.obj',
+                        "url": "0.obj",
                     },
                 },
                 "1": {
                     "name": "object#frame1",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '1.obj',
+                        "url": "1.obj",
                     },
                 },
                 "10": {
                     "name": "object#frame10",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '10.obj',
+                        "url": "10.obj",
                     },
                 },
                 "11": {
                     "name": "object#frame11",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '11.obj',
+                        "url": "11.obj",
                     },
                 },
                 "2": {
                     "name": "object#frame2",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '2.obj',
+                        "url": "2.obj",
                     },
                 },
                 "3": {
                     "name": "object#frame3",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '3.obj',
+                        "url": "3.obj",
                     },
                 },
                 "4": {
                     "name": "object#frame4",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '4.obj',
+                        "url": "4.obj",
                     },
                 },
                 "5": {
                     "name": "object#frame5",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '5.obj',
+                        "url": "5.obj",
                     },
                 },
                 "6": {
                     "name": "object#frame6",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '6.obj',
+                        "url": "6.obj",
                     },
                 },
                 "7": {
                     "name": "object#frame7",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '7.obj',
+                        "url": "7.obj",
                     },
                 },
                 "8": {
                     "name": "object#frame8",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '8.obj',
+                        "url": "8.obj",
                     },
                 },
                 "9": {
                     "name": "object#frame9",
                     "geometry": {
                         "displayType": "OBJ",
-                        'url': '9.obj',
+                        "url": "9.obj",
                     },
                 },
             },
@@ -293,7 +293,7 @@ data_with_optional_data = Mem3dgData(
         box_size=np.array([box_size, box_size, box_size]),
     ),
     agent_color=color,
-    agent_name=name
+    agent_name=name,
 )
 converter_optional_data = Mem3dgConverter(data_with_optional_data)
 results_optional_data = JsonWriter.format_trajectory_data(converter_optional_data._data)
@@ -307,22 +307,14 @@ results_optional_data = JsonWriter.format_trajectory_data(converter_optional_dat
             results_optional_data["trajectoryInfo"]["typeMapping"]["1"],
             {
                 "name": f"{name}#frame1",
-                "geometry": {
-                    "displayType": "OBJ",
-                    "color": color,
-                    "url": "1.obj"
-                },
+                "geometry": {"displayType": "OBJ", "color": color, "url": "1.obj"},
             },
         ),
         (
             results_optional_data["trajectoryInfo"]["typeMapping"]["7"],
             {
                 "name": f"{name}#frame7",
-                "geometry": {
-                    "displayType": "OBJ",
-                    "color": color,
-                    "url": "7.obj"
-                },
+                "geometry": {"displayType": "OBJ", "color": color, "url": "7.obj"},
             },
         ),
     ],
@@ -363,12 +355,12 @@ def test_bundleData(bundleData, expected_bundleData):
 # test the generated .obj file
 vertices = []
 faces = []
-with open("1.obj", 'r') as f:
+with open("1.obj", "r") as f:
     for line in f:
-        if line.startswith('v '):
+        if line.startswith("v "):
             vertex = list(map(float, line.strip().split()[1:]))
             vertices.append(vertex)
-        if line.startswith('f'):
+        if line.startswith("f"):
             face = list(map(int, line.strip().split()[1:]))
             faces.append(face)
 
@@ -389,7 +381,7 @@ with open("1.obj", 'r') as f:
                 [-0.07103420756652815, 0.12890346705753208, -1.4027636325505357],
                 [-0.21819128564743445, 0.1535233470313994, -1.3532338908453854],
                 [0.08002216511514706, 0.05349158797718862, -1.414705819367836],
-                [0.21652298025580569, 0.12117631622076441, -1.3635688485379431]
+                [0.21652298025580569, 0.12117631622076441, -1.3635688485379431],
             ],
         ),
         (
@@ -404,9 +396,9 @@ with open("1.obj", 'r') as f:
                 [1, 9, 4],
                 [7, 9, 1],
                 [6, 4, 9],
-                [6, 9, 10]
-            ]
-        )
+                [6, 9, 10],
+            ],
+        ),
     ],
 )
 def test_obj_data_values(objData, expected_objData):

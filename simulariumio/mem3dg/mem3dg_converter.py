@@ -30,16 +30,19 @@ class Mem3dgConverter(TrajectoryConverter):
 
     def write_to_obj(self, filepath, data, frame):
         # Extract XYZ coordinates for vertices
-        coordinates = np.array(data.groups["Trajectory"].variables["coordinates"][frame])
+        coordinates = np.array(
+            data.groups["Trajectory"].variables["coordinates"][frame]
+        )
         coordinates = np.reshape(coordinates, (-1, 3))
 
         # Extract indices of vertices to make faces (all triangles)
         topology = np.array(data.groups["Trajectory"].variables["topology"][frame])
         topology = np.reshape(topology, (-1, 3))
-        topology += 1  # change indices to be 1 indexed instead of 0 indexed for .obj files
+        # change indices to be 1 indexed instead of 0 indexed for .obj files
+        topology += 1
 
         # Generate one .obj file per frame
-        with open(filepath, 'w') as file:
+        with open(filepath, "w") as file:
             file.write(f"# Frame {frame}\n")
             for v in coordinates:
                 file.write(f"v {v[0]} {v[1]} {v[2]}\n")
@@ -48,7 +51,7 @@ class Mem3dgConverter(TrajectoryConverter):
 
     def _read_traj_data(self, input_data: Mem3dgData) -> AgentData:
         try:
-            data = Dataset(input_data.input_file_path,'r')
+            data = Dataset(input_data.input_file_path, "r")
             n_frames = np.size(data.groups["Trajectory"].variables["time"])
         except Exception as e:
             raise InputDataError(f"Error reading input Mem3DG data: {e}")
@@ -76,7 +79,7 @@ class Mem3dgConverter(TrajectoryConverter):
                 name=f"{base_agent_name}#frame{frame}",
                 display_type=DISPLAY_TYPE.OBJ,
                 url=str(output_file_path),
-                color=input_data.agent_color
+                color=input_data.agent_color,
             )
             agent_data.display_data[name] = object_display_data
         return agent_data
