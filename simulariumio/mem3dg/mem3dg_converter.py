@@ -78,7 +78,7 @@ class Mem3dgConverter(TrajectoryConverter):
             object_display_data = DisplayData(
                 name=f"{base_agent_name}#frame{frame}",
                 display_type=DISPLAY_TYPE.OBJ,
-                url=str(output_file_path),
+                url=f"{frame}.obj",
                 color=input_data.agent_color,
             )
             agent_data.display_data[name] = object_display_data
