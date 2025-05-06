@@ -1,10 +1,12 @@
 ## Simularium repositories
 This repository is part of the Simularium project ([simularium.allencell.org](https://simularium.allencell.org)), which includes repositories:
 - [simulariumIO](https://github.com/simularium/simulariumio) - Python package that converts simulation outputs to the format consumed by the Simularium viewer website
-- [simularium-engine](https://github.com/simularium/simularium-engine) - C++ backend application that interfaces with biological simulation engines and serves simulation data to the front end website
+- [octopus](https://github.com/simularium/octopus) - Python application that serves simulation data to the front end website
 - [simularium-viewer](https://github.com/simularium/simularium-viewer) - NPM package to view Simularium trajectories in 3D
 - [simularium-website](https://github.com/simularium/simularium-website) - Front end website for the Simularium project, includes the Simularium viewer
 
+## Simularium Project Status
+While we are continuing to support Simularium, **active development on new features is currently paused**. As a result, new feature request will not be addressed immediately.
 <br/>
 
 ---
@@ -95,6 +97,7 @@ Upload your file to a public Dropbox or Google Drive folder or an AWS S3 bucket,
     * Smoldyn (http://www.smoldyn.org/)
     * SpringSaLaD (https://vcell.org/ssalad)
     * Molecular dynamics trajectories via MDAnalysis (https://www.mdanalysis.org/)
+    * NERDSS (https://mjohn218.github.io/NERDSS/)
 * Conversions for data from custom engines can be implemented using the TrajectoryConverter class
 * Also accepts metrics data for plots to display alongside spatial data
 
@@ -152,6 +155,7 @@ See the Tutorial for the simulation engine you're using for details:
 * [Smoldyn Tutorial](examples/Tutorial_smoldyn.ipynb)
 * [SpringSaLaD Tutorial](examples/Tutorial_springsalad.ipynb)
 * [Molecular Dynamics Tutorial](examples/Tutorial_md.ipynb)
+* [NERDSS Tutorial](examples/Tutorial_nerdss.ipynb)
 
 An overview for data from ReaDDy:
 ```python
