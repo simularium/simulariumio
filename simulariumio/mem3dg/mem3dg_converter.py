@@ -56,7 +56,7 @@ class Mem3dgConverter(TrajectoryConverter):
         except Exception as e:
             raise InputDataError(f"Error reading input Mem3DG data: {e}")
 
-        # for now, we are representing converted Mem3DG trajectoies as one
+        # for now, we are representing converted Mem3DG trajectories as one
         # unique mesh agent per frame
         dimensions = DimensionData(total_steps=n_frames, max_agents=1)
         agent_data = AgentData.from_dimensions(dimensions)
