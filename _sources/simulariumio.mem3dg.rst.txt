@@ -1,0 +1,29 @@
+simulariumio.mem3dg package
+===========================
+
+Submodules
+----------
+
+simulariumio.mem3dg.mem3dg\_converter module
+--------------------------------------------
+
+.. automodule:: simulariumio.mem3dg.mem3dg_converter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.mem3dg.mem3dg\_data module
+---------------------------------------
+
+.. automodule:: simulariumio.mem3dg.mem3dg_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: simulariumio.mem3dg
+   :members:
+   :undoc-members:
+   :show-inheritance:

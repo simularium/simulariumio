@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.08.06 -->
-        <title>simulariumio.data_objects.dimension_data - simulariumio 1.12.2.dev2+g2280752 documentation</title>
+        <title>simulariumio.mem3dg.mem3dg_data - simulariumio 1.12.2.dev2+g2280752 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -261,93 +261,74 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for simulariumio.data_objects.dimension_data</h1><div class="highlight"><pre>
-<span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">..exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataError</span>
+          <h1>Source code for simulariumio.mem3dg.mem3dg_data</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">..data_objects</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetaData</span><span class="p">,</span> <span class="n">UnitData</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 
 
-<span class="c1">###############################################################################</span>
-
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-
-<span class="c1">###############################################################################</span>
-
-
-<div class="viewcode-block" id="DimensionData">
-<a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">DimensionData</span><span class="p">:</span>
-    <span class="n">total_steps</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">max_agents</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">max_subpoints</span><span class="p">:</span> <span class="nb">int</span>
+<div class="viewcode-block" id="Mem3dgData">
+<a class="viewcode-back" href="../../../simulariumio.mem3dg.html#simulariumio.mem3dg.mem3dg_data.Mem3dgData">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Mem3dgData</span><span class="p">:</span>
+    <span class="n">input_file_path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">output_obj_file_path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
+    <span class="n">agent_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">agent_color</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span>
+    <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span>
+    <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">total_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">max_agents</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">max_subpoints</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">input_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">output_obj_file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">agent_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">agent_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This object contains dimension data</span>
-
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        total_steps : int</span>
-<span class="sd">            The total number of timesteps in a trajectory</span>
-<span class="sd">        max_agents : int</span>
-<span class="sd">            The number of agents at the timestep with the most agents</span>
-<span class="sd">        max_subpoints : int (optional)</span>
-<span class="sd">            The number of subpoints on the agent at any timestep</span>
-<span class="sd">            with the most subpoints</span>
-<span class="sd">            Default: 0</span>
+<span class="sd">        input_file_path : str</span>
+<span class="sd">            The path to the .nc file output by Mem3DG for this trajectory.</span>
+<span class="sd">        output_obj_file_path : str (optional)</span>
+<span class="sd">            The path to the directory where output .obj files will be saved</span>
+<span class="sd">            to. If nothing is provided, the output .obj files will be saved</span>
+<span class="sd">            to the current directory.</span>
+<span class="sd">        meta_data : MetaData</span>
+<span class="sd">            An object containing metadata for the trajectory</span>
+<span class="sd">            including box size, scale factor, and camera defaults</span>
+<span class="sd">        agent_name: str (optional)</span>
+<span class="sd">            This converter generates it&#39;s own DisplayData, but the agent name</span>
+<span class="sd">            can optionally be overridden here. This will change the agent</span>
+<span class="sd">            name that is displayed on the side column in simularium</span>
+<span class="sd">        agent_color: string (optional)</span>
+<span class="sd">            This converter generates it&#39;s own DisplayData, but the agent color</span>
+<span class="sd">            can optionally be overridden here with a hex value for the color to</span>
+<span class="sd">            display, e.g &quot;#FFFFFF&quot;</span>
+<span class="sd">            Default: Use default colors from Simularium Viewer</span>
+<span class="sd">        time_units: UnitData (optional)</span>
+<span class="sd">            multiplier and unit name for time values</span>
+<span class="sd">            Default: 1.0 second</span>
+<span class="sd">        spatial_units: UnitData (optional)</span>
+<span class="sd">            multiplier and unit name for spatial values</span>
+<span class="sd">            (including positions, radii, and box size)</span>
+<span class="sd">            Default: 1.0 meter</span>
+<span class="sd">        plots : List[Dict[str, Any]] (optional)</span>
+<span class="sd">            An object containing plot data already</span>
+<span class="sd">            in Simularium format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">=</span> <span class="n">total_steps</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">=</span> <span class="n">max_agents</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_subpoints</span> <span class="o">=</span> <span class="n">max_subpoints</span>
-
-<div class="viewcode-block" id="DimensionData.add">
-<a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.dimension_data.DimensionData.add">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">added_dimensions</span><span class="p">:</span> <span class="n">DimensionData</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DimensionData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add the given dimensions with this object&#39;s and return a copy</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">&gt;</span> <span class="mi">0</span>
-                <span class="ow">and</span> <span class="n">added_dimensions</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span>
-            <span class="p">):</span>
-                <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span>
-                    <span class="s2">&quot;Total steps must be equal when adding dimensions on agent axis: &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">added_dimensions</span><span class="o">.</span><span class="n">total_steps</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="p">)</span>
-            <span class="n">result_total_steps</span> <span class="o">=</span> <span class="n">added_dimensions</span><span class="o">.</span><span class="n">total_steps</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">result_total_steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">+</span> <span class="n">added_dimensions</span><span class="o">.</span><span class="n">total_steps</span>
-        <span class="k">return</span> <span class="n">DimensionData</span><span class="p">(</span>
-            <span class="n">total_steps</span><span class="o">=</span><span class="n">result_total_steps</span><span class="p">,</span>
-            <span class="n">max_agents</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">+</span> <span class="n">added_dimensions</span><span class="o">.</span><span class="n">max_agents</span><span class="p">,</span>
-            <span class="n">max_subpoints</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">max_subpoints</span> <span class="o">+</span> <span class="n">added_dimensions</span><span class="o">.</span><span class="n">max_subpoints</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span><span class="si">}</span><span class="s2"> timesteps X </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_agents</span><span class="si">}</span><span class="s2"> agents &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;X </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_subpoints</span><span class="si">}</span><span class="s2"> subpoints&quot;</span>
-        <span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">DimensionData</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">total_steps</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">max_agents</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_subpoints</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">max_subpoints</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_file_path</span> <span class="o">=</span> <span class="n">input_file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_obj_file_path</span> <span class="o">=</span> <span class="n">output_obj_file_path</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span> <span class="ow">or</span> <span class="n">MetaData</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent_name</span> <span class="o">=</span> <span class="n">agent_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent_color</span> <span class="o">=</span> <span class="n">agent_color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span> <span class="ow">or</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spatial_units</span> <span class="o">=</span> <span class="n">spatial_units</span> <span class="ow">or</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span> <span class="ow">or</span> <span class="p">[]</span></div>
 
 </pre></div>
         </article>

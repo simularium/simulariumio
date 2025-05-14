@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.medyan package" href="simulariumio.medyan.html" /><link rel="prev" title="simulariumio.filters package" href="simulariumio.filters.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="simulariumio.nerdss package" href="simulariumio.nerdss.html" /><link rel="prev" title="simulariumio.medyan package" href="simulariumio.medyan.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.08.06 -->
-        <title>simulariumio.mcell package - simulariumio 1.12.2.dev2+g2280752 documentation</title>
+        <title>simulariumio.mem3dg package - simulariumio 1.12.2.dev2+g2280752 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -209,9 +209,9 @@
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.cytosim.html">simulariumio.cytosim package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.data_objects.html">simulariumio.data_objects package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.filters.html">simulariumio.filters package</a></li>
-<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">simulariumio.mcell package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simulariumio.mcell.html">simulariumio.mcell package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.medyan.html">simulariumio.medyan package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="simulariumio.mem3dg.html">simulariumio.mem3dg package</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">simulariumio.mem3dg package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="simulariumio.nerdss.html">simulariumio.nerdss package</a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="simulariumio.physicell.html">simulariumio.physicell package</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of simulariumio.physicell package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="simulariumio.physicell.dep.html">simulariumio.physicell.dep package</a></li>
@@ -248,7 +248,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="_sources/simulariumio.mcell.rst.txt" title="View this page">
+  <a class="muted-link" href="_sources/simulariumio.mem3dg.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -268,79 +268,67 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="simulariumio-mcell-package">
-<h1>simulariumio.mcell package<a class="headerlink" href="#simulariumio-mcell-package" title="Link to this heading">¶</a></h1>
+          <section id="simulariumio-mem3dg-package">
+<h1>simulariumio.mem3dg package<a class="headerlink" href="#simulariumio-mem3dg-package" title="Link to this heading">¶</a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
 </section>
-<section id="module-simulariumio.mcell.mcell_converter">
-<span id="simulariumio-mcell-mcell-converter-module"></span><h2>simulariumio.mcell.mcell_converter module<a class="headerlink" href="#module-simulariumio.mcell.mcell_converter" title="Link to this heading">¶</a></h2>
+<section id="module-simulariumio.mem3dg.mem3dg_converter">
+<span id="simulariumio-mem3dg-mem3dg-converter-module"></span><h2>simulariumio.mem3dg.mem3dg_converter module<a class="headerlink" href="#module-simulariumio.mem3dg.mem3dg_converter" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="simulariumio.mcell.mcell_converter.McellConverter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.mcell.mcell_converter.</span></span><span class="sig-name descname"><span class="pre">McellConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#simulariumio.mcell.mcell_data.McellData" title="simulariumio.mcell.mcell_data.McellData"><span class="pre">McellData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/mcell/mcell_converter.html#McellConverter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.mcell.mcell_converter.McellConverter" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="simulariumio.mem3dg.mem3dg_converter.Mem3dgConverter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.mem3dg.mem3dg_converter.</span></span><span class="sig-name descname"><span class="pre">Mem3dgConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData" title="simulariumio.mem3dg.mem3dg_data.Mem3dgData"><span class="pre">Mem3dgData</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/mem3dg/mem3dg_converter.html#Mem3dgConverter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.mem3dg.mem3dg_converter.Mem3dgConverter" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter" title="simulariumio.trajectory_converter.TrajectoryConverter"><code class="xref py py-class docutils literal notranslate"><span class="pre">TrajectoryConverter</span></code></a></p>
-<p>This object reads simulation trajectory outputs
-from MCell (<a class="reference external" href="https://mcell.org/">https://mcell.org/</a>)
-and plot data and writes them in the JSON format used
-by the Simularium viewer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>input_data</strong><span class="classifier">McellData</span></dt><dd><p>An object containing info for reading
-MCell simulation trajectory outputs and plot data</p>
-</dd>
-<dt><strong>progress_callback</strong><span class="classifier">Callable[[float], None] (optional)</span></dt><dd><p>Callback function that accepts 1 float argument and returns None
-which will be called at a given progress interval, determined by
-callback_interval requested, providing the current percent progress
-Default: None</p>
-</dd>
-<dt><strong>callback_interval</strong><span class="classifier">float (optional)</span></dt><dd><p>If a progress_callback was provided, the period between updates
-to be sent to the callback, in seconds
-Default: 10</p>
+<dt><strong>input_data</strong><span class="classifier">Mem3dgData</span></dt><dd><p>An object containing info for reading
+Mem3DG simulation trajectory output</p>
 </dd>
 </dl>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="simulariumio.mem3dg.mem3dg_converter.Mem3dgConverter.write_to_obj">
+<span class="sig-name descname"><span class="pre">write_to_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/mem3dg/mem3dg_converter.html#Mem3dgConverter.write_to_obj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.mem3dg.mem3dg_converter.Mem3dgConverter.write_to_obj" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
-<section id="module-simulariumio.mcell.mcell_data">
-<span id="simulariumio-mcell-mcell-data-module"></span><h2>simulariumio.mcell.mcell_data module<a class="headerlink" href="#module-simulariumio.mcell.mcell_data" title="Link to this heading">¶</a></h2>
+<section id="module-simulariumio.mem3dg.mem3dg_data">
+<span id="simulariumio-mem3dg-mem3dg-data-module"></span><h2>simulariumio.mem3dg.mem3dg_data module<a class="headerlink" href="#module-simulariumio.mem3dg.mem3dg_data" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="simulariumio.mcell.mcell_data.McellData">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.mcell.mcell_data.</span></span><span class="sig-name descname"><span class="pre">McellData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_data_model_json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_to_binary_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.meta_data.MetaData" title="simulariumio.data_objects.meta_data.MetaData"><span class="pre">MetaData</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nth_timestep_to_read</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.display_data.DisplayData" title="simulariumio.data_objects.display_data.DisplayData"><span class="pre">DisplayData</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface_mol_rotation_angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/mcell/mcell_data.html#McellData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.mcell.mcell_data.McellData" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="simulariumio.mem3dg.mem3dg_data.Mem3dgData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">simulariumio.mem3dg.mem3dg_data.</span></span><span class="sig-name descname"><span class="pre">Mem3dgData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_obj_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.meta_data.MetaData" title="simulariumio.data_objects.meta_data.MetaData"><span class="pre">MetaData</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData" title="simulariumio.data_objects.unit_data.UnitData"><span class="pre">UnitData</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spatial_units</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData" title="simulariumio.data_objects.unit_data.UnitData"><span class="pre">UnitData</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plots</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/simulariumio/mem3dg/mem3dg_data.html#Mem3dgData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>This object holds simulation trajectory outputs
-from MCell (<a class="reference external" href="https://mcell.org/">https://mcell.org/</a>)
-and plot data</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>path_to_data_model_json</strong><span class="classifier">str</span></dt><dd><p>A string path to the json file
-containing the data model</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>input_file_path</strong><span class="classifier">str</span></dt><dd><p>The path to the .nc file output by Mem3DG for this trajectory.</p>
 </dd>
-<dt><strong>path_to_binary_files</strong><span class="classifier">str</span></dt><dd><p>A string path to the directory containing
-visualization .dat binary files</p>
+<dt><strong>output_obj_file_path</strong><span class="classifier">str (optional)</span></dt><dd><p>The path to the directory where output .obj files will be saved
+to. If nothing is provided, the output .obj files will be saved
+to the current directory.</p>
 </dd>
-<dt><strong>meta_data</strong><span class="classifier">MetaData (optional)</span></dt><dd><p>An object containing metadata for the trajectory
+<dt><strong>meta_data</strong><span class="classifier">MetaData</span></dt><dd><p>An object containing metadata for the trajectory
 including box size, scale factor, and camera defaults</p>
 </dd>
-<dt><strong>nth_timestep_to_read: int (optional)</strong></dt><dd><p>Visualize every Nth timestep
-e.g. if 10, only every 10th timestep will be visualized
-Default: 1</p>
+<dt><strong>agent_name: str (optional)</strong></dt><dd><p>This converter generates it’s own DisplayData, but the agent name
+can optionally be overridden here. This will change the agent
+name that is displayed on the side column in simularium</p>
 </dd>
-<dt><strong>display_data: Dict[str, DisplayData] (optional)</strong></dt><dd><p>A mapping from molecule names in the MCell data
-to DisplayData, including names and display info
-to use for rendering this agent type in the Simularium Viewer
-Default: for names, use names from MCell,</p>
-<blockquote>
-<div><p>for radius, use value from MCell,
-for rendering, use default representations and colors</p>
-</div></blockquote>
+<dt><strong>agent_color: string (optional)</strong></dt><dd><p>This converter generates it’s own DisplayData, but the agent color
+can optionally be overridden here with a hex value for the color to
+display, e.g “#FFFFFF”
+Default: Use default colors from Simularium Viewer</p>
 </dd>
-<dt><strong>surface_mol_rotation_angle: float (optional)</strong></dt><dd><p>The angle to use to calculate rotations
-around surface molecules’ normals
-Default: use random angles</p>
+<dt><strong>time_units: UnitData (optional)</strong></dt><dd><p>multiplier and unit name for time values
+Default: 1.0 second</p>
+</dd>
+<dt><strong>spatial_units: UnitData (optional)</strong></dt><dd><p>multiplier and unit name for spatial values
+(including positions, radii, and box size)
+Default: 1.0 meter</p>
 </dd>
 <dt><strong>plots</strong><span class="classifier">List[Dict[str, Any]] (optional)</span></dt><dd><p>An object containing plot data already
 in Simularium format</p>
@@ -349,45 +337,50 @@ in Simularium format</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.mcell.mcell_data.McellData.display_data">
-<span class="sig-name descname"><span class="pre">display_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.display_data.DisplayData" title="simulariumio.data_objects.display_data.DisplayData"><span class="pre">DisplayData</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.mcell.mcell_data.McellData.display_data" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="simulariumio.mem3dg.mem3dg_data.Mem3dgData.agent_color">
+<span class="sig-name descname"><span class="pre">agent_color</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.agent_color" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.mcell.mcell_data.McellData.meta_data">
-<span class="sig-name descname"><span class="pre">meta_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.meta_data.MetaData" title="simulariumio.data_objects.meta_data.MetaData"><span class="pre">MetaData</span></a></em><a class="headerlink" href="#simulariumio.mcell.mcell_data.McellData.meta_data" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="simulariumio.mem3dg.mem3dg_data.Mem3dgData.agent_name">
+<span class="sig-name descname"><span class="pre">agent_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.agent_name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.mcell.mcell_data.McellData.nth_timestep_to_read">
-<span class="sig-name descname"><span class="pre">nth_timestep_to_read</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#simulariumio.mcell.mcell_data.McellData.nth_timestep_to_read" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="simulariumio.mem3dg.mem3dg_data.Mem3dgData.input_file_path">
+<span class="sig-name descname"><span class="pre">input_file_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.input_file_path" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.mcell.mcell_data.McellData.path_to_binary_files">
-<span class="sig-name descname"><span class="pre">path_to_binary_files</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simulariumio.mcell.mcell_data.McellData.path_to_binary_files" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="simulariumio.mem3dg.mem3dg_data.Mem3dgData.meta_data">
+<span class="sig-name descname"><span class="pre">meta_data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.meta_data.MetaData" title="simulariumio.data_objects.meta_data.MetaData"><span class="pre">MetaData</span></a></em><a class="headerlink" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.meta_data" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.mcell.mcell_data.McellData.path_to_data_model_json">
-<span class="sig-name descname"><span class="pre">path_to_data_model_json</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simulariumio.mcell.mcell_data.McellData.path_to_data_model_json" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="simulariumio.mem3dg.mem3dg_data.Mem3dgData.output_obj_file_path">
+<span class="sig-name descname"><span class="pre">output_obj_file_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.output_obj_file_path" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.mcell.mcell_data.McellData.plots">
-<span class="sig-name descname"><span class="pre">plots</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.mcell.mcell_data.McellData.plots" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="simulariumio.mem3dg.mem3dg_data.Mem3dgData.plots">
+<span class="sig-name descname"><span class="pre">plots</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.plots" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="simulariumio.mcell.mcell_data.McellData.surface_mol_rotation_angle">
-<span class="sig-name descname"><span class="pre">surface_mol_rotation_angle</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#simulariumio.mcell.mcell_data.McellData.surface_mol_rotation_angle" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="simulariumio.mem3dg.mem3dg_data.Mem3dgData.spatial_units">
+<span class="sig-name descname"><span class="pre">spatial_units</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData" title="simulariumio.data_objects.unit_data.UnitData"><span class="pre">UnitData</span></a></em><a class="headerlink" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.spatial_units" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="simulariumio.mem3dg.mem3dg_data.Mem3dgData.time_units">
+<span class="sig-name descname"><span class="pre">time_units</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="simulariumio.data_objects.html#simulariumio.data_objects.unit_data.UnitData" title="simulariumio.data_objects.unit_data.UnitData"><span class="pre">UnitData</span></a></em><a class="headerlink" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.time_units" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </section>
-<section id="module-simulariumio.mcell">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.mcell" title="Link to this heading">¶</a></h2>
+<section id="module-simulariumio.mem3dg">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulariumio.mem3dg" title="Link to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -396,23 +389,23 @@ in Simularium format</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="simulariumio.medyan.html">
+          <a class="next-page" href="simulariumio.nerdss.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">simulariumio.medyan package</div>
+                <div class="title">simulariumio.nerdss package</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="simulariumio.filters.html">
+          <a class="prev-page" href="simulariumio.medyan.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">simulariumio.filters package</div>
+                <div class="title">simulariumio.medyan package</div>
                 
               </div>
             </a>
@@ -446,26 +439,30 @@ in Simularium format</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">simulariumio.mcell package</a><ul>
+<li><a class="reference internal" href="#">simulariumio.mem3dg package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-simulariumio.mcell.mcell_converter">simulariumio.mcell.mcell_converter module</a><ul>
-<li><a class="reference internal" href="#simulariumio.mcell.mcell_converter.McellConverter"><code class="docutils literal notranslate"><span class="pre">McellConverter</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-simulariumio.mcell.mcell_data">simulariumio.mcell.mcell_data module</a><ul>
-<li><a class="reference internal" href="#simulariumio.mcell.mcell_data.McellData"><code class="docutils literal notranslate"><span class="pre">McellData</span></code></a><ul>
-<li><a class="reference internal" href="#simulariumio.mcell.mcell_data.McellData.display_data"><code class="docutils literal notranslate"><span class="pre">McellData.display_data</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.mcell.mcell_data.McellData.meta_data"><code class="docutils literal notranslate"><span class="pre">McellData.meta_data</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.mcell.mcell_data.McellData.nth_timestep_to_read"><code class="docutils literal notranslate"><span class="pre">McellData.nth_timestep_to_read</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.mcell.mcell_data.McellData.path_to_binary_files"><code class="docutils literal notranslate"><span class="pre">McellData.path_to_binary_files</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.mcell.mcell_data.McellData.path_to_data_model_json"><code class="docutils literal notranslate"><span class="pre">McellData.path_to_data_model_json</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.mcell.mcell_data.McellData.plots"><code class="docutils literal notranslate"><span class="pre">McellData.plots</span></code></a></li>
-<li><a class="reference internal" href="#simulariumio.mcell.mcell_data.McellData.surface_mol_rotation_angle"><code class="docutils literal notranslate"><span class="pre">McellData.surface_mol_rotation_angle</span></code></a></li>
+<li><a class="reference internal" href="#module-simulariumio.mem3dg.mem3dg_converter">simulariumio.mem3dg.mem3dg_converter module</a><ul>
+<li><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_converter.Mem3dgConverter"><code class="docutils literal notranslate"><span class="pre">Mem3dgConverter</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_converter.Mem3dgConverter.write_to_obj"><code class="docutils literal notranslate"><span class="pre">Mem3dgConverter.write_to_obj()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-simulariumio.mcell">Module contents</a></li>
+<li><a class="reference internal" href="#module-simulariumio.mem3dg.mem3dg_data">simulariumio.mem3dg.mem3dg_data module</a><ul>
+<li><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData"><code class="docutils literal notranslate"><span class="pre">Mem3dgData</span></code></a><ul>
+<li><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.agent_color"><code class="docutils literal notranslate"><span class="pre">Mem3dgData.agent_color</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.agent_name"><code class="docutils literal notranslate"><span class="pre">Mem3dgData.agent_name</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.input_file_path"><code class="docutils literal notranslate"><span class="pre">Mem3dgData.input_file_path</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.meta_data"><code class="docutils literal notranslate"><span class="pre">Mem3dgData.meta_data</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.output_obj_file_path"><code class="docutils literal notranslate"><span class="pre">Mem3dgData.output_obj_file_path</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.plots"><code class="docutils literal notranslate"><span class="pre">Mem3dgData.plots</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.spatial_units"><code class="docutils literal notranslate"><span class="pre">Mem3dgData.spatial_units</span></code></a></li>
+<li><a class="reference internal" href="#simulariumio.mem3dg.mem3dg_data.Mem3dgData.time_units"><code class="docutils literal notranslate"><span class="pre">Mem3dgData.time_units</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-simulariumio.mem3dg">Module contents</a></li>
 </ul>
 </li>
 </ul>
