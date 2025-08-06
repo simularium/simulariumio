@@ -4,6 +4,7 @@
 import json
 import logging
 from typing import Any, Dict, List
+import math
 
 import numpy as np
 
@@ -185,6 +186,58 @@ class JsonWriter(Writer):
         with open(f"{output_path}.simularium", "w+") as outfile:
             json.dump(json_data, outfile)
         print(f"saved to {output_path}.simularium")
+        
+    @staticmethod
+    def save_replacing_nan(
+        trajectory_data: "TrajectoryData", output_path: str, validate_ids: bool
+    ) -> None:
+        """
+        Save simularium data in JSON format, replacing all NaN with null and
+        converting NumPy arrays to native types.
+
+        Parameters
+        ----------
+        trajectory_data: TrajectoryData
+            The data to save.
+        output_path: str
+            Output file path (without extension).
+        validate_ids: bool
+            Whether to perform agent ID validation.
+        """
+
+        def _sanitize_for_json(obj):
+            """
+            Recursively convert to JSON-safe structure:
+            - NaN → None
+            - numpy arrays → lists
+            - numpy scalars → native Python scalars
+            """
+            if isinstance(obj, float):
+                return None if math.isnan(obj) else obj
+            elif isinstance(obj, (np.floating, np.integer)):
+                return obj.item()
+            elif isinstance(obj, np.ndarray):
+                return _sanitize_for_json(obj.tolist())
+            elif isinstance(obj, list):
+                return [_sanitize_for_json(x) for x in obj]
+            elif isinstance(obj, dict):
+                return {k: _sanitize_for_json(v) for k, v in obj.items()}
+            else:
+                return obj
+
+        if validate_ids:
+            Writer._validate_ids(trajectory_data)
+
+        print("Formatting trajectory data...")
+        json_data = JsonWriter.format_trajectory_data(trajectory_data)
+
+        print("Sanitizing JSON for NaNs and NumPy types...")
+        sanitized_data = _sanitize_for_json(json_data)
+
+        print("Writing sanitized JSON...")
+        with open(f"{output_path}.simularium", "w") as outfile:
+            json.dump(sanitized_data, outfile, indent=2, allow_nan=False)
+        print(f"Saved clean JSON to {output_path}.simularium")
 
     @staticmethod
     def save_plot_data(plot_data: List[Dict[str, Any]], output_path: str):
