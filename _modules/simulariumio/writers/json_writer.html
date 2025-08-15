@@ -4,12 +4,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.3.7 and Furo 2024.08.06 -->
-        <title>simulariumio.writers.json_writer - simulariumio 1.12.2.dev2+g2280752 documentation</title>
+    <!-- Generated with Sphinx 7.3.7 and Furo 2025.07.19 -->
+        <title>simulariumio.writers.json_writer - simulariumio 1.12.2.dev3+g4b33053 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
@@ -22,14 +22,14 @@
   }
   @media not print {
     body[data-theme="dark"] {
-      --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
   
     }
     @media (prefers-color-scheme: dark) {
       body:not([data-theme="light"]) {
-        --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
   
       }
     }
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.12.2.dev2+g2280752 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.12.2.dev3+g4b33053 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -189,8 +189,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  
-  <span class="sidebar-brand-text">simulariumio 1.12.2.dev2+g2280752 documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.12.2.dev3+g4b33053 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -392,7 +391,7 @@
 <span class="sd">        trajectory_data: TrajectoryData</span>
 <span class="sd">            the data to format</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converting Trajectory Data to JSON -------------&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Converting Trajectory Data to JSON -------------&quot;</span><span class="p">)</span>
         <span class="n">trajectory_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">_check_subpoints_match_display_type</span><span class="p">()</span>
         <span class="n">simularium_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># trajectory info</span>
@@ -452,10 +451,10 @@
         <span class="k">if</span> <span class="n">validate_ids</span><span class="p">:</span>
             <span class="n">Writer</span><span class="o">.</span><span class="n">_validate_ids</span><span class="p">(</span><span class="n">trajectory_data</span><span class="p">)</span>
         <span class="n">json_data</span> <span class="o">=</span> <span class="n">JsonWriter</span><span class="o">.</span><span class="n">format_trajectory_data</span><span class="p">(</span><span class="n">trajectory_data</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Writing JSON -------------&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Writing JSON -------------&quot;</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.simularium&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">json_data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;saved to </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.simularium&quot;</span><span class="p">)</span></div>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;saved to </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.simularium&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="JsonWriter.save_plot_data">
@@ -514,10 +513,10 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=a27411c2"></script>
+</div><script src="../../../_static/documentation_options.js?v=9ebe4ac3"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=30646c52"></script>
     </body>
