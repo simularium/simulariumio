@@ -124,7 +124,7 @@ class JsonWriter(Writer):
         trajectory_data: TrajectoryData
             the data to format
         """
-        print("Converting Trajectory Data to JSON -------------")
+        log.info("Converting Trajectory Data to JSON -------------")
         trajectory_data.agent_data._check_subpoints_match_display_type()
         simularium_data = {}
         # trajectory info
@@ -181,10 +181,10 @@ class JsonWriter(Writer):
         if validate_ids:
             Writer._validate_ids(trajectory_data)
         json_data = JsonWriter.format_trajectory_data(trajectory_data)
-        print("Writing JSON -------------")
+        log.info("Writing JSON -------------")
         with open(f"{output_path}.simularium", "w+") as outfile:
             json.dump(json_data, outfile)
-        print(f"saved to {output_path}.simularium")
+        log.info(f"saved to {output_path}.simularium")
 
     @staticmethod
     def save_plot_data(plot_data: List[Dict[str, Any]], output_path: str):

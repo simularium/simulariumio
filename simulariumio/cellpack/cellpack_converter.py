@@ -362,7 +362,7 @@ class CellpackConverter(TrajectoryConverter):
         """
         Return a TrajectoryData object containing the Cellpack data
         """
-        print("Reading Cellpack Data -------------")
+        log.info("Reading Cellpack Data -------------")
         # currently only converts one model, ie one time step
         time_step_index = 0
         # default scale for cellpack => simularium

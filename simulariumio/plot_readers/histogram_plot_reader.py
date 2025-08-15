@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from typing import Dict, Any
+from typing import Any, Dict
 
 from .plot_reader import PlotReader
 
@@ -18,7 +18,7 @@ class HistogramPlotReader(PlotReader):
         """
         Return an object containing the data shaped for Simularium format
         """
-        print("Reading Histogram Data -------------")
+        log.info("Reading Histogram Data -------------")
         simularium_data = {}
         # layout info
         simularium_data["layout"] = {
