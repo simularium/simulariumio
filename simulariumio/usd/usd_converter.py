@@ -9,7 +9,7 @@ from typing import Callable, Dict, List, Tuple
 import numpy as np
 
 try:
-    from pxr import Usd, UsdGeom, UsdShade
+    from pxr import Gf, Usd, UsdGeom, UsdShade
 except ImportError:
     raise ImportError(
         "OpenUSD is required for UsdConverter. "
@@ -92,6 +92,25 @@ class UsdConverter(TrajectoryConverter):
         return ""
 
     @staticmethod
+    def _find_xform_prim(mesh_prim):
+        """Find the prim that carries xform ops for a mesh.
+
+        Blender exports USD with an Xform parent that holds
+        translate/rotate/scale while the child Mesh has none.
+        Other tools put xform ops directly on the Mesh prim.
+        This checks the mesh first, then its parent.
+        """
+        xformable = UsdGeom.Xformable(mesh_prim)
+        if xformable.GetOrderedXformOps():
+            return mesh_prim
+        parent = mesh_prim.GetParent()
+        if parent and not parent.IsPseudoRoot():
+            parent_xformable = UsdGeom.Xformable(parent)
+            if parent_xformable.GetOrderedXformOps():
+                return parent
+        return mesh_prim
+
+    @staticmethod
     def _get_xform_op(prim, op_suffix: str):
         """Get a specific xform op from a prim by op name suffix."""
         xformable = UsdGeom.Xformable(prim)
@@ -126,43 +145,70 @@ class UsdConverter(TrajectoryConverter):
         """
         print("Reading USD Data -------------")
         stage = Usd.Stage.Open(input_data.usd_file_path)
+        if stage is None:
+            raise FileNotFoundError(
+                f"Could not open USD file: {input_data.usd_file_path}"
+            )
 
         # Stage metadata
         start_frame = int(stage.GetStartTimeCode())
         end_frame = int(stage.GetEndTimeCode())
         fps = stage.GetFramesPerSecond()
         meters_per_unit = UsdGeom.GetStageMetersPerUnit(stage)
-        total_frames = end_frame - start_frame + 1
 
-        # Collect mesh prims
+        # Collect mesh prims and find their transform sources.
+        # Blender puts xform ops on a parent Xform prim, not the Mesh itself.
         mesh_prims = [p for p in stage.Traverse() if p.IsA(UsdGeom.Mesh)]
+        xform_prims = [self._find_xform_prim(p) for p in mesh_prims]
+
+        # Optionally trim to the last frame that has actual keyframe data
+        if input_data.trim_to_animation:
+            last_keyed = start_frame
+            for xf in xform_prims:
+                xformable = UsdGeom.Xformable(xf)
+                for op in xformable.GetOrderedXformOps():
+                    samples = op.GetTimeSamples()
+                    if samples:
+                        last_keyed = max(last_keyed, int(samples[-1]))
+            end_frame = min(end_frame, last_keyed)
+
+        total_frames = end_frame - start_frame + 1
         n_agents = len(mesh_prims)
 
         if n_agents == 0:
             log.warning("No mesh prims found in USD file")
 
         # Extract and deduplicate mesh geometry.
-        # OBJ vertices are normalized to fit in a unit sphere so the viewer's
-        # per-instance `vertex * radius` scaling produces the correct size.
+        # Non-uniform scale is baked into the vertices so the OBJ shape is
+        # correct, then the result is normalized to fit in a unit sphere.
+        # Vertices are scaled relative to the prim's local origin (NOT
+        # re-centered) so that the viewer's `vertex * radius` scaling
+        # preserves the original pivot point — e.g. a cylinder whose origin
+        # is at one end will still extend outward from that end.
         hash_to_obj: Dict[str, str] = {}
+        mesh_max_dists: Dict[str, float] = {}
         obj_counter = 0
-        for prim in mesh_prims:
+        for i, prim in enumerate(mesh_prims):
             mesh = UsdGeom.Mesh(prim)
             points = mesh.GetPointsAttr().Get()
             fvc = mesh.GetFaceVertexCountsAttr().Get()
             fvi = mesh.GetFaceVertexIndicesAttr().Get()
 
-            geo_hash = self._geometry_hash(points, fvi)
+            # Bake scale into vertices (use first-frame scale)
+            scale_op = self._get_xform_op(xform_prims[i], "scale")
+            scale = np.array(scale_op.Get(start_frame)) if scale_op else np.ones(3)
+            pts = np.array(points) * scale
+
+            geo_hash = self._geometry_hash(pts, fvi)
             if geo_hash not in hash_to_obj:
-                pts = np.array(points)
-                center = (pts.max(axis=0) + pts.min(axis=0)) / 2.0
-                half_extent = np.max(pts.max(axis=0) - pts.min(axis=0)) / 2.0
-                if half_extent > 0:
-                    pts = (pts - center) / half_extent
+                max_dist = np.max(np.linalg.norm(pts, axis=1))
+                if max_dist > 0:
+                    pts = pts / max_dist
                 obj_filename = f"mesh_{obj_counter}.obj"
                 obj_counter += 1
                 hash_to_obj[geo_hash] = obj_filename
                 self._obj_data[obj_filename] = (pts, fvc, fvi)
+                mesh_max_dists[obj_filename] = max_dist
 
             self._mesh_to_obj[prim.GetName()] = hash_to_obj[geo_hash]
 
@@ -172,46 +218,74 @@ class UsdConverter(TrajectoryConverter):
 
         # Per-agent constants (invariant across frames)
         agent_type_names: List[str] = []
-        translate_ops = []
-        rotate_ops = []
+        xformables = []
         for agent_idx, prim in enumerate(mesh_prims):
             result.unique_ids[:, agent_idx] = agent_idx
             result.viz_types[:, agent_idx] = VIZ_TYPE.DEFAULT
 
-            agent_type_names.append(prim.GetName())
-            translate_ops.append(self._get_xform_op(prim, "translate"))
-            rotate_ops.append(self._get_xform_op(prim, "rotateXYZ"))
-
-            # Radius from mesh extent (rest-pose, constant across frames)
-            mesh = UsdGeom.Mesh(prim)
-            extent = mesh.GetExtentAttr().Get()
-            if extent:
-                size = np.array(extent[1]) - np.array(extent[0])
-                result.radii[:, agent_idx] = np.max(size) / 2.0 * meters_per_unit
+            # Use display name from user-provided display_data if available,
+            # otherwise fall back to the prim name. This ensures result.types
+            # and result.display_data use the same key.
+            raw_name = prim.GetName()
+            if raw_name in input_data.display_data:
+                agent_type_names.append(input_data.display_data[raw_name].name)
             else:
-                result.radii[:, agent_idx] = 1.0
+                agent_type_names.append(raw_name)
 
+            xf = xform_prims[agent_idx]
+            xformables.append(UsdGeom.Xformable(xf))
+
+            # Radius = max distance from origin to any vertex (with scale
+            # baked in), matching the normalization used for the OBJ geometry.
+            obj_filename = self._mesh_to_obj[prim.GetName()]
+            max_dist = mesh_max_dists.get(obj_filename, 1.0)
+            result.radii[:, agent_idx] = max_dist * meters_per_unit
+
+        # Extract position and rotation from each prim's composed local
+        # transform.  Using the full matrix (rather than individual xform ops)
+        # ensures the correct rotation convention: the viewer expects intrinsic
+        # XYZ Euler angles, while USD's rotateXYZ is extrinsic XYZ.
+        # Gf.Rotation.Decompose produces well-behaved intrinsic XYZ angles.
         result.n_agents[:] = n_agents
         for frame_idx in range(total_frames):
             result.times[frame_idx] = frame_idx / fps
             result.types[frame_idx] = list(agent_type_names)
 
-            frame_time = start_frame + frame_idx
+            frame_time = Usd.TimeCode(start_frame + frame_idx)
             for agent_idx in range(n_agents):
-                # Position (translate)
-                if translate_ops[agent_idx]:
-                    pos = translate_ops[agent_idx].Get(frame_time)
-                    result.positions[frame_idx][agent_idx] = (
-                        np.array(pos) * meters_per_unit
-                    )
+                local = xformables[agent_idx].GetLocalTransformation(frame_time)
+                gf_xform = Gf.Transform(local)
 
-                # Rotation (XYZ Euler, converted from degrees to radians
-                # because the viewer passes values directly to THREE.js Euler)
-                if rotate_ops[agent_idx]:
-                    rot = rotate_ops[agent_idx].Get(frame_time)
-                    result.rotations[frame_idx][agent_idx] = np.radians(rot)
+                # Position
+                pos = gf_xform.GetTranslation()
+                result.positions[frame_idx][agent_idx] = (
+                    np.array(pos) * meters_per_unit
+                )
+
+                # Rotation: decompose into extrinsic XYZ Euler angles.
+                # THREE.js Euler('XYZ') builds: R = Rz(rz)*Ry(ry)*Rx(rx).
+                # Decompose(axis0, axis1, axis2) factors as
+                #   R = R(axis2, a2) * R(axis1, a1) * R(axis0, a0)
+                # and returns (a2, a1, a0).  With (X, Y, Z) this gives
+                # R = Rz(a2) * Ry(a1) * Rx(a0), and returns (rz, ry, rx).
+                # Passing the tuple directly as (rx, ry, rz) to the viewer
+                # is correct because Decompose's return order already matches
+                # THREE.js's parameter order (verified empirically).
+                euler_deg = gf_xform.GetRotation().Decompose(
+                    Gf.Vec3d(1, 0, 0),
+                    Gf.Vec3d(0, 1, 0),
+                    Gf.Vec3d(0, 0, 1),
+                )
+                result.rotations[frame_idx][agent_idx] = np.radians(euler_deg)
 
             self.check_report_progress(frame_idx / total_frames)
+
+        # Unwrap any 2-pi Euler jumps across frames
+        for agent_idx in range(int(n_agents)):
+            for axis in range(3):
+                result.rotations[:total_frames, agent_idx, axis] = np.unwrap(
+                    result.rotations[:total_frames, agent_idx, axis]
+                )
 
         # Build display data
         for prim in mesh_prims:

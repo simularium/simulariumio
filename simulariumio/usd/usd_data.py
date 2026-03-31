@@ -25,6 +25,7 @@ class UsdData:
     spatial_units: UnitData
     plots: List[Dict[str, Any]]
     center: bool
+    trim_to_animation: bool
 
     def __init__(
         self,
@@ -35,6 +36,7 @@ class UsdData:
         spatial_units: UnitData = None,
         plots: List[Dict[str, Any]] = None,
         center: bool = True,
+        trim_to_animation: bool = True,
     ):
         """
         This object holds simulation trajectory outputs
@@ -66,6 +68,11 @@ class UsdData:
             If true, the spatial values of the data are centered
             around the origin (0, 0, 0) during conversion
             Default: True
+        trim_to_animation : bool (optional)
+            If true, trim the frame range to only include frames
+            that have actual keyframe data, ignoring any held/static
+            tail beyond the last animated frame.
+            Default: True
         """
         self.usd_file_path = usd_file_path
         self.meta_data = meta_data if meta_data is not None else MetaData()
@@ -76,3 +83,4 @@ class UsdData:
         )
         self.plots = plots if plots is not None else []
         self.center = center
+        self.trim_to_animation = trim_to_animation

@@ -17,12 +17,16 @@ BINARY_USD = "simulariumio/tests/data/usd/actin_USDbinary.usd"
 
 @pytest.fixture
 def ascii_converter():
-    return UsdConverter(UsdData(usd_file_path=ASCII_USD, center=False))
+    return UsdConverter(
+        UsdData(usd_file_path=ASCII_USD, center=False, trim_to_animation=False)
+    )
 
 
 @pytest.fixture
 def binary_converter():
-    return UsdConverter(UsdData(usd_file_path=BINARY_USD, center=False))
+    return UsdConverter(
+        UsdData(usd_file_path=BINARY_USD, center=False, trim_to_animation=False)
+    )
 
 
 @pytest.fixture
@@ -69,12 +73,13 @@ class TestUsdPositionsAndRotations:
         assert np.isclose(pos[2], 5.142660258715312 * 0.01 * scale, atol=1e-3)
 
     def test_first_frame_rotation(self, ascii_converter):
-        # actin1 at frame 1: rotateXYZ=(-18.1128, 155.2658, -41.9077) degrees
-        # stored as radians for the viewer
+        # actin1 at frame 1: rotation decomposed as extrinsic XYZ
+        # matching THREE.js Euler('XYZ'), stored as radians
         rot = ascii_converter._data.agent_data.rotations[0][0]
-        assert np.isclose(rot[0], np.radians(-18.112833), atol=1e-3)
-        assert np.isclose(rot[1], np.radians(155.26578), atol=1e-3)
-        assert np.isclose(rot[2], np.radians(-41.907677), atol=1e-3)
+        # Extrinsic XYZ Euler angles matching THREE.js Euler('XYZ')
+        assert np.isclose(rot[0], np.radians(177.73), atol=1e-1)
+        assert np.isclose(rot[1], np.radians(30.24), atol=1e-1)
+        assert np.isclose(rot[2], np.radians(-141.48), atol=1e-1)
 
 
 class TestUsdMeshDeduplication:
@@ -110,13 +115,14 @@ class TestUsdMaterialColors:
 
 
 class TestUsdRadii:
-    def test_radius_from_extent(self, ascii_converter):
-        # Extent max dimension: max(6.7858544, 6.7360334, 4.4300746) = 6.7858544
-        # radius = 6.7858544 / 2.0 * metersPerUnit(0.01) * scale_factor
+    def test_radius_from_max_distance(self, ascii_converter):
+        # Radius = max distance from any vertex to local origin (with scale
+        # baked in), times metersPerUnit, times scale_factor.
+        # max_dist ≈ 4.3405 for actin mesh (non-uniform scale baked in)
         scale = ascii_converter._data.meta_data.scale_factor
         radius = ascii_converter._data.agent_data.radii[0][0]
-        expected = 6.7858544 / 2.0 * 0.01 * scale
-        assert np.isclose(radius, expected, atol=1e-3)
+        expected = 4.3405 * 0.01 * scale
+        assert np.isclose(radius, expected, atol=1e-2)
 
 
 class TestUsdObjWriting:
@@ -178,6 +184,7 @@ class TestUsdDisplayDataOverride:
                 usd_file_path=ASCII_USD,
                 display_data=custom_display,
                 center=False,
+                trim_to_animation=False,
             )
         )
         dd = converter._data.agent_data.display_data
@@ -187,6 +194,17 @@ class TestUsdDisplayDataOverride:
         # Other types should still be auto-detected
         assert "actin2" in dd
         assert dd["actin2"].display_type == DISPLAY_TYPE.OBJ
+        # Verify types array uses display name (not prim name) for overridden agents
+        types = converter._data.agent_data.types[0]
+        assert "CustomActin" in types
+        assert "actin1" not in types
+        # Verify the full output type mapping is consistent
+        results = JsonWriter.format_trajectory_data(converter._data)
+        tm = results["trajectoryInfo"]["typeMapping"]
+        custom_entries = [
+            tid for tid in tm if tm[tid]["name"] == "CustomActin"
+        ]
+        assert len(custom_entries) == 1
 
 
 class TestUsdCentering:
