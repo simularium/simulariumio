@@ -4,7 +4,7 @@
 import hashlib
 import logging
 import os
-from typing import Callable, Dict, List, Tuple
+from typing import Callable, Dict, List
 
 import numpy as np
 
@@ -29,9 +29,6 @@ log = logging.getLogger(__name__)
 
 
 class UsdConverter(TrajectoryConverter):
-    _obj_data: Dict[str, Tuple]
-    _mesh_to_obj: Dict[str, str]
-
     def __init__(
         self,
         input_data: UsdData,
@@ -144,7 +141,10 @@ class UsdConverter(TrajectoryConverter):
         Return a TrajectoryData object containing the USD data
         """
         print("Reading USD Data -------------")
-        stage = Usd.Stage.Open(input_data.usd_file_path)
+        try:
+            stage = Usd.Stage.Open(input_data.usd_file_path)
+        except Exception:
+            stage = None
         if stage is None:
             raise FileNotFoundError(
                 f"Could not open USD file: {input_data.usd_file_path}"
@@ -241,11 +241,8 @@ class UsdConverter(TrajectoryConverter):
             max_dist = mesh_max_dists.get(obj_filename, 1.0)
             result.radii[:, agent_idx] = max_dist * meters_per_unit
 
-        # Extract position and rotation from each prim's composed local
-        # transform.  Using the full matrix (rather than individual xform ops)
-        # ensures the correct rotation convention: the viewer expects intrinsic
-        # XYZ Euler angles, while USD's rotateXYZ is extrinsic XYZ.
-        # Gf.Rotation.Decompose produces well-behaved intrinsic XYZ angles.
+        # Extract position and rotation per frame from each prim's composed
+        # local transform, which correctly handles any combination of xform ops.
         result.n_agents[:] = n_agents
         for frame_idx in range(total_frames):
             result.times[frame_idx] = frame_idx / fps
@@ -262,15 +259,8 @@ class UsdConverter(TrajectoryConverter):
                     np.array(pos) * meters_per_unit
                 )
 
-                # Rotation: decompose into extrinsic XYZ Euler angles.
-                # THREE.js Euler('XYZ') builds: R = Rz(rz)*Ry(ry)*Rx(rx).
-                # Decompose(axis0, axis1, axis2) factors as
-                #   R = R(axis2, a2) * R(axis1, a1) * R(axis0, a0)
-                # and returns (a2, a1, a0).  With (X, Y, Z) this gives
-                # R = Rz(a2) * Ry(a1) * Rx(a0), and returns (rz, ry, rx).
-                # Passing the tuple directly as (rx, ry, rz) to the viewer
-                # is correct because Decompose's return order already matches
-                # THREE.js's parameter order (verified empirically).
+                # Rotation: Decompose(X, Y, Z) returns Euler angles matching
+                # THREE.js Euler('XYZ') — both use intrinsic XYZ convention.
                 euler_deg = gf_xform.GetRotation().Decompose(
                     Gf.Vec3d(1, 0, 0),
                     Gf.Vec3d(0, 1, 0),

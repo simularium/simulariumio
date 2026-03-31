@@ -6,7 +6,7 @@ import os
 import numpy as np
 import pytest
 
-from simulariumio import DisplayData, JsonWriter, MetaData, UnitData
+from simulariumio import DisplayData, JsonWriter
 from simulariumio.constants import DISPLAY_TYPE, VIZ_TYPE
 from simulariumio.usd import UsdConverter, UsdData
 
@@ -73,10 +73,9 @@ class TestUsdPositionsAndRotations:
         assert np.isclose(pos[2], 5.142660258715312 * 0.01 * scale, atol=1e-3)
 
     def test_first_frame_rotation(self, ascii_converter):
-        # actin1 at frame 1: rotation decomposed as extrinsic XYZ
-        # matching THREE.js Euler('XYZ'), stored as radians
+        # actin1 at frame 1: intrinsic XYZ Euler angles matching
+        # THREE.js Euler('XYZ'), stored as radians
         rot = ascii_converter._data.agent_data.rotations[0][0]
-        # Extrinsic XYZ Euler angles matching THREE.js Euler('XYZ')
         assert np.isclose(rot[0], np.radians(177.73), atol=1e-1)
         assert np.isclose(rot[1], np.radians(30.24), atol=1e-1)
         assert np.isclose(rot[2], np.radians(-141.48), atol=1e-1)
