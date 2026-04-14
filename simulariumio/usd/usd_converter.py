@@ -18,6 +18,7 @@ except ImportError:
 
 from ..constants import DISPLAY_TYPE, VIZ_TYPE
 from ..data_objects import AgentData, DisplayData, DimensionData, TrajectoryData
+from ..exceptions import InputDataError
 from ..trajectory_converter import TrajectoryConverter
 from .usd_data import UsdData
 
@@ -143,11 +144,12 @@ class UsdConverter(TrajectoryConverter):
         print("Reading USD Data -------------")
         try:
             stage = Usd.Stage.Open(input_data.usd_file_path)
-        except Exception:
-            stage = None
+        except Exception as e:
+            raise InputDataError(f"Error reading input USD data: {e}")
         if stage is None:
-            raise FileNotFoundError(
-                f"Could not open USD file: {input_data.usd_file_path}"
+            raise InputDataError(
+                f"Error reading input USD data: could not open "
+                f"'{input_data.usd_file_path}'"
             )
 
         # Stage metadata
