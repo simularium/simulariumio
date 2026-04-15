@@ -206,6 +206,56 @@ class TestUsdDisplayDataOverride:
         assert len(custom_entries) == 1
 
 
+class TestUsdTrimToAnimation:
+    def test_trim_reduces_frame_count_to_last_keyframe(self):
+        # The ascii fixture declares end time code 400, but the last
+        # keyed frame across all agents and xform ops is 340. With
+        # trim_to_animation=True the converter should stop there.
+        trimmed = UsdConverter(
+            UsdData(
+                usd_file_path=ASCII_USD,
+                center=False,
+                trim_to_animation=True,
+            )
+        )
+        untrimmed = UsdConverter(
+            UsdData(
+                usd_file_path=ASCII_USD,
+                center=False,
+                trim_to_animation=False,
+            )
+        )
+        assert len(untrimmed._data.agent_data.times) == 400
+        assert len(trimmed._data.agent_data.times) == 340
+
+    def test_trim_preserves_animated_data(self):
+        # Trimming should not alter positions/rotations of frames that are
+        # kept — only drop the held tail beyond the last keyframe.
+        trimmed = UsdConverter(
+            UsdData(
+                usd_file_path=ASCII_USD,
+                center=False,
+                trim_to_animation=True,
+            )
+        )
+        untrimmed = UsdConverter(
+            UsdData(
+                usd_file_path=ASCII_USD,
+                center=False,
+                trim_to_animation=False,
+            )
+        )
+        kept = len(trimmed._data.agent_data.times)
+        assert np.allclose(
+            trimmed._data.agent_data.positions[:kept],
+            untrimmed._data.agent_data.positions[:kept],
+        )
+        assert np.allclose(
+            trimmed._data.agent_data.rotations[:kept],
+            untrimmed._data.agent_data.rotations[:kept],
+        )
+
+
 class TestUsdCentering:
     def test_centered_positions_near_origin(self):
         converter = UsdConverter(
