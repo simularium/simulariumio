@@ -136,7 +136,7 @@ class NerdssConverter(TrajectoryConverter):
 
         # need our own write-able n_subpoints array
         n_subpoints = np.zeros_like(agent_data.n_subpoints)
-        
+
         for timestep in range(n_timesteps):
             n_fibers = len(fiber_positions[timestep])
             n_atoms = int(agent_data.n_agents[timestep])
@@ -155,7 +155,7 @@ class NerdssConverter(TrajectoryConverter):
                 agent_data.types[timestep].append(bonds_display_data.name)
                 agent_data.unique_ids[timestep][agent_index + n_atoms] = next_uid
                 next_uid += 1
-        agent_data.n_subpoints = n_subpoints # overwrite with our own array
+        agent_data.n_subpoints = n_subpoints  # overwrite with our own array
         return agent_data
 
     def _read(self, input_data: NerdssData) -> TrajectoryData:
