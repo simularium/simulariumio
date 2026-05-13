@@ -22,6 +22,7 @@ Subpackages
    simulariumio.readers
    simulariumio.smoldyn
    simulariumio.springsalad
+   simulariumio.usd
    simulariumio.writers
 
 Submodules

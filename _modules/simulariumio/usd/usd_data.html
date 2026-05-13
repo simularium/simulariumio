@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.plot_readers.scatter_plot_reader - simulariumio 1.13.1.dev17+g0fe3839af documentation</title>
+        <title>simulariumio.usd.usd_data - simulariumio 1.13.1.dev17+g0fe3839af documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -252,15 +252,18 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for simulariumio.plot_readers.scatter_plot_reader</h1><div class="highlight"><pre>
+          <h1>Source code for simulariumio.usd.usd_data</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">..exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataError</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.plot_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">PlotReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..data_objects</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">MetaData</span><span class="p">,</span>
+    <span class="n">UnitData</span><span class="p">,</span>
+    <span class="n">DisplayData</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="c1">###############################################################################</span>
 
@@ -269,41 +272,75 @@
 <span class="c1">###############################################################################</span>
 
 
-<div class="viewcode-block" id="ScatterPlotReader">
-<a class="viewcode-back" href="../../../simulariumio.plot_readers.html#simulariumio.plot_readers.scatter_plot_reader.ScatterPlotReader">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ScatterPlotReader</span><span class="p">(</span><span class="n">PlotReader</span><span class="p">):</span>
-<div class="viewcode-block" id="ScatterPlotReader.read">
-<a class="viewcode-back" href="../../../simulariumio.plot_readers.html#simulariumio.plot_readers.scatter_plot_reader.ScatterPlotReader.read">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="UsdData">
+<a class="viewcode-back" href="../../../simulariumio.usd.html#simulariumio.usd.usd_data.UsdData">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UsdData</span><span class="p">:</span>
+    <span class="n">usd_file_path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span>
+    <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span>
+    <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span>
+    <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span>
+    <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
+    <span class="n">center</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">trim_to_animation</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">usd_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">meta_data</span><span class="p">:</span> <span class="n">MetaData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">center</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">trim_to_animation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return an object containing the data shaped for Simularium format</span>
+<span class="sd">        This object holds simulation trajectory outputs</span>
+<span class="sd">        from USD (Universal Scene Description) files</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        usd_file_path: str</span>
+<span class="sd">            Path to the .usd, .usda, or .usdc file.</span>
+<span class="sd">            Must be a file path (not contents) because</span>
+<span class="sd">            the USD library requires file-based access.</span>
+<span class="sd">        meta_data : MetaData (optional)</span>
+<span class="sd">            An object containing metadata for the trajectory</span>
+<span class="sd">            including box size, scale factor, and camera defaults</span>
+<span class="sd">        display_data: Dict[str, DisplayData] (optional)</span>
+<span class="sd">            The mesh prim name from USD data mapped</span>
+<span class="sd">            to display names and rendering info for that type.</span>
+<span class="sd">            Default: auto-detect from USD mesh and material data</span>
+<span class="sd">        time_units: UnitData (optional)</span>
+<span class="sd">            multiplier and unit name for time values</span>
+<span class="sd">            Default: 1.0 second</span>
+<span class="sd">        spatial_units: UnitData (optional)</span>
+<span class="sd">            multiplier and unit name for spatial values</span>
+<span class="sd">            Default: 1.0 meter</span>
+<span class="sd">        plots : List[Dict[str, Any]] (optional)</span>
+<span class="sd">            An object containing plot data already</span>
+<span class="sd">            in Simularium format</span>
+<span class="sd">        center : bool (optional)</span>
+<span class="sd">            If true, the spatial values of the data are centered</span>
+<span class="sd">            around the origin (0, 0, 0) during conversion</span>
+<span class="sd">            Default: True</span>
+<span class="sd">        trim_to_animation : bool (optional)</span>
+<span class="sd">            If true, trim the frame range to only include frames</span>
+<span class="sd">            that have actual keyframe data, ignoring any held/static</span>
+<span class="sd">            tail beyond the last animated frame.</span>
+<span class="sd">            Default: True</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading Scatter Plot Data -------------&quot;</span><span class="p">)</span>
-        <span class="n">simularium_data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># layout info</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;layout&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
-            <span class="s2">&quot;xaxis&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">xaxis_title</span><span class="p">},</span>
-            <span class="s2">&quot;yaxis&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">yaxis_title</span><span class="p">},</span>
-        <span class="p">}</span>
-        <span class="c1"># plot data</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">ytrace_name</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">ytraces</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">ytraces</span><span class="p">[</span><span class="n">ytrace_name</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">xtrace</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;y-trace </span><span class="si">{</span><span class="n">ytrace_name</span><span class="si">}</span><span class="s2"> has a different length than x-trace&quot;</span>
-                <span class="p">)</span>
-            <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">ytrace_name</span><span class="p">,</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">xtrace</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">ytraces</span><span class="p">[</span><span class="n">ytrace_name</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                    <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">render_mode</span><span class="p">,</span>
-                <span class="p">}</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="n">simularium_data</span></div>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">usd_file_path</span> <span class="o">=</span> <span class="n">usd_file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span> <span class="k">if</span> <span class="n">meta_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">MetaData</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">display_data</span> <span class="k">if</span> <span class="n">display_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span> <span class="k">if</span> <span class="n">time_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spatial_units</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">spatial_units</span> <span class="k">if</span> <span class="n">spatial_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span> <span class="k">if</span> <span class="n">plots</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trim_to_animation</span> <span class="o">=</span> <span class="n">trim_to_animation</span></div>
 
 </pre></div>
         </article>

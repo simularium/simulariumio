@@ -1,0 +1,29 @@
+simulariumio.usd package
+========================
+
+Submodules
+----------
+
+simulariumio.usd.usd\_converter module
+--------------------------------------
+
+.. automodule:: simulariumio.usd.usd_converter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+simulariumio.usd.usd\_data module
+---------------------------------
+
+.. automodule:: simulariumio.usd.usd_data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: simulariumio.usd
+   :members:
+   :undoc-members:
+   :show-inheritance:
