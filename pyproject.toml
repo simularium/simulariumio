@@ -60,6 +60,9 @@ nerdss = [
 mem3dg = [
   "netCDF4",
 ]
+usd = [
+  "usd-core>=24.0",
+]
 tutorial = [
   "jupyter",
   "scipy>=1.5.2",
