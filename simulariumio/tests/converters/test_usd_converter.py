@@ -140,8 +140,8 @@ class TestUsdObjWriting:
         with open(obj_path) as f:
             lines = f.readlines()
 
-        v_lines = [l for l in lines if l.startswith("v ")]
-        f_lines = [l for l in lines if l.startswith("f ")]
+        v_lines = [line for line in lines if line.startswith("v ")]
+        f_lines = [line for line in lines if line.startswith("f ")]
         assert len(v_lines) == 4768
         assert len(f_lines) == 9528
 
