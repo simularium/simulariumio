@@ -4,3 +4,4 @@ channels:
 dependencies:
   - readdy
   - numpy>=1.20
+  - pip
