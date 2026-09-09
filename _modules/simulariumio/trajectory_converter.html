@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.trajectory_converter - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.trajectory_converter - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -288,8 +288,8 @@
 <span class="c1">###############################################################################</span>
 
 <span class="n">SUPPORTED_PLOT_READERS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;scatter&quot;</span><span class="p">:</span> <span class="n">ScatterPlotReader</span><span class="p">,</span>
-    <span class="s2">&quot;histogram&quot;</span><span class="p">:</span> <span class="n">HistogramPlotReader</span><span class="p">,</span>
+    <span class="s2">"scatter"</span><span class="p">:</span> <span class="n">ScatterPlotReader</span><span class="p">,</span>
+    <span class="s2">"histogram"</span><span class="p">:</span> <span class="n">HistogramPlotReader</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="c1">###############################################################################</span>
@@ -306,7 +306,7 @@
         <span class="n">progress_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">callback_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This object reads simulation trajectory outputs</span>
 <span class="sd">        and plot data and writes them in the JSON format used</span>
 <span class="sd">        by the Simularium viewer</span>
@@ -325,7 +325,7 @@
 <span class="sd">            If a progress_callback was provided, the period between updates</span>
 <span class="sd">            to be sent to the callback, in seconds</span>
 <span class="sd">            Default: 10</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">input_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">progress_callback</span> <span class="o">=</span> <span class="n">progress_callback</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">callback_interval</span> <span class="o">=</span> <span class="n">callback_interval</span>
@@ -344,12 +344,12 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_valid_agents</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Given position data (shape = [timesteps, agents, 3]), and</span>
 <span class="sd">        corresponding n_agents data, indicating agents per timestamp,</span>
 <span class="sd">        return arrays of X, Y, and Z values from data, skipping values</span>
 <span class="sd">        that do not correspond with agents, as specified by n_agents.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">x_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
         <span class="n">y_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
         <span class="n">z_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
@@ -366,12 +366,12 @@
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.get_xyz_max">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_xyz_max</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Given AgentData position data (shape = [timesteps, agents, 3]), and</span>
 <span class="sd">        corresponding n_agents data, indicating agents per timestamp, extract</span>
 <span class="sd">        all position data, skipping the zeros that represent no data. Provide</span>
 <span class="sd">        maximum X, Y, and Z values from remaining data</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">n_agents</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="p">[</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">z_data</span><span class="p">]</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">_get_valid_agents</span><span class="p">(</span>
                 <span class="n">data</span><span class="p">,</span> <span class="n">n_agents</span>
@@ -387,12 +387,12 @@
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.get_xyz_min">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_xyz_min</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Given AgentData position data (shape = [timesteps, agents, 3]), and</span>
 <span class="sd">        corresponding n_agents data, indicating agents per timestamp, extract</span>
 <span class="sd">        all position data, skipping the zeros that represent no data. Provide</span>
 <span class="sd">        minimum X, Y, and Z values from remaining data</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">n_agents</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="p">[</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">z_data</span><span class="p">]</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">_get_valid_agents</span><span class="p">(</span>
                 <span class="n">data</span><span class="p">,</span> <span class="n">n_agents</span>
@@ -409,12 +409,12 @@
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.get_subpoints_xyz">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_subpoints_xyz</span><span class="p">(</span><span class="n">subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">n_subpoints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Given AgentData subpoints (shape = [timesteps, agents, subpoints]), and a</span>
 <span class="sd">        list of n_subpoints per agent per timestep (shape = [timesteps, agents])</span>
 <span class="sd">        extract all subpoint data, skipping the zeros which represent no data.</span>
 <span class="sd">        Reshape resulting subpoint data into a 2D array of XYZ coordinate data</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">xyz_subpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
         <span class="k">for</span> <span class="n">timestep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_subpoints</span><span class="p">)):</span>
             <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">timestep</span><span class="p">])):</span>
@@ -475,11 +475,11 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">calculate_scale_factor</span><span class="p">(</span>
         <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return a scale factor, using the given position, radii,</span>
 <span class="sd">        and subpoints, data from AgentData, so that the final range of agent</span>
 <span class="sd">        locations is within the dimensions defined by VIEWER_DIMENSION_RANGE.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">min_dimensions</span><span class="p">,</span> <span class="n">max_dimensions</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">get_min_max_positions</span><span class="p">(</span>
             <span class="n">agent_data</span>
         <span class="p">)</span>
@@ -495,14 +495,14 @@
         <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
         <span class="n">input_scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return a scaled AgentData object, either using a provided scale</span>
 <span class="sd">        factor if input_scale_factor is given, or using a calculated scale</span>
 <span class="sd">        factor using calculate_scale_factor() with the provided agent data.</span>
 <span class="sd">        Also returns the scale factor that was used on the AgentData object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">input_scale_factor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># If scale factor wasn&#39;t provided, calculate one</span>
+            <span class="c1"># If scale factor wasn't provided, calculate one</span>
             <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">calculate_scale_factor</span><span class="p">(</span><span class="n">agent_data</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">input_scale_factor</span>
@@ -518,13 +518,13 @@
         <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
         <span class="n">input_scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Center the provided agent_data at the origin, based on the range of</span>
 <span class="sd">        XYZ position data and subpoint data. In addition, scale position</span>
 <span class="sd">        and radii data based on the input_scale_factor if provided, otherwise</span>
 <span class="sd">        calculate the scale factor using calculate_scale_factor(). Returns the</span>
 <span class="sd">        centered and scaled AgentData, and the scale factor that was applied</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">min_dimensions</span><span class="p">,</span> <span class="n">max_dimensions</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">get_min_max_positions</span><span class="p">(</span>
             <span class="n">agent_data</span>
         <span class="p">)</span>
@@ -532,7 +532,7 @@
 
         <span class="n">translated_data</span> <span class="o">=</span> <span class="n">translate_agent_positions</span><span class="p">(</span><span class="n">agent_data</span><span class="p">,</span> <span class="n">translation</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">input_scale_factor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># If scale factor wasn&#39;t provided, calculate one</span>
+            <span class="c1"># If scale factor wasn't provided, calculate one</span>
             <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">_get_scale_factor_with_min_max</span><span class="p">(</span>
                 <span class="n">min_dimensions</span><span class="p">,</span> <span class="n">max_dimensions</span>
             <span class="p">)</span>
@@ -545,18 +545,18 @@
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.center_fiber_positions">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">center_fiber_positions</span><span class="p">(</span><span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        For each agent with fiber subpoints, calculate the center of</span>
 <span class="sd">        the fiber positions, and adjust the agent position to be at</span>
 <span class="sd">        the center. Adjust the subpoint positions accordingly. Returns</span>
 <span class="sd">        an AgentData object with updates reflected.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span> <span class="ow">is</span> <span class="kc">None</span>
             <span class="ow">or</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span> <span class="ow">is</span> <span class="kc">None</span>
             <span class="ow">or</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">subpoints</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span>
         <span class="p">):</span>
-            <span class="c1"># if there are no subpoints, don&#39;t do anything</span>
+            <span class="c1"># if there are no subpoints, don't do anything</span>
             <span class="k">return</span> <span class="n">agent_data</span>
         <span class="k">for</span> <span class="n">timestep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">)):</span>
             <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">timestep</span><span class="p">])):</span>
@@ -585,12 +585,12 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_display_type_name_from_raw</span><span class="p">(</span>
         <span class="n">raw_type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get the display type_name from the display data</span>
 <span class="sd">        given the raw type name from the engine.</span>
 <span class="sd">        If there is no DisplayData for this type, add it</span>
 <span class="sd">        using the raw type_name and SPHERE display_type</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">agent_display_data</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">_get_display_data_for_agent</span><span class="p">(</span>
             <span class="n">raw_type_name</span><span class="p">,</span> <span class="n">display_data</span>
         <span class="p">)</span>
@@ -608,21 +608,21 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_display_data_for_agent</span><span class="p">(</span>
         <span class="n">raw_type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DisplayData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        If the provided raw_type_name matches a key in the display data dict,</span>
 <span class="sd">        ignoring case, return the corresponding DisplayData for that key.</span>
 <span class="sd">        Otherwise, return None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">for</span> <span class="n">input_name</span> <span class="ow">in</span> <span class="n">display_data</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">input_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">raw_type_name</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
                 <span class="k">return</span> <span class="n">display_data</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_determine_plot_reader</span><span class="p">(</span><span class="n">plot_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;scatter&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">PlotReader</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_determine_plot_reader</span><span class="p">(</span><span class="n">plot_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"scatter"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">PlotReader</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the plot reader to match the requested plot type</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">plot_type</span> <span class="ow">in</span> <span class="n">SUPPORTED_PLOT_READERS</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">SUPPORTED_PLOT_READERS</span><span class="p">[</span><span class="n">plot_type</span><span class="p">]</span>
 
@@ -633,9 +633,9 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">add_plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">data</span><span class="p">:</span> <span class="p">[</span><span class="n">ScatterPlotData</span> <span class="ow">or</span> <span class="n">HistogramPlotData</span><span class="p">],</span>
-        <span class="n">plot_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;scatter&quot;</span><span class="p">,</span>
+        <span class="n">plot_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"scatter"</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Add data to be rendered in a plot</span>
 
 <span class="sd">        Parameters</span>
@@ -645,13 +645,13 @@
 <span class="sd">        plot_type: str</span>
 <span class="sd">            A string specifying which type of plot to render.</span>
 <span class="sd">            Current options:</span>
-<span class="sd">                &#39;scatter&#39; : a scatterplot with y-trace(s) dependent</span>
+<span class="sd">                'scatter' : a scatterplot with y-trace(s) dependent</span>
 <span class="sd">                    on an x-trace</span>
-<span class="sd">                &#39;histogram&#39; : a histogram with bars drawn at intervals</span>
+<span class="sd">                'histogram' : a histogram with bars drawn at intervals</span>
 <span class="sd">                    over the range(s) of the data, with their height</span>
 <span class="sd">                    corresponding to the number of values in each interval</span>
-<span class="sd">            Default: &#39;scatter&#39;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            Default: 'scatter'</span>
+<span class="sd">        """</span>
         <span class="n">plot_reader_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_determine_plot_reader</span><span class="p">(</span><span class="n">plot_type</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot_reader_class</span><span class="p">()</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">data</span><span class="p">))</span></div>
 
@@ -660,38 +660,38 @@
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.add_number_of_agents_plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_number_of_agents_plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">plot_title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Number of agents over time&quot;</span><span class="p">,</span>
-        <span class="n">yaxis_title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Number of agents&quot;</span><span class="p">,</span>
+        <span class="n">plot_title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Number of agents over time"</span><span class="p">,</span>
+        <span class="n">yaxis_title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Number of agents"</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Add a scatterplot of the number of each type of agent over time</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        plot_title: str</span>
 <span class="sd">            The title for the plot</span>
-<span class="sd">            Default: &quot;Number of agents over time&quot;</span>
+<span class="sd">            Default: "Number of agents over time"</span>
 <span class="sd">        yaxis_title: str</span>
 <span class="sd">            The title for the y-axis of the plot</span>
-<span class="sd">            Default: &quot;Number of agents&quot;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            Default: "Number of agents"</span>
+<span class="sd">        """</span>
         <span class="n">n_agents</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">agent_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">])):</span>
                 <span class="n">type_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s2">&quot;#&quot;</span> <span class="ow">in</span> <span class="n">type_name</span><span class="p">:</span>
-                    <span class="n">type_name</span> <span class="o">=</span> <span class="n">type_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">"#"</span> <span class="ow">in</span> <span class="n">type_name</span><span class="p">:</span>
+                    <span class="n">type_name</span> <span class="o">=</span> <span class="n">type_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"#"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">type_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">n_agents</span><span class="p">:</span>
                     <span class="n">n_agents</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="p">)</span>
                 <span class="n">n_agents</span><span class="p">[</span><span class="n">type_name</span><span class="p">][</span><span class="n">time_index</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_plot</span><span class="p">(</span>
             <span class="n">ScatterPlotData</span><span class="p">(</span>
                 <span class="n">title</span><span class="o">=</span><span class="n">plot_title</span><span class="p">,</span>
-                <span class="n">xaxis_title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Time (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">time_units</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+                <span class="n">xaxis_title</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Time (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">time_units</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
                 <span class="n">yaxis_title</span><span class="o">=</span><span class="n">yaxis_title</span><span class="p">,</span>
                 <span class="n">xtrace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="p">,</span>
                 <span class="n">ytraces</span><span class="o">=</span><span class="n">n_agents</span><span class="p">,</span>
-                <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+                <span class="n">render_mode</span><span class="o">=</span><span class="s2">"lines"</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span></div>
 
@@ -699,9 +699,9 @@
 <div class="viewcode-block" id="TrajectoryConverter.filter_data">
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.filter_data">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">filter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Filter</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the simularium data with the given filter applied</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">filtered_data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filters</span><span class="p">:</span>
             <span class="n">filtered_data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">filtered_data</span><span class="p">)</span>
@@ -711,10 +711,10 @@
 <div class="viewcode-block" id="TrajectoryConverter.to_JSON">
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.to_JSON">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_JSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the current simularium data in JSON format</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">buffer_data</span> <span class="o">=</span> <span class="n">JsonWriter</span><span class="o">.</span><span class="n">format_trajectory_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">)</span></div>
 
@@ -722,7 +722,7 @@
 <div class="viewcode-block" id="TrajectoryConverter.save_plot_data">
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.save_plot_data">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">save_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Save the current plot data in JSON format</span>
 <span class="sd">        at the output path</span>
 
@@ -730,14 +730,14 @@
 <span class="sd">        ----------</span>
 <span class="sd">        output_path: str</span>
 <span class="sd">            where to save the file</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">JsonWriter</span><span class="o">.</span><span class="n">save_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">plots</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TrajectoryConverter.save">
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.trajectory_converter.TrajectoryConverter.save">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">binary</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">validate_ids</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Save the current simularium data in .simularium JSON format</span>
 <span class="sd">        at the output path</span>
 
@@ -751,7 +751,7 @@
 <span class="sd">        validate_ids: bool</span>
 <span class="sd">            additional validation to check agent ID size?</span>
 <span class="sd">            Default = True</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">binary</span><span class="p">:</span>
             <span class="n">BinaryWriter</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">validate_ids</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -790,7 +790,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

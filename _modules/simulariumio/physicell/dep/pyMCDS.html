@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html"><link rel="search" title="Search" href="../../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.physicell.dep.pyMCDS - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.physicell.dep.pyMCDS - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -262,9 +262,9 @@
 <span class="c1">#</span>
 <span class="c1">#  Example usage:</span>
 <span class="c1">#  from pyMCDS_optional_meshes import pyMCDS</span>
-<span class="c1">#  mcds = pyMCDS(&#39;output00000000.xml&#39;)</span>
-<span class="c1">#  mcds = pyMCDS(&#39;output00000000.xml&#39;, &#39;.&#39;)   # optional 2nd arg indicating data directory</span>
-<span class="c1">#  mcds = pyMCDS(&#39;output00000000.xml&#39;, &#39;.&#39;, False)   # skip over microenv data</span>
+<span class="c1">#  mcds = pyMCDS('output00000000.xml')</span>
+<span class="c1">#  mcds = pyMCDS('output00000000.xml', '.')   # optional 2nd arg indicating data directory</span>
+<span class="c1">#  mcds = pyMCDS('output00000000.xml', '.', False)   # skip over microenv data</span>
 <span class="c1">#</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">xml.etree.ElementTree</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ET</span>
@@ -275,16 +275,16 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Source: https://github.com/PhysiCell-Tools/vis3D/blob/</span>
 <span class="sd">c25a5da486d7b9ba52407b1460c2a5244eb243dc/Simularium/pyMCDS_optional_meshes.py</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 
 <div class="viewcode-block" id="pyMCDS">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">pyMCDS</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    This class contains a dictionary of dictionaries that contains all of the</span>
 <span class="sd">    output from a single time step of a PhysiCell Model. This class assumes that</span>
 <span class="sd">    all output files are stored in the same directory. Data is loaded by reading</span>
@@ -295,15 +295,15 @@
 <span class="sd">        String containing the name of the xml file without the path</span>
 <span class="sd">    output_path: str, optional</span>
 <span class="sd">        String containing the path (relative or absolute) to the directory</span>
-<span class="sd">        where PhysiCell output files are stored (default= &quot;.&quot;)</span>
+<span class="sd">        where PhysiCell output files are stored (default= ".")</span>
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    data : dict</span>
 <span class="sd">        Hierarchical container for all of the data retrieved by parsing the xml</span>
 <span class="sd">        file and the files referenced therein.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">,</span> <span class="n">parse_continuum_variables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">,</span> <span class="n">parse_continuum_variables</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">"."</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_xml</span><span class="p">(</span><span class="n">xml_file</span><span class="p">,</span> <span class="n">output_path</span><span class="p">,</span> <span class="n">parse_continuum_variables</span><span class="p">)</span>
 
     <span class="c1"># METADATA RELATED FUNCTIONS</span>
@@ -311,7 +311,7 @@
 <div class="viewcode-block" id="pyMCDS.get_time">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_time">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;current_time&quot;</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">][</span><span class="s2">"current_time"</span><span class="p">]</span></div>
 
 
     <span class="c1"># MESH RELATED FUNCTIONS</span>
@@ -319,7 +319,7 @@
 <div class="viewcode-block" id="pyMCDS.get_mesh">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_mesh">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return a meshgrid of the computational domain. Can return either full</span>
 <span class="sd">        3D or a 2D plane for contour plots.</span>
 <span class="sd">        Parameters</span>
@@ -332,18 +332,18 @@
 <span class="sd">        splitting : list length=2 if flat=True, else length=3</span>
 <span class="sd">            Contains arrays of voxel center coordinates as meshgrid with shape</span>
 <span class="sd">            [nx_voxel, ny_voxel, nz_voxel] or [nx_voxel, ny_voxel] if flat=True.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">flat</span><span class="p">:</span>
-            <span class="n">xx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;x_coordinates&quot;</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
-            <span class="n">yy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;y_coordinates&quot;</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">xx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"x_coordinates"</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">yy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"y_coordinates"</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
 
             <span class="k">return</span> <span class="p">[</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">]</span>
 
         <span class="c1"># if we dont want a plane just return appropriate values</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">xx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;x_coordinates&quot;</span><span class="p">]</span>
-            <span class="n">yy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;y_coordinates&quot;</span><span class="p">]</span>
-            <span class="n">zz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;z_coordinates&quot;</span><span class="p">]</span>
+            <span class="n">xx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"x_coordinates"</span><span class="p">]</span>
+            <span class="n">yy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"y_coordinates"</span><span class="p">]</span>
+            <span class="n">zz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"z_coordinates"</span><span class="p">]</span>
 
             <span class="k">return</span> <span class="p">[</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span><span class="p">]</span></div>
 
@@ -351,7 +351,7 @@
 <div class="viewcode-block" id="pyMCDS.get_2D_mesh">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_2D_mesh">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_2D_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This function returns the x, y meshgrid as two numpy arrays. It is</span>
 <span class="sd">        identical to get_mesh with the option flat=True</span>
 <span class="sd">        Returns</span>
@@ -359,9 +359,9 @@
 <span class="sd">        splitting : list length=2</span>
 <span class="sd">            Contains arrays of voxel center coordinates in x and y dimensions</span>
 <span class="sd">            as meshgrid with shape [nx_voxel, ny_voxel]</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">xx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;x_coordinates&quot;</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="n">yy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;y_coordinates&quot;</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="sd">        """</span>
+        <span class="n">xx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"x_coordinates"</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">yy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"y_coordinates"</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="p">[</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">]</span></div>
 
@@ -369,25 +369,25 @@
 <div class="viewcode-block" id="pyMCDS.get_linear_voxels">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_linear_voxels">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_linear_voxels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Helper function to quickly grab voxel centers array stored linearly as</span>
 <span class="sd">        opposed to meshgrid-style.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;voxels&quot;</span><span class="p">][</span><span class="s2">&quot;centers&quot;</span><span class="p">]</span></div>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"voxels"</span><span class="p">][</span><span class="s2">"centers"</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="pyMCDS.get_mesh_spacing">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_mesh_spacing">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_mesh_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns the space in between voxel centers for the mesh in terms of the</span>
-<span class="sd">        mesh&#39;s spatial units. Assumes that voxel centers fall on integer values.</span>
+<span class="sd">        mesh's spatial units. Assumes that voxel centers fall on integer values.</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dx : float</span>
 <span class="sd">            Distance between voxel centers in the same units as the other</span>
 <span class="sd">            spatial measurements</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">centers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_linear_voxels</span><span class="p">()</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">centers</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
         <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">centers</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
@@ -402,7 +402,7 @@
             <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dy</span> <span class="o">-</span> <span class="n">dz</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-10</span>
             <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dx</span> <span class="o">-</span> <span class="n">dz</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-10</span>
         <span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: grid spacing may be axis dependent.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Warning: grid spacing may be axis dependent."</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span></div>
 
@@ -410,11 +410,11 @@
 <div class="viewcode-block" id="pyMCDS.get_containing_voxel_ijk">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_containing_voxel_ijk">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_containing_voxel_ijk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Internal function to get the meshgrid indices for the center of a voxel</span>
 <span class="sd">        that contains the given position.</span>
-<span class="sd">        Note that pyMCDS stores meshgrids as &#39;cartesian&#39;</span>
-<span class="sd">        (indexing=&#39;xy&#39; in np.meshgrid) which means that we will have</span>
+<span class="sd">        Note that pyMCDS stores meshgrids as 'cartesian'</span>
+<span class="sd">        (indexing='xy' in np.meshgrid) which means that we will have</span>
 <span class="sd">        to use these indices as [j, i, k] on the actual meshgrid objects</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -427,45 +427,45 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ijk : list length=3</span>
-<span class="sd">            contains the i, j, and k indices for the containing voxel&#39;s center</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            contains the i, j, and k indices for the containing voxel's center</span>
+<span class="sd">        """</span>
         <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mesh</span><span class="p">()</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mesh_spacing</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">xx</span><span class="o">.</span><span class="n">max</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;Position out of bounds: x out of bounds in pyMCDS._get_voxel_idx&quot;</span>
-                <span class="s2">&quot;(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting x = x_max!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+                <span class="s2">"Position out of bounds: x out of bounds in pyMCDS._get_voxel_idx"</span>
+                <span class="s2">"(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting x = x_max!"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">xx</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">xx</span><span class="o">.</span><span class="n">min</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;Position out of bounds: x out of bounds in pyMCDS._get_voxel_idx&quot;</span>
-                <span class="s2">&quot;(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting x = x_min!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+                <span class="s2">"Position out of bounds: x out of bounds in pyMCDS._get_voxel_idx"</span>
+                <span class="s2">"(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting x = x_min!"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">xx</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="n">yy</span><span class="o">.</span><span class="n">max</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;Position out of bounds: y out of bounds in pyMCDS._get_voxel_idx&quot;</span>
-                <span class="s2">&quot;(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting y = y_max!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+                <span class="s2">"Position out of bounds: y out of bounds in pyMCDS._get_voxel_idx"</span>
+                <span class="s2">"(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting y = y_max!"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">yy</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">yy</span><span class="o">.</span><span class="n">min</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;Position out of bounds: y out of bounds in pyMCDS._get_voxel_idx&quot;</span>
-                <span class="s2">&quot;(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting y = y_min!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+                <span class="s2">"Position out of bounds: y out of bounds in pyMCDS._get_voxel_idx"</span>
+                <span class="s2">"(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting y = y_min!"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">yy</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">z</span> <span class="o">&gt;</span> <span class="n">zz</span><span class="o">.</span><span class="n">max</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;Position out of bounds: z out of bounds in pyMCDS._get_voxel_idx&quot;</span>
-                <span class="s2">&quot;(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting z = z_max!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+                <span class="s2">"Position out of bounds: z out of bounds in pyMCDS._get_voxel_idx"</span>
+                <span class="s2">"(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting z = z_max!"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">zz</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="n">zz</span><span class="o">.</span><span class="n">min</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;Position out of bounds: z out of bounds in pyMCDS._get_voxel_idx&quot;</span>
-                <span class="s2">&quot;(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting z = z_min!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+                <span class="s2">"Position out of bounds: z out of bounds in pyMCDS._get_voxel_idx"</span>
+                <span class="s2">"(</span><span class="si">{0}</span><span class="s2">, </span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">). Setting z = z_min!"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">zz</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
 
@@ -483,15 +483,15 @@
 <div class="viewcode-block" id="pyMCDS.get_substrate_names">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_substrate_names">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_substrate_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns list of chemical species in microenvironment</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        species_list : array (str), shape=[n_species,]</span>
 <span class="sd">            Contains names of chemical species in microenvironment</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">species_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">]:</span>
             <span class="n">species_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">species_list</span></div>
@@ -500,7 +500,7 @@
 <div class="viewcode-block" id="pyMCDS.get_concentrations">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_concentrations">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_concentrations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">z_slice</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns the concentration array for the specified chemical species</span>
 <span class="sd">        in the microenvironment. Can return either the whole 3D picture, or</span>
 <span class="sd">        a 2D plane of concentrations.</span>
@@ -516,20 +516,20 @@
 <span class="sd">        conc_arr : array (np.float) shape=[nx_voxels, ny_voxels, nz_voxels]</span>
 <span class="sd">            Contains the concentration of the specified chemical in each voxel.</span>
 <span class="sd">            The array spatially maps to a meshgrid of the voxel centers.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">z_slice</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># check to see that z_slice is a valid plane</span>
-            <span class="n">zz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;z_coordinates&quot;</span><span class="p">]</span>
-            <span class="k">assert</span> <span class="n">z_slice</span> <span class="ow">in</span> <span class="n">zz</span><span class="p">,</span> <span class="s2">&quot;Specified z_slice </span><span class="si">{}</span><span class="s2"> not in z_coordinates&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">zz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"z_coordinates"</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="n">z_slice</span> <span class="ow">in</span> <span class="n">zz</span><span class="p">,</span> <span class="s2">"Specified z_slice </span><span class="si">{}</span><span class="s2"> not in z_coordinates"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">z_slice</span>
             <span class="p">)</span>
 
             <span class="c1"># do the processing if its ok</span>
             <span class="n">mask</span> <span class="o">=</span> <span class="n">zz</span> <span class="o">==</span> <span class="n">z_slice</span>
-            <span class="n">full_conc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+            <span class="n">full_conc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">"data"</span><span class="p">]</span>
             <span class="n">conc_arr</span> <span class="o">=</span> <span class="n">full_conc</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">zz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">zz</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">conc_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+            <span class="n">conc_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">"data"</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">conc_arr</span></div>
 
@@ -537,7 +537,7 @@
 <div class="viewcode-block" id="pyMCDS.get_concentrations_at">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_concentrations_at">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_concentrations_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return concentrations of each chemical species inside a particular voxel</span>
 <span class="sd">        that contains the point described in the arguments.</span>
 <span class="sd">        Parameters</span>
@@ -552,7 +552,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        concs : array, shape=[n_substrates,]</span>
 <span class="sd">            array of concentrations in the order given by get_substrate_names()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_containing_voxel_ijk</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
         <span class="n">sub_name_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_substrate_names</span><span class="p">()</span>
         <span class="n">concs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sub_name_list</span><span class="p">))</span>
@@ -568,30 +568,30 @@
 <div class="viewcode-block" id="pyMCDS.get_cell_df">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_cell_df">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_cell_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Builds DataFrame from data[&#39;discrete_cells&#39;]</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Builds DataFrame from data['discrete_cells']</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        cells_df : pd.Dataframe, shape=[n_cells, n_variables]</span>
 <span class="sd">            Dataframe containing the cell data for all cells at this time step</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cells_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;discrete_cells&quot;</span><span class="p">])</span>
+<span class="sd">        """</span>
+        <span class="n">cells_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"discrete_cells"</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">cells_df</span></div>
 
 
 <div class="viewcode-block" id="pyMCDS.get_cell_variables">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_cell_variables">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_cell_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the names of all of the cell variables tracked in [&#39;discrete cells&#39;]</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Returns the names of all of the cell variables tracked in ['discrete cells']</span>
 <span class="sd">        dictionary</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        var_list : list, shape=[n_variables]</span>
 <span class="sd">            Contains the names of the cell variables</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">var_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;discrete_cells&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"discrete_cells"</span><span class="p">]:</span>
             <span class="n">var_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">var_list</span></div>
 
@@ -599,7 +599,7 @@
 <div class="viewcode-block" id="pyMCDS.get_cell_df_at">
 <a class="viewcode-back" href="../../../../simulariumio.physicell.dep.html#simulariumio.physicell.dep.pyMCDS.pyMCDS.get_cell_df_at">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_cell_df_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns a dataframe for cells in the same voxel as the position given by</span>
 <span class="sd">        x, y, and z.</span>
 <span class="sd">        Parameters</span>
@@ -615,7 +615,7 @@
 <span class="sd">        vox_df : pd.DataFrame, shape=[n_cell_in_voxel, n_variables]</span>
 <span class="sd">            cell dataframe containing only cells in the same voxel as the point</span>
 <span class="sd">            specified by x, y, and z.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mesh_spacing</span><span class="p">()</span>
         <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mesh</span><span class="p">()</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_containing_voxel_ijk</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
@@ -625,101 +625,101 @@
 
         <span class="n">cell_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_cell_df</span><span class="p">()</span>
         <span class="n">inside_voxel</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">&quot;position_x&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">x_vox</span> <span class="o">+</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
-            <span class="o">&amp;</span> <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">&quot;position_x&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x_vox</span> <span class="o">-</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
-            <span class="o">&amp;</span> <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">&quot;position_y&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">y_vox</span> <span class="o">+</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
-            <span class="o">&amp;</span> <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">&quot;position_y&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y_vox</span> <span class="o">-</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
-            <span class="o">&amp;</span> <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">&quot;position_z&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">z_vox</span> <span class="o">+</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
-            <span class="o">&amp;</span> <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">&quot;position_z&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">z_vox</span> <span class="o">-</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">"position_x"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">x_vox</span> <span class="o">+</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">"position_x"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x_vox</span> <span class="o">-</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">"position_y"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">y_vox</span> <span class="o">+</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">"position_y"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y_vox</span> <span class="o">-</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">"position_z"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">z_vox</span> <span class="o">+</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+            <span class="o">&amp;</span> <span class="p">(</span><span class="n">cell_df</span><span class="p">[</span><span class="s2">"position_z"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">z_vox</span> <span class="o">-</span> <span class="n">ds</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">vox_df</span> <span class="o">=</span> <span class="n">cell_df</span><span class="p">[</span><span class="n">inside_voxel</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">vox_df</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_read_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">parse_continuum_variables</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="s2">"."</span><span class="p">,</span> <span class="n">parse_continuum_variables</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Does the actual work of initializing MultiCellDS by parsing the xml</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">output_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
         <span class="n">xml_file</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">/</span> <span class="n">xml_file</span>
         <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">xml_file</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xml_file</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Reading </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xml_file</span><span class="p">))</span>
 
         <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
         <span class="n">MCDS</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="c1"># Get current simulated time</span>
-        <span class="n">metadata_node</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;metadata&quot;</span><span class="p">)</span>
-        <span class="n">time_node</span> <span class="o">=</span> <span class="n">metadata_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;current_time&quot;</span><span class="p">)</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;current_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">time_node</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;time_units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">)</span>
+        <span class="n">metadata_node</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"metadata"</span><span class="p">)</span>
+        <span class="n">time_node</span> <span class="o">=</span> <span class="n">metadata_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"current_time"</span><span class="p">)</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">][</span><span class="s2">"current_time"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">time_node</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">][</span><span class="s2">"time_units"</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"units"</span><span class="p">)</span>
 
         <span class="c1"># Get current runtime</span>
-        <span class="n">time_node</span> <span class="o">=</span> <span class="n">metadata_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;current_runtime&quot;</span><span class="p">)</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;current_runtime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">time_node</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;runtime_units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">)</span>
+        <span class="n">time_node</span> <span class="o">=</span> <span class="n">metadata_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"current_runtime"</span><span class="p">)</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">][</span><span class="s2">"current_runtime"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">time_node</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">][</span><span class="s2">"runtime_units"</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"units"</span><span class="p">)</span>
 
         <span class="c1"># find the microenvironment node</span>
-        <span class="n">me_node</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;microenvironment&quot;</span><span class="p">)</span>
-        <span class="n">me_node</span> <span class="o">=</span> <span class="n">me_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;domain&quot;</span><span class="p">)</span>
+        <span class="n">me_node</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"microenvironment"</span><span class="p">)</span>
+        <span class="n">me_node</span> <span class="o">=</span> <span class="n">me_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"domain"</span><span class="p">)</span>
 
         <span class="c1"># find the mesh node</span>
-        <span class="n">mesh_node</span> <span class="o">=</span> <span class="n">me_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;mesh&quot;</span><span class="p">)</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;spatial_units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">)</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">mesh_node</span> <span class="o">=</span> <span class="n">me_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"mesh"</span><span class="p">)</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">][</span><span class="s2">"spatial_units"</span><span class="p">]</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"units"</span><span class="p">)</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="c1"># while we&#39;re at it, find the mesh</span>
-        <span class="n">coord_str</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;x_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
-        <span class="n">delimiter</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;x_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">)</span>
+        <span class="c1"># while we're at it, find the mesh</span>
+        <span class="n">coord_str</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"x_coordinates"</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">delimiter</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"x_coordinates"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"delimiter"</span><span class="p">)</span>
         <span class="n">x_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coord_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
-        <span class="n">coord_str</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;y_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
-        <span class="n">delimiter</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;y_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">)</span>
+        <span class="n">coord_str</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"y_coordinates"</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">delimiter</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"y_coordinates"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"delimiter"</span><span class="p">)</span>
         <span class="n">y_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coord_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
-        <span class="n">coord_str</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;z_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
-        <span class="n">delimiter</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;z_coordinates&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">)</span>
+        <span class="n">coord_str</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"z_coordinates"</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">delimiter</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"z_coordinates"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"delimiter"</span><span class="p">)</span>
         <span class="n">z_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coord_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
         <span class="c1"># reshape into a mesh grid</span>
         <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">zz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">,</span> <span class="n">z_coords</span><span class="p">)</span>
 
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;x_coordinates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xx</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;y_coordinates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">yy</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;z_coordinates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">zz</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"x_coordinates"</span><span class="p">]</span> <span class="o">=</span> <span class="n">xx</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"y_coordinates"</span><span class="p">]</span> <span class="o">=</span> <span class="n">yy</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"z_coordinates"</span><span class="p">]</span> <span class="o">=</span> <span class="n">zz</span>
 
         <span class="c1"># Voxel data must be loaded from .mat file</span>
-        <span class="n">voxel_file</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;voxels&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">voxel_file</span> <span class="o">=</span> <span class="n">mesh_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"voxels"</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"filename"</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
         <span class="n">voxel_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">/</span> <span class="n">voxel_file</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">initial_mesh</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">voxel_path</span><span class="p">)[</span><span class="s2">&quot;mesh&quot;</span><span class="p">]</span>
+            <span class="n">initial_mesh</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">voxel_path</span><span class="p">)[</span><span class="s2">"mesh"</span><span class="p">]</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
-                <span class="s2">&quot;No such file or directory:</span><span class="se">\n</span><span class="s2">&#39;</span><span class="si">{}</span><span class="s2">&#39; referenced in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"No such file or directory:</span><span class="se">\n</span><span class="s2">'</span><span class="si">{}</span><span class="s2">' referenced in '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">voxel_path</span><span class="p">,</span> <span class="n">xml_file</span>
                 <span class="p">)</span>
             <span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">voxel_path</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Reading </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">voxel_path</span><span class="p">))</span>
 
         <span class="c1"># # center of voxel specified by first three rows [ x, y, z ]</span>
         <span class="c1"># # volume specified by fourth row</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;voxels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;voxels&quot;</span><span class="p">][</span><span class="s2">&quot;centers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_mesh</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;voxels&quot;</span><span class="p">][</span><span class="s2">&quot;volumes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_mesh</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"voxels"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"voxels"</span><span class="p">][</span><span class="s2">"centers"</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_mesh</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"voxels"</span><span class="p">][</span><span class="s2">"volumes"</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_mesh</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>
 
         <span class="k">if</span> <span class="n">parse_continuum_variables</span><span class="p">:</span>
             <span class="c1"># Continuum_variables, unlike in the matlab version the individual chemical</span>
             <span class="c1"># species will be primarily accessed through their names e.g.</span>
-            <span class="c1"># MCDS[&#39;continuum_variables&#39;][&#39;oxygen&#39;][&#39;units&#39;]</span>
-            <span class="c1"># MCDS[&#39;continuum_variables&#39;][&#39;glucose&#39;][&#39;data&#39;]</span>
-            <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">variables_node</span> <span class="o">=</span> <span class="n">me_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;variables&quot;</span><span class="p">)</span>
-            <span class="n">file_node</span> <span class="o">=</span> <span class="n">me_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>
+            <span class="c1"># MCDS['continuum_variables']['oxygen']['units']</span>
+            <span class="c1"># MCDS['continuum_variables']['glucose']['data']</span>
+            <span class="n">MCDS</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">variables_node</span> <span class="o">=</span> <span class="n">me_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"variables"</span><span class="p">)</span>
+            <span class="n">file_node</span> <span class="o">=</span> <span class="n">me_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"data"</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"filename"</span><span class="p">)</span>
 
             <span class="c1"># micro environment data is shape [4+n, len(voxels)] where n is the number</span>
             <span class="c1"># of species being tracked. the first 3 rows represent (x, y, z) of voxel</span>
@@ -729,113 +729,113 @@
             <span class="n">me_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">/</span> <span class="n">me_file</span>
             <span class="c1"># Changes here</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">me_data</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">me_path</span><span class="p">)[</span><span class="s2">&quot;multiscale_microenvironment&quot;</span><span class="p">]</span>
+                <span class="n">me_data</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">me_path</span><span class="p">)[</span><span class="s2">"multiscale_microenvironment"</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; referenced in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">me_path</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"'</span><span class="si">{}</span><span class="s2">' referenced in '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">me_path</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">))</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; referenced in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">me_path</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"'</span><span class="si">{}</span><span class="s2">' referenced in '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">me_path</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">))</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">me_path</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Reading </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">me_path</span><span class="p">))</span>
 
-            <span class="n">var_children</span> <span class="o">=</span> <span class="n">variables_node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;variable&quot;</span><span class="p">)</span>
+            <span class="n">var_children</span> <span class="o">=</span> <span class="n">variables_node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"variable"</span><span class="p">)</span>
 
-            <span class="c1"># we&#39;re going to need the linear x, y, and z coordinates later</span>
+            <span class="c1"># we're going to need the linear x, y, and z coordinates later</span>
             <span class="c1"># but we dont need to get them in the loop</span>
             <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">xx</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">yy</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">zz</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">si</span><span class="p">,</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">var_children</span><span class="p">):</span>
-                <span class="n">species_name</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
-                <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                    <span class="s2">&quot;units&quot;</span>
+                <span class="n">species_name</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span>
+                <span class="n">MCDS</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">MCDS</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="s2">"units"</span>
                 <span class="p">)</span>
 
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parsing </span><span class="si">{:s}</span><span class="s2"> data&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species_name</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"Parsing </span><span class="si">{:s}</span><span class="s2"> data"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species_name</span><span class="p">))</span>
 
                 <span class="c1"># initialize array for concentration data</span>
-                <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                <span class="n">MCDS</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">"data"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
                 <span class="c1"># travel down one level on tree</span>
-                <span class="n">species</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;physical_parameter_set&quot;</span><span class="p">)</span>
+                <span class="n">species</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"physical_parameter_set"</span><span class="p">)</span>
 
                 <span class="c1"># diffusion data for each species</span>
-                <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">&quot;diffusion_coefficient&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">&quot;diffusion_coefficient&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;value&quot;</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;diffusion_coefficient&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-                <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">&quot;diffusion_coefficient&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;units&quot;</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;diffusion_coefficient&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">)</span>
+                <span class="n">MCDS</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">"diffusion_coefficient"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">MCDS</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">"diffusion_coefficient"</span><span class="p">][</span>
+                    <span class="s2">"value"</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"diffusion_coefficient"</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">MCDS</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">"diffusion_coefficient"</span><span class="p">][</span>
+                    <span class="s2">"units"</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"diffusion_coefficient"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"units"</span><span class="p">)</span>
 
                 <span class="c1"># decay data for each species</span>
-                <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">&quot;decay_rate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">&quot;decay_rate&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;value&quot;</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;decay_rate&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-                <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">&quot;decay_rate&quot;</span><span class="p">][</span>
-                    <span class="s2">&quot;units&quot;</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;decay_rate&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">)</span>
+                <span class="n">MCDS</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">"decay_rate"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">MCDS</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">"decay_rate"</span><span class="p">][</span>
+                    <span class="s2">"value"</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">species</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"decay_rate"</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">MCDS</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">"decay_rate"</span><span class="p">][</span>
+                    <span class="s2">"units"</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">species</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"decay_rate"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"units"</span><span class="p">)</span>
 
                 <span class="c1"># store data from microenvironment file as numpy array</span>
                 <span class="c1"># iterate over each voxel</span>
-                <span class="k">for</span> <span class="n">vox_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;voxels&quot;</span><span class="p">][</span><span class="s2">&quot;centers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">for</span> <span class="n">vox_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MCDS</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"voxels"</span><span class="p">][</span><span class="s2">"centers"</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
                     <span class="c1"># find the center</span>
-                    <span class="n">center</span> <span class="o">=</span> <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;mesh&quot;</span><span class="p">][</span><span class="s2">&quot;voxels&quot;</span><span class="p">][</span><span class="s2">&quot;centers&quot;</span><span class="p">][:,</span> <span class="n">vox_idx</span><span class="p">]</span>
+                    <span class="n">center</span> <span class="o">=</span> <span class="n">MCDS</span><span class="p">[</span><span class="s2">"mesh"</span><span class="p">][</span><span class="s2">"voxels"</span><span class="p">][</span><span class="s2">"centers"</span><span class="p">][:,</span> <span class="n">vox_idx</span><span class="p">]</span>
 
                     <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                     <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">Y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                     <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">Z</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
-                    <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;continuum_variables&quot;</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">][</span>
+                    <span class="n">MCDS</span><span class="p">[</span><span class="s2">"continuum_variables"</span><span class="p">][</span><span class="n">species_name</span><span class="p">][</span><span class="s2">"data"</span><span class="p">][</span>
                         <span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span>
                     <span class="p">]</span> <span class="o">=</span> <span class="n">me_data</span><span class="p">[</span><span class="mi">4</span> <span class="o">+</span> <span class="n">si</span><span class="p">,</span> <span class="n">vox_idx</span><span class="p">]</span>
 
         <span class="c1"># in order to get to the good stuff we have to pass through a few different</span>
         <span class="c1"># hierarchal levels</span>
-        <span class="n">cell_node</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;cellular_information&quot;</span><span class="p">)</span>
-        <span class="n">cell_node</span> <span class="o">=</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;cell_populations&quot;</span><span class="p">)</span>
-        <span class="n">cell_node</span> <span class="o">=</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;cell_population&quot;</span><span class="p">)</span>
-        <span class="n">cell_node</span> <span class="o">=</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">)</span>
+        <span class="n">cell_node</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"cellular_information"</span><span class="p">)</span>
+        <span class="n">cell_node</span> <span class="o">=</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"cell_populations"</span><span class="p">)</span>
+        <span class="n">cell_node</span> <span class="o">=</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"cell_population"</span><span class="p">)</span>
+        <span class="n">cell_node</span> <span class="o">=</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"custom"</span><span class="p">)</span>
         <span class="c1"># we want the PhysiCell data, there is more of it</span>
-        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;simplified_data&quot;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;PhysiCell&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"simplified_data"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"source"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"PhysiCell"</span><span class="p">:</span>
                 <span class="n">cell_node</span> <span class="o">=</span> <span class="n">child</span>
                 <span class="k">break</span>
 
-        <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;discrete_cells&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">MCDS</span><span class="p">[</span><span class="s2">"discrete_cells"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">data_labels</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="c1"># iterate over &#39;label&#39;s which are children of &#39;labels&#39; these will be used to</span>
+        <span class="c1"># iterate over 'label's which are children of 'labels' these will be used to</span>
         <span class="c1"># label data arrays</span>
         <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;labels&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">):</span>
-            <span class="c1"># I don&#39;t like spaces in my dictionary keys</span>
-            <span class="n">fixed_label</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
-            <span class="n">nlabels</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"labels"</span><span class="p">)</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">"label"</span><span class="p">):</span>
+            <span class="c1"># I don't like spaces in my dictionary keys</span>
+            <span class="n">fixed_label</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
+            <span class="n">nlabels</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"size"</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">nlabels</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># tags to differentiate repeated labels (usually space related)</span>
-                <span class="c1"># print(&quot;n=&quot;,n)</span>
+                <span class="c1"># print("n=",n)</span>
                 <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="k">if</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">"position"</span><span class="p">:</span>
                     <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">&quot;orientation&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">"orientation"</span><span class="p">:</span>
                     <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">&quot;velocity&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">"velocity"</span><span class="p">:</span>
                     <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">&quot;migration_bias_direction&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">"migration_bias_direction"</span><span class="p">:</span>
                     <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">&quot;motility_vector&quot;</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">fixed_label</span> <span class="o">==</span> <span class="s2">"motility_vector"</span><span class="p">:</span>
                     <span class="n">spatial_type</span> <span class="o">=</span> <span class="kc">True</span>
 
                 <span class="k">if</span> <span class="n">nlabels</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">spatial_type</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-                    <span class="n">dir_label</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_x&quot;</span><span class="p">,</span> <span class="s2">&quot;_y&quot;</span><span class="p">,</span> <span class="s2">&quot;_z&quot;</span><span class="p">]</span>
+                    <span class="n">dir_label</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"_x"</span><span class="p">,</span> <span class="s2">"_y"</span><span class="p">,</span> <span class="s2">"_z"</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">dir_label</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="k">for</span> <span class="n">nn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
-                        <span class="n">dir_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;_</span><span class="si">%u</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nn</span><span class="p">)</span>
+                        <span class="n">dir_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"_</span><span class="si">%u</span><span class="s2">"</span> <span class="o">%</span> <span class="n">nn</span><span class="p">)</span>
                 <span class="c1"># print( dir_label )</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">))):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"size"</span><span class="p">))):</span>
                     <span class="c1"># print( fixed_label + dir_label[i] )</span>
                     <span class="n">data_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fixed_label</span> <span class="o">+</span> <span class="n">dir_label</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
@@ -844,21 +844,21 @@
             <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="c1"># load the file</span>
-        <span class="n">cell_file</span> <span class="o">=</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">cell_file</span> <span class="o">=</span> <span class="n">cell_node</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"filename"</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
         <span class="n">cell_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">/</span> <span class="n">cell_file</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">cell_data</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">cell_path</span><span class="p">)[</span><span class="s2">&quot;cells&quot;</span><span class="p">]</span>
+            <span class="n">cell_data</span> <span class="o">=</span> <span class="n">sio</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">cell_path</span><span class="p">)[</span><span class="s2">"cells"</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; referenced in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cell_path</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"'</span><span class="si">{}</span><span class="s2">' referenced in '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cell_path</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">))</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; referenced in &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cell_path</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"'</span><span class="si">{}</span><span class="s2">' referenced in '</span><span class="si">{}</span><span class="s2">'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cell_path</span><span class="p">,</span> <span class="n">xml_file</span><span class="p">))</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cell_path</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Reading </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cell_path</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_labels</span><span class="p">)):</span>
-            <span class="n">MCDS</span><span class="p">[</span><span class="s2">&quot;discrete_cells&quot;</span><span class="p">][</span><span class="n">data_labels</span><span class="p">[</span><span class="n">col</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cell_data</span><span class="p">[</span><span class="n">col</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">MCDS</span><span class="p">[</span><span class="s2">"discrete_cells"</span><span class="p">][</span><span class="n">data_labels</span><span class="p">[</span><span class="n">col</span><span class="p">]]</span> <span class="o">=</span> <span class="n">cell_data</span><span class="p">[</span><span class="n">col</span><span class="p">,</span> <span class="p">:]</span>
 
         <span class="k">return</span> <span class="n">MCDS</span></div>
 
@@ -894,7 +894,7 @@
       
     </aside>
   </div>
-</div><script src="../../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/furo.js?v=46bd48cc"></script>

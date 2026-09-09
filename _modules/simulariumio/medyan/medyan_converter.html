@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.medyan.medyan_converter - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.medyan.medyan_converter - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -293,7 +293,7 @@
         <span class="n">progress_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">callback_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This object reads simulation trajectory outputs</span>
 <span class="sd">        from MEDYAN (http://medyan.org/)</span>
 <span class="sd">        and plot data and writes them in the JSON format used</span>
@@ -313,17 +313,17 @@
 <span class="sd">            If a progress_callback was provided, the period between updates</span>
 <span class="sd">            to be sent to the callback, in seconds</span>
 <span class="sd">            Default: 10</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">progress_callback</span><span class="p">,</span> <span class="n">callback_interval</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_draw_endpoints</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">object_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MedyanData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parse a line of a MEDYAN snapshot.traj output file</span>
 <span class="sd">        and determine whether to also draw the endpoints as spheres</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">object_type</span> <span class="o">==</span> <span class="s2">&quot;motor&quot;</span> <span class="ow">or</span> <span class="n">object_type</span> <span class="o">==</span> <span class="s2">&quot;linker&quot;</span><span class="p">:</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">object_type</span> <span class="o">==</span> <span class="s2">"motor"</span> <span class="ow">or</span> <span class="n">object_type</span> <span class="o">==</span> <span class="s2">"linker"</span><span class="p">:</span>
             <span class="n">type_name</span> <span class="o">=</span> <span class="n">MedyanConverter</span><span class="o">.</span><span class="n">_get_display_type_name</span><span class="p">(</span>
                 <span class="n">line</span><span class="p">,</span> <span class="n">object_type</span><span class="p">,</span> <span class="n">input_data</span>
             <span class="p">)</span>
@@ -335,10 +335,10 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_display_type_name</span><span class="p">(</span>
         <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">object_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MedyanData</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parse a line of a MEDYAN snapshot.traj output file</span>
 <span class="sd">        and return the type name to display for this agent type</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">raw_tid</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">raw_tid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">object_type</span><span class="p">]:</span>
             <span class="n">display_name</span> <span class="o">=</span> <span class="n">object_type</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">raw_tid</span><span class="p">)</span>
@@ -354,10 +354,10 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_data_dimensions</span><span class="p">(</span>
         <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MedyanData</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DimensionData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parse a MEDYAN snapshot.traj output file to get the max numbers</span>
 <span class="sd">        of subpoints per agent and agents per timestep, and number of timesteps</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">DimensionData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">agents</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">at_frame_start</span> <span class="o">=</span> <span class="kc">True</span>
@@ -373,17 +373,17 @@
                 <span class="n">agents</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">total_steps</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">at_frame_start</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">elif</span> <span class="s2">&quot;FILAMENT&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s2">&quot;LINKER&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s2">&quot;MOTOR&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="s2">"FILAMENT"</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s2">"LINKER"</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s2">"MOTOR"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="c1"># start of object</span>
-                <span class="k">if</span> <span class="s2">&quot;FILAMENT&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">&quot;filament&quot;</span>
-                <span class="k">elif</span> <span class="s2">&quot;LINKER&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">&quot;linker&quot;</span>
+                <span class="k">if</span> <span class="s2">"FILAMENT"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">"filament"</span>
+                <span class="k">elif</span> <span class="s2">"LINKER"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">"linker"</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">&quot;motor&quot;</span>
+                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">"motor"</span>
                 <span class="k">if</span> <span class="n">MedyanConverter</span><span class="o">.</span><span class="n">_draw_endpoints</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">object_type</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
                     <span class="n">agents</span> <span class="o">+=</span> <span class="mi">2</span>
-                <span class="k">if</span> <span class="s2">&quot;FILAMENT&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">"FILAMENT"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                     <span class="c1"># start of filament</span>
                     <span class="c1"># filaments N xyz points = 3 * N subpoints</span>
                     <span class="n">cols</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
@@ -409,32 +409,32 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">input_data</span><span class="p">:</span> <span class="n">MedyanData</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parse a MEDYAN snapshot.traj output file to get agents</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">lines</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">snapshot_file</span><span class="o">.</span><span class="n">get_contents</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">snapshot_file</span><span class="o">.</span><span class="n">get_contents</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
             <span class="n">dimensions</span> <span class="o">=</span> <span class="n">MedyanConverter</span><span class="o">.</span><span class="n">_parse_data_dimensions</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading input medyan data: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error reading input medyan data: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">from_dimensions</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
         <span class="n">time_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">at_frame_start</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">parsing_object</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">uids</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;filament&quot;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s2">&quot;linker&quot;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s2">&quot;motor&quot;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">"filament"</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">"linker"</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">"motor"</span><span class="p">:</span> <span class="p">{},</span>
         <span class="p">}</span>
         <span class="n">last_uid</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">tids</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;filament&quot;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s2">&quot;linker&quot;</span><span class="p">:</span> <span class="p">{},</span>
-            <span class="s2">&quot;motor&quot;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">"filament"</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">"linker"</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">"motor"</span><span class="p">:</span> <span class="p">{},</span>
         <span class="p">}</span>
         <span class="n">last_tid</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">object_type</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">object_type</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="n">draw_endpoints</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">line_count</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -450,15 +450,15 @@
                 <span class="n">result</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
                 <span class="n">at_frame_start</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">if</span> <span class="s2">&quot;FILAMENT&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s2">&quot;LINKER&quot;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s2">&quot;MOTOR&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"FILAMENT"</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s2">"LINKER"</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s2">"MOTOR"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="c1"># start of object</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">viz_types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">VIZ_TYPE</span><span class="o">.</span><span class="n">FIBER</span>
-                <span class="k">if</span> <span class="s2">&quot;FILAMENT&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">&quot;filament&quot;</span>
-                <span class="k">elif</span> <span class="s2">&quot;LINKER&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">&quot;linker&quot;</span>
+                <span class="k">if</span> <span class="s2">"FILAMENT"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">"filament"</span>
+                <span class="k">elif</span> <span class="s2">"LINKER"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">"linker"</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">&quot;motor&quot;</span>
+                    <span class="n">object_type</span> <span class="o">=</span> <span class="s2">"motor"</span>
                 <span class="n">draw_endpoints</span> <span class="o">=</span> <span class="n">MedyanConverter</span><span class="o">.</span><span class="n">_draw_endpoints</span><span class="p">(</span>
                     <span class="n">line</span><span class="p">,</span> <span class="n">object_type</span><span class="p">,</span> <span class="n">input_data</span>
                 <span class="p">)</span>
@@ -487,7 +487,7 @@
                     <span class="k">else</span> <span class="mf">1.0</span>
                 <span class="p">)</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">radius</span>
-                <span class="k">if</span> <span class="n">object_type</span> <span class="o">==</span> <span class="s2">&quot;filament&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">object_type</span> <span class="o">==</span> <span class="s2">"filament"</span><span class="p">:</span>
                     <span class="n">result</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
                         <span class="n">cols</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
                     <span class="p">)</span> <span class="o">*</span> <span class="n">SUBPOINT_VALUES_PER_ITEM</span><span class="p">(</span><span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">FIBER</span><span class="p">)</span>
@@ -504,7 +504,7 @@
                         <span class="n">result</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                             <span class="n">uids</span><span class="p">[</span><span class="n">object_type</span><span class="p">][</span><span class="n">raw_uid</span><span class="p">]</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
                         <span class="p">)</span>
-                        <span class="n">end_type</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; End&quot;</span>
+                        <span class="n">end_type</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="n">agent_index</span><span class="p">]</span> <span class="o">+</span> <span class="s2">" End"</span>
                         <span class="n">result</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end_type</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">end_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">display_data</span><span class="p">:</span>
                             <span class="n">result</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">end_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">DisplayData</span><span class="p">(</span>
@@ -545,10 +545,10 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">center_fiber_positions</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">scale_factor</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">MedyanData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return an object containing the data shaped for Simularium format</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading MEDYAN Data -------------&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Reading MEDYAN Data -------------"</span><span class="p">)</span>
         <span class="n">agent_data</span><span class="p">,</span> <span class="n">scale_factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_trajectory_data</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
         <span class="c1"># get display data (geometry and color)</span>
         <span class="k">for</span> <span class="n">object_type</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">:</span>
@@ -560,8 +560,8 @@
                 <span class="p">):</span>
                     <span class="n">display_data</span><span class="o">.</span><span class="n">display_type</span> <span class="o">=</span> <span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">FIBER</span>
                     <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">display_data</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> display type of &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">display_data</span><span class="o">.</span><span class="n">display_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> was changed to FIBER&quot;</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">display_data</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> display type of "</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">display_data</span><span class="o">.</span><span class="n">display_type</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2"> was changed to FIBER"</span>
                     <span class="p">)</span>
                 <span class="n">agent_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="n">display_data</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_data</span>
         <span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">scale_factor</span> <span class="o">=</span> <span class="n">scale_factor</span>
@@ -569,8 +569,8 @@
         <span class="k">return</span> <span class="n">TrajectoryData</span><span class="p">(</span>
             <span class="n">meta_data</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="p">,</span>
             <span class="n">agent_data</span><span class="o">=</span><span class="n">agent_data</span><span class="p">,</span>
-            <span class="n">time_units</span><span class="o">=</span><span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">),</span>
-            <span class="n">spatial_units</span><span class="o">=</span><span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;nm&quot;</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">scale_factor</span><span class="p">),</span>
+            <span class="n">time_units</span><span class="o">=</span><span class="n">UnitData</span><span class="p">(</span><span class="s2">"s"</span><span class="p">),</span>
+            <span class="n">spatial_units</span><span class="o">=</span><span class="n">UnitData</span><span class="p">(</span><span class="s2">"nm"</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">scale_factor</span><span class="p">),</span>
             <span class="n">plots</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">plots</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -606,7 +606,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

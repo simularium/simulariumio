@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.smoldyn.smoldyn_data - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.smoldyn.smoldyn_data - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -297,7 +297,7 @@
         <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">center</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This object holds simulation trajectory outputs</span>
 <span class="sd">        from Smoldyn (http://www.smoldyn.org) and plot data</span>
 
@@ -333,13 +333,13 @@
 <span class="sd">            If true, the spatial values of the data are centered</span>
 <span class="sd">            around the origin (0, 0, 0) during conversion</span>
 <span class="sd">            Default: True</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">smoldyn_file</span> <span class="o">=</span> <span class="n">smoldyn_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span> <span class="k">if</span> <span class="n">meta_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">MetaData</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">display_data</span> <span class="o">=</span> <span class="n">display_data</span> <span class="k">if</span> <span class="n">display_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span> <span class="k">if</span> <span class="n">time_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span> <span class="k">if</span> <span class="n">time_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">"s"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spatial_units</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">spatial_units</span> <span class="k">if</span> <span class="n">spatial_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
+            <span class="n">spatial_units</span> <span class="k">if</span> <span class="n">spatial_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span> <span class="k">if</span> <span class="n">plots</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span>
@@ -350,7 +350,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">smoldyn_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Create SmoldynData from a simularium JSON dict</span>
 
 <span class="sd">        Parameters</span>
@@ -359,46 +359,46 @@
 <span class="sd">            JSON dict containing values key value pairs representing the</span>
 <span class="sd">            data to be turned into a SmoldynData object. JSON representation</span>
 <span class="sd">            will be as defined in ui-templates/smoldyn_data.json</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="s2">&quot;fileContents&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">smoldyn_info</span>
-            <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;fileContents&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">&quot;fileContents&quot;</span><span class="p">]</span>
-                <span class="ow">and</span> <span class="s2">&quot;filePath&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">&quot;fileContents&quot;</span><span class="p">])</span>
+            <span class="s2">"fileContents"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">smoldyn_info</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="s2">"fileContents"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">"fileContents"</span><span class="p">]</span>
+                <span class="ow">and</span> <span class="s2">"filePath"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">"fileContents"</span><span class="p">])</span>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span>
-                <span class="s2">&quot;File contents or file path must be provided &quot;</span>
-                <span class="s2">&quot;to create a SmoldynData object&quot;</span>
+                <span class="s2">"File contents or file path must be provided "</span>
+                <span class="s2">"to create a SmoldynData object"</span>
             <span class="p">)</span>
         <span class="n">display_data</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="s2">&quot;displayData&quot;</span> <span class="ow">in</span> <span class="n">smoldyn_info</span><span class="p">:</span>
-            <span class="n">display_data</span> <span class="o">=</span> <span class="n">unpack_display_data</span><span class="p">(</span><span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">&quot;displayData&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s2">"displayData"</span> <span class="ow">in</span> <span class="n">smoldyn_info</span><span class="p">:</span>
+            <span class="n">display_data</span> <span class="o">=</span> <span class="n">unpack_display_data</span><span class="p">(</span><span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">"displayData"</span><span class="p">])</span>
 
         <span class="n">spatial_units</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="s2">&quot;spatialUnits&quot;</span> <span class="ow">in</span> <span class="n">smoldyn_info</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"spatialUnits"</span> <span class="ow">in</span> <span class="n">smoldyn_info</span><span class="p">:</span>
             <span class="c1"># spatial units defaults to meter in the UI</span>
             <span class="n">spatial_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
-                <span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">&quot;spatialUnits&quot;</span><span class="p">],</span>
-                <span class="n">default_name</span><span class="o">=</span><span class="s2">&quot;meter&quot;</span><span class="p">,</span>
+                <span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">"spatialUnits"</span><span class="p">],</span>
+                <span class="n">default_name</span><span class="o">=</span><span class="s2">"meter"</span><span class="p">,</span>
                 <span class="n">default_mag</span><span class="o">=</span><span class="mf">1.0</span>
             <span class="p">)</span>
 
         <span class="n">time_units</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="s2">&quot;timeUnits&quot;</span> <span class="ow">in</span> <span class="n">smoldyn_info</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"timeUnits"</span> <span class="ow">in</span> <span class="n">smoldyn_info</span><span class="p">:</span>
             <span class="c1"># time units default to seconds on UI</span>
             <span class="n">time_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
-                <span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">&quot;timeUnits&quot;</span><span class="p">],</span>
-                <span class="n">default_name</span><span class="o">=</span><span class="s2">&quot;second&quot;</span><span class="p">,</span>
+                <span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">"timeUnits"</span><span class="p">],</span>
+                <span class="n">default_name</span><span class="o">=</span><span class="s2">"second"</span><span class="p">,</span>
                 <span class="n">default_mag</span><span class="o">=</span><span class="mf">1.0</span>
             <span class="p">)</span>
 
-        <span class="n">meta_data</span> <span class="o">=</span> <span class="n">MetaData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">smoldyn_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metaData&quot;</span><span class="p">))</span>
-        <span class="n">meta_data</span><span class="o">.</span><span class="n">trajectory_title</span> <span class="o">=</span> <span class="n">smoldyn_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trajectoryTitle&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">meta_data</span> <span class="o">=</span> <span class="n">MetaData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">smoldyn_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"metaData"</span><span class="p">))</span>
+        <span class="n">meta_data</span><span class="o">.</span><span class="n">trajectory_title</span> <span class="o">=</span> <span class="n">smoldyn_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"trajectoryTitle"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">meta_data</span><span class="o">=</span><span class="n">meta_data</span><span class="p">,</span>
             <span class="n">smoldyn_file</span><span class="o">=</span><span class="n">InputFileData</span><span class="p">(</span>
-                <span class="n">file_contents</span><span class="o">=</span><span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">&quot;fileContents&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fileContents&quot;</span><span class="p">),</span>
-                <span class="n">file_path</span><span class="o">=</span><span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">&quot;fileContents&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filePath&quot;</span><span class="p">)</span>
+                <span class="n">file_contents</span><span class="o">=</span><span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">"fileContents"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"fileContents"</span><span class="p">),</span>
+                <span class="n">file_path</span><span class="o">=</span><span class="n">smoldyn_info</span><span class="p">[</span><span class="s2">"fileContents"</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"filePath"</span><span class="p">)</span>
             <span class="p">),</span>
             <span class="n">display_data</span><span class="o">=</span><span class="n">display_data</span><span class="p">,</span>
             <span class="n">time_units</span><span class="o">=</span><span class="n">time_units</span><span class="p">,</span>
@@ -450,7 +450,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

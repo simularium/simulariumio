@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.usd.usd_converter - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.usd.usd_converter - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -267,8 +267,8 @@
     <span class="kn">from</span><span class="w"> </span><span class="nn">pxr</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gf</span><span class="p">,</span> <span class="n">Usd</span><span class="p">,</span> <span class="n">UsdGeom</span><span class="p">,</span> <span class="n">UsdShade</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-        <span class="s2">&quot;OpenUSD is required for UsdConverter. &quot;</span>
-        <span class="s2">&quot;Install it with: pip install simulariumio[usd]&quot;</span>
+        <span class="s2">"OpenUSD is required for UsdConverter. "</span>
+        <span class="s2">"Install it with: pip install simulariumio[usd]"</span>
     <span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">DISPLAY_TYPE</span><span class="p">,</span> <span class="n">VIZ_TYPE</span>
@@ -293,7 +293,7 @@
         <span class="n">progress_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">callback_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This object reads simulation trajectory outputs</span>
 <span class="sd">        from USD (Universal Scene Description) files</span>
 <span class="sd">        and writes them in the format used</span>
@@ -313,7 +313,7 @@
 <span class="sd">            If a progress_callback was provided, the period between updates</span>
 <span class="sd">            to be sent to the callback, in seconds</span>
 <span class="sd">            Default: 10</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mesh_to_obj</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">progress_callback</span><span class="p">,</span> <span class="n">callback_interval</span><span class="p">)</span>
@@ -321,40 +321,40 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_geometry_hash</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">face_vertex_indices</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute a hash for mesh geometry to identify duplicates.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Compute a hash for mesh geometry to identify duplicates."""</span>
         <span class="n">pts_bytes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
         <span class="n">idx_bytes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">face_vertex_indices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">pts_bytes</span> <span class="o">+</span> <span class="n">idx_bytes</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_extract_color</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract hex color from a mesh prim&#39;s material binding.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Extract hex color from a mesh prim's material binding."""</span>
         <span class="n">binding</span> <span class="o">=</span> <span class="n">UsdShade</span><span class="o">.</span><span class="n">MaterialBindingAPI</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
         <span class="n">material</span> <span class="o">=</span> <span class="n">binding</span><span class="o">.</span><span class="n">GetDirectBinding</span><span class="p">()</span><span class="o">.</span><span class="n">GetMaterial</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">material</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">return</span> <span class="s2">""</span>
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">material</span><span class="o">.</span><span class="n">GetPrim</span><span class="p">()</span><span class="o">.</span><span class="n">GetChildren</span><span class="p">():</span>
             <span class="n">shader</span> <span class="o">=</span> <span class="n">UsdShade</span><span class="o">.</span><span class="n">Shader</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
-            <span class="n">color_input</span> <span class="o">=</span> <span class="n">shader</span><span class="o">.</span><span class="n">GetInput</span><span class="p">(</span><span class="s2">&quot;diffuseColor&quot;</span><span class="p">)</span>
+            <span class="n">color_input</span> <span class="o">=</span> <span class="n">shader</span><span class="o">.</span><span class="n">GetInput</span><span class="p">(</span><span class="s2">"diffuseColor"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">color_input</span><span class="p">:</span>
                 <span class="n">color</span> <span class="o">=</span> <span class="n">color_input</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="s2">&quot;#</span><span class="si">{:02x}{:02x}{:02x}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="k">return</span> <span class="s2">"#</span><span class="si">{:02x}{:02x}{:02x}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="nb">int</span><span class="p">(</span><span class="n">color</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">255</span><span class="p">),</span>
                         <span class="nb">int</span><span class="p">(</span><span class="n">color</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">255</span><span class="p">),</span>
                         <span class="nb">int</span><span class="p">(</span><span class="n">color</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">255</span><span class="p">),</span>
                     <span class="p">)</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">""</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_find_xform_prim</span><span class="p">(</span><span class="n">mesh_prim</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the prim that carries xform ops for a mesh.</span>
+<span class="w">        </span><span class="sd">"""Find the prim that carries xform ops for a mesh.</span>
 
 <span class="sd">        Blender exports USD with an Xform parent that holds</span>
 <span class="sd">        translate/rotate/scale while the child Mesh has none.</span>
 <span class="sd">        Other tools put xform ops directly on the Mesh prim.</span>
 <span class="sd">        This checks the mesh first, then its parent.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">xformable</span> <span class="o">=</span> <span class="n">UsdGeom</span><span class="o">.</span><span class="n">Xformable</span><span class="p">(</span><span class="n">mesh_prim</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">xformable</span><span class="o">.</span><span class="n">GetOrderedXformOps</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">mesh_prim</span>
@@ -367,7 +367,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_xform_op</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">op_suffix</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a specific xform op from a prim by op name suffix.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get a specific xform op from a prim by op name suffix."""</span>
         <span class="n">xformable</span> <span class="o">=</span> <span class="n">UsdGeom</span><span class="o">.</span><span class="n">Xformable</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">xformable</span><span class="o">.</span><span class="n">GetOrderedXformOps</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">GetOpName</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">op_suffix</span><span class="p">):</span>
@@ -381,32 +381,32 @@
         <span class="n">face_vertex_counts</span><span class="p">,</span>
         <span class="n">face_vertex_indices</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write mesh geometry to a Wavefront OBJ file.&quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Write mesh geometry to a Wavefront OBJ file."""</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;v </span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"v </span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">pt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">face_vertex_counts</span><span class="p">:</span>
                 <span class="c1"># OBJ uses 1-based indexing</span>
-                <span class="n">face</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">face</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                     <span class="nb">str</span><span class="p">(</span><span class="n">face_vertex_indices</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
                 <span class="p">)</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;f </span><span class="si">{</span><span class="n">face</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"f </span><span class="si">{</span><span class="n">face</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
                 <span class="n">idx</span> <span class="o">+=</span> <span class="n">count</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">UsdData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return a TrajectoryData object containing the USD data</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading USD Data -------------&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Reading USD Data -------------"</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">stage</span> <span class="o">=</span> <span class="n">Usd</span><span class="o">.</span><span class="n">Stage</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">usd_file_path</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading input USD data: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error reading input USD data: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">stage</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Error reading input USD data: could not open &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">input_data</span><span class="o">.</span><span class="n">usd_file_path</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                <span class="sa">f</span><span class="s2">"Error reading input USD data: could not open "</span>
+                <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">input_data</span><span class="o">.</span><span class="n">usd_file_path</span><span class="si">}</span><span class="s2">'"</span>
             <span class="p">)</span>
 
         <span class="c1"># Stage metadata</span>
@@ -435,13 +435,13 @@
         <span class="n">n_agents</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mesh_prims</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">n_agents</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No mesh prims found in USD file&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"No mesh prims found in USD file"</span><span class="p">)</span>
 
         <span class="c1"># Extract and deduplicate mesh geometry.</span>
         <span class="c1"># Non-uniform scale is baked into the vertices so the OBJ shape is</span>
         <span class="c1"># correct, then the result is normalized to fit in a unit sphere.</span>
-        <span class="c1"># Vertices are scaled relative to the prim&#39;s local origin (NOT</span>
-        <span class="c1"># re-centered) so that the viewer&#39;s `vertex * radius` scaling</span>
+        <span class="c1"># Vertices are scaled relative to the prim's local origin (NOT</span>
+        <span class="c1"># re-centered) so that the viewer's `vertex * radius` scaling</span>
         <span class="c1"># preserves the original pivot point — e.g. a cylinder whose origin</span>
         <span class="c1"># is at one end will still extend outward from that end.</span>
         <span class="n">hash_to_obj</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -454,7 +454,7 @@
             <span class="n">fvi</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">GetFaceVertexIndicesAttr</span><span class="p">()</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span>
 
             <span class="c1"># Bake scale into vertices (use first-frame scale)</span>
-            <span class="n">scale_op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_xform_op</span><span class="p">(</span><span class="n">xform_prims</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;scale&quot;</span><span class="p">)</span>
+            <span class="n">scale_op</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_xform_op</span><span class="p">(</span><span class="n">xform_prims</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">"scale"</span><span class="p">)</span>
             <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scale_op</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">start_frame</span><span class="p">))</span> <span class="k">if</span> <span class="n">scale_op</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
             <span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span>
 
@@ -463,7 +463,7 @@
                 <span class="n">max_dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">max_dist</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">pts</span> <span class="o">=</span> <span class="n">pts</span> <span class="o">/</span> <span class="n">max_dist</span>
-                <span class="n">obj_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;mesh_</span><span class="si">{</span><span class="n">obj_counter</span><span class="si">}</span><span class="s2">.obj&quot;</span>
+                <span class="n">obj_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"mesh_</span><span class="si">{</span><span class="n">obj_counter</span><span class="si">}</span><span class="s2">.obj"</span>
                 <span class="n">obj_counter</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="n">hash_to_obj</span><span class="p">[</span><span class="n">geo_hash</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj_filename</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_obj_data</span><span class="p">[</span><span class="n">obj_filename</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">fvc</span><span class="p">,</span> <span class="n">fvi</span><span class="p">)</span>
@@ -500,7 +500,7 @@
             <span class="n">max_dist</span> <span class="o">=</span> <span class="n">mesh_max_dists</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">obj_filename</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
             <span class="n">result</span><span class="o">.</span><span class="n">radii</span><span class="p">[:,</span> <span class="n">agent_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_dist</span> <span class="o">*</span> <span class="n">meters_per_unit</span>
 
-        <span class="c1"># Extract position and rotation per frame from each prim&#39;s composed</span>
+        <span class="c1"># Extract position and rotation per frame from each prim's composed</span>
         <span class="c1"># local transform, which correctly handles any combination of xform ops.</span>
         <span class="n">result</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">n_agents</span>
         <span class="k">for</span> <span class="n">frame_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_frames</span><span class="p">):</span>
@@ -519,7 +519,7 @@
                 <span class="p">)</span>
 
                 <span class="c1"># Rotation: Decompose(X, Y, Z) returns Euler angles matching</span>
-                <span class="c1"># THREE.js Euler(&#39;XYZ&#39;) — both use intrinsic XYZ convention.</span>
+                <span class="c1"># THREE.js Euler('XYZ') — both use intrinsic XYZ convention.</span>
                 <span class="n">euler_deg</span> <span class="o">=</span> <span class="n">gf_xform</span><span class="o">.</span><span class="n">GetRotation</span><span class="p">()</span><span class="o">.</span><span class="n">Decompose</span><span class="p">(</span>
                     <span class="n">Gf</span><span class="o">.</span><span class="n">Vec3d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
                     <span class="n">Gf</span><span class="o">.</span><span class="n">Vec3d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
@@ -578,7 +578,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">binary</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">validate_ids</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Save the trajectory as a .simularium file and write any</span>
 <span class="sd">        OBJ geometry files alongside it.</span>
 
@@ -592,8 +592,8 @@
 <span class="sd">        validate_ids: bool</span>
 <span class="sd">            additional validation to check agent ID size?</span>
 <span class="sd">            Default = True</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span>
+<span class="sd">        """</span>
+        <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"."</span>
         <span class="k">for</span> <span class="n">obj_filename</span><span class="p">,</span> <span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">fvc</span><span class="p">,</span> <span class="n">fvi</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">obj_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">obj_filename</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write_obj</span><span class="p">(</span><span class="n">obj_path</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">fvc</span><span class="p">,</span> <span class="n">fvi</span><span class="p">)</span>
@@ -632,7 +632,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

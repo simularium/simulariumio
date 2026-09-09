@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.readers.simularium_binary_reader - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.readers.simularium_binary_reader - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -279,38 +279,38 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">SimulariumBinaryReader</span><span class="p">:</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_binary_data_from_source</span><span class="p">(</span><span class="n">input_file</span><span class="p">:</span> <span class="n">InputFileData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BinaryFileData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Read a .simularium binary file or take binary input bytes and return</span>
 <span class="sd">        multiple views of the data</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">BinaryFileData</span><span class="p">()</span>
         <span class="n">result</span><span class="o">.</span><span class="n">byte_view</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">get_contents</span><span class="p">()</span>
         <span class="n">result</span><span class="o">.</span><span class="n">int_view</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">byte_view</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">byte_view</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">"I"</span><span class="p">)</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="s2">"&lt;"</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">float_view</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">byte_view</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">byte_view</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s2">"f"</span><span class="p">)</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">(</span><span class="s2">"&lt;"</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_parse_binary_header</span><span class="p">(</span><span class="n">data_as_bytes</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BinaryBlockInfo</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parse header of data from a .simularium binary file</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">id_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">FILE_IDENTIFIER</span><span class="p">)</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">id_length</span>
             <span class="o">+</span> <span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">HEADER_CONSTANT_N_VALUES</span> <span class="o">*</span> <span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">BYTES_PER_VALUE</span>
         <span class="p">)</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">binary_version</span><span class="p">,</span> <span class="n">n_blocks</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">id_length</span><span class="si">}</span><span class="s2">sIII&quot;</span><span class="p">,</span> <span class="n">data_as_bytes</span><span class="p">[:</span><span class="n">pos</span><span class="p">]</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">id_length</span><span class="si">}</span><span class="s2">sIII"</span><span class="p">,</span> <span class="n">data_as_bytes</span><span class="p">[:</span><span class="n">pos</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">binary_version</span> <span class="o">!=</span> <span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">VERSION</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span>
-                <span class="s2">&quot;Binary file parsing only implemented for &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;version &gt; 1 up to current version </span><span class="si">{</span><span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">VERSION</span><span class="si">}</span><span class="s2">, &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;found </span><span class="si">{</span><span class="n">binary_version</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="s2">"Binary file parsing only implemented for "</span>
+                <span class="sa">f</span><span class="s2">"version &gt; 1 up to current version </span><span class="si">{</span><span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">VERSION</span><span class="si">}</span><span class="s2">, "</span>
+                <span class="sa">f</span><span class="s2">"found </span><span class="si">{</span><span class="n">binary_version</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
         <span class="n">block_info_length</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">HEADER_N_VALUES_PER_BLOCK</span>
@@ -318,7 +318,7 @@
             <span class="o">*</span> <span class="n">n_blocks</span>
         <span class="p">)</span>
         <span class="n">block_info</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
-            <span class="n">n_blocks</span> <span class="o">*</span> <span class="s2">&quot;III&quot;</span><span class="p">,</span>
+            <span class="n">n_blocks</span> <span class="o">*</span> <span class="s2">"III"</span><span class="p">,</span>
             <span class="n">data_as_bytes</span><span class="p">[</span><span class="n">pos</span> <span class="p">:</span> <span class="n">pos</span> <span class="o">+</span> <span class="n">block_info_length</span><span class="p">],</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">BinaryBlockInfo</span><span class="p">(</span>
@@ -334,27 +334,27 @@
         <span class="n">block_info</span><span class="p">:</span> <span class="n">BinaryBlockInfo</span><span class="p">,</span>
         <span class="n">data_as_ints</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parse block header of data from a .simularium binary file</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">block_offset</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
             <span class="n">block_info</span><span class="o">.</span><span class="n">block_offsets</span><span class="p">[</span><span class="n">block_index</span><span class="p">]</span> <span class="o">/</span> <span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">BYTES_PER_VALUE</span>
         <span class="p">)</span>
         <span class="n">block_type</span> <span class="o">=</span> <span class="n">data_as_ints</span><span class="p">[</span><span class="n">block_offset</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">block_type</span> <span class="o">!=</span> <span class="n">block_info</span><span class="o">.</span><span class="n">block_types</span><span class="p">[</span><span class="n">block_index</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span>
-                <span class="s2">&quot;Block type is not consistent for block &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">block_index</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">block_type</span><span class="si">}</span><span class="s2"> from block != &quot;</span>
+                <span class="s2">"Block type is not consistent for block "</span>
+                <span class="sa">f</span><span class="s2">"#</span><span class="si">{</span><span class="n">block_index</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">block_type</span><span class="si">}</span><span class="s2"> from block != "</span>
                 <span class="o">+</span> <span class="n">block_info</span><span class="o">.</span><span class="n">block_types</span><span class="p">[</span><span class="n">block_index</span><span class="p">]</span>
-                <span class="o">+</span> <span class="s2">&quot; from header&quot;</span>
+                <span class="o">+</span> <span class="s2">" from header"</span>
             <span class="p">)</span>
         <span class="n">block_length</span> <span class="o">=</span> <span class="n">data_as_ints</span><span class="p">[</span><span class="n">block_offset</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">block_length</span> <span class="o">!=</span> <span class="n">block_info</span><span class="o">.</span><span class="n">block_lengths</span><span class="p">[</span><span class="n">block_index</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span>
-                <span class="s2">&quot;Block length is not consistent for block &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">block_index</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">block_length</span><span class="si">}</span><span class="s2"> from block != &quot;</span>
+                <span class="s2">"Block length is not consistent for block "</span>
+                <span class="sa">f</span><span class="s2">"#</span><span class="si">{</span><span class="n">block_index</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">block_length</span><span class="si">}</span><span class="s2"> from block != "</span>
                 <span class="o">+</span> <span class="n">block_info</span><span class="o">.</span><span class="n">block_lengths</span><span class="p">[</span><span class="n">block_index</span><span class="p">]</span>
-                <span class="o">+</span> <span class="s2">&quot; from header&quot;</span>
+                <span class="o">+</span> <span class="s2">" from header"</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">block_type</span>
 
@@ -364,9 +364,9 @@
         <span class="n">block_info</span><span class="p">:</span> <span class="n">BinaryBlockInfo</span><span class="p">,</span>
         <span class="n">data_as_bytes</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parse JSON block from a .simularium binary file</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">block_offset</span> <span class="o">=</span> <span class="n">block_info</span><span class="o">.</span><span class="n">block_offsets</span><span class="p">[</span><span class="n">block_index</span><span class="p">]</span>
         <span class="n">block_length</span> <span class="o">=</span> <span class="n">block_info</span><span class="o">.</span><span class="n">block_lengths</span><span class="p">[</span><span class="n">block_index</span><span class="p">]</span>
         <span class="n">block_header_n_bytes</span> <span class="o">=</span> <span class="p">(</span>
@@ -375,7 +375,7 @@
         <span class="n">block_offset</span> <span class="o">+=</span> <span class="n">block_header_n_bytes</span>
         <span class="n">block_length</span> <span class="o">-=</span> <span class="n">block_header_n_bytes</span>
         <span class="n">traj_info_bytes</span> <span class="o">=</span> <span class="n">data_as_bytes</span><span class="p">[</span><span class="n">block_offset</span> <span class="p">:</span> <span class="n">block_offset</span> <span class="o">+</span> <span class="n">block_length</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">traj_info_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\x00</span><span class="s2">&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">traj_info_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\x00</span><span class="s2">"</span><span class="p">))</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_binary_block_spatial_data</span><span class="p">(</span>
@@ -386,9 +386,9 @@
         <span class="n">data_as_floats</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">parse_data_as_binary</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parse spatial data binary block from a .simularium binary file</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">block_offset</span> <span class="o">=</span> <span class="p">(</span>
             <span class="nb">int</span><span class="p">(</span><span class="n">block_info</span><span class="o">.</span><span class="n">block_offsets</span><span class="p">[</span><span class="n">block_index</span><span class="p">]</span> <span class="o">/</span> <span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">BYTES_PER_VALUE</span><span class="p">)</span>
             <span class="o">+</span> <span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">BLOCK_HEADER_N_VALUES</span>
@@ -399,16 +399,16 @@
         <span class="n">frame_info</span> <span class="o">=</span> <span class="n">data_as_ints</span><span class="p">[</span><span class="n">block_offset</span> <span class="o">+</span> <span class="mi">2</span> <span class="p">:</span> <span class="n">current_frame_offset</span><span class="p">]</span>
         <span class="n">frame_lengths</span> <span class="o">=</span> <span class="n">frame_info</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">spatial_data_version</span><span class="p">,</span>
-            <span class="s2">&quot;msgType&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;bundleStart&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;bundleSize&quot;</span><span class="p">:</span> <span class="n">n_frames</span><span class="p">,</span>
-            <span class="s2">&quot;bundleData&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">"version"</span><span class="p">:</span> <span class="n">spatial_data_version</span><span class="p">,</span>
+            <span class="s2">"msgType"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">"bundleStart"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">"bundleSize"</span><span class="p">:</span> <span class="n">n_frames</span><span class="p">,</span>
+            <span class="s2">"bundleData"</span><span class="p">:</span> <span class="p">[],</span>
         <span class="p">}</span>
         <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_frames</span><span class="p">):</span>
             <span class="n">frame_index</span> <span class="o">=</span> <span class="n">data_as_ints</span><span class="p">[</span><span class="n">current_frame_offset</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;bundleStart&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_index</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">"bundleStart"</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_index</span>
             <span class="n">frame_n_values</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">frame_lengths</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">/</span> <span class="n">BINARY_SETTINGS</span><span class="o">.</span><span class="n">BYTES_PER_VALUE</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">parse_data_as_binary</span><span class="p">:</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">data_as_bytes</span><span class="p">[</span>
@@ -421,12 +421,12 @@
                         <span class="n">current_frame_offset</span> <span class="o">+</span> <span class="mi">3</span> <span class="p">:</span> <span class="n">current_frame_offset</span> <span class="o">+</span> <span class="n">frame_n_values</span>
                     <span class="p">]</span>
                 <span class="p">)</span>
-            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;bundleData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">"bundleData"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;frameNumber&quot;</span><span class="p">:</span> <span class="n">frame_index</span><span class="p">,</span>
-                    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">data_as_floats</span><span class="p">[</span><span class="n">current_frame_offset</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-                    <span class="s2">&quot;nAgents&quot;</span><span class="p">:</span> <span class="n">data_as_ints</span><span class="p">[</span><span class="n">current_frame_offset</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span>
-                    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+                    <span class="s2">"frameNumber"</span><span class="p">:</span> <span class="n">frame_index</span><span class="p">,</span>
+                    <span class="s2">"time"</span><span class="p">:</span> <span class="n">data_as_floats</span><span class="p">[</span><span class="n">current_frame_offset</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="s2">"nAgents"</span><span class="p">:</span> <span class="n">data_as_ints</span><span class="p">[</span><span class="n">current_frame_offset</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span>
+                    <span class="s2">"data"</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
                 <span class="p">}</span>
             <span class="p">)</span>
             <span class="n">current_frame_offset</span> <span class="o">+=</span> <span class="n">frame_n_values</span>
@@ -438,7 +438,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">load_binary</span><span class="p">(</span>
         <span class="n">input_file</span><span class="p">:</span> <span class="n">InputFileData</span><span class="p">,</span> <span class="n">parse_spatial_data_as_binary</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Load data from the input file in .simularium binary format and update it.</span>
 
 <span class="sd">        Parameters</span>
@@ -448,7 +448,7 @@
 <span class="sd">        parse_spatial_data_as_binary: bool (optional)</span>
 <span class="sd">            Leave spatial data binary encoded in returned dict?</span>
 <span class="sd">            Default = False</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">binary_data</span> <span class="o">=</span> <span class="n">SimulariumBinaryReader</span><span class="o">.</span><span class="n">_binary_data_from_source</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
         <span class="n">block_info</span> <span class="o">=</span> <span class="n">SimulariumBinaryReader</span><span class="o">.</span><span class="n">_parse_binary_header</span><span class="p">(</span><span class="n">binary_data</span><span class="o">.</span><span class="n">byte_view</span><span class="p">)</span>
@@ -459,30 +459,30 @@
                 <span class="n">block_index</span><span class="p">,</span> <span class="n">block_info</span><span class="p">,</span> <span class="n">binary_data</span><span class="o">.</span><span class="n">int_view</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">block_type_id</span> <span class="o">==</span> <span class="n">BINARY_BLOCK_TYPE</span><span class="o">.</span><span class="n">SPATIAL_DATA_JSON</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-                <span class="n">block_type</span> <span class="o">=</span> <span class="s2">&quot;spatialData&quot;</span>
-                <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;JSON&quot;</span>
+                <span class="n">block_type</span> <span class="o">=</span> <span class="s2">"spatialData"</span>
+                <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"JSON"</span>
             <span class="k">elif</span> <span class="n">block_type_id</span> <span class="o">==</span> <span class="n">BINARY_BLOCK_TYPE</span><span class="o">.</span><span class="n">TRAJ_INFO_JSON</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-                <span class="n">block_type</span> <span class="o">=</span> <span class="s2">&quot;trajectoryInfo&quot;</span>
-                <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;JSON&quot;</span>
+                <span class="n">block_type</span> <span class="o">=</span> <span class="s2">"trajectoryInfo"</span>
+                <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"JSON"</span>
             <span class="k">elif</span> <span class="n">block_type_id</span> <span class="o">==</span> <span class="n">BINARY_BLOCK_TYPE</span><span class="o">.</span><span class="n">PLOT_DATA_JSON</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-                <span class="n">block_type</span> <span class="o">=</span> <span class="s2">&quot;plotData&quot;</span>
-                <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;JSON&quot;</span>
+                <span class="n">block_type</span> <span class="o">=</span> <span class="s2">"plotData"</span>
+                <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"JSON"</span>
             <span class="k">elif</span> <span class="n">block_type_id</span> <span class="o">==</span> <span class="n">BINARY_BLOCK_TYPE</span><span class="o">.</span><span class="n">SPATIAL_DATA_BINARY</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-                <span class="n">block_type</span> <span class="o">=</span> <span class="s2">&quot;spatialData&quot;</span>
-                <span class="n">data_type</span> <span class="o">=</span> <span class="s2">&quot;binary&quot;</span>
+                <span class="n">block_type</span> <span class="o">=</span> <span class="s2">"spatialData"</span>
+                <span class="n">data_type</span> <span class="o">=</span> <span class="s2">"binary"</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Binary block type ID = </span><span class="si">{</span><span class="n">block_type_id</span><span class="si">}</span><span class="s2"> is not supported&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Binary block type ID = </span><span class="si">{</span><span class="n">block_type_id</span><span class="si">}</span><span class="s2"> is not supported"</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">block_type</span> <span class="ow">in</span> <span class="n">found_blocks</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;WARNING: More than one </span><span class="si">{</span><span class="n">block_type</span><span class="si">}</span><span class="s2"> block found, &quot;</span>
-                    <span class="s2">&quot;only using last one&quot;</span>
+                    <span class="sa">f</span><span class="s2">"WARNING: More than one </span><span class="si">{</span><span class="n">block_type</span><span class="si">}</span><span class="s2"> block found, "</span>
+                    <span class="s2">"only using last one"</span>
                 <span class="p">)</span>
-            <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;JSON&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s2">"JSON"</span><span class="p">:</span>
                 <span class="n">result</span><span class="p">[</span><span class="n">block_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">SimulariumBinaryReader</span><span class="o">.</span><span class="n">_binary_block_json</span><span class="p">(</span>
                     <span class="n">block_index</span><span class="p">,</span> <span class="n">block_info</span><span class="p">,</span> <span class="n">binary_data</span><span class="o">.</span><span class="n">byte_view</span>
                 <span class="p">)</span>
-            <span class="k">elif</span> <span class="n">block_type</span> <span class="o">==</span> <span class="s2">&quot;spatialData&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">block_type</span> <span class="o">==</span> <span class="s2">"spatialData"</span><span class="p">:</span>
                 <span class="n">result</span><span class="p">[</span><span class="n">block_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">SimulariumBinaryReader</span><span class="o">.</span><span class="n">_binary_block_spatial_data</span><span class="p">(</span>
                     <span class="n">block_index</span><span class="p">,</span>
                     <span class="n">block_info</span><span class="p">,</span>
@@ -493,7 +493,7 @@
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">DataError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Binary </span><span class="si">{</span><span class="n">block_type</span><span class="si">}</span><span class="s2"> block reading is not yet supported&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Binary </span><span class="si">{</span><span class="n">block_type</span><span class="si">}</span><span class="s2"> block reading is not yet supported"</span>
                 <span class="p">)</span>
             <span class="n">found_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
@@ -531,7 +531,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

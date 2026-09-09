@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.writers.json_writer - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.writers.json_writer - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -284,10 +284,10 @@
         <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
         <span class="n">type_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the spatialData&#39;s bundleData for a simulation</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Return the spatialData's bundleData for a simulation</span>
 <span class="sd">        of agents with subpoints, packing buffer with jagged data is slower</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">bundle_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">uids</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">used_unique_IDs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">))</span>
@@ -299,9 +299,9 @@
         <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
             <span class="c1"># timestep</span>
             <span class="n">frame_data</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">frame_data</span><span class="p">[</span><span class="s2">&quot;frameNumber&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_index</span>
-            <span class="n">frame_data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">time_index</span><span class="p">])</span>
-            <span class="n">frame_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">uids</span><span class="p">,</span> <span class="n">used_unique_IDs</span> <span class="o">=</span> <span class="n">Writer</span><span class="o">.</span><span class="n">_get_frame_buffer</span><span class="p">(</span>
+            <span class="n">frame_data</span><span class="p">[</span><span class="s2">"frameNumber"</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_index</span>
+            <span class="n">frame_data</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">time_index</span><span class="p">])</span>
+            <span class="n">frame_data</span><span class="p">[</span><span class="s2">"data"</span><span class="p">],</span> <span class="n">uids</span><span class="p">,</span> <span class="n">used_unique_IDs</span> <span class="o">=</span> <span class="n">Writer</span><span class="o">.</span><span class="n">_get_frame_buffer</span><span class="p">(</span>
                 <span class="n">time_index</span><span class="p">,</span> <span class="n">agent_data</span><span class="p">,</span> <span class="n">type_ids</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">uids</span><span class="p">,</span> <span class="n">used_unique_IDs</span>
             <span class="p">)</span>
             <span class="n">bundle_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frame_data</span><span class="p">)</span>
@@ -312,10 +312,10 @@
         <span class="n">agent_data</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
         <span class="n">type_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the spatialData&#39;s bundleData for a simulation</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Return the spatialData's bundleData for a simulation</span>
 <span class="sd">        of agents without subpoints, using list slicing for speed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">bundle_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">max_n_agents</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         <span class="n">ix_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">VALUES_PER_3D_POINT</span> <span class="o">*</span> <span class="n">max_n_agents</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
@@ -346,8 +346,8 @@
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">total_steps</span><span class="p">):</span>
             <span class="n">frame_data</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">frame_data</span><span class="p">[</span><span class="s2">&quot;frameNumber&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_index</span>
-            <span class="n">frame_data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">time_index</span><span class="p">])</span>
+            <span class="n">frame_data</span><span class="p">[</span><span class="s2">"frameNumber"</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_index</span>
+            <span class="n">frame_data</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">time_index</span><span class="p">])</span>
             <span class="n">n_agents</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">])</span>
             <span class="n">local_buf</span> <span class="o">=</span> <span class="n">frame_buf</span><span class="p">[:</span> <span class="p">(</span><span class="n">buffer_struct</span><span class="o">.</span><span class="n">MIN_VALUES_PER_AGENT</span><span class="p">)</span> <span class="o">*</span> <span class="n">n_agents</span><span class="p">]</span>
             <span class="n">local_buf</span><span class="p">[</span>
@@ -368,7 +368,7 @@
             <span class="n">local_buf</span><span class="p">[</span>
                 <span class="n">buffer_struct</span><span class="o">.</span><span class="n">R_INDEX</span> <span class="p">::</span> <span class="n">buffer_struct</span><span class="o">.</span><span class="n">MIN_VALUES_PER_AGENT</span>
             <span class="p">]</span> <span class="o">=</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">time_index</span><span class="p">,</span> <span class="p">:</span><span class="n">n_agents</span><span class="p">]</span>
-            <span class="n">frame_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">local_buf</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">frame_data</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]</span> <span class="o">=</span> <span class="n">local_buf</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
             <span class="n">bundle_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frame_data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">bundle_data</span>
 
@@ -376,14 +376,14 @@
 <a class="viewcode-back" href="../../../simulariumio.writers.html#simulariumio.writers.json_writer.JsonWriter.format_trajectory_data">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_trajectory_data</span><span class="p">(</span><span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the data shaped for Simularium JSON</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        trajectory_data: TrajectoryData</span>
 <span class="sd">            the data to format</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Converting Trajectory Data to JSON -------------&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Converting Trajectory Data to JSON -------------"</span><span class="p">)</span>
         <span class="n">trajectory_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">_check_subpoints_match_display_type</span><span class="p">()</span>
         <span class="n">simularium_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># trajectory info</span>
@@ -393,31 +393,31 @@
             <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">trajectory_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">times</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">type_ids</span><span class="p">,</span> <span class="n">type_mapping</span> <span class="o">=</span> <span class="n">trajectory_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">get_type_ids_and_mapping</span><span class="p">()</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Writer</span><span class="o">.</span><span class="n">_get_trajectory_info</span><span class="p">(</span>
+        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">]</span> <span class="o">=</span> <span class="n">Writer</span><span class="o">.</span><span class="n">_get_trajectory_info</span><span class="p">(</span>
             <span class="n">trajectory_data</span><span class="p">,</span> <span class="n">total_steps</span><span class="p">,</span> <span class="n">type_mapping</span>
         <span class="p">)</span>
         <span class="c1"># spatial data</span>
         <span class="n">spatialData</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">CURRENT_VERSION</span><span class="o">.</span><span class="n">SPATIAL_DATA</span><span class="p">,</span>
-            <span class="s2">&quot;msgType&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;bundleStart&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;bundleSize&quot;</span><span class="p">:</span> <span class="n">total_steps</span><span class="p">,</span>
+            <span class="s2">"version"</span><span class="p">:</span> <span class="n">CURRENT_VERSION</span><span class="o">.</span><span class="n">SPATIAL_DATA</span><span class="p">,</span>
+            <span class="s2">"msgType"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">"bundleStart"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">"bundleSize"</span><span class="p">:</span> <span class="n">total_steps</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">trajectory_data</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">spatialData</span><span class="p">[</span><span class="s2">&quot;bundleData&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">JsonWriter</span><span class="o">.</span><span class="n">_get_spatial_bundle_data_subpoints</span><span class="p">(</span>
+            <span class="n">spatialData</span><span class="p">[</span><span class="s2">"bundleData"</span><span class="p">]</span> <span class="o">=</span> <span class="n">JsonWriter</span><span class="o">.</span><span class="n">_get_spatial_bundle_data_subpoints</span><span class="p">(</span>
                 <span class="n">trajectory_data</span><span class="o">.</span><span class="n">agent_data</span><span class="p">,</span> <span class="n">type_ids</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">spatialData</span><span class="p">[</span>
-                <span class="s2">&quot;bundleData&quot;</span>
+                <span class="s2">"bundleData"</span>
             <span class="p">]</span> <span class="o">=</span> <span class="n">JsonWriter</span><span class="o">.</span><span class="n">_get_spatial_bundle_data_no_subpoints</span><span class="p">(</span>
                 <span class="n">trajectory_data</span><span class="o">.</span><span class="n">agent_data</span><span class="p">,</span> <span class="n">type_ids</span>
             <span class="p">)</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;spatialData&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spatialData</span>
+        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">"spatialData"</span><span class="p">]</span> <span class="o">=</span> <span class="n">spatialData</span>
         <span class="c1"># plot data</span>
-        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">&quot;plotData&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">CURRENT_VERSION</span><span class="o">.</span><span class="n">PLOT_DATA</span><span class="p">,</span>
-            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">trajectory_data</span><span class="o">.</span><span class="n">plots</span><span class="p">,</span>
+        <span class="n">simularium_data</span><span class="p">[</span><span class="s2">"plotData"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"version"</span><span class="p">:</span> <span class="n">CURRENT_VERSION</span><span class="o">.</span><span class="n">PLOT_DATA</span><span class="p">,</span>
+            <span class="s2">"data"</span><span class="p">:</span> <span class="n">trajectory_data</span><span class="o">.</span><span class="n">plots</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">return</span> <span class="n">simularium_data</span></div>
 
@@ -428,7 +428,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span>
         <span class="n">trajectory_data</span><span class="p">:</span> <span class="n">TrajectoryData</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">validate_ids</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Save the simularium data in .simularium JSON format</span>
 <span class="sd">        at the output path</span>
 <span class="sd">        Parameters</span>
@@ -439,21 +439,21 @@
 <span class="sd">            where to save the file</span>
 <span class="sd">        validate_ids: bool (optional)</span>
 <span class="sd">            additional validation to check agent ID size?</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">validate_ids</span><span class="p">:</span>
             <span class="n">Writer</span><span class="o">.</span><span class="n">_validate_ids</span><span class="p">(</span><span class="n">trajectory_data</span><span class="p">)</span>
         <span class="n">json_data</span> <span class="o">=</span> <span class="n">JsonWriter</span><span class="o">.</span><span class="n">format_trajectory_data</span><span class="p">(</span><span class="n">trajectory_data</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Writing JSON -------------&quot;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.simularium&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Writing JSON -------------"</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.simularium"</span><span class="p">,</span> <span class="s2">"w+"</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">json_data</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;saved to </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.simularium&quot;</span><span class="p">)</span></div>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"saved to </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">.simularium"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="JsonWriter.save_plot_data">
 <a class="viewcode-back" href="../../../simulariumio.writers.html#simulariumio.writers.json_writer.JsonWriter.save_plot_data">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">save_plot_data</span><span class="p">(</span><span class="n">plot_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Save the current plot data in JSON format</span>
 <span class="sd">        at the output path</span>
 <span class="sd">        Parameters</span>
@@ -462,12 +462,12 @@
 <span class="sd">            the data to save</span>
 <span class="sd">        output_path: str</span>
 <span class="sd">            where to save the file</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">_plot-data.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+<span class="sd">        """</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">_plot-data.json"</span><span class="p">,</span> <span class="s2">"w+"</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
                 <span class="p">{</span>
-                    <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">CURRENT_VERSION</span><span class="o">.</span><span class="n">PLOT_DATA</span><span class="p">,</span>
-                    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">plot_data</span><span class="p">,</span>
+                    <span class="s2">"version"</span><span class="p">:</span> <span class="n">CURRENT_VERSION</span><span class="o">.</span><span class="n">PLOT_DATA</span><span class="p">,</span>
+                    <span class="s2">"data"</span><span class="p">:</span> <span class="n">plot_data</span><span class="p">,</span>
                 <span class="p">},</span>
                 <span class="n">outfile</span><span class="p">,</span>
             <span class="p">)</span></div>
@@ -505,7 +505,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

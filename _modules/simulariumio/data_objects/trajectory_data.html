@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.data_objects.trajectory_data - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.data_objects.trajectory_data - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -298,7 +298,7 @@
         <span class="n">spatial_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This object holds simulation trajectory outputs</span>
 <span class="sd">        and plot data</span>
 
@@ -319,12 +319,12 @@
 <span class="sd">        plots : List[Dict[str, Any]] (optional)</span>
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent_data</span> <span class="o">=</span> <span class="n">agent_data</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span> <span class="k">if</span> <span class="n">time_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span> <span class="k">if</span> <span class="n">time_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">"s"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spatial_units</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">spatial_units</span> <span class="k">if</span> <span class="n">spatial_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
+            <span class="n">spatial_units</span> <span class="k">if</span> <span class="n">spatial_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span> <span class="k">if</span> <span class="n">plots</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
 
@@ -334,31 +334,31 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">from_buffer_data</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="n">buffer_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Create TrajectoryData from a simularium JSON dict containing buffers</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">display_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">display_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">meta_data</span><span class="o">=</span><span class="n">MetaData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]),</span>
+            <span class="n">meta_data</span><span class="o">=</span><span class="n">MetaData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">]),</span>
             <span class="n">agent_data</span><span class="o">=</span><span class="n">AgentData</span><span class="o">.</span><span class="n">from_buffer_data</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">,</span> <span class="n">display_data</span><span class="p">),</span>
             <span class="n">time_units</span><span class="o">=</span><span class="n">UnitData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
-                <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;timeUnits&quot;</span><span class="p">],</span> <span class="n">default_mag</span><span class="o">=</span><span class="mf">1.0</span>
+                <span class="n">buffer_data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">][</span><span class="s2">"timeUnits"</span><span class="p">],</span> <span class="n">default_mag</span><span class="o">=</span><span class="mf">1.0</span>
             <span class="p">),</span>
             <span class="n">spatial_units</span><span class="o">=</span><span class="n">UnitData</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
-                <span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;spatialUnits&quot;</span><span class="p">],</span> <span class="n">default_mag</span><span class="o">=</span><span class="mf">1.0</span>
+                <span class="n">buffer_data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">][</span><span class="s2">"spatialUnits"</span><span class="p">],</span> <span class="n">default_mag</span><span class="o">=</span><span class="mf">1.0</span>
             <span class="p">),</span>
-            <span class="n">plots</span><span class="o">=</span><span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;plotData&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
+            <span class="n">plots</span><span class="o">=</span><span class="n">buffer_data</span><span class="p">[</span><span class="s2">"plotData"</span><span class="p">][</span><span class="s2">"data"</span><span class="p">],</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TrajectoryData.append_agents">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.trajectory_data.TrajectoryData.append_agents">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">append_agents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_agents</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Concatenate the new AgentData with the current data,</span>
 <span class="sd">        generate new unique IDs and type IDs as needed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># create appropriate length buffer with current agents</span>
         <span class="n">current_dimensions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">get_dimensions</span><span class="p">()</span>
         <span class="n">added_dimensions</span> <span class="o">=</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">get_dimensions</span><span class="p">()</span>
@@ -377,7 +377,7 @@
         <span class="n">result</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[:,</span> <span class="n">start_i</span><span class="p">:</span><span class="n">end_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">n_subpoints</span><span class="p">[:]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_agents</span><span class="o">.</span><span class="n">subpoints</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">result</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[:,</span> <span class="n">start_i</span><span class="p">:</span><span class="n">end_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_agents</span><span class="o">.</span><span class="n">subpoints</span><span class="p">[:]</span>
-        <span class="c1"># generate new unique IDs and type IDs so they don&#39;t overlap</span>
+        <span class="c1"># generate new unique IDs and type IDs so they don't overlap</span>
         <span class="n">used_uids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agent_data</span><span class="o">.</span><span class="n">unique_ids</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
         <span class="n">new_uids</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">new_dimensions</span><span class="o">.</span><span class="n">total_steps</span><span class="p">):</span>
@@ -453,7 +453,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.nerdss.nerdss_converter - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.nerdss.nerdss_converter - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -278,13 +278,13 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">input_data</span><span class="p">:</span> <span class="n">NerdssData</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        input_data : NerdssData</span>
 <span class="sd">            An object containing info for reading</span>
 <span class="sd">            NERDSS simulation trajectory outputs and plot data</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read_pdb_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">NerdssData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
@@ -299,13 +299,13 @@
             <span class="n">u</span> <span class="o">=</span> <span class="n">Universe</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">path_to_pdb_files</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
             <span class="n">n_agents</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">positions</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">n_agents</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="n">dimensions</span><span class="o">.</span><span class="n">max_agents</span><span class="p">:</span>
-                <span class="c1"># each &quot;atom&quot; will be represented by 1 sphere agent and up</span>
+                <span class="c1"># each "atom" will be represented by 1 sphere agent and up</span>
                 <span class="c1"># to 1 fiber agent, representing a bond</span>
                 <span class="n">dimensions</span><span class="o">.</span><span class="n">max_agents</span> <span class="o">=</span> <span class="n">n_agents</span> <span class="o">*</span> <span class="mi">2</span>
             <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">file_name</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
                 <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;File name is expected to be the timestep, </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2"> is invalid&quot;</span>
+                    <span class="sa">f</span><span class="s2">"File name is expected to be the timestep, </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2"> is invalid"</span>
                 <span class="p">)</span>
             <span class="n">time_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
         <span class="n">time_steps</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
@@ -319,7 +319,7 @@
             <span class="c1"># we are assuming the time is the file name</span>
             <span class="n">universe</span> <span class="o">=</span> <span class="n">Universe</span><span class="p">(</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                    <span class="n">input_data</span><span class="o">.</span><span class="n">path_to_pdb_files</span><span class="p">,</span> <span class="n">time_steps</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;.pdb&quot;</span>
+                    <span class="n">input_data</span><span class="o">.</span><span class="n">path_to_pdb_files</span><span class="p">,</span> <span class="n">time_steps</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">+</span> <span class="s2">".pdb"</span>
                 <span class="p">)</span>
             <span class="p">)</span>
             <span class="n">atoms</span> <span class="o">=</span> <span class="n">universe</span><span class="o">.</span><span class="n">atoms</span>
@@ -331,9 +331,9 @@
             <span class="p">)</span>
 
             <span class="n">agent_data</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bonds&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="s2">&quot;bonds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DisplayData</span><span class="p">(</span>
-                    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bonds&quot;</span><span class="p">,</span> <span class="n">display_type</span><span class="o">=</span><span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">FIBER</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.5</span>
+            <span class="k">if</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"bonds"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">[</span><span class="s2">"bonds"</span><span class="p">]</span> <span class="o">=</span> <span class="n">DisplayData</span><span class="p">(</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">"bonds"</span><span class="p">,</span> <span class="n">display_type</span><span class="o">=</span><span class="n">DISPLAY_TYPE</span><span class="o">.</span><span class="n">FIBER</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.5</span>
                 <span class="p">)</span>
 
             <span class="k">for</span> <span class="n">residue</span> <span class="ow">in</span> <span class="n">universe</span><span class="o">.</span><span class="n">residues</span><span class="p">:</span>
@@ -344,7 +344,7 @@
                 <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">residue</span><span class="o">.</span><span class="n">atoms</span><span class="p">:</span>
                     <span class="n">name</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">name</span>
                     <span class="n">atom_index</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">index</span>
-                    <span class="n">full_name</span> <span class="o">=</span> <span class="n">resname</span> <span class="o">+</span> <span class="s2">&quot;#&quot;</span> <span class="o">+</span> <span class="n">name</span>
+                    <span class="n">full_name</span> <span class="o">=</span> <span class="n">resname</span> <span class="o">+</span> <span class="s2">"#"</span> <span class="o">+</span> <span class="n">name</span>
                     <span class="n">position</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">position</span>
                     <span class="n">agent_data</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">_get_display_type_name_from_raw</span><span class="p">(</span>
@@ -368,8 +368,8 @@
 
                     <span class="c1"># Draw intra-molecular bonds as a fiber between COM (center of</span>
                     <span class="c1"># mass) and binding sites each residue</span>
-                    <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;ref&quot;</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;COM&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">"ref"</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"COM"</span><span class="p">:</span>
                             <span class="c1"># Found the center of mass!</span>
                             <span class="n">com_pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
                             <span class="k">for</span> <span class="n">bond_site</span> <span class="ow">in</span> <span class="n">bond_site_pos</span><span class="p">:</span>
@@ -381,13 +381,13 @@
                             <span class="n">bond_coords</span> <span class="o">=</span> <span class="n">com_pos</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
                             <span class="n">fiber_positions</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bond_coords</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
-                            <span class="c1"># Haven&#39;t found COM, so keep track of this bond site to</span>
+                            <span class="c1"># Haven't found COM, so keep track of this bond site to</span>
                             <span class="c1"># connect to COM when we find it</span>
                             <span class="n">bond_site_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">position</span><span class="p">))</span>
 
         <span class="c1"># Add bond data into agent_data</span>
         <span class="n">bonds_display_data</span> <span class="o">=</span> <span class="n">TrajectoryConverter</span><span class="o">.</span><span class="n">_get_display_data_for_agent</span><span class="p">(</span>
-            <span class="s2">&quot;bonds&quot;</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span>
+            <span class="s2">"bonds"</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span>
         <span class="p">)</span>
         <span class="n">next_uid</span> <span class="o">=</span> <span class="n">agent_data</span><span class="o">.</span><span class="n">unique_ids</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
 
@@ -416,10 +416,10 @@
         <span class="k">return</span> <span class="n">agent_data</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">NerdssData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return a TrajectoryData object containing the NERDSS data</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading PDB Data -------------&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Reading PDB Data -------------"</span><span class="p">)</span>
         <span class="n">agent_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_pdb_files</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
         <span class="c1"># get display data (geometry and color)</span>
         <span class="k">for</span> <span class="n">tid</span> <span class="ow">in</span> <span class="n">input_data</span><span class="o">.</span><span class="n">display_data</span><span class="p">:</span>
@@ -468,7 +468,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

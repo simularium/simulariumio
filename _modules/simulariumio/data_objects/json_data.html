@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.data_objects.json_data - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.data_objects.json_data - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -267,24 +267,24 @@
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">JsonData</span><span class="p">(</span><span class="n">SimulariumFileData</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_contents</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This object holds JSON encoded simulation trajectory file&#39;s</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        This object holds JSON encoded simulation trajectory file's</span>
 <span class="sd">        data while staying close to the original file format</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        file_contents : str</span>
 <span class="sd">            A string of the data of an open .simularium file</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">file_contents</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span> <span class="o">=</span> <span class="n">JsonData</span><span class="o">.</span><span class="n">_get_n_agents</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_n_agents</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="c1"># return number of agents in each timestamp as a list</span>
         <span class="n">n_agents</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">bundle_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;spatialData&quot;</span><span class="p">][</span><span class="s2">&quot;bundleData&quot;</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;totalSteps&quot;</span><span class="p">]):</span>
-            <span class="n">frame_data</span> <span class="o">=</span> <span class="n">bundle_data</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+        <span class="n">bundle_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"spatialData"</span><span class="p">][</span><span class="s2">"bundleData"</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">time_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">][</span><span class="s2">"totalSteps"</span><span class="p">]):</span>
+            <span class="n">frame_data</span> <span class="o">=</span> <span class="n">bundle_data</span><span class="p">[</span><span class="n">time_index</span><span class="p">][</span><span class="s2">"data"</span><span class="p">]</span>
             <span class="n">agent_index</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">buffer_index</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">while</span> <span class="n">buffer_index</span> <span class="o">+</span> <span class="n">V1_SPATIAL_BUFFER_STRUCT</span><span class="o">.</span><span class="n">NSP_INDEX</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">frame_data</span><span class="p">):</span>
@@ -300,40 +300,40 @@
 <div class="viewcode-block" id="JsonData.get_frame_at_index">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_frame_at_index">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_frame_at_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FrameData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return frame data for frame at index. If there is no frame at the index,</span>
 <span class="sd">        return None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">frame_number</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">frame_number</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;spatialData&quot;</span><span class="p">][</span><span class="s2">&quot;bundleData&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"spatialData"</span><span class="p">][</span><span class="s2">"bundleData"</span><span class="p">]</span>
         <span class="p">):</span>
             <span class="c1"># invalid frame number requested</span>
             <span class="k">return</span> <span class="kc">None</span>
 
-        <span class="n">frame_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;spatialData&quot;</span><span class="p">][</span><span class="s2">&quot;bundleData&quot;</span><span class="p">][</span><span class="n">frame_number</span><span class="p">]</span>
+        <span class="n">frame_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"spatialData"</span><span class="p">][</span><span class="s2">"bundleData"</span><span class="p">][</span><span class="n">frame_number</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">FrameData</span><span class="p">(</span>
             <span class="n">frame_number</span><span class="o">=</span><span class="n">frame_number</span><span class="p">,</span>
             <span class="n">n_agents</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">[</span><span class="n">frame_number</span><span class="p">],</span>
-            <span class="n">time</span><span class="o">=</span><span class="n">frame_data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
-            <span class="n">data</span><span class="o">=</span><span class="n">frame_data</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
+            <span class="n">time</span><span class="o">=</span><span class="n">frame_data</span><span class="p">[</span><span class="s2">"time"</span><span class="p">],</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">frame_data</span><span class="p">[</span><span class="s2">"data"</span><span class="p">],</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="JsonData.get_index_for_time">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_index_for_time">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_index_for_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return index for frame closest to a given timestamp</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">closest_frame</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="n">min_dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;spatialData&quot;</span><span class="p">][</span><span class="s2">&quot;bundleData&quot;</span><span class="p">]:</span>
-            <span class="n">dist</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">time</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"spatialData"</span><span class="p">][</span><span class="s2">"bundleData"</span><span class="p">]:</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">frame</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span> <span class="o">-</span> <span class="n">time</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="n">min_dist</span><span class="p">:</span>
                 <span class="n">min_dist</span> <span class="o">=</span> <span class="n">dist</span>
-                <span class="n">closest_frame</span> <span class="o">=</span> <span class="n">frame</span><span class="p">[</span><span class="s2">&quot;frameNumber&quot;</span><span class="p">]</span>
+                <span class="n">closest_frame</span> <span class="o">=</span> <span class="n">frame</span><span class="p">[</span><span class="s2">"frameNumber"</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># if dist is increasing, we&#39;ve passed the closest frame</span>
+                <span class="c1"># if dist is increasing, we've passed the closest frame</span>
                 <span class="k">break</span>
 
         <span class="c1"># frame index must be &lt;= self.get_num_frames() - 1</span>
@@ -343,46 +343,46 @@
 <div class="viewcode-block" id="JsonData.get_trajectory_info">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_trajectory_info">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_trajectory_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return trajectory info block for trajectory, as dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]</span></div>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="JsonData.get_plot_data">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_plot_data">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_plot_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return plot data block for trajectory, as dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;plotData&quot;</span><span class="p">]</span></div>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"plotData"</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="JsonData.get_trajectory_data_object">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_trajectory_data_object">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_trajectory_data_object</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the data of the trajectory, as a TrajectoryData object</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">TrajectoryData</span><span class="o">.</span><span class="n">from_buffer_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="JsonData.get_file_contents">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_file_contents">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_file_contents</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return raw file data, as a dict</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
 
 
 <div class="viewcode-block" id="JsonData.get_num_frames">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.json_data.JsonData.get_num_frames">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_num_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return number of frames in the trajectory</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;spatialData&quot;</span><span class="p">][</span><span class="s2">&quot;bundleData&quot;</span><span class="p">])</span></div>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"spatialData"</span><span class="p">][</span><span class="s2">"bundleData"</span><span class="p">])</span></div>
 </div>
 
 </pre></div>
@@ -417,7 +417,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

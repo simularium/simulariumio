@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.file_converter - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.file_converter - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -278,24 +278,24 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="p">:</span> <span class="n">InputFileData</span><span class="p">,</span> <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This object loads data from the input file in .simularium format.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        input_file: InputFileData</span>
 <span class="sd">            A InputFileData object containing .simularium data to load</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">display_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">display_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">input_file</span><span class="o">.</span><span class="n">_is_binary</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading Simularium binary -------------&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Reading Simularium binary -------------"</span><span class="p">)</span>
             <span class="n">buffer_data</span> <span class="o">=</span> <span class="n">SimulariumBinaryReader</span><span class="o">.</span><span class="n">load_binary</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading Simularium JSON -------------&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Reading Simularium JSON -------------"</span><span class="p">)</span>
             <span class="n">buffer_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">input_file</span><span class="o">.</span><span class="n">get_contents</span><span class="p">())</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="nb">int</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;version&quot;</span><span class="p">])</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">][</span><span class="s2">"version"</span><span class="p">])</span>
             <span class="o">&lt;</span> <span class="n">CURRENT_VERSION</span><span class="o">.</span><span class="n">TRAJECTORY_INFO</span>
         <span class="p">):</span>
             <span class="n">buffer_data</span> <span class="o">=</span> <span class="n">FileConverter</span><span class="o">.</span><span class="n">update_trajectory_info_version</span><span class="p">(</span><span class="n">buffer_data</span><span class="p">)</span>
@@ -303,43 +303,43 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_update_trajectory_info_v1_to_v2</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Update the trajectory info block from v1 to v2</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># units</span>
-        <span class="k">if</span> <span class="s2">&quot;spatialUnitFactorMeters&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="s2">"spatialUnitFactorMeters"</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">]:</span>
             <span class="n">spatial_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span>
-                <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;spatialUnitFactorMeters&quot;</span><span class="p">]</span>
+                <span class="s2">"m"</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">][</span><span class="s2">"spatialUnitFactorMeters"</span><span class="p">]</span>
             <span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;spatialUnitFactorMeters&quot;</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"spatialUnitFactorMeters"</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">spatial_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;m&quot;</span><span class="p">)</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;spatialUnits&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span> <span class="n">spatial_units</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">spatial_units</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">spatial_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">][</span><span class="s2">"spatialUnits"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"magnitude"</span><span class="p">:</span> <span class="n">spatial_units</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="s2">"name"</span><span class="p">:</span> <span class="n">spatial_units</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">time_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;timeUnits&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span> <span class="n">time_units</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">time_units</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">time_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">"s"</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">][</span><span class="s2">"timeUnits"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"magnitude"</span><span class="p">:</span> <span class="n">time_units</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="s2">"name"</span><span class="p">:</span> <span class="n">time_units</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">][</span><span class="s2">"version"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="n">data</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_update_trajectory_info_v2_to_v3</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Update the trajectory info block from v2 to v3</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># all the new fields from v2 to v3 are optional</span>
-        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">][</span><span class="s2">"version"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
         <span class="k">return</span> <span class="n">data</span>
 
 <div class="viewcode-block" id="FileConverter.update_trajectory_info_version">
 <a class="viewcode-back" href="../../simulariumio.html#simulariumio.file_converter.FileConverter.update_trajectory_info_version">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">update_trajectory_info_version</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Update the trajectory info block</span>
 <span class="sd">        to match the current version</span>
 
@@ -348,16 +348,16 @@
 <span class="sd">        data: Dict[str, Any]</span>
 <span class="sd">            A .simularium JSON file loaded in memory as a Dict.</span>
 <span class="sd">            This object will be mutated, not copied.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">original_version</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;trajectoryInfo&quot;</span><span class="p">][</span><span class="s2">&quot;version&quot;</span><span class="p">])</span>
+<span class="sd">        """</span>
+        <span class="n">original_version</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"trajectoryInfo"</span><span class="p">][</span><span class="s2">"version"</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">original_version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">FileConverter</span><span class="o">.</span><span class="n">_update_trajectory_info_v1_to_v2</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">FileConverter</span><span class="o">.</span><span class="n">_update_trajectory_info_v2_to_v3</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">original_version</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">FileConverter</span><span class="o">.</span><span class="n">_update_trajectory_info_v2_to_v3</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Updated TrajectoryInfo v</span><span class="si">{</span><span class="n">original_version</span><span class="si">}</span><span class="s2"> -&gt; &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;v</span><span class="si">{</span><span class="n">CURRENT_VERSION</span><span class="o">.</span><span class="n">TRAJECTORY_INFO</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Updated TrajectoryInfo v</span><span class="si">{</span><span class="n">original_version</span><span class="si">}</span><span class="s2"> -&gt; "</span>
+            <span class="sa">f</span><span class="s2">"v</span><span class="si">{</span><span class="n">CURRENT_VERSION</span><span class="o">.</span><span class="n">TRAJECTORY_INFO</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span></div>
 </div>
@@ -394,7 +394,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

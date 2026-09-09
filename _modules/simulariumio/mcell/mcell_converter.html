@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.mcell.mcell_converter - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.mcell.mcell_converter - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -295,7 +295,7 @@
         <span class="n">progress_callback</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">callback_interval</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This object reads simulation trajectory outputs</span>
 <span class="sd">        from MCell (https://mcell.org/)</span>
 <span class="sd">        and plot data and writes them in the JSON format used</span>
@@ -315,22 +315,22 @@
 <span class="sd">            If a progress_callback was provided, the period between updates</span>
 <span class="sd">            to be sent to the callback, in seconds</span>
 <span class="sd">            Default: 10</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="n">progress_callback</span><span class="p">,</span> <span class="n">callback_interval</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_normalize</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        normalize a vector</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">v</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_rotate</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        rotate a vector around axis by angle (radians)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">rotation</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">expm</span><span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">VALUES_PER_3D_POINT</span><span class="p">),</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="o">*</span> <span class="n">angle</span>
@@ -340,22 +340,22 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_perpendicular_vector</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get a unit vector perpendicular to the given vector</span>
 <span class="sd">        rotated by the given angle</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot calculate perpendicular vector to zero vector&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Cannot calculate perpendicular vector to zero vector"</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
         <span class="n">u</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]))</span>
         <span class="k">return</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_rotate</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_rotation_matrix</span><span class="p">(</span><span class="n">v1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">v2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Orthonormalize and cross the vectors to get a rotation matrix</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">v1</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
         <span class="n">v2</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
         <span class="n">v2</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_normalize</span><span class="p">(</span><span class="n">v2</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v1</span><span class="p">))</span> <span class="o">*</span> <span class="n">v1</span><span class="p">)</span>
@@ -370,22 +370,22 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_euler_angles</span><span class="p">(</span><span class="n">normal</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get euler angles in degrees representing a rotation defined by the basis</span>
 <span class="sd">        between the given normal and a perpendicular vector rotated at angle</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">perpendicular</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_get_perpendicular_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
         <span class="n">rotation</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_get_rotation_matrix</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">perpendicular</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Rotation</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span><span class="o">.</span><span class="n">as_euler</span><span class="p">(</span><span class="s2">&quot;xyz&quot;</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Rotation</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span><span class="o">.</span><span class="n">as_euler</span><span class="p">(</span><span class="s2">"xyz"</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_rotation_euler_angles_for_normals</span><span class="p">(</span>
         <span class="n">normals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Generate an orientation around each normal and return euler angles</span>
 <span class="sd">        Either use the given angle or random ones</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">angle</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">normals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
@@ -398,41 +398,41 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_should_read_cellblender_binary_file</span><span class="p">(</span>
         <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nth_timestep_to_read</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Is this a cellblender binary file?</span>
 <span class="sd">        And should this frame of data be included in the visualization?</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s2">&quot;ascii&quot;</span> <span class="ow">in</span> <span class="n">file_name</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.dat&quot;</span><span class="p">):</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="s2">"ascii"</span> <span class="ow">in</span> <span class="n">file_name</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">".dat"</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="n">split_file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-        <span class="n">time_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split_file_name</span><span class="p">[</span><span class="n">split_file_name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;dat&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">split_file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+        <span class="n">time_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split_file_name</span><span class="p">[</span><span class="n">split_file_name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"dat"</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">time_index</span> <span class="o">%</span> <span class="n">nth_timestep_to_read</span> <span class="o">==</span> <span class="mi">0</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_count_agents_in_binary_cellblender_viz_frame</span><span class="p">(</span><span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Count the number of agents in the frame of cellblender data</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">total_mols</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mol_file</span><span class="p">:</span>
-            <span class="c1"># first 4 bytes must contain value &#39;1&#39;</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">mol_file</span><span class="p">:</span>
+            <span class="c1"># first 4 bytes must contain value '1'</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"I"</span><span class="p">)</span>
             <span class="n">b</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">assert</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
             <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="c1"># advance through file to get</span>
                     <span class="c1"># number of instances of each molecule type</span>
-                    <span class="n">n_chars_type_name</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+                    <span class="n">n_chars_type_name</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"B"</span><span class="p">)</span>
                     <span class="n">n_chars_type_name</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="n">mol_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">n_chars_type_name</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_CUR</span><span class="p">)</span>
-                    <span class="n">is_surface_mol</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+                    <span class="n">is_surface_mol</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"B"</span><span class="p">)</span>
                     <span class="n">is_surface_mol</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="n">is_surface_mol</span> <span class="o">=</span> <span class="n">is_surface_mol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
-                    <span class="n">n_data</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">)</span>
+                    <span class="n">n_data</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"I"</span><span class="p">)</span>
                     <span class="n">n_data</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="n">n_data</span> <span class="o">=</span> <span class="n">n_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"f"</span><span class="p">)</span>
                     <span class="n">data</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="n">n_data</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">is_surface_mol</span><span class="p">:</span>
                         <span class="n">data</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="n">n_data</span><span class="p">)</span>
@@ -446,10 +446,10 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_dimensions_of_cellblender_data</span><span class="p">(</span>
         <span class="n">path_to_binary_files</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nth_timestep_to_read</span><span class="p">:</span> <span class="nb">int</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DimensionData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parse cellblender binary files to get the number of timesteps</span>
 <span class="sd">        and maximum agents per timestep</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">DimensionData</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path_to_binary_files</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_should_read_cellblender_binary_file</span><span class="p">(</span>
@@ -472,22 +472,22 @@
         <span class="n">input_data</span><span class="p">:</span> <span class="n">McellData</span><span class="p">,</span>
         <span class="n">result</span><span class="p">:</span> <span class="n">AgentData</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AgentData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Read MCell binary visualization files</span>
 
 <span class="sd">        code based on cellblender/cellblender_mol_viz.py function mol_viz_file_read</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mol_file</span><span class="p">:</span>
-            <span class="c1"># first 4 bytes must contain value &#39;1&#39;</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">mol_file</span><span class="p">:</span>
+            <span class="c1"># first 4 bytes must contain value '1'</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"I"</span><span class="p">)</span>
             <span class="n">b</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">assert</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
             <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="c1"># get type name</span>
-                    <span class="n">n_chars_type_name</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+                    <span class="n">n_chars_type_name</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"B"</span><span class="p">)</span>
                     <span class="n">n_chars_type_name</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-                    <span class="n">type_name_array</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+                    <span class="n">type_name_array</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"B"</span><span class="p">)</span>
                     <span class="n">type_name_array</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="n">n_chars_type_name</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                     <span class="n">raw_type_name</span> <span class="o">=</span> <span class="n">type_name_array</span><span class="o">.</span><span class="n">tobytes</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
                     <span class="n">display_type_name</span> <span class="o">=</span> <span class="p">(</span>
@@ -496,19 +496,19 @@
                         <span class="p">)</span>
                     <span class="p">)</span>
                     <span class="c1"># get positions and rotations</span>
-                    <span class="n">is_surface_mol</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">)</span>
+                    <span class="n">is_surface_mol</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"B"</span><span class="p">)</span>
                     <span class="n">is_surface_mol</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="n">is_surface_mol</span> <span class="o">=</span> <span class="n">is_surface_mol</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
-                    <span class="n">n_data</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;I&quot;</span><span class="p">)</span>
+                    <span class="n">n_data</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"I"</span><span class="p">)</span>
                     <span class="n">n_data</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
                     <span class="n">n_data</span> <span class="o">=</span> <span class="n">n_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                     <span class="n">n_mols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_data</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span>
-                    <span class="n">positions</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)</span>
+                    <span class="n">positions</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"f"</span><span class="p">)</span>
                     <span class="n">positions</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="n">n_data</span><span class="p">)</span>
                     <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
                     <span class="n">positions</span> <span class="o">=</span> <span class="n">positions</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_mols</span><span class="p">,</span> <span class="n">VALUES_PER_3D_POINT</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">is_surface_mol</span><span class="p">:</span>
-                        <span class="n">normals</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)</span>
+                        <span class="n">normals</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">"f"</span><span class="p">)</span>
                         <span class="n">normals</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">mol_file</span><span class="p">,</span> <span class="n">n_data</span><span class="p">)</span>
                         <span class="n">normals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">normals</span><span class="p">)</span>
                         <span class="n">normals</span> <span class="o">=</span> <span class="n">normals</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_mols</span><span class="p">,</span> <span class="n">VALUES_PER_3D_POINT</span><span class="p">)</span>
@@ -541,7 +541,7 @@
                             <span class="n">agent_display_data</span><span class="o">.</span><span class="n">radius</span>
                             <span class="k">if</span> <span class="n">agent_display_data</span>
                             <span class="ow">and</span> <span class="n">agent_display_data</span><span class="o">.</span><span class="n">radius</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                            <span class="k">else</span> <span class="n">molecule_info</span><span class="p">[</span><span class="n">raw_type_name</span><span class="p">][</span><span class="s2">&quot;display&quot;</span><span class="p">][</span><span class="s2">&quot;scale&quot;</span><span class="p">]</span>
+                            <span class="k">else</span> <span class="n">molecule_info</span><span class="p">[</span><span class="n">raw_type_name</span><span class="p">][</span><span class="s2">"display"</span><span class="p">][</span><span class="s2">"scale"</span><span class="p">]</span>
                         <span class="p">)</span>
                         <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_mols</span><span class="p">)</span>
                     <span class="p">)</span>
@@ -560,15 +560,15 @@
         <span class="n">molecule_list</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
         <span class="n">input_data</span><span class="p">:</span> <span class="n">McellData</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">AgentData</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Parse cellblender binary files to get spatial data</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">dimensions</span> <span class="o">=</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_get_dimensions_of_cellblender_data</span><span class="p">(</span>
                 <span class="n">input_data</span><span class="o">.</span><span class="n">path_to_binary_files</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">nth_timestep_to_read</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading Mcell binary files: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error reading Mcell binary files: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">AgentData</span><span class="o">.</span><span class="n">from_dimensions</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span>
         <span class="c1"># get metadata for each agent type</span>
@@ -577,14 +577,14 @@
         <span class="n">step_count</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">for</span> <span class="n">molecule</span> <span class="ow">in</span> <span class="n">molecule_list</span><span class="p">:</span>
-            <span class="n">molecule_info</span><span class="p">[</span><span class="n">molecule</span><span class="p">[</span><span class="s2">&quot;mol_name&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">molecule</span>
+            <span class="n">molecule_info</span><span class="p">[</span><span class="n">molecule</span><span class="p">[</span><span class="s2">"mol_name"</span><span class="p">]]</span> <span class="o">=</span> <span class="n">molecule</span>
         <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">path_to_binary_files</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">McellConverter</span><span class="o">.</span><span class="n">_should_read_cellblender_binary_file</span><span class="p">(</span>
                 <span class="n">file_name</span><span class="p">,</span> <span class="n">input_data</span><span class="o">.</span><span class="n">nth_timestep_to_read</span>
             <span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="n">split_file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-            <span class="n">time_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split_file_name</span><span class="p">[</span><span class="n">split_file_name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;dat&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">split_file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+            <span class="n">time_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split_file_name</span><span class="p">[</span><span class="n">split_file_name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"dat"</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">time_index</span> <span class="o">&gt;</span> <span class="n">total_steps</span><span class="p">:</span>
                 <span class="n">total_steps</span> <span class="o">=</span> <span class="n">time_index</span>
             <span class="n">result</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="n">time_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_index</span> <span class="o">*</span> <span class="n">timestep</span>
@@ -603,34 +603,34 @@
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="n">McellData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrajectoryData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return an object containing the data shaped for Simularium format</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading MCell Data -------------&quot;</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Reading MCell Data -------------"</span><span class="p">)</span>
         <span class="c1"># read data model json</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">path_to_data_model_json</span><span class="p">)</span> <span class="k">as</span> <span class="n">data_model_file</span><span class="p">:</span>
                 <span class="n">data_model</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data_model_file</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading Mcell file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">InputDataError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error reading Mcell file: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="c1"># read spatial data</span>
         <span class="n">time_units</span> <span class="o">=</span> <span class="n">UnitData</span><span class="p">(</span>
-            <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">data_model</span><span class="p">[</span><span class="s2">&quot;mcell&quot;</span><span class="p">][</span><span class="s2">&quot;initialization&quot;</span><span class="p">][</span><span class="s2">&quot;time_step&quot;</span><span class="p">])</span>
+            <span class="s2">"s"</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">data_model</span><span class="p">[</span><span class="s2">"mcell"</span><span class="p">][</span><span class="s2">"initialization"</span><span class="p">][</span><span class="s2">"time_step"</span><span class="p">])</span>
         <span class="p">)</span>
         <span class="n">agent_data</span><span class="p">,</span> <span class="n">scale_factor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_cellblender_data</span><span class="p">(</span>
             <span class="n">time_units</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">data_model</span><span class="p">[</span><span class="s2">&quot;mcell&quot;</span><span class="p">][</span><span class="s2">&quot;define_molecules&quot;</span><span class="p">][</span><span class="s2">&quot;molecule_list&quot;</span><span class="p">],</span>
+            <span class="n">data_model</span><span class="p">[</span><span class="s2">"mcell"</span><span class="p">][</span><span class="s2">"define_molecules"</span><span class="p">][</span><span class="s2">"molecule_list"</span><span class="p">],</span>
             <span class="n">input_data</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">time_units</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="c1"># get box size</span>
-        <span class="n">partitions</span> <span class="o">=</span> <span class="n">data_model</span><span class="p">[</span><span class="s2">&quot;mcell&quot;</span><span class="p">][</span><span class="s2">&quot;initialization&quot;</span><span class="p">][</span><span class="s2">&quot;partitions&quot;</span><span class="p">]</span>
+        <span class="n">partitions</span> <span class="o">=</span> <span class="n">data_model</span><span class="p">[</span><span class="s2">"mcell"</span><span class="p">][</span><span class="s2">"initialization"</span><span class="p">][</span><span class="s2">"partitions"</span><span class="p">]</span>
         <span class="n">box_size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
             <span class="p">[</span>
-                <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">&quot;x_end&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">&quot;x_start&quot;</span><span class="p">]),</span>
-                <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">&quot;y_end&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">&quot;y_start&quot;</span><span class="p">]),</span>
-                <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">&quot;z_end&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">&quot;z_start&quot;</span><span class="p">]),</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">"x_end"</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">"x_start"</span><span class="p">]),</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">"y_end"</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">"y_start"</span><span class="p">]),</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">"z_end"</span><span class="p">])</span> <span class="o">-</span> <span class="nb">float</span><span class="p">(</span><span class="n">partitions</span><span class="p">[</span><span class="s2">"z_start"</span><span class="p">]),</span>
             <span class="p">]</span>
         <span class="p">)</span>
         <span class="c1"># get display data (geometry and color)</span>
@@ -643,7 +643,7 @@
             <span class="n">meta_data</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">meta_data</span><span class="p">,</span>
             <span class="n">agent_data</span><span class="o">=</span><span class="n">agent_data</span><span class="p">,</span>
             <span class="n">time_units</span><span class="o">=</span><span class="n">time_units</span><span class="p">,</span>
-            <span class="n">spatial_units</span><span class="o">=</span><span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;µm&quot;</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">scale_factor</span><span class="p">),</span>
+            <span class="n">spatial_units</span><span class="o">=</span><span class="n">UnitData</span><span class="p">(</span><span class="s2">"µm"</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">scale_factor</span><span class="p">),</span>
             <span class="n">plots</span><span class="o">=</span><span class="n">input_data</span><span class="o">.</span><span class="n">plots</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -679,7 +679,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

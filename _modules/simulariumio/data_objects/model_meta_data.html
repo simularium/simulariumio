@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.data_objects.model_meta_data - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.data_objects.model_meta_data - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -281,17 +281,17 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">authors</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">source_code_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">source_code_license_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">input_data_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="n">raw_output_data_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">authors</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">doi</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">source_code_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">source_code_license_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">input_data_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">raw_output_data_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This object holds metadata for a model that generates simulation trajectories</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -316,14 +316,14 @@
 <span class="sd">            A link to any model configuration or parameter files posted publicly</span>
 <span class="sd">        raw_output_data_url : str (optional)</span>
 <span class="sd">            A link to any raw outputs from the source code posted publicly</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">authors</span> <span class="o">=</span> <span class="n">authors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
         <span class="c1"># remove url prefix from doi</span>
-        <span class="k">if</span> <span class="s2">&quot;doi.org&quot;</span> <span class="ow">in</span> <span class="n">doi</span><span class="p">:</span>
-            <span class="n">doi</span> <span class="o">=</span> <span class="n">doi</span><span class="p">[</span><span class="n">doi</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;doi.org&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span> <span class="p">:]</span>
+        <span class="k">if</span> <span class="s2">"doi.org"</span> <span class="ow">in</span> <span class="n">doi</span><span class="p">:</span>
+            <span class="n">doi</span> <span class="o">=</span> <span class="n">doi</span><span class="p">[</span><span class="n">doi</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"doi.org"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">8</span> <span class="p">:]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">doi</span> <span class="o">=</span> <span class="n">doi</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_code_url</span> <span class="o">=</span> <span class="n">source_code_url</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source_code_license_url</span> <span class="o">=</span> <span class="n">source_code_license_url</span>
@@ -334,30 +334,30 @@
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.model_meta_data.ModelMetaData.from_dict">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Create ModelMetaData from a simularium JSON dict containing buffers</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">model_info</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">model_info</span> <span class="o">==</span> <span class="p">{}:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">title</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="n">version</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="n">authors</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="n">description</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="n">doi</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="n">source_code_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sourceCodeUrl&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="n">source_code_license_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sourceCodeLicenseUrl&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="n">input_data_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;inputDataUrl&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
-            <span class="n">raw_output_data_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rawOutputDataUrl&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"title"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="n">version</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"version"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="n">authors</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"authors"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"description"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="n">doi</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"doi"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="n">source_code_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"sourceCodeUrl"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="n">source_code_license_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"sourceCodeLicenseUrl"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="n">input_data_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"inputDataUrl"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
+            <span class="n">raw_output_data_url</span><span class="o">=</span><span class="n">model_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"rawOutputDataUrl"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
         <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ModelMetaData.is_default">
 <a class="viewcode-back" href="../../../simulariumio.data_objects.html#simulariumio.data_objects.model_meta_data.ModelMetaData.is_default">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Check if this ModelMetaData is only holding default data</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
             <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
@@ -373,23 +373,23 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
+            <span class="k">yield</span> <span class="s2">"title"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
+            <span class="k">yield</span> <span class="s2">"version"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">version</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">authors</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s2">&quot;authors&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">authors</span>
+            <span class="k">yield</span> <span class="s2">"authors"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">authors</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
+            <span class="k">yield</span> <span class="s2">"description"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">doi</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">doi</span>
+            <span class="k">yield</span> <span class="s2">"doi"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">doi</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_url</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s2">&quot;sourceCodeUrl&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_url</span>
+            <span class="k">yield</span> <span class="s2">"sourceCodeUrl"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_url</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_license_url</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s2">&quot;sourceCodeLicenseUrl&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_license_url</span>
+            <span class="k">yield</span> <span class="s2">"sourceCodeLicenseUrl"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_code_license_url</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_data_url</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s2">&quot;inputDataUrl&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_data_url</span>
+            <span class="k">yield</span> <span class="s2">"inputDataUrl"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_data_url</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="s2">&quot;rawOutputDataUrl&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span>
+            <span class="k">yield</span> <span class="s2">"rawOutputDataUrl"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_output_data_url</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ModelMetaData</span><span class="p">):</span>
@@ -438,7 +438,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>

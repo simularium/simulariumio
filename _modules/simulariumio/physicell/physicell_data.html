@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2025.12.19 -->
-        <title>simulariumio.physicell.physicell_data - simulariumio 1.13.1.dev26+g68e42ecdd documentation</title>
+        <title>simulariumio.physicell.physicell_data - simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev26+g68e42ecdd documentation</div></a>
+      <a href="../../../index.html"><div class="brand">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
-  <span class="sidebar-brand-text">simulariumio 1.13.1.dev26+g68e42ecdd documentation</span>
+  <span class="sidebar-brand-text">simulariumio 1.13.1.dev27+g2ba5cbcfc documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -291,11 +291,11 @@
         <span class="n">display_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DisplayData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">phase_names</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">max_owner_cells</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">owner_cell_display_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cell&quot;</span><span class="p">,</span>
+        <span class="n">owner_cell_display_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"cell"</span><span class="p">,</span>
         <span class="n">time_units</span><span class="p">:</span> <span class="n">UnitData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">plots</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        This object holds simulation trajectory outputs</span>
 <span class="sd">        from PhysiCell (http://physicell.org/)</span>
 <span class="sd">        and plot data</span>
@@ -318,13 +318,13 @@
 <span class="sd">            The cell type ID from PhysiCell data mapped</span>
 <span class="sd">            to DisplayData, including names and display info</span>
 <span class="sd">            to use for rendering that agent type in the Simularium Viewer</span>
-<span class="sd">            Default: for names, &quot;cell[cell type ID from PhysiCell data]&quot;,</span>
-<span class="sd">                for radius, calculate from cell&#39;s volume,</span>
+<span class="sd">            Default: for names, "cell[cell type ID from PhysiCell data]",</span>
+<span class="sd">                for radius, calculate from cell's volume,</span>
 <span class="sd">                for rendering, use default representations and colors</span>
 <span class="sd">        phase_names : Dict[int, Dict[int, str]] (optional)</span>
 <span class="sd">            the cell type ID from PhysiCell data mapped</span>
 <span class="sd">            to display names for phases of that type</span>
-<span class="sd">            Default: &quot;phase[cell phase ID from PhysiCell data]&quot;</span>
+<span class="sd">            Default: "phase[cell phase ID from PhysiCell data]"</span>
 <span class="sd">        max_owner_cells : int (optional)</span>
 <span class="sd">            MAX_OWNER_CELLS constant from PhysiCell OwnerCell module.</span>
 <span class="sd">            Every cell with ID &gt;= this will be displayed</span>
@@ -333,14 +333,14 @@
 <span class="sd">        owner_cell_display_name : str (optional)</span>
 <span class="sd">            Display name for cells that are rendered</span>
 <span class="sd">            as groups of spheres</span>
-<span class="sd">            Default: &quot;cell&quot;</span>
+<span class="sd">            Default: "cell"</span>
 <span class="sd">        time_units: UnitData (optional)</span>
 <span class="sd">            multiplier and unit name for time values</span>
 <span class="sd">            Default: 1.0 second</span>
 <span class="sd">        plots : List[Dict[str, Any]] (optional)</span>
 <span class="sd">            An object containing plot data already</span>
 <span class="sd">            in Simularium format</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestep</span> <span class="o">=</span> <span class="n">timestep</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path_to_output_dir</span> <span class="o">=</span> <span class="n">path_to_output_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">meta_data</span> <span class="k">if</span> <span class="n">meta_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">MetaData</span><span class="p">()</span>
@@ -349,7 +349,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">phase_names</span> <span class="o">=</span> <span class="n">phase_names</span> <span class="k">if</span> <span class="n">phase_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_owner_cells</span> <span class="o">=</span> <span class="n">max_owner_cells</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">owner_cell_display_name</span> <span class="o">=</span> <span class="n">owner_cell_display_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span> <span class="k">if</span> <span class="n">time_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_units</span> <span class="o">=</span> <span class="n">time_units</span> <span class="k">if</span> <span class="n">time_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">UnitData</span><span class="p">(</span><span class="s2">"s"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plots</span> <span class="o">=</span> <span class="n">plots</span> <span class="k">if</span> <span class="n">plots</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span></div>
 
 </pre></div>
@@ -384,7 +384,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=80e03528"></script>
+</div><script src="../../../_static/documentation_options.js?v=737dd160"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
